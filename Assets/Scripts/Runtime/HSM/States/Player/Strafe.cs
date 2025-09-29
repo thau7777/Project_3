@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Strafe : State
 {
-    readonly PlayerContext ctx;
+    readonly MyPlayerContext ctx;
 
-    public Strafe(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
+    public Strafe(StateMachine m, State parent, MyPlayerContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
         Add(new ColorPhaseActivity(ctx.renderer)

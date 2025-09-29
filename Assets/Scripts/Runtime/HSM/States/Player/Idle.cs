@@ -2,9 +2,9 @@ using UnityEngine;
 using HSM;
 public class Idle : State
 {
-    readonly PlayerContext ctx;
+    readonly MyPlayerContext ctx;
 
-    public Idle(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
+    public Idle(StateMachine m, State parent, MyPlayerContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
         Add(new ColorPhaseActivity(ctx.renderer)

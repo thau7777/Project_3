@@ -31,6 +31,7 @@ public class MyPlayerStateDriver : MonoBehaviour
     private float targetAttackLayerWeight = 0f;          // 0 = off, 1 = active
     private float currentAttackLayerWeight = 0f;
 
+    [SerializeField]
     private MyPlayerContext _context;
     #endregion
     private void Awake()
@@ -42,7 +43,9 @@ public class MyPlayerStateDriver : MonoBehaviour
             accelerate, 
             _animator, 
             _controller, 
-            _renderer);
+            _renderer,
+            Camera.main.transform,
+            transform);
     }
     private void OnEnable()
     {
@@ -99,23 +102,29 @@ public class MyPlayerContext
 
     public Vector2 moveInput;   // store the latest input          // store the latest input
 
-    public float baseMoveSpeed = 6f;
-    public float accel = 40f;
+    public float baseMoveSpeed = 5f;
+    public float accel = 4;
     public Animator anim;
     public CharacterController characterController;
     public Renderer renderer;
+    public Transform mainCameraTransform;
+    public Transform rootTransform;
 
     public MyPlayerContext(
         float baseMoveSpeed, 
         float accel, 
         Animator anim, 
         CharacterController characterController, 
-        Renderer renderer)
+        Renderer renderer,
+        Transform mainCameraTransform,
+        Transform rootTransform)
     {
         this.baseMoveSpeed = baseMoveSpeed;
         this.accel = accel;
         this.anim = anim;
         this.characterController = characterController;
         this.renderer = renderer;
+        this.mainCameraTransform = mainCameraTransform;
+        this.rootTransform = rootTransform;
     }
 }
