@@ -109,6 +109,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""733936f5-3e6a-40d2-9f05-ca2dabf60066"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -177,6 +186,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc00f203-71cd-44f8-9afc-db31adc717a3"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -233,6 +253,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown = asset.FindActionMap("PlayerTopDown", throwIfNotFound: true);
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_Attack = m_PlayerTopDown.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerTopDown_Aim = m_PlayerTopDown.FindAction("Aim", throwIfNotFound: true);
         // PlayerTurnBased
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
         // PlayerFPS
@@ -328,6 +349,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerTopDownActions> m_PlayerTopDownActionsCallbackInterfaces = new List<IPlayerTopDownActions>();
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_Attack;
+    private readonly InputAction m_PlayerTopDown_Aim;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTopDown".
     /// </summary>
@@ -347,6 +369,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerTopDown/Attack".
         /// </summary>
         public InputAction @Attack => m_Wrapper.m_PlayerTopDown_Attack;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Aim".
+        /// </summary>
+        public InputAction @Aim => m_Wrapper.m_PlayerTopDown_Aim;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -379,6 +405,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
         }
 
         /// <summary>
@@ -396,6 +425,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
         }
 
         /// <summary>
@@ -801,6 +833,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Aim" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAim(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTurnBased" which allows adding and removing callbacks.

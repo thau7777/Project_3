@@ -2,9 +2,9 @@ using UnityEngine;
 using HSM;
 public class Move : State
 {
-    readonly MyPlayerContext ctx;
+    readonly PlayerContext ctx;
 
-    public Move(StateMachine m, State parent, MyPlayerContext ctx) : base(m, parent)
+    public Move(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
         Add(new ColorPhaseActivity(ctx.renderer)
@@ -12,18 +12,26 @@ public class Move : State
             enterColor = Color.green,  // runs while Grounded is activating
         });
     }
-
-    protected override State GetTransition()
+    protected override void OnEnter()
     {
-        return null;
-        //if (!ctx.grounded) return ((PlayerRoot)Parent).Strafe;
-
-        //return Mathf.Abs(ctx.move.x) <= 0.01f ? ((Grounded)Parent).Idle : null;
+        ctx.targetMoveSpeed = ctx.baseMoveSpeed;
     }
-
     protected override void OnUpdate(float deltaTime)
     {
-        //var target = ctx.move.x * ctx.moveSpeed;
-        //ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, target, ctx.accel * deltaTime);
+        // rotate toward movement
+        if (ctx.moveInput != Vector2.zero)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(ctx.moveDir);
+            ctx.rootTransform.rotation = Quaternion.Slerp(ctx.rootTransform.rotation, targetRot, Time.deltaTime * 20f);
+        }
     }
+    protected override State GetTransition()
+    {
+        if(ctx.moveInput == Vector2.zero)
+            return ((Grounded)Parent).Idle;
+        else if(ctx.isAiming)
+            return ((Grounded)Parent).Strafe;
+        return null;
+    }
+
 }
