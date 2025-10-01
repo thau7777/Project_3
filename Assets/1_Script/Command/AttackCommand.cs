@@ -6,7 +6,7 @@ public class AttackCommand : SkillCommand
     private float moveSpeed = 5f;
 
     float attackDuration = 0f;
-    private float rotationDuration = 0.25f; // Đặt thời gian xoay mượt mà
+    private float rotationDuration = 0.25f; 
 
     public AttackCommand(Character user, Character target, Skill skill)
     : base(user, target, skill) { }
@@ -18,7 +18,6 @@ public class AttackCommand : SkillCommand
         float direction = Mathf.Sign(target.transform.position.x - user.transform.position.x);
         Vector3 destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
 
-        // 1. Chạy đến target
         user.animator.Play("Run");
         user.animator.SetBool("IsRunning", true);
         while (Vector3.Distance(user.transform.position, destination) > 0.1f)
@@ -29,16 +28,13 @@ public class AttackCommand : SkillCommand
 
         attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
 
-        // 2. Attack
         user.animator.SetBool("IsRunning", false);
         user.animator.SetTrigger("Attack");
         yield return new WaitForSeconds(attackDuration);
 
-        // 3. Gây damage
         target.TakeDamage(skill.damage);
         yield return new WaitForSeconds(attackDuration);
 
-        // 4. Quay về vị trí
         user.animator.SetBool("IsRunning", true);
         while (Vector3.Distance(user.transform.position, initialPosition) > 0.1f)
         {
@@ -47,19 +43,17 @@ public class AttackCommand : SkillCommand
         }
         user.animator.SetBool("IsRunning", false);
 
-        // 5. 🟢 XOAY TRỞ LẠI GÓC BAN ĐẦU MƯỢT MÀ
         Quaternion startRotation = user.transform.rotation;
-        // LƯU Ý: Phải sử dụng user.initialRotation (kiểu Quaternion)
+
         Quaternion endRotation = user.initialRotation;
 
         float elapsed = 0f;
         while (elapsed < rotationDuration)
         {
-            // Sử dụng Quaternion.Slerp để xoay mượt mà
             user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        user.transform.rotation = endRotation; // Đảm bảo xoay chính xác
+        user.transform.rotation = endRotation;
     }
 }

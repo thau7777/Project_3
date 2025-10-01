@@ -15,7 +15,6 @@ public class SkillAttackingState : BaseState
         Character user = stateMachine.character;
         Character target = user.target;
 
-        // Truyền đúng thứ tự: user, target, skill, battleManager
         ICommand command = SkillCommandFactory.CreateCommand(
             user,
             target,
@@ -33,8 +32,6 @@ public class SkillAttackingState : BaseState
             stateMachine.battleManager.EndTurn(user);
         }
 
-        //PlayerActionUI.Instance.HidePanelEvent();
-
     }
 
 
@@ -42,7 +39,6 @@ public class SkillAttackingState : BaseState
     {
         yield return command.Execute();
 
-        // Kết thúc lượt sau khi skill hoàn tất
         stateMachine.battleManager.EndTurn(stateMachine.character);
     }
 

@@ -71,6 +71,12 @@ public class Character : MonoBehaviour
 
     public PlayerActionUI ownUI;
 
+    public Action OnAttackHitFrame;
+    public bool isAttackReadyForParry = false; 
+    public bool isParryWindowFinished = false;
+    public float parryWindowDuration = 0f;
+
+
 
     public bool isAlive
     {

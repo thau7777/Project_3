@@ -32787,6 +32787,7 @@ GameObject:
   - component: {fileID: 75167956460423509}
   - component: {fileID: 3378854915989972298}
   - component: {fileID: 3404509342006786628}
+  - component: {fileID: 4313930177542392817}
   - component: {fileID: 6007067907109271698}
   m_Layer: 0
   m_Name: Player
@@ -32870,7 +32871,7 @@ MonoBehaviour:
     defense: 153
     magicAttack: 154
     magicDefense: 139
-    agility: 111
+    agility: 98
   skills: []
   isPlayer: 1
   target: {fileID: 0}
@@ -32878,9 +32879,28 @@ MonoBehaviour:
   animator: {fileID: 3378854915989972298}
   actionGauge: 0
   initialPosition: {x: 0, y: 0, z: 0}
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
   isParryable: 0
   ownUI: {fileID: 0}
+  isAttackReadyForParry: 0
+  isParryWindowFinished: 0
+  parryWindowDuration: 0
+--- !u!114 &4313930177542392817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a88dcda9766e5e42afe0e8cc9675614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GanzSe.ModularHeroController
+  armorPartsRoot: {fileID: 106956000024553084}
+  facePartsRoot: {fileID: 5915380383658111504}
+  showHelmet: 1
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0

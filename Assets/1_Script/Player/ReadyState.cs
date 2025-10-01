@@ -15,7 +15,6 @@ public class ReadyState : BaseState
         Debug.Log(stateMachine.gameObject.name + " đã sẵn sàng hành động.");
 
 
-        // Ẩn tất cả các marker trước khi vào trạng thái
         ShowTargetMarker(false);
 
         stateMachine.character.target = null;
@@ -29,7 +28,6 @@ public class ReadyState : BaseState
 
             RotateToTarget();
 
-            // Chỉ hiển thị marker cho mục tiêu mặc định
             if (stateMachine.character.isPlayer)
             {
                 if (enemies[currentIndex].targetMarker != null)
@@ -46,7 +44,6 @@ public class ReadyState : BaseState
 
     public override void OnUpdate()
     {
-        // Kiểm tra xem nhân vật có phải là người chơi không trước khi xử lý input
         if (stateMachine.character.isPlayer)
         {
             if (Input.GetKeyDown(KeyCode.A))
@@ -65,7 +62,6 @@ public class ReadyState : BaseState
     {
         if (enemies.Count > 0)
         {
-            // Ẩn marker của mục tiêu hiện tại trước khi chuyển đổi
             if (stateMachine.character.target != null && stateMachine.character.target.targetMarker != null)
             {
                 stateMachine.character.target.targetMarker.SetActive(false);
@@ -77,7 +73,6 @@ public class ReadyState : BaseState
 
             RotateToTarget();
 
-            // Hiển thị marker cho mục tiêu mới
             if (stateMachine.character.target != null && stateMachine.character.target.targetMarker != null)
             {
                 stateMachine.character.target.targetMarker.SetActive(true);
@@ -87,14 +82,9 @@ public class ReadyState : BaseState
 
     public override void OnExit()
     {
-        // Ẩn tất cả các target marker khi thoát khỏi trạng thái
         ShowTargetMarker(false);
     }
 
-    /// <summary>
-    /// Hiển thị hoặc ẩn tất cả các target marker của kẻ địch.
-    /// </summary>
-    /// <param name="active">Giá trị true để hiển thị, false để ẩn.</param>
     private void ShowTargetMarker(bool active)
     {
         if (enemies != null)
@@ -116,16 +106,13 @@ public class ReadyState : BaseState
 
         if (target != null)
         {
-            // 1. Tính toán hướng đến mục tiêu (chỉ trên trục XZ)
             Vector3 directionToTarget = target.transform.position - user.transform.position;
-            directionToTarget.y = 0; // Bỏ qua trục Y
+            directionToTarget.y = 0;
 
             if (directionToTarget.sqrMagnitude > 0)
             {
-                // 2. Tạo Quaternion (xoay) từ hướng
                 Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
 
-                // 3. Áp dụng xoay ngay lập tức
                 user.transform.rotation = targetRotation;
             }
         }

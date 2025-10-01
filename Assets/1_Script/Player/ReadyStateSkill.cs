@@ -21,7 +21,6 @@ public class ReadyStateSkill : BaseState
         ShowTargetMarker(false);
         stateMachine.character.target = null;
 
-        // Lọc danh sách mục tiêu dựa trên loại mục tiêu của kỹ năng, thêm kiểm tra null
         switch (selectedSkill.targetType)
         {
             case SkillTargetType.Self:

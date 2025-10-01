@@ -30,7 +30,6 @@ public class PlayerPanelController : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Vẫn cần hủy đăng ký khi GameObject bị hủy (ví dụ: kết thúc trận đấu)
         EventBus<HidePanelEvent>.Deregister(hidePanelBinding);
         EventBus<ShowPanelEvent>.Deregister(showPanelBinding);
         EventBus<OnUIAction>.Deregister(showActionConfirmBinding);

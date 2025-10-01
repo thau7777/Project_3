@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-// Trạng thái chờ lượt
 public class WaitingState : BaseState
 {    
     public WaitingState(CharacterStateMachine stateMachine) : base(stateMachine) { }

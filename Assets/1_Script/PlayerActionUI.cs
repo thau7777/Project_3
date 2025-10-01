@@ -218,7 +218,6 @@ public class PlayerActionUI : MonoBehaviour
 
         Debug.Log($"OnSkillButtonClicked được gọi với kỹ năng: {selectedSkill.skillName} cho {currentCharacter.name}");
 
-        //Show panel action 2
         EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
 
         playerActionsPanel.SetActive(false);

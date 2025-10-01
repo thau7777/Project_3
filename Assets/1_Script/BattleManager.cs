@@ -20,6 +20,8 @@ public class BattleManager : MonoBehaviour
 
     public TurnOrderUI turnOrderUI;
 
+    private Coroutine currentParryWindow;
+
 
     void Start()
     {
@@ -27,9 +29,29 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(DelayedStart());
     }
 
+    void Update()
+    {
+        // 1. Chỉ cho phép kiểm tra input khi đang là lượt của kẻ địch và cửa sổ Parry đang mở
+        if (activeCharacter != null && !activeCharacter.isPlayer && currentParryWindow != null)
+        {
+            // 2. Tìm mục tiêu (player) mà kẻ địch đang nhắm đến
+            Enemy enemy = activeCharacter as Enemy;
+            Character playerTarget = enemy?.target;
+
+            // 3. Kiểm tra phím Space và trạng thái có thể Parry
+            if (playerTarget != null && playerTarget.isParryable && Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Nhấn Space: Bắt đầu cố gắng Parry!");
+
+                // Gọi hàm xử lý Parry chính
+                OnParryAttempted();
+            }
+        }
+    }
+
     IEnumerator DelayedStart()
     {
-        yield return null;  // đợi 1 frame
+        yield return null;  
         StartCoroutine(UpdateActionGauge());
     }
 
@@ -37,7 +59,6 @@ public class BattleManager : MonoBehaviour
     {
         allCombatants = new List<Character>();
 
-        // Spawn Players
         int playerCount = Mathf.Min(playerPrefabs.Length, playerSpawnPoints.Length);
         for (int i = 0; i < playerCount; i++)
         {
@@ -55,25 +76,19 @@ public class BattleManager : MonoBehaviour
                 playerStateMachine.battleManager = this;
             }
 
-            // 🔹 Gắn UI riêng cho mỗi player
             PlayerActionUI actionUI = playerInstance.GetComponentInChildren<PlayerActionUI>(true);
             if (actionUI != null)
             {
-                // Gán owner để UI biết thuộc về player này
                 actionUI.SetOwner(playerInstance);
 
-                // Ẩn UI lúc spawn
                 actionUI.Hide();
 
-                // Subscribe parry event
                 actionUI.OnParryAttempted += OnParryAttempted;
 
-                // Lưu tham chiếu UI vào player
                 playerInstance.ownUI = actionUI;
             }
         }
 
-        // Spawn Enemies
         int enemyCount = Mathf.Min(enemySlots.Length, enemyPrefabs.Length);
         for (int i = 0; i < enemyCount; i++)
         {
@@ -92,7 +107,6 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        // Reset state ban đầu
         foreach (Character combatant in allCombatants)
         {
             if (combatant.stateMachine != null)
@@ -147,7 +161,7 @@ public class BattleManager : MonoBehaviour
             yield return null;
         }
     }
- 
+
     public void AdvanceTurn(Character characterToAct)
     {
         if (activeCharacter != null) return;
@@ -182,15 +196,12 @@ public class BattleManager : MonoBehaviour
         {
             turnOrderUI.HighlightActiveCharacter(activeCharacter);
         }
-
-        
-        
     }
 
     private IEnumerator DelayedStartTurn(Character character)
     {
         yield return new WaitForSeconds(2f);
-        CameraAction.instance.LookCameraAtTarget(character);
+        CameraAction.instance.LookCameraAtTarget(character); 
     }
 
 
@@ -198,87 +209,88 @@ public class BattleManager : MonoBehaviour
     {
         Debug.Log("Đến lượt của kẻ địch: " + enemy.gameObject.name);
 
-
-
         yield return new WaitForSeconds(1f);
 
         Enemy enemyComponent = enemy.GetComponent<Enemy>();
         if (enemyComponent != null)
         {
-            enemyComponent.PerformTurn();
+            enemyComponent.PerformTurn(); 
         }
 
-        // Enemy đã set target trong PerformTurn()
         if (enemy.target != null)
         {
-            StartCoroutine(EnemyParryWindow(enemy, enemy.target));
+            float startTime = 0f;
+            float endTime = 0f;
+
+            yield return new WaitUntil(() => enemy.isAttackReadyForParry == true);
+            startTime = Time.time;
+            enemy.isAttackReadyForParry = false; 
+            enemy.isParryWindowFinished = false; 
+
+
+            yield return new WaitUntil(() => enemy.isParryWindowFinished == true);
+            endTime = Time.time;
+            enemy.isParryWindowFinished = false; 
+
+            float duration = endTime - startTime;
+            enemy.parryWindowDuration = duration;
+            Debug.Log($"Thời lượng Parry tính toán: {duration}s");
+
+            StartParryWindow(enemy, enemy.target, duration);
         }
     }
 
+    public void StartParryWindow(Character enemy, Character target, float duration)
+    {
+        if (currentParryWindow != null)
+        {
+            StopCoroutine(currentParryWindow);
+        }
 
-    private IEnumerator EnemyParryWindow(Character enemy, Character target)
+        currentParryWindow = StartCoroutine(ImmediateParryWindow(enemy, target, duration));
+    }
+
+
+    private IEnumerator ImmediateParryWindow(Character enemy, Character target, float duration)
     {
         if (target == null || !target.isAlive) yield break;
 
         float parryTimer = 0f;
-        float attackDuration = 1.5f;
 
-        // Chỉ hiện UI của target
         if (target.ownUI != null)
+        {
             target.ownUI.ShowParryUI(true);
+            target.ownUI.SetParrySprite(true); 
+        }
+        target.isParryable = true; 
 
-        while (parryTimer < attackDuration)
+        while (parryTimer < duration)
         {
             parryTimer += Time.deltaTime;
-            float normalizedValue = parryTimer / attackDuration; // Giá trị từ 0.0f đến 1.0f
+            float normalizedValue = Mathf.Clamp01(parryTimer / duration);
 
             if (target.ownUI != null)
             {
-                // Cập nhật thanh đổ đầy Image
                 target.ownUI.UpdateParryFill(normalizedValue);
-            }
-
-            // Logic kiểm tra Cửa sổ Parry
-            bool isInParryWindow = (normalizedValue >= 0.6f && normalizedValue <= 0.9f);
-
-            if (isInParryWindow)
-            {
-                if (!target.isParryable)
-                {
-                    target.isParryable = true;
-                    // ⬅️ CHUYỂN SPRITE SANG TRẠNG THÁI READY
-                    if (target.ownUI != null)
-                        target.ownUI.SetParrySprite(true);
-                }
-            }
-            else
-            {
-                if (target.isParryable)
-                {
-                    target.isParryable = false;
-                    // ⬅️ CHUYỂN SPRITE VỀ TRẠNG THÁI MẶC ĐỊNH
-                    if (target.ownUI != null)
-                        target.ownUI.SetParrySprite(false);
-                }
             }
 
             yield return null;
         }
 
-        // Khi Coroutine kết thúc (thời gian đã hết)
+
         if (target.ownUI != null)
         {
             target.ownUI.ShowParryUI(false);
-            // ⬅️ Đảm bảo Sprite trở về mặc định nếu đang ở ngưỡng (và tránh lỗi)
             target.ownUI.SetParrySprite(false);
         }
-        target.isParryable = false; // Đảm bảo trạng thái Parry bị tắt
+        target.isParryable = false;
+        currentParryWindow = null;
+
     }
 
 
     public void OnParryAttempted()
     {
-        // Enemy đang đánh target nào thì target đó mới được parry
         if (activeCharacter != null && activeCharacter is Enemy enemy)
         {
             Character target = enemy.target;
@@ -286,6 +298,18 @@ public class BattleManager : MonoBehaviour
             {
                 Debug.Log("Parry thành công!");
                 target.isParryable = false;
+
+                if (currentParryWindow != null)
+                {
+                    StopCoroutine(currentParryWindow);
+                    currentParryWindow = null;
+                    if (target.ownUI != null)
+                    {
+                        target.ownUI.ShowParryUI(false);
+                        target.ownUI.SetParrySprite(false);
+                    }
+                }
+
 
                 activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.interruptedState);
                 target.stateMachine.SwitchState(target.stateMachine.parryingState);
@@ -302,7 +326,6 @@ public class BattleManager : MonoBehaviour
     {
         if (character == activeCharacter)
         {
-
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
 
@@ -323,8 +346,4 @@ public class BattleManager : MonoBehaviour
             allCombatants.Remove(character);
         }
     }
-
-
-    
-
 }
