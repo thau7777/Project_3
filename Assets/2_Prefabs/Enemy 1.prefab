@@ -627,6 +627,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -648,6 +650,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -824,7 +827,6 @@ GameObject:
   - component: {fileID: 3378854915989972298}
   - component: {fileID: -5687909505730138963}
   - component: {fileID: 229363719538074653}
-  - component: {fileID: 3541049482812531621}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -899,12 +901,12 @@ MonoBehaviour:
     magicAttack: 56
     magicDefense: 93
     agility: 100
+  skills: []
   isPlayer: 0
   target: {fileID: 0}
   targetMarker: {fileID: 5109386890736583360}
   animator: {fileID: 3378854915989972298}
   actionGauge: 0
-  skills: []
   initialPosition: {x: 0, y: 0, z: 0}
   battleManager: {fileID: 0}
   isParryable: 0
@@ -923,41 +925,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: -5687909505730138963}
   battleManager: {fileID: 0}
---- !u!114 &3541049482812531621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8083454903267841439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boneShape: 1
-  drawBones: 1
-  drawTripods: 0
-  boneSize: 1
-  tripodSize: 1
-  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
-  m_Transforms:
-  - {fileID: 7993429176243601918}
-  - {fileID: 4269364687390277671}
-  - {fileID: 3157584190809749811}
-  - {fileID: 1121845461961421784}
-  - {fileID: 4883790012046321084}
-  - {fileID: 5998490225624990036}
-  - {fileID: 7125868379999099873}
-  - {fileID: 9130612894722145034}
-  - {fileID: 5241519804213373503}
-  - {fileID: 8835788767518028874}
-  - {fileID: 5221787983853058135}
-  - {fileID: 7877282687084073605}
-  - {fileID: 5907548035013427426}
-  - {fileID: 6828190366826316254}
-  - {fileID: 7387858804288477694}
-  - {fileID: 6807336015204174886}
 --- !u!1 &8633805098435303522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,6 +977,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1031,6 +1000,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

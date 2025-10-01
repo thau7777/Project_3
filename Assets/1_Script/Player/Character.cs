@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using UnityEditor.ShaderKeywordFilter;
+using HSM;
 
 public enum BattleState
 {
@@ -44,9 +46,13 @@ public class Character : MonoBehaviour
 
     public CharacterClass characterClass;
 
-    public List<CharacterClassProfile> allClassProfiles;
+    [TabGroup("Class")]  public List<CharacterClassProfile> allClassProfiles;
 
-    public CharacterStats stats;
+    [TabGroup("Stats")] public CharacterStats stats;
+
+    [TabGroup("Skill")] public List<Skill> skills;
+
+
     public bool isPlayer;
     public Character target;
     public GameObject targetMarker;
@@ -55,9 +61,9 @@ public class Character : MonoBehaviour
 
     public float actionGauge;
 
-    public List<Skill> skills;
 
     public Vector3 initialPosition;
+    public Quaternion initialRotation;
 
     public BattleManager battleManager;
 

@@ -26,6 +26,9 @@ public class ReadyState : BaseState
         {
             currentIndex = 0;
             stateMachine.character.target = enemies[currentIndex];
+
+            RotateToTarget();
+
             // Chỉ hiển thị marker cho mục tiêu mặc định
             if (stateMachine.character.isPlayer)
             {
@@ -72,6 +75,8 @@ public class ReadyState : BaseState
             stateMachine.character.target = enemies[currentIndex];
             Debug.Log("Đã chuyển mục tiêu sang: " + enemies[currentIndex].gameObject.name + " tại vị trí slot: " + currentIndex);
 
+            RotateToTarget();
+
             // Hiển thị marker cho mục tiêu mới
             if (stateMachine.character.target != null && stateMachine.character.target.targetMarker != null)
             {
@@ -100,6 +105,28 @@ public class ReadyState : BaseState
                 {
                     enemy.targetMarker.SetActive(active);
                 }
+            }
+        }
+    }
+
+    private void RotateToTarget()
+    {
+        Character user = stateMachine.character;
+        Character target = user.target;
+
+        if (target != null)
+        {
+            // 1. Tính toán hướng đến mục tiêu (chỉ trên trục XZ)
+            Vector3 directionToTarget = target.transform.position - user.transform.position;
+            directionToTarget.y = 0; // Bỏ qua trục Y
+
+            if (directionToTarget.sqrMagnitude > 0)
+            {
+                // 2. Tạo Quaternion (xoay) từ hướng
+                Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+
+                // 3. Áp dụng xoay ngay lập tức
+                user.transform.rotation = targetRotation;
             }
         }
     }
