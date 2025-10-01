@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Projectile Settings", menuName = "ScriptableObjects/Flyweight/Projectile Settings")]
+[CreateAssetMenu(menuName = "Flyweight/Projectile Settings")]
 public class ProjectileSettings : FlyweightSettings
 {
     public float despawnDelay = 5f;

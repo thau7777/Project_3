@@ -12,7 +12,9 @@ public static class EventBus<T> where T : IEvent
     {
         var snapshot = new HashSet<IEventBinding<T>>(bindings);
 
-        foreach (var binding in snapshot)
+        Debug.Log($"[BUS] Raising {typeof(T).Name}. Found {snapshot.Count} subscriber(s).");
+
+        foreach (var binding in snapshot)
         {
             if (bindings.Contains(binding))
             {
