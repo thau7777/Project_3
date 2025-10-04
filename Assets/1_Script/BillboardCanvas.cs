@@ -17,7 +17,6 @@ public class BillboardCanvas : MonoBehaviour
     {
         if (cam != null)
         {
-            // Giữ cho UI song song với mặt phẳng camera
             transform.rotation = cam.rotation;
         }
     }

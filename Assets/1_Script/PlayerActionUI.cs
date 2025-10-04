@@ -309,6 +309,7 @@ public class PlayerActionUI : MonoBehaviour
         {
             Debug.Log("Chuyển từ ReadyState sang AttackingState.");
             currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.attackingState);
+
             confirmButton.gameObject.SetActive(false);
             PlayerSkillPanel.SetActive(false);
         }

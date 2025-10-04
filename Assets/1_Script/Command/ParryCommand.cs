@@ -14,15 +14,14 @@ public class ParryCommand : ICommand
     {
         Debug.Log($"{character.name} bắt đầu Parry!");
 
-        // Gọi animation
         character.animator.SetTrigger("Parry");
 
-        // Thời gian "cửa sổ parry" hoặc chờ animation
         yield return new WaitForSeconds(0.8f);
 
-        // Kết thúc parry, quay về WaitingState
         character.stateMachine.SwitchState(character.stateMachine.waitingState);
 
         Debug.Log($"{character.name} kết thúc Parry.");
+
+        Time.timeScale = 1f; 
     }
 }

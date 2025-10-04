@@ -48,6 +48,11 @@ public class CharacterStateMachine : MonoBehaviour
 
     public void SwitchState(BaseState newState)
     {
+        if (currentState is DeadState)
+        {
+            return;
+        }
+
         if (currentState != null)
         {
             currentState.OnExit();

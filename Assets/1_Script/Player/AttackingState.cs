@@ -19,13 +19,30 @@ public class AttackingState : BaseState
             return;
         }
 
-        // Tạo skill cơ bản (basic attack)
         Skill basicAttack = ScriptableObject.CreateInstance<Skill>();
         basicAttack.skillName = "Basic Attack";
         basicAttack.damage = stateMachine.character.stats.attack;
         basicAttack.skillType = SkillType.Damage;
 
-        ICommand command = new AttackCommand(stateMachine.character, target, basicAttack);
+        ICommand command;
+
+        switch (stateMachine.character.characterClass)
+        {
+            case CharacterClass.Sword_Shield:
+                command = new AttackCommand(stateMachine.character, target, basicAttack);
+                break;
+            case CharacterClass.Magical:
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
+                break;
+            case CharacterClass.Enemy:
+                command = new AttackCommand(stateMachine.character, target, basicAttack);
+                break;
+            default:
+                command = new AttackCommand(stateMachine.character, target, basicAttack);
+                break;
+        }
+
+
         stateMachine.character.StartCoroutine(ExecuteCommand(command));
 
 

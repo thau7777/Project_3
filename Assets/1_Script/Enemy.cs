@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
-using System;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
 
 public class Enemy : Character
 {
+    private Character currentCharacter;
+
+
     public void Animation_ReadyParry()
     {
         isAttackReadyForParry = true;

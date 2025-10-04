@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-// Thêm dòng này để cho phép tạo ScriptableObject từ Unity Editor
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
 public class Skill : ScriptableObject
 {
@@ -19,11 +18,11 @@ public class Skill : ScriptableObject
 // Giữ nguyên các enum
 public enum SkillTargetType
 {
-    Self,       // Chỉ bản thân
-    Ally,       // Một đồng minh
-    Enemy,      // Một kẻ địch
-    Enemies,    // Tất cả kẻ địch (Lỗi: 'AllEnemie' -> sửa thành 'Enemies')
-    Allies,     // Tất  đồng minhcả
+    Self,      
+    Ally,      
+    Enemy,     
+    Enemies,   
+    Allies,    
 
 }
 

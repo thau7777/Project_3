@@ -8,7 +8,7 @@ public class BattleManager : MonoBehaviour
     public List<Character> allCombatants = new List<Character>();
     public Character activeCharacter;
 
-    private bool isProcessingTurn = false;
+    public bool isProcessingTurn = false;
 
     [Header("Players")]
     public Character[] playerPrefabs;
@@ -20,30 +20,35 @@ public class BattleManager : MonoBehaviour
 
     public TurnOrderUI turnOrderUI;
 
+
+
     private Coroutine currentParryWindow;
 
+    [Header("UI")] 
+    public GameObject AvatarGroupPrefab;
+    public Transform UIContainer;
+
+
+    private Dictionary<Character, AvatarGroup> characterToUI = new Dictionary<Character, AvatarGroup>();
 
     void Start()
     {
         SetupBattle();
         StartCoroutine(DelayedStart());
+        UpdateAllCharacterUIs();
     }
 
     void Update()
     {
-        // 1. Chỉ cho phép kiểm tra input khi đang là lượt của kẻ địch và cửa sổ Parry đang mở
         if (activeCharacter != null && !activeCharacter.isPlayer && currentParryWindow != null)
         {
-            // 2. Tìm mục tiêu (player) mà kẻ địch đang nhắm đến
             Enemy enemy = activeCharacter as Enemy;
             Character playerTarget = enemy?.target;
 
-            // 3. Kiểm tra phím Space và trạng thái có thể Parry
             if (playerTarget != null && playerTarget.isParryable && Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Nhấn Space: Bắt đầu cố gắng Parry!");
 
-                // Gọi hàm xử lý Parry chính
                 OnParryAttempted();
             }
         }
@@ -69,6 +74,8 @@ public class BattleManager : MonoBehaviour
             allCombatants.Add(playerInstance);
             playerInstance.initialPosition = playerSpawnPoints[i].position;
             playerInstance.battleManager = this;
+
+            SpawnCharacterUI(playerInstance);
 
             CharacterStateMachine playerStateMachine = playerInstance.GetComponent<CharacterStateMachine>();
             if (playerStateMachine != null)
@@ -288,16 +295,20 @@ public class BattleManager : MonoBehaviour
 
     }
 
-
     public void OnParryAttempted()
     {
         if (activeCharacter != null && activeCharacter is Enemy enemy)
         {
-            Character target = enemy.target;
+            Character target = enemy.target; 
             if (target != null && target.isParryable)
             {
-                Debug.Log("Parry thành công!");
+                Debug.Log("Parry thành công! Kẻ địch bị nhận phản sát thương!");
                 target.isParryable = false;
+
+                int parryDamage = target.stats.attack * 20; 
+                enemy.TakeDamage(parryDamage);
+
+                Time.timeScale = 0.5f;
 
                 if (currentParryWindow != null)
                 {
@@ -309,7 +320,6 @@ public class BattleManager : MonoBehaviour
                         target.ownUI.SetParrySprite(false);
                     }
                 }
-
 
                 activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.interruptedState);
                 target.stateMachine.SwitchState(target.stateMachine.parryingState);
@@ -344,6 +354,49 @@ public class BattleManager : MonoBehaviour
         if (allCombatants.Contains(character))
         {
             allCombatants.Remove(character);
+        }
+    }
+
+
+    public void UpdateAllCharacterUIs()
+    {
+        foreach (Character combatant in allCombatants)
+        {
+            AvatarGroup uiGroup = combatant.GetComponentInChildren<AvatarGroup>();
+
+            if (uiGroup != null)
+            {
+                uiGroup.UpdateUI(combatant.stats);
+            }
+        }
+    }
+
+    void SpawnCharacterUI(Character character)
+    {
+        if (AvatarGroupPrefab == null || UIContainer == null)
+        {
+            Debug.LogError("Cần gán AvatarGroup Prefab VÀ UI Container trong BattleManager!");
+            return;
+        }
+
+        GameObject uiInstance = Instantiate(AvatarGroupPrefab, UIContainer);
+
+        AvatarGroup uiGroup = uiInstance.GetComponent<AvatarGroup>();
+        if (uiGroup != null)
+        {
+            uiGroup.SetOwner(character);
+
+            characterToUI.Add(character, uiGroup);
+
+            uiGroup.UpdateUI(character.stats);
+        }
+    }
+
+    public void UpdateCharacterUI(Character character)
+    {
+        if (characterToUI.TryGetValue(character, out AvatarGroup uiGroup))
+        {
+            uiGroup.UpdateUI(character.stats);
         }
     }
 }
