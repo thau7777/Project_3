@@ -8,14 +8,19 @@ public static class SkillCommandFactory
         {
             case SkillType.Damage:
                 return new AttackCommand(user, target, skill);
+
             case SkillType.Heal:
-                return new HealCommand(user, target, skill);
+                return new HealCommand(user, target, skill, battleManager);
+
             case SkillType.Buff:
-                return new HealCommand(user, target, skill);
+                return new HealCommand(user, target, skill, battleManager);
+
             case SkillType.Special:
-                return new HealCommand(user, target, skill);
+                return new HealCommand(user, target, skill, battleManager);
+
             case SkillType.DamageAll:
                 return new DamageAllCommand(user, skill, battleManager);
+
             default:
                 Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
                 return null;

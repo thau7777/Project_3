@@ -135,9 +135,11 @@ public class Character : MonoBehaviour
         stats.currentHP -= damageAmount;
         Debug.Log(gameObject.name + " đã nhận " + damageAmount + " sát thương. Máu còn lại: " + stats.currentHP);
 
+
         UpdateOwnUI();
 
-        if (battleManager != null && isPlayer == false)
+
+        if (battleManager != null)
         {
             battleManager.UpdateCharacterUI(this);
         }
@@ -150,6 +152,7 @@ public class Character : MonoBehaviour
             if (battleManager != null)
             {
                 battleManager.RemoveCombatant(this);
+
             }
         }
         else
@@ -166,7 +169,7 @@ public class Character : MonoBehaviour
 
         UpdateOwnUI();
 
-        if (battleManager != null && isPlayer == false)
+        if (battleManager != null)
         {
             battleManager.UpdateCharacterUI(this);
         }

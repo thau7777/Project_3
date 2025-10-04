@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Linq;
 
 public class HealCommand : SkillCommand
 {
-    public HealCommand(Character user, Character target, Skill skill)
-        : base(user, target, skill) { }
+    private BattleManager battleManager;
+
+    public HealCommand(Character user, Character target, Skill skill, BattleManager battleManager)
+        : base(user, target, skill)
+    {
+        this.battleManager = battleManager;
+    }
 
     public override IEnumerator Execute()
     {
@@ -12,7 +18,28 @@ public class HealCommand : SkillCommand
         user.animator.Play("Buff");
         yield return new WaitForSeconds(1.5f);
 
-        target.Heal(skill.damage); 
+        var targetsToHeal = new System.Collections.Generic.List<Character>();
+
+        if (skill.targetType == SkillTargetType.Ally || skill.targetType == SkillTargetType.Self)
+        {
+            if (target != null && target.isAlive)
+            {
+                targetsToHeal.Add(target);
+            }
+        }
+        else if (skill.targetType == SkillTargetType.Allies)
+        {
+            targetsToHeal = battleManager.allCombatants
+                .Where(c => c.isPlayer == user.isPlayer && c.isAlive)
+                .ToList();
+        }
+
+        foreach (var charTarget in targetsToHeal)
+        {
+            charTarget.Heal(skill.damage); 
+        }
+
         yield return new WaitForSeconds(0.5f);
+
     }
 }
