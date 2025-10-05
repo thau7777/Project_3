@@ -69,10 +69,31 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     StateMachine machine;
     State root;
 
-    Vector3 rotateDirOnAttack;
+    Vector3 _rotateDirOnAttack;
     bool _isNextAttackQueued = false;
-    bool _isStillInAttackAnim => _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") ||
-        _animator.GetCurrentAnimatorStateInfo(_context.upperBodyLayerIndex).IsTag("Attack");
+    bool _isStillInAttackAnim
+    {
+        get
+        {
+            bool baseLayer = _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
+            bool upperBodyLayer = false;
+
+            if (_context.upperBodyLayerIndex < _animator.layerCount)
+                upperBodyLayer = _animator.GetCurrentAnimatorStateInfo(_context.upperBodyLayerIndex).IsTag("Attack");
+
+            return baseLayer || upperBodyLayer;
+        }
+    }
+    bool _isInSpecialActionAnim
+    {
+        get
+        {
+            int layerIndex = _context.upperBodyLayerIndex < _animator.layerCount ? _context.upperBodyLayerIndex : 0;
+            
+
+            return _animator.GetCurrentAnimatorStateInfo(layerIndex).IsTag("SpecialAction");
+        }
+    }
 
     #endregion
 
@@ -128,7 +149,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region Input Handlers
     private void OnAim(bool value)
     {
-        if (_context.isAttacking || _isStillInAttackAnim) return;
+        if (_context.isAttacking || _isStillInAttackAnim || _isInSpecialActionAnim || _context.isInSpecialAction) return;
 
         if (_context.IsRangeClass)
         {
@@ -136,7 +157,12 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         }
         else 
         {
-            _context.isInSpecialAction = value;
+            if (!value) return;
+            _locomotionSet.SetCurrentAnimDataByName(_locomotionSet.SpecialActions[0].animName);
+            _context.nextAttackAnim = _locomotionSet.currentAnimData.animName;
+            _context.isAttacking = true;
+            _context.isInSpecialAction = true;
+            SaveDirToAttack();
         }
 
     }
@@ -147,25 +173,26 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     }
     public void OnAttack()
     {
-        if (_context.isCastingSpell || _animator.GetCurrentAnimatorStateInfo(_context.upperBodyLayerIndex).IsTag("CastSpell"))
-        {
-            Debug.Log("Attack ignored: already casting spell");
+        if (_context.isInSpecialAction || _isInSpecialActionAnim)
             return;
-        }
-            
+
         SaveDirToAttack();
-        if (_context.isStrafing)
+
+        if (_context.isStrafing) // special attack for range class
         {
             string spellToCast = "Cast"+_context.aimType.ToString();
+            _locomotionSet.SetCurrentAnimDataByName(spellToCast);
             _context.nextAttackAnim = spellToCast;
             _context.isAttacking = true;
+            _context.isInSpecialAction = true;
             return;
         }
-        if (_isNextAttackQueued || _locomotionSet.IsNextAttackNull ||
+
+        // normal attack stuff
+        if (_isNextAttackQueued || _locomotionSet.IsNextComboAttackNull ||
             _isStillInAttackAnim && !_context.isAttacking) return;
 
-        var nextAnim = _locomotionSet.GetNextAttackAnim();
-        _context.attackDashForce = nextAnim.dashForce;
+        var nextAnim = _locomotionSet.GetNextAttackComboAnim();
         _context.nextAttackAnim = nextAnim.animName;
 
         if (!_context.isAttacking)
@@ -190,7 +217,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
             if (lookDir.sqrMagnitude > 0.001f)
             {
-                rotateDirOnAttack = lookDir;
+                _rotateDirOnAttack = lookDir;
             }
         }
     }
@@ -220,19 +247,24 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region Animation Events
     public void OnAttackAnimStart()
     {
-        _context.rotateDir = rotateDirOnAttack; // face the saved dir
-        if (_context.IsRangeClass)
-            return;
-        _context.targetMoveSpeed = _context.attackDashForce;
-        _context.moveDir = _context.rotateDir.normalized;
+        _context.rotateDir = _rotateDirOnAttack; // face the saved dir
+        Debug.Log("Attack started");
     }
+
+    public void ApplyDash()
+    {
+        if (_locomotionSet.currentAnimData.isDashForward)
+            _context.moveDir = _rotateDirOnAttack.normalized;
+        else
+            _context.moveDir = -_rotateDirOnAttack.normalized;
+
+        _context.targetMoveSpeed = _locomotionSet.currentAnimData.dashForce;
+        Debug.Log("Dash applied " + _locomotionSet.currentAnimData.isDashForward);
+    }
+    public void StopMoving() => _context.targetMoveSpeed = 0; // stop moving when attacking
     public void OnAttackTrigger(FlyweightType type)
     {
         SpawnSlashVFX(type, transform.position);
-
-        if (_context.IsRangeClass) return;
-
-        _context.targetMoveSpeed = 0; // stop moving when attacking
     }
     private void SpawnSlashVFX(FlyweightType type, Vector3 pos)
     {
@@ -240,32 +272,21 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         {
             if(spawnPoint.flyweightType == type)
             {
-                Flyweight slashVFX = FlyweightFactory.Spawn(GetSlashVfxPrefab(type));
+                Flyweight slashVFX = FlyweightFactory.Spawn(FlyweightFactory.GetFlyweightSettingByType(type,_flyweightSettings));
                 slashVFX.transform.position = spawnPoint.spawnPoint.position;
                 slashVFX.transform.rotation = transform.rotation;
                 break;
             }
         }
     }
-    private FlyweightSettings GetSlashVfxPrefab(FlyweightType type)
-    {
-        foreach(var data in _flyweightSettings)
-        {
-            if(data.type == type)
-            {
-                Debug.Log("Found slash VFX prefab for type: " + type);
-                return data;
-            }
-        }
-        return null;
-    }
+    
     public void ExecuteNextAttack()
     {
         if (!_isNextAttackQueued)
         {
             _context.isAttacking = false;
-            if(_context.isCastingSpell)
-                _context.isCastingSpell = false;
+            if(_context.isInSpecialAction)
+                _context.isInSpecialAction = false;
             return;
         }
         _isNextAttackQueued = false;
@@ -288,43 +309,41 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 [Serializable]
 public class PlayerContext
 {
-    public float currentMoveSpeed;   // smoothed speed
-    public float targetMoveSpeed;    // desired speed
+    public float currentMoveSpeed { set; get; }   // smoothed speed
+    public float targetMoveSpeed { set; get; }    // desired speed
 
-    public Vector2 moveInput;   // store the latest input
-    public Vector3 moveDir;
-    public Vector3 rotateDir;
-    public float rotateSpeed;
-    public bool isStrafing;     // store whether the player is aiming
-    public bool isInSpecialAction;
+    public Vector2 moveInput { set; get; }   // store the latest input
+    public Vector3 moveDir { set; get; }
+    public Vector3 rotateDir { set; get; }
+    public float rotateSpeed { set; get; }
+    public bool isStrafing { set; get; }    // store whether the player is aiming
 
-    public bool isAttacking;
-    public bool isCastingSpell;
-    public LocomotionSet locomotionSet;
-    public string nextAttackAnim;
-    public Vector2 mousePosOnClick;
-    public float attackDashForce;
+    public bool isAttacking { set; get; }
+    public bool isInSpecialAction { set; get; }
+    public LocomotionSet locomotionSet { set; get; }
+    public string nextAttackAnim { set; get; }
+    public Vector2 mousePosOnClick { set; get; }
 
-    public float baseMoveSpeed;
-    public float strafeMoveSpeed;
-    public float moveSpeedSmoothTime;
-    public Animator anim;
-    public CharacterController characterController;
-    public Renderer renderer;
-    public Transform mainCameraTransform;
-    public Transform rootTransform;
+    public float baseMoveSpeed { set; get; }
+    public float strafeMoveSpeed { set; get; }
+    public float moveSpeedSmoothTime { set; get; }
+    public Animator anim { set; get; }
+    public CharacterController characterController { set; get; }
+    public Renderer renderer { set; get; }
+    public Transform mainCameraTransform { set; get; }
+    public Transform rootTransform { set; get; }
     public CharacterClass characterClass => locomotionSet.characterClass;
     public bool IsRangeClass => characterClass == CharacterClass.Mage || characterClass == CharacterClass.Bow;
 
-    public readonly int strafeStateHash = Animator.StringToHash("Strafe");
-    public readonly int movementStateHash = Animator.StringToHash("Movement");
+    public int strafeStateHash => Animator.StringToHash("Strafe");
+    public  int movementStateHash => Animator.StringToHash("Movement");
+    public  int moveSpeedHash => Animator.StringToHash("MoveSpeed");
+    public  int inputXHash => Animator.StringToHash("InputX");
+    public  int inputYHash => Animator.StringToHash("InputY");
+    public  int upperBodyLayerIndex => 1;
 
-    public readonly int moveSpeedHash = Animator.StringToHash("MoveSpeed");
-    public readonly int inputXHash = Animator.StringToHash("InputX");
-    public readonly int inputYHash = Animator.StringToHash("InputY");
-    public readonly int upperBodyLayerIndex;
-    public MageAimType aimType = MageAimType.Below;
-    public float nextAnimCrossFadeTime;
+    public MageAimType aimType { set; get; } = MageAimType.Below;
+    public float nextAnimCrossFadeTime { set; get; }
     public PlayerContext(
         float baseMoveSpeed, 
         float strafeMoveSpeed,
@@ -344,7 +363,6 @@ public class PlayerContext
         this.renderer = renderer;
         this.mainCameraTransform = mainCameraTransform;
         this.rootTransform = rootTransform;
-        upperBodyLayerIndex = anim.GetLayerIndex("UpperBody");
 
         isStrafing = false;
         isAttacking = false;

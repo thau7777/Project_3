@@ -14,13 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LocomotionSet
   characterClass: 0
   animationController: {fileID: 9100000, guid: 49b9f238aa8a81f4ea853b43c2db7e7b, type: 2}
-  attackAnims:
+  comboAttackAnims:
   - animName: Attack 1
     damage: 0
     dashForce: 10
+    isDashForward: 1
   - animName: Attack 2
     damage: 0
     dashForce: 10
+    isDashForward: 1
   - animName: Attack 1
     damage: 0
     dashForce: 10
+    isDashForward: 1
+  SpecialActions:
+  - animName: Parry
+    damage: 0
+    dashForce: 0
+    isDashForward: 1
+  currentAnimData:
+    animName: Parry
+    damage: 0
+    dashForce: 0
+    isDashForward: 1

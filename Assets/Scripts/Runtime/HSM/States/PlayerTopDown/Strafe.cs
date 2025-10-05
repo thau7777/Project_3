@@ -67,7 +67,6 @@ public class Strafe : State
                 return ((Grounded)Parent).Idle;
         }else if (ctx.isAttacking)
         {
-            ctx.isCastingSpell = true;
             ctx.isStrafing = false; 
             ctx.nextAnimCrossFadeTime = 0.1f;
             return ((Grounded)Parent).Attack;

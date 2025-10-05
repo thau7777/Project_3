@@ -63,8 +63,6 @@ public class Attack : State
             ctx.nextAnimCrossFadeTime = 0.1f;
             if (ctx.moveInput != Vector2.zero)
                 return ((Grounded)Parent).Move;
-            else if (ctx.isStrafing)
-                return ((Grounded)Parent).Strafe;
             else
                 return ((Grounded)Parent).Idle;
         }

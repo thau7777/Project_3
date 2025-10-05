@@ -6,7 +6,9 @@ public class AttackEventBehaviour : StateMachineBehaviour
     private PlayerTopDownStateDriver _stateDriver;
     [SerializeField]
     [Range(0,1f)]
-    private float TriggerTime = 0.8f;
+    private float EndTime = 0.8f;
+    [SerializeField]
+    private bool isDashAtStart = true;
     // Called on first frame the state is active
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -19,7 +21,7 @@ public class AttackEventBehaviour : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Example: fire event when reaching halfway (0.5 normalized time)
-        if (!_hasTriggered && stateInfo.normalizedTime >= TriggerTime)
+        if (!_hasTriggered && stateInfo.normalizedTime >= EndTime)
         {
             _hasTriggered = true;
             _stateDriver.ExecuteNextAttack(); // or whatever function you want

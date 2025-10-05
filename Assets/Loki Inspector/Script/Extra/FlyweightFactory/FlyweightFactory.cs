@@ -32,6 +32,18 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
         pools.Add(settings.type, pool);
         return pool;
     }
+    public static FlyweightSettings GetFlyweightSettingByType(FlyweightType type, List<FlyweightSettings> _flyweightSettings)
+    {
+        foreach (var data in _flyweightSettings)
+        {
+            if (data.type == type)
+            {
+                Debug.Log("Found slash VFX prefab for type: " + type);
+                return data;
+            }
+        }
+        return null;
+    }
 }
 public enum FlyweightType
 {
