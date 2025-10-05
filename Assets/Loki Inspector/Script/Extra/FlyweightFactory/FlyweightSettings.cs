@@ -11,5 +11,3 @@ public abstract class FlyweightSettings : ScriptableObject
     public virtual void OnRelease(Flyweight f) => f.gameObject.SetActive(false);
     public virtual void OnDestroyPoolObject(Flyweight f) => Destroy(f.gameObject);
 }
-
-public enum FlyweightType { Fire, Ice }

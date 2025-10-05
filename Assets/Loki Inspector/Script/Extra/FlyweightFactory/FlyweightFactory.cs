@@ -33,3 +33,8 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
         return pool;
     }
 }
+public enum FlyweightType
+{
+    SmallSwordSlashVFX,
+    ShieldBashVFX
+}
