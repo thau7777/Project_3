@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -222,6 +223,8 @@ public class BattleManager : MonoBehaviour
             {
                 turnOrderUI.UpdateActionGaugeUI(allCombatants);
             }
+
+            CheckWinCondition();
         }
 
     }
@@ -499,5 +502,22 @@ public class BattleManager : MonoBehaviour
         {
             uiGroup.UpdateUI(character.stats);
         }
+    }
+
+    private void CheckWinCondition()
+    {
+        var livingEnemies = allCombatants.Where(c => !c.isPlayer && c.isAlive).ToList();
+
+        if (livingEnemies.Count == 0)
+        {
+            Debug.Log("CHIẾN THẮNG! Tất cả kẻ địch đã bị đánh bại.");
+            StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+        }
+    }
+
+    private IEnumerator LoadMapSceneDelayed(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
     }
 }

@@ -92,6 +92,12 @@ public class PlayerActionUI : MonoBehaviour
         if (parryButton != null) parryButton.gameObject.SetActive(false);
         if (parryFillImage != null) parryFillImage.gameObject.SetActive(false);
 
+        if (summomonButton != null)
+        {
+            bool isSummoner = Owner != null && Owner.characterClass == CharacterClass.Summon;
+            summomonButton.gameObject.SetActive(isSummoner);
+        }
+
     }
 
     public void OnCancelClicked()
@@ -105,6 +111,7 @@ public class PlayerActionUI : MonoBehaviour
 
         playerActionsPanel.SetActive(true);
         PlayerSkillPanel.SetActive(false);
+        PlayerSummonPanel.SetActive(false);
         confirmButton.gameObject.SetActive(false);
 
         EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
@@ -115,6 +122,8 @@ public class PlayerActionUI : MonoBehaviour
     public void Hide()
     {
         playerActionsPanel.SetActive(false);
+        PlayerSkillPanel.SetActive(false); 
+        PlayerSummonPanel.SetActive(false);
 
         if (parryButton != null) parryButton.gameObject.SetActive(false);
         if (parryFillImage != null) parryFillImage.gameObject.SetActive(false);
@@ -255,15 +264,13 @@ public class PlayerActionUI : MonoBehaviour
     private void OnSummonClicked()
     {
         Debug.Log("sử dụng Triệu hồi!");
-        PlayerSummonPanel.SetActive(true);
-        CameraAction.instance.ReadySkill(currentCharacter);
+        SetupSummonUI(currentCharacter.skills);
 
-        SetupSkillUI(currentCharacter.skills);
+        CameraAction.instance.ReadySkill(currentCharacter);
 
         PlayerSummonPanel.SetActive(true);
         PlayerSkillPanel.SetActive(false);
-
-
+        confirmButton.gameObject.SetActive(false);
     }
 
     private void OnSkillButtonClicked(Skill selectedSkill)
@@ -344,9 +351,6 @@ public class PlayerActionUI : MonoBehaviour
         Debug.Log("OnConfirmClicked được gọi.");
 
         EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
-
-
-        //CameraAction.instance.ResetCamera();
 
 
 
