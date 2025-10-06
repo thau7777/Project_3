@@ -21,6 +21,7 @@ public enum CharacterClass
 {
     Sword_Shield,
     Magical,
+    Summon,
     Enemy,
 
 

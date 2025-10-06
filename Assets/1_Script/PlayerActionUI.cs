@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class PlayerActionUI : MonoBehaviour
 {    public Character Owner { get; private set; }
@@ -13,19 +14,22 @@ public class PlayerActionUI : MonoBehaviour
     public Button skillButton;
     public Button parryButton;
     public Button confirmButton;
+    public Button summomonButton;
     public Button confirmButton2;
     public Button cancelButton;
 
-
-    private Character currentCharacter;
-
-    [Header("Skill Buttons")]
-    public List<Button> skillButtons;
-
     public GameObject playerActionsPanel;
     public GameObject playerActionsPanel2;
+    private Character currentCharacter;
 
-    public GameObject PlayerSkillPanel;
+    
+    [TabGroup("Skill")]public List<Button> skillButtons;
+    [TabGroup("Skill")]public GameObject PlayerSkillPanel;
+
+    [TabGroup("Summon")]public List<Button> summonButtons;
+    [TabGroup("Summon")]public GameObject PlayerSummonPanel;
+
+
 
     [Header("Parry UI")]
     public Image parryFillImage;
@@ -52,8 +56,10 @@ public class PlayerActionUI : MonoBehaviour
         skillButton.onClick.AddListener(OnSkillClicked);
         parryButton.onClick.AddListener(OnParryClicked);
         confirmButton.onClick.AddListener(OnConfirmClicked);
+        summomonButton.onClick.AddListener(OnSummonClicked);
 
         PlayerSkillPanel.gameObject.SetActive(false);
+        PlayerSummonPanel.gameObject.SetActive(false);
 
 
         Hide();
@@ -158,7 +164,7 @@ public class PlayerActionUI : MonoBehaviour
     {
         Debug.Log("OnAttackClicked được gọi.");
 
-        CameraAction.instance.NormalAttack(currentCharacter,false);
+        CameraAction.instance.NormalAttack(currentCharacter, false);
 
         if (currentCharacter != null && currentCharacter.isPlayer)
         {
@@ -167,6 +173,7 @@ public class PlayerActionUI : MonoBehaviour
         }
 
         PlayerSkillPanel.SetActive(false);
+        PlayerSummonPanel.SetActive(false);
     }
 
     private void OnSkillClicked()
@@ -212,6 +219,50 @@ public class PlayerActionUI : MonoBehaviour
         }
     }
 
+    private void SetupSummonUI(List<Skill> skills)
+    {
+        List<Skill> summonSkills = skills.Where(s => s.skillType == SkillType.Summon).ToList();
+        foreach (var b in summonButtons) b.gameObject.SetActive(false);
+        for (int i = 0; i < summonSkills.Count && i < summonButtons.Count; i++)
+        {
+            Button currentButton = summonButtons[i];
+            currentButton.onClick.RemoveAllListeners();
+
+            Skill skillToUse = summonSkills[i];
+            Skill captured = skillToUse;
+            currentButton.onClick.AddListener(() => OnSkillButtonClicked(captured));
+
+            Image buttonImage = currentButton.GetComponent<Image>();
+            if (buttonImage == null)
+            {
+                buttonImage = currentButton.GetComponentInChildren<Image>();
+            }
+
+            if (buttonImage != null && skillToUse.icon != null)
+            {
+                buttonImage.sprite = skillToUse.icon;
+                buttonImage.color = Color.white;
+            }
+            
+
+            currentButton.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnSummonClicked()
+    {
+        Debug.Log("sử dụng Triệu hồi!");
+        PlayerSummonPanel.SetActive(true);
+        CameraAction.instance.ReadySkill(currentCharacter);
+
+        SetupSkillUI(currentCharacter.skills);
+
+        PlayerSummonPanel.SetActive(true);
+        PlayerSkillPanel.SetActive(false);
+
+
+    }
+
     private void OnSkillButtonClicked(Skill selectedSkill)
     {
         if (currentCharacter == null) return;
@@ -234,6 +285,8 @@ public class PlayerActionUI : MonoBehaviour
     public void SetupSkillUI(List<Skill> skills)
     {
         Debug.Log("SetupSkillUI được gọi.");
+
+        //List<Skill> damageSkills = skills.Where(s => s.skillType != SkillType.Summon).ToList();
 
         foreach (var b in skillButtons) b.gameObject.SetActive(false);
 
@@ -287,7 +340,7 @@ public class PlayerActionUI : MonoBehaviour
         EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
 
 
-        CameraAction.instance.ResetCamera();
+        //CameraAction.instance.ResetCamera();
 
 
 
@@ -300,8 +353,6 @@ public class PlayerActionUI : MonoBehaviour
             Debug.Log("Gọi OnConfirm() của ReadyStateSkill.");
             currentState.OnConfirm();
 
-            confirmButton.gameObject.SetActive(false);
-
             PlayerSkillPanel.SetActive(false);
 
         }
@@ -310,7 +361,6 @@ public class PlayerActionUI : MonoBehaviour
             Debug.Log("Chuyển từ ReadyState sang AttackingState.");
             currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.attackingState);
 
-            confirmButton.gameObject.SetActive(false);
             PlayerSkillPanel.SetActive(false);
         }
     }

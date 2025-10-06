@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
 public class Skill : ScriptableObject
@@ -12,6 +13,8 @@ public class Skill : ScriptableObject
     public SkillTargetType targetType;
     public SkillType skillType;
     public ElementType elementType;
+
+    public List<GameObject> summonPrefab;
 
 }
 
@@ -33,7 +36,8 @@ public enum SkillType
     Heal,
     Buff,
     Debuff,
-    Special
+    Special, 
+    Summon,
 }
 
 public enum ElementType

@@ -12,8 +12,11 @@ public class CameraAction : MonoBehaviour
     public float smoothSpeed = 5f;
 
     [Header("Điểm Neo Cố Định")]
-    public Transform TargetAllPlayer;
-    public Transform TargetAllEnemy;
+    [SerializeField] private Transform CameraTargetAll;
+    [SerializeField] private Transform TargetAllPlayer;
+    [SerializeField] private Transform TargetAllEnemy;
+
+
 
     private Transform currentAnchor;
 
@@ -67,6 +70,13 @@ public class CameraAction : MonoBehaviour
     {
         LookAtAnchorTransform(TargetAllEnemy, true);
     }
+
+    private void TargetAllCharacters()
+    {
+        LookAtAnchorTransform(CameraTargetAll, false);
+    }
+
+
 
     public void ResetCamera()
     {
