@@ -22,6 +22,8 @@ public class BattleManager : MonoBehaviour
 
 
 
+
+
     private Coroutine currentParryWindow;
 
     [Header("UI")] 
@@ -124,6 +126,106 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private Transform FindFreePlayerSpawnSlot()
+    {
+        HashSet<Vector3> occupiedPositions = new HashSet<Vector3>(
+            allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
+        );
+
+        foreach (Transform slot in playerSpawnPoints)
+        {
+            if (!occupiedPositions.Contains(slot.position))
+            {
+                return slot; 
+            }
+        }
+        return null;
+    }
+
+    public void SummonPet(Character summoner, GameObject petPrefab)
+    {
+        if (petPrefab == null)
+        {
+            Debug.LogError("Pet Prefab không được gán!");
+            return;
+        }
+
+        Transform freeSlot = FindFreePlayerSpawnSlot();
+
+        if (freeSlot == null)
+        {
+            Debug.LogWarning("Không tìm thấy Slot Trống nào trong playerSpawnPoints để Triệu hồi Pet!");
+            return;
+        }
+
+        Vector3 petSpawnPosition = freeSlot.position;
+        Quaternion petRotation = freeSlot.rotation;
+
+        GameObject petInstanceObject = Instantiate(petPrefab, petSpawnPosition, petRotation);
+        Character summonInstance = petInstanceObject.GetComponent<Character>();
+
+        if (summonInstance != null)
+        {
+            summonInstance.transform.SetParent(freeSlot);
+
+            summonInstance.isPlayer = summoner.isPlayer;
+
+            PlayerActionUI actionUI = summonInstance.GetComponentInChildren<PlayerActionUI>(true);
+            if (actionUI != null)
+            {
+                actionUI.SetOwner(summonInstance);
+                actionUI.Hide();
+
+                summonInstance.ownUI = actionUI;
+            }
+            else
+            {
+                Debug.LogWarning($"Pet/Summon '{summonInstance.name}' KHÔNG có component PlayerActionUI. Nó sẽ không thể được điều khiển.");
+            }
+
+            summonInstance.battleManager = this;
+            summonInstance.initialPosition = petSpawnPosition;
+
+            CharacterStateMachine summonStateMachine = summonInstance.GetComponent<CharacterStateMachine>();
+            if (summonStateMachine != null)
+            {
+                summonStateMachine.battleManager = this;
+                summonStateMachine.SwitchState(summonStateMachine.waitingState);
+            }
+
+            allCombatants.Add(summonInstance);
+
+            SpawnCharacterUI(summonInstance);
+
+            if (turnOrderUI != null)
+            {
+                turnOrderUI.UpdateActionGaugeUI(allCombatants);
+            }
+
+            Debug.Log($"[{summoner.name}] đã triệu hồi Pet/Summon: {summonInstance.name} tại slot {freeSlot.name}!");
+
+            EndTurn(summoner);
+        }
+        else
+        {
+            Debug.LogError($"Prefab '{petPrefab.name}' không có component Character!");
+            Destroy(petInstanceObject);
+        }
+    }
+    public void RemoveCombatant(Character character)
+    {
+        if (allCombatants.Contains(character))
+        {
+            allCombatants.Remove(character);
+
+            if (turnOrderUI != null)
+            {
+                turnOrderUI.UpdateActionGaugeUI(allCombatants);
+            }
+        }
+
+    }
+
     private IEnumerator UpdateActionGauge()
     {
         yield return new WaitForSeconds(0.5f);
@@ -178,16 +280,24 @@ public class BattleManager : MonoBehaviour
 
         if (activeCharacter.isPlayer)
         {
-            foreach (var player in allCombatants.Where(c => c.isPlayer))
+            if (activeCharacter.ownUI != null) 
             {
-                if (player.ownUI != null) player.ownUI.Hide();
-            }
+                foreach (var player in allCombatants.Where(c => c.isPlayer && c.ownUI != null))
+                {
+                    if (player.ownUI != null) player.ownUI.Hide();
+                }
 
-            if (activeCharacter.ownUI != null)
-            {
                 activeCharacter.ownUI.ShowUI();
                 activeCharacter.ownUI.SetupSkillUI(activeCharacter.skills);
+                activeCharacter.ownUI.SetupSummonUI(activeCharacter.skills);
                 activeCharacter.ownUI.SetActiveCharacter(activeCharacter);
+            }
+            else
+            {
+                Debug.Log($"Đến lượt Pet/Summon: {activeCharacter.gameObject.name}. Đang thực hiện hành động tự động...");
+
+
+                EndTurn(activeCharacter);
             }
         }
         else
@@ -348,15 +458,6 @@ public class BattleManager : MonoBehaviour
             isProcessingTurn = false;
         }
     }
-
-    public void RemoveCombatant(Character character)
-    {
-        if (allCombatants.Contains(character))
-        {
-            allCombatants.Remove(character);
-        }
-    }
-
 
     public void UpdateAllCharacterUIs()
     {

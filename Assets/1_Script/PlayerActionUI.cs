@@ -207,6 +207,9 @@ public class PlayerActionUI : MonoBehaviour
 
         CameraAction.instance.ReadySkill(currentCharacter);
 
+        PlayerSummonPanel.SetActive(false);
+
+
         confirmButton.gameObject.SetActive(false);
 
         if (PlayerSkillPanel.activeSelf == true)
@@ -219,7 +222,7 @@ public class PlayerActionUI : MonoBehaviour
         }
     }
 
-    private void SetupSummonUI(List<Skill> skills)
+    public void SetupSummonUI(List<Skill> skills)
     {
         List<Skill> summonSkills = skills.Where(s => s.skillType == SkillType.Summon).ToList();
         foreach (var b in summonButtons) b.gameObject.SetActive(false);
@@ -267,6 +270,8 @@ public class PlayerActionUI : MonoBehaviour
     {
         if (currentCharacter == null) return;
 
+        OnSkillClicked();
+
         Debug.Log($"OnSkillButtonClicked được gọi với kỹ năng: {selectedSkill.skillName} cho {currentCharacter.name}");
 
         EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
@@ -286,18 +291,20 @@ public class PlayerActionUI : MonoBehaviour
     {
         Debug.Log("SetupSkillUI được gọi.");
 
-        //List<Skill> damageSkills = skills.Where(s => s.skillType != SkillType.Summon).ToList();
+
+        List<Skill> damageSkills = skills.Where(s => s.skillType != SkillType.Summon).ToList();
 
         foreach (var b in skillButtons) b.gameObject.SetActive(false);
 
-        for (int i = 0; i < skills.Count && i < skillButtons.Count; i++)
+        for (int i = 0; i < damageSkills.Count && i < skillButtons.Count; i++)
         {
             Button currentButton = skillButtons[i];
             currentButton.onClick.RemoveAllListeners();
 
-            Skill skillToUse = skills[i];
+            Skill skillToUse = damageSkills[i];
             Skill captured = skillToUse;
             currentButton.onClick.AddListener(() => OnSkillButtonClicked(captured));
+
 
             Image buttonImage = currentButton.GetComponent<Image>();
             if (buttonImage == null)
@@ -319,7 +326,6 @@ public class PlayerActionUI : MonoBehaviour
             currentButton.gameObject.SetActive(true);
         }
     }
-
 
     private void OnParryClicked()
     {

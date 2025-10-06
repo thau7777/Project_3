@@ -148,12 +148,50 @@ public class ReadyStateSkill : BaseState
     {
         if (selectedSkill.targetType == SkillTargetType.Enemies || selectedSkill.targetType == SkillTargetType.Allies)
         {
-            stateMachine.character.target = possibleTargets[0];
+            stateMachine.character.target = possibleTargets.FirstOrDefault();
         }
 
-        stateMachine.SwitchState(new SkillAttackingState(stateMachine, selectedSkill));
-    }
+        if (stateMachine.character.ownUI != null)
+        {
+            stateMachine.character.ownUI.PlayerSkillPanel.SetActive(false);
+            stateMachine.character.ownUI.PlayerSummonPanel.SetActive(false);
+            stateMachine.character.ownUI.confirmButton.gameObject.SetActive(false);
+        }
 
+        ShowTargetMarker(false);
+
+        if (selectedSkill.skillType == SkillType.Summon)
+        {
+            GameObject petToSummon = null;
+
+            if (selectedSkill.summonPrefab != null && selectedSkill.summonPrefab.Count > 0)
+            {
+                petToSummon = selectedSkill.summonPrefab.FirstOrDefault();
+            }
+
+            if (stateMachine.battleManager != null && petToSummon != null)
+            {
+                Debug.Log($"Xác nhận: Thực hiện Triệu hồi Pet '{petToSummon.name}'");
+
+                stateMachine.battleManager.SummonPet(
+                    stateMachine.character,
+                    petToSummon 
+                );
+
+                stateMachine.battleManager.EndTurn(stateMachine.character);
+            }
+            else
+            {
+                Debug.LogError("Lỗi Triệu hồi: BattleManager bị thiếu hoặc danh sách Summon Prefab bị trống/null.");
+                stateMachine.SwitchState(stateMachine.waitingState);
+            }
+        }
+        else
+        {
+            Debug.Log($"Xác nhận: Chuyển sang AttackingState cho kỹ năng '{selectedSkill.skillName}'");
+            stateMachine.SwitchState(new SkillAttackingState(stateMachine, selectedSkill));
+        }
+    }
     public void OnCancel()
     {
         if (stateMachine.character.ownUI != null)
