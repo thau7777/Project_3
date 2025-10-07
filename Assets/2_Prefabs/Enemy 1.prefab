@@ -1053,6 +1053,7 @@ GameObject:
   - component: {fileID: -5687909505730138963}
   - component: {fileID: 229363719538074653}
   - component: {fileID: 9145698497346757161}
+  - component: {fileID: 1527328286654397455}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -1139,13 +1140,12 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
+  buffManager: {fileID: 0}
   isParryable: 0
   ownUI: {fileID: 0}
   isAttackReadyForParry: 0
   isParryWindowFinished: 0
   parryWindowDuration: 0
-  temporaryAttackBuff: 0
-  attackBuffTurnsRemaining: 0
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1175,6 +1175,23 @@ MonoBehaviour:
   hpBarFill: {fileID: 3373876973846427296}
   mpBarFill: {fileID: 4380093277856424796}
   shieldBarFill: {fileID: 8466390429216592537}
+--- !u!114 &1527328286654397455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ead3fde8731cfe4e8d201635a9935cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterBuffManager
+  attackBuffTurnsRemaining: 0
+  maxHPBuffTurnsRemaining: 0
+  defenseBuffTurnsRemaining: 0
+  agilityBuffTurnsRemaining: 0
+  shieldTurnsRemaining: 0
 --- !u!1 &8633805098435303522
 GameObject:
   m_ObjectHideFlags: 0

@@ -462,34 +462,37 @@ public class BattleManager : MonoBehaviour
         {
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
-            if (character.attackBuffTurnsRemaining > 0)
+            if (character.buffManager != null)
             {
-                character.attackBuffTurnsRemaining--;
-                character.RemoveExpiredAttackBuff();
-            }
+                if (character.buffManager.attackBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.attackBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredAttackBuff();
+                }
 
-            if (character.maxHPBuffTurnsRemaining > 0)
-            {
-                character.maxHPBuffTurnsRemaining--;
-                character.RemoveExpiredMaxHPBuff();
-            }
+                if (character.buffManager.maxHPBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.maxHPBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredMaxHPBuff();
+                }
 
-            if (character.defenseBuffTurnsRemaining > 0)
-            {
-                character.defenseBuffTurnsRemaining--;
-                character.RemoveExpiredDefenseBuff();
-            }
+                if (character.buffManager.defenseBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.defenseBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredDefenseBuff();
+                }
 
-            if (character.agilityBuffTurnsRemaining > 0)
-            {
-                character.agilityBuffTurnsRemaining--;
-                character.RemoveExpiredAgilityBuff();
-            }
+                if (character.buffManager.agilityBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.agilityBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredAgilityBuff();
+                }
 
-            if (character.shieldTurnsRemaining > 0)
-            {
-                character.shieldTurnsRemaining--;
-                character.RemoveExpiredShield();
+                if (character.buffManager.shieldTurnsRemaining > 0)
+                {
+                    character.buffManager.shieldTurnsRemaining--;
+                    character.buffManager.RemoveExpiredShield();
+                }
             }
 
 

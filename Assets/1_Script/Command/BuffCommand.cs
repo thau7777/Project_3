@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BuffAttackCommand : SkillCommand
+public class BuffCommand : SkillCommand
 {
     private BattleManager battleManager;
 
-    public BuffAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
+    public BuffCommand(Character user, Character target, Skill skill, BattleManager battleManager)
         : base(user, target, skill)
     {
         this.battleManager = battleManager;
@@ -19,13 +19,11 @@ public class BuffAttackCommand : SkillCommand
         user.animator.Play("Buff");
         yield return new WaitForSeconds(1.5f);
 
-        // Khởi tạo danh sách mục tiêu
         var targetsToBuff = new List<Character>();
 
-        int buffAmount = skill.damage; // Dùng skill.damage làm giá trị buff
+        int buffAmount = skill.damage; 
         int buffDuration = skill.durationTurns;
 
-        // Xác định mục tiêu
         if (skill.targetType == SkillTargetType.Ally || skill.targetType == SkillTargetType.Self)
         {
             if (target != null && target.isAlive)
@@ -40,10 +38,8 @@ public class BuffAttackCommand : SkillCommand
                 .ToList();
         }
 
-        // Áp dụng Buff cho mục tiêu
         foreach (var charTarget in targetsToBuff)
         {
-            // ✅ SỬ DỤNG SWITCH ĐỂ XỬ LÝ TẤT CẢ CÁC LOẠI STATTYPE
             switch (skill.statToModify)
             {
                 case StatType.Attack:
@@ -51,21 +47,17 @@ public class BuffAttackCommand : SkillCommand
                     break;
 
                 case StatType.MaxHP:
-                    // Lưu ý: Bạn cần tạo hàm ApplyMaxHPBuff trong Character.cs
                     charTarget.ApplyMaxHPBuff(buffAmount, buffDuration);
                     break;
 
                 case StatType.Defense:
-                    // Lưu ý: Bạn cần tạo hàm ApplyDefenseBuff trong Character.cs
                     charTarget.ApplyDefenseBuff(buffAmount, buffDuration);
                     break;
 
                 case StatType.Agility:
-                    // Lưu ý: Bạn cần tạo hàm ApplyAgilityBuff trong Character.cs
                     charTarget.ApplyAgilityBuff(buffAmount, buffDuration);
                     break;
 
-                // Thêm các StatType khác nếu có (e.g., StatType.Magic, StatType.CriticalRate)
 
                 default:
                     Debug.LogWarning($"Skill '{skill.skillName}' có StatType là {skill.statToModify}. StatType này chưa được hỗ trợ trong BuffCommand.");
