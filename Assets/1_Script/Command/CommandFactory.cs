@@ -15,6 +15,9 @@ public static class SkillCommandFactory
             case SkillType.Buff:
                 return new HealCommand(user, target, skill, battleManager);
 
+            case SkillType.Shield:
+                return new ShieldCommand(user, target, skill, battleManager);
+
             case SkillType.Special:
                 return new HealCommand(user, target, skill, battleManager);
 

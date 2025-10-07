@@ -352,16 +352,33 @@ public class PlayerActionUI : MonoBehaviour
 
         EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
 
-
-
         EventBus<HidePanelEvent>.Raise(new HidePanelEvent(panelName: "PlayerPanelControll"));
 
         if (currentCharacter == null) return;
 
+
         if (currentCharacter.stateMachine.currentState is ReadyStateSkill currentState)
         {
             Debug.Log("Gọi OnConfirm() của ReadyStateSkill.");
-            currentState.OnConfirm();
+
+            int manaCost = selectedSkillToConfirm.manaCost;
+
+            if (currentCharacter.stats.currentMP >= manaCost)
+            {
+                currentCharacter.stats.currentMP -= manaCost;
+                currentCharacter.battleManager.UpdateCharacterUI(currentCharacter); 
+
+                currentState.OnConfirm();
+                PlayerSkillPanel.SetActive(false);
+                PlayerSummonPanel.SetActive(false); 
+            }
+            else
+            {
+                Debug.LogWarning($"{currentCharacter.name} không đủ Mana ({manaCost}) để dùng kỹ năng {selectedSkillToConfirm.skillName}!");
+                currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.waitingState);
+                PlayerSkillPanel.SetActive(false);
+                PlayerSummonPanel.SetActive(false);
+            }
 
             PlayerSkillPanel.SetActive(false);
 

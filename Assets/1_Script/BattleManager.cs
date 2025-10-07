@@ -78,6 +78,11 @@ public class BattleManager : MonoBehaviour
             playerInstance.initialPosition = playerSpawnPoints[i].position;
             playerInstance.battleManager = this;
 
+            if (playerInstance.stats != null)
+            {
+                playerInstance.stats.currentShield = 0;
+            }
+
             SpawnCharacterUI(playerInstance);
 
             CharacterStateMachine playerStateMachine = playerInstance.GetComponent<CharacterStateMachine>();
@@ -109,6 +114,11 @@ public class BattleManager : MonoBehaviour
             allCombatants.Add(enemyInstance);
             enemyInstance.initialPosition = enemySlots[i].position;
             enemyInstance.battleManager = this;
+
+            if (enemyInstance.stats != null)
+            {
+                enemyInstance.stats.currentShield = 0;
+            }
 
             CharacterStateMachine enemyStateMachine = enemyInstance.GetComponent<CharacterStateMachine>();
             if (enemyStateMachine != null)

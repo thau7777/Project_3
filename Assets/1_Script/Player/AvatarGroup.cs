@@ -7,6 +7,7 @@ public class AvatarGroup : MonoBehaviour
     public Image avatar;
     public Image hpBar;
     public Image mpBar;
+    public Image shieldBar;
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI mpText;
 
@@ -43,6 +44,7 @@ public class AvatarGroup : MonoBehaviour
         avatar.sprite = stats.Avatar;
         hpBar.fillAmount = (float)stats.currentHP / stats.maxHP;
         mpBar.fillAmount = (float)stats.currentMP / stats.maxMP;
+        shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
         hpText.text = $"{stats.currentHP} / {stats.maxHP}";
         mpText.text = $"{stats.currentMP} / {stats.maxMP}";
     }

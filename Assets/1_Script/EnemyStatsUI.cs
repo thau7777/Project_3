@@ -6,6 +6,7 @@ public class EnemyStatsUI : MonoBehaviour
 {
     public Image hpBarFill;
     public Image mpBarFill;
+    public Image shieldBarFill;
 
 
     private Character ownerCharacter;
@@ -34,6 +35,11 @@ public class EnemyStatsUI : MonoBehaviour
             if (mpBarFill != null)
             {
                 mpBarFill.fillAmount = (float)stats.currentMP / stats.maxMP;
+            }
+
+            if (shieldBarFill != null)
+            {
+                shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxHP;
             }
 
         }

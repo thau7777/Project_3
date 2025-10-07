@@ -34,11 +34,14 @@ public class AttackingState : BaseState
             case CharacterClass.Magical:
                 command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
                 break;
+            case CharacterClass.Summon:
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
+               break;
             case CharacterClass.Enemy:
                 command = new AttackCommand(stateMachine.character, target, basicAttack);
                 break;
             default:
-                command = new AttackCommand(stateMachine.character, target, basicAttack);
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
                 break;
         }
 

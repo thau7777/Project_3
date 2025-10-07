@@ -35,6 +35,7 @@ public enum SkillType
     DamageAll,
     Heal,
     Buff,
+    Shield,
     Debuff,
     Special, 
     Summon,

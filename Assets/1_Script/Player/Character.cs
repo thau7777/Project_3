@@ -35,6 +35,8 @@ public class CharacterStats
     public int currentHP;
     public int maxMP;
     public int currentMP;
+    public int maxShield;
+    public int currentShield;
     public int attack;
     public int defense;
     public int magicAttack;
@@ -133,32 +135,49 @@ public class Character : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
-        stats.currentHP -= damageAmount;
-        Debug.Log(gameObject.name + " đã nhận " + damageAmount + " sát thương. Máu còn lại: " + stats.currentHP);
+        int remainingDamage = damageAmount;
+
+        if(stats.currentShield > 0)
+        {
+            int shieldAbsorb = Mathf.Min(stats.currentShield, remainingDamage);
+            stats.currentShield -= shieldAbsorb;
+            remainingDamage -= shieldAbsorb;
+            Debug.Log(gameObject.name + " hấp thụ " + shieldAbsorb + " sát thương bằng lá chắn. Lá chắn còn lại: " + stats.currentShield);
+
+        }
+        if (remainingDamage > 0)
+        {
+            stats.currentHP -= remainingDamage;
+            Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
+        }
+        else if(damageAmount > 0)
+        {
+            Debug.Log(gameObject.name + " không nhận sát thương do lá chắn còn đủ.");
+        }
 
 
         UpdateOwnUI();
 
-
-        if (battleManager != null)
+        if(battleManager != null)
         {
             battleManager.UpdateCharacterUI(this);
         }
-
-        if (stats.currentHP <= 0)
+        if(stats.currentHP <= 0)
         {
             stats.currentHP = 0;
+            Debug.Log($"{gameObject.name} đã chết!");
             stateMachine.SwitchState(stateMachine.deadState);
-
-            if (battleManager != null)
+            if(battleManager != null)
             {
                 battleManager.RemoveCombatant(this);
-
             }
         }
         else
         {
-            stateMachine.SwitchState(stateMachine.takingDamageState);
+            if(damageAmount>0)
+            {
+                stateMachine.SwitchState(stateMachine.takingDamageState);
+            }
         }
     }
 
@@ -176,6 +195,20 @@ public class Character : MonoBehaviour
         }
 
         Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
+    }
+
+    public void AddShield(int amount)
+    {
+        if (amount <= 0) return;
+
+        stats.currentShield = Mathf.Min(stats.currentShield + amount, stats.maxShield);
+
+        Debug.Log(gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
+
+        if (battleManager != null)
+        {
+            battleManager.UpdateCharacterUI(this);
+        }
     }
 
 
