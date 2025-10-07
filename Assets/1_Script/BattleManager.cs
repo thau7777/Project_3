@@ -27,7 +27,7 @@ public class BattleManager : MonoBehaviour
 
     private Coroutine currentParryWindow;
 
-    [Header("UI")] 
+    [Header("UI")]
     public GameObject AvatarGroupPrefab;
     public Transform UIContainer;
 
@@ -59,7 +59,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator DelayedStart()
     {
-        yield return null;  
+        yield return null;
         StartCoroutine(UpdateActionGauge());
     }
 
@@ -140,14 +140,14 @@ public class BattleManager : MonoBehaviour
     private Transform FindFreePlayerSpawnSlot()
     {
         HashSet<Vector3> occupiedPositions = new HashSet<Vector3>(
-            allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
-        );
+                allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
+            );
 
         foreach (Transform slot in playerSpawnPoints)
         {
             if (!occupiedPositions.Contains(slot.position))
             {
-                return slot; 
+                return slot;
             }
         }
         return null;
@@ -293,7 +293,7 @@ public class BattleManager : MonoBehaviour
 
         if (activeCharacter.isPlayer)
         {
-            if (activeCharacter.ownUI != null) 
+            if (activeCharacter.ownUI != null)
             {
                 foreach (var player in allCombatants.Where(c => c.isPlayer && c.ownUI != null))
                 {
@@ -331,7 +331,7 @@ public class BattleManager : MonoBehaviour
     private IEnumerator DelayedStartTurn(Character character)
     {
         yield return new WaitForSeconds(2f);
-        CameraAction.instance.LookCameraAtTarget(character); 
+        CameraAction.instance.LookCameraAtTarget(character);
     }
 
 
@@ -344,7 +344,7 @@ public class BattleManager : MonoBehaviour
         Enemy enemyComponent = enemy.GetComponent<Enemy>();
         if (enemyComponent != null)
         {
-            enemyComponent.PerformTurn(); 
+            enemyComponent.PerformTurn();
         }
 
         if (enemy.target != null)
@@ -354,13 +354,13 @@ public class BattleManager : MonoBehaviour
 
             yield return new WaitUntil(() => enemy.isAttackReadyForParry == true);
             startTime = Time.time;
-            enemy.isAttackReadyForParry = false; 
-            enemy.isParryWindowFinished = false; 
+            enemy.isAttackReadyForParry = false;
+            enemy.isParryWindowFinished = false;
 
 
             yield return new WaitUntil(() => enemy.isParryWindowFinished == true);
             endTime = Time.time;
-            enemy.isParryWindowFinished = false; 
+            enemy.isParryWindowFinished = false;
 
             float duration = endTime - startTime;
             enemy.parryWindowDuration = duration;
@@ -390,9 +390,9 @@ public class BattleManager : MonoBehaviour
         if (target.ownUI != null)
         {
             target.ownUI.ShowParryUI(true);
-            target.ownUI.SetParrySprite(true); 
+            target.ownUI.SetParrySprite(true);
         }
-        target.isParryable = true; 
+        target.isParryable = true;
 
         while (parryTimer < duration)
         {
@@ -422,13 +422,14 @@ public class BattleManager : MonoBehaviour
     {
         if (activeCharacter != null && activeCharacter is Enemy enemy)
         {
-            Character target = enemy.target; 
+            Character target = enemy.target;
             if (target != null && target.isParryable)
             {
                 Debug.Log("Parry thành công! Kẻ địch bị nhận phản sát thương!");
                 target.isParryable = false;
 
-                int parryDamage = target.stats.attack * 20; 
+                // Lưu ý: Dùng stats.attack TRỰC TIẾP
+                int parryDamage = target.stats.attack * 20;
                 enemy.TakeDamage(parryDamage);
 
                 Time.timeScale = 0.5f;
@@ -460,6 +461,36 @@ public class BattleManager : MonoBehaviour
         if (character == activeCharacter)
         {
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
+
+            if (character.attackBuffTurnsRemaining > 0)
+            {
+                character.attackBuffTurnsRemaining--;
+                character.RemoveExpiredAttackBuff();
+            }
+
+            if (character.maxHPBuffTurnsRemaining > 0)
+            {
+                character.maxHPBuffTurnsRemaining--;
+                character.RemoveExpiredMaxHPBuff();
+            }
+
+            if (character.defenseBuffTurnsRemaining > 0)
+            {
+                character.defenseBuffTurnsRemaining--;
+                character.RemoveExpiredDefenseBuff();
+            }
+
+            if (character.agilityBuffTurnsRemaining > 0)
+            {
+                character.agilityBuffTurnsRemaining--;
+                character.RemoveExpiredAgilityBuff();
+            }
+
+            if (character.shieldTurnsRemaining > 0)
+            {
+                character.shieldTurnsRemaining--;
+                character.RemoveExpiredShield();
+            }
 
 
             activeCharacter = null;

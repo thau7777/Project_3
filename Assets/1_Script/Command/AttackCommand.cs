@@ -4,12 +4,15 @@ using UnityEngine;
 public class AttackCommand : SkillCommand
 {
     private float moveSpeed = 5f;
-
-    float attackDuration = 0f;
+    private float attackDuration = 0f;
     private float rotationDuration = 0.25f;
+    private BattleManager battleManager;
 
-    public AttackCommand(Character user, Character target, Skill skill)
-    : base(user, target, skill) { }
+    public AttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
+        : base(user, target, skill)
+    {
+        this.battleManager = battleManager;
+    }
 
     public override IEnumerator Execute()
     {
@@ -52,10 +55,13 @@ public class AttackCommand : SkillCommand
 
         yield return new WaitForSeconds(attackDuration);
 
-        target.TakeDamage(skill.damage);
+        int effectiveAttack = user.stats.attack; 
+
+        int finalDamage = effectiveAttack * skill.damage;
+
+        target.TakeDamage(finalDamage);
 
         yield return new WaitForSeconds(0.2f);
-
 
         user.animator.SetBool("IsRunning", true);
         while (Vector3.Distance(user.transform.position, initialPosition) > 0.1f)
@@ -87,5 +93,7 @@ public class AttackCommand : SkillCommand
             yield return null;
         }
         user.transform.rotation = endRotation;
+
+        battleManager.EndTurn(user);
     }
 }

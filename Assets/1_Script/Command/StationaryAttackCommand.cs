@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class StationaryAttackCommand : SkillCommand
 {
-    private float rotationDuration = 0.25f; 
+    private float rotationDuration = 0.25f;
+    private BattleManager battleManager;
 
-    public StationaryAttackCommand(Character user, Character target, Skill skill)
-        : base(user, target, skill) { }
+    public StationaryAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
+        : base(user, target, skill)
+    {
+        this.battleManager = battleManager;
+    }
 
     public override IEnumerator Execute()
     {
@@ -17,6 +21,7 @@ public class StationaryAttackCommand : SkillCommand
 
         float elapsed = 0f;
         Quaternion startRotation = user.transform.rotation;
+
         while (elapsed < rotationDuration)
         {
             user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
@@ -26,7 +31,6 @@ public class StationaryAttackCommand : SkillCommand
         user.transform.rotation = lookRotation;
 
         float attackDuration = 0f;
-        AnimatorStateInfo stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
 
         user.animator.Play("Attack");
 
@@ -36,12 +40,15 @@ public class StationaryAttackCommand : SkillCommand
 
         yield return new WaitForSeconds(attackDuration);
 
-        target.TakeDamage(skill.damage);
+        int effectiveAttack = user.stats.attack; 
+
+        int finalDamage = effectiveAttack * skill.damage;
+
+        target.TakeDamage(finalDamage);
 
         yield return new WaitForSeconds(0.2f);
 
         user.animator.Play("Idle");
-
 
         elapsed = 0f;
         startRotation = user.transform.rotation;
@@ -54,5 +61,7 @@ public class StationaryAttackCommand : SkillCommand
             yield return null;
         }
         user.transform.rotation = endRotation;
+
+        battleManager.EndTurn(user);
     }
 }

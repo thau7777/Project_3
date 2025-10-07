@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Linq;
 
 public class AttackingState : BaseState
 {
     private Character target;
-
 
     public AttackingState(CharacterStateMachine stateMachine) : base(stateMachine) { }
 
@@ -21,40 +21,39 @@ public class AttackingState : BaseState
 
         Skill basicAttack = ScriptableObject.CreateInstance<Skill>();
         basicAttack.skillName = "Basic Attack";
-        basicAttack.damage = stateMachine.character.stats.attack;
+
+        basicAttack.damage = 1;
+
         basicAttack.skillType = SkillType.Damage;
 
         ICommand command;
+        BattleManager bm = stateMachine.battleManager;
 
         switch (stateMachine.character.characterClass)
         {
             case CharacterClass.Sword_Shield:
-                command = new AttackCommand(stateMachine.character, target, basicAttack);
+                command = new AttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
             case CharacterClass.Magical:
-                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
             case CharacterClass.Summon:
-                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
-               break;
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
+                break;
             case CharacterClass.Enemy:
-                command = new AttackCommand(stateMachine.character, target, basicAttack);
+                command = new AttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
             default:
-                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack);
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
         }
 
-
         stateMachine.character.StartCoroutine(ExecuteCommand(command));
-
-
     }
 
     private IEnumerator ExecuteCommand(ICommand command)
     {
         yield return stateMachine.character.StartCoroutine(command.Execute());
-        stateMachine.battleManager.EndTurn(stateMachine.character);
     }
 
     public override void OnUpdate() { }

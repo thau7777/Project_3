@@ -7,13 +7,13 @@ public static class SkillCommandFactory
         switch (skill.skillType)
         {
             case SkillType.Damage:
-                return new AttackCommand(user, target, skill);
+                return new AttackCommand(user, target, skill, battleManager);
 
             case SkillType.Heal:
                 return new HealCommand(user, target, skill, battleManager);
 
             case SkillType.Buff:
-                return new HealCommand(user, target, skill, battleManager);
+                return new BuffAttackCommand(user, target, skill, battleManager); 
 
             case SkillType.Shield:
                 return new ShieldCommand(user, target, skill, battleManager);

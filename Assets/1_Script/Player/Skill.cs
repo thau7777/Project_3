@@ -16,9 +16,23 @@ public class Skill : ScriptableObject
 
     public List<GameObject> summonPrefab;
 
+    [Header("Buff/Debuff Properties")]
+    public StatType statToModify;
+    public int durationTurns = 2;
+    public bool isStackable = false;
+
 }
 
-// Giữ nguyên các enum
+public enum StatType
+{
+    None,
+    Attack,
+    Defense,
+    Agility,
+    MaxHP,
+
+}
+
 public enum SkillTargetType
 {
     Self,      
