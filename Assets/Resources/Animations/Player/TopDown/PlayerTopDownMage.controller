@@ -38,7 +38,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8712835cf962fe54792388054138ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackEventBehaviour
-  TriggerTime: 0.8
+  EndTime: 0.8
 --- !u!1102 &-6769401160577494885
 AnimatorState:
   serializedVersion: 6
@@ -98,7 +98,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CastBelow
+  m_Name: Cast Below
   m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
@@ -113,7 +113,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 0bdf3eafe67177d4d90faf1601f2a8b9, type: 2}
-  m_Tag: SpecialAction
+  m_Tag: SpecialMove
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8712835cf962fe54792388054138ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackEventBehaviour
-  TriggerTime: 0.9
+  EndTime: 0.8
 --- !u!1102 &-4260575121829800389
 AnimatorState:
   serializedVersion: 6
@@ -191,7 +191,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CastStraight
+  m_Name: Cast Straight
   m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
@@ -206,7 +206,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 7bcdc75fde7d3d4459758a9e0ef7125a, type: 2}
-  m_Tag: SpecialAction
+  m_Tag: SpecialMove
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8712835cf962fe54792388054138ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackEventBehaviour
-  TriggerTime: 0.9
+  EndTime: 0.8
 --- !u!1107 &-2273731182475204759
 AnimatorStateMachine:
   serializedVersion: 6
@@ -414,13 +414,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: InputX
+  - m_Name: MoveDirX
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: InputY
+  - m_Name: MoveDirY
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8712835cf962fe54792388054138ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackEventBehaviour
-  TriggerTime: 0.9
+  EndTime: 0.8
 --- !u!114 &3788089161744366471
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8712835cf962fe54792388054138ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackEventBehaviour
-  TriggerTime: 0.8
+  EndTime: 0.8
 --- !u!1102 &4592807531035441508
 AnimatorState:
   serializedVersion: 6
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8712835cf962fe54792388054138ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackEventBehaviour
-  TriggerTime: 0.8
+  EndTime: 0.8
 --- !u!1102 &7365733377615502615
 AnimatorState:
   serializedVersion: 6
@@ -549,7 +549,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CastAbove
+  m_Name: Cast Above
   m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
@@ -564,7 +564,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: ad2bf1d1fb693884785340f095ad5e87, type: 2}
-  m_Tag: SpecialAction
+  m_Tag: SpecialMove
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -617,8 +617,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveSpeed
     m_Mirror: 0
-  m_BlendParameter: InputX
-  m_BlendParameterY: InputY
+  m_BlendParameter: MoveDirX
+  m_BlendParameterY: MoveDirY
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1

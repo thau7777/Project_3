@@ -5,24 +5,24 @@ using UnityEngine.InputSystem;
 public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
 {
     public Action<Vector2> onMove;
-    public Action onAttack;
-    public Action<bool> onAim;
+    public Action onLeftClick;
+    public Action<bool> onRightClick;
 
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnLeftClick(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onAttack?.Invoke();
+            onLeftClick?.Invoke();
     }
     public void OnMove(InputAction.CallbackContext context)
     {
         var value = context.ReadValue<Vector2>();
         onMove?.Invoke(value);
     }
-    public void OnAim(InputAction.CallbackContext context)
+    public void OnRightClick(InputAction.CallbackContext context)
     {
         if(context.performed)
-            onAim?.Invoke(true);
+            onRightClick?.Invoke(true);
         else if(context.canceled)
-            onAim?.Invoke(false);
+            onRightClick?.Invoke(false);
     }
 }

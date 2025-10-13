@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 
 public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
 {
+    [SerializeField] List<FlyweightSettings> _flyweightSettings = new();
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultCapacity = 10;
     [SerializeField] int maxPoolSize = 100;
@@ -32,7 +33,7 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
         pools.Add(settings.type, pool);
         return pool;
     }
-    public static FlyweightSettings GetFlyweightSettingByType(FlyweightType type, List<FlyweightSettings> _flyweightSettings)
+    public FlyweightSettings GetFlyweightSettingByType(FlyweightType type)
     {
         foreach (var data in _flyweightSettings)
         {

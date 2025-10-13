@@ -7,8 +7,6 @@ public class AttackEventBehaviour : StateMachineBehaviour
     [SerializeField]
     [Range(0,1f)]
     private float EndTime = 0.8f;
-    [SerializeField]
-    private bool isDashAtStart = true;
     // Called on first frame the state is active
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -24,12 +22,15 @@ public class AttackEventBehaviour : StateMachineBehaviour
         if (!_hasTriggered && stateInfo.normalizedTime >= EndTime)
         {
             _hasTriggered = true;
-            _stateDriver.ExecuteNextAttack(); // or whatever function you want
+            if(stateInfo.IsTag("SpecialMove"))
+                _stateDriver.OnSkillDone();
+            else
+                _stateDriver.OnAttackDone(); // or whatever function you want
         }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        _stateDriver.OnAttackAnimEnd();
+        _stateDriver.OnAttackAnimExit();
     }
 }

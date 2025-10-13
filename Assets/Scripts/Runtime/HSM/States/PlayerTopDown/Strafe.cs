@@ -7,29 +7,43 @@ public class Strafe : State
 {
     readonly PlayerContext ctx;
     Action getMoveDirByInput;
+    Vector3 lastLookDir;
     public Strafe(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirInput = null) : base(m, parent)
     {
         this.ctx = ctx;
         this.getMoveDirByInput = getMoveDirInput;
-        Add(new LayerWeightActivity(ctx.anim, ctx.upperBodyLayerIndex, 1f, 0f, 0.1f)); 
+        Add(new LayerWeightActivity(ctx.Animator, ctx.UpperBodyLayerIndex, 1f, 0f, 0.1f)); 
     }
     protected override void OnEnter()
     {
-        ctx.targetMoveSpeed = ctx.strafeMoveSpeed;
-        ctx.anim.CrossFade(ctx.strafeStateHash, ctx.nextAnimCrossFadeTime); // main layer / lower body
-
-        ctx.anim.CrossFade(ctx.aimType.ToString(), 0.1f,ctx.upperBodyLayerIndex);
-
+        ctx.TargetMoveSpeed = ctx.StrafeMoveSpeed;
+        ctx.Animator.CrossFade(ctx.StrafeStateHash, ctx.NextAnimCrossFadeTime); // main layer / lower body
     }
 
     protected override void OnUpdate(float deltaTime)
     {
-        UpdateMoveDir();
-        RotateToMouse(deltaTime);
+        if (!ctx.IsInSpecialMove)
+        {
+            UpdateMoveDir();
+            RotateToMouse(deltaTime);
+        }else
+        {
+            ctx.RotateDir = lastLookDir;
+            if (ctx.NeedHoldStill)
+            {
+                ctx.TargetMoveSpeed = 0;
+                ctx.MoveDir = Vector3.zero;
+            }
+            else
+            {
+                UpdateMoveDir();
+            }
+        }
     }
     protected override void OnExit()
     {
-        ctx.anim.CrossFade("Empty State", ctx.nextAnimCrossFadeTime, ctx.upperBodyLayerIndex);
+        if(ctx.IsRangeClass && !ctx.IsAttacking)
+        ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
     }
     private void UpdateMoveDir()
     {
@@ -41,34 +55,35 @@ public class Strafe : State
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
 
-        Plane groundPlane = new Plane(Vector3.up, ctx.rootTransform.position);
+        Plane groundPlane = new Plane(Vector3.up, ctx.RootTransform.position);
 
         if (groundPlane.Raycast(ray, out float hitDist))
         {
             Vector3 hitPoint = ray.GetPoint(hitDist);
 
-            Vector3 lookDir = hitPoint - ctx.rootTransform.position;
+            Vector3 lookDir = hitPoint - ctx.RootTransform.position;
             lookDir.y = 0f; // keep it flat on ground
 
             if (lookDir.sqrMagnitude > 0.001f)
             {
-                ctx.rotateDir = lookDir;
+                ctx.RotateDir = lookDir;
+                lastLookDir = lookDir;
             }
         }
     }
     protected override State GetTransition()
     {
-        if (!ctx.isStrafing)
+        if (!ctx.IsStrafing)
         {
-            ctx.nextAnimCrossFadeTime = 0.1f;
-            if (ctx.moveInput != Vector2.zero)
+            ctx.NextAnimCrossFadeTime = 0.1f;
+            if (ctx.MoveInput != Vector2.zero)
                 return ((Grounded)Parent).Move;
             else
                 return ((Grounded)Parent).Idle;
-        }else if (ctx.isAttacking)
+        }else if (ctx.IsAttacking)
         {
-            ctx.isStrafing = false; 
-            ctx.nextAnimCrossFadeTime = 0.1f;
+            ctx.IsStrafing = false;
+            ctx.NextAnimCrossFadeTime = 0.1f;
             return ((Grounded)Parent).Attack;
         }
             return null;

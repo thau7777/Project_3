@@ -9,23 +9,23 @@ public class Move : State
     {
         this.ctx = ctx;
         this.getMoveDirByInput = getMoveDirByInput;
-        Add(new ColorPhaseActivity(ctx.renderer)
+        Add(new ColorPhaseActivity(ctx.Renderer)
         {
             enterColor = Color.green,  // runs while Grounded is activating
         });
     }
     protected override void OnEnter()
     {
-        ctx.targetMoveSpeed = ctx.baseMoveSpeed;
-        var currentAnim = ctx.anim.GetCurrentAnimatorStateInfo(0);
-        if(!currentAnim.IsName("Movement"))
-            ctx.anim.CrossFade(ctx.movementStateHash, ctx.nextAnimCrossFadeTime);
+        ctx.TargetMoveSpeed = ctx.BaseMoveSpeed;
+        var currentAnim = ctx.Animator.GetCurrentAnimatorStateInfo(0);
+        if (!currentAnim.IsName("Movement") && !ctx.IsInSpecialMove && !ctx.IsStrafing && !ctx.IsAttacking)
+            ctx.Animator.CrossFade(ctx.MovementStateHash, ctx.NextAnimCrossFadeTime);
     }
     protected override void OnUpdate(float deltaTime)
     {
         UpdateMoveDir();
         // rotate toward movement
-        ctx.rotateDir = ctx.moveDir;
+        ctx.RotateDir = ctx.MoveDir;
     }
     private void UpdateMoveDir()
     {
@@ -33,19 +33,23 @@ public class Move : State
     }
     protected override State GetTransition()
     {
-        if(ctx.moveInput == Vector2.zero)
+        if(ctx.MoveInput == Vector2.zero)
             return ((Grounded)Parent).Idle;
-        else if (ctx.isStrafing)
+        else if (ctx.IsStrafing)
         {
-            ctx.nextAnimCrossFadeTime = 0.1f;
+            ctx.NextAnimCrossFadeTime = 0.1f;
             return ((Grounded)Parent).Strafe;
         }
-        else if (ctx.isAttacking)
+        else if (ctx.IsAttacking)
         {
-            ctx.nextAnimCrossFadeTime = 0.1f;
+            ctx.NextAnimCrossFadeTime = 0.1f;
             return ((Grounded)Parent).Attack;
+        }else if (ctx.IsInSpecialMove)
+        {
+            ctx.NextAnimCrossFadeTime = 0.1f;
+            return ((Grounded)Parent).SpecialMove;
         }
-        return null;
+            return null;
     }
 
 }

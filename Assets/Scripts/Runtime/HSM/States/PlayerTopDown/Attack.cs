@@ -6,38 +6,32 @@ using UnityEngine.InputSystem;
 public class Attack : State
 {
     readonly PlayerContext ctx;
-    float ogMoveSpeedSmoothTime;
-    float ogMoveSpeed;
     Action getMoveDirByInput;
     public Attack(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirInput = null) : base(m, parent)
     {
         this.ctx = ctx;
         this.getMoveDirByInput = getMoveDirInput;
-        Add(new ColorPhaseActivity(ctx.renderer)
+        Add(new ColorPhaseActivity(ctx.Renderer)
         {
             enterColor = Color.cyan, 
         }); 
         if (ctx.IsRangeClass) // attack by upper body
-            Add(new LayerWeightActivity(ctx.anim, ctx.upperBodyLayerIndex, 1f, 0f, 0.1f));
+            Add(new LayerWeightActivity(ctx.Animator, ctx.UpperBodyLayerIndex, 1f, 0f, 0.1f));
     }
     protected override void OnEnter()
     {
-        ogMoveSpeedSmoothTime = ctx.moveSpeedSmoothTime;
-        ctx.moveSpeedSmoothTime = 0.05f; // quick to 0
         if (ctx.IsRangeClass)
         {
-            ctx.anim.CrossFade(ctx.nextAttackAnim, ctx.nextAnimCrossFadeTime, ctx.upperBodyLayerIndex, 0);
-            ctx.anim.CrossFade(ctx.strafeStateHash, ctx.nextAnimCrossFadeTime);
-            ctx.targetMoveSpeed = ctx.strafeMoveSpeed;
+            ctx.Animator.CrossFade(ctx.StrafeStateHash, ctx.NextAnimCrossFadeTime);
+            ctx.TargetMoveSpeed = ctx.StrafeMoveSpeed;
             return;
         }
-        ctx.anim.CrossFade(ctx.nextAttackAnim, ctx.nextAnimCrossFadeTime, 0, 0);
     }
     protected override void OnUpdate(float deltaTime)
     {
         if (ctx.IsRangeClass)
         {
-            ctx.anim.SetLayerWeight(ctx.upperBodyLayerIndex, 1f);
+            ctx.Animator.SetLayerWeight(ctx.UpperBodyLayerIndex, 1f);
             UpdateMoveDir();
         }
 
@@ -49,23 +43,32 @@ public class Attack : State
 
     protected override void OnExit()
     {
-        ctx.moveSpeedSmoothTime = ogMoveSpeedSmoothTime;
-        if (ctx.IsRangeClass)
+        if (ctx.IsRangeClass && !ctx.IsStrafing)
         {
-            ctx.anim.CrossFade("Empty State", ctx.nextAnimCrossFadeTime, ctx.upperBodyLayerIndex);
+            ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
             return;
         }
     }
     protected override State GetTransition()
     {
-        if(ctx.isAttacking == false)
+        if(!ctx.IsAttacking)
         {
-            ctx.nextAnimCrossFadeTime = 0.1f;
-            if (ctx.moveInput != Vector2.zero)
+            ctx.NextAnimCrossFadeTime = 0.1f;
+            if (ctx.MoveInput != Vector2.zero)
                 return ((Grounded)Parent).Move;
             else
                 return ((Grounded)Parent).Idle;
+        }else if (ctx.IsStrafing)
+        {
+            ctx.IsAttacking = false;
+            ctx.NextAnimCrossFadeTime = 0.1f;
+            return ((Grounded)Parent).Strafe;
+        }else if (ctx.IsInSpecialMove)
+        {
+            ctx.IsAttacking = false;
+            ctx.NextAnimCrossFadeTime = 0.1f;
+            return ((Grounded)Parent).SpecialMove;
         }
-        return null;
+            return null;
     }
 }

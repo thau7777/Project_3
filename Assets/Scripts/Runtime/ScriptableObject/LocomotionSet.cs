@@ -11,12 +11,20 @@ public enum CharacterClass
     Mage,
     Bow
 }
-
+public enum VFXSpawnLocation
+{
+    Slash,
+    ShieldBash,
+    LeftHand,
+    RightHand,
+}
 [Serializable]
 public struct AttackData
 {
     public string animName;
     public float damage;
+    public FlyweightSettings flyweightSettings;
+    public VFXSpawnLocation spawnLocation;
     public float dashForce;
     public bool isDashForward;
 }
@@ -28,50 +36,51 @@ public class LocomotionSet : ScriptableObject
     public CharacterClass characterClass;
     public AnimatorController animationController;
     public List<AttackData> comboAttackAnims = new();
-    public List<AttackData> SpecialActions ;
-    public AttackData currentAnimData;
-    public bool IsNextComboAttackNull => _currentIndex >= comboAttackAnims.Count - 1;
+    public AttackData FirstComboAttack 
+    { get
+        {
+            ResetAttackAnimCycle();
+            _currentIndex++;
+            SetCurrentAttackData(comboAttackAnims[_currentIndex]);
+            return CurrentAttackData;
+        }
+
+        private set { }
+    }
+    private AttackData _queuedAttackData;
+    public AttackData QueuedAttackData
+    {
+        get
+        {
+            SetCurrentAttackData(_queuedAttackData);
+            return CurrentAttackData;
+        }
+
+        private set { _queuedAttackData = value; }
+    }
+    public AttackData CurrentAttackData { get; private set; }
+    public bool HasNextCombo => _currentIndex < comboAttackAnims.Count - 1;
     private int _currentIndex = -1; // start before the first
-    public int CurrentIndex => _currentIndex;
 
     private void OnEnable()
     {
         ResetAttackAnimCycle();
     }
 
-    /// <summary>
-    /// Returns the next attack animation name in the list,
-    /// or null if there are no more.
-    /// </summary>
-    public AttackData GetNextAttackComboAnim()
+    public void QueueNextComboAttack()
     {
+        if (!HasNextCombo) ResetAttackAnimCycle();
         _currentIndex++;
-        currentAnimData = comboAttackAnims[_currentIndex];
-        return comboAttackAnims[_currentIndex];
+        QueuedAttackData = comboAttackAnims[_currentIndex];
+        
     }
-
+    public void SetCurrentAttackData(AttackData data)
+    {
+        CurrentAttackData = data;
+    }
     public void ResetAttackAnimCycle()
     {
         _currentIndex = -1;
-    }
-    public void FindAnimDataByName(string animName)
-    {
-
-    }
-    /// <summary>
-    /// use for special actions only
-    /// </summary>
-    /// <param name="anim"></param>
-    public void SetCurrentAnimDataByName(string animName)
-    {
-        foreach(var anim in SpecialActions)
-        {
-            if (anim.animName == animName)
-            {
-                currentAnimData = anim;
-                return;
-            }
-        }
     }
 }
 
