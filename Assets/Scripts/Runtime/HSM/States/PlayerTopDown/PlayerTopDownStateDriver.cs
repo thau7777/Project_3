@@ -41,7 +41,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
     [SerializeField, Required]
     [TabGroup("References")]
-    private SkillExecutor _executer;
+    private SkillExecutor _executor;
 
     [SerializeField]
     private List<ClassWeaponData> classWeaponDataList;
@@ -63,7 +63,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
     Vector3 _rotateDirOnAttack;
     bool _isNextAttackQueued = false;
-    bool _isStillInAttackAnim => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
+    
     bool _isUseSkillByUpperBody = false;
     bool _isInSpecialMoveAnim
         => _animator.GetCurrentAnimatorStateInfo(_isUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
@@ -75,7 +75,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
-        _executer = GetComponent<SkillExecutor>();
+        _executor = GetComponent<SkillExecutor>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
         _context = new PlayerContext(
             baseMoveSpeed,
@@ -128,14 +128,12 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         if (value)
         {
             // use first skill so we put in 0
-            Action onCastInstantly = null;
-            onCastInstantly += SaveDirToAttack;
-            _isUseSkillByUpperBody = _executer.UseSkill(0, _locomotionSet.characterClass, _context, onCastInstantly);
+            _isUseSkillByUpperBody = _executor.UseSkill(0, _locomotionSet.characterClass, _context, SaveDirToAttack);
             _isNextAttackQueued = false;
         }
         else if(_context.IsStrafing) // unleash the right mouse 
         {
-            _executer.CastSkill(_context);
+            _executor.CastSkill(_context);
         }
         
 
@@ -203,8 +201,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         float dashForce;
         if (_context.IsInSpecialMove)
         {
-            isDashForward = _executer.StoredSkillData.Value.isDashForward;
-            dashForce = _executer.StoredSkillData.Value.dashForce;
+            isDashForward = _executor.StoredSkillData.Value.isDashForward;
+            dashForce = _executor.StoredSkillData.Value.dashForce;
         }
         else
         {
@@ -232,8 +230,12 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             if(location.ToString() == spawnPoint.name)
             {
                 Flyweight slashVFX = FlyweightFactory.Spawn(flyweightSettings);
-                slashVFX.transform.position = spawnPoint.position;
-                slashVFX.transform.rotation = transform.rotation;
+                slashVFX.Initialize(spawnPoint.position, transform.rotation);
+                if (slashVFX is StraightProjectile)
+                {
+                    var straightProjectile = slashVFX as StraightProjectile;
+                    straightProjectile.Initialize(transform.forward, 10);
+                }
                 break;
             }
         }

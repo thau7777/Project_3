@@ -43,7 +43,7 @@ public class Attack : State
 
     protected override void OnExit()
     {
-        if (ctx.IsRangeClass && !ctx.IsStrafing)
+        if (ctx.IsRangeClass && !ctx.IsStrafing && !ctx.IsAttacking)
         {
             ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
             return;

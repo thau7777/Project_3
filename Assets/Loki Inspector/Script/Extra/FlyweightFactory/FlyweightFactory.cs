@@ -4,7 +4,6 @@ using UnityEngine.Pool;
 
 public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
 {
-    [SerializeField] List<FlyweightSettings> _flyweightSettings = new();
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultCapacity = 10;
     [SerializeField] int maxPoolSize = 100;
@@ -33,21 +32,14 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
         pools.Add(settings.type, pool);
         return pool;
     }
-    public FlyweightSettings GetFlyweightSettingByType(FlyweightType type)
-    {
-        foreach (var data in _flyweightSettings)
-        {
-            if (data.type == type)
-            {
-                Debug.Log("Found slash VFX prefab for type: " + type);
-                return data;
-            }
-        }
-        return null;
-    }
+    
 }
 public enum FlyweightType
 {
     SmallSwordSlashVFX,
-    ShieldBashVFX
+    ShieldBashVFX,
+    PurpleProjectile,
+    PurpleHitVFX,
+    BigPurpleProjectile,
+    BigPurpleHitVFX,
 }

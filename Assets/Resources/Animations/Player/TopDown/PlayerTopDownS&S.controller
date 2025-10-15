@@ -177,13 +177,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: InputX
+  - m_Name: MoveDirX
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: InputY
+  - m_Name: MoveDirY
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -448,8 +448,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveSpeed
     m_Mirror: 0
-  m_BlendParameter: InputX
-  m_BlendParameterY: InputY
+  m_BlendParameter: MoveDirX
+  m_BlendParameterY: MoveDirY
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1

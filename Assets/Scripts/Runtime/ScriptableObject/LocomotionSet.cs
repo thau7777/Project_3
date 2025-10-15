@@ -30,7 +30,7 @@ public struct AttackData
 }
 
 
-[CreateAssetMenu(fileName = "NewLocomotionSet", menuName = "ScriptableObjects/LocomotionSet", order = 1)]
+[CreateAssetMenu(fileName = "NewLocomotionSet", menuName = "Scriptable Objects/LocomotionSet", order = 1)]
 public class LocomotionSet : ScriptableObject
 {
     public CharacterClass characterClass;

@@ -4,11 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider))]
 public class StraightProjectile : Flyweight
 {
-    new SlashVFXSetting settings => (SlashVFXSetting)base.settings;
+    new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
 
     private Vector3? _direction;
     private Rigidbody _rb;
-    public float Speed {  get; private set; }
+    private float _speed;
+
+    private Coroutine _despawnRoutine;
 
     private void Awake()
     {
@@ -17,12 +19,23 @@ public class StraightProjectile : Flyweight
 
     private void OnEnable()
     {
-        StartCoroutine(DespawnAfterDelay(settings.despawnDelay));
+        _despawnRoutine = StartCoroutine(DespawnAfterDelay(settings.DespawnDelay));
     }
 
-    public void Initialize(Vector3 direction)
+    private void OnDisable()
+    {
+        // Safety — stop any running coroutine
+        if (_despawnRoutine != null)
+        {
+            StopCoroutine(_despawnRoutine);
+            _despawnRoutine = null;
+        }
+    }
+
+    public void Initialize(Vector3 direction, float speed)
     {
         _direction = direction.normalized;
+        _speed = speed;
 
         if (_rb != null)
         {
@@ -36,18 +49,14 @@ public class StraightProjectile : Flyweight
         if (_direction == null || _rb == null)
             return;
 
-        // Constant velocity movement
-        _rb.linearVelocity = _direction.Value * Speed;
-    }
-     
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Optionally handle hit effects here
-        FlyweightFactory.ReturnToPool(this);
+        _rb.linearVelocity = _direction.Value * _speed;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if ((settings.DodgeLayers.value & (1 << other.gameObject.layer)) != 0)
+            return;
+
         FlyweightFactory.ReturnToPool(this);
     }
 

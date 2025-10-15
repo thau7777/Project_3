@@ -26,23 +26,19 @@ public class Strafe : State
         {
             UpdateMoveDir();
             RotateToMouse(deltaTime);
-        }else
-        {
-            ctx.RotateDir = lastLookDir;
-            if (ctx.NeedHoldStill)
-            {
-                ctx.TargetMoveSpeed = 0;
-                ctx.MoveDir = Vector3.zero;
-            }
-            else
-            {
-                UpdateMoveDir();
-            }
+            return;
         }
+        ctx.RotateDir = lastLookDir;
+        if (ctx.NeedHoldStill)
+        {
+            ctx.TargetMoveSpeed = 0;
+            ctx.MoveDir = Vector3.zero;
+        }
+        else UpdateMoveDir();
     }
     protected override void OnExit()
     {
-        if(ctx.IsRangeClass && !ctx.IsAttacking)
+        if(!ctx.IsAttacking)
         ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
     }
     private void UpdateMoveDir()
