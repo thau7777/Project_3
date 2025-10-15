@@ -15,6 +15,7 @@ public class SkillExecutor : MonoBehaviour
     private SkillRuntimeInstance _skillToCast;
     private SkillDataForClass? _storedSkillData;
     public SkillDataForClass? StoredSkillData => _storedSkillData;
+    private Flyweight _chargedSkillFlyweight;
     private Animator _animator;
     void Awake()
     {
@@ -45,6 +46,14 @@ public class SkillExecutor : MonoBehaviour
             // run aim anim first
             context.IsStrafing = true;
             _animator.CrossFade(_storedSkillData.Value.aimType.ToString(), 0.1f, 1);
+
+            if (_skillToCast.Definition.CanCharge)
+            {
+                _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.FlyweightSettings);
+                _chargedSkillFlyweight.transform.position = GetSkillSpawnPoint(_storedSkillData.Value.spawnLocation);
+                _chargedSkillFlyweight.transform.SetParent(transform);
+            }
+                
             return true;
         }
         onCastInstantly?.Invoke();
@@ -72,24 +81,26 @@ public class SkillExecutor : MonoBehaviour
     private void ExecuteSkill()
     {
         if(_skillToCast == null) return;
+        Vector3 spawnPoint = _chargedSkillFlyweight ? GetSkillSpawnPoint(_storedSkillData.Value.spawnLocation) : Vector3.zero;
+        var ctx = new SkillStrategyContext(transform, spawnPoint, _chargedSkillFlyweight);
+
+        _skillToCast.Cast(ctx);
+        _skillToCast = null;
+        _storedSkillData = null;
+        _chargedSkillFlyweight = null;
+    }
+    private Vector3 GetSkillSpawnPoint(VFXSpawnLocation location)
+    {
         Vector3 skillSpawnPoint = transform.position;
         foreach (var sp in _skillSpawnPoints)
         {
-            if (sp.name == _storedSkillData.Value.spawnLocation.ToString())
+            if (sp.name == location.ToString())
             {
                 skillSpawnPoint = sp.position;
                 break;
             }
         }
-        var ctx = new SkillStrategyContext
-        {
-            origin = transform,
-            spawnPoint = skillSpawnPoint,
-
-        };
-        _skillToCast.Cast(ctx);
-        _skillToCast = null;
-        _storedSkillData = null;
+        return skillSpawnPoint;
     }
     public void AddOrReplaceSkill(int index, SkillStrategy newSkill)
     {

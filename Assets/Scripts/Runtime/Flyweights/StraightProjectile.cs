@@ -6,7 +6,7 @@ public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
 
-    private Vector3? _direction;
+    private Vector3? _direction = null;
     private Rigidbody _rb;
     private float _speed;
 
@@ -14,17 +14,16 @@ public class StraightProjectile : Flyweight
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-    }
-
-    private void OnEnable()
-    {
-        _despawnRoutine = StartCoroutine(DespawnAfterDelay(settings.DespawnDelay));
+        _rb = gameObject.GetOrAdd<Rigidbody>();
+        _direction = null;
+        _rb.useGravity = false;
     }
 
     private void OnDisable()
     {
+        _direction = null;
         // Safety — stop any running coroutine
+
         if (_despawnRoutine != null)
         {
             StopCoroutine(_despawnRoutine);
@@ -36,18 +35,16 @@ public class StraightProjectile : Flyweight
     {
         _direction = direction.normalized;
         _speed = speed;
-
-        if (_rb != null)
-        {
-            _rb.linearVelocity = Vector3.zero;
-            _rb.angularVelocity = Vector3.zero;
-        }
+        _despawnRoutine = StartCoroutine(DespawnAfterDelay(settings.DespawnDelay));
     }
 
     private void FixedUpdate()
     {
         if (_direction == null || _rb == null)
+        {
+            _rb.Stop();
             return;
+        }
 
         _rb.linearVelocity = _direction.Value * _speed;
     }

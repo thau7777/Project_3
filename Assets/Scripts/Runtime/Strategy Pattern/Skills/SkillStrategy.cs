@@ -35,11 +35,21 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [field: SerializeField]
     public bool NeedHoldStill { get; private set; }
 
-    [field: SerializeField]
-    public bool CanCharge { get; private set; }
+    [SerializeField]
+    private bool _canCharge;
+    public bool CanCharge { get => _canCharge; private set => _canCharge = value; }
+
+    [ShowIf("_canCharge")]
+    public FlyweightSettings chargingEffect;
+    [ShowIf("_canCharge")]
+    public int chargeLevel;
     public void Execute(IStrategyContext context)
     {
-        SpawnSkillVFX((SkillStrategyContext)context);
+        var skillContext = context as SkillStrategyContext;
+        if (!skillContext.chargedSkillFlyweight)
+            SpawnSkillVFX(skillContext);
+        else
+            ExecuteChargedSkill(skillContext);
     }
 
     public SkillDataForClass? GetSkillDataByClass(CharacterClass characterClass)
@@ -63,14 +73,25 @@ public class SkillStrategy : ScriptableObject, IStrategy
         return null;
     }
 
-    protected void SpawnSkillVFX(SkillStrategyContext context)
+    private void SpawnSkillVFX(SkillStrategyContext context)
     {
         Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
         flyweightObj.Initialize(context.spawnPoint, context.origin.rotation);
-        if(flyweightObj is StraightProjectile)
+        if (flyweightObj is StraightProjectile straightProjectile)
         {
-            var straightProjectile = flyweightObj as StraightProjectile;
             straightProjectile.Initialize(context.origin.forward, 10);
+        }
+
+        
+
+    }
+    private void ExecuteChargedSkill(SkillStrategyContext context)
+    {
+        // initialize that charged skill direction and speed
+        if (context.chargedSkillFlyweight is StraightProjectile chargedStraightProjectile)
+        {
+            context.chargedSkillFlyweight.transform.SetParent(null);
+            chargedStraightProjectile.Initialize(context.origin.forward, 10);
         }
     }
 }
