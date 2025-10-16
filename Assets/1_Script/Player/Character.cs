@@ -78,6 +78,8 @@ public class Character : MonoBehaviour
     public PlayerActionUI ownUI;
 
     public Action OnAttackHitFrame;
+    private Action damageCallback;
+
     public bool isAttackReadyForParry = false;
     public bool isParryWindowFinished = false;
     public float parryWindowDuration = 0f;
@@ -87,6 +89,7 @@ public class Character : MonoBehaviour
     {
         get { return stats.currentHP > 0; }
     }
+
 
 
     void Awake()
@@ -138,7 +141,7 @@ public class Character : MonoBehaviour
     {
         int remainingDamage = damageAmount;
 
-        if(stats.currentShield > 0)
+        if (stats.currentShield > 0)
         {
             int shieldAbsorb = Mathf.Min(stats.currentShield, remainingDamage);
             stats.currentShield -= shieldAbsorb;
@@ -151,7 +154,7 @@ public class Character : MonoBehaviour
             stats.currentHP -= remainingDamage;
             Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
         }
-        else if(damageAmount > 0)
+        else if (damageAmount > 0)
         {
             Debug.Log(gameObject.name + " không nhận sát thương do lá chắn còn đủ.");
         }
@@ -159,27 +162,38 @@ public class Character : MonoBehaviour
 
         UpdateOwnUI();
 
-        if(battleManager != null)
+        if (battleManager != null)
         {
             battleManager.UpdateCharacterUI(this);
         }
-        if(stats.currentHP <= 0)
+        if (stats.currentHP <= 0)
         {
             stats.currentHP = 0;
             Debug.Log($"{gameObject.name} đã chết!");
             stateMachine.SwitchState(stateMachine.deadState);
-            if(battleManager != null)
+            if (battleManager != null)
             {
                 battleManager.RemoveCombatant(this);
             }
         }
         else
         {
-            if(damageAmount>0)
+            if (damageAmount > 0)
             {
                 stateMachine.SwitchState(stateMachine.takingDamageState);
             }
         }
+    }
+
+    public void PrepareHitCallBack(Action callback)
+    {
+        this.damageCallback = callback;
+    }
+    
+    public void TriggerDamage()
+    {
+        damageCallback?.Invoke();
+        
     }
 
     public void Heal(int amount)

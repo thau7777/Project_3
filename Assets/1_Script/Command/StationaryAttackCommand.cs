@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class StationaryAttackCommand : SkillCommand
 {
+    private int finalDamage;
+    private bool damageApplied = false;
+
     private float rotationDuration = 0.25f;
     private BattleManager battleManager;
+
+    private bool animationFinished = false;
 
     public StationaryAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
         : base(user, target, skill)
@@ -28,40 +34,51 @@ public class StationaryAttackCommand : SkillCommand
             elapsed += Time.deltaTime;
             yield return null;
         }
-        user.transform.rotation = lookRotation;
 
-        float attackDuration = 0f;
+        int effectiveAttack = user.stats.attack;
+        finalDamage = effectiveAttack * skill.damage;
 
+        Action hitAction = () =>
+        {
+            if (!damageApplied)
+            {
+                target.TakeDamage(finalDamage);
+                damageApplied = true;
+            }
+        };
+
+        user.PrepareHitCallBack(hitAction);
         user.animator.Play("Attack");
 
-        yield return new WaitForSeconds(0.1f);
+        while (!damageApplied)
+        {
+            yield return null;
+        }
 
-        attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
+        float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
 
-        yield return new WaitForSeconds(attackDuration);
 
-        int effectiveAttack = user.stats.attack; 
-
-        int finalDamage = effectiveAttack * skill.damage;
-
-        target.TakeDamage(finalDamage);
-
-        yield return new WaitForSeconds(0.2f);
-
-        user.animator.Play("Idle");
 
         elapsed = 0f;
         startRotation = user.transform.rotation;
-        Quaternion endRotation = user.initialRotation;
+        Quaternion endRotation = user.initialRotation; 
+
 
         while (elapsed < rotationDuration)
         {
-            user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
+            user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        user.transform.rotation = endRotation;
+
+        user.transform.rotation = endRotation; 
+        yield return new WaitForSeconds(attackDuration);
+
+        
 
         battleManager.EndTurn(user);
+
+
+        
     }
 }
