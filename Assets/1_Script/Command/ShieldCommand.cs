@@ -15,7 +15,11 @@ public class ShieldCommand : SkillCommand
     public override IEnumerator Execute()
     {
         Debug.Log($"{user.name} dung skill lá chắn ");
+
+        user.animator.Play("Buff");
+
         yield return new WaitForSeconds(1f);
+
 
         var targetsToShield = new List<Character>();
 

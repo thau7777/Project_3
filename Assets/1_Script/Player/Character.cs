@@ -22,6 +22,7 @@ public enum CharacterClass
     Sword_Shield,
     Magical,
     Summon,
+    Tank,
     Enemy,
 
 

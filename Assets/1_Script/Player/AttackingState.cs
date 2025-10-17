@@ -43,6 +43,9 @@ public class AttackingState : BaseState
             case CharacterClass.Enemy:
                 command = new AttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
+            case CharacterClass.Tank:
+                command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
+                break;
             default:
                 command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;

@@ -320,7 +320,7 @@ public class BattleManager : MonoBehaviour
 
         StartCoroutine(DelayedStartTurn(activeCharacter));
 
-        activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.waitingState);
+        //activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.waitingState);
 
         if (turnOrderUI != null)
         {
