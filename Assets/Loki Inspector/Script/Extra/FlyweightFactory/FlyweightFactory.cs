@@ -32,4 +32,14 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
         pools.Add(settings.type, pool);
         return pool;
     }
+    
+}
+public enum FlyweightType
+{
+    SmallSwordSlashVFX,
+    ShieldBashVFX,
+    PurpleProjectile,
+    PurpleHitVFX,
+    BigPurpleProjectile,
+    BigPurpleHitVFX,
 }
