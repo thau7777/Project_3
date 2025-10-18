@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class StationaryAttackCommand : SkillCommand
 {
@@ -44,6 +45,8 @@ public class StationaryAttackCommand : SkillCommand
             {
                 target.TakeDamage(finalDamage);
                 damageApplied = true;
+
+                SpawnEffectAtTarget();
             }
         };
 
@@ -77,8 +80,40 @@ public class StationaryAttackCommand : SkillCommand
         
 
         battleManager.EndTurn(user);
-
-
         
+    }
+
+    private void SpawnEffectAtTarget()
+    {
+        GameObject effectToSpawn = null;
+        string effectPath = string.Empty;
+
+        switch (user.characterClass)
+        {
+            case CharacterClass.Magical:
+                effectPath = "Effects/Effect7";
+                break;
+            case CharacterClass.Summon:
+                effectPath = "Effects/Effect27";
+                break;
+            default:
+                break;
+        }
+
+        if (!string.IsNullOrEmpty(effectPath))
+        {
+            effectToSpawn = Resources.Load<GameObject>(effectPath);
+        }
+
+        if (effectToSpawn != null)
+        {
+            GameObject effectInstance = GameObject.Instantiate(effectToSpawn, target.transform.position, Quaternion.identity);
+
+            GameObject.Destroy(effectInstance, 3f);
+        }
+        else
+        {
+            Debug.LogError($"Không tìm thấy hiệu ứng tại đường dẫn: {effectPath} cho lớp: {user.characterClass}");
+        }
     }
 }

@@ -16,6 +16,9 @@ public class Skill : ScriptableObject
 
     public List<GameObject> summonPrefab;
 
+    [Header("Visual Effects")]
+    public GameObject impactVFXPrefab;
+
     [Header("Buff/Debuff Properties")]
     public StatType statToModify;
     public int durationTurns = 2;
@@ -45,7 +48,8 @@ public enum SkillTargetType
 
 public enum SkillType
 {
-    Damage,
+    MeleeAttack,
+    RangedAttack,
     DamageAll,
     Heal,
     Buff,

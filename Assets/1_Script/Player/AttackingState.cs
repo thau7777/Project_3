@@ -24,7 +24,7 @@ public class AttackingState : BaseState
 
         basicAttack.damage = 1;
 
-        basicAttack.skillType = SkillType.Damage;
+        basicAttack.skillType = SkillType.MeleeAttack;
 
         ICommand command;
         BattleManager bm = stateMachine.battleManager;
@@ -32,7 +32,7 @@ public class AttackingState : BaseState
         switch (stateMachine.character.characterClass)
         {
             case CharacterClass.Sword_Shield:
-                command = new AttackCommand(stateMachine.character, target, basicAttack, bm);
+                command = new MeleeAttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
             case CharacterClass.Magical:
                 command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
@@ -41,7 +41,7 @@ public class AttackingState : BaseState
                 command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
             case CharacterClass.Enemy:
-                command = new AttackCommand(stateMachine.character, target, basicAttack, bm);
+                command = new MeleeAttackCommand(stateMachine.character, target, basicAttack, bm);
                 break;
             case CharacterClass.Tank:
                 command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);

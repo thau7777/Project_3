@@ -6,8 +6,11 @@ public static class SkillCommandFactory
     {
         switch (skill.skillType)
         {
-            case SkillType.Damage:
-                return new AttackCommand(user, target, skill, battleManager);
+            case SkillType.MeleeAttack:
+                return new MeleeAttackCommand(user, target, skill, battleManager);
+
+            case SkillType.RangedAttack:
+                return new RangedAttackCommand(user, target, skill, battleManager);
 
             case SkillType.Heal:
                 return new HealCommand(user, target, skill, battleManager);
