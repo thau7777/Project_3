@@ -245,6 +245,173 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PopUpGame"",
+            ""id"": ""00a02b0f-d267-464e-b7d5-f233e6793b55"",
+            ""actions"": [
+                {
+                    ""name"": ""Naviagate"",
+                    ""type"": ""Value"",
+                    ""id"": ""28070395-4e0c-4f75-b595-30cf23a4924e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Left Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b2ef7d7-2dfd-433f-b7cb-12e213512edc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a878e6c-b530-44e8-abb9-d3d8d3048274"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""89b1e62a-82e2-4129-b417-31fa85f219d7"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""957d5d35-1faa-4a19-b778-6ac72bcc4ff9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""058192e8-e8bb-4b52-a544-491f83c60cad"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9b65d882-de84-45a1-a066-40661de4d2b1"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""dee4422b-9cad-4b57-b4fe-dd7baa4cb6b9"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""352cc35c-afbb-4580-9aa1-92fbc178bd2a"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""df207c47-faec-4ce4-8a5c-4bef7f3e2ab7"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""a77efc3e-d480-4c70-bc8f-b70505c97244"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2302f429-f5a5-40d1-9171-3e6eae941426"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""51f9ef89-fb31-4ba8-96e9-2692f2b1df97"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3fd8255e-e2e9-4708-a3d6-dd5cf183fc24"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""967342de-b464-4800-ba0a-eaf726fe2edd"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Naviagate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -263,6 +430,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
+        // PopUpGame
+        m_PopUpGame = asset.FindActionMap("PopUpGame", throwIfNotFound: true);
+        m_PopUpGame_Naviagate = m_PopUpGame.FindAction("Naviagate", throwIfNotFound: true);
+        m_PopUpGame_LeftClick = m_PopUpGame.FindAction("Left Click", throwIfNotFound: true);
+        m_PopUpGame_RightClick = m_PopUpGame.FindAction("Right Click", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -272,6 +444,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerFPS.enabled, "This will cause a leak and performance issues, InputActions.PlayerFPS.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerTowerDefense.enabled, "This will cause a leak and performance issues, InputActions.PlayerTowerDefense.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PopUpGame.enabled, "This will cause a leak and performance issues, InputActions.PopUpGame.Disable() has not been called.");
     }
 
     /// <summary>
@@ -812,6 +985,124 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
+
+    // PopUpGame
+    private readonly InputActionMap m_PopUpGame;
+    private List<IPopUpGameActions> m_PopUpGameActionsCallbackInterfaces = new List<IPopUpGameActions>();
+    private readonly InputAction m_PopUpGame_Naviagate;
+    private readonly InputAction m_PopUpGame_LeftClick;
+    private readonly InputAction m_PopUpGame_RightClick;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "PopUpGame".
+    /// </summary>
+    public struct PopUpGameActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public PopUpGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "PopUpGame/Naviagate".
+        /// </summary>
+        public InputAction @Naviagate => m_Wrapper.m_PopUpGame_Naviagate;
+        /// <summary>
+        /// Provides access to the underlying input action "PopUpGame/LeftClick".
+        /// </summary>
+        public InputAction @LeftClick => m_Wrapper.m_PopUpGame_LeftClick;
+        /// <summary>
+        /// Provides access to the underlying input action "PopUpGame/RightClick".
+        /// </summary>
+        public InputAction @RightClick => m_Wrapper.m_PopUpGame_RightClick;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_PopUpGame; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="PopUpGameActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(PopUpGameActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="PopUpGameActions" />
+        public void AddCallbacks(IPopUpGameActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Add(instance);
+            @Naviagate.started += instance.OnNaviagate;
+            @Naviagate.performed += instance.OnNaviagate;
+            @Naviagate.canceled += instance.OnNaviagate;
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="PopUpGameActions" />
+        private void UnregisterCallbacks(IPopUpGameActions instance)
+        {
+            @Naviagate.started -= instance.OnNaviagate;
+            @Naviagate.performed -= instance.OnNaviagate;
+            @Naviagate.canceled -= instance.OnNaviagate;
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />.
+        /// </summary>
+        /// <seealso cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />
+        public void RemoveCallbacks(IPopUpGameActions instance)
+        {
+            if (m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="PopUpGameActions.AddCallbacks(IPopUpGameActions)" />
+        /// <seealso cref="PopUpGameActions.RemoveCallbacks(IPopUpGameActions)" />
+        /// <seealso cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />
+        public void SetCallbacks(IPopUpGameActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PopUpGameActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="PopUpGameActions" /> instance referencing this action map.
+    /// </summary>
+    public PopUpGameActions @PopUpGame => new PopUpGameActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
     /// </summary>
@@ -879,5 +1170,34 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnNewaction(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PopUpGame" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="PopUpGameActions.AddCallbacks(IPopUpGameActions)" />
+    /// <seealso cref="PopUpGameActions.RemoveCallbacks(IPopUpGameActions)" />
+    public interface IPopUpGameActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Naviagate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNaviagate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Left Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Right Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }
