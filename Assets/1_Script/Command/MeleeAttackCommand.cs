@@ -46,18 +46,49 @@ public class MeleeAttackCommand : SkillCommand
         Vector3 finalLookDirection = (target.transform.position - user.transform.position).normalized;
         user.transform.rotation = Quaternion.LookRotation(new Vector3(finalLookDirection.x, 0, finalLookDirection.z));
 
-
         yield return null;
 
         attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
 
         user.animator.SetTrigger("Attack");
 
+
+        int offensiveStat = user.stats.attack;
+        int defensiveStat = target.stats.defense;
+
+        switch (skill.elementType)
+        {
+            case ElementType.Magical:
+            case ElementType.Fire:
+            case ElementType.Ice:
+            case ElementType.Poison:
+            case ElementType.Lightning:
+            case ElementType.Holy:
+            case ElementType.Dark:
+                offensiveStat = user.stats.magicAttack;
+                defensiveStat = target.stats.magicDefense;
+                break;
+
+            case ElementType.Physical:
+            case ElementType.None:
+            default:
+                offensiveStat = user.stats.attack;
+                defensiveStat = target.stats.defense;
+                break;
+        }
+
+        int rawDamage = offensiveStat * skill.damage;
+
+        float damageMultiplier = 100f / (defensiveStat + 100f);
+        int finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+
+        if (rawDamage > 0)
+        {
+            finalDamage = Mathf.Max(1, finalDamage);
+        }
+
+
         yield return new WaitForSeconds(attackDuration);
-
-        int effectiveAttack = user.stats.attack; 
-
-        int finalDamage = effectiveAttack * skill.damage;
 
         target.TakeDamage(finalDamage);
 

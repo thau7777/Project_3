@@ -33,8 +33,39 @@ public class RangedAttackCommand : SkillCommand
         }
         user.transform.rotation = lookRotation;
 
-        int effectiveAttack = user.stats.attack;
-        finalDamage = effectiveAttack * skill.damage;
+        int offensiveStat = user.stats.attack;
+        int defensiveStat = target.stats.defense;
+
+        switch (skill.elementType)
+        {
+            case ElementType.Magical:
+            case ElementType.Fire:
+            case ElementType.Ice:
+            case ElementType.Poison:
+            case ElementType.Lightning:
+            case ElementType.Holy:
+            case ElementType.Dark:
+                offensiveStat = user.stats.magicAttack;
+                defensiveStat = target.stats.magicDefense;
+                break;
+
+            case ElementType.Physical:
+            case ElementType.None:
+            default:
+                offensiveStat = user.stats.attack;
+                defensiveStat = target.stats.defense;
+                break;
+        }
+
+        int rawDamage = offensiveStat * skill.damage;
+
+        float damageMultiplier = 100f / (defensiveStat + 100f);
+        finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+
+        if (rawDamage > 0)
+        {
+            finalDamage = Mathf.Max(1, finalDamage);
+        }
 
         Action hitAction = () =>
         {
@@ -48,17 +79,15 @@ public class RangedAttackCommand : SkillCommand
 
         user.PrepareHitCallBack(hitAction);
 
-        user.animator.Play("Attack"); 
+        user.animator.Play("Attack");
 
         while (!damageApplied)
         {
             yield return null;
         }
 
-
         float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
         yield return new WaitForSeconds(attackDuration);
-
 
         elapsed = 0f;
         startRotation = user.transform.rotation;

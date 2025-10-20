@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DamageAllCommand : ICommand
 {
@@ -22,8 +23,32 @@ public class DamageAllCommand : ICommand
         user.animator.Play("Cast");
         yield return new WaitForSeconds(1.5f);
 
+
         const float attackMultiplier = 0.5f;
-        int calculatedDamage = skill.damage + Mathf.RoundToInt(user.stats.attack * attackMultiplier);
+
+        int offensiveStat = user.stats.attack;
+
+        switch (skill.elementType)
+        {
+            case ElementType.Magical:
+            case ElementType.Fire:
+            case ElementType.Ice:
+            case ElementType.Poison:
+            case ElementType.Lightning:
+            case ElementType.Holy:
+            case ElementType.Dark:
+                offensiveStat = user.stats.magicAttack;
+                break;
+
+            case ElementType.Physical:
+            case ElementType.None:
+            default:
+                offensiveStat = user.stats.attack;
+                break;
+        }
+
+        int rawDamage = skill.damage + Mathf.RoundToInt(offensiveStat * attackMultiplier);
+
 
 
         List<Character> allTargets;
@@ -38,7 +63,22 @@ public class DamageAllCommand : ICommand
 
         foreach (Character aoeTarget in allTargets)
         {
-            aoeTarget.TakeDamage(calculatedDamage);
+            int defensiveStat = aoeTarget.stats.defense;
+            if (skill.elementType != ElementType.Physical && skill.elementType != ElementType.None)
+            {
+                defensiveStat = aoeTarget.stats.magicDefense;
+            }
+
+            float damageMultiplier = 100f / (defensiveStat + 100f);
+
+            int finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+
+            if (rawDamage > 0)
+            {
+                finalDamage = Mathf.Max(1, finalDamage);
+            }
+
+            aoeTarget.TakeDamage(finalDamage);
 
             SpawnImpactEffect(aoeTarget.transform.position);
         }
