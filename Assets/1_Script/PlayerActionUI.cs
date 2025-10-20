@@ -38,7 +38,9 @@ public class PlayerActionUI : MonoBehaviour
 
     public Action OnParryAttempted;
 
-    private Skill selectedSkillToConfirm;
+    private Animator animator;
+
+    [SerializeField] private Skill selectedSkillToConfirm;
 
     void Awake()
     {
@@ -51,6 +53,8 @@ public class PlayerActionUI : MonoBehaviour
     private void Start()
     {
         EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
+
+        animator = Owner.GetComponent<Animator>();
 
         attackButton.onClick.AddListener(OnAttackClicked);
         skillButton.onClick.AddListener(OnSkillClicked);
@@ -188,6 +192,8 @@ public class PlayerActionUI : MonoBehaviour
     private void OnSkillClicked()
     {
         Debug.Log("Sử dụng Kỹ năng!");
+
+        animator.SetTrigger("CastSkill");
 
         GameObject actionObject = GameObject.Find("Action");
         GameObject cancelObject = GameObject.Find("Cancel");

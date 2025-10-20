@@ -20,7 +20,7 @@ public class DamageAllCommand : ICommand
     {
         Debug.Log($"{user.name} dùng skill AOE {skill.skillName}");
 
-        user.animator.Play("Cast");
+        user.animator.Play(skill.animationTriggerName);
         yield return new WaitForSeconds(1.5f);
 
 

@@ -79,7 +79,7 @@ public class RangedAttackCommand : SkillCommand
 
         user.PrepareHitCallBack(hitAction);
 
-        user.animator.Play("Attack");
+        user.animator.Play(skill.animationTriggerName);
 
         while (!damageApplied)
         {

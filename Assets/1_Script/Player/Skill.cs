@@ -9,11 +9,13 @@ public class Skill : ScriptableObject
     public int damage;
     public int manaCost;
     public Sprite icon;
+    public string animationTriggerName;
 
     public SkillTargetType targetType;
     public SkillType skillType;
     public ElementType elementType;
 
+    [ShowIfEnumValue("skillType", SkillType.Summon)]
     public List<GameObject> summonPrefab;
 
     [Header("Visual Effects")]

@@ -16,7 +16,9 @@ public class BuffCommand : SkillCommand
     public override IEnumerator Execute()
     {
         Debug.Log($"{user.name} dùng skill Buff {skill.statToModify}!");
-        user.animator.Play("Cast");
+        
+        user.animator.Play(skill.animationTriggerName);
+
         yield return new WaitForSeconds(1.5f);
 
         var targetsToBuff = new List<Character>();
