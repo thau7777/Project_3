@@ -1,47 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DeadState : BaseState
+
+
+namespace Turnbase
 {
-    public DeadState(CharacterStateMachine stateMachine) : base(stateMachine) { }
-
-    public override void OnEnter()
+    public class DeadState : BaseState
     {
-        Debug.Log($"{stateMachine.character.name} chuyển sang DeadState. Đã chết!");
+        public DeadState(CharacterStateMachine stateMachine) : base(stateMachine) { }
 
-        stateMachine.character.StopAllCoroutines();
-
-        Collider col = stateMachine.character.GetComponent<Collider>();
-        if (col != null)
+        public override void OnEnter()
         {
-            col.enabled = false;
-        }
+            Debug.Log($"{stateMachine.character.name} chuyển sang DeadState. Đã chết!");
 
-        stateMachine.character.animator.SetTrigger("Die");
+            stateMachine.character.StopAllCoroutines();
 
-        stateMachine.character.StartCoroutine(HandleDeath());
-    }
-
-    private IEnumerator HandleDeath()
-    {
-        yield return new WaitForSeconds(3f);
-
-        if (stateMachine.battleManager != null)
-        {
-            if (stateMachine.battleManager.activeCharacter == stateMachine.character)
+            Collider col = stateMachine.character.GetComponent<Collider>();
+            if (col != null)
             {
-                stateMachine.battleManager.activeCharacter = null;
-                stateMachine.battleManager.isProcessingTurn = false;
+                col.enabled = false;
             }
 
-            stateMachine.battleManager.RemoveCombatant(stateMachine.character);
+            stateMachine.character.animator.SetTrigger("Die");
+
+            stateMachine.character.StartCoroutine(HandleDeath());
         }
 
-        GameObject.Destroy(stateMachine.character.gameObject);
-    }
+        private IEnumerator HandleDeath()
+        {
+            yield return new WaitForSeconds(3f);
 
-    public override void OnExit()
-    {
-        
+            if (stateMachine.battleManager != null)
+            {
+                if (stateMachine.battleManager.activeCharacter == stateMachine.character)
+                {
+                    stateMachine.battleManager.activeCharacter = null;
+                    stateMachine.battleManager.isProcessingTurn = false;
+                }
+
+                stateMachine.battleManager.RemoveCombatant(stateMachine.character);
+            }
+
+            GameObject.Destroy(stateMachine.character.gameObject);
+        }
+
+        public override void OnExit()
+        {
+
+        }
     }
 }

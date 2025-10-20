@@ -2,32 +2,36 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TurnOrderIcon : MonoBehaviour
+
+namespace Turnbase
 {
-    [Header("UI References")]
-    public Image avatarImage;
-    public TextMeshProUGUI nameText;
-    public TextMeshProUGUI actionGaugeText;
-
-    [HideInInspector] public Character characterOwner;
-
-    public void UpdateIcon(Character character)
+    public class TurnOrderIcon : MonoBehaviour
     {
-        characterOwner = character;
+        [Header("UI References")]
+        public Image avatarImage;
+        public TextMeshProUGUI nameText;
+        public TextMeshProUGUI actionGaugeText;
 
-        if (avatarImage != null && character.stats.Avatar != null)
-        {
-            avatarImage.sprite = character.stats.Avatar;
-        }
+        [HideInInspector] public Character characterOwner;
 
-        if (nameText != null)
+        public void UpdateIcon(Character character)
         {
-            nameText.text = character.gameObject.name;
-        }
+            characterOwner = character;
 
-        if (actionGaugeText != null)
-        {
-            actionGaugeText.text = Mathf.RoundToInt(character.actionGauge).ToString();
+            if (avatarImage != null && character.stats.Avatar != null)
+            {
+                avatarImage.sprite = character.stats.Avatar;
+            }
+
+            if (nameText != null)
+            {
+                nameText.text = character.gameObject.name;
+            }
+
+            if (actionGaugeText != null)
+            {
+                actionGaugeText.text = Mathf.RoundToInt(character.actionGauge).ToString();
+            }
         }
     }
 }

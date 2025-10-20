@@ -1,6 +1,11 @@
 using UnityEngine;
 
-public class Dodge : BaseState
+
+namespace Turnbase
 {
-    public Dodge(CharacterStateMachine stateMachine) : base(stateMachine) { }
+    public class Dodge : BaseState
+    {
+        public Dodge(CharacterStateMachine stateMachine) : base(stateMachine) { }
+    }
+
 }

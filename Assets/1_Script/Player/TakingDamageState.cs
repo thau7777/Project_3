@@ -1,34 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TakingDamageState : BaseState
+
+namespace Turnbase
 {
-    public TakingDamageState(CharacterStateMachine stateMachine) : base(stateMachine) { }
-
-    public override void OnEnter()
+    public class TakingDamageState : BaseState
     {
-        Debug.Log(stateMachine.gameObject.name + " đang bị nhận sát thương.");
-        stateMachine.character.StartCoroutine(HandleTakingDamage());
-    }
+        public TakingDamageState(CharacterStateMachine stateMachine) : base(stateMachine) { }
 
-    private IEnumerator HandleTakingDamage()
-    {
-        stateMachine.character.animator.Play("Idle_Hurt");
-
-        yield return new WaitForSeconds(0.5f);
-
-        if (stateMachine.character.isAlive)
+        public override void OnEnter()
         {
-            stateMachine.SwitchState(stateMachine.waitingState);
+            Debug.Log(stateMachine.gameObject.name + " đang bị nhận sát thương.");
+            stateMachine.character.StartCoroutine(HandleTakingDamage());
         }
-        else
+
+        private IEnumerator HandleTakingDamage()
         {
-            stateMachine.SwitchState(stateMachine.deadState);
+            stateMachine.character.animator.Play("Idle_Hurt");
+
+            yield return new WaitForSeconds(0.5f);
+
+            if (stateMachine.character.isAlive)
+            {
+                stateMachine.SwitchState(stateMachine.waitingState);
+            }
+            else
+            {
+                stateMachine.SwitchState(stateMachine.deadState);
+            }
+        }
+
+        public override void OnExit()
+        {
+            stateMachine.character.StopAllCoroutines();
         }
     }
 
-    public override void OnExit()
-    {
-        stateMachine.character.StopAllCoroutines();
-    }
 }

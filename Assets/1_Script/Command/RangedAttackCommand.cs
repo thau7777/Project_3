@@ -2,120 +2,125 @@
 using System.Collections;
 using UnityEngine;
 
-public class RangedAttackCommand : SkillCommand
+
+namespace Turnbase
 {
-    private int finalDamage;
-    private bool damageApplied = false;
-
-    private float rotationDuration = 0.25f;
-    private BattleManager battleManager;
-
-    public RangedAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
-        : base(user, target, skill)
+    public class RangedAttackCommand : SkillCommand
     {
-        this.battleManager = battleManager;
-    }
+        private int finalDamage;
+        private bool damageApplied = false;
 
-    public override IEnumerator Execute()
-    {
-        Vector3 direction = (target.transform.position - user.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        lookRotation.eulerAngles = new Vector3(0, lookRotation.eulerAngles.y, 0);
+        private float rotationDuration = 0.25f;
+        private BattleManager battleManager;
 
-        float elapsed = 0f;
-        Quaternion startRotation = user.transform.rotation;
-
-        while (elapsed < rotationDuration)
+        public RangedAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
+            : base(user, target, skill)
         {
-            user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        user.transform.rotation = lookRotation;
-
-        int offensiveStat = user.stats.attack;
-        int defensiveStat = target.stats.defense;
-
-        switch (skill.elementType)
-        {
-            case ElementType.Magical:
-            case ElementType.Fire:
-            case ElementType.Ice:
-            case ElementType.Poison:
-            case ElementType.Lightning:
-            case ElementType.Holy:
-            case ElementType.Dark:
-                offensiveStat = user.stats.magicAttack;
-                defensiveStat = target.stats.magicDefense;
-                break;
-
-            case ElementType.Physical:
-            case ElementType.None:
-            default:
-                offensiveStat = user.stats.attack;
-                defensiveStat = target.stats.defense;
-                break;
+            this.battleManager = battleManager;
         }
 
-        int rawDamage = offensiveStat * skill.damage;
-
-        float damageMultiplier = 100f / (defensiveStat + 100f);
-        finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
-
-        if (rawDamage > 0)
+        public override IEnumerator Execute()
         {
-            finalDamage = Mathf.Max(1, finalDamage);
-        }
+            Vector3 direction = (target.transform.position - user.transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            lookRotation.eulerAngles = new Vector3(0, lookRotation.eulerAngles.y, 0);
 
-        Action hitAction = () =>
-        {
-            if (!damageApplied)
+            float elapsed = 0f;
+            Quaternion startRotation = user.transform.rotation;
+
+            while (elapsed < rotationDuration)
             {
-                target.TakeDamage(finalDamage);
-                damageApplied = true;
-                SpawnImpactEffect(target.transform.position);
+                user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
             }
-        };
+            user.transform.rotation = lookRotation;
 
-        user.PrepareHitCallBack(hitAction);
+            int offensiveStat = user.stats.attack;
+            int defensiveStat = target.stats.defense;
 
-        user.animator.Play(skill.animationTriggerName);
+            switch (skill.elementType)
+            {
+                case ElementType.Magical:
+                case ElementType.Fire:
+                case ElementType.Ice:
+                case ElementType.Poison:
+                case ElementType.Lightning:
+                case ElementType.Holy:
+                case ElementType.Dark:
+                    offensiveStat = user.stats.magicAttack;
+                    defensiveStat = target.stats.magicDefense;
+                    break;
 
-        while (!damageApplied)
-        {
-            yield return null;
+                case ElementType.Physical:
+                case ElementType.None:
+                default:
+                    offensiveStat = user.stats.attack;
+                    defensiveStat = target.stats.defense;
+                    break;
+            }
+
+            int rawDamage = offensiveStat * skill.damage;
+
+            float damageMultiplier = 100f / (defensiveStat + 100f);
+            finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+
+            if (rawDamage > 0)
+            {
+                finalDamage = Mathf.Max(1, finalDamage);
+            }
+
+            Action hitAction = () =>
+            {
+                if (!damageApplied)
+                {
+                    target.TakeDamage(finalDamage);
+                    damageApplied = true;
+                    SpawnImpactEffect(target.transform.position);
+                }
+            };
+
+            user.PrepareHitCallBack(hitAction);
+
+            user.animator.Play(skill.animationTriggerName);
+
+            while (!damageApplied)
+            {
+                yield return null;
+            }
+
+            float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(attackDuration);
+
+            elapsed = 0f;
+            startRotation = user.transform.rotation;
+            Quaternion endRotation = user.initialRotation;
+
+            while (elapsed < rotationDuration)
+            {
+                user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            user.transform.rotation = endRotation;
+
+            battleManager.EndTurn(user);
         }
 
-        float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(attackDuration);
-
-        elapsed = 0f;
-        startRotation = user.transform.rotation;
-        Quaternion endRotation = user.initialRotation;
-
-        while (elapsed < rotationDuration)
+        private void SpawnImpactEffect(Vector3 position)
         {
-            user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        user.transform.rotation = endRotation;
+            GameObject effectToSpawn = skill.impactVFXPrefab;
 
-        battleManager.EndTurn(user);
-    }
-
-    private void SpawnImpactEffect(Vector3 position)
-    {
-        GameObject effectToSpawn = skill.impactVFXPrefab;
-
-        if (effectToSpawn != null)
-        {
-            GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
-            GameObject.Destroy(effectInstance, 3f);
-        }
-        else
-        {
-            Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng: {skill.skillName}");
+            if (effectToSpawn != null)
+            {
+                GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+                GameObject.Destroy(effectInstance, 3f);
+            }
+            else
+            {
+                Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng: {skill.skillName}");
+            }
         }
     }
 }
+

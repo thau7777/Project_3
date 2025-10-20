@@ -1,6 +1,11 @@
 using UnityEngine;
 
-public class CameraAnimation : MonoBehaviour
-{
 
+namespace Turnbase
+{
+    public class CameraAnimation : MonoBehaviour
+    {
+
+    }
 }
+

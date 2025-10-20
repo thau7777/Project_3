@@ -2,46 +2,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyStatsUI : MonoBehaviour
+
+namespace Turnbase
 {
-    public Image hpBarFill;
-    public Image mpBarFill;
-    public Image shieldBarFill;
-
-
-    private Character ownerCharacter;
-
-    void Awake()
+    public class EnemyStatsUI : MonoBehaviour
     {
-        ownerCharacter = GetComponentInParent<Character>();
-    }
+        public Image hpBarFill;
+        public Image mpBarFill;
+        public Image shieldBarFill;
 
-    void Start()
-    {
-        UpdateUI();
-    }
 
-    public void UpdateUI()
-    {
-        if (ownerCharacter != null)
+        private Character ownerCharacter;
+
+        void Awake()
         {
-            CharacterStats stats = ownerCharacter.stats;
+            ownerCharacter = GetComponentInParent<Character>();
+        }
 
-            if (hpBarFill != null)
+        void Start()
+        {
+            UpdateUI();
+        }
+
+        public void UpdateUI()
+        {
+            if (ownerCharacter != null)
             {
-                hpBarFill.fillAmount = (float)stats.currentHP / stats.maxHP;
-            }
+                CharacterStats stats = ownerCharacter.stats;
 
-            if (mpBarFill != null)
-            {
-                mpBarFill.fillAmount = (float)stats.currentMP / stats.maxMP;
-            }
+                if (hpBarFill != null)
+                {
+                    hpBarFill.fillAmount = (float)stats.currentHP / stats.maxHP;
+                }
 
-            if (shieldBarFill != null)
-            {
-                shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxHP;
-            }
+                if (mpBarFill != null)
+                {
+                    mpBarFill.fillAmount = (float)stats.currentMP / stats.maxMP;
+                }
 
+                if (shieldBarFill != null)
+                {
+                    shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxHP;
+                }
+
+            }
         }
     }
 }

@@ -5,252 +5,256 @@ using System.Linq;
 using UnityEditor.ShaderKeywordFilter;
 using HSM;
 
-public enum BattleState
+
+namespace Turnbase
 {
-    Waiting,
-    Ready,
-    Attacking,
-    TakingDamage,
-    Dead,
-    Parrying,
-    Interrupted
-}
-
-[System.Serializable]
-public enum CharacterClass
-{
-    Sword_Shield,
-    Magical,
-    Summon,
-    Tank,
-    Enemy,
-
-
-}
-
-[System.Serializable]
-public class CharacterStats
-{
-    public Sprite Avatar;
-    public int maxHP;
-    public int currentHP;
-    public int maxMP;
-    public int currentMP;
-    public int maxShield;
-    public int currentShield;
-    public int attack;
-    public int defense;
-    public int magicAttack;
-    public int magicDefense;
-    public int agility;
-}
-
-public class Character : MonoBehaviour
-{
-    public CharacterStateMachine stateMachine;
-
-    public CharacterClass characterClass;
-
-    [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
-
-    [TabGroup("Stats")] public CharacterStats stats;
-
-    [TabGroup("Skill")] public List<Skill> skills;
-
-
-    public bool isPlayer;
-    public Character target;
-    public GameObject targetMarker;
-
-    public Animator animator;
-
-    public float actionGauge;
-
-
-    public Vector3 initialPosition;
-    public Quaternion initialRotation;
-
-    public BattleManager battleManager;
-
-    public CharacterBuffManager buffManager;
-
-    public bool isParryable;
-
-    public PlayerActionUI ownUI;
-
-    public Action OnAttackHitFrame;
-    private Action damageCallback;
-
-    public bool isAttackReadyForParry = false;
-    public bool isParryWindowFinished = false;
-    public float parryWindowDuration = 0f;
-
-
-    public bool isAlive
+    public enum BattleState
     {
-        get { return stats.currentHP > 0; }
+        Waiting,
+        Ready,
+        Attacking,
+        TakingDamage,
+        Dead,
+        Parrying,
+        Interrupted
     }
 
-
-
-    void Awake()
+    [System.Serializable]
+    public enum CharacterClass
     {
-        stateMachine = GetComponent<CharacterStateMachine>();
-        animator = GetComponent<Animator>();
+        Sword_Shield,
+        Magical,
+        Summon,
+        Tank,
+        Enemy,
 
-
-        InitializeCharacterFrom(characterClass);
 
     }
 
-    public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
+    [System.Serializable]
+    public class CharacterStats
     {
-        CharacterClassProfile targetProfile =
-            allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
-
-        if (targetProfile == null)
-        {
-            Debug.LogWarning($"Không tìm thấy Class Profile cho lớp: {classTypeToLoad} trên {gameObject.name}!");
-
-        }
-        characterClass = targetProfile.characterClass;
-
-        if (animator != null && targetProfile.animatorController != null)
-        {
-            animator.runtimeAnimatorController = targetProfile.animatorController;
-        }
-
-        if (targetProfile.initialSkills != null)
-        {
-            skills.Clear();
-            skills.AddRange(targetProfile.initialSkills);
-        }
+        public Sprite Avatar;
+        public int maxHP;
+        public int currentHP;
+        public int maxMP;
+        public int currentMP;
+        public int maxShield;
+        public int currentShield;
+        public int attack;
+        public int defense;
+        public int magicAttack;
+        public int magicDefense;
+        public int agility;
     }
 
-    public void UpdateOwnUI()
+    public class Character : MonoBehaviour
     {
-        EnemyStatsUI uiComponent = GetComponentInChildren<EnemyStatsUI>();
+        public CharacterStateMachine stateMachine;
 
-        if (uiComponent != null)
+        public CharacterClass characterClass;
+
+        [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
+
+        [TabGroup("Stats")] public CharacterStats stats;
+
+        [TabGroup("Skill")] public List<Skill> skills;
+
+
+        public bool isPlayer;
+        public Character target;
+        public GameObject targetMarker;
+
+        public Animator animator;
+
+        public float actionGauge;
+
+
+        public Vector3 initialPosition;
+        public Quaternion initialRotation;
+
+        public BattleManager battleManager;
+
+        public CharacterBuffManager buffManager;
+
+        public bool isParryable;
+
+        public PlayerActionUI ownUI;
+
+        public Action OnAttackHitFrame;
+        private Action damageCallback;
+
+        public bool isAttackReadyForParry = false;
+        public bool isParryWindowFinished = false;
+        public float parryWindowDuration = 0f;
+
+
+        public bool isAlive
         {
-            uiComponent.UpdateUI();
+            get { return stats.currentHP > 0; }
         }
-    }
 
 
-    public void TakeDamage(int damageAmount)
-    {
-        int remainingDamage = damageAmount;
 
-        if (stats.currentShield > 0)
+        void Awake()
         {
-            int shieldAbsorb = Mathf.Min(stats.currentShield, remainingDamage);
-            stats.currentShield -= shieldAbsorb;
-            remainingDamage -= shieldAbsorb;
-            Debug.Log(gameObject.name + " hấp thụ " + shieldAbsorb + " sát thương bằng lá chắn. Lá chắn còn lại: " + stats.currentShield);
+            stateMachine = GetComponent<CharacterStateMachine>();
+            animator = GetComponent<Animator>();
+
+
+            InitializeCharacterFrom(characterClass);
 
         }
-        if (remainingDamage > 0)
+
+        public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
         {
-            stats.currentHP -= remainingDamage;
-            Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
+            CharacterClassProfile targetProfile =
+                allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
+
+            if (targetProfile == null)
+            {
+                Debug.LogWarning($"Không tìm thấy Class Profile cho lớp: {classTypeToLoad} trên {gameObject.name}!");
+
+            }
+            characterClass = targetProfile.characterClass;
+
+            if (animator != null && targetProfile.animatorController != null)
+            {
+                animator.runtimeAnimatorController = targetProfile.animatorController;
+            }
+
+            if (targetProfile.initialSkills != null)
+            {
+                skills.Clear();
+                skills.AddRange(targetProfile.initialSkills);
+            }
         }
-        else if (damageAmount > 0)
+
+        public void UpdateOwnUI()
         {
-            Debug.Log(gameObject.name + " không nhận sát thương do lá chắn còn đủ.");
+            EnemyStatsUI uiComponent = GetComponentInChildren<EnemyStatsUI>();
+
+            if (uiComponent != null)
+            {
+                uiComponent.UpdateUI();
+            }
         }
 
 
-        UpdateOwnUI();
+        public void TakeDamage(int damageAmount)
+        {
+            int remainingDamage = damageAmount;
 
-        if (battleManager != null)
-        {
-            battleManager.UpdateCharacterUI(this);
-        }
-        if (stats.currentHP <= 0)
-        {
-            stats.currentHP = 0;
-            Debug.Log($"{gameObject.name} đã chết!");
-            stateMachine.SwitchState(stateMachine.deadState);
+            if (stats.currentShield > 0)
+            {
+                int shieldAbsorb = Mathf.Min(stats.currentShield, remainingDamage);
+                stats.currentShield -= shieldAbsorb;
+                remainingDamage -= shieldAbsorb;
+                Debug.Log(gameObject.name + " hấp thụ " + shieldAbsorb + " sát thương bằng lá chắn. Lá chắn còn lại: " + stats.currentShield);
+
+            }
+            if (remainingDamage > 0)
+            {
+                stats.currentHP -= remainingDamage;
+                Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
+            }
+            else if (damageAmount > 0)
+            {
+                Debug.Log(gameObject.name + " không nhận sát thương do lá chắn còn đủ.");
+            }
+
+
+            UpdateOwnUI();
+
             if (battleManager != null)
             {
-                battleManager.RemoveCombatant(this);
+                battleManager.UpdateCharacterUI(this);
             }
-        }
-        else
-        {
-            if (damageAmount > 0)
+            if (stats.currentHP <= 0)
             {
-                stateMachine.SwitchState(stateMachine.takingDamageState);
+                stats.currentHP = 0;
+                Debug.Log($"{gameObject.name} đã chết!");
+                stateMachine.SwitchState(stateMachine.deadState);
+                if (battleManager != null)
+                {
+                    battleManager.RemoveCombatant(this);
+                }
+            }
+            else
+            {
+                if (damageAmount > 0)
+                {
+                    stateMachine.SwitchState(stateMachine.takingDamageState);
+                }
             }
         }
-    }
 
-    public void PrepareHitCallBack(Action callback)
-    {
-        this.damageCallback = callback;
-    }
-    
-    public void TriggerDamage()
-    {
-        damageCallback?.Invoke();
-        
-    }
-
-    public void Heal(int amount)
-    {
-        if (!isAlive) return;
-
-        stats.currentHP = Mathf.Min(stats.currentHP + amount, stats.maxHP);
-
-        UpdateOwnUI();
-
-        if (battleManager != null)
+        public void PrepareHitCallBack(Action callback)
         {
-            battleManager.UpdateCharacterUI(this);
+            this.damageCallback = callback;
         }
 
-        Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
-    }
-
-    public void AddShield(int amount)
-    {
-        if (buffManager != null)
+        public void TriggerDamage()
         {
-            buffManager.AddShield(amount);
-        }
-    }
+            damageCallback?.Invoke();
 
-    public void ApplyAttackBuff(int amount, int duration)
-    {
-        if (buffManager != null)
+        }
+
+        public void Heal(int amount)
         {
-            buffManager.ApplyAttackBuff(amount, duration);
-        }
-    }
+            if (!isAlive) return;
 
-    public void ApplyMaxHPBuff(int amount, int duration)
-    {
-        if (buffManager != null)
+            stats.currentHP = Mathf.Min(stats.currentHP + amount, stats.maxHP);
+
+            UpdateOwnUI();
+
+            if (battleManager != null)
+            {
+                battleManager.UpdateCharacterUI(this);
+            }
+
+            Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
+        }
+
+        public void AddShield(int amount)
         {
-            buffManager.ApplyMaxHPBuff(amount, duration);
+            if (buffManager != null)
+            {
+                buffManager.AddShield(amount);
+            }
         }
-    }
 
-    public void ApplyDefenseBuff(int amount, int duration)
-    {
-        if (buffManager != null)
+        public void ApplyAttackBuff(int amount, int duration)
         {
-            buffManager.ApplyDefenseBuff(amount, duration);
+            if (buffManager != null)
+            {
+                buffManager.ApplyAttackBuff(amount, duration);
+            }
         }
-    }
 
-    public void ApplyAgilityBuff(int amount, int duration)
-    {
-        if (buffManager != null)
+        public void ApplyMaxHPBuff(int amount, int duration)
         {
-            buffManager.ApplyAgilityBuff(amount, duration);
+            if (buffManager != null)
+            {
+                buffManager.ApplyMaxHPBuff(amount, duration);
+            }
         }
-    }
 
+        public void ApplyDefenseBuff(int amount, int duration)
+        {
+            if (buffManager != null)
+            {
+                buffManager.ApplyDefenseBuff(amount, duration);
+            }
+        }
+
+        public void ApplyAgilityBuff(int amount, int duration)
+        {
+            if (buffManager != null)
+            {
+                buffManager.ApplyAgilityBuff(amount, duration);
+            }
+        }
+
+    }
 }

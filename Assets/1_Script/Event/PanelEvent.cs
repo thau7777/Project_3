@@ -1,40 +1,45 @@
-public class HidePanelEvent : IEvent
+
+namespace Turnbase
 {
-    public string panelName;
-
-    public HidePanelEvent(string panelName)
+    public class HidePanelEvent : IEvent
     {
-        this.panelName = panelName;
-    }
-}
+        public string panelName;
 
-public class ShowPanelEvent : IEvent
-{
-    public string panelName;
-
-    public ShowPanelEvent(string panelName)
-    {
-        this.panelName = panelName;
-    }
-}
-
-
-public class OffUIAction : IEvent
-{
-    public string panelName;
-    public OffUIAction(string panelName)
-    {
-        this.panelName = panelName;
+        public HidePanelEvent(string panelName)
+        {
+            this.panelName = panelName;
+        }
     }
 
-}
-
-public class OnUIAction : IEvent
-{
-    public string panelName;
-    public OnUIAction(string panelName)
+    public class ShowPanelEvent : IEvent
     {
-        this.panelName = panelName;
+        public string panelName;
+
+        public ShowPanelEvent(string panelName)
+        {
+            this.panelName = panelName;
+        }
+    }
+
+
+    public class OffUIAction : IEvent
+    {
+        public string panelName;
+        public OffUIAction(string panelName)
+        {
+            this.panelName = panelName;
+        }
+
+    }
+
+    public class OnUIAction : IEvent
+    {
+        public string panelName;
+        public OnUIAction(string panelName)
+        {
+            this.panelName = panelName;
+        }
+
     }
 
 }

@@ -2,51 +2,56 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AvatarGroup : MonoBehaviour
+
+namespace Turnbase
 {
-    public Image avatar;
-    public Image hpBar;
-    public Image mpBar;
-    public Image shieldBar;
-    public TextMeshProUGUI hpText;
-    public TextMeshProUGUI mpText;
-
-    private Character ownerCharacter;
-
-
-    private void Awake()
+    public class AvatarGroup : MonoBehaviour
     {
-        ownerCharacter = GetComponentInParent<Character>();
-    }
-    public void SetOwner(Character character)
-    {
-        ownerCharacter = character;
-    }
+        public Image avatar;
+        public Image hpBar;
+        public Image mpBar;
+        public Image shieldBar;
+        public TextMeshProUGUI hpText;
+        public TextMeshProUGUI mpText;
 
-    private void Start()
-    {
-        if (ownerCharacter != null)
-        {
-            UpdateUI(ownerCharacter.stats);
-        }
-        else
+        private Character ownerCharacter;
+
+
+        private void Awake()
         {
             ownerCharacter = GetComponentInParent<Character>();
+        }
+        public void SetOwner(Character character)
+        {
+            ownerCharacter = character;
+        }
+
+        private void Start()
+        {
             if (ownerCharacter != null)
             {
                 UpdateUI(ownerCharacter.stats);
             }
+            else
+            {
+                ownerCharacter = GetComponentInParent<Character>();
+                if (ownerCharacter != null)
+                {
+                    UpdateUI(ownerCharacter.stats);
+                }
+            }
         }
-    }
 
-    public void UpdateUI(CharacterStats stats)
-    {
-        avatar.sprite = stats.Avatar;
-        hpBar.fillAmount = (float)stats.currentHP / stats.maxHP;
-        mpBar.fillAmount = (float)stats.currentMP / stats.maxMP;
-        shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
-        hpText.text = $"{stats.currentHP} / {stats.maxHP}";
-        mpText.text = $"{stats.currentMP} / {stats.maxMP}";
+        public void UpdateUI(CharacterStats stats)
+        {
+            avatar.sprite = stats.Avatar;
+            hpBar.fillAmount = (float)stats.currentHP / stats.maxHP;
+            mpBar.fillAmount = (float)stats.currentMP / stats.maxMP;
+            shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
+            hpText.text = $"{stats.currentHP} / {stats.maxHP}";
+            mpText.text = $"{stats.currentMP} / {stats.maxMP}";
+        }
+
     }
 
 }

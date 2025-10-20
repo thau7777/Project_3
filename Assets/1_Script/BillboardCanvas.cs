@@ -1,23 +1,28 @@
 ﻿using UnityEngine;
 
-public class BillboardCanvas : MonoBehaviour
+
+namespace Turnbase
 {
-    private Transform cam;
-
-    void Start()
+    public class BillboardCanvas : MonoBehaviour
     {
-        GameObject camObj = GameObject.FindGameObjectWithTag("MainCamera");
-        if (camObj != null)
+        private Transform cam;
+
+        void Start()
         {
-            cam = camObj.transform;
+            GameObject camObj = GameObject.FindGameObjectWithTag("MainCamera");
+            if (camObj != null)
+            {
+                cam = camObj.transform;
+            }
+        }
+
+        void LateUpdate()
+        {
+            if (cam != null)
+            {
+                transform.rotation = cam.rotation;
+            }
         }
     }
 
-    void LateUpdate()
-    {
-        if (cam != null)
-        {
-            transform.rotation = cam.rotation;
-        }
-    }
 }

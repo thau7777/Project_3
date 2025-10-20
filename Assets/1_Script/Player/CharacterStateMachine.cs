@@ -1,65 +1,70 @@
 ﻿using System.Collections; 
 using UnityEngine;
 
-public class CharacterStateMachine : MonoBehaviour
+
+namespace Turnbase
 {
-    public Character character;
-
-    public BattleManager battleManager;
-
-    public BaseState currentState; 
-    public WaitingState waitingState;
-    public ReadyState readyState;
-    public ReadyStateSkill readyStateSkill;
-    public AttackingState attackingState;
-    public TakingDamageState takingDamageState;
-    public DeadState deadState;
-    public ParryingState parryingState;
-    public InterruptedState interruptedState;
-
-
-    private void Awake()
+    public class CharacterStateMachine : MonoBehaviour
     {
-        character = GetComponent<Character>();
+        public Character character;
 
-        battleManager = FindFirstObjectByType<BattleManager>();
-        waitingState = new WaitingState(this);
-        readyState = new ReadyState(this);
-        attackingState = new AttackingState(this);
-        takingDamageState = new TakingDamageState(this);
-        deadState = new DeadState(this);
-        parryingState = new ParryingState(this);
-        interruptedState = new InterruptedState(this);
-    }
+        public BattleManager battleManager;
 
-    void Start()
-    {
-        SwitchState(waitingState);
+        public BaseState currentState;
+        public WaitingState waitingState;
+        public ReadyState readyState;
+        public ReadyStateSkill readyStateSkill;
+        public AttackingState attackingState;
+        public TakingDamageState takingDamageState;
+        public DeadState deadState;
+        public ParryingState parryingState;
+        public InterruptedState interruptedState;
 
-    }
 
-    void Update()
-    {
-        if (currentState != null)
+        private void Awake()
         {
-            currentState.OnUpdate();
-        }
-    }
+            character = GetComponent<Character>();
 
-    public void SwitchState(BaseState newState)
-    {
-        if (currentState is DeadState)
-        {
-            return;
+            battleManager = FindFirstObjectByType<BattleManager>();
+            waitingState = new WaitingState(this);
+            readyState = new ReadyState(this);
+            attackingState = new AttackingState(this);
+            takingDamageState = new TakingDamageState(this);
+            deadState = new DeadState(this);
+            parryingState = new ParryingState(this);
+            interruptedState = new InterruptedState(this);
         }
 
-        if (currentState != null)
+        void Start()
         {
-            currentState.OnExit();
-        }
-        currentState = newState;
-        currentState.OnEnter();
-    }
+            SwitchState(waitingState);
 
+        }
+
+        void Update()
+        {
+            if (currentState != null)
+            {
+                currentState.OnUpdate();
+            }
+        }
+
+        public void SwitchState(BaseState newState)
+        {
+            if (currentState is DeadState)
+            {
+                return;
+            }
+
+            if (currentState != null)
+            {
+                currentState.OnExit();
+            }
+            currentState = newState;
+            currentState.OnEnter();
+        }
+
+
+    }
 
 }

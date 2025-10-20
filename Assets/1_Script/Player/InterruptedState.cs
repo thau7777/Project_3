@@ -1,55 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InterruptedState : BaseState
+
+
+namespace Turnbase
 {
-    private float moveSpeed = 5f;
-
-    private float Duradition;
-
-    public InterruptedState(CharacterStateMachine stateMachine) : base(stateMachine) { }
-
-    public override void OnEnter()
+    public class InterruptedState : BaseState
     {
-        Debug.Log(stateMachine.gameObject.name + " đã bị gián đoạn và đang nhận sát thương.");
-        stateMachine.character.StartCoroutine(HandleInterruption());
-    }
+        private float moveSpeed = 5f;
 
-    private IEnumerator HandleInterruption()
-    {
-        stateMachine.character.animator.SetTrigger("Hit");
-        stateMachine.character.animator.SetTrigger("GetUp");
-        stateMachine.character.animator.SetBool("IsIdle", false);
+        private float Duradition;
 
+        public InterruptedState(CharacterStateMachine stateMachine) : base(stateMachine) { }
 
-        Duradition = stateMachine.character.animator.GetCurrentAnimatorStateInfo(0).length;
-
-        yield return new WaitForSeconds(Duradition);
-
-        stateMachine.character.animator.SetBool("IsRunningOut", true);
-
-
-        Vector3 initialPosition = stateMachine.character.initialPosition;
-
-        while (Vector3.Distance(stateMachine.character.transform.position, initialPosition) > 0.1f)
+        public override void OnEnter()
         {
-            stateMachine.character.transform.position = Vector3.MoveTowards(
-                stateMachine.character.transform.position,
-                initialPosition,
-                moveSpeed * Time.deltaTime
-            );
-            yield return null;
+            Debug.Log(stateMachine.gameObject.name + " đã bị gián đoạn và đang nhận sát thương.");
+            stateMachine.character.StartCoroutine(HandleInterruption());
         }
 
+        private IEnumerator HandleInterruption()
+        {
+            stateMachine.character.animator.SetTrigger("Hit");
+            stateMachine.character.animator.SetTrigger("GetUp");
+            stateMachine.character.animator.SetBool("IsIdle", false);
 
-        stateMachine.character.animator.SetBool("IsIdle", true);
-        Debug.Log(stateMachine.gameObject.name + " đã quay về vị trí ban đầu sau khi bị gián đoạn.");
 
-        stateMachine.battleManager.EndTurn(stateMachine.character);
+            Duradition = stateMachine.character.animator.GetCurrentAnimatorStateInfo(0).length;
+
+            yield return new WaitForSeconds(Duradition);
+
+            stateMachine.character.animator.SetBool("IsRunningOut", true);
+
+
+            Vector3 initialPosition = stateMachine.character.initialPosition;
+
+            while (Vector3.Distance(stateMachine.character.transform.position, initialPosition) > 0.1f)
+            {
+                stateMachine.character.transform.position = Vector3.MoveTowards(
+                    stateMachine.character.transform.position,
+                    initialPosition,
+                    moveSpeed * Time.deltaTime
+                );
+                yield return null;
+            }
+
+
+            stateMachine.character.animator.SetBool("IsIdle", true);
+            Debug.Log(stateMachine.gameObject.name + " đã quay về vị trí ban đầu sau khi bị gián đoạn.");
+
+            stateMachine.battleManager.EndTurn(stateMachine.character);
+        }
+
+        public override void OnExit()
+        {
+            stateMachine.character.StopAllCoroutines();
+        }
     }
 
-    public override void OnExit()
-    {
-        stateMachine.character.StopAllCoroutines();
-    }
 }
