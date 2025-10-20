@@ -5,13 +5,11 @@ using UnityEngine.InputSystem;
 
 public class Strafe : State
 {
-    readonly PlayerContext ctx;
-    Action getMoveDirByInput;
+    readonly PlayerTopdownContext ctx;
     Vector3 lastLookDir;
-    public Strafe(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirInput = null) : base(m, parent)
+    public Strafe(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
-        this.getMoveDirByInput = getMoveDirInput;
         Add(new LayerWeightActivity(ctx.Animator, ctx.UpperBodyLayerIndex, 1f, 0f, 0.1f)); 
     }
     protected override void OnEnter()
@@ -24,7 +22,7 @@ public class Strafe : State
     {
         if (!ctx.IsInSpecialMove)
         {
-            UpdateMoveDir();
+            ctx.MoveDir = ctx.DesiredMoveDir;
             RotateToMouse(deltaTime);
             return;
         }
@@ -34,16 +32,12 @@ public class Strafe : State
             ctx.TargetMoveSpeed = 0;
             ctx.MoveDir = Vector3.zero;
         }
-        else UpdateMoveDir();
+        else ctx.MoveDir = ctx.DesiredMoveDir;
     }
     protected override void OnExit()
     {
         if(!ctx.IsAttacking)
         ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
-    }
-    private void UpdateMoveDir()
-    {
-        getMoveDirByInput?.Invoke();
     }
     private void RotateToMouse(float deltaTime)
     {
@@ -76,11 +70,6 @@ public class Strafe : State
                 return ((Grounded)Parent).Move;
             else
                 return ((Grounded)Parent).Idle;
-        }else if (ctx.IsAttacking)
-        {
-            ctx.IsStrafing = false;
-            ctx.NextAnimCrossFadeTime = 0.1f;
-            return ((Grounded)Parent).Attack;
         }
             return null;
     }

@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Attack : State
 {
-    readonly PlayerContext ctx;
+    readonly PlayerTopdownContext ctx;
     Action getMoveDirByInput;
-    public Attack(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirInput = null) : base(m, parent)
+    public Attack(StateMachine m, State parent, PlayerTopdownContext ctx, Action getMoveDirInput = null) : base(m, parent)
     {
         this.ctx = ctx;
         this.getMoveDirByInput = getMoveDirInput;

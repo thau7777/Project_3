@@ -2,22 +2,26 @@ using UnityEngine;
 using HSM;
 public class Grounded : State
 {
-    readonly PlayerContext ctx;
+    readonly PlayerTopdownContext ctx;
     public readonly Idle Idle;
     public readonly Move Move;
     public readonly Strafe Strafe;
     public readonly Attack Attack;
     public readonly SpecialMove SpecialMove;
-    public Grounded(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
+    
+    public Grounded(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
         Idle = new Idle(m, this, ctx);
-        Move = new Move(m, this, ctx, GetMoveDirByInput);
-        Strafe = new Strafe(m, this, ctx, GetMoveDirByInput);
-        Attack = new Attack(m, this, ctx, GetMoveDirByInput);
+        Move = new Move(m, this, ctx);
+        Strafe = new Strafe(m, this, ctx);
+        Attack = new Attack(m, this, ctx);
         SpecialMove = new SpecialMove(m, this, ctx);
     }
-
+    protected override void OnUpdate(float deltaTime)
+    {
+        GetMoveDirByInput();
+    }
     public void GetMoveDirByInput()
     {
         //camera reference
@@ -29,7 +33,8 @@ public class Grounded : State
 
         // input relative to camera
         Vector3 moveDir = camForward * ctx.MoveInput.y + camRight * ctx.MoveInput.x;
-        ctx.MoveDir = moveDir;
+        
+        ctx.DesiredMoveDir = moveDir;
     }
     protected override State GetInitialState() => Idle;
 

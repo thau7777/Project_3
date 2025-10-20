@@ -9,6 +9,7 @@ public enum CharacterClass
     GreatsSword,
     PoleArm,
     Mage,
+    Summoner,
     Bow
 }
 public enum VFXSpawnLocation

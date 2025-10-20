@@ -4,7 +4,7 @@ using UnityEngine;
 public class StraightProjectileSettings : FlyweightSettings
 {
     [field: SerializeField]
-    public float DespawnDelay { get; private set; }
+    public float DespawnDelay { get; private set; } = 5f;
 
     [field: SerializeField]
     public OneShotVFXSettings HitVFXSettings { get; private set; }
@@ -16,7 +16,6 @@ public class StraightProjectileSettings : FlyweightSettings
         var go = Instantiate(prefab);
         go.name = prefab.name;
 
-        DespawnDelay = 10f;
         var flyweight = go.GetOrAdd<StraightProjectile>();
         flyweight.settings = this;
 
@@ -68,13 +67,6 @@ public class StraightProjectileSettings : FlyweightSettings
         if (trailRoot != null)
             trailRoot.Clear();
 
-        FlyweightFactory.Spawn(HitVFXSettings).Initialize(f.transform.position, f.transform.rotation);
-    }
-
-    public override void OnDestroyPoolObject(Flyweight f)
-    {
-        FlyweightFactory.Spawn(HitVFXSettings).Initialize(f.transform.position, f.transform.rotation);
-        base.OnDestroyPoolObject(f);
     }
 
 }

@@ -3,8 +3,8 @@ using HSM;
 using System;
 public class SpecialMove : State
 {
-    readonly PlayerContext ctx;
-    public SpecialMove(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
+    readonly PlayerTopdownContext ctx;
+    public SpecialMove(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
         Add(new ColorPhaseActivity(ctx.Renderer)

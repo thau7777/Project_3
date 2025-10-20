@@ -2,8 +2,8 @@ using UnityEngine;
 using HSM;
 public class Idle : State
 {
-    readonly PlayerContext ctx;
-    public Idle(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
+    readonly PlayerTopdownContext ctx;
+    public Idle(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
         Add(new ColorPhaseActivity(ctx.Renderer)
@@ -13,7 +13,8 @@ public class Idle : State
     }
     protected override void OnEnter()
     {
-        ctx.TargetMoveSpeed = 0; 
+        if(!ctx.IsDashing)
+            ctx.TargetMoveSpeed = 0; 
         var currentAnim = ctx.Animator.GetCurrentAnimatorStateInfo(0);
         if (!currentAnim.IsName("Movement") && !ctx.IsInSpecialMove && !ctx.IsStrafing && !ctx.IsAttacking)
             ctx.Animator.CrossFade(ctx.MovementStateHash, ctx.NextAnimCrossFadeTime);

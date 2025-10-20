@@ -1,10 +1,9 @@
 using HSM;
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
+using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public struct ClassWeaponData
@@ -52,21 +51,20 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #endregion
 
     #region Variables
-    [SerializeField, TabGroup("Movement Settings")] private float baseMoveSpeed = 5f;   // default
-    [SerializeField, TabGroup("Movement Settings")] private float strafeMoveSpeed = 2f;   // default
-    [SerializeField, TabGroup("Movement Settings")] private float smoothTime = 0.2f;    // higher = slower accel/dec
+    [SerializeField, TabGroup("Movement Settings")] private float _baseMoveSpeed = 5f;   // default
+    [SerializeField, TabGroup("Movement Settings")] private float _strafeMoveSpeed = 2f;   // default
+    [SerializeField, TabGroup("Movement Settings")] private float _smoothTime = 0.2f;    // higher = slower accel/dec
+    [SerializeField, TabGroup("Movement Settings")] private float _rotateSpeed = 20f;
 
     [SerializeField]
-    private PlayerContext _context;
+    private PlayerTopdownContext _context;
     StateMachine machine;
     State root;
 
     Vector3 _rotateDirOnAttack;
-    bool _isNextAttackQueued = false;
     
-    bool _isUseSkillByUpperBody = false;
     bool _isInSpecialMoveAnim
-        => _animator.GetCurrentAnimatorStateInfo(_isUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
+        => _animator.GetCurrentAnimatorStateInfo(_context.IsUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
 
     #endregion
 
@@ -77,18 +75,21 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
-        _context = new PlayerContext(
-            baseMoveSpeed,
-            strafeMoveSpeed,
-            smoothTime, 
-            _animator, 
-            _controller, 
-            _renderer,
-            Camera.main.transform,
-            transform,
-            _locomotionSet);
+        _context = new PlayerTopdownContextBuilder()
+        .SetBaseMoveSpeed(_baseMoveSpeed)
+        .SetStrafeMoveSpeed(_strafeMoveSpeed)
+        .SetMoveSpeedSmoothTime(_smoothTime)
+        .SetRotateSpeed(_rotateSpeed)
+        .SetAnimator(_animator)
+        .SetCharacterController(_controller)
+        .SetRenderer(_renderer)
+        .SetMainCameraTransform(Camera.main.transform)
+        .SetRootTransform(transform)
+        .SetLocomotionSet(_locomotionSet)
+        .Build();
 
-        root = new PlayerRoot(null, _context);
+
+        root = new PlayerTopdownRoot(null, _context);
         var builder = new StateMachineBuilder(root);
         machine = builder.Build();
 
@@ -99,13 +100,19 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _inputReader.playerTopDownActions.onMove += OnMove;
         _inputReader.playerTopDownActions.onLeftClick += OnLeftClick;
         _inputReader.playerTopDownActions.onRightClick += OnRightClick;
+        _inputReader.playerTopDownActions.onSpaceBar += OnSpaceBar;
+        _inputReader.playerTopDownActions.onButtonQ += OnButtonQ;
     }
     private void OnDisable()
     {
         _inputReader.playerTopDownActions.onMove -= OnMove;
         _inputReader.playerTopDownActions.onLeftClick -= OnLeftClick;
         _inputReader.playerTopDownActions.onRightClick -= OnRightClick;
+        _inputReader.playerTopDownActions.onSpaceBar -= OnSpaceBar;
+        _inputReader.playerTopDownActions.onButtonQ -= OnButtonQ;
     }
+
+
     private void InitializeClassWeapon(CharacterClass characterClass)
     {
         foreach (var classWeaponData in classWeaponDataList)
@@ -123,19 +130,31 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region Input Handlers
     private void OnRightClick(bool value)
     {
-        if (_isInSpecialMoveAnim || _context.IsInSpecialMove) return;
+        UseSKill(0, value, SaveDirToAttack);
+    }
+    private void OnSpaceBar(bool value)
+    {
+        UseSKill(1, value, SaveDirToAttack);
+    }
+    private void OnButtonQ(bool value)
+    {
+        UseSKill(2, value, SaveDirToAttack);
+    }
+    private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
+    {
 
-        if (value)
+        if (_isInSpecialMoveAnim || _context.IsInSpecialMove || 
+            _context.CastingSkill != -1 && _context.CastingSkill != skillIndex) return;
+
+        if (isPressed)
         {
             // use first skill so we put in 0
-            _isUseSkillByUpperBody = _executor.UseSkill(0, _locomotionSet.characterClass, _context, SaveDirToAttack);
-            _isNextAttackQueued = false;
+            _executor.UseSkill(skillIndex, _locomotionSet.characterClass, _context, onCastInstantly);
         }
-        else if(_context.IsStrafing) // unleash the right mouse 
+        else if (_context.IsStrafing) // unleash the right mouse 
         {
             _executor.CastSkill(_context);
         }
-        
 
     }
     private void OnMove(Vector2 vector)
@@ -145,8 +164,13 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     public void OnLeftClick()
     {
         SaveDirToAttack();
-        if (_isNextAttackQueued || _context.IsInSpecialMove) return;
+        if (_context.IsNextAttackQueued || _context.IsInSpecialMove) return;
         // lay cai dau tien va neu la queue thi lay cai thu 2 va luu o dau do
+        if (_context.IsStrafing) // unleash the right mouse 
+        {
+            _executor.CastSkill(_context);
+            return;
+        }
         if (!_context.IsAttacking)
         {
             _context.IsAttacking = true;
@@ -154,7 +178,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         }
         else
         {
-            _isNextAttackQueued = true;
+            _context.IsNextAttackQueued = true;
             _locomotionSet.QueueNextComboAttack();
         }
     }
@@ -179,6 +203,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             }
         }
     }
+
     #endregion
 
     #region Loop
@@ -192,10 +217,17 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region Animation Events
     public void OnAttackAnimStart()
     {
+        if (_context.IsDashing)
+        {
+            _context.CurrentMoveSpeed = 0; // reset current speed
+            _context.RotateDir = _context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir;
+            return;
+        }
         _context.RotateDir = _rotateDirOnAttack; // face the saved dir
     }
     public void ApplyDash()
     {
+        _context.CurrentMoveSpeed = 0; // reset current speed
         _context.MoveSpeedSmoothTime = 0.05f; // quick accel
         bool isDashForward;
         float dashForce;
@@ -210,8 +242,9 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             dashForce = _locomotionSet.CurrentAttackData.dashForce;
         }
             
-        _context.MoveDir = _rotateDirOnAttack.normalized * (isDashForward ? 1 : -1);
         _context.TargetMoveSpeed = dashForce;
+        
+        _context.MoveDir = _context.IsDashing ? (_context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir) : _rotateDirOnAttack.normalized * (isDashForward ? 1 : -1);
     }
     public void StopMoving()
     {
@@ -234,7 +267,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 if (slashVFX is StraightProjectile)
                 {
                     var straightProjectile = slashVFX as StraightProjectile;
-                    straightProjectile.Initialize(transform.forward, 10);
+                    straightProjectile.InitializeMovement(transform.forward, 10);
                 }
                 break;
             }
@@ -243,18 +276,20 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     public void OnSkillDone()
     {
         _context.IsInSpecialMove = false;
-        if (_context.IsStrafing) _context.IsStrafing = false;
+        _context.IsStrafing = false;
+        _context.CastingSkill = -1;
+        _context.IsDashing = false;
+        
     }
     public void OnAttackDone()
     {
-        if (_context.IsInSpecialMove) return;
-        if (!_isNextAttackQueued)
+        if (!_context.IsNextAttackQueued)
         {
             _context.IsAttacking = false;
             return;
         }
         // execute cai queued combo
-        _isNextAttackQueued = false;
+        _context.IsNextAttackQueued = false;
         _animator.Play(_locomotionSet.QueuedAttackData.animName, _context.IsRangeClass ? _context.UpperBodyLayerIndex : 0,0);
     }
     public void OnAttackAnimExit()
@@ -264,75 +299,6 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _locomotionSet.ResetAttackAnimCycle();
     }
     #endregion
-}
-
-[Serializable]
-public class PlayerContext
-{
-    [field: SerializeField] public float CurrentMoveSpeed { get; set; }   // smoothed speed
-    [field: SerializeField] public float TargetMoveSpeed { get; set; }    // desired speed
-
-    [field: SerializeField] public Vector2 MoveInput { get; set; }        // latest input
-    [field: SerializeField] public Vector3 MoveDir { get; set; }
-    [field: SerializeField] public Vector3 RotateDir { get; set; }
-    [field: SerializeField] public float RotateSpeed { get; set; }
-    [field: SerializeField] public bool IsStrafing { get; set; }          // player aiming
-
-    [field: SerializeField] public bool IsAttacking { get; set; }
-    [field: SerializeField] public bool IsInSpecialMove { get; set; }
-    [field: SerializeField] public LocomotionSet LocomotionSet { get; set; }
-    [field: SerializeField] public Vector2 MousePosOnClick { get; set; }
-
-    [field: SerializeField] public float BaseMoveSpeed { get; set; }
-    [field: SerializeField] public float StrafeMoveSpeed { get; set; }
-    [field: SerializeField] public float MoveSpeedSmoothTime { get; set; }
-
-    [field: SerializeField] public Animator Animator { get; set; }
-    [field: SerializeField] public CharacterController CharacterController { get; set; }
-    [field: SerializeField] public Renderer Renderer { get; set; }
-    [field: SerializeField] public Transform MainCameraTransform { get; set; }
-    [field: SerializeField] public Transform RootTransform { get; set; }
-
-    public CharacterClass CharacterClass => LocomotionSet.characterClass;
-    public bool IsRangeClass => CharacterClass == CharacterClass.Mage || CharacterClass == CharacterClass.Bow;
-
-    [field: SerializeField] public bool NeedHoldStill { get; set; }
-
-    public int StrafeStateHash => Animator.StringToHash("Strafe");
-    public int MovementStateHash => Animator.StringToHash("Movement");
-    public int MoveSpeedHash => Animator.StringToHash("MoveSpeed");
-    public int InputXHash => Animator.StringToHash("MoveDirX");
-    public int InputYHash => Animator.StringToHash("MoveDirY");
-    public int UpperBodyLayerIndex => 1;
-
-    [field: SerializeField] public float NextAnimCrossFadeTime { get; set; }
-
-    public PlayerContext(
-        float baseMoveSpeed,
-        float strafeMoveSpeed,
-        float smoothTime,
-        Animator anim,
-        CharacterController characterController,
-        Renderer renderer,
-        Transform mainCameraTransform,
-        Transform rootTransform,
-        LocomotionSet locomotionSet)
-    {
-        BaseMoveSpeed = baseMoveSpeed;
-        StrafeMoveSpeed = strafeMoveSpeed;
-        MoveSpeedSmoothTime = smoothTime;
-        Animator = anim;
-        CharacterController = characterController;
-        Renderer = renderer;
-        MainCameraTransform = mainCameraTransform;
-        RootTransform = rootTransform;
-        LocomotionSet = locomotionSet;
-
-        IsStrafing = false;
-        IsAttacking = false;
-        RotateDir = Vector3.zero;
-        RotateSpeed = 20f;
-    }
 }
 
 

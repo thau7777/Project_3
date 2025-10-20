@@ -18,8 +18,8 @@ public class SkillRuntimeInstance
     }
     public void Cast(SkillStrategyContext context)
     {
-        Definition.Execute(context);
         MarkUsed();
+        Definition.Execute(context);
     }
 }
 

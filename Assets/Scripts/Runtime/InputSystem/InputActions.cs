@@ -118,6 +118,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpaceBar"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1b11398-1a81-4e00-9fd9-0de71ddab5c3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Button Q"",
+                    ""type"": ""Button"",
+                    ""id"": ""def1ea3f-85d1-4869-9bf8-ca5540cced4c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -197,6 +215,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2644cc17-855a-4e94-a7f6-0687bb860535"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpaceBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37396d66-02f1-4324-b93d-67a4096955c8"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button Q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -254,6 +294,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_LeftClick = m_PlayerTopDown.FindAction("LeftClick", throwIfNotFound: true);
         m_PlayerTopDown_RightClick = m_PlayerTopDown.FindAction("RightClick", throwIfNotFound: true);
+        m_PlayerTopDown_SpaceBar = m_PlayerTopDown.FindAction("SpaceBar", throwIfNotFound: true);
+        m_PlayerTopDown_ButtonQ = m_PlayerTopDown.FindAction("Button Q", throwIfNotFound: true);
         // PlayerTurnBased
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
         // PlayerFPS
@@ -350,6 +392,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_LeftClick;
     private readonly InputAction m_PlayerTopDown_RightClick;
+    private readonly InputAction m_PlayerTopDown_SpaceBar;
+    private readonly InputAction m_PlayerTopDown_ButtonQ;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTopDown".
     /// </summary>
@@ -373,6 +417,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerTopDown/RightClick".
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/SpaceBar".
+        /// </summary>
+        public InputAction @SpaceBar => m_Wrapper.m_PlayerTopDown_SpaceBar;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/ButtonQ".
+        /// </summary>
+        public InputAction @ButtonQ => m_Wrapper.m_PlayerTopDown_ButtonQ;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -408,6 +460,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
+            @SpaceBar.started += instance.OnSpaceBar;
+            @SpaceBar.performed += instance.OnSpaceBar;
+            @SpaceBar.canceled += instance.OnSpaceBar;
+            @ButtonQ.started += instance.OnButtonQ;
+            @ButtonQ.performed += instance.OnButtonQ;
+            @ButtonQ.canceled += instance.OnButtonQ;
         }
 
         /// <summary>
@@ -428,6 +486,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
+            @SpaceBar.started -= instance.OnSpaceBar;
+            @SpaceBar.performed -= instance.OnSpaceBar;
+            @SpaceBar.canceled -= instance.OnSpaceBar;
+            @ButtonQ.started -= instance.OnButtonQ;
+            @ButtonQ.performed -= instance.OnButtonQ;
+            @ButtonQ.canceled -= instance.OnButtonQ;
         }
 
         /// <summary>
@@ -840,6 +904,20 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SpaceBar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpaceBar(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Button Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnButtonQ(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTurnBased" which allows adding and removing callbacks.

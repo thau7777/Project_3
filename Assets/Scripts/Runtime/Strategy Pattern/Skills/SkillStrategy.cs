@@ -75,11 +75,13 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     private void SpawnSkillVFX(SkillStrategyContext context)
     {
+        if (name == "Basic Dash") return;
+
         Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
-        flyweightObj.Initialize(context.spawnPoint, context.origin.rotation);
+        flyweightObj.Initialize(context.spawnPos, context.origin.rotation);
         if (flyweightObj is StraightProjectile straightProjectile)
         {
-            straightProjectile.Initialize(context.origin.forward, 10);
+            straightProjectile.InitializeMovement(context.origin.forward, 10);
         }
 
         
@@ -88,10 +90,10 @@ public class SkillStrategy : ScriptableObject, IStrategy
     private void ExecuteChargedSkill(SkillStrategyContext context)
     {
         // initialize that charged skill direction and speed
-        if (context.chargedSkillFlyweight is StraightProjectile chargedStraightProjectile)
+        if (context.chargedSkillFlyweight is StraightProjectile chargedSkillProjectile)
         {
             context.chargedSkillFlyweight.transform.SetParent(null);
-            chargedStraightProjectile.Initialize(context.origin.forward, 10);
+            chargedSkillProjectile.InitializeMovement(context.origin.forward, 10);
         }
     }
 }
