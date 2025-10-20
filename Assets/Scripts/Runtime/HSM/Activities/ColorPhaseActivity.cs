@@ -17,18 +17,29 @@ namespace HSM {
             }
         }
 
-        public override async Task ActivateAsync(CancellationToken ct){
-            if (this.Mode != ActivityMode.Inactive || mat == null) return;
+        public override Task ActivateAsync(CancellationToken ct)
+        {
+            if (this.Mode != ActivityMode.Inactive || mat == null)
+                return Task.CompletedTask;
+
             this.Mode = ActivityMode.Activating;
             mat.color = enterColor;
             this.Mode = ActivityMode.Active;
+
+            return Task.CompletedTask;
         }
 
-        public override async Task DeactivateAsync(CancellationToken ct){
-            if (this.Mode != ActivityMode.Active || mat == null) return;
+        public override Task DeactivateAsync(CancellationToken ct)
+        {
+            if (this.Mode != ActivityMode.Active || mat == null)
+                return Task.CompletedTask;
+
             this.Mode = ActivityMode.Deactivating;
             mat.color = exitColor;
             this.Mode = ActivityMode.Inactive;
+
+            return Task.CompletedTask;
         }
+
     }
 }

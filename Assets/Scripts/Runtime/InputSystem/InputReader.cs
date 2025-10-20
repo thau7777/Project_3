@@ -10,7 +10,7 @@ public enum ActionMap
     UI
 }
 
-[CreateAssetMenu(fileName = "InputReader", menuName = "ScriptableObjects/InputReader")]
+[CreateAssetMenu(fileName = "InputReader", menuName = "Scriptable Objects/InputReader")]
 public class InputReader : ScriptableObject
 {
     private InputActions input;

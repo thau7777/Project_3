@@ -82,7 +82,7 @@ namespace GanzSe
                 controller.RandomizeFaceParts();
             }
 
-            if (GUILayout.Button(controller.showHelmet ? "HidePanelEvent Helmet" : "Show Helmet"))
+            if (GUILayout.Button(controller.showHelmet ? "Hide Helmet" : "Show Helmet"))
             {
                 controller.showHelmet = !controller.showHelmet;
                 controller.ToggleHelmet();

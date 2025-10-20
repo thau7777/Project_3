@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c3b1a36d6769147863bf273b618214, type: 3}
+  m_Name: PlayerTopDownMage
+  m_EditorClassIdentifier: Assembly-CSharp::LocomotionSet
+  characterClass: 3
+  animationController: {fileID: 9100000, guid: 4312d79ef4895f04e92ac23303e01540, type: 2}
+  comboAttackAnims:
+  - animName: Attack 1
+    damage: 0
+    flyweightSettings: {fileID: 11400000, guid: 558400d73ffb99c46b22aff8ae0065f7, type: 2}
+    spawnLocation: 2
+    dashForce: 0
+    isDashForward: 0
+  - animName: Attack 2
+    damage: 0
+    flyweightSettings: {fileID: 11400000, guid: 558400d73ffb99c46b22aff8ae0065f7, type: 2}
+    spawnLocation: 3
+    dashForce: 0
+    isDashForward: 0
+  - animName: Attack Above
+    damage: 0
+    flyweightSettings: {fileID: 11400000, guid: 89c9613adf79d694ea7bd0771003305b, type: 2}
+    spawnLocation: 4
+    dashForce: 0
+    isDashForward: 0
