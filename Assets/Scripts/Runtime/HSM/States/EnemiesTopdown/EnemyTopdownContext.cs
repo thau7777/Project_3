@@ -5,7 +5,8 @@ public enum EnemyTopdownType
     Slime,
     Normal
 }
-public class EnemyTopdownContext : MonoBehaviour    
+[System.Serializable]
+public class EnemyTopdownContext    
 {
     public Animator Animator { get; private set; }
     public CharacterController CharacterController { get; private set; }
