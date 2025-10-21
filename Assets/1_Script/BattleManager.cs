@@ -156,12 +156,12 @@ namespace Turnbase
             return null;
         }
 
-        public void SummonPet(Character summoner, GameObject petPrefab)
+        public Character SummonPet(Character summoner, GameObject petPrefab) 
         {
             if (petPrefab == null)
             {
                 Debug.LogError("Pet Prefab không được gán!");
-                return;
+                return null; 
             }
 
             Transform freeSlot = FindFreePlayerSpawnSlot();
@@ -169,7 +169,7 @@ namespace Turnbase
             if (freeSlot == null)
             {
                 Debug.LogWarning("Không tìm thấy Slot Trống nào trong playerSpawnPoints để Triệu hồi Pet!");
-                return;
+                return null; 
             }
 
             Vector3 petSpawnPosition = freeSlot.position;
@@ -218,12 +218,14 @@ namespace Turnbase
 
                 Debug.Log($"[{summoner.name}] đã triệu hồi Pet/Summon: {summonInstance.name} tại slot {freeSlot.name}!");
 
-                EndTurn(summoner);
+
+                return summonInstance; 
             }
             else
             {
                 Debug.LogError($"Prefab '{petPrefab.name}' không có component Character!");
                 Destroy(petInstanceObject);
+                return null;
             }
         }
         public void RemoveCombatant(Character character)

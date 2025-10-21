@@ -1,8 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-
+using UnityEngine;
 
 namespace Turnbase
 {
@@ -11,6 +10,7 @@ namespace Turnbase
         private Skill selectedSkill;
         private List<Character> possibleTargets;
         private int currentIndex;
+        public GameObject SummonVFXPrefab;
 
         public ReadyStateSkill(CharacterStateMachine stateMachine, Skill skill) : base(stateMachine)
         {
@@ -150,64 +150,91 @@ namespace Turnbase
 
         public void OnConfirm()
         {
-            if (selectedSkill.targetType == SkillTargetType.Enemies || selectedSkill.targetType == SkillTargetType.Allies)
-            {
-                stateMachine.character.target = possibleTargets.FirstOrDefault();
-            }
-
             if (stateMachine.character.ownUI != null)
             {
                 stateMachine.character.ownUI.PlayerSkillPanel.SetActive(false);
                 stateMachine.character.ownUI.PlayerSummonPanel.SetActive(false);
                 stateMachine.character.ownUI.confirmButton.gameObject.SetActive(false);
             }
-
             ShowTargetMarker(false);
 
             if (selectedSkill.skillType == SkillType.Summon)
             {
-                GameObject petToSummon = null;
-
-                if (selectedSkill.summonPrefab != null && selectedSkill.summonPrefab.Count > 0)
-                {
-                    petToSummon = selectedSkill.summonPrefab.FirstOrDefault();
-                }
-
-                if (stateMachine.battleManager != null && petToSummon != null)
-                {
-                    Debug.Log($"Xác nhận: Thực hiện Triệu hồi Pet '{petToSummon.name}'");
-
-                    stateMachine.battleManager.SummonPet(
-                        stateMachine.character,
-                        petToSummon
-                    );
-
-                    stateMachine.battleManager.EndTurn(stateMachine.character);
-                }
-                else
-                {
-                    Debug.LogError("Lỗi Triệu hồi: BattleManager bị thiếu hoặc danh sách Summon Prefab bị trống/null.");
-                    stateMachine.SwitchState(stateMachine.waitingState);
-                }
+                stateMachine.StartCoroutine(PerformSummonRoutine(selectedSkill));
             }
             else
             {
+                if (selectedSkill.targetType == SkillTargetType.Enemies || selectedSkill.targetType == SkillTargetType.Allies)
+                {
+                    stateMachine.character.target = possibleTargets.FirstOrDefault();
+                }
+
                 Debug.Log($"Xác nhận: Chuyển sang AttackingState cho kỹ năng '{selectedSkill.skillName}'");
                 stateMachine.SwitchState(new SkillAttackingState(stateMachine, selectedSkill));
             }
+        }
+
+        private IEnumerator PerformSummonRoutine(Skill skill)
+        {
+            Character user = stateMachine.character;
+
+            stateMachine.SwitchState(stateMachine.waitingState);
+
+            if (!string.IsNullOrEmpty(skill.animationTriggerName))
+            {
+                user.animator.Play(skill.animationTriggerName);
+            }
+
+            yield return new WaitForSeconds(0.5f); 
+
+            GameObject petPrefab = skill.summonPrefab.FirstOrDefault();
+            Character newPet = null;
+
+            if (petPrefab != null)
+            {
+                newPet = user.battleManager.SummonPet(user, petPrefab);
+            }
+
+            if (newPet != null)
+            {
+                GameObject effectToSpawn = skill.impactVFXPrefab; 
+
+                if (effectToSpawn != null)
+                {
+                    Vector3 position = newPet.transform.position;
+
+                    GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+
+                    GameObject.Destroy(effectInstance, 2.0f);
+                    Debug.Log($"Đã Spawn VFX Triệu hồi '{skill.skillName}' sử dụng impactVFXPrefab tại vị trí Pet.");
+                }
+                else
+                {
+                    Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng Triệu hồi: {skill.skillName}.");
+                }
+
+                yield return new WaitForSeconds(1.0f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            user.battleManager.EndTurn(user);
+            yield break;
         }
         public void OnCancel()
         {
             if (stateMachine.character.ownUI != null)
             {
-                stateMachine.character.ownUI.PlayerSkillPanel.SetActive(false);
+                stateMachine.character.ownUI.PlayerSkillPanel.SetActive(true);
+                stateMachine.character.ownUI.PlayerSummonPanel.SetActive(true); 
                 stateMachine.character.ownUI.confirmButton.gameObject.SetActive(false);
             }
 
+            ShowTargetMarker(false);
             stateMachine.character.target = null;
             stateMachine.SwitchState(stateMachine.readyState);
         }
-
     }
-
 }
