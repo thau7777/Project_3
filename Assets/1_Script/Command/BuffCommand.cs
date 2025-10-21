@@ -68,6 +68,9 @@ namespace Turnbase
                         Debug.LogWarning($"Skill '{skill.skillName}' có StatType là {skill.statToModify}. StatType này chưa được hỗ trợ trong BuffCommand.");
                         break;
                 }
+
+                SpawnImpactEffect(charTarget.transform.position, skill);
+
             }
 
             yield return new WaitForSeconds(0.5f);

@@ -11,9 +11,13 @@ namespace Turnbase
         public override IEnumerator Execute()
         {
             Debug.Log($"{user.name} sử dụng kỹ năng triệu hồi {skill.skillName}");
-            user.animator.Play("Cast");
-            yield return new WaitForSeconds(1.5f);
 
+            user.animator.Play(skill.animationTriggerName);
+
+            SpawnImpactEffect(user.transform.position, skill);
+
+
+            yield return new WaitForSeconds(1.5f);
 
 
 

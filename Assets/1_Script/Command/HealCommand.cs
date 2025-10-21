@@ -18,7 +18,7 @@ namespace Turnbase
         public override IEnumerator Execute()
         {
             Debug.Log($"{user.name} dùng skill hồi máu!");
-            user.animator.Play("Buff");
+            user.animator.Play(skill.animationTriggerName);
             yield return new WaitForSeconds(1.5f);
 
             var targetsToHeal = new System.Collections.Generic.List<Character>();
@@ -40,11 +40,14 @@ namespace Turnbase
             foreach (var charTarget in targetsToHeal)
             {
                 charTarget.Heal(skill.damage);
+
+                SpawnImpactEffect(charTarget.transform.position, skill);
             }
 
             yield return new WaitForSeconds(0.5f);
 
         }
     }
+
 }
 

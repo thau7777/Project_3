@@ -76,7 +76,7 @@ namespace Turnbase
                 {
                     target.TakeDamage(finalDamage);
                     damageApplied = true;
-                    SpawnImpactEffect(target.transform.position);
+                    SpawnImpactEffect(target.transform.position, skill);
                 }
             };
 
@@ -107,20 +107,7 @@ namespace Turnbase
             battleManager.EndTurn(user);
         }
 
-        private void SpawnImpactEffect(Vector3 position)
-        {
-            GameObject effectToSpawn = skill.impactVFXPrefab;
-
-            if (effectToSpawn != null)
-            {
-                GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
-                GameObject.Destroy(effectInstance, 3f);
-            }
-            else
-            {
-                Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng: {skill.skillName}");
-            }
-        }
     }
 }
+
 

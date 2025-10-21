@@ -14,7 +14,7 @@ namespace Turnbase
         private float rotationDuration = 0.25f;
         private BattleManager battleManager;
 
-        private bool animationFinished = false;
+        //private bool animationFinished = false;
 
         public StationaryAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
             : base(user, target, skill)

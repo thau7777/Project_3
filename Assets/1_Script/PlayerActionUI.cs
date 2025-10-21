@@ -181,6 +181,8 @@ namespace Turnbase
         {
             Debug.Log("OnAttackClicked được gọi.");
 
+            animator.Play("Idle");
+
             CameraAction.instance.NormalAttack(currentCharacter, false);
 
             if (currentCharacter != null && currentCharacter.isPlayer)

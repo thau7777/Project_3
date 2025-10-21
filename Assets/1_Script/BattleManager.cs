@@ -294,6 +294,9 @@ namespace Turnbase
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
+            EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
+
+
             if (activeCharacter.isPlayer)
             {
                 if (activeCharacter.ownUI != null)
@@ -341,6 +344,8 @@ namespace Turnbase
         private IEnumerator EnemyTurn(Character enemy)
         {
             Debug.Log("Đến lượt của kẻ địch: " + enemy.gameObject.name);
+
+
 
             yield return new WaitForSeconds(1f);
 
@@ -431,8 +436,7 @@ namespace Turnbase
                     Debug.Log("Parry thành công! Kẻ địch bị nhận phản sát thương!");
                     target.isParryable = false;
 
-                    // Lưu ý: Dùng stats.attack TRỰC TIẾP
-                    int parryDamage = target.stats.attack * 20;
+                    int parryDamage = target.stats.attack * 1;
                     enemy.TakeDamage(parryDamage);
 
                     Time.timeScale = 0.5f;

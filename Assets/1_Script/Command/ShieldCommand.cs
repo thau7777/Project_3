@@ -19,7 +19,7 @@ namespace Turnbase
         {
             Debug.Log($"{user.name} dung skill lá chắn ");
 
-            user.animator.Play("Buff");
+            user.animator.Play(skill.animationTriggerName);
 
             yield return new WaitForSeconds(1f);
 
@@ -46,6 +46,9 @@ namespace Turnbase
             foreach (var charTarget in targetsToShield)
             {
                 charTarget.AddShield(shieldAmount);
+
+                SpawnImpactEffect(charTarget.transform.position, skill);
+
                 Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield.");
             }
 

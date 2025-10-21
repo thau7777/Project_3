@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Turnbase
@@ -22,6 +22,22 @@ namespace Turnbase
         }
 
         public abstract IEnumerator Execute();
+
+        protected void SpawnImpactEffect(Vector3 position, Skill skill)
+        {
+            GameObject effectToSpawn = skill.impactVFXPrefab;
+            if (effectToSpawn != null)
+            {
+                GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+
+                GameObject.Destroy(effectInstance, 3f);
+            }
+            else
+            {
+                Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng: {skill.skillName}.");
+            }
+
+        }
     }
 }
 
