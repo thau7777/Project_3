@@ -26,6 +26,15 @@ namespace Turnbase
         [HideInInspector] private int originalBaseAgility = 0;
         [HideInInspector] public int agilityBuffTurnsRemaining = 0;
 
+        [Header("Magical Attack Buff")]
+        [HideInInspector] public int magicalAttackBuffTurnsRemaining = 0;
+        [HideInInspector] private int magicalOriginalBaseAttack = 0;
+
+        [Header("Defense Buff")]
+        [HideInInspector] private int magicalOriginalBaseDefense = 0;
+        [HideInInspector] public int magicalDefenseBuffTurnsRemaining = 0;
+
+
         [HideInInspector] private int baseShieldAmount = 0;
         [HideInInspector] public int shieldTurnsRemaining = 0;
 
@@ -143,6 +152,42 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Agility, hiệu lực {duration} lượt. Agility hiện tại: {stats.agility}");
         }
 
+        public void ApplyMagicalAttackBuff(int amount, int duration)
+        {
+            if (amount <= 0 || duration <= 0) return;
+
+            if (magicalAttackBuffTurnsRemaining <= 0)
+            {
+                magicalOriginalBaseAttack = stats.magicAttack;
+                stats.magicAttack += amount;
+            }
+            else
+            {
+                Debug.Log($"Buff Magical Attack của {character.name} đã được làm mới thời gian.");
+            }
+
+            magicalAttackBuffTurnsRemaining = duration;
+            Debug.Log($"{character.name} đã nhận buff +{amount} Magical Attack, hiệu lực {duration} lượt. Magical Attack hiện tại: {stats.magicAttack}");
+        }
+
+        public void ApplyMagicalDefenseBuff(int amount, int duration)
+        {
+            if (amount <= 0 || duration <= 0) return;
+
+            if (magicalDefenseBuffTurnsRemaining <= 0)
+            {
+                magicalOriginalBaseDefense = stats.magicDefense;
+                stats.magicDefense += amount;
+            }
+            else
+            {
+                Debug.Log($"Buff Magical Defense của {character.name} đã được làm mới thời gian.");
+            }
+
+            magicalDefenseBuffTurnsRemaining = duration;
+            Debug.Log($"{character.name} đã nhận buff +{amount} Magical Defense, hiệu lực {duration} lượt. Magical Defense hiện tại: {stats.magicDefense}");
+        }
+
         public void RemoveExpiredAttackBuff()
         {
             if (attackBuffTurnsRemaining > 0) return;
@@ -219,6 +264,30 @@ namespace Turnbase
             agilityBuffTurnsRemaining = 0;
 
             Debug.Log($"Buff Agility của {character.name} đã hết hạn và bị gỡ bỏ. Agility hiện tại: {stats.agility}");
+        }
+
+        public void RemoveExpiredMagicalAttackBuff()
+        {
+            if (magicalAttackBuffTurnsRemaining > 0 || magicalOriginalBaseAttack == 0) return;
+
+            stats.magicAttack = magicalOriginalBaseAttack;
+
+            magicalOriginalBaseAttack = 0;
+            magicalAttackBuffTurnsRemaining = 0;
+
+            Debug.Log($"Buff Magical Attack của {character.name} đã hết hạn và bị gỡ bỏ. Magical Attack hiện tại: {stats.magicAttack}");
+        }
+
+        public void RemoveExpiredMagicalDefenseBuff()
+        {
+            if (magicalDefenseBuffTurnsRemaining > 0 || magicalOriginalBaseDefense == 0) return;
+
+            stats.magicDefense = magicalOriginalBaseDefense;
+
+            magicalOriginalBaseDefense = 0;
+            magicalDefenseBuffTurnsRemaining = 0;
+
+            Debug.Log($"Buff Magical Defense của {character.name} đã hết hạn và bị gỡ bỏ. Magical Defense hiện tại: {stats.magicDefense}");
         }
     }
 }

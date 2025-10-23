@@ -38,6 +38,11 @@ namespace Turnbase
             }
 
         }
+
+        protected void SpawnContinuousEfect(Vector3 position, Skill skill)
+        {
+            
+        }
     }
 }
 

@@ -296,6 +296,8 @@ namespace Turnbase
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
+            ProcessTurnStartBuffs(activeCharacter);
+
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
 
@@ -471,39 +473,6 @@ namespace Turnbase
             {
                 EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
-                if (character.buffManager != null)
-                {
-                    if (character.buffManager.attackBuffTurnsRemaining > 0)
-                    {
-                        character.buffManager.attackBuffTurnsRemaining--;
-                        character.buffManager.RemoveExpiredAttackBuff();
-                    }
-
-                    if (character.buffManager.maxHPBuffTurnsRemaining > 0)
-                    {
-                        character.buffManager.maxHPBuffTurnsRemaining--;
-                        character.buffManager.RemoveExpiredMaxHPBuff();
-                    }
-
-                    if (character.buffManager.defenseBuffTurnsRemaining > 0)
-                    {
-                        character.buffManager.defenseBuffTurnsRemaining--;
-                        character.buffManager.RemoveExpiredDefenseBuff();
-                    }
-
-                    if (character.buffManager.agilityBuffTurnsRemaining > 0)
-                    {
-                        character.buffManager.agilityBuffTurnsRemaining--;
-                        character.buffManager.RemoveExpiredAgilityBuff();
-                    }
-
-                    if (character.buffManager.shieldTurnsRemaining > 0)
-                    {
-                        character.buffManager.shieldTurnsRemaining--;
-                        character.buffManager.RemoveExpiredShield();
-                    }
-                }
-
 
                 activeCharacter = null;
                 if (character.stateMachine != null)
@@ -512,6 +481,53 @@ namespace Turnbase
                     character.actionGauge = 0;
                 }
                 isProcessingTurn = false;
+            }
+        }
+
+        private void ProcessTurnStartBuffs(Character character)
+        {
+            if (character.buffManager != null)
+            {
+                if (character.buffManager.attackBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.attackBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredAttackBuff();
+                }
+
+                if (character.buffManager.maxHPBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.maxHPBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredMaxHPBuff();
+                }
+
+                if (character.buffManager.defenseBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.defenseBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredDefenseBuff();
+                }
+
+                if (character.buffManager.agilityBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.agilityBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredAgilityBuff();
+                }
+
+                if (character.buffManager.shieldTurnsRemaining > 0)
+                {
+                    character.buffManager.shieldTurnsRemaining--;
+                    character.buffManager.RemoveExpiredShield();
+                }
+
+                if (character.buffManager.magicalDefenseBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.magicalDefenseBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredMagicalDefenseBuff();
+                }
+                if (character.buffManager.magicalAttackBuffTurnsRemaining > 0)
+                {
+                    character.buffManager.magicalAttackBuffTurnsRemaining--;
+                    character.buffManager.RemoveExpiredMagicalAttackBuff();
+                }
             }
         }
 

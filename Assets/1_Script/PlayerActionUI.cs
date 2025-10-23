@@ -197,9 +197,22 @@ namespace Turnbase
 
         private void OnSkillClicked()
         {
-            Debug.Log("Sử dụng Kỹ năng!");
-
-            animator.SetTrigger("CastSkill");
+            
+            switch (currentCharacter.characterClass)
+            {
+                case CharacterClass.Sword_Shield:
+                    animator.SetTrigger("Warrio_Cast");
+                    break;
+                case CharacterClass.Magical:
+                    animator.SetTrigger("Magic_Cast");
+                    break;
+                case CharacterClass.Summon:
+                    animator.SetTrigger("Summon_Cast");
+                    break;
+                default:
+                    animator.SetTrigger("Magic_Cast");
+                    break;
+            }
 
             GameObject actionObject = GameObject.Find("Action");
             GameObject cancelObject = GameObject.Find("Cancel");

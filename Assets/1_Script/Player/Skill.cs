@@ -35,6 +35,8 @@ public enum StatType
     Defense,
     Agility,
     MaxHP,
+    MagicalAttack,
+    MagicalDefense,
 
 }
 

@@ -62,6 +62,13 @@ namespace Turnbase
                     case StatType.Agility:
                         charTarget.ApplyAgilityBuff(buffAmount, buffDuration);
                         break;
+                    case StatType.MagicalAttack:
+                        charTarget.ApplyMagicAttackBuff(buffAmount, buffDuration);
+                        break;
+                        
+                    case StatType.MagicalDefense:
+                        charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration);
+                        break;
 
 
                     default:

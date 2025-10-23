@@ -32,6 +32,17 @@ namespace Turnbase
     }
 
     [System.Serializable]
+    public enum CharacterElement
+    {
+        None,
+        Fire,
+        Water,
+        Earth,
+        Light,
+        Dark
+    }
+
+    [System.Serializable]
     public class CharacterStats
     {
         public Sprite Avatar;
@@ -53,6 +64,8 @@ namespace Turnbase
         public CharacterStateMachine stateMachine;
 
         public CharacterClass characterClass;
+
+        public CharacterElement characterElement;
 
         [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
 
@@ -253,6 +266,22 @@ namespace Turnbase
             if (buffManager != null)
             {
                 buffManager.ApplyAgilityBuff(amount, duration);
+            }
+        }
+
+        public void ApplyMagicAttackBuff(int amount, int duration)
+        {
+            if (buffManager != null)
+            {
+                buffManager.ApplyMagicalAttackBuff(amount, duration);
+            }
+        }
+
+        public void ApplyMagicDefenseBuff(int amount, int duration)
+        {
+            if (buffManager != null)
+            {
+                buffManager.ApplyMagicalDefenseBuff(amount, duration);
             }
         }
 
