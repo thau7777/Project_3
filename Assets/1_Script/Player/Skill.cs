@@ -24,7 +24,6 @@ public class Skill : ScriptableObject
     [Header("Buff/Debuff Properties")]
     public StatType statToModify;
     public int durationTurns = 2;
-    public bool isStackable = false;
 
 }
 

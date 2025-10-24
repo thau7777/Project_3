@@ -24,6 +24,7 @@ namespace Turnbase
             Debug.Log($"{user.name} dùng skill AOE {skill.skillName}");
 
             user.animator.Play(skill.animationTriggerName);
+
             yield return new WaitForSeconds(1.5f);
 
 

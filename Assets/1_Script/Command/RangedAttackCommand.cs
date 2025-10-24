@@ -21,21 +21,7 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            Vector3 direction = (target.transform.position - user.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            lookRotation.eulerAngles = new Vector3(0, lookRotation.eulerAngles.y, 0);
-
-            float elapsed = 0f;
-            Quaternion startRotation = user.transform.rotation;
-
-            while (elapsed < rotationDuration)
-            {
-                user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-            user.transform.rotation = lookRotation;
-
+            
             int offensiveStat = user.stats.attack;
             int defensiveStat = target.stats.defense;
 
@@ -92,8 +78,8 @@ namespace Turnbase
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(attackDuration);
 
-            elapsed = 0f;
-            startRotation = user.transform.rotation;
+            float elapsed = 0f;
+            Quaternion startRotation = user.transform.rotation;
             Quaternion endRotation = user.initialRotation;
 
             while (elapsed < rotationDuration)

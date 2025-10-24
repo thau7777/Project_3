@@ -118,6 +118,21 @@ namespace Turnbase
             SetTargetAndOffset(character, pos, rot);
         }
 
+        public void NormalCamera(Character character)
+        {
+            Vector3 pos = new Vector3(0f, 0f, 0f);
+            Vector3 rot = new Vector3(0f, 0f, 0f);
+            SetTargetAndOffset(character, pos, rot);
+        }
+
+
+        public void ParryCamera(Character character)
+        {
+            Vector3 pos = new Vector3(-1f, -1f, 1f);
+            Vector3 rot = new Vector3(0f, -12f, 0f);
+            SetTargetAndOffset(character, pos, rot);
+        }
+
 
         private void LateUpdate()
         {

@@ -88,6 +88,8 @@ namespace Turnbase
 
         public BattleManager battleManager;
 
+        public BattleUIManager battleUIManager;
+
         public CharacterBuffManager buffManager;
 
         public bool isParryable;
@@ -112,6 +114,7 @@ namespace Turnbase
         void Awake()
         {
             stateMachine = GetComponent<CharacterStateMachine>();
+            buffManager = GetComponent<CharacterBuffManager>();
             animator = GetComponent<Animator>();
 
 
@@ -181,7 +184,7 @@ namespace Turnbase
 
             if (battleManager != null)
             {
-                battleManager.UpdateCharacterUI(this);
+                battleUIManager.UpdateCharacterUI(this);
             }
             if (stats.currentHP <= 0)
             {
@@ -223,67 +226,68 @@ namespace Turnbase
 
             if (battleManager != null)
             {
-                battleManager.UpdateCharacterUI(this);
+                battleUIManager.UpdateCharacterUI(this);
             }
 
             Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
         }
 
-        public void AddShield(int amount)
+        public void AddShield(int amount, GameObject vfxInstance = null) 
         {
             if (buffManager != null)
             {
-                buffManager.AddShield(amount);
+                buffManager.AddShield(amount, 2, vfxInstance); 
             }
         }
 
-        public void ApplyAttackBuff(int amount, int duration)
+        public void ApplyAttackBuff(int amount, int duration, GameObject vfxInstance)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyAttackBuff(amount, duration);
+                buffManager.ApplyAttackBuff(amount, duration, vfxInstance);
             }
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration)
+        public void ApplyMaxHPBuff(int amount, int duration, GameObject vfxInstance) 
         {
             if (buffManager != null)
             {
-                buffManager.ApplyMaxHPBuff(amount, duration);
+                buffManager.ApplyMaxHPBuff(amount, duration, vfxInstance); 
             }
         }
 
-        public void ApplyDefenseBuff(int amount, int duration)
+        public void ApplyDefenseBuff(int amount, int duration, GameObject vfxInstance) 
         {
             if (buffManager != null)
             {
-                buffManager.ApplyDefenseBuff(amount, duration);
+                buffManager.ApplyDefenseBuff(amount, duration, vfxInstance);
             }
         }
 
-        public void ApplyAgilityBuff(int amount, int duration)
+        public void ApplyAgilityBuff(int amount, int duration, GameObject vfxInstance) 
         {
             if (buffManager != null)
             {
-                buffManager.ApplyAgilityBuff(amount, duration);
+                buffManager.ApplyAgilityBuff(amount, duration, vfxInstance); 
             }
         }
 
-        public void ApplyMagicAttackBuff(int amount, int duration)
+        public void ApplyMagicAttackBuff(int amount, int duration, GameObject vfxInstance)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyMagicalAttackBuff(amount, duration);
+                buffManager.ApplyMagicalAttackBuff(amount, duration, vfxInstance); 
             }
         }
 
-        public void ApplyMagicDefenseBuff(int amount, int duration)
+        public void ApplyMagicDefenseBuff(int amount, int duration, GameObject vfxInstance) 
         {
             if (buffManager != null)
             {
-                buffManager.ApplyMagicalDefenseBuff(amount, duration);
+                buffManager.ApplyMagicalDefenseBuff(amount, duration, vfxInstance);
             }
         }
-
     }
+
 }
+

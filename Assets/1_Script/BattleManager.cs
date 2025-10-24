@@ -10,6 +10,7 @@ namespace Turnbase
     public class BattleManager : MonoBehaviour
     {
         public List<Character> allCombatants = new List<Character>();
+
         public Character activeCharacter;
 
         public bool isProcessingTurn = false;
@@ -24,24 +25,16 @@ namespace Turnbase
 
         public TurnOrderUI turnOrderUI;
 
-
-
-
+        public BattleUIManager uiManager;
 
         private Coroutine currentParryWindow;
 
-        [Header("UI")]
-        public GameObject AvatarGroupPrefab;
-        public Transform UIContainer;
 
-
-        private Dictionary<Character, AvatarGroup> characterToUI = new Dictionary<Character, AvatarGroup>();
 
         void Start()
         {
             SetupBattle();
             StartCoroutine(DelayedStart());
-            UpdateAllCharacterUIs();
         }
 
         void Update()
@@ -80,13 +73,14 @@ namespace Turnbase
                 allCombatants.Add(playerInstance);
                 playerInstance.initialPosition = playerSpawnPoints[i].position;
                 playerInstance.battleManager = this;
+                playerInstance.battleUIManager = this.uiManager;
 
                 if (playerInstance.stats != null)
                 {
                     playerInstance.stats.currentShield = 0;
                 }
 
-                SpawnCharacterUI(playerInstance);
+                if (uiManager != null) uiManager.SpawnCharacterUI(playerInstance);
 
                 CharacterStateMachine playerStateMachine = playerInstance.GetComponent<CharacterStateMachine>();
                 if (playerStateMachine != null)
@@ -117,6 +111,7 @@ namespace Turnbase
                 allCombatants.Add(enemyInstance);
                 enemyInstance.initialPosition = enemySlots[i].position;
                 enemyInstance.battleManager = this;
+                enemyInstance.battleUIManager = this.uiManager;
 
                 if (enemyInstance.stats != null)
                 {
@@ -127,6 +122,7 @@ namespace Turnbase
                 if (enemyStateMachine != null)
                 {
                     enemyStateMachine.battleManager = this;
+
                 }
             }
 
@@ -204,12 +200,13 @@ namespace Turnbase
                 if (summonStateMachine != null)
                 {
                     summonStateMachine.battleManager = this;
+                    summonInstance.battleUIManager = this.uiManager;
                     summonStateMachine.SwitchState(summonStateMachine.waitingState);
                 }
 
                 allCombatants.Add(summonInstance);
 
-                SpawnCharacterUI(summonInstance);
+                if (uiManager != null) uiManager.SpawnCharacterUI(summonInstance);
 
                 if (turnOrderUI != null)
                 {
@@ -296,7 +293,10 @@ namespace Turnbase
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
-            ProcessTurnStartBuffs(activeCharacter);
+            if (activeCharacter.buffManager != null)
+            {
+                activeCharacter.buffManager.ProcessTurnStartDecay();
+            }
 
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
@@ -483,95 +483,10 @@ namespace Turnbase
                 isProcessingTurn = false;
             }
         }
+       
 
-        private void ProcessTurnStartBuffs(Character character)
-        {
-            if (character.buffManager != null)
-            {
-                if (character.buffManager.attackBuffTurnsRemaining > 0)
-                {
-                    character.buffManager.attackBuffTurnsRemaining--;
-                    character.buffManager.RemoveExpiredAttackBuff();
-                }
+        
 
-                if (character.buffManager.maxHPBuffTurnsRemaining > 0)
-                {
-                    character.buffManager.maxHPBuffTurnsRemaining--;
-                    character.buffManager.RemoveExpiredMaxHPBuff();
-                }
-
-                if (character.buffManager.defenseBuffTurnsRemaining > 0)
-                {
-                    character.buffManager.defenseBuffTurnsRemaining--;
-                    character.buffManager.RemoveExpiredDefenseBuff();
-                }
-
-                if (character.buffManager.agilityBuffTurnsRemaining > 0)
-                {
-                    character.buffManager.agilityBuffTurnsRemaining--;
-                    character.buffManager.RemoveExpiredAgilityBuff();
-                }
-
-                if (character.buffManager.shieldTurnsRemaining > 0)
-                {
-                    character.buffManager.shieldTurnsRemaining--;
-                    character.buffManager.RemoveExpiredShield();
-                }
-
-                if (character.buffManager.magicalDefenseBuffTurnsRemaining > 0)
-                {
-                    character.buffManager.magicalDefenseBuffTurnsRemaining--;
-                    character.buffManager.RemoveExpiredMagicalDefenseBuff();
-                }
-                if (character.buffManager.magicalAttackBuffTurnsRemaining > 0)
-                {
-                    character.buffManager.magicalAttackBuffTurnsRemaining--;
-                    character.buffManager.RemoveExpiredMagicalAttackBuff();
-                }
-            }
-        }
-
-        public void UpdateAllCharacterUIs()
-        {
-            foreach (Character combatant in allCombatants)
-            {
-                AvatarGroup uiGroup = combatant.GetComponentInChildren<AvatarGroup>();
-
-                if (uiGroup != null)
-                {
-                    uiGroup.UpdateUI(combatant.stats);
-                }
-            }
-        }
-
-        void SpawnCharacterUI(Character character)
-        {
-            if (AvatarGroupPrefab == null || UIContainer == null)
-            {
-                Debug.LogError("Cần gán AvatarGroup Prefab VÀ UI Container trong BattleManager!");
-                return;
-            }
-
-            GameObject uiInstance = Instantiate(AvatarGroupPrefab, UIContainer);
-
-            AvatarGroup uiGroup = uiInstance.GetComponent<AvatarGroup>();
-            if (uiGroup != null)
-            {
-                uiGroup.SetOwner(character);
-
-                characterToUI.Add(character, uiGroup);
-
-                uiGroup.UpdateUI(character.stats);
-            }
-        }
-
-        public void UpdateCharacterUI(Character character)
-        {
-            if (characterToUI.TryGetValue(character, out AvatarGroup uiGroup))
-            {
-                uiGroup.UpdateUI(character.stats);
-            }
-        }
 
         private void CheckWinCondition()
         {

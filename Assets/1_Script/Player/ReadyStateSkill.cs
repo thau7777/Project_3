@@ -82,6 +82,8 @@ namespace Turnbase
                     {
                         Debug.LogError($"Lỗi: Target marker bị thiếu trên nhân vật: {stateMachine.character.target.gameObject.name}. Vui lòng gán trong Inspector.");
                     }
+
+                    RotateToTarget();
                 }
             }
             else
@@ -121,6 +123,8 @@ namespace Turnbase
                 stateMachine.character.target = possibleTargets[currentIndex];
 
                 Debug.Log("Đã chuyển mục tiêu sang: " + stateMachine.character.target.gameObject.name + " tại vị trí slot: " + currentIndex);
+
+                RotateToTarget();
 
                 if (stateMachine.character.target != null && stateMachine.character.target.targetMarker != null)
                 {
@@ -235,6 +239,25 @@ namespace Turnbase
             ShowTargetMarker(false);
             stateMachine.character.target = null;
             stateMachine.SwitchState(stateMachine.readyState);
+        }
+
+        private void RotateToTarget()
+        {
+            Character user = stateMachine.character;
+            Character target = user.target;
+
+            if (target != null)
+            {
+                Vector3 directionToTarget = target.transform.position - user.transform.position;
+                directionToTarget.y = 0;
+
+                if (directionToTarget.sqrMagnitude > 0)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+
+                    user.transform.rotation = targetRotation;
+                }
+            }
         }
     }
 }

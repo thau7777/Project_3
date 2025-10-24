@@ -780,6 +780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 498165807}
   - component: {fileID: 498165806}
+  - component: {fileID: 498165808}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -803,7 +804,7 @@ MonoBehaviour:
   activeCharacter: {fileID: 0}
   isProcessingTurn: 0
   playerPrefabs:
-  - {fileID: 3404509342006786628, guid: a880cabf23177fe48bf2fbe6626d6f75, type: 3}
+  - {fileID: 3404509342006786628, guid: 24a7881fbab9cad4699af3c9e9a91582, type: 3}
   playerSpawnPoints:
   - {fileID: 346027862}
   - {fileID: 1871293695}
@@ -816,10 +817,9 @@ MonoBehaviour:
   - {fileID: 44314711}
   enemyPrefabs:
   - {fileID: -5687909505730138963, guid: 1135f6c68f0168748898ba9c25cb213c, type: 3}
-  - {fileID: -5687909505730138963, guid: ed6ab1150c90bad49bb44bbb955a3d01, type: 3}
+  - {fileID: -5687909505730138963, guid: 1135f6c68f0168748898ba9c25cb213c, type: 3}
   turnOrderUI: {fileID: 748348505}
-  AvatarGroupPrefab: {fileID: 5473713768793454524, guid: c191cc4ac52289a48b76598cdefd9548, type: 3}
-  UIContainer: {fileID: 1373605635}
+  uiManager: {fileID: 498165808}
 --- !u!4 &498165807
 Transform:
   m_ObjectHideFlags: 0
@@ -835,6 +835,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &498165808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498165805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4fd13c0c33c49d40b1a7cd7b8871e0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleUIManager
+  AvatarGroupPrefab: {fileID: 5473713768793454524, guid: c191cc4ac52289a48b76598cdefd9548, type: 3}
+  UIContainer: {fileID: 1373605635}
 --- !u!1 &543398488
 GameObject:
   m_ObjectHideFlags: 0

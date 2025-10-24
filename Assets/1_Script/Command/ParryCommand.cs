@@ -17,7 +17,9 @@ namespace Turnbase
         {
             Debug.Log($"{character.name} bắt đầu Parry!");
 
-            character.animator.SetTrigger("Parry");
+            CameraAction.instance.ParryCamera(character);
+
+            character.animator.Play("Parry");
 
             yield return new WaitForSeconds(0.8f);
 
@@ -26,6 +28,8 @@ namespace Turnbase
             Debug.Log($"{character.name} kết thúc Parry.");
 
             Time.timeScale = 1f;
+
+
         }
     }
 

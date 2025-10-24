@@ -14,6 +14,7 @@ namespace Turnbase
 
         public BattleManager battleManager;
 
+
         public Button attackButton;
         public Button skillButton;
         public Button parryButton;
@@ -391,7 +392,7 @@ namespace Turnbase
                 if (currentCharacter.stats.currentMP >= manaCost)
                 {
                     currentCharacter.stats.currentMP -= manaCost;
-                    currentCharacter.battleManager.UpdateCharacterUI(currentCharacter);
+                    currentCharacter.battleUIManager.UpdateCharacterUI(currentCharacter);
 
                     currentState.OnConfirm();
                     PlayerSkillPanel.SetActive(false);

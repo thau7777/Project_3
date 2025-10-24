@@ -39,9 +39,28 @@ namespace Turnbase
 
         }
 
-        protected void SpawnContinuousEfect(Vector3 position, Skill skill)
+        protected GameObject SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
-            
+            GameObject effectToSpawn = skill.impactVFXPrefab; 
+            GameObject effectInstance = null; 
+
+            if (effectToSpawn != null)
+            {
+                effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+
+                effectInstance.transform.SetParent(targetCharacter.transform);
+
+                effectInstance.transform.localPosition = Vector3.zero;
+
+
+
+                Debug.Log($"Đã Spawn hiệu ứng liên tục '{effectToSpawn.name}' lên {targetCharacter.name}.");
+            }
+            else
+            {
+                Debug.LogWarning($"Thiếu Prefab Continuous VFX cho kỹ năng: {skill.skillName}.");
+            }
+            return effectInstance;
         }
     }
 }

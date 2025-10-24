@@ -45,29 +45,32 @@ namespace Turnbase
 
             foreach (var charTarget in targetsToBuff)
             {
+                GameObject activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
+
                 switch (skill.statToModify)
                 {
                     case StatType.Attack:
-                        charTarget.ApplyAttackBuff(buffAmount, buffDuration);
+                        charTarget.ApplyAttackBuff(buffAmount, buffDuration, activeVFX);
                         break;
 
                     case StatType.MaxHP:
-                        charTarget.ApplyMaxHPBuff(buffAmount, buffDuration);
+                        charTarget.ApplyMaxHPBuff(buffAmount, buffDuration, activeVFX);
                         break;
 
                     case StatType.Defense:
-                        charTarget.ApplyDefenseBuff(buffAmount, buffDuration);
+                        charTarget.ApplyDefenseBuff(buffAmount, buffDuration, activeVFX);
                         break;
 
                     case StatType.Agility:
-                        charTarget.ApplyAgilityBuff(buffAmount, buffDuration);
+                        charTarget.ApplyAgilityBuff(buffAmount, buffDuration, activeVFX);
                         break;
+
                     case StatType.MagicalAttack:
-                        charTarget.ApplyMagicAttackBuff(buffAmount, buffDuration);
+                        charTarget.ApplyMagicAttackBuff(buffAmount, buffDuration, activeVFX);
                         break;
-                        
+
                     case StatType.MagicalDefense:
-                        charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration);
+                        charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration, activeVFX);
                         break;
 
 
@@ -76,8 +79,6 @@ namespace Turnbase
                         break;
                 }
 
-                SpawnImpactEffect(charTarget.transform.position, skill);
-
             }
 
             yield return new WaitForSeconds(0.5f);
@@ -85,5 +86,4 @@ namespace Turnbase
             battleManager.EndTurn(user);
         }
     }
-
 }

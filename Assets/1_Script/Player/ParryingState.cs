@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 
 
@@ -25,6 +26,8 @@ namespace Turnbase
 
         public override void OnExit()
         {
+            CameraAction.instance.NormalCamera(stateMachine.character);
+
             stateMachine.character.StopAllCoroutines();
         }
     }

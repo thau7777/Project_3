@@ -1,15 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System;
 
 
 namespace Turnbase
 {
     public class MeleeAttackCommand : SkillCommand
     {
-        private float moveSpeed = 5f;
-        private float attackDuration = 0f;
+        private float moveSpeed = 30f;
         private float rotationDuration = 0.25f;
         private BattleManager battleManager;
+
+        private bool damageApplied = false;
+        private int finalDamage;
+
+        private Vector3 initialPosition;
+        private Vector3 destination;
 
         public MeleeAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
             : base(user, target, skill)
@@ -19,17 +25,24 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            Vector3 initialPosition = user.initialPosition;
+            initialPosition = user.initialPosition;
             float attackDistance = 1.5f;
-
             float direction = Mathf.Sign(target.transform.position.x - user.transform.position.x);
-            Vector3 destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
+            destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
 
-            user.animator.Play("Run");
+            yield return MoveToTarget(destination);
+            yield return PerformAttack();
+            yield return MoveBackToInitialPosition(initialPosition);
+            yield return RotateBackToInitial();
+
+            battleManager.EndTurn(user);
+        }
+        private IEnumerator MoveToTarget(Vector3 dest)
+        {
             user.animator.SetBool("IsRunning", true);
-            while (Vector3.Distance(user.transform.position, destination) > 0.1f)
+            while (Vector3.Distance(user.transform.position, dest) > 0.1f)
             {
-                user.transform.position = Vector3.MoveTowards(user.transform.position, destination, moveSpeed * Time.deltaTime);
+                user.transform.position = Vector3.MoveTowards(user.transform.position, dest, moveSpeed * Time.deltaTime);
 
                 Vector3 lookDirection = (target.transform.position - user.transform.position).normalized;
                 Quaternion targetRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
@@ -44,20 +57,18 @@ namespace Turnbase
             }
 
             user.animator.SetBool("IsRunning", false);
-            user.transform.position = destination;
+            user.transform.position = dest;
 
             Vector3 finalLookDirection = (target.transform.position - user.transform.position).normalized;
             user.transform.rotation = Quaternion.LookRotation(new Vector3(finalLookDirection.x, 0, finalLookDirection.z));
 
             yield return null;
+        }
 
-            attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-
-            user.animator.SetTrigger("Attack");
-
-
-            int offensiveStat = user.stats.attack;
-            int defensiveStat = target.stats.defense;
+        private IEnumerator PerformAttack()
+        {
+            int offensiveStat;
+            int defensiveStat;
 
             switch (skill.elementType)
             {
@@ -81,26 +92,50 @@ namespace Turnbase
             }
 
             int rawDamage = offensiveStat * skill.damage;
-
             float damageMultiplier = 100f / (defensiveStat + 100f);
-            int finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+            finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
 
             if (rawDamage > 0)
             {
                 finalDamage = Mathf.Max(1, finalDamage);
             }
 
-
-            yield return new WaitForSeconds(attackDuration);
-
-            target.TakeDamage(finalDamage);
-
-            yield return new WaitForSeconds(0.2f);
-
-            user.animator.SetBool("IsRunning", true);
-            while (Vector3.Distance(user.transform.position, initialPosition) > 0.1f)
+            damageApplied = false;
+            Action hitAction = () =>
             {
-                user.transform.position = Vector3.MoveTowards(user.transform.position, initialPosition, moveSpeed * Time.deltaTime);
+                if (!damageApplied)
+                {
+                    target.TakeDamage(finalDamage);
+                    damageApplied = true;
+                }
+            };
+
+            user.PrepareHitCallBack(hitAction);
+
+            user.animator.Play("Attack");
+
+            while (!damageApplied)
+            {
+                yield return null;
+            }
+
+            float calculatedDuration = 0.5f;
+            AnimatorStateInfo stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            if (user.animator.HasState(0, Animator.StringToHash("Attack")))
+            {
+                calculatedDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
+            }
+
+            yield return new WaitForSeconds(calculatedDuration);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
+        {
+            user.animator.SetBool("IsRunning", true);
+            while (Vector3.Distance(user.transform.position, initialPos) > 0.1f)
+            {
+                user.transform.position = Vector3.MoveTowards(user.transform.position, initialPos, moveSpeed * Time.deltaTime);
 
                 Vector3 returnLookDirection = (target.transform.position - user.transform.position).normalized;
                 Quaternion returnRotation = Quaternion.LookRotation(new Vector3(returnLookDirection.x, 0, returnLookDirection.z));
@@ -114,8 +149,11 @@ namespace Turnbase
                 yield return null;
             }
             user.animator.SetBool("IsRunning", false);
-            user.transform.position = initialPosition;
+            user.transform.position = initialPos;
+        }
 
+        private IEnumerator RotateBackToInitial()
+        {
             Quaternion startRotation = user.transform.rotation;
             Quaternion endRotation = user.initialRotation;
 
@@ -127,8 +165,6 @@ namespace Turnbase
                 yield return null;
             }
             user.transform.rotation = endRotation;
-
-            battleManager.EndTurn(user);
         }
     }
 }

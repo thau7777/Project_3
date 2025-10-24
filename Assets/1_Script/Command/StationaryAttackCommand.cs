@@ -14,8 +14,6 @@ namespace Turnbase
         private float rotationDuration = 0.25f;
         private BattleManager battleManager;
 
-        //private bool animationFinished = false;
-
         public StationaryAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
             : base(user, target, skill)
         {
@@ -54,6 +52,7 @@ namespace Turnbase
             };
 
             user.PrepareHitCallBack(hitAction);
+
             user.animator.Play("Attack");
 
             while (!damageApplied)
@@ -94,10 +93,13 @@ namespace Turnbase
             switch (user.characterClass)
             {
                 case CharacterClass.Magical:
-                    effectPath = "Effects/Effect7";
+                    effectPath = "Effects/Attack1";
                     break;
                 case CharacterClass.Summon:
                     effectPath = "Effects/Effect27";
+                    break;
+                case CharacterClass.Tank:
+                    effectPath = "Effects/Effect7";
                     break;
                 default:
                     break;
