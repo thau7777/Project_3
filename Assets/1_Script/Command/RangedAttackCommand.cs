@@ -13,6 +13,9 @@ namespace Turnbase
         private float rotationDuration = 0.25f;
         private BattleManager battleManager;
 
+        private Quaternion targetLookRotation;
+
+
         public RangedAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
             : base(user, target, skill)
         {
@@ -21,9 +24,27 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            
-            int offensiveStat = user.stats.attack;
-            int defensiveStat = target.stats.defense;
+            targetLookRotation = GetTargetLookRotation();
+
+            yield return PerformRangedAttack();
+
+            yield return RotateBackToInitial();
+
+            battleManager.EndTurn(user);
+        }
+
+        private Quaternion GetTargetLookRotation()
+        {
+            Vector3 direction = (target.transform.position - user.transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            lookRotation.eulerAngles = new Vector3(0, lookRotation.eulerAngles.y, 0);
+            return lookRotation;
+        }
+
+        private IEnumerator PerformRangedAttack()
+        {
+            int offensiveStat;
+            int defensiveStat;
 
             switch (skill.elementType)
             {
@@ -48,14 +69,20 @@ namespace Turnbase
 
             int rawDamage = offensiveStat * skill.damage;
 
-            float damageMultiplier = 100f / (defensiveStat + 100f);
-            finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+            float defenseMultiplier = 100f / (defensiveStat + 100f);
+
+            float damageBase = rawDamage * defenseMultiplier;
+
+            float elementMultiplier = GetElementMultiplier();
+
+            finalDamage = Mathf.RoundToInt(damageBase * elementMultiplier);
 
             if (rawDamage > 0)
             {
                 finalDamage = Mathf.Max(1, finalDamage);
             }
 
+            damageApplied = false;
             Action hitAction = () =>
             {
                 if (!damageApplied)
@@ -77,7 +104,20 @@ namespace Turnbase
 
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(attackDuration);
+        }
 
+        private float GetElementMultiplier()
+        {
+            if (battleManager != null && battleManager.elementChart != null)
+            {
+                return battleManager.elementChart.GetMultiplier(skill.elementType, target.characterElement);
+            }
+
+            return 1.0f;
+        }
+
+        private IEnumerator RotateBackToInitial()
+        {
             float elapsed = 0f;
             Quaternion startRotation = user.transform.rotation;
             Quaternion endRotation = user.initialRotation;
@@ -89,11 +129,6 @@ namespace Turnbase
                 yield return null;
             }
             user.transform.rotation = endRotation;
-
-            battleManager.EndTurn(user);
         }
-
     }
 }
-
-

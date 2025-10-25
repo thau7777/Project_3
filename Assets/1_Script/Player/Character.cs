@@ -42,6 +42,7 @@ namespace Turnbase
         Dark
     }
 
+
     [System.Serializable]
     public class CharacterStats
     {
@@ -216,6 +217,7 @@ namespace Turnbase
 
         }
 
+        #region Heal and Buffs Methods
         public void Heal(int amount)
         {
             if (!isAlive) return;
@@ -287,6 +289,7 @@ namespace Turnbase
                 buffManager.ApplyMagicalDefenseBuff(amount, duration, vfxInstance);
             }
         }
+        #endregion
     }
 
 }

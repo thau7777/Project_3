@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 
 namespace Turnbase
@@ -20,28 +21,45 @@ namespace Turnbase
         {
             Debug.Log($"{user.name} dùng skill Buff {skill.statToModify}!");
 
+            yield return AnimateBuffUser();
+
+            List<Character> targetsToBuff = FindTargets();
+
+            ApplyBuffEffects(targetsToBuff);
+
+            yield return new WaitForSeconds(0.5f);
+
+            battleManager.EndTurn(user);
+        }
+
+        private IEnumerator AnimateBuffUser()
+        {
             user.animator.Play(skill.animationTriggerName);
-
             yield return new WaitForSeconds(1.5f);
+        }
 
-            var targetsToBuff = new List<Character>();
-
-            int buffAmount = skill.damage;
-            int buffDuration = skill.durationTurns;
-
+        private List<Character> FindTargets()
+        {
             if (skill.targetType == SkillTargetType.Ally || skill.targetType == SkillTargetType.Self)
             {
                 if (target != null && target.isAlive)
                 {
-                    targetsToBuff.Add(target);
+                    return new List<Character> { target };
                 }
             }
             else if (skill.targetType == SkillTargetType.Allies)
             {
-                targetsToBuff = battleManager.allCombatants
+                return battleManager.allCombatants
                     .Where(c => c.isPlayer == user.isPlayer && c.isAlive)
                     .ToList();
             }
+            return new List<Character>();
+        }
+
+        private void ApplyBuffEffects(List<Character> targetsToBuff)
+        {
+            int buffAmount = skill.damage;
+            int buffDuration = skill.durationTurns;
 
             foreach (var charTarget in targetsToBuff)
             {
@@ -73,17 +91,11 @@ namespace Turnbase
                         charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration, activeVFX);
                         break;
 
-
                     default:
                         Debug.LogWarning($"Skill '{skill.skillName}' có StatType là {skill.statToModify}. StatType này chưa được hỗ trợ trong BuffCommand.");
                         break;
                 }
-
             }
-
-            yield return new WaitForSeconds(0.5f);
-
-            battleManager.EndTurn(user);
         }
     }
 }

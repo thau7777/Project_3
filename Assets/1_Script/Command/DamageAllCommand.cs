@@ -12,6 +12,8 @@ namespace Turnbase
         private Skill skill;
         private BattleManager battleManager;
 
+        private const float ATTACK_MULTIPLIER = 0.5f;
+
         public DamageAllCommand(Character user, Skill skill, BattleManager battleManager)
         {
             this.user = user;
@@ -27,10 +29,22 @@ namespace Turnbase
 
             yield return new WaitForSeconds(1.5f);
 
+            int rawDamage = CalculateRawDamage();
+            List<Character> allTargets = GetTargets();
 
-            const float attackMultiplier = 0.5f;
+            yield return ApplyDamageToTargets(rawDamage, allTargets);
 
-            int offensiveStat = user.stats.attack;
+            yield return new WaitForSeconds(0.5f);
+
+            if (battleManager != null)
+            {
+                battleManager.EndTurn(user);
+            }
+        }
+
+        private int CalculateRawDamage()
+        {
+            int offensiveStat;
 
             switch (skill.elementType)
             {
@@ -51,23 +65,27 @@ namespace Turnbase
                     break;
             }
 
-            int rawDamage = skill.damage + Mathf.RoundToInt(offensiveStat * attackMultiplier);
+            return skill.damage + Mathf.RoundToInt(offensiveStat * ATTACK_MULTIPLIER);
+        }
 
-
-
-            List<Character> allTargets;
+        private List<Character> GetTargets()
+        {
             if (skill.targetType == SkillTargetType.Enemies)
             {
-                allTargets = battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                return battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
             }
             else
             {
-                allTargets = battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                return battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
             }
+        }
 
-            foreach (Character aoeTarget in allTargets)
+        private IEnumerator ApplyDamageToTargets(int rawDamage, List<Character> targets)
+        {
+            foreach (Character aoeTarget in targets)
             {
                 int defensiveStat = aoeTarget.stats.defense;
+
                 if (skill.elementType != ElementType.Physical && skill.elementType != ElementType.None)
                 {
                     defensiveStat = aoeTarget.stats.magicDefense;
@@ -83,15 +101,9 @@ namespace Turnbase
                 }
 
                 aoeTarget.TakeDamage(finalDamage);
-
                 SpawnImpactEffect(aoeTarget.transform.position);
-            }
 
-            yield return new WaitForSeconds(0.5f);
-
-            if (battleManager != null)
-            {
-                battleManager.EndTurn(user);
+                yield return null;
             }
         }
 

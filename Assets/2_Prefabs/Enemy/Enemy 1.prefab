@@ -1116,6 +1116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateMachine: {fileID: 229363719538074653}
   characterClass: 4
+  characterElement: 1
   allClassProfiles:
   - {fileID: 11400000, guid: 9c1995ba6ceb8454fab4fedcbe8f14c1, type: 2}
   stats:
@@ -1140,6 +1141,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
+  battleUIManager: {fileID: 0}
   buffManager: {fileID: 0}
   isParryable: 0
   ownUI: {fileID: 0}
@@ -1175,6 +1177,8 @@ MonoBehaviour:
   hpBarFill: {fileID: 3373876973846427296}
   mpBarFill: {fileID: 4380093277856424796}
   shieldBarFill: {fileID: 8466390429216592537}
+  elementImage: {fileID: 2133629080756104704}
+  elementMapping: {fileID: 11400000, guid: 67f64a4800e011c419210d4dacaded8d, type: 2}
 --- !u!114 &1527328286654397455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1188,10 +1192,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterBuffManager
   attackBuffTurnsRemaining: 0
+  attackVFXInstance: {fileID: 0}
   maxHPBuffTurnsRemaining: 0
+  maxHPVFXInstance: {fileID: 0}
   defenseBuffTurnsRemaining: 0
+  defenseVFXInstance: {fileID: 0}
   agilityBuffTurnsRemaining: 0
+  agilityVFXInstance: {fileID: 0}
+  magicalAttackBuffTurnsRemaining: 0
+  magicalAttackVFXInstance: {fileID: 0}
+  magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseVFXInstance: {fileID: 0}
   shieldTurnsRemaining: 0
+  shieldVFXInstance: {fileID: 0}
 --- !u!1 &8633805098435303522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,6 +1344,81 @@ Transform:
   - {fileID: 6828190366826316254}
   m_Father: {fileID: 3157584190809749811}
   m_LocalEulerAnglesHint: {x: 85.33849, y: 120.316986, z: 30.166664}
+--- !u!1 &8929755134453175513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4012649086264396210}
+  - component: {fileID: 2198836544006169274}
+  - component: {fileID: 2133629080756104704}
+  m_Layer: 5
+  m_Name: Element_Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4012649086264396210
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929755134453175513}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -0.004593662, y: -0.004593662, z: -0.004593662}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 626011186020759060}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.305, y: 0.561}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2198836544006169274
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929755134453175513}
+  m_CullTransparentMesh: 1
+--- !u!114 &2133629080756104704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929755134453175513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 75c39fdbbbe259645b76e9f6c326455b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &9185360619718995328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,6 +1459,7 @@ RectTransform:
   - {fileID: 1525437447574439332}
   - {fileID: 3842551249276216914}
   - {fileID: 4155118014273465142}
+  - {fileID: 4012649086264396210}
   m_Father: {fileID: 75167956460423509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1478,6 +1567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4547afc9e2c42c04da4f774dba231bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsUI
-  hpBarFill: {fileID: 0}
-  mpBarFill: {fileID: 0}
-  shieldBarFill: {fileID: 0}
+  hpBarFill: {fileID: 3373876973846427296}
+  mpBarFill: {fileID: 4380093277856424796}
+  shieldBarFill: {fileID: 8466390429216592537}
+  elementImage: {fileID: 2133629080756104704}
+  elementMapping: {fileID: 0}

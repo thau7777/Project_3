@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 
 namespace Turnbase
@@ -22,23 +21,22 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            Vector3 direction = (target.transform.position - user.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
 
-            lookRotation.eulerAngles = new Vector3(0, lookRotation.eulerAngles.y, 0);
+            yield return PerformStationaryAttack();
 
-            float elapsed = 0f;
-            Quaternion startRotation = user.transform.rotation;
+            yield return RotateBackToInitial();
 
-            while (elapsed < rotationDuration)
-            {
-                user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
+            battleManager.EndTurn(user);
+        }
 
-            int effectiveAttack = user.stats.attack;
-            finalDamage = effectiveAttack * skill.damage;
+        
+
+        private IEnumerator PerformStationaryAttack()
+        {
+            int offensiveStat = user.stats.attack;
+            int defensiveStat = target.stats.defense; 
+
+            finalDamage = offensiveStat * skill.damage;
 
             Action hitAction = () =>
             {
@@ -46,7 +44,6 @@ namespace Turnbase
                 {
                     target.TakeDamage(finalDamage);
                     damageApplied = true;
-
                     SpawnEffectAtTarget();
                 }
             };
@@ -61,28 +58,22 @@ namespace Turnbase
             }
 
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(attackDuration);
+        }
 
-
-
-            elapsed = 0f;
-            startRotation = user.transform.rotation;
+        private IEnumerator RotateBackToInitial()
+        {
+            float elapsed = 0f;
+            Quaternion startRotation = user.transform.rotation;
             Quaternion endRotation = user.initialRotation;
-
 
             while (elapsed < rotationDuration)
             {
-                user.transform.rotation = Quaternion.Slerp(startRotation, lookRotation, elapsed / rotationDuration);
+                user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-
             user.transform.rotation = endRotation;
-            yield return new WaitForSeconds(attackDuration);
-
-
-
-            battleManager.EndTurn(user);
-
         }
 
         private void SpawnEffectAtTarget()

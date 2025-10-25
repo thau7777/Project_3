@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
 
 
@@ -12,7 +11,6 @@ namespace Turnbase
     public class Enemy : Character
     {
         private Character currentCharacter;
-
 
         public void Animation_ReadyParry()
         {
@@ -62,5 +60,4 @@ namespace Turnbase
             return null;
         }
     }
-
 }

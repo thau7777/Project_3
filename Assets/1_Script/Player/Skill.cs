@@ -68,6 +68,7 @@ public enum ElementType
     Physical,
     Magical,
     Fire,
+    Water,  
     Ice,
     Poison,
     Lightning,

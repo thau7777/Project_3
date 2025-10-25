@@ -19,29 +19,44 @@ namespace Turnbase
         {
             Debug.Log($"{user.name} dung skill lá chắn ");
 
+            yield return AnimateShieldUser();
+
+            List<Character> targetsToShield = FindTargets();
+
+            yield return ApplyShieldEffects(targetsToShield);
+
+            yield return new WaitForSeconds(0.5f);
+
+            battleManager.EndTurn(user);
+        }
+
+        private IEnumerator AnimateShieldUser()
+        {
             user.animator.Play(skill.animationTriggerName);
-
             yield return new WaitForSeconds(1f);
+        }
 
-
-            var targetsToShield = new List<Character>();
-
-            int shieldAmount = skill.damage;
-
+        private List<Character> FindTargets()
+        {
             if (skill.targetType == SkillTargetType.Ally || skill.targetType == SkillTargetType.Self)
             {
                 if (target != null && target.isAlive)
                 {
-                    targetsToShield.Add(target);
+                    return new List<Character> { target };
                 }
             }
             else if (skill.targetType == SkillTargetType.Allies)
             {
-                targetsToShield = battleManager.allCombatants
+                return battleManager.allCombatants
                     .Where(c => c.isPlayer == user.isPlayer && c.isAlive)
                     .ToList();
             }
+            return new List<Character>();
+        }
 
+        private IEnumerator ApplyShieldEffects(List<Character> targetsToShield)
+        {
+            int shieldAmount = skill.damage;
 
             foreach (var charTarget in targetsToShield)
             {
@@ -50,15 +65,9 @@ namespace Turnbase
                 SpawnImpactEffect(charTarget.transform.position, skill);
 
                 Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield.");
+
+                yield return null;
             }
-
-            yield return new WaitForSeconds(0.5f);
-
-            battleManager.EndTurn(user);
-
         }
-
     }
-
 }
-

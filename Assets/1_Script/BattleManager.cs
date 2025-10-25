@@ -27,6 +27,8 @@ namespace Turnbase
 
         public BattleUIManager uiManager;
 
+        public ElementChart elementChart;
+
         private Coroutine currentParryWindow;
 
 
@@ -329,8 +331,6 @@ namespace Turnbase
             }
 
             StartCoroutine(DelayedStartTurn(activeCharacter));
-
-            //activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.waitingState);
 
             if (turnOrderUI != null)
             {
