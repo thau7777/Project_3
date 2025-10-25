@@ -53,7 +53,6 @@ namespace Turnbase
                 case ElementType.Ice:
                 case ElementType.Poison:
                 case ElementType.Lightning:
-                case ElementType.Holy:
                 case ElementType.Dark:
                     offensiveStat = user.stats.magicAttack;
                     defensiveStat = target.stats.magicDefense;

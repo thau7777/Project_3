@@ -72,7 +72,6 @@ public enum ElementType
     Ice,
     Poison,
     Lightning,
-    Holy,
     Dark,
 
 }

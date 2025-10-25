@@ -77,7 +77,6 @@ namespace Turnbase
                 case ElementType.Ice:
                 case ElementType.Poison:
                 case ElementType.Lightning:
-                case ElementType.Holy:
                 case ElementType.Dark:
                     offensiveStat = user.stats.magicAttack;
                     defensiveStat = target.stats.magicDefense;
@@ -92,8 +91,13 @@ namespace Turnbase
             }
 
             int rawDamage = offensiveStat * skill.damage;
-            float damageMultiplier = 100f / (defensiveStat + 100f);
-            finalDamage = Mathf.RoundToInt(rawDamage * damageMultiplier);
+            float defenseMultiplier = 100f / (defensiveStat + 100f);
+
+            float damageBase = rawDamage * defenseMultiplier;
+
+            float elementMultiplier = GetElementMultiplier();
+
+            finalDamage = Mathf.RoundToInt(damageBase * elementMultiplier);
 
             if (rawDamage > 0)
             {
@@ -106,6 +110,9 @@ namespace Turnbase
                 if (!damageApplied)
                 {
                     target.TakeDamage(finalDamage);
+
+                    SpawnImpactEffect(target.transform.position, skill);
+
                     damageApplied = true;
                 }
             };
@@ -128,6 +135,16 @@ namespace Turnbase
 
             yield return new WaitForSeconds(calculatedDuration);
             yield return new WaitForSeconds(0.2f);
+        }
+
+        private float GetElementMultiplier()
+        {
+            if (battleManager != null && battleManager.elementChart != null)
+            {
+                return battleManager.elementChart.GetMultiplier(skill.elementType, target.characterElement);
+            }
+
+            return 1.0f;
         }
 
         private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
