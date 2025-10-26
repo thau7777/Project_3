@@ -29,6 +29,10 @@ namespace Turnbase
                 case SkillType.DamageAll:
                     return new DamageAllCommand(user, skill, battleManager);
 
+                case SkillType.RangedProjectile:
+                    return new ProjectileAttackCommand(user, target, skill, battleManager);
+
+
                 default:
                     Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
                     return null;

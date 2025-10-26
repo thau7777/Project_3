@@ -21,6 +21,10 @@ public class Skill : ScriptableObject
     [Header("Visual Effects")]
     public GameObject impactVFXPrefab;
 
+    [Header("Projectile & VFX")]
+    public float impactVFXDuration = 1.0f;
+    public FlyweightSettings projectileSettings;
+
     [Header("Buff/Debuff Properties")]
     public StatType statToModify;
     public int durationTurns = 2;
@@ -60,6 +64,7 @@ public enum SkillType
     Debuff,
     Special, 
     Summon,
+    RangedProjectile,
 }
 
 public enum ElementType

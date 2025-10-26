@@ -35,11 +35,14 @@ namespace Turnbase
     public enum CharacterElement
     {
         None,
+        Physical,
+        Magical,
         Fire,
         Water,
-        Earth,
-        Light,
-        Dark
+        Ice,
+        Poison,
+        Lightning,
+        Dark,
     }
 
 
