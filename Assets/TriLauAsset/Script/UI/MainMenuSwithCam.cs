@@ -4,9 +4,15 @@ namespace MyRule
 {
     public class MainMenuSwithCam : MonoBehaviour
     {
+        public static MainMenuSwithCam Instance;
         public GameObject cam1;
         public GameObject cam2;
         public GameObject canvas;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {

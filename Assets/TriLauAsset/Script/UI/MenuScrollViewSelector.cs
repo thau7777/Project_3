@@ -27,7 +27,6 @@ namespace MyRule
 
         public void Scroll(Vector2 scrollValue)
         {
-            Debug.Log("Scroll Value: " + scrollValue);
             if (buttons.Count == 0) return;
 
             if (scrollValue.y > temp)
@@ -54,7 +53,7 @@ namespace MyRule
                 ArrowUp.SetActive(true);
             }
 
-            if (currentIndex == buttons.Count - 3)
+            if (currentIndex >= buttons.Count - 3)
             {
                 ArrowDown.SetActive(false);
             }
