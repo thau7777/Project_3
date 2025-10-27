@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public enum CharacterClass
@@ -36,7 +35,7 @@ public struct AttackData
 public class LocomotionSet : ScriptableObject
 {
     public CharacterClass characterClass;
-    public AnimatorController animationController;
+    public RuntimeAnimatorController animationController;
     public List<AttackData> comboAttackAnims = new();
     public AttackData FirstComboAttack 
     { get
@@ -85,4 +84,3 @@ public class LocomotionSet : ScriptableObject
         _currentIndex = -1;
     }
 }
-

@@ -9,6 +9,10 @@ public class EnemyTopdownStunned : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsDead)
+        {
+            return ((EnemyTopdownRoot)Parent).Dead;
+        }
         return null;
     }
 }

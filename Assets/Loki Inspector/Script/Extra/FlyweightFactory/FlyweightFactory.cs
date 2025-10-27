@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -44,5 +44,6 @@ public enum FlyweightType
     BigPurpleHitVFX,
     FireBallProjectile,
     FireBallExplosionVFX,
-
+    TopDownEnemySlime,
+    TopDownEnemyTurtle,
 }

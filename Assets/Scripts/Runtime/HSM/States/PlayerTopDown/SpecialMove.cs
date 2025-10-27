@@ -12,11 +12,15 @@ public class SpecialMove : State
             enterColor = Color.black,
         });
     }
+    protected override void OnEnter()
+    {
+        ctx.Animator.CrossFade(ctx.SkillAnimName, 0.1f);
+
+    }
     protected override State GetTransition()
     {
         if (!ctx.IsInSpecialMove)
-        {
-            ctx.NextAnimCrossFadeTime = 0.1f;
+        { 
             if (ctx.MoveInput != Vector2.zero)
                 return ((Grounded)Parent).Move;
             else
