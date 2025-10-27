@@ -3,12 +3,48 @@ using HSM;
 public class EnemyTopdownHurt : State
 {
     readonly EnemyTopdownContext ctx;
+    float _targetSpeed = 0;
+    float _knockBackDuration = 0.2f;
+    float _elapsedTime = 0;
     public EnemyTopdownHurt(StateMachine machine, State parent, EnemyTopdownContext context) : base(machine, parent)
     {
         ctx = context;
     }
+
+    protected override void OnEnter()
+    {
+        _elapsedTime = 0f;
+        ctx.MoveDir = ctx.KnockbackDirection;
+        ctx.CurrentSpeed = ctx.KnockbackForce;
+    }
+    protected override void OnUpdate(float deltaTime)
+    {
+        if (ctx.IsMoreHurt)
+        {
+            ctx.IsMoreHurt = false;
+            ctx.Animator.Play(ctx.HurtHash,0,0);
+            OnEnter();
+        }
+        if(_elapsedTime >= _knockBackDuration)
+            return;
+
+        _elapsedTime += deltaTime;
+
+        float t = Mathf.Clamp01(_elapsedTime / _knockBackDuration);
+        ctx.CurrentSpeed = Mathf.Lerp(ctx.KnockbackForce, _targetSpeed, t);
+
+        if (_elapsedTime >= _knockBackDuration)
+        {
+            ctx.CurrentSpeed = _targetSpeed;
+        }
+    }
     protected override State GetTransition()
     {
+        if (!ctx.IsHurting)
+        {
+            ctx.Animator.CrossFade(ctx.IdleHash, 0.1f);
+            return ((EnemyTopdownRoot)Parent).Idle;
+        }
         return null;
     }
 }

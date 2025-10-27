@@ -12,25 +12,24 @@ public class EnemyTopdownAttack : State
     protected override void OnEnter()
     {
         _targetLastPosition = ctx.TargetTransform.position;
-        if (GetTransition() != null) return;
-        ctx.Animator.CrossFade(ctx.AttackHash, 0.1f);
+        ctx.CurrentSpeed = 0;
+        //if (GetTransition() != null) return;
+        //ctx.Animator.CrossFade(ctx.AttackHash, 0.1f);
     }protected override void OnUpdate(float deltaTime)
     {
-        UpdateRotation(deltaTime);
-    }
-    private void UpdateRotation(float deltaTime)
-    {
-        var toPlayer = (_targetLastPosition - ctx.RootTransform.position).normalized;
-        if (toPlayer == Vector3.zero)
-            return;
-        Quaternion targetRot = Quaternion.LookRotation(toPlayer);
-        ctx.RootTransform.rotation = Quaternion.Slerp(ctx.RootTransform.rotation, targetRot, deltaTime * ctx.RotateSpeed);
+        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime,_targetLastPosition);
     }
     protected override State GetTransition()
     {
+        if (ctx.IsHurting)
+        {
+            ctx.Animator.CrossFade(ctx.HurtHash, 0.1f);
+            return ((EnemyTopdownRoot)Parent).Hurt;
+        }
         if (ctx.IsDoneAttacking)
         {
-            ctx.IsDoneAttacking = false;    
+            ctx.IsDoneAttacking = false;
+            ctx.Animator.CrossFade(ctx.IdleHash, 0.1f);
             return ((EnemyTopdownRoot)Parent).Idle;
         }
         return null;

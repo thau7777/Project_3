@@ -19,12 +19,17 @@ public class EnemyTopdownStateDriver : MonoBehaviour
 
     [SerializeField]
     float _attackRange = 1f;
+
+    public int MaxHealth { get; set; }
+    public int CurrentHealth { get; set; }
     #endregion
 
     [SerializeField]
     EnemyTopdownContext _context;
     StateMachine _machine;
     State _root;
+
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -43,6 +48,7 @@ public class EnemyTopdownStateDriver : MonoBehaviour
         _root = new EnemyTopdownRoot(null, _context);
         _machine = new StateMachineBuilder(_root).Build();
         
+        GetComponent<Damageable>().Initialize(100);
     }
 
     private void Update()
@@ -61,5 +67,23 @@ public class EnemyTopdownStateDriver : MonoBehaviour
         {
             _context.IsDoneMoving = true;
         }
+        else if (stateInfo.IsTag("Hurt"))
+        {
+            _context.IsHurting = false;
+        }
+    }
+
+    public void OnTakeDamage(int currentHealth, Vector3 knockBackDirection, float knockBackForce)
+    {
+        if(!_context.IsHurting)
+        _context.IsHurting = true;
+        else _context.IsMoreHurt = true;
+
+        _context.KnockbackDirection = knockBackDirection;
+        _context.KnockbackForce = knockBackForce;
+    }
+    public void OnHealed()
+    {
+
     }
 }

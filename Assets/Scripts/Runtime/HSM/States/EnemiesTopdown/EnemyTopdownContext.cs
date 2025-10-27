@@ -1,5 +1,4 @@
 using UnityEngine;
-using HSM;
 public enum EnemyTopdownType
 {
     Slime,
@@ -13,13 +12,25 @@ public class EnemyTopdownContext
 
     public Transform RootTransform { get; private set; }
     public Transform TargetTransform { get; private set; }
-    public float MoveSpeed { get; private set; }
+    public float BaseMoveSpeed { get; private set; }
+    [field: SerializeField]
+    public float CurrentSpeed { get; set; }
     public float RotateSpeed { get; private set; }
+    [field: SerializeField]
+    public Vector3 MoveDir { get; set; }
+
+    public bool IsMoreHurt { get; set; }
+    public Vector3 KnockbackDirection { get; set; }
+    public float KnockbackForce { get; set; }
     public float AttackRange { get; private set; }
+
 
     // State Properties
     public bool IsDoneMoving { get; set; }
     public bool IsDoneAttacking { get; set; }
+    public bool IsHurting { get; set; }
+    public bool IsStunned { get; set; }
+    public bool IsDead { get; set; }
 
     // Cached Animator Hashes
     public int IdleHash => Animator.StringToHash("Idle");
@@ -36,19 +47,6 @@ public class EnemyTopdownContext
         return distanceToTarget <= AttackRange;
     }
 
-    //public State GetTransition()
-    //{
-    //    switch(EnemyType)
-    //    {
-    //        case EnemyTopdownType.Slime:
-    //            // Slime specific transition logic
-    //            break;
-    //        case EnemyTopdownType.Normal:
-    //            // Normal enemy specific transition logic
-    //            break;
-    //    }
-    //}
-    //public 
 
     private EnemyTopdownContext() { }
 
@@ -85,7 +83,7 @@ public class EnemyTopdownContext
 
         public Builder SetMoveSpeed(float distance)
         {
-            ctx.MoveSpeed = distance;
+            ctx.BaseMoveSpeed = distance;
             return this;
         }
 

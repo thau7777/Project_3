@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillExecutor : MonoBehaviour
@@ -20,10 +21,8 @@ public class SkillExecutor : MonoBehaviour
     private Coroutine _chargeCoroutine;
     private Coroutine _lerpCoroutine;
 
-    private Animator _animator;
     void Awake()
     {
-        _animator = GetComponent<Animator>();
         _skillInstance = new List<SkillRuntimeInstance>();
         foreach (var s in _skillDatas)
             _skillInstance.Add(new SkillRuntimeInstance(s));
@@ -47,28 +46,31 @@ public class SkillExecutor : MonoBehaviour
         context.IsNextAttackQueued = false;
         context.CastingSkill = index;
         bool isAimNeeded = _storedSkillData.Value.aimType != AimType.None;
+        context.IsUseSkillByUpperBody = isAimNeeded;
         if (isAimNeeded)
         {
             // run aim anim first
-            context.IsUseSkillByUpperBody = true;
-            context.IsStrafing = true;
-            _animator.CrossFade(_storedSkillData.Value.aimType.ToString(), 0.1f, 1);
+            context.IsAiming = true;
+            context.AimAnimName = _storedSkillData.Value.aimType.ToString();
+        }
+        if (_skillToCast.Definition.CanCharge)
+        {
+            _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect ?? _skillToCast.Definition.FlyweightSettings);
+            Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
+            _chargedSkillFlyweight.Initialize(spawnTransform.position, Quaternion.identity);
 
-            if (_skillToCast.Definition.CanCharge)
+            _chargedSkillFlyweight.transform.SetParent(spawnTransform);
+
+            if (!_skillToCast.Definition.chargingEffect)
             {
-                _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.FlyweightSettings);
-                Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
-                _chargedSkillFlyweight.Initialize(spawnTransform.position, Quaternion.identity);
-                
-                _chargedSkillFlyweight.transform.SetParent(spawnTransform);
-                
                 _chargeCoroutine = StartCoroutine(ChargeSkill(
                     _chargedSkillFlyweight, _skillToCast.Definition.chargeLevel));
             }
-                
-            return;
+
         }
-        context.IsUseSkillByUpperBody = false;
+
+        if (isAimNeeded || _skillToCast.Definition.CanCharge) return;
+
         onCastInstantly?.Invoke();
         CastSkill(context);
     }
@@ -112,14 +114,12 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-        bool isDashSkill = _storedSkillData.Value.animName == "Dash";
-        if (isDashSkill)
-            context.IsDashing = true;
+
+        string animName = _storedSkillData.Value.animName;
+        if (animName == "Dash") context.IsDashing = true;
         context.IsInSpecialMove = true;
         context.NeedHoldStill = _skillToCast.Definition.NeedHoldStill;
-        bool isAimNeeded = _storedSkillData.Value.aimType != AimType.None;
-        string animName = _storedSkillData.Value.animName;
-        _animator.CrossFade(animName, !isDashSkill ? 0.1f : 0f, isAimNeeded ? 1 : 0);
+        context.SkillAnimName = animName;
     }
 
     // animation event
@@ -129,8 +129,8 @@ public class SkillExecutor : MonoBehaviour
     }
     private void ExecuteSkill()
     {
-        if (_skillToCast == null) return;
-        if (_chargedSkillFlyweight != null && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
+        if (_skillToCast == null || _storedSkillData == null) return;
+        if (_chargedSkillFlyweight && !_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
         {
             chargedProjectile.projectileImpactScale = _skillToCast.Definition.name switch
             {
@@ -138,20 +138,26 @@ public class SkillExecutor : MonoBehaviour
                 
                 _ => null
             };
+        }else if (_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight)
+        {
+            _chargedSkillFlyweight.ReturnToPool();
+            _chargedSkillFlyweight = null;
         }
 
-        if (_storedSkillData == null) return;
 
         Vector3 spawnPos = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation).position;
         var ctx = new SkillStrategyContext(transform, spawnPos, _chargedSkillFlyweight);
 
         _skillToCast.Cast(ctx);
 
+
+    }
+    public void ClearSkillData()
+    {
         _skillToCast = null;
         _storedSkillData = null;
         _chargedSkillFlyweight = null;
     }
-
     private Transform GetSkillSpawnTransform(VFXSpawnLocation location)
     {
         Transform skillSpawnTransform = transform;

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88d738d736f601640aa5c5c46f038f8c, type: 3}
-  m_Name: Basic Parry
+  m_Name: Flying Slash
   m_EditorClassIdentifier: Assembly-CSharp::SkillStrategy
   dataForClasses:
   - characterClass: 0
-    animName: Parry
+    animName: Special Slash
     spawnLocation: 0
-    isDashForward: 0
-    dashForce: 0
+    isDashForward: 1
+    dashForce: 7
     aimType: 0
   <FlyweightSettings>k__BackingField: {fileID: 11400000, guid: 156878f4b42619247a1bae3a32673b2e, type: 2}
   <Cooldown>k__BackingField: 0
   <NeedHoldStill>k__BackingField: 0
-  _canCharge: 0
+  _canCharge: 1
   chargingEffect: {fileID: 11400000, guid: 8c439b229b7aa6f41b5359abe86d13ed, type: 2}
   chargeLevel: 0

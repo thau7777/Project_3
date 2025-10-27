@@ -66,6 +66,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     bool _isInSpecialMoveAnim
         => _animator.GetCurrentAnimatorStateInfo(_context.IsUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
 
+    bool _inIsInAttackAnim
+        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
     #endregion
 
     #region Initialization
@@ -75,7 +77,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
-        _context = new PlayerTopdownContextBuilder()
+
+        _context = new PlayerTopdownContext.Builder()
         .SetBaseMoveSpeed(_baseMoveSpeed)
         .SetStrafeMoveSpeed(_strafeMoveSpeed)
         .SetMoveSpeedSmoothTime(_smoothTime)
@@ -136,6 +139,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     {
         UseSKill(1, value, SaveDirToAttack);
     }
+    public void TestDash() => UseSKill(1, true, SaveDirToAttack);
     private void OnButtonQ(bool value)
     {
         UseSKill(2, value, SaveDirToAttack);
@@ -148,12 +152,12 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
         if (isPressed)
         {
-            // use first skill so we put in 0
             _executor.UseSkill(skillIndex, _locomotionSet.characterClass, _context, onCastInstantly);
         }
-        else if (_context.IsStrafing) // unleash the right mouse 
+        else if (_context.CastingSkill != -1) // currently charging skill
         {
             _executor.CastSkill(_context);
+            onCastInstantly?.Invoke();
         }
 
     }
@@ -164,17 +168,18 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     public void OnLeftClick()
     {
         SaveDirToAttack();
-        if (_context.IsNextAttackQueued || _context.IsInSpecialMove) return;
-        // lay cai dau tien va neu la queue thi lay cai thu 2 va luu o dau do
-        if (_context.IsStrafing) // unleash the right mouse 
+        if (_context.IsNextAttackQueued || _context.IsInSpecialMove ||
+            !_context.IsAttacking && _inIsInAttackAnim) return;
+        if (_context.CastingSkill != -1) 
         {
             _executor.CastSkill(_context);
+            SaveDirToAttack();
             return;
         }
         if (!_context.IsAttacking)
         {
             _context.IsAttacking = true;
-            _animator.Play(_locomotionSet.FirstComboAttack.animName, _context.IsRangeClass ? 1 : 0,0);
+            _context.FirstAttackAnimName = _locomotionSet.FirstComboAttack.animName;
         }
         else
         {
@@ -199,7 +204,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
             if (lookDir.sqrMagnitude > 0.001f)
             {
-                _rotateDirOnAttack = lookDir;
+                _rotateDirOnAttack = lookDir.normalized;
             }
         }
     }
@@ -217,39 +222,35 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region Animation Events
     public void OnAttackAnimStart()
     {
-        if (_context.IsDashing)
-        {
-            _context.CurrentMoveSpeed = 0; // reset current speed
-            _context.RotateDir = _context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir;
-            return;
-        }
-        _context.RotateDir = _rotateDirOnAttack; // face the saved dir
+        _context.RotateDir = _context.IsDashing ? (_context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir) : _rotateDirOnAttack;
     }
     public void ApplyDash()
     {
         _context.CurrentMoveSpeed = 0; // reset current speed
-        _context.MoveSpeedSmoothTime = 0.05f; // quick accel
+        _context.MoveSpeedSmoothTime = _context.IsDashing ? 0.01f : 0.05f; // quick accel
         bool isDashForward;
         float dashForce;
         if (_context.IsInSpecialMove)
         {
             isDashForward = _executor.StoredSkillData.Value.isDashForward;
             dashForce = _executor.StoredSkillData.Value.dashForce;
+            
         }
         else
         {
             isDashForward = _locomotionSet.CurrentAttackData.isDashForward;
             dashForce = _locomotionSet.CurrentAttackData.dashForce;
         }
-            
         _context.TargetMoveSpeed = dashForce;
-        
-        _context.MoveDir = _context.IsDashing ? (_context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir) : _rotateDirOnAttack.normalized * (isDashForward ? 1 : -1);
+        _context.MoveDir = _context.IsDashing ? (_context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir) : _rotateDirOnAttack * (isDashForward ? 1 : -1);
+
     }
-    public void StopMoving()
+    public void StopMoving(int isDashTrigerredThis = 0) // 0 means not the dash anim triggered this
     {
+        if (_context.IsDashing && isDashTrigerredThis == 0) return;
         _context.TargetMoveSpeed = 0; // stop moving when attacking
         _context.MoveSpeedSmoothTime = 0.1f;
+        
     }
     
     public void OnAttackTrigger()
@@ -276,10 +277,10 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     public void OnSkillDone()
     {
         _context.IsInSpecialMove = false;
-        _context.IsStrafing = false;
+        _context.IsAiming = false;
         _context.CastingSkill = -1;
         _context.IsDashing = false;
-        
+        _executor.ClearSkillData();
     }
     public void OnAttackDone()
     {
@@ -292,8 +293,11 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _context.IsNextAttackQueued = false;
         _animator.Play(_locomotionSet.QueuedAttackData.animName, _context.IsRangeClass ? _context.UpperBodyLayerIndex : 0,0);
     }
+
+    // must have to reset attack cycle when attack animation exits maybe by other state entering
     public void OnAttackAnimExit()
     {
+        // if marked for exit state
         if (_context.IsAttacking)
             return;
         _locomotionSet.ResetAttackAnimCycle();
