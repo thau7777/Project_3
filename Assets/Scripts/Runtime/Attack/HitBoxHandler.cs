@@ -14,7 +14,7 @@ public class HitBoxHandler : MonoBehaviour
         if (other.TryGetComponent<Damageable>(out var damageable) && other != _origin)
         {
             Vector3 hitDirection = other.transform.position - _origin.position;
-            damageable.TakeDamage(10, hitDirection.normalized,_knockbackForce); // Example damage value
+            damageable.TakeDamage(40, hitDirection.normalized,_knockbackForce); // Example damage value
         }
     }
 }
