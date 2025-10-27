@@ -5,45 +5,43 @@ using UnityEngine.InputSystem;
 
 public class Strafe : State
 {
-    readonly PlayerContext ctx;
-    Action getMoveDirByInput;
+    readonly PlayerTopdownContext ctx;
     Vector3 lastLookDir;
-    public Strafe(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirInput = null) : base(m, parent)
+    bool _triggeredSkill;
+    public Strafe(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
-        this.getMoveDirByInput = getMoveDirInput;
         Add(new LayerWeightActivity(ctx.Animator, ctx.UpperBodyLayerIndex, 1f, 0f, 0.1f)); 
     }
     protected override void OnEnter()
     {
         ctx.TargetMoveSpeed = ctx.StrafeMoveSpeed;
-        ctx.Animator.CrossFade(ctx.StrafeStateHash, ctx.NextAnimCrossFadeTime); // main layer / lower body
+        _triggeredSkill = false;
+        ctx.Animator.CrossFade(ctx.StrafeStateHash, 0.1f); // main layer / lower body
+        ctx.Animator.CrossFade(ctx.AimAnimName, 0.1f, ctx.UpperBodyLayerIndex);
     }
 
     protected override void OnUpdate(float deltaTime)
     {
         if (!ctx.IsInSpecialMove)
         {
-            UpdateMoveDir();
+            ctx.MoveDir = ctx.DesiredMoveDir;
             RotateToMouse(deltaTime);
             return;
         }
+        if (!_triggeredSkill)
+        {
+            _triggeredSkill = true;
+            ctx.Animator.CrossFade(ctx.SkillAnimName, 0.1f, ctx.UpperBodyLayerIndex);
+        }
+
         ctx.RotateDir = lastLookDir;
         if (ctx.NeedHoldStill)
         {
             ctx.TargetMoveSpeed = 0;
             ctx.MoveDir = Vector3.zero;
         }
-        else UpdateMoveDir();
-    }
-    protected override void OnExit()
-    {
-        if(!ctx.IsAttacking)
-        ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
-    }
-    private void UpdateMoveDir()
-    {
-        getMoveDirByInput?.Invoke();
+        else ctx.MoveDir = ctx.DesiredMoveDir;
     }
     private void RotateToMouse(float deltaTime)
     {
@@ -67,20 +65,18 @@ public class Strafe : State
             }
         }
     }
+    protected override void OnExit()
+    {
+        ctx.Animator.Play("Empty State", ctx.UpperBodyLayerIndex);
+    }
     protected override State GetTransition()
     {
-        if (!ctx.IsStrafing)
+        if (!ctx.IsAiming)
         {
-            ctx.NextAnimCrossFadeTime = 0.1f;
             if (ctx.MoveInput != Vector2.zero)
                 return ((Grounded)Parent).Move;
             else
                 return ((Grounded)Parent).Idle;
-        }else if (ctx.IsAttacking)
-        {
-            ctx.IsStrafing = false;
-            ctx.NextAnimCrossFadeTime = 0.1f;
-            return ((Grounded)Parent).Attack;
         }
             return null;
     }

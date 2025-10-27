@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillExecutor : MonoBehaviour
@@ -16,10 +18,11 @@ public class SkillExecutor : MonoBehaviour
     private SkillDataForClass? _storedSkillData;
     public SkillDataForClass? StoredSkillData => _storedSkillData;
     private Flyweight _chargedSkillFlyweight;
-    private Animator _animator;
+    private Coroutine _chargeCoroutine;
+    private Coroutine _lerpCoroutine;
+
     void Awake()
     {
-        _animator = GetComponent<Animator>();
         _skillInstance = new List<SkillRuntimeInstance>();
         foreach (var s in _skillDatas)
             _skillInstance.Add(new SkillRuntimeInstance(s));
@@ -36,37 +39,87 @@ public class SkillExecutor : MonoBehaviour
         _storedSkillData = skillData;
         return true;
     }
-    public bool UseSkill(int index, CharacterClass characterClass,PlayerContext context, Action onCastInstantly = null)
+    public void UseSkill(int index, CharacterClass characterClass,PlayerTopdownContext context, Action onCastInstantly = null)
     {
-        if (!SetSkillData(index, characterClass)) return false;
+        if (!SetSkillData(index, characterClass)) return;
 
+        context.IsNextAttackQueued = false;
+        context.CastingSkill = index;
         bool isAimNeeded = _storedSkillData.Value.aimType != AimType.None;
+        context.IsUseSkillByUpperBody = isAimNeeded;
         if (isAimNeeded)
         {
             // run aim anim first
-            context.IsStrafing = true;
-            _animator.CrossFade(_storedSkillData.Value.aimType.ToString(), 0.1f, 1);
-
-            if (_skillToCast.Definition.CanCharge)
-            {
-                _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.FlyweightSettings);
-                _chargedSkillFlyweight.transform.position = GetSkillSpawnPoint(_storedSkillData.Value.spawnLocation);
-                _chargedSkillFlyweight.transform.SetParent(transform);
-            }
-                
-            return true;
+            context.IsAiming = true;
+            context.AimAnimName = _storedSkillData.Value.aimType.ToString();
         }
+        if (_skillToCast.Definition.CanCharge)
+        {
+            _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect ?? _skillToCast.Definition.FlyweightSettings);
+            Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
+            _chargedSkillFlyweight.Initialize(spawnTransform.position, Quaternion.identity);
+
+            _chargedSkillFlyweight.transform.SetParent(spawnTransform);
+
+            if (!_skillToCast.Definition.chargingEffect)
+            {
+                _chargeCoroutine = StartCoroutine(ChargeSkill(
+                    _chargedSkillFlyweight, _skillToCast.Definition.chargeLevel));
+            }
+
+        }
+
+        if (isAimNeeded || _skillToCast.Definition.CanCharge) return;
+
         onCastInstantly?.Invoke();
         CastSkill(context);
-        return false;
     }
-    public void CastSkill(PlayerContext context)// run the actual skill animation
+
+    private IEnumerator ChargeSkill(Flyweight chargingObject,int totalLevel)
     {
+        int currentLevel = 0;
+        while (currentLevel < totalLevel)
+        {
+            yield return Helpers.GetWaitForSeconds(2f);
+            currentLevel++;
+
+            Vector3 startScale = chargingObject.transform.localScale;
+            Vector3 targetScale = startScale + Vector3.one * 0.3f;
+
+            if (_lerpCoroutine != null)
+                StopCoroutine(_lerpCoroutine);
+
+            _lerpCoroutine = StartCoroutine(Helpers.LerpValue(
+                startScale,
+                targetScale,
+                0.5f,
+                Vector3.Lerp,
+                value => chargingObject.transform.localScale = value
+            ));
+
+
+        }
+        yield break;
+    }
+    public void CastSkill(PlayerTopdownContext context)// run the actual skill animation
+    {
+        if(_chargeCoroutine != null)
+        {
+            StopCoroutine(_chargeCoroutine);
+            _chargeCoroutine = null;
+
+            if(_lerpCoroutine != null)
+            {
+                StopCoroutine(_lerpCoroutine);
+                _lerpCoroutine = null;
+            }
+        }
+
+        string animName = _storedSkillData.Value.animName;
+        if (animName == "Dash") context.IsDashing = true;
         context.IsInSpecialMove = true;
         context.NeedHoldStill = _skillToCast.Definition.NeedHoldStill;
-        bool isAimNeeded = _storedSkillData.Value.aimType != AimType.None;
-        string animName = _storedSkillData.Value.animName;
-        _animator.CrossFade(animName, 0.1f, isAimNeeded ? 1 : 0);
+        context.SkillAnimName = animName;
     }
 
     // animation event
@@ -74,33 +127,49 @@ public class SkillExecutor : MonoBehaviour
     {
         ExecuteSkill();
     }
-    public void OnSkillEnd()
-    {
-
-    }
     private void ExecuteSkill()
     {
-        if(_skillToCast == null) return;
-        Vector3 spawnPoint = _chargedSkillFlyweight ? GetSkillSpawnPoint(_storedSkillData.Value.spawnLocation) : Vector3.zero;
-        var ctx = new SkillStrategyContext(transform, spawnPoint, _chargedSkillFlyweight);
+        if (_skillToCast == null || _storedSkillData == null) return;
+        if (_chargedSkillFlyweight && !_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
+        {
+            chargedProjectile.projectileImpactScale = _skillToCast.Definition.name switch
+            {
+                "Fireball" => _chargedSkillFlyweight.transform.localScale * 2f,
+                
+                _ => null
+            };
+        }else if (_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight)
+        {
+            _chargedSkillFlyweight.ReturnToPool();
+            _chargedSkillFlyweight = null;
+        }
+
+
+        Vector3 spawnPos = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation).position;
+        var ctx = new SkillStrategyContext(transform, spawnPos, _chargedSkillFlyweight);
 
         _skillToCast.Cast(ctx);
+
+
+    }
+    public void ClearSkillData()
+    {
         _skillToCast = null;
         _storedSkillData = null;
         _chargedSkillFlyweight = null;
     }
-    private Vector3 GetSkillSpawnPoint(VFXSpawnLocation location)
+    private Transform GetSkillSpawnTransform(VFXSpawnLocation location)
     {
-        Vector3 skillSpawnPoint = transform.position;
+        Transform skillSpawnTransform = transform;
         foreach (var sp in _skillSpawnPoints)
         {
             if (sp.name == location.ToString())
             {
-                skillSpawnPoint = sp.position;
+                skillSpawnTransform = sp;
                 break;
             }
         }
-        return skillSpawnPoint;
+        return skillSpawnTransform;
     }
     public void AddOrReplaceSkill(int index, SkillStrategy newSkill)
     {

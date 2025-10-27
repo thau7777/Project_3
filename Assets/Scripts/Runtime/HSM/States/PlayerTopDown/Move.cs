@@ -3,12 +3,11 @@ using HSM;
 using System;
 public class Move : State
 {
-    readonly PlayerContext ctx;
-    Action getMoveDirByInput;
-    public Move(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirByInput = null) : base(m, parent)
+    readonly PlayerTopdownContext ctx;
+    public Move(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
-        this.getMoveDirByInput = getMoveDirByInput;
+        
         Add(new ColorPhaseActivity(ctx.Renderer)
         {
             enterColor = Color.green,  // runs while Grounded is activating
@@ -17,39 +16,35 @@ public class Move : State
     protected override void OnEnter()
     {
         ctx.TargetMoveSpeed = ctx.BaseMoveSpeed;
-        var currentAnim = ctx.Animator.GetCurrentAnimatorStateInfo(0);
-        if (!currentAnim.IsName("Movement") && !ctx.IsInSpecialMove && !ctx.IsStrafing && !ctx.IsAttacking)
-            ctx.Animator.CrossFade(ctx.MovementStateHash, ctx.NextAnimCrossFadeTime);
+        bool isInMovementAnim = ctx.Animator.GetCurrentAnimatorStateInfo(0).IsName("Movement");
+        if (!isInMovementAnim)
+        {
+            ctx.Animator.CrossFade(ctx.MovementStateHash, 0.1f); // main layer / lower body
+        }
     }
     protected override void OnUpdate(float deltaTime)
     {
-        UpdateMoveDir();
+        ctx.MoveDir = ctx.DesiredMoveDir;
         // rotate toward movement
         ctx.RotateDir = ctx.MoveDir;
     }
-    private void UpdateMoveDir()
-    {
-        getMoveDirByInput?.Invoke();
-    }
     protected override State GetTransition()
     {
-        if(ctx.MoveInput == Vector2.zero)
-            return ((Grounded)Parent).Idle;
-        else if (ctx.IsStrafing)
+        if (ctx.IsAiming)
         {
-            ctx.NextAnimCrossFadeTime = 0.1f;
             return ((Grounded)Parent).Strafe;
         }
-        else if (ctx.IsAttacking)
+        if (ctx.IsInSpecialMove)
         {
-            ctx.NextAnimCrossFadeTime = 0.1f;
-            return ((Grounded)Parent).Attack;
-        }else if (ctx.IsInSpecialMove)
-        {
-            ctx.NextAnimCrossFadeTime = 0.1f;
             return ((Grounded)Parent).SpecialMove;
         }
-            return null;
+        if (ctx.IsAttacking)
+        {
+            return ((Grounded)Parent).Attack;
+        }
+        if (ctx.MoveInput == Vector2.zero)
+            return ((Grounded)Parent).Idle;
+        return null;
     }
 
 }

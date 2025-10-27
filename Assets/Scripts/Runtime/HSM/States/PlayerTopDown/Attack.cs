@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Attack : State
 {
-    readonly PlayerContext ctx;
+    readonly PlayerTopdownContext ctx;
     Action getMoveDirByInput;
-    public Attack(StateMachine m, State parent, PlayerContext ctx, Action getMoveDirInput = null) : base(m, parent)
+    public Attack(StateMachine m, State parent, PlayerTopdownContext ctx, Action getMoveDirInput = null) : base(m, parent)
     {
         this.ctx = ctx;
         this.getMoveDirByInput = getMoveDirInput;
@@ -22,10 +22,10 @@ public class Attack : State
     {
         if (ctx.IsRangeClass)
         {
-            ctx.Animator.CrossFade(ctx.StrafeStateHash, ctx.NextAnimCrossFadeTime);
             ctx.TargetMoveSpeed = ctx.StrafeMoveSpeed;
-            return;
+            ctx.Animator.Play(ctx.StrafeStateHash, 0, 0);
         }
+        ctx.Animator.Play(ctx.FirstAttackAnimName, ctx.IsRangeClass ? 1 : 0, 0);
     }
     protected override void OnUpdate(float deltaTime)
     {
@@ -33,6 +33,7 @@ public class Attack : State
         {
             ctx.Animator.SetLayerWeight(ctx.UpperBodyLayerIndex, 1f);
             UpdateMoveDir();
+            ctx.MoveDir = ctx.DesiredMoveDir;
         }
 
     }
@@ -40,34 +41,31 @@ public class Attack : State
     {
         getMoveDirByInput?.Invoke();
     }
-
     protected override void OnExit()
     {
-        if (ctx.IsRangeClass && !ctx.IsStrafing && !ctx.IsAttacking)
-        {
-            ctx.Animator.CrossFade("Empty State", ctx.NextAnimCrossFadeTime, ctx.UpperBodyLayerIndex);
-            return;
-        }
+        if (ctx.IsRangeClass)
+            ctx.Animator.Play("Empty State", ctx.UpperBodyLayerIndex);
     }
     protected override State GetTransition()
     {
-        if(!ctx.IsAttacking)
+        if (ctx.IsAiming)
         {
-            ctx.NextAnimCrossFadeTime = 0.1f;
+            ctx.IsAttacking = false;
+
+            return ((Grounded)Parent).Strafe;
+        }
+        if (ctx.IsInSpecialMove)
+        {
+            ctx.IsAttacking = false;
+
+            return ((Grounded)Parent).SpecialMove;
+        }
+        if (!ctx.IsAttacking)
+        {
             if (ctx.MoveInput != Vector2.zero)
                 return ((Grounded)Parent).Move;
             else
                 return ((Grounded)Parent).Idle;
-        }else if (ctx.IsStrafing)
-        {
-            ctx.IsAttacking = false;
-            ctx.NextAnimCrossFadeTime = 0.1f;
-            return ((Grounded)Parent).Strafe;
-        }else if (ctx.IsInSpecialMove)
-        {
-            ctx.IsAttacking = false;
-            ctx.NextAnimCrossFadeTime = 0.1f;
-            return ((Grounded)Parent).SpecialMove;
         }
             return null;
     }

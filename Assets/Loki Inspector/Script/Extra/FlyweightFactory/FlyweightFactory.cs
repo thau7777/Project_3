@@ -44,4 +44,6 @@ public enum FlyweightType
     BigPurpleHitVFX,
     FireBallProjectile,
     FireBallExplosionVFX,
+    TopDownEnemySlime,
+    TopDownEnemyTurtle,
 }

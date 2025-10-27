@@ -13,6 +13,7 @@ public class AttackEventBehaviour : StateMachineBehaviour
         _hasTriggered = false;
         _stateDriver = animator.GetComponent<PlayerTopDownStateDriver>();
         _stateDriver.OnAttackAnimStart();
+        
     }
 
     // Called every frame while this state is active
