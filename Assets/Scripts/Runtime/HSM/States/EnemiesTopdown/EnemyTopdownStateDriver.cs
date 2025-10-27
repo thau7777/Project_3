@@ -1,6 +1,6 @@
 using UnityEngine;
 using HSM;
-public class EnemyTopdownStateDriver : MonoBehaviour
+public class EnemyTopdownStateDriver : Flyweight
 {
     #region References
     Animator _animator;
@@ -47,7 +47,6 @@ public class EnemyTopdownStateDriver : MonoBehaviour
             .Build();
         _root = new EnemyTopdownRoot(null, _context);
         _machine = new StateMachineBuilder(_root).Build();
-        
         GetComponent<Damageable>().Initialize(100);
     }
 
@@ -71,11 +70,21 @@ public class EnemyTopdownStateDriver : MonoBehaviour
         {
             _context.IsHurting = false;
         }
+        else if (stateInfo.IsTag("Dead"))
+        {
+            FlyweightFactory.ReturnToPool(this);
+        }
     }
 
     public void OnTakeDamage(int currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {
-        if(!_context.IsHurting)
+        if(_context.IsDead) return;
+        if (currentHealth <= 0)
+        {
+            _context.IsDead = true;
+            return;
+        }
+        if (!_context.IsHurting)
         _context.IsHurting = true;
         else _context.IsMoreHurt = true;
 
@@ -85,5 +94,14 @@ public class EnemyTopdownStateDriver : MonoBehaviour
     public void OnHealed()
     {
 
+    }
+    public void ResetStateContext()
+    {
+        _context.IsDead = false;
+        _context.IsHurting = false;
+        _context.IsMoreHurt = false;
+        _context.IsStunned = false;
+        _context.IsDoneAttacking = true;
+        _context.IsDoneMoving = true;
     }
 }

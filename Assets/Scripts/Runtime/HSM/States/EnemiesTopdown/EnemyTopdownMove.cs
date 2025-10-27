@@ -15,7 +15,7 @@ public class EnemyTopdownMove : State
             _targetLastPosition = ctx.TargetTransform.position;
         ctx.CurrentSpeed = ctx.BaseMoveSpeed;
         //if (GetTransition() != null) return;
-        //ctx.Animator.CrossFade(ctx.MoveHash, 0.1f);
+        ctx.Animator.CrossFade(ctx.MoveHash, 0.1f);
     }
     protected override void OnUpdate(float deltaTime)
     {
@@ -28,9 +28,12 @@ public class EnemyTopdownMove : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsDead)
+        {
+            return ((EnemyTopdownRoot)Parent).Dead;
+        }
         if (ctx.IsHurting)
         {
-            ctx.Animator.CrossFade(ctx.HurtHash, 0.1f);
             return ((EnemyTopdownRoot)Parent).Hurt;
         }
         if (ctx.EnemyType == EnemyTopdownType.Slime)
@@ -40,10 +43,8 @@ public class EnemyTopdownMove : State
                 ctx.IsDoneMoving = false;
                 if (ctx.IsTargetInAttackRange())
                 {
-                    ctx.Animator.CrossFade(ctx.AttackHash, 0.1f);
                     return ((EnemyTopdownRoot)Parent).Attack;
                 }
-                ctx.Animator.CrossFade(ctx.IdleHash, 0.1f);
                 return ((EnemyTopdownRoot)Parent).Idle;
             }
         }
@@ -51,7 +52,6 @@ public class EnemyTopdownMove : State
         {
             if (ctx.IsTargetInAttackRange())
             {
-                ctx.Animator.CrossFade(ctx.AttackHash, 0.1f);
                 return ((EnemyTopdownRoot)Parent).Attack;
             }
         }

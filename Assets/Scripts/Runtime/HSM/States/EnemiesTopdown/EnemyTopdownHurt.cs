@@ -16,13 +16,13 @@ public class EnemyTopdownHurt : State
         _elapsedTime = 0f;
         ctx.MoveDir = ctx.KnockbackDirection;
         ctx.CurrentSpeed = ctx.KnockbackForce;
+        ctx.Animator.Play(ctx.HurtHash, 0, 0);
     }
     protected override void OnUpdate(float deltaTime)
     {
         if (ctx.IsMoreHurt)
         {
             ctx.IsMoreHurt = false;
-            ctx.Animator.Play(ctx.HurtHash,0,0);
             OnEnter();
         }
         if(_elapsedTime >= _knockBackDuration)
@@ -40,9 +40,12 @@ public class EnemyTopdownHurt : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsDead)
+        {
+            return ((EnemyTopdownRoot)Parent).Dead;
+        }
         if (!ctx.IsHurting)
         {
-            ctx.Animator.CrossFade(ctx.IdleHash, 0.1f);
             return ((EnemyTopdownRoot)Parent).Idle;
         }
         return null;

@@ -14,22 +14,24 @@ public class EnemyTopdownAttack : State
         _targetLastPosition = ctx.TargetTransform.position;
         ctx.CurrentSpeed = 0;
         //if (GetTransition() != null) return;
-        //ctx.Animator.CrossFade(ctx.AttackHash, 0.1f);
+        ctx.Animator.CrossFade(ctx.AttackHash, 0,0);
     }protected override void OnUpdate(float deltaTime)
     {
         ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime,_targetLastPosition);
     }
     protected override State GetTransition()
     {
+        if (ctx.IsDead)
+        {
+            return ((EnemyTopdownRoot)Parent).Dead;
+        }
         if (ctx.IsHurting)
         {
-            ctx.Animator.CrossFade(ctx.HurtHash, 0.1f);
             return ((EnemyTopdownRoot)Parent).Hurt;
         }
         if (ctx.IsDoneAttacking)
         {
             ctx.IsDoneAttacking = false;
-            ctx.Animator.CrossFade(ctx.IdleHash, 0.1f);
             return ((EnemyTopdownRoot)Parent).Idle;
         }
         return null;

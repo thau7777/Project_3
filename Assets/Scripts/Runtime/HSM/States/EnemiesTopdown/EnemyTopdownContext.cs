@@ -19,7 +19,6 @@ public class EnemyTopdownContext
     [field: SerializeField]
     public Vector3 MoveDir { get; set; }
 
-    public bool IsMoreHurt { get; set; }
     public Vector3 KnockbackDirection { get; set; }
     public float KnockbackForce { get; set; }
     public float AttackRange { get; private set; }
@@ -29,6 +28,7 @@ public class EnemyTopdownContext
     public bool IsDoneMoving { get; set; }
     public bool IsDoneAttacking { get; set; }
     public bool IsHurting { get; set; }
+    public bool IsMoreHurt { get; set; }
     public bool IsStunned { get; set; }
     public bool IsDead { get; set; }
 
