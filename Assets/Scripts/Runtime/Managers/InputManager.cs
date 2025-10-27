@@ -31,6 +31,9 @@ public class InputManager : PersistentSingleton<InputManager>
             case "TowerDefense":
                 _inputReader.SwitchActionMap(ActionMap.PlayerTowerDefense);
                 break;
+            case "PopupGame":
+                _inputReader.SwitchActionMap(ActionMap.PopUpGame);
+                break;
             default:
                 _inputReader.SwitchActionMap(ActionMap.UI);
                 break;
