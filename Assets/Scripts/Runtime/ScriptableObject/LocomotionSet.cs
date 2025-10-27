@@ -85,4 +85,3 @@ public class LocomotionSet : ScriptableObject
         _currentIndex = -1;
     }
 }
-

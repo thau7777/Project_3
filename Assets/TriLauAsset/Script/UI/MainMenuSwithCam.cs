@@ -28,10 +28,12 @@ namespace MyRule
             if (cam2.activeSelf)
             {
                 canvas.SetActive(false);
+                EscManager.Instance.SetIsSettingsOpen(true);
             }
             else
             {
                 canvas.SetActive(true);
+                EscManager.Instance.SetIsSettingsOpen(false);
             }
         }
     }

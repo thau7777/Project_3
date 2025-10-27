@@ -5,25 +5,26 @@ namespace MyRule
 {
     public class UISettingsManager : MonoBehaviour
     {
+        public static UISettingsManager Instance;
+
         private VisualElement _settingsPanel;
-        private Button _backButton;
 
         private void Awake()
         {
+            Instance = this;
+
             var root = GetComponent<UIDocument>().rootVisualElement;
 
             _settingsPanel = root.Q<VisualElement>("SettingsPanel");
-            _backButton = root.Q<Button>("BackButton");
         }
 
         private void Start()
         {
-            _backButton.clicked += OnBackButtonClicked;
+            
         }
 
-        private void OnBackButtonClicked()
+        public void HideSettingsPanel()
         {
-            MainMenuSwithCam.Instance.SwithCamera();
             _settingsPanel.AddToClassList("HideSettingsPanel");
         }
 
