@@ -1,0 +1,44 @@
+﻿using UnityEngine;
+
+namespace Turnbase
+{
+    public static class SkillCommandFactory
+    {
+        public static ICommand CreateCommand(Character user, Character target, Skill skill, BattleManager battleManager)
+        {
+            switch (skill.skillType)
+            {
+                case SkillType.MeleeAttack:
+                    return new MeleeAttackCommand(user, target, skill, battleManager);
+
+                case SkillType.RangedAttack:
+                    return new RangedAttackCommand(user, target, skill, battleManager);
+
+                case SkillType.Heal:
+                    return new HealCommand(user, target, skill, battleManager);
+
+                case SkillType.Buff:
+                    return new BuffCommand(user, target, skill, battleManager);
+
+                case SkillType.Shield:
+                    return new ShieldCommand(user, target, skill, battleManager);
+
+                case SkillType.Special:
+                    return new HealCommand(user, target, skill, battleManager);
+
+                case SkillType.DamageAll:
+                    return new DamageAllCommand(user, skill, battleManager);
+
+                case SkillType.RangedProjectile:
+                    return new ProjectileAttackCommand(user, target, skill, battleManager);
+
+
+                default:
+                    Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
+                    return null;
+            }
+        }
+    }
+
+}
+

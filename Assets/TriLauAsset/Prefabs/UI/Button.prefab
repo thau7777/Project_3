@@ -338,7 +338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 2100000, guid: 0644d3d689740d84ba141d3a3855333b, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -397,19 +397,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3515212426103506462}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuSwithCam, Assembly-CSharp
-        m_MethodName: SwithCamera
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7297346034940812161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,3 +412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuButton
   buttonText: {fileID: 5018663467024586503}
   selectHighlightObj: {fileID: 1344573200663292409}
+  hoverSound: {fileID: 0}
+  activeSound: {fileID: 0}
+  button: {fileID: 6714692184127924306}
+  selectColor: {r: 1, g: 1, b: 1, a: 1}
+  deselectColor: {r: 0.2905661, g: 0.2905661, b: 0.2905661, a: 1}

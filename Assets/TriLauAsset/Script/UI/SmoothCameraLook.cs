@@ -7,6 +7,7 @@ namespace MyRule
     {
         [Header("References")]
         public Transform target;
+        public InputReader inputReader;
 
         [Header("Settings")]
         public float lookSpeed = 0.1f;
@@ -17,6 +18,18 @@ namespace MyRule
         private Vector2 rotation;
         private Vector2 targetRotation;
 
+        private Vector2 lookInput;
+
+        private void OnEnable()
+        {
+            inputReader.uiActions.onLook += OnLook;
+        }
+
+        private void OnDisable()
+        {
+            inputReader.uiActions.onLook -= OnLook;
+        }
+
         private void Start()
         {
             rotation = Vector2.zero;
@@ -25,10 +38,11 @@ namespace MyRule
 
         private void Update()
         {
-            Vector2 lookInput = Mouse.current.delta.ReadValue() * lookSpeed;
+            //if (lookInput == Vector2.zero) return;
+            //Vector2 lookInput = Mouse.current.delta.ReadValue() * lookSpeed;
 
-            targetRotation.x -= lookInput.y;
-            targetRotation.y += lookInput.x;
+            targetRotation.x -= lookInput.y * lookSpeed;
+            targetRotation.y += lookInput.x * lookSpeed;
             targetRotation.x = Mathf.Clamp(targetRotation.x, -maxXAngle, maxXAngle);
             targetRotation.y = Mathf.Clamp(targetRotation.y, -maxYAngle, maxYAngle);
 
@@ -38,6 +52,11 @@ namespace MyRule
             {
                 target.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
             }
+        }
+
+        private void OnLook(Vector2 lookValue)
+        {
+            lookInput = lookValue;
         }
     }
 }

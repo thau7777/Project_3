@@ -1,0 +1,72 @@
+﻿using System.Collections;
+using UnityEngine;
+using System.Linq;
+
+
+namespace Turnbase
+{
+    public class AttackingState : BaseState
+    {
+        private Character target;
+
+        public AttackingState(CharacterStateMachine stateMachine) : base(stateMachine) { }
+
+        public override void OnEnter()
+        {
+            target = stateMachine.character.target;
+
+            if (target == null || !target.isAlive)
+            {
+                Debug.LogWarning("Mục tiêu không hợp lệ hoặc đã chết. Trở lại trạng thái chờ.");
+                stateMachine.battleManager.EndTurn(stateMachine.character);
+                return;
+            }
+
+            Skill basicAttack = ScriptableObject.CreateInstance<Skill>();
+            basicAttack.skillName = "Basic Attack";
+
+            basicAttack.damage = 1;
+
+            basicAttack.skillType = SkillType.MeleeAttack;
+
+            ICommand command;
+            BattleManager bm = stateMachine.battleManager;
+
+            switch (stateMachine.character.characterClass)
+            {
+                case CharacterClass.Sword_Shield:
+                    command = new MeleeAttackCommand(stateMachine.character, target, basicAttack, bm);
+                    break;
+                case CharacterClass.Magical:
+                    command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
+                    break;
+                case CharacterClass.Summon:
+                    command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
+                    break;
+                case CharacterClass.Enemy:
+                    command = new MeleeAttackCommand(stateMachine.character, target, basicAttack, bm);
+                    break;
+                case CharacterClass.Tank:
+                    command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
+                    break;
+                default:
+                    command = new StationaryAttackCommand(stateMachine.character, target, basicAttack, bm);
+                    break;
+            }
+
+            stateMachine.character.StartCoroutine(ExecuteCommand(command));
+        }
+
+        private IEnumerator ExecuteCommand(ICommand command)
+        {
+            yield return stateMachine.character.StartCoroutine(command.Execute());
+        }
+
+        public override void OnUpdate() { }
+
+        public override void OnExit()
+        {
+            stateMachine.character.StopAllCoroutines();
+        }
+    }
+}

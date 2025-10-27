@@ -192,7 +192,7 @@ MonoBehaviour:
     x: 34
     y: 278
     width: 652
-    height: 2011
+    height: 2031
 --- !u!114 &114350483966674978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2010,6 +2010,7 @@ MonoBehaviour:
   - {fileID: 114350483966675081}
   - {fileID: 114350483966675086}
   - {fileID: 114350483966675087}
+  - {fileID: 114350483966675126}
   m_OutputSlots: []
   m_Label: 
   m_Data: {fileID: 114350483966674997}
@@ -2063,8 +2064,7 @@ MonoBehaviour:
     - rid: 1001
       type: {class: ParticleShadingShaderGraph, ns: UnityEditor.VFX, asm: Unity.VisualEffectGraph.Editor}
       data:
-        shaderGraph: {fileID: 4333940904281232215, guid: 9d608e0a9caf857449b4b03f66841781,
-          type: 3}
+        shaderGraph: {fileID: 4333940904281232215, guid: 9d608e0a9caf857449b4b03f66841781, type: 3}
         materialSettings:
           m_PropertyNames: []
           m_PropertyValues: []
@@ -3798,3 +3798,37 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 114350483966675086}
+--- !u!114 &114350483966675126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a331b1d86cc8d4aa106ccbe0da5852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.VisualEffectGraph.Editor::UnityEditor.VFX.VFXSlotTexture2D
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 114350483966675126}
+  m_MasterData:
+    m_Owner: {fileID: 114350483966675072}
+    m_Value:
+      m_Type:
+        m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"2a54f16904242654299a96730ded17c9","type":3}}'
+    m_Space: -1
+  m_Property:
+    name: _NoiseTex
+    m_serializedType:
+      m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  m_Direction: 0
+  m_LinkedSlots: []
