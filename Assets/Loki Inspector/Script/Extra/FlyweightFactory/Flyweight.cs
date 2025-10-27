@@ -8,4 +8,8 @@ public abstract class Flyweight : MonoBehaviour
         transform.position = position;
         transform.rotation = rotation;
     }
+    public void ReturnToPool()
+    {
+        FlyweightFactory.ReturnToPool(this);
+    }
 }
