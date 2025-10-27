@@ -125,15 +125,17 @@ namespace Turnbase
 
         private void SpawnImpactEffect(Vector3 position)
         {
-            GameObject effectToSpawn = skill.impactVFXPrefab;
-
-            float duration = 3f;
+            FlyweightSettings effectToSpawn = skill.impactVFXPrefab;
 
             if (effectToSpawn != null)
             {
-                GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+                Flyweight effectInstance = FlyweightFactory.Spawn(effectToSpawn);
 
-                GameObject.Destroy(effectInstance, duration);
+                if (effectInstance != null)
+                {
+                    effectInstance.Initialize(position, Quaternion.identity);
+
+                }
             }
         }
     }

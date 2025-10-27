@@ -30131,6 +30131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateMachine: {fileID: 6007067907109271698}
   characterClass: 0
+  characterElement: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
   - {fileID: 11400000, guid: 93dbbbec8c2df4447b3dd35f19171ece, type: 2}
@@ -30141,7 +30142,7 @@ MonoBehaviour:
     currentHP: 150
     maxMP: 261
     currentMP: 261
-    maxShield: 1000
+    maxShield: 10000
     currentShield: 0
     attack: 100
     defense: 100
@@ -30157,6 +30158,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
+  battleUIManager: {fileID: 0}
   buffManager: {fileID: -7072520419978499482}
   isParryable: 0
   ownUI: {fileID: 0}
@@ -30205,10 +30207,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterBuffManager
   attackBuffTurnsRemaining: 0
+  attackVFXInstance: {fileID: 0}
   maxHPBuffTurnsRemaining: 0
+  maxHPVFXInstance: {fileID: 0}
   defenseBuffTurnsRemaining: 0
+  defenseVFXInstance: {fileID: 0}
   agilityBuffTurnsRemaining: 0
+  agilityVFXInstance: {fileID: 0}
+  magicalAttackBuffTurnsRemaining: 0
+  magicalAttackVFXInstance: {fileID: 0}
+  magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseVFXInstance: {fileID: 0}
   shieldTurnsRemaining: 0
+  shieldVFXInstance: {fileID: 0}
 --- !u!1 &8083655193775197940
 GameObject:
   m_ObjectHideFlags: 0

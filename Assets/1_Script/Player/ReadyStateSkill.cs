@@ -201,15 +201,17 @@ namespace Turnbase
 
             if (newPet != null)
             {
-                GameObject effectToSpawn = skill.impactVFXPrefab; 
+                FlyweightSettings effectToSpawn = skill.impactVFXPrefab;
+                float vfxDuration = 2.0f;
 
                 if (effectToSpawn != null)
                 {
                     Vector3 position = newPet.transform.position;
 
-                    GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+                    Flyweight effectInstance = FlyweightFactory.Spawn(effectToSpawn);
 
-                    GameObject.Destroy(effectInstance, 2.0f);
+                    stateMachine.StartCoroutine(ReleaseVFXAfterDelay(effectInstance, vfxDuration));
+
                     Debug.Log($"Đã Spawn VFX Triệu hồi '{skill.skillName}' sử dụng impactVFXPrefab tại vị trí Pet.");
                 }
                 else
@@ -227,6 +229,16 @@ namespace Turnbase
             user.battleManager.EndTurn(user);
             yield break;
         }
+
+        private IEnumerator ReleaseVFXAfterDelay(Flyweight effect, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (effect != null)
+            {
+                FlyweightFactory.ReturnToPool(effect);
+            }
+        }
+
         public void OnCancel()
         {
             if (stateMachine.character.ownUI != null)

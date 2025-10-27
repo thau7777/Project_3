@@ -19,7 +19,7 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            Debug.Log($"{user.name} dùng skill Buff {skill.statToModify}!");
+            Debug.Log($"{user.name} dùng skill Buff {skill.buffProperties.statToModify}!");
 
             yield return AnimateBuffUser();
 
@@ -59,13 +59,13 @@ namespace Turnbase
         private void ApplyBuffEffects(List<Character> targetsToBuff)
         {
             int buffAmount = skill.damage;
-            int buffDuration = skill.durationTurns;
+            int buffDuration = skill.buffProperties.durationTurns;
 
             foreach (var charTarget in targetsToBuff)
             {
-                GameObject activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
+                Flyweight activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
 
-                switch (skill.statToModify)
+                switch (skill.buffProperties.statToModify)
                 {
                     case StatType.Attack:
                         charTarget.ApplyAttackBuff(buffAmount, buffDuration, activeVFX);
@@ -92,7 +92,7 @@ namespace Turnbase
                         break;
 
                     default:
-                        Debug.LogWarning($"Skill '{skill.skillName}' có StatType là {skill.statToModify}. StatType này chưa được hỗ trợ trong BuffCommand.");
+                        Debug.LogWarning($"Skill '{skill.skillName}' có StatType là {skill.buffProperties.statToModify}. StatType này chưa được hỗ trợ trong BuffCommand.");
                         break;
                 }
             }

@@ -12,32 +12,32 @@ namespace Turnbase
         [Header("Attack Buff")]
         [HideInInspector] public int attackBuffTurnsRemaining = 0;
         [HideInInspector] private int originalBaseAttack = 0;
-        [HideInInspector] public GameObject attackVFXInstance;
+        [HideInInspector] public Flyweight attackVFXInstance;
 
         [Header("MAX HP Buff")]
         [HideInInspector] private int originalBaseMaxHP = 0;
         [HideInInspector] public int maxHPBuffTurnsRemaining = 0;
-        [HideInInspector] public GameObject maxHPVFXInstance;
+        [HideInInspector] public Flyweight maxHPVFXInstance;
 
         [Header("Defense Buff")]
         [HideInInspector] private int originalBaseDefense = 0;
         [HideInInspector] public int defenseBuffTurnsRemaining = 0;
-        [HideInInspector] public GameObject defenseVFXInstance;
+        [HideInInspector] public Flyweight defenseVFXInstance;
 
         [Header("Agility Buff")]
         [HideInInspector] private int originalBaseAgility = 0;
         [HideInInspector] public int agilityBuffTurnsRemaining = 0;
-        [HideInInspector] public GameObject agilityVFXInstance;
+        [HideInInspector] public Flyweight agilityVFXInstance;
 
         [Header("Magical Attack Buff")]
         [HideInInspector] public int magicalAttackBuffTurnsRemaining = 0;
         [HideInInspector] private int magicalOriginalBaseAttack = 0;
-        [HideInInspector] public GameObject magicalAttackVFXInstance;
+        [HideInInspector] public Flyweight magicalAttackVFXInstance;
 
         [Header("Magical Defense Buff")]
         [HideInInspector] private int magicalOriginalBaseDefense = 0;
         [HideInInspector] public int magicalDefenseBuffTurnsRemaining = 0;
-        [HideInInspector] public GameObject magicalDefenseVFXInstance;
+        [HideInInspector] public Flyweight magicalDefenseVFXInstance;
 
 
         [Header("Shield")]
@@ -89,7 +89,7 @@ namespace Turnbase
         }
 
 
-        public void ApplyAttackBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyAttackBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -113,7 +113,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Attack, hiệu lực {duration} lượt. Attack hiện tại: {stats.attack}");
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyMaxHPBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -144,7 +144,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} MaxHP, hiệu lực {duration} lượt. MaxHP hiện tại: {stats.maxHP}");
         }
 
-        public void ApplyDefenseBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyDefenseBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -168,7 +168,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Defense, hiệu lực {duration} lượt. Defense hiện tại: {stats.defense}");
         }
 
-        public void ApplyAgilityBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyAgilityBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -192,7 +192,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Agility, hiệu lực {duration} lượt. Agility hiện tại: {stats.agility}");
         }
 
-        public void ApplyMagicalAttackBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyMagicalAttackBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -216,7 +216,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Attack, hiệu lực {duration} lượt. Magical Attack hiện tại: {stats.magicAttack}");
         }
 
-        public void ApplyMagicalDefenseBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyMagicalDefenseBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (amount <= 0 || duration <= 0) return;
 

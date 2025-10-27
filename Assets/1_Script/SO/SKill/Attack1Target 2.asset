@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbff8377f0ac1842a40f5494278af3e, type: 3}
   m_Name: Attack1Target 2
   m_EditorClassIdentifier: 
-  skillName: Electrol
+  skillName: Electrol 2
   description: "C\xF4ng l\xFD Demacia"
   damage: 1
   manaCost: 10
@@ -22,8 +22,9 @@ MonoBehaviour:
   skillType: 9
   elementType: 4
   summonPrefab: []
-  impactVFXPrefab: {fileID: 5038517967286858703, guid: 59f08a7d7ae1ec542aee7f79c5e276c9, type: 3}
+  impactVFXPrefab: {fileID: 11400000, guid: 353694a14d7a69342949e897d60ac5f7, type: 2}
+  projectileSettings: {fileID: 11400000, guid: dcbb133427ff3f24d9213570c035e6ae, type: 2}
   impactVFXDuration: 1
-  projectileSettings: {fileID: 11400000, guid: ddfa7cf79c88384419346477596266a3, type: 2}
-  statToModify: 0
-  durationTurns: 2
+  buffProperties:
+    statToModify: 0
+    durationTurns: 0

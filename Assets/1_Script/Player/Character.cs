@@ -60,6 +60,8 @@ namespace Turnbase
         public int defense;
         public int magicAttack;
         public int magicDefense;
+        public int crit;
+        public int critDamage;
         public int agility;
     }
 
@@ -245,7 +247,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyAttackBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyAttackBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (buffManager != null)
             {
@@ -253,7 +255,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration, GameObject vfxInstance) 
+        public void ApplyMaxHPBuff(int amount, int duration, Flyweight vfxInstance) 
         {
             if (buffManager != null)
             {
@@ -261,7 +263,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyDefenseBuff(int amount, int duration, GameObject vfxInstance) 
+        public void ApplyDefenseBuff(int amount, int duration, Flyweight vfxInstance) 
         {
             if (buffManager != null)
             {
@@ -269,7 +271,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyAgilityBuff(int amount, int duration, GameObject vfxInstance) 
+        public void ApplyAgilityBuff(int amount, int duration, Flyweight vfxInstance) 
         {
             if (buffManager != null)
             {
@@ -277,7 +279,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMagicAttackBuff(int amount, int duration, GameObject vfxInstance)
+        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight vfxInstance)
         {
             if (buffManager != null)
             {
@@ -285,7 +287,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMagicDefenseBuff(int amount, int duration, GameObject vfxInstance) 
+        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight vfxInstance) 
         {
             if (buffManager != null)
             {

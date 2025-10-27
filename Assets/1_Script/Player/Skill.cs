@@ -18,16 +18,28 @@ public class Skill : ScriptableObject
     [ShowIfEnumValue("skillType", SkillType.Summon)]
     public List<GameObject> summonPrefab;
 
+
     [Header("Visual Effects")]
-    public GameObject impactVFXPrefab;
+    public FlyweightSettings impactVFXPrefab;
 
     [Header("Projectile & VFX")]
-    public float impactVFXDuration = 1.0f;
+    [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
     public FlyweightSettings projectileSettings;
 
+    public float impactVFXDuration = 1.0f;
+
+
     [Header("Buff/Debuff Properties")]
-    public StatType statToModify;
-    public int durationTurns = 2;
+    [ShowIfEnumValue("skillType", SkillType.Buff)]
+    public BuffSettings buffProperties;
+
+    [System.Serializable]
+    public struct BuffSettings
+    {
+        public StatType statToModify;
+        public int durationTurns;
+    }
+
 
 }
 

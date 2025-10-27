@@ -25,46 +25,48 @@ namespace Turnbase
 
         protected void SpawnImpactEffect(Vector3 position, Skill skill)
         {
-            GameObject effectToSpawn = skill.impactVFXPrefab;
-            if (effectToSpawn != null)
+            FlyweightSettings settingsToSpawn = skill.impactVFXPrefab;
+            
+            if (settingsToSpawn != null)
             {
-                GameObject effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+                Flyweight effectInstance = FlyweightFactory.Spawn(settingsToSpawn); 
 
-                GameObject.Destroy(effectInstance, 3f);
+                if (effectInstance != null)
+                {
+                    effectInstance.Initialize(position, Quaternion.identity); 
+
+                }
             }
             else
             {
-                Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng: {skill.skillName}.");
+                Debug.LogWarning($"Thiếu FlyweightSettings Impact VFX cho kỹ năng: {skill.skillName}.");
             }
-
         }
 
-        protected GameObject SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
+        protected Flyweight SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
-            GameObject effectToSpawn = skill.impactVFXPrefab; 
-            GameObject effectInstance = null; 
+            FlyweightSettings settingsToSpawn = skill.impactVFXPrefab; 
+            Flyweight effectInstance = null; 
 
-            if (effectToSpawn != null)
+            if (settingsToSpawn != null)
             {
-                effectInstance = GameObject.Instantiate(effectToSpawn, position, Quaternion.identity);
+                effectInstance = FlyweightFactory.Spawn(settingsToSpawn); 
 
-                effectInstance.transform.SetParent(targetCharacter.transform);
+                if (effectInstance != null)
+                {
+                    effectInstance.Initialize(position, Quaternion.identity); 
+                    
+                    effectInstance.transform.SetParent(targetCharacter.transform);
+                    effectInstance.transform.localPosition = Vector3.zero;
 
-                effectInstance.transform.localPosition = Vector3.zero;
-
-
-
-                Debug.Log($"Đã Spawn hiệu ứng liên tục '{effectToSpawn.name}' lên {targetCharacter.name}.");
+                    Debug.Log($"Đã Spawn hiệu ứng liên tục '{settingsToSpawn.name}' lên {targetCharacter.name} dùng Flyweight.");
+                }
             }
             else
             {
-                Debug.LogWarning($"Thiếu Prefab Continuous VFX cho kỹ năng: {skill.skillName}.");
+                Debug.LogWarning($"Thiếu FlyweightSettings Continuous VFX cho kỹ năng: {skill.skillName}.");
             }
             return effectInstance;
         }
     }
 }
-
-
-
-
