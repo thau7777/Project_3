@@ -46,4 +46,5 @@ public enum FlyweightType
     FireBallExplosionVFX,
     TopDownEnemySlime,
     TopDownEnemyTurtle,
+    TurnbaseSpawnPet,
 }

@@ -82,8 +82,11 @@ namespace Turnbase
                     {
                         Debug.LogError($"Lỗi: Target marker bị thiếu trên nhân vật: {stateMachine.character.target.gameObject.name}. Vui lòng gán trong Inspector.");
                     }
+                    if (selectedSkill.skillType != SkillType.Buff && selectedSkill.skillType != SkillType.Heal)
+                    {
+                        RotateToTarget();
+                    }
 
-                    RotateToTarget();
                 }
             }
             else
@@ -124,7 +127,10 @@ namespace Turnbase
 
                 Debug.Log("Đã chuyển mục tiêu sang: " + stateMachine.character.target.gameObject.name + " tại vị trí slot: " + currentIndex);
 
-                RotateToTarget();
+                if (selectedSkill.skillType != SkillType.Buff && selectedSkill.skillType != SkillType.Heal)
+                {
+                    RotateToTarget();
+                }
 
                 if (stateMachine.character.target != null && stateMachine.character.target.targetMarker != null)
                 {
@@ -209,6 +215,8 @@ namespace Turnbase
                     Vector3 position = newPet.transform.position;
 
                     Flyweight effectInstance = FlyweightFactory.Spawn(effectToSpawn);
+
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                     stateMachine.StartCoroutine(ReleaseVFXAfterDelay(effectInstance, vfxDuration));
 
