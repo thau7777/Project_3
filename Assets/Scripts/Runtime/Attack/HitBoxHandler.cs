@@ -1,20 +1,40 @@
 using UnityEngine;
 
+
+[RequireComponent(typeof(CapsuleCollider))]
 public class HitBoxHandler : MonoBehaviour
 {
     Transform _origin;
     [SerializeField]
     float _knockbackForce = 20f;
-    private void Start()
+
+    [field: SerializeField]
+    public LayerMask DodgeLayers { get; private set; }
+
+    [SerializeField]
+    bool _isProjectile = false;
+
+    [field: SerializeField]
+    public OneShotVFXSettings HitImpactEffect;
+    private void Awake()
     {
         _origin = transform.root;
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Damageable>(out var damageable) && other != _origin)
+        if (other != _origin && (DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
-            Vector3 hitDirection = other.transform.position - _origin.position;
-            damageable.TakeDamage(40, hitDirection.normalized,_knockbackForce); // Example damage value
+
+            if(other.TryGetComponent<Damageable>(out var damageable))
+            {
+                Vector3 hitDirection = other.transform.position - _origin.position;
+                damageable.TakeDamage(40, hitDirection.normalized, _knockbackForce); // Example damage value
+            }
+
+            if (!_isProjectile)
+                FlyweightFactory.Spawn(HitImpactEffect).transform.position = other.transform.position.Add(y: 1);
+            else
+                GetComponent<StraightProjectile>()?.DespawnFlyweight();
         }
     }
 }

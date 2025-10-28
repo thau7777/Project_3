@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1176069696937736997}
   - component: {fileID: -8287643532893239416}
   - component: {fileID: 5482525178471638254}
+  - component: {fileID: -145414833420419800}
   m_Layer: 0
   m_Name: Purple Projectile
   m_TagString: Untagged
@@ -4889,8 +4890,8 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.16
-  m_Height: 0
-  m_Direction: 2
+  m_Height: 1.5
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5482525178471638254
 MonoBehaviour:
@@ -4905,7 +4906,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StraightProjectile
   settings: {fileID: 0}
-  projectileImpactScale: {x: 0, y: 0, z: 0}
+--- !u!114 &-145414833420419800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102685460086169877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144849a07d1333d4bad9c0edd571f79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
+  _knockbackForce: 20
+  <DodgeLayers>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 72
+  _isProjectile: 1
+  HitImpactEffect: {fileID: 11400000, guid: 57c990ad89f4ee4409cf1347f5107d22, type: 2}
 --- !u!1 &774619148282737152
 GameObject:
   m_ObjectHideFlags: 0

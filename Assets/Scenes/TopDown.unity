@@ -544,6 +544,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
   _knockbackForce: 10
+  <DodgeLayers>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 8
+  _isProjectile: 0
+  HitImpactEffect: {fileID: 11400000, guid: 381fdfc52c2e0254d80b67fcbe4c8310, type: 2}
 --- !u!1 &424424973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,6 +1347,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
   _knockbackForce: 10
+  <DodgeLayers>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 8
+  _isProjectile: 0
+  HitImpactEffect: {fileID: 11400000, guid: 381fdfc52c2e0254d80b67fcbe4c8310, type: 2}
 --- !u!1 &1163420635
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,8 +1794,8 @@ MonoBehaviour:
   _enemyTopDownSettings:
   - {fileID: 11400000, guid: e7e29cbe8bfd58348bc6ff8368f7392c, type: 2}
   - {fileID: 11400000, guid: dd0d22ebba02c234a91901a837cb6c55, type: 2}
-  _spawnInterval: 10
-  _spawnCountPerWave: 1
+  _spawnInterval: 7
+  _spawnCountPerWave: 2
 --- !u!4 &1370029503
 Transform:
   m_ObjectHideFlags: 0
@@ -2314,7 +2324,7 @@ PrefabInstance:
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillDatas.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 3321b3aae4269af4c8af9fad71cba6c2, type: 2}
+      objectReference: {fileID: 11400000, guid: 7e4bfbfc4e3f53f47980885b668577ca, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillDatas.Array.data[1]'
       value: 
@@ -2322,11 +2332,11 @@ PrefabInstance:
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillDatas.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 7e4bfbfc4e3f53f47980885b668577ca, type: 2}
+      objectReference: {fileID: 11400000, guid: 665cfc9e684f0d54b87b0854f3254870, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillDatas.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: 665cfc9e684f0d54b87b0854f3254870, type: 2}
+      objectReference: {fileID: 11400000, guid: 3321b3aae4269af4c8af9fad71cba6c2, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: _skillSpawnPoints.Array.size
       value: 5
@@ -2646,7 +2656,7 @@ PrefabInstance:
     - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: _locomotionSet
       value: 
-      objectReference: {fileID: 11400000, guid: d139eb56773700f438e79f994cf2190c, type: 2}
+      objectReference: {fileID: 11400000, guid: e24c46937ea281745958c97aad990fbd, type: 2}
     - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: _attackVfxSpawnPoints.Array.size
       value: 5
