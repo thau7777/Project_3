@@ -85,10 +85,12 @@ namespace Turnbase
                 case ElementType.Physical:
                 case ElementType.None:
                 default:
-                    offensiveStat = user.stats.attack;
-                    defensiveStat = target.stats.defense;
+                    offensiveStat = user.stats.physicalAttack;
+                    defensiveStat = target.stats.physicalDefense;
                     break;
             }
+
+            //st cơ bản -> giảmt trừ phòng thủ -> khắc chế nguyên tố -> chí mạng -> final damage
 
             int rawDamage = offensiveStat * skill.damage;
             float defenseMultiplier = 100f / (defensiveStat + 100f);
@@ -97,7 +99,18 @@ namespace Turnbase
 
             float elementMultiplier = GetElementMultiplier();
 
-            finalDamage = Mathf.RoundToInt(damageBase * elementMultiplier);
+            float preCritDamageFloat = damageBase * elementMultiplier;
+
+            bool isCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
+
+            if (isCrit)
+            {
+                float critMultiplier = (float)user.stats.critDamage / 100f;
+                preCritDamageFloat *= critMultiplier;
+            }
+
+            finalDamage = Mathf.RoundToInt(preCritDamageFloat);
+
 
             if (rawDamage > 0)
             {

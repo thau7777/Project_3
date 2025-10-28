@@ -25,7 +25,10 @@ namespace Turnbase
 
         public IEnumerator Execute()
         {
-            user.animator.Play(skill.animationTriggerName);
+            if (!string.IsNullOrEmpty(skill.animationTriggerName))
+            {
+                user.animator.Play(skill.animationTriggerName);
+            }
 
             yield return new WaitForSeconds(1.5f);
 
@@ -61,7 +64,7 @@ namespace Turnbase
                 case ElementType.Physical:
                 case ElementType.None:
                 default:
-                    offensiveStat = user.stats.attack;
+                    offensiveStat = user.stats.physicalAttack;
                     break;
             }
 
@@ -84,6 +87,8 @@ namespace Turnbase
         {
             foreach (Character aoeTarget in targets)
             {
+                if (aoeTarget == null || !aoeTarget.isAlive) continue;
+
                 int defensiveStat;
 
                 if (skill.elementType != ElementType.Physical && skill.elementType != ElementType.None)
@@ -92,14 +97,27 @@ namespace Turnbase
                 }
                 else
                 {
-                    defensiveStat = aoeTarget.stats.defense;
+                    defensiveStat = aoeTarget.stats.physicalDefense;
                 }
+
 
                 float defenseMultiplier = 100f / (defensiveStat + 100f);
                 float damageBase = rawDamage * defenseMultiplier;
 
                 float elementMultiplier = GetElementMultiplier(aoeTarget);
-                int finalDamage = Mathf.RoundToInt(damageBase * elementMultiplier);
+
+                float preCritDamageFloat = damageBase * elementMultiplier;
+
+                bool isCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
+
+                if (isCrit)
+                {
+                    float critMultiplier = (float)user.stats.critDamage / 100f;
+                    preCritDamageFloat *= critMultiplier;
+                }
+
+                int finalDamage = Mathf.RoundToInt(preCritDamageFloat);
+
 
                 if (rawDamage > 0)
                 {

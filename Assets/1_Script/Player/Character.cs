@@ -56,8 +56,8 @@ namespace Turnbase
         public int currentMP;
         public int maxShield;
         public int currentShield;
-        public int attack;
-        public int defense;
+        public int physicalAttack;
+        public int physicalDefense;
         public int magicAttack;
         public int magicDefense;
         public int crit;
@@ -239,11 +239,11 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
         }
 
-        public void AddShield(int amount, GameObject vfxInstance = null) 
+        public void AddShield(int amount, int duration, Flyweight vfxInstance = null) 
         {
             if (buffManager != null)
             {
-                buffManager.AddShield(amount, 2, vfxInstance); 
+                buffManager.AddShield(amount, duration, vfxInstance); 
             }
         }
 

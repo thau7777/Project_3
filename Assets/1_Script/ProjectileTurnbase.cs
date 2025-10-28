@@ -12,7 +12,7 @@ namespace Turnbase
         private Skill skillData;
         private int damageAmount;
 
-        private const float SPEED = 50f;
+        private const float SPEED = 30f;
 
         public void Setup(Character target, Skill skill, int damage, Action hitCallback)
         {
@@ -31,9 +31,7 @@ namespace Turnbase
             while (target != null && Vector3.Distance(transform.position, endPos) > 0.1f)
             {
                 endPos = target.transform.position;
-
                 transform.position = Vector3.MoveTowards(transform.position, endPos, SPEED * Time.deltaTime);
-
                 yield return null;
             }
 
@@ -49,12 +47,12 @@ namespace Turnbase
             }
 
             FlyweightFactory.ReturnToPool(this);
-
         }
 
         private void ApplyImpact()
         {
             target.TakeDamage(damageAmount);
+
             SpawnImpactEffect(target.transform.position, skillData);
 
             onHitCallback?.Invoke();
@@ -70,7 +68,7 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    effectInstance.Initialize(position, Quaternion.identity);
+                    ((ImpactVFX)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
                 }
             }
         }

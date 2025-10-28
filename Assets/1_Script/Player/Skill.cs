@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
 public class Skill : ScriptableObject
@@ -30,7 +31,7 @@ public class Skill : ScriptableObject
 
 
     [Header("Buff/Debuff Properties")]
-    [ShowIfEnumValue("skillType", SkillType.Buff)]
+    [ShowIfEnumValue("skillType", SkillType.Buff, SkillType.Shield)]
     public BuffSettings buffProperties;
 
     [System.Serializable]

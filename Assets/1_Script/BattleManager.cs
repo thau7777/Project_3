@@ -440,7 +440,7 @@ namespace Turnbase
                     Debug.Log("Parry thành công! Kẻ địch bị nhận phản sát thương!");
                     target.isParryable = false;
 
-                    int parryDamage = target.stats.attack * 1;
+                    int parryDamage = target.stats.physicalAttack * 1;
                     enemy.TakeDamage(parryDamage);
 
                     Time.timeScale = 0.5f;

@@ -53,18 +53,27 @@ namespace Turnbase
             }
             return new List<Character>();
         }
-
         private IEnumerator ApplyShieldEffects(List<Character> targetsToShield)
         {
             int shieldAmount = skill.damage;
+            int durationTurns = skill.buffProperties.durationTurns;
+
+            if (!targetsToShield.Any())
+            {
+                yield break;
+            }
 
             foreach (var charTarget in targetsToShield)
             {
-                charTarget.AddShield(shieldAmount);
+                Flyweight localShieldVFXInstance = SpawnContinuousEffect(
+                    charTarget.transform.position,
+                    charTarget,
+                    skill
+                );
 
-                SpawnImpactEffect(charTarget.transform.position, skill);
+                charTarget.AddShield(shieldAmount, durationTurns, localShieldVFXInstance);
 
-                Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield.");
+                Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield, hiệu lực {durationTurns} lượt.");
 
                 yield return null;
             }

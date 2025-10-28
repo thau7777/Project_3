@@ -23,17 +23,18 @@ namespace Turnbase
 
         public abstract IEnumerator Execute();
 
-        protected void SpawnImpactEffect(Vector3 position, Skill skill)
+        protected Flyweight SpawnImpactEffect(Vector3 position, Skill skill)
         {
             FlyweightSettings settingsToSpawn = skill.impactVFXPrefab;
-            
+            Flyweight effectInstance = null; 
+
             if (settingsToSpawn != null)
             {
-                Flyweight effectInstance = FlyweightFactory.Spawn(settingsToSpawn); 
+                effectInstance = FlyweightFactory.Spawn(settingsToSpawn); 
 
                 if (effectInstance != null)
                 {
-                    effectInstance.Initialize(position, Quaternion.identity); 
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                 }
             }
@@ -41,6 +42,8 @@ namespace Turnbase
             {
                 Debug.LogWarning($"Thiếu FlyweightSettings Impact VFX cho kỹ năng: {skill.skillName}.");
             }
+
+            return effectInstance; 
         }
 
         protected Flyweight SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
@@ -68,5 +71,6 @@ namespace Turnbase
             }
             return effectInstance;
         }
+
     }
 }
