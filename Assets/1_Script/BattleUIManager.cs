@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Turnbase;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -8,8 +10,31 @@ public class BattleUIManager : MonoBehaviour
     public GameObject AvatarGroupPrefab;
     public Transform UIContainer;
 
+    [Header("Combatant List UI")]
+    public GameObject combatantButtonPrefab;
+    public Transform combatantButtonContainer;
+    public Button toggleButton;
+
+    private CharacterStatUI statDisplayPanel;
+    private BattleManager battleManager;
+    private bool isShowingPlayers = true;
 
     private Dictionary<Character, AvatarGroup> characterToUI = new Dictionary<Character, AvatarGroup>();
+
+
+    public void InitializeCombatantButtons(List<Character> allCombatants, CharacterStatUI statUI, BattleManager bm)
+    {
+        this.statDisplayPanel = statUI;
+        this.battleManager = bm;
+
+        if (toggleButton != null)
+        {
+            toggleButton.onClick.RemoveAllListeners();
+            toggleButton.onClick.AddListener(OnToggleButtonClicked);
+        }
+
+        SpawnCombatantButtons(isShowingPlayers, allCombatants);
+    }
 
 
     public void SpawnCharacterUI(Character character)
@@ -52,7 +77,6 @@ public class BattleUIManager : MonoBehaviour
 
     public void HideParryUI(Character character)
     {
-        // Giả định logic Parry UI nằm trong PlayerActionUI (ownUI)
         if (character.ownUI != null)
         {
             character.ownUI.ShowParryUI(false);
@@ -60,4 +84,60 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
+    public void OnToggleButtonClicked()
+    {
+        if (battleManager == null)
+        {
+            Debug.LogError("BattleUIManager: BattleManager chưa được gán.");
+            return;
+        }
+
+        isShowingPlayers = !isShowingPlayers;
+        SpawnCombatantButtons(isShowingPlayers, battleManager.allCombatants);
+    }
+
+    public void SpawnCombatantButtons(bool showPlayers, List<Character> allCombatants)
+    {
+        if (combatantButtonPrefab == null || combatantButtonContainer == null || statDisplayPanel == null)
+        {
+            Debug.LogError("BattleUIManager: Thiếu tham chiếu UI (Button Prefab, Container, hoặc Stat Display)!");
+            return;
+        }
+
+        foreach (Transform child in combatantButtonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        var filteredCombatants = allCombatants
+            .Where(c => c.isPlayer == showPlayers && c.isAlive)
+            .ToList();
+
+        Character firstCombatant = null;
+
+        foreach (Character combatant in filteredCombatants)
+        {
+            GameObject buttonGO = Instantiate(combatantButtonPrefab, combatantButtonContainer);
+            CombatantButton combatantButton = buttonGO.GetComponent<CombatantButton>();
+
+            if (combatantButton != null)
+            {
+                combatantButton.Setup(combatant, statDisplayPanel);
+            }
+
+            if (firstCombatant == null)
+            {
+                firstCombatant = combatant;
+            }
+        }
+
+        if (statDisplayPanel != null)
+        {
+            if (firstCombatant == null)
+            {
+                statDisplayPanel.HideStats();
+            }
+            
+        }
+    }
 }

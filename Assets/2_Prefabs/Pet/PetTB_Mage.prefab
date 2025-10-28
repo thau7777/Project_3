@@ -4394,6 +4394,7 @@ MonoBehaviour:
   parryFillImage: {fileID: 2841629156007760934}
   defaultParrySprite: {fileID: 21300000, guid: 63be7197c60874147a5fb1f91704cfea, type: 3}
   readyParrySprite: {fileID: 21300000, guid: b79a56f910ade2b4f8bf0c8925a5f772, type: 3}
+  selectedSkillToConfirm: {fileID: 0}
 --- !u!1 &6282752800876333310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5103,10 +5104,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateMachine: {fileID: 6007067907109271698}
   characterClass: 1
+  characterElement: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
   - {fileID: 11400000, guid: 93dbbbec8c2df4447b3dd35f19171ece, type: 2}
   - {fileID: 11400000, guid: 0a48ae65bdd5a38489ab5e9bfd188908, type: 2}
+  info:
+    name: Mage
+    level: 0
   stats:
     Avatar: {fileID: 21300000, guid: 4dc23881685a51e4d9031fa3d563656c, type: 3}
     maxHP: 255
@@ -5115,10 +5120,12 @@ MonoBehaviour:
     currentMP: 150
     maxShield: 1000
     currentShield: 0
-    attack: 222
-    defense: 153
+    physicalAttack: 100
+    physicalDefense: 100
     magicAttack: 154
     magicDefense: 139
+    crit: 0
+    critDamage: 0
     agility: 111
   skills: []
   isPlayer: 1
@@ -5129,6 +5136,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
+  battleUIManager: {fileID: 0}
   buffManager: {fileID: 428602294126036014}
   isParryable: 0
   ownUI: {fileID: 0}
@@ -5162,10 +5170,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterBuffManager
   attackBuffTurnsRemaining: 0
+  attackVFXInstance: {fileID: 0}
   maxHPBuffTurnsRemaining: 0
+  maxHPVFXInstance: {fileID: 0}
   defenseBuffTurnsRemaining: 0
+  defenseVFXInstance: {fileID: 0}
   agilityBuffTurnsRemaining: 0
+  agilityVFXInstance: {fileID: 0}
+  magicalAttackBuffTurnsRemaining: 0
+  magicalAttackVFXInstance: {fileID: 0}
+  magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseVFXInstance: {fileID: 0}
   shieldTurnsRemaining: 0
+  shieldVFXInstance: {fileID: 0}
 --- !u!1 &8151604687338966246
 GameObject:
   m_ObjectHideFlags: 0

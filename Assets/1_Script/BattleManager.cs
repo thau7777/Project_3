@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro; 
 
 
 namespace Turnbase
@@ -23,6 +25,7 @@ namespace Turnbase
         public Transform[] enemySlots;
         public Character[] enemyPrefabs;
 
+
         public TurnOrderUI turnOrderUI;
 
         public BattleUIManager uiManager;
@@ -31,11 +34,16 @@ namespace Turnbase
 
         private Coroutine currentParryWindow;
 
+        public CharacterStatUI statDisplayPanel;
 
 
         void Start()
         {
             SetupBattle();
+            if (uiManager != null)
+            {
+                uiManager.InitializeCombatantButtons(allCombatants, statDisplayPanel, this);
+            }
             StartCoroutine(DelayedStart());
         }
 
@@ -60,6 +68,15 @@ namespace Turnbase
             yield return null;
             StartCoroutine(UpdateActionGauge());
         }
+
+        public void ShowCombatantButtonsForFaction(bool showPlayers)
+        {
+            if (uiManager != null)
+            {
+                uiManager.SpawnCombatantButtons(showPlayers, allCombatants);
+            }
+        }
+
 
         void SetupBattle()
         {
@@ -141,8 +158,8 @@ namespace Turnbase
         private Transform FindFreePlayerSpawnSlot()
         {
             HashSet<Vector3> occupiedPositions = new HashSet<Vector3>(
-                    allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
-                );
+                        allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
+                    );
 
             foreach (Transform slot in playerSpawnPoints)
             {
@@ -154,12 +171,12 @@ namespace Turnbase
             return null;
         }
 
-        public Character SummonPet(Character summoner, GameObject petPrefab) 
+        public Character SummonPet(Character summoner, GameObject petPrefab)
         {
             if (petPrefab == null)
             {
                 Debug.LogError("Pet Prefab không được gán!");
-                return null; 
+                return null;
             }
 
             Transform freeSlot = FindFreePlayerSpawnSlot();
@@ -167,7 +184,7 @@ namespace Turnbase
             if (freeSlot == null)
             {
                 Debug.LogWarning("Không tìm thấy Slot Trống nào trong playerSpawnPoints để Triệu hồi Pet!");
-                return null; 
+                return null;
             }
 
             Vector3 petSpawnPosition = freeSlot.position;
@@ -218,7 +235,7 @@ namespace Turnbase
                 Debug.Log($"[{summoner.name}] đã triệu hồi Pet/Summon: {summonInstance.name} tại slot {freeSlot.name}!");
 
 
-                return summonInstance; 
+                return summonInstance;
             }
             else
             {
@@ -483,9 +500,9 @@ namespace Turnbase
                 isProcessingTurn = false;
             }
         }
-       
 
-        
+
+
 
 
         private void CheckWinCondition()

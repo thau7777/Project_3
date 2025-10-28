@@ -45,6 +45,13 @@ namespace Turnbase
         Dark,
     }
 
+    [System.Serializable]
+    public class CharacterInfo
+    {
+        public string name;
+        public int level;
+    }
+
 
     [System.Serializable]
     public class CharacterStats
@@ -74,6 +81,8 @@ namespace Turnbase
         public CharacterElement characterElement;
 
         [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
+
+        [TabGroup("Stats")] public CharacterInfo info;
 
         [TabGroup("Stats")] public CharacterStats stats;
 

@@ -13,10 +13,20 @@ namespace Turnbase
 
         public Transform turnOrderContainer;
 
+        public CharacterStatUI statDisplayPanel;
+
+        public BattleManager battleManager;
+
         private List<TurnOrderIcon> turnOrderIcons = new List<TurnOrderIcon>();
 
         public void UpdateTurnQueue(List<Character> characters)
         {
+            if (statDisplayPanel == null || battleManager == null)
+            {
+                Debug.LogError("TurnOrderUI: Thiếu tham chiếu Stat Display Panel hoặc Battle Manager! Vui lòng gán trong Inspector.");
+                return;
+            }
+
             List<Character> sortedCharacters = characters.Where(c => c.isAlive).OrderByDescending(c => c.actionGauge).ToList();
 
             foreach (var icon in turnOrderIcons)
@@ -34,7 +44,8 @@ namespace Turnbase
                 if (iconComponent != null)
                 {
                     turnOrderIcons.Add(iconComponent);
-                    iconComponent.UpdateIcon(character);
+
+                    iconComponent.Setup(character, statDisplayPanel, battleManager);
                 }
             }
         }
