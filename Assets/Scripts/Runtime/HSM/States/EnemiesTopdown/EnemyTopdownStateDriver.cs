@@ -20,6 +20,9 @@ public class EnemyTopdownStateDriver : Flyweight
     [SerializeField]
     float _attackRange = 1f;
 
+    [SerializeField]
+    LayerMask _layerIgnoreOnDeath;
+
     public int MaxHealth { get; set; }
     public int CurrentHealth { get; set; }
     #endregion
@@ -81,6 +84,7 @@ public class EnemyTopdownStateDriver : Flyweight
         if(_context.IsDead) return;
         if (currentHealth <= 0)
         {
+            ApplyIgnoreCollision(true);
             _context.IsDead = true;
             return;
         }
@@ -95,13 +99,29 @@ public class EnemyTopdownStateDriver : Flyweight
     {
 
     }
+    public void ApplyIgnoreCollision(bool ignore)
+    {
+        // Find all active colliders in the scene
+        Collider[] allColliders = FindObjectsByType<Collider>(FindObjectsSortMode.None);
+
+        foreach (var col in allColliders)
+        {
+            // Check if the collider's layer is one of the layers in the mask
+            if (((1 << col.gameObject.layer) & _layerIgnoreOnDeath) != 0)
+            {
+                Physics.IgnoreCollision(_characterController, col, ignore);
+            }
+        }
+    }
     public void ResetStateContext()
     {
         _context.IsDead = false;
         _context.IsHurting = false;
         _context.IsMoreHurt = false;
         _context.IsStunned = false;
-        _context.IsDoneAttacking = true;
-        _context.IsDoneMoving = true;
+        _context.IsDoneAttacking = false;
+        _context.IsDoneMoving = false;
+
+        ApplyIgnoreCollision(false);
     }
 }

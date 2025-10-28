@@ -6,11 +6,6 @@ public class StraightProjectileSettings : FlyweightSettings
     [field: SerializeField]
     public float DespawnDelay { get; private set; } = 5f;
 
-    [field: SerializeField]
-    public OneShotVFXSettings HitVFXSettings { get; private set; }
-
-    [field: SerializeField]
-    public LayerMask DodgeLayers { get; private set; }
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);

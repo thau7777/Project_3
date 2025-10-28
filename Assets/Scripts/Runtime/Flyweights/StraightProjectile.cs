@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider))]
 public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
@@ -17,9 +16,11 @@ public class StraightProjectile : Flyweight
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
 
+    HitBoxHandler _hitboxHandler;
     private void Awake()
     {
         _rb = gameObject.GetOrAdd<Rigidbody>();
+        _hitboxHandler = GetComponent<HitBoxHandler>();
         _direction = null;
         _rb.useGravity = false;
         _ogScale = transform.localScale;
@@ -40,8 +41,6 @@ public class StraightProjectile : Flyweight
             StopCoroutine(_despawnRoutine);
             _despawnRoutine = null;
         }
-
-        
     }
 
     public void InitializeMovement(Vector3 direction, float speed)
@@ -73,24 +72,19 @@ public class StraightProjectile : Flyweight
         _rb.linearVelocity = velocity;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((settings.DodgeLayers.value & (1 << other.gameObject.layer)) != 0)
-            return;
-
-        FlyweightFactory.ReturnToPool(this);
-        SpawnHitVFX();
-    }
-
     private IEnumerator DespawnAfterDelay(float delay)
     {
         yield return Helpers.GetWaitForSeconds(delay);
-        FlyweightFactory.ReturnToPool(this);
+        DespawnFlyweight();
+    }
+    public void DespawnFlyweight()
+    {
         SpawnHitVFX();
+        FlyweightFactory.ReturnToPool(this);
     }
     private void SpawnHitVFX()
     {
-        var projectileImpactFlyweight = FlyweightFactory.Spawn(settings.HitVFXSettings);
+        var projectileImpactFlyweight = FlyweightFactory.Spawn(_hitboxHandler.HitImpactEffect);
         projectileImpactFlyweight.Initialize(transform.position, Quaternion.identity);
         if(projectileImpactScale != null)
             projectileImpactFlyweight.transform.localScale = projectileImpactScale.Value;
