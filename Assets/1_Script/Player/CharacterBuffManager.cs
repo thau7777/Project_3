@@ -45,6 +45,8 @@ namespace Turnbase
         [HideInInspector] public int shieldTurnsRemaining = 0;
         [HideInInspector] public Flyweight shieldVFXInstance;
 
+
+
         void Awake()
         {
             character = GetComponent<Character>();
@@ -390,6 +392,9 @@ namespace Turnbase
             Debug.Log($"Buff Magical Defense của {character.name} đã hết hạn và bị gỡ bỏ. Magical Defense hiện tại: {stats.magicDefense}");
         }
 
+        
+
+
         public void ProcessTurnStartDecay()
         {
             if(character.buffManager.attackBuffTurnsRemaining > 0)
@@ -432,6 +437,9 @@ namespace Turnbase
                 character.buffManager.magicalAttackBuffTurnsRemaining--;
                 character.buffManager.RemoveExpiredMagicalAttackBuff();
             }
+
+
+
         }
     }
 }

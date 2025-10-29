@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro; 
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro; 
 
 
 namespace Turnbase
@@ -56,8 +56,6 @@ namespace Turnbase
 
                 if (playerTarget != null && playerTarget.isParryable && Input.GetKeyDown(KeyCode.Space))
                 {
-                    Debug.Log("Nhấn Space: Bắt đầu cố gắng Parry!");
-
                     OnParryAttempted();
                 }
             }
@@ -175,7 +173,6 @@ namespace Turnbase
         {
             if (petPrefab == null)
             {
-                Debug.LogError("Pet Prefab không được gán!");
                 return null;
             }
 
@@ -183,7 +180,6 @@ namespace Turnbase
 
             if (freeSlot == null)
             {
-                Debug.LogWarning("Không tìm thấy Slot Trống nào trong playerSpawnPoints để Triệu hồi Pet!");
                 return null;
             }
 
@@ -207,10 +203,7 @@ namespace Turnbase
 
                     summonInstance.ownUI = actionUI;
                 }
-                else
-                {
-                    Debug.LogWarning($"Pet/Summon '{summonInstance.name}' KHÔNG có component PlayerActionUI. Nó sẽ không thể được điều khiển.");
-                }
+
 
                 summonInstance.battleManager = this;
                 summonInstance.initialPosition = petSpawnPosition;
@@ -232,14 +225,12 @@ namespace Turnbase
                     turnOrderUI.UpdateActionGaugeUI(allCombatants);
                 }
 
-                Debug.Log($"[{summoner.name}] đã triệu hồi Pet/Summon: {summonInstance.name} tại slot {freeSlot.name}!");
 
 
                 return summonInstance;
             }
             else
             {
-                Debug.LogError($"Prefab '{petPrefab.name}' không có component Character!");
                 Destroy(petInstanceObject);
                 return null;
             }
@@ -315,9 +306,44 @@ namespace Turnbase
             if (activeCharacter.buffManager != null)
             {
                 activeCharacter.buffManager.ProcessTurnStartDecay();
+
+                
+            }
+
+            if(activeCharacter.debuffManager != null)
+            {
+
+                activeCharacter.debuffManager.ProcessTurnStartDecay();
+
+                activeCharacter.debuffManager.ApplyDoTDamage();
+            }
+
+            if (activeCharacter.debuffManager.stunTurnsRemaining > 0)
+            {
+
+                activeCharacter.actionGauge = 0;
+                if (activeCharacter.stateMachine != null)
+                {
+                    activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.waitingState);
+                }
+
+                activeCharacter = null;
+                isProcessingTurn = false;
+
+                return;
             }
 
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
+
+            if (!activeCharacter.isAlive)
+            {
+                Debug.Log($"{activeCharacter.name} đã bị hạ gục bởi Debuff DoT!");
+
+                activeCharacter.actionGauge = 0;
+                isProcessingTurn = false;
+                activeCharacter = null;
+                return;
+            }
 
 
             if (activeCharacter.isPlayer)
@@ -336,9 +362,6 @@ namespace Turnbase
                 }
                 else
                 {
-                    Debug.Log($"Đến lượt Pet/Summon: {activeCharacter.gameObject.name}. Đang thực hiện hành động tự động...");
-
-
                     EndTurn(activeCharacter);
                 }
             }
@@ -354,6 +377,7 @@ namespace Turnbase
                 turnOrderUI.HighlightActiveCharacter(activeCharacter);
             }
         }
+
 
         private IEnumerator DelayedStartTurn(Character character)
         {
@@ -393,7 +417,6 @@ namespace Turnbase
 
                 float duration = endTime - startTime;
                 enemy.parryWindowDuration = duration;
-                Debug.Log($"Thời lượng Parry tính toán: {duration}s");
 
                 StartParryWindow(enemy, enemy.target, duration);
             }
@@ -454,7 +477,6 @@ namespace Turnbase
                 Character target = enemy.target;
                 if (target != null && target.isParryable)
                 {
-                    Debug.Log("Parry thành công! Kẻ địch bị nhận phản sát thương!");
                     target.isParryable = false;
 
                     int parryDamage = target.stats.physicalAttack * 1;
@@ -500,9 +522,6 @@ namespace Turnbase
                 isProcessingTurn = false;
             }
         }
-
-
-
 
 
         private void CheckWinCondition()

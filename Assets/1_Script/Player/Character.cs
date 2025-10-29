@@ -107,6 +107,9 @@ namespace Turnbase
 
         public CharacterBuffManager buffManager;
 
+        public CharacterDebuffManager debuffManager;
+
+
         public bool isParryable;
 
         public PlayerActionUI ownUI;
@@ -130,6 +133,7 @@ namespace Turnbase
         {
             stateMachine = GetComponent<CharacterStateMachine>();
             buffManager = GetComponent<CharacterBuffManager>();
+            debuffManager = GetComponent<CharacterDebuffManager>();
             animator = GetComponent<Animator>();
 
 

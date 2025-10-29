@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static Skill;
 using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
@@ -30,9 +31,10 @@ public class Skill : ScriptableObject
     public float impactVFXDuration = 1.0f;
 
 
-    [Header("Buff/Debuff Properties")]
+    [Header("Buff Properties")]
     [ShowIfEnumValue("skillType", SkillType.Buff, SkillType.Shield)]
     public BuffSettings buffProperties;
+
 
     [System.Serializable]
     public struct BuffSettings
@@ -40,6 +42,17 @@ public class Skill : ScriptableObject
         public StatType statToModify;
         public int durationTurns;
     }
+
+
+    public DebuffSettings debuffProperties;
+    [System.Serializable]
+    public struct DebuffSettings 
+    {
+        public DebuffType debuffType;
+        public int durationTurns;
+        public int baseDamagePerTurn;
+        public FlyweightSettings debuffEffect;
+    }
 
 
 }
@@ -74,7 +87,6 @@ public enum SkillType
     Heal,
     Buff,
     Shield,
-    Debuff,
     Special, 
     Summon,
     RangedProjectile,
@@ -92,4 +104,12 @@ public enum ElementType
     Lightning,
     Dark,
 
+}
+
+public enum  DebuffType
+{
+    None,
+    Burn,
+    Poison,
+    Stun,
 }

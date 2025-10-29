@@ -1103,6 +1103,7 @@ GameObject:
   - component: {fileID: 229363719538074653}
   - component: {fileID: 9145698497346757161}
   - component: {fileID: 1527328286654397455}
+  - component: {fileID: -7500645950520890881}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Untagged
@@ -1196,7 +1197,8 @@ MonoBehaviour:
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
   battleUIManager: {fileID: 0}
-  buffManager: {fileID: 0}
+  buffManager: {fileID: 1527328286654397455}
+  debuffManager: {fileID: -7500645950520890881}
   isParryable: 0
   ownUI: {fileID: 0}
   isAttackReadyForParry: 0
@@ -1259,6 +1261,21 @@ MonoBehaviour:
   magicalDefenseVFXInstance: {fileID: 0}
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
+--- !u!114 &-7500645950520890881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e54ede7ee1ecdb4c9cb9fd5217ddba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterDebuffManager
+  burnTurnsRemaining: 0
+  burnDamagePerTurn: 0
+  burnVFXInstance: {fileID: 0}
 --- !u!1 &8430056524065960636
 GameObject:
   m_ObjectHideFlags: 0

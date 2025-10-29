@@ -100,6 +100,11 @@ namespace Turnbase
                     target.TakeDamage(finalDamage);
                     damageApplied = true;
                     SpawnImpactEffect(target.transform.position, skill);
+
+                    if (skill.debuffProperties.debuffType != DebuffType.None)
+                    {
+                        target.debuffManager.ApplyDebuff(skill.debuffProperties);
+                    }
                 }
             };
 

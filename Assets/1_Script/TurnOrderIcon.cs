@@ -11,7 +11,6 @@ namespace Turnbase
         public Image avatarImage;
         public Button avatarButton;
 
-        public TextMeshProUGUI nameText;
         public TextMeshProUGUI actionGaugeText;
 
         [HideInInspector] public Character characterOwner;
@@ -32,11 +31,6 @@ namespace Turnbase
             if (avatarImage != null && character.stats.Avatar != null)
             {
                 avatarImage.sprite = character.stats.Avatar;
-            }
-
-            if (nameText != null)
-            {
-                nameText.text = character.gameObject.name;
             }
 
             if (actionGaugeText != null)

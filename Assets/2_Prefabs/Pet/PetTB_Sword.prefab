@@ -5063,6 +5063,7 @@ GameObject:
   - component: {fileID: 3404509342006786628}
   - component: {fileID: 6007067907109271698}
   - component: {fileID: -7072520419978499482}
+  - component: {fileID: -4638524337439984294}
   m_Layer: 0
   m_Name: PetTB_Sword
   m_TagString: Player
@@ -5161,6 +5162,7 @@ MonoBehaviour:
   battleManager: {fileID: 0}
   battleUIManager: {fileID: 0}
   buffManager: {fileID: -7072520419978499482}
+  debuffManager: {fileID: -4638524337439984294}
   isParryable: 0
   ownUI: {fileID: 0}
   isAttackReadyForParry: 0
@@ -5206,6 +5208,21 @@ MonoBehaviour:
   magicalDefenseVFXInstance: {fileID: 0}
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
+--- !u!114 &-4638524337439984294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e54ede7ee1ecdb4c9cb9fd5217ddba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterDebuffManager
+  burnTurnsRemaining: 0
+  burnDamagePerTurn: 0
+  burnVFXInstance: {fileID: 0}
 --- !u!1 &8151604687338966246
 GameObject:
   m_ObjectHideFlags: 0
