@@ -45,4 +45,5 @@ public enum FlyweightType
     TopDownEnemySlime,
     TopDownEnemyTurtle,
     TurnbaseSpawnPet,
+    CircleIndicator,
 }

@@ -21,6 +21,7 @@ public class SkillExecutor : MonoBehaviour
     private Coroutine _chargeCoroutine;
     private Coroutine _lerpCoroutine;
 
+    private SkillIndicator _skillIndicator;
     void Awake()
     {
         _skillInstance = new List<SkillRuntimeInstance>();
@@ -52,6 +53,9 @@ public class SkillExecutor : MonoBehaviour
             // run aim anim first
             context.IsAiming = true;
             context.AimAnimName = _storedSkillData.Value.aimType.ToString();
+
+            _skillIndicator = FlyweightFactory.Spawn(_skillToCast.Definition.skillIndicator) as SkillIndicator;
+            _skillIndicator.Initialize(100);
         }
         if (_skillToCast.Definition.CanCharge)
         {
@@ -114,7 +118,20 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-
+        if (_skillIndicator)
+        {
+            if (_skillToCast.Definition.useWhenIndicatorFullyLocked)
+            {
+                _skillIndicator.OnSkillUse(_skillToCast.Definition.indicatorLockTime, ExecuteSkill);
+            }
+            else
+            {
+                _skillIndicator.OnSkillUse(0);
+            }
+                
+            
+            _skillIndicator = null;
+        }
         string animName = _storedSkillData.Value.animName;
         if (animName == "Dash") context.IsDashing = true;
         context.IsInSpecialMove = true;
@@ -150,7 +167,7 @@ public class SkillExecutor : MonoBehaviour
 
         _skillToCast.Cast(ctx);
 
-
+        ClearSkillData();
     }
     public void ClearSkillData()
     {

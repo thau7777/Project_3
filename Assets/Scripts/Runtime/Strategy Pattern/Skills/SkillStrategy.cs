@@ -43,6 +43,15 @@ public class SkillStrategy : ScriptableObject, IStrategy
     public FlyweightSettings chargingEffect;
     [ShowIf("_canCharge")]
     public int chargeLevel;
+
+    [ShowIf("_canCharge")]
+    public SkillIndicatorSettings skillIndicator;
+
+    [ShowIf("_canCharge")]
+    public bool useWhenIndicatorFullyLocked;
+    [ShowIf("useWhenIndicatorFullyLocked")]
+    public float indicatorLockTime;
+
     public void Execute(IStrategyContext context)
     {
         var skillContext = context as SkillStrategyContext;

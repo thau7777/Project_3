@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public struct ClassWeaponData
@@ -280,7 +279,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _context.IsAiming = false;
         _context.CastingSkill = -1;
         _context.IsDashing = false;
-        _executor.ClearSkillData();
+        //_executor.ClearSkillData();
     }
     public void OnAttackDone()
     {

@@ -24,17 +24,18 @@ public class HitBoxHandler : MonoBehaviour
     {
         if (other != _origin && (DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
+            if(_isProjectile)
+                GetComponent<StraightProjectile>()?.DespawnFlyweight();
 
-            if(other.TryGetComponent<Damageable>(out var damageable))
+            if (other.TryGetComponent<Damageable>(out var damageable))
             {
                 Vector3 hitDirection = other.transform.position - _origin.position;
                 damageable.TakeDamage(40, hitDirection.normalized, _knockbackForce); // Example damage value
+
+                if (!_isProjectile)
+                    FlyweightFactory.Spawn(HitImpactEffect).transform.position = other.transform.position.Add(y: 1);
             }
 
-            if (!_isProjectile)
-                FlyweightFactory.Spawn(HitImpactEffect).transform.position = other.transform.position.Add(y: 1);
-            else
-                GetComponent<StraightProjectile>()?.DespawnFlyweight();
         }
     }
 }
