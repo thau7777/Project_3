@@ -11,10 +11,18 @@ namespace Turnbase
         public Button button;
         public Image avatarImage;
 
+        public CameraViewManager cameraViewManager;
+
         private Character character;
         private CharacterStatUI statUI;
 
-
+        void Start()
+        {
+            if (cameraViewManager == null)
+            {
+                cameraViewManager = FindFirstObjectByType<CameraViewManager>();
+            }
+        }
 
         public void Setup(Character combatant, CharacterStatUI statUIRef)
         {
@@ -36,6 +44,12 @@ namespace Turnbase
             {
                 statUI.ShowStats(character);
             }
+            
+            if (cameraViewManager != null)
+            {
+                cameraViewManager.SetCameraView(character);
+            }
+
         }
 
 

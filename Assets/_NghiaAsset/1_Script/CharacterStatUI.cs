@@ -9,7 +9,6 @@ namespace Turnbase
         [Header("UI Components")]
         public TextMeshProUGUI characterName;
         public TextMeshProUGUI level;
-        public Image Avatar;
         public TextMeshProUGUI maxHP;
         public TextMeshProUGUI currentHP;
         public TextMeshProUGUI maxMP;
@@ -46,7 +45,6 @@ namespace Turnbase
             currentCharacter = character;
             characterName.text = character.info.name;
             level.text = "Lv. " + character.info.level.ToString();
-            Avatar.sprite = character.stats.Avatar;
             maxHP.text = character.stats.maxHP.ToString();
             currentHP.text = character.stats.currentHP.ToString();
             maxMP.text = character.stats.maxMP.ToString();
@@ -73,7 +71,6 @@ namespace Turnbase
 
             characterName.text = character.info.name;
             level.text = "Lv. " + character.info.level.ToString();
-            Avatar.sprite = character.stats.Avatar;
 
             maxHP.text = character.stats.maxHP.ToString();
             currentHP.text = character.stats.currentHP.ToString();

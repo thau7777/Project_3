@@ -19,8 +19,12 @@ namespace Turnbase
 
         private BattleManager battleManager;
 
+        public CameraViewManager cameraViewManager;
 
-
+        void Awake()
+        {
+            cameraViewManager = FindFirstObjectByType<CameraViewManager>();
+        }
 
         public void Setup(Character character, CharacterStatUI statUIRef, BattleManager battleManagerRef)
         {
@@ -38,6 +42,12 @@ namespace Turnbase
                 actionGaugeText.text = Mathf.RoundToInt(character.actionGauge).ToString();
             }
 
+            if (cameraViewManager != null)
+            {
+                cameraViewManager.SetCameraView(characterOwner);
+            }
+
+
             avatarButton.onClick.RemoveAllListeners();
             avatarButton.onClick.AddListener(ShowPanel);
         }
@@ -54,6 +64,11 @@ namespace Turnbase
                 }
 
                 EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "AvatarCharacterPanel"));
+            }
+
+            if (cameraViewManager != null)
+            {
+                cameraViewManager.SetCameraView(characterOwner);
             }
         }
     }

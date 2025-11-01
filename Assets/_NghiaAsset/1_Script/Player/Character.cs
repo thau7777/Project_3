@@ -121,6 +121,8 @@ namespace Turnbase
         public bool isParryWindowFinished = false;
         public float parryWindowDuration = 0f;
 
+        public RenderTexture RenderTexture;
+
 
         public bool isAlive
         {

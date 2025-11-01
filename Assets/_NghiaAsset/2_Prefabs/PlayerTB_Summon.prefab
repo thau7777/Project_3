@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 491428639446087303}
   - component: {fileID: 3891791016236224623}
   - component: {fileID: 5552038364893154049}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PlayerPanelControll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4500,7 +4500,7 @@ GameObject:
   - component: {fileID: 7598169496358491796}
   - component: {fileID: 584746600035032348}
   - component: {fileID: 4271732975004652489}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Pet_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6087,7 +6087,7 @@ GameObject:
   - component: {fileID: 2010861171533756749}
   - component: {fileID: 3331449390298777768}
   - component: {fileID: 890592742504622838}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Skill4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6952,7 +6952,7 @@ GameObject:
   - component: {fileID: 2758371892131474108}
   - component: {fileID: 5693333921370299763}
   - component: {fileID: 7606013516310287801}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8042,7 +8042,7 @@ GameObject:
   - component: {fileID: 7195698461698761317}
   - component: {fileID: 1049041792525354901}
   - component: {fileID: 5139679972537450289}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Skill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10910,7 +10910,7 @@ GameObject:
   - component: {fileID: 4198661179924874199}
   - component: {fileID: 6192563342937085153}
   - component: {fileID: 2280471293981089559}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Skill5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11405,7 +11405,7 @@ GameObject:
   - component: {fileID: 7558818180274236371}
   - component: {fileID: 1360055508009126778}
   - component: {fileID: 1118597204951588907}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: ===Canvas-Player===
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13239,6 +13239,143 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000029802322, y: 0.86608315, z: 0.046070434}
     m_Extent: {x: 0.1379911, y: 0.1745039, z: 0.1776357}
   m_DirtyAABB: 0
+--- !u!1 &3716217613091226528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4218505926349681531}
+  - component: {fileID: 3496582111882856468}
+  - component: {fileID: 5840473766713155203}
+  - component: {fileID: 6503169392498742944}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4218505926349681531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716217613091226528}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 1.17, z: 2.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+--- !u!20 &3496582111882856468
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716217613091226528}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 127
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: 574d4e3412d2c0d4aa57943900c62d23, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &5840473766713155203
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716217613091226528}
+  m_Enabled: 1
+--- !u!114 &6503169392498742944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716217613091226528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &3741182185492762606
 GameObject:
   m_ObjectHideFlags: 0
@@ -20659,7 +20796,7 @@ GameObject:
   - component: {fileID: 3107767477531986889}
   - component: {fileID: 1741448422446315691}
   - component: {fileID: 3855636557377399935}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Confirm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21980,7 +22117,7 @@ GameObject:
   - component: {fileID: 4283402558143271064}
   - component: {fileID: 8404072796591710723}
   - component: {fileID: 4397587214029958317}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22847,7 +22984,7 @@ GameObject:
   - component: {fileID: 6333250730210276841}
   - component: {fileID: 2692016682437910097}
   - component: {fileID: 1188607868895568532}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23603,7 +23740,7 @@ GameObject:
   - component: {fileID: 5918952976289813533}
   - component: {fileID: 7533592552311341973}
   - component: {fileID: 836994478937794905}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24401,7 +24538,7 @@ GameObject:
   - component: {fileID: 5668988771105067222}
   - component: {fileID: 1679031270358977031}
   - component: {fileID: 5251121971699622321}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Pet_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26587,7 +26724,7 @@ GameObject:
   - component: {fileID: 3250521033407350544}
   - component: {fileID: 4177102395214332393}
   - component: {fileID: 405924366865261420}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: SummonPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27439,7 +27576,7 @@ GameObject:
   - component: {fileID: 3031072490978718292}
   - component: {fileID: 649431932380001678}
   - component: {fileID: 9057316955419229240}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Pet_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27734,7 +27871,7 @@ GameObject:
   - component: {fileID: 3205982340775827941}
   - component: {fileID: 798757209058637656}
   - component: {fileID: 6375269322593942064}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28523,7 +28660,7 @@ GameObject:
   - component: {fileID: 2994716496950678007}
   - component: {fileID: 9022755409449896144}
   - component: {fileID: 5788453046725211252}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Skill1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28818,7 +28955,7 @@ GameObject:
   - component: {fileID: 9036756228474214863}
   - component: {fileID: 8808501323189245352}
   - component: {fileID: 113694450943541788}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Pet_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29541,7 +29678,7 @@ GameObject:
   - component: {fileID: 1765702823809000869}
   - component: {fileID: 8269954221772138452}
   - component: {fileID: 7035549844620799442}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29709,6 +29846,7 @@ Transform:
   - {fileID: 106956000024553084}
   - {fileID: 5915380383658111504}
   - {fileID: 6009187008068791951}
+  - {fileID: 4218505926349681531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3378854915989972298
@@ -29788,6 +29926,7 @@ MonoBehaviour:
   isAttackReadyForParry: 0
   isParryWindowFinished: 0
   parryWindowDuration: 0
+  RenderTexture: {fileID: 8400000, guid: 574d4e3412d2c0d4aa57943900c62d23, type: 2}
 --- !u!114 &4313930177542392817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29858,6 +29997,11 @@ MonoBehaviour:
   burnTurnsRemaining: 0
   burnDamagePerTurn: 0
   burnVFXInstance: {fileID: 0}
+  poisonTurnsRemaining: 0
+  poisonDamagePerTurn: 0
+  poisonVFXInstance: {fileID: 0}
+  stunTurnsRemaining: 0
+  stunVFXInstance: {fileID: 0}
 --- !u!1 &8083655193775197940
 GameObject:
   m_ObjectHideFlags: 0
@@ -30902,7 +31046,7 @@ GameObject:
   - component: {fileID: 1921682701355694531}
   - component: {fileID: 3641295327736535237}
   - component: {fileID: 2841629156007760934}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: ImageParry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31550,7 +31694,7 @@ GameObject:
   - component: {fileID: 131773560976500506}
   - component: {fileID: 5718119124376058859}
   - component: {fileID: 1658288617893833595}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Pet_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32242,7 +32386,7 @@ GameObject:
   - component: {fileID: 8432914285879727078}
   - component: {fileID: 6127583579540684866}
   - component: {fileID: 1590782272674630539}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Parry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32935,7 +33079,7 @@ GameObject:
   - component: {fileID: 7123639041458070790}
   - component: {fileID: 1530410394467794889}
   - component: {fileID: 3562872748008177822}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Summon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33199,7 +33343,7 @@ GameObject:
   - component: {fileID: 7236134589831093916}
   - component: {fileID: 103654514461450365}
   - component: {fileID: 4876243988405133813}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: SkillPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33304,7 +33448,7 @@ GameObject:
   - component: {fileID: 5334663491941328481}
   - component: {fileID: 6571836421982525880}
   - component: {fileID: 1223197517527682233}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Skill3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
