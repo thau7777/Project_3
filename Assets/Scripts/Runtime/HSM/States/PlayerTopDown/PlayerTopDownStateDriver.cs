@@ -294,7 +294,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _animator.Play(_locomotionSet.QueuedAttackData.animName, _context.IsRangeClass ? _context.UpperBodyLayerIndex : 0,0);
     }
 
-    // must have to reset attack cycle when attack animation exits maybe by other state entering
+    // must have to reset physicalAttack cycle when physicalAttack animation exits maybe by other state entering
     public void OnAttackAnimExit()
     {
         // if marked for exit state

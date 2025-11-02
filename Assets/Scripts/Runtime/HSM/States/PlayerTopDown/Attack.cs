@@ -15,7 +15,7 @@ public class Attack : State
         {
             enterColor = Color.cyan, 
         }); 
-        if (ctx.IsRangeClass) // attack by upper body
+        if (ctx.IsRangeClass) // physicalAttack by upper body
             Add(new LayerWeightActivity(ctx.Animator, ctx.UpperBodyLayerIndex, 1f, 0f, 0.1f));
     }
     protected override void OnEnter()

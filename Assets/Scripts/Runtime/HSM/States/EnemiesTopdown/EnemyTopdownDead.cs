@@ -10,11 +10,14 @@ public class EnemyTopdownDead : State
     protected override void OnEnter()
     {
         ctx.CurrentSpeed = 0; 
-        ctx.CharacterController.isTrigger = true;
         ctx.Animator.CrossFade(ctx.DeadHash, 0, 0);
     }
     protected override State GetTransition()
     {
+        if(!ctx.IsDead)
+        {
+            return ((EnemyTopdownRoot)Parent).Idle;
+        }
         return null;
     }
 }

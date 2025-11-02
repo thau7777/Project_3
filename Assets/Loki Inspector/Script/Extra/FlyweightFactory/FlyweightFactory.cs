@@ -4,9 +4,6 @@ using UnityEngine.Pool;
 
 public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
 {
-    [SerializeField] bool collectionCheck = true;
-    [SerializeField] int defaultCapacity = 10;
-    [SerializeField] int maxPoolSize = 100;
 
     readonly Dictionary<FlyweightType, IObjectPool<Flyweight>> pools = new();
 
@@ -25,9 +22,9 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
             settings.OnGet,
             settings.OnRelease,
             settings.OnDestroyPoolObject,
-            collectionCheck,
-            defaultCapacity,
-            maxPoolSize
+            settings.collectionCheck,
+            settings.defaultCapacity,
+            settings.maxPoolSize
         );
         pools.Add(settings.type, pool);
         return pool;
@@ -38,6 +35,7 @@ public enum FlyweightType
 {
     SmallSwordSlashVFX,
     ShieldBashVFX,
+    SlashHitVFX,
     PurpleProjectile,
     PurpleHitVFX,
     BigPurpleProjectile,
@@ -46,4 +44,9 @@ public enum FlyweightType
     FireBallExplosionVFX,
     TopDownEnemySlime,
     TopDownEnemyTurtle,
+    TurnbaseSpawnPet,
+    TurnbaseBuff,
+    TurnbaseImpact,
+    TurnbaseHeal,
+
 }
