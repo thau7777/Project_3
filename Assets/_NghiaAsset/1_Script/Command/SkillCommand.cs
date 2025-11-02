@@ -23,6 +23,8 @@ namespace Turnbase
 
         public abstract IEnumerator Execute();
 
+
+
         protected Flyweight SpawnImpactEffect(Vector3 position, Skill skill)
         {
             FlyweightSettings settingsToSpawn = skill.impactVFXPrefab;

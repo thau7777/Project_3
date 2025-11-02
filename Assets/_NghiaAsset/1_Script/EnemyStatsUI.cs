@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-
+using System.Collections.Generic;
+using TMPro; 
 
 namespace Turnbase
 {
@@ -10,6 +11,9 @@ namespace Turnbase
         public Image mpBarFill;
         public Image shieldBarFill;
         public Image elementImage;
+
+        public Transform statusEffectContainer;
+        public GameObject statusEffectIconPrefab;
 
         public ElementMapping elementMapping;
 
@@ -35,6 +39,8 @@ namespace Turnbase
             UpdateMpBar(stats);
             UpdateShieldBar(stats);
             UpdateElementImage();
+
+            UpdateStatusEffects(ownerCharacter.GetActiveStatusEffects());
         }
 
         private void UpdateHpBar(CharacterStats stats)
@@ -63,11 +69,9 @@ namespace Turnbase
 
         private void UpdateElementImage()
         {
-            Enemy enemy = ownerCharacter as Enemy;
+            if (elementImage == null || elementMapping == null) return;
 
-            if (enemy == null || elementImage == null || elementMapping == null) return;
-
-            Sprite elementSprite = elementMapping.GetElementSprite(enemy.characterElement);
+            Sprite elementSprite = elementMapping.GetElementSprite(ownerCharacter.characterElement);
 
             if (elementSprite != null)
             {
@@ -77,6 +81,37 @@ namespace Turnbase
             else
             {
                 elementImage.enabled = false;
+            }
+        }
+
+        public void UpdateStatusEffects(List<StatusEffectData> activeEffects)
+        {
+            if (statusEffectContainer == null || statusEffectIconPrefab == null)
+            {
+                return;
+            }
+
+            foreach (Transform child in statusEffectContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (var effect in activeEffects)
+            {
+                GameObject iconObject = Instantiate(statusEffectIconPrefab, statusEffectContainer);
+
+                Image iconImage = iconObject.GetComponent<Image>();
+                TextMeshProUGUI turnText = iconObject.GetComponentInChildren<TextMeshProUGUI>();
+
+                if (iconImage != null && effect.Icon != null)
+                {
+                    iconImage.sprite = effect.Icon;
+                }
+
+                if (turnText != null)
+                {
+                    turnText.text = effect.TurnsRemaining.ToString();
+                }
             }
         }
     }

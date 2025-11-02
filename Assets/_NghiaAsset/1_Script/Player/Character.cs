@@ -19,6 +19,8 @@ namespace Turnbase
         Interrupted
     }
 
+
+
     [System.Serializable]
     public enum CharacterClass
     {
@@ -43,12 +45,16 @@ namespace Turnbase
         Poison,
         Lightning,
         Dark,
+        Frost,
+        Holy,
+
     }
 
     [System.Serializable]
     public class CharacterInfo
     {
         public string name;
+        public Sprite Avatar;
         public int level;
     }
 
@@ -56,7 +62,6 @@ namespace Turnbase
     [System.Serializable]
     public class CharacterStats
     {
-        public Sprite Avatar;
         public int maxHP;
         public int currentHP;
         public int maxMP;
@@ -254,63 +259,206 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
         }
 
-        public void AddShield(int amount, int duration, Flyweight vfxInstance = null) 
+        public void AddShield(int amount, int duration, Sprite icon, Flyweight vfxInstance = null)
         {
             if (buffManager != null)
             {
-                buffManager.AddShield(amount, duration, vfxInstance); 
+                buffManager.AddShield(amount, duration, vfxInstance, icon);
             }
         }
 
-        public void ApplyAttackBuff(int amount, int duration, Flyweight vfxInstance)
+        public void ApplyAttackBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyAttackBuff(amount, duration, vfxInstance);
+                buffManager.ApplyAttackBuff(amount, duration, vfxInstance, icon);
             }
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration, Flyweight vfxInstance) 
+        public void ApplyMaxHPBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyMaxHPBuff(amount, duration, vfxInstance); 
+                buffManager.ApplyMaxHPBuff(amount, duration, vfxInstance, icon);
             }
         }
 
-        public void ApplyDefenseBuff(int amount, int duration, Flyweight vfxInstance) 
+        public void ApplyDefenseBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyDefenseBuff(amount, duration, vfxInstance);
+                buffManager.ApplyDefenseBuff(amount, duration, vfxInstance, icon);
             }
         }
 
-        public void ApplyAgilityBuff(int amount, int duration, Flyweight vfxInstance) 
-        {
+        public void ApplyAgilityBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        {   
             if (buffManager != null)
             {
-                buffManager.ApplyAgilityBuff(amount, duration, vfxInstance); 
+                buffManager.ApplyAgilityBuff(amount, duration, vfxInstance, icon);
             }
         }
 
-        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight vfxInstance)
+        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyMagicalAttackBuff(amount, duration, vfxInstance); 
+                buffManager.ApplyMagicalAttackBuff(amount, duration, vfxInstance, icon);
             }
         }
 
-        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight vfxInstance) 
+        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
-                buffManager.ApplyMagicalDefenseBuff(amount, duration, vfxInstance);
+                buffManager.ApplyMagicalDefenseBuff(amount, duration, vfxInstance,icon);
             }
         }
         #endregion
+
+        #region Lấy Dữ liệu Hiệu ứng (Cho CharacterStatUI)
+        public List<StatusEffectData> GetActiveStatusEffects()
+        {
+            List<StatusEffectData> effects = new List<StatusEffectData>();
+
+            if (buffManager == null || debuffManager == null) return effects;
+
+
+            if (buffManager.shieldTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Lá chắn",
+                    TurnsRemaining = buffManager.shieldTurnsRemaining,
+                    Detail = $"{stats.currentShield} Shield",
+                    IsBuff = true,
+                    Icon = buffManager.shieldIcon
+
+                });
+            }
+
+            if (buffManager.attackBuffTurnsRemaining > 0)
+            {
+                int buffAmount = stats.physicalAttack - buffManager.originalBaseAttack;
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Tăng P.Attack",
+                    TurnsRemaining = buffManager.attackBuffTurnsRemaining,
+                    Detail = $"+{buffAmount}",
+                    IsBuff = true,
+                    Icon = buffManager.attackBuffIcon
+                });
+            }
+
+            if (buffManager.defenseBuffTurnsRemaining > 0)
+            {
+                int buffAmount = stats.physicalDefense - buffManager.originalBaseDefense;
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Tăng P.Defense",
+                    TurnsRemaining = buffManager.defenseBuffTurnsRemaining,
+                    Detail = $"+{buffAmount}",
+                    IsBuff = true,
+                    Icon = buffManager.defenseBuffIcon
+                });
+            }
+
+            if (buffManager.agilityBuffTurnsRemaining > 0)
+            {
+                int buffAmount = stats.agility - buffManager.originalBaseAgility;
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Tăng Agility",
+                    TurnsRemaining = buffManager.agilityBuffTurnsRemaining,
+                    Detail = $"+{buffAmount}",
+                    IsBuff = true,
+                    Icon = buffManager.agilityBuffIcon
+                });
+            }
+
+            if (buffManager.maxHPBuffTurnsRemaining > 0)
+            {
+                int buffAmount = stats.maxHP - buffManager.originalBaseMaxHP;
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Tăng MaxHP",
+                    TurnsRemaining = buffManager.maxHPBuffTurnsRemaining,
+                    Detail = $"+{buffAmount} MaxHP",
+                    IsBuff = true,
+                    Icon = buffManager.maxHPBuffIcon
+                });
+            }
+
+            if (buffManager.magicalAttackBuffTurnsRemaining > 0)
+            {
+                int buffAmount = stats.magicAttack - buffManager.magicalOriginalBaseAttack;
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Tăng M.Attack",
+                    TurnsRemaining = buffManager.magicalAttackBuffTurnsRemaining,
+                    Detail = $"+{buffAmount}",
+                    IsBuff = true,
+                    Icon = buffManager.magicalAttackBuffIcon
+                });
+            }
+
+            if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
+            {
+                int buffAmount = stats.magicDefense - buffManager.magicalOriginalBaseDefense;
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Tăng M.Defense",
+                    TurnsRemaining = buffManager.magicalDefenseBuffTurnsRemaining,
+                    Detail = $"+{buffAmount}",
+                    IsBuff = true,
+                    Icon = buffManager.magicalDefenseBuffIcon
+                });
+            }
+
+
+            // Lấy dữ liệu DEBUFF và thêm Icon
+
+            if (debuffManager.burnTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Thiêu đốt",
+                    TurnsRemaining = debuffManager.burnTurnsRemaining,
+                    Detail = $"{debuffManager.burnDamagePerTurn} Sát thương/lượt",
+                    IsBuff = false,
+                    Icon = debuffManager.burnIcon
+                });
+            }
+
+            if (debuffManager.poisonTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Độc",
+                    TurnsRemaining = debuffManager.poisonTurnsRemaining,
+                    Detail = $"{debuffManager.poisonDamagePerTurn} Sát thương/lượt",
+                    IsBuff = false,
+                    Icon = debuffManager.poisonIcon
+                });
+            }
+
+            if (debuffManager.stunTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Choáng",
+                    TurnsRemaining = debuffManager.stunTurnsRemaining,
+                    Detail = "Không hành động",
+                    IsBuff = false,
+                    Icon = debuffManager.stunIcon
+                });
+            }
+
+            return effects;
+        }
+        #endregion    
     }
 
 }
+
 

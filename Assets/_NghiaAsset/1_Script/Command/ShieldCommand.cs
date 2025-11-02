@@ -57,6 +57,7 @@ namespace Turnbase
         {
             int shieldAmount = skill.damage;
             int durationTurns = skill.buffProperties.durationTurns;
+            Sprite shieldIcon = skill.buffProperties.icon;
 
             if (!targetsToShield.Any())
             {
@@ -71,7 +72,7 @@ namespace Turnbase
                     skill
                 );
 
-                charTarget.AddShield(shieldAmount, durationTurns, localShieldVFXInstance);
+                charTarget.AddShield(shieldAmount, durationTurns, shieldIcon, localShieldVFXInstance);
 
                 Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield, hiệu lực {durationTurns} lượt.");
 

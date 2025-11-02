@@ -13,7 +13,6 @@ namespace Turnbase
         private Skill skill;
         private BattleManager battleManager;
 
-        private const float ATTACK_MULTIPLIER = 0.5f;
         private const float TARGET_DELAY = 0.05f;
 
         public DamageAllCommand(Character user, Skill skill, BattleManager battleManager)
@@ -32,10 +31,9 @@ namespace Turnbase
 
             yield return new WaitForSeconds(1.5f);
 
-            int rawDamage = CalculateRawDamage();
             List<Character> allTargets = GetTargets();
 
-            yield return ApplyDamageToTargets(rawDamage, allTargets);
+            yield return ApplyDamageToTargets(allTargets);
 
             float totalAnimationDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(totalAnimationDuration);
@@ -44,31 +42,6 @@ namespace Turnbase
             {
                 battleManager.EndTurn(user);
             }
-        }
-
-        private int CalculateRawDamage()
-        {
-            int offensiveStat;
-
-            switch (skill.elementType)
-            {
-                case ElementType.Magical:
-                case ElementType.Fire:
-                case ElementType.Ice:
-                case ElementType.Poison:
-                case ElementType.Lightning:
-                case ElementType.Dark:
-                    offensiveStat = user.stats.magicAttack;
-                    break;
-
-                case ElementType.Physical:
-                case ElementType.None:
-                default:
-                    offensiveStat = user.stats.physicalAttack;
-                    break;
-            }
-
-            return skill.damage + Mathf.RoundToInt(offensiveStat * ATTACK_MULTIPLIER);
         }
 
         private List<Character> GetTargets()
@@ -83,62 +56,24 @@ namespace Turnbase
             }
         }
 
-        private IEnumerator ApplyDamageToTargets(int rawDamage, List<Character> targets)
+        private IEnumerator ApplyDamageToTargets(List<Character> targets)
         {
             foreach (Character aoeTarget in targets)
             {
                 if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
-                int defensiveStat;
-
-                if (skill.elementType != ElementType.Physical && skill.elementType != ElementType.None)
-                {
-                    defensiveStat = aoeTarget.stats.magicDefense;
-                }
-                else
-                {
-                    defensiveStat = aoeTarget.stats.physicalDefense;
-                }
-
-
-                float defenseMultiplier = 100f / (defensiveStat + 100f);
-                float damageBase = rawDamage * defenseMultiplier;
-
-                float elementMultiplier = GetElementMultiplier(aoeTarget);
-
-                float preCritDamageFloat = damageBase * elementMultiplier;
-
-                bool isCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
-
-                if (isCrit)
-                {
-                    float critMultiplier = (float)user.stats.critDamage / 100f;
-                    preCritDamageFloat *= critMultiplier;
-                }
-
-                int finalDamage = Mathf.RoundToInt(preCritDamageFloat);
-
-
-                if (rawDamage > 0)
-                {
-                    finalDamage = Mathf.Max(1, finalDamage);
-                }
+                int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
 
                 aoeTarget.TakeDamage(finalDamage);
                 SpawnImpactEffect(aoeTarget.transform.position);
 
+                if (skill.debuffProperties.debuffType != DebuffType.None)
+                {
+                    aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                }
+
                 yield return new WaitForSeconds(TARGET_DELAY);
             }
-        }
-
-        private float GetElementMultiplier(Character target)
-        {
-            if (battleManager != null && battleManager.elementChart != null)
-            {
-                return battleManager.elementChart.GetMultiplier(skill.elementType, target.characterElement);
-            }
-
-            return 1.0f;
         }
 
         private void SpawnImpactEffect(Vector3 position)

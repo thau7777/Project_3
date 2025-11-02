@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro; 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 
@@ -312,10 +313,10 @@ namespace Turnbase
 
             if(activeCharacter.debuffManager != null)
             {
+                activeCharacter.debuffManager.ApplyDoTDamage();
 
                 activeCharacter.debuffManager.ProcessTurnStartDecay();
 
-                activeCharacter.debuffManager.ApplyDoTDamage();
             }
 
             if (activeCharacter.debuffManager.stunTurnsRemaining > 0)
@@ -388,10 +389,6 @@ namespace Turnbase
 
         private IEnumerator EnemyTurn(Character enemy)
         {
-            Debug.Log("Đến lượt của kẻ địch: " + enemy.gameObject.name);
-
-
-
             yield return new WaitForSeconds(1f);
 
             Enemy enemyComponent = enemy.GetComponent<Enemy>();

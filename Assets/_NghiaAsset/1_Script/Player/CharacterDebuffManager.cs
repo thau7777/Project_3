@@ -12,17 +12,18 @@ namespace Turnbase
         [HideInInspector] public int burnTurnsRemaining = 0;
         [HideInInspector] public int burnDamagePerTurn = 0;
         [HideInInspector] public Flyweight burnVFXInstance;
+        [HideInInspector] public Sprite burnIcon;
 
         [Header("Poison Debuff State")]
         [HideInInspector] public int poisonTurnsRemaining = 0;
         [HideInInspector] public int poisonDamagePerTurn = 0;
         [HideInInspector] public Flyweight poisonVFXInstance;
+        [HideInInspector] public Sprite poisonIcon;
 
         [Header("Stun Debuff State")]
         [HideInInspector] public int stunTurnsRemaining = 0;
         [HideInInspector] public Flyweight stunVFXInstance;
-
-
+        [HideInInspector] public Sprite stunIcon;
 
 
         private void Awake()
@@ -35,7 +36,7 @@ namespace Turnbase
 
         }
 
-        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight vfxInstance)
+        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
@@ -56,11 +57,14 @@ namespace Turnbase
             }
             burnVFXInstance = vfxInstance;
 
-            Debug.Log($"{character.name} đã nhận Debuff Thiêu đốt: {burnDamagePerTurn} sát thương/lượt, {duration} lượt.");
+            burnIcon = icon;
 
+            character.UpdateOwnUI();
+
+            Debug.Log($"{character.name} đã nhận Debuff Thiêu đốt: **{burnDamagePerTurn} sát thương/lượt**, **{duration} lượt**.");
         }
 
-        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight vfxInstance)
+        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
@@ -81,11 +85,12 @@ namespace Turnbase
             }
             poisonVFXInstance = vfxInstance;
 
-            Debug.Log($"{character.name} đã nhận Debuff Độc: {poisonDamagePerTurn} sát thương/lượt, {duration} lượt.");
+            poisonIcon = icon;
 
+            Debug.Log($"{character.name} đã nhận Debuff Độc: **{poisonDamagePerTurn} sát thương/lượt**, **{duration} lượt**.");
         }
 
-        public void ApplyStunDebuff(int duration, Flyweight newVfxInstance)
+        public void ApplyStunDebuff(int duration, Flyweight newVfxInstance, Sprite icon)
         {
             if (duration <= 0) return;
 
@@ -103,9 +108,11 @@ namespace Turnbase
                     FlyweightFactory.ReturnToPool(stunVFXInstance);
                 }
                 stunVFXInstance = newVfxInstance;
+
+                stunIcon = icon;
             }
 
-            Debug.Log($"{character.name} đã bị Choáng trong {duration} lượt.");
+            Debug.Log($"{character.name} đã bị Choáng trong **{duration} lượt**.");
         }
 
 
@@ -116,21 +123,28 @@ namespace Turnbase
 
             Flyweight debuffVFX = null;
 
-            debuffVFX = FlyweightFactory.Spawn(debuffSettings.debuffEffect);
 
-            if (debuffVFX != null)
+
+            if (debuffSettings.debuffEffect != null)
             {
-                debuffVFX.transform.SetParent(character.transform);
-                debuffVFX.transform.localPosition = Vector3.zero;
-                debuffVFX.gameObject.SetActive(true);
+                debuffVFX = FlyweightFactory.Spawn(debuffSettings.debuffEffect);
+
+                if (debuffVFX != null)
+                {
+                    debuffVFX.transform.SetParent(character.transform);
+                    debuffVFX.transform.localPosition = Vector3.zero;
+                    debuffVFX.gameObject.SetActive(true);
+                }
             }
+
             switch (debuffSettings.debuffType)
             {
                 case DebuffType.Burn:
                     ApplyBurnDebuff(
                         debuffSettings.baseDamagePerTurn,
                         debuffSettings.durationTurns,
-                        debuffVFX
+                        debuffVFX,
+                        debuffSettings.icon
                     );
                     break;
 
@@ -138,14 +152,17 @@ namespace Turnbase
                     ApplyPoisonDebuff(
                         debuffSettings.baseDamagePerTurn,
                         debuffSettings.durationTurns,
-                        debuffVFX
+                        debuffVFX,
+                        debuffSettings.icon
+
                     );
                     break;
 
                 case DebuffType.Stun:
                     ApplyStunDebuff(
                         debuffSettings.durationTurns,
-                        debuffVFX
+                        debuffVFX,
+                        debuffSettings.icon
                     );
                     break;
 
@@ -155,6 +172,7 @@ namespace Turnbase
         public void ApplyDoTDamage()
         {
             if (!character.isAlive) return;
+
 
             if (burnTurnsRemaining > 0)
             {
@@ -167,10 +185,6 @@ namespace Turnbase
                 Debug.Log($"{character.name} nhận sát thương từ Độc: {poisonDamagePerTurn}");
                 character.TakeDamage(poisonDamagePerTurn);
             }
-
-
-
-
         }
 
 
@@ -182,7 +196,13 @@ namespace Turnbase
                 burnVFXInstance = null;
             }
             burnDamagePerTurn = 0;
+
+            character.UpdateOwnUI();
+
+
+
             Debug.Log($"Debuff Thiêu đốt của {character.name} đã hết hạn.");
+
         }
 
         private void RemoveExpiredPoisonDebuff()
@@ -193,6 +213,7 @@ namespace Turnbase
                 poisonVFXInstance = null;
             }
             poisonDamagePerTurn = 0;
+
             Debug.Log($"Debuff Độc của {character.name} đã hết hạn.");
         }
 
@@ -213,12 +234,15 @@ namespace Turnbase
 
         public void ProcessTurnStartDecay()
         {
+            bool uiUpdateNeeded = false;
+
             if (burnTurnsRemaining > 0)
             {
                 burnTurnsRemaining--;
                 if (burnTurnsRemaining <= 0)
                 {
                     RemoveExpiredBurnDebuff();
+                    uiUpdateNeeded = true;
                 }
             }
 
@@ -228,6 +252,7 @@ namespace Turnbase
                 if (poisonTurnsRemaining <= 0)
                 {
                     RemoveExpiredPoisonDebuff();
+                    uiUpdateNeeded = true;
                 }
             }
 
@@ -237,11 +262,14 @@ namespace Turnbase
                 if (stunTurnsRemaining <= 0)
                 {
                     RemoveExpiredStunDebuff();
+                    uiUpdateNeeded = true;
                 }
             }
+
+            if (uiUpdateNeeded && character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
         }
-
-
     }
-
 }

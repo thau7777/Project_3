@@ -28,7 +28,7 @@ namespace Turnbase
         {
             character = combatant;
             statUI = statUIRef;
-            avatarImage.sprite = character.stats.Avatar;
+            avatarImage.sprite = character.info.Avatar;
 
 
 

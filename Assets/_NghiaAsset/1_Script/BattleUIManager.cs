@@ -41,7 +41,6 @@ public class BattleUIManager : MonoBehaviour
     {
         if (AvatarGroupPrefab == null || UIContainer == null)
         {
-            Debug.LogError("Cần gán AvatarGroup Prefab VÀ UI Container trong BattleManager!");
             return;
         }
 
@@ -54,7 +53,7 @@ public class BattleUIManager : MonoBehaviour
 
             characterToUI.Add(character, uiGroup);
 
-            uiGroup.UpdateUI(character.stats);
+            uiGroup.UpdateUI(character.stats, character.info);
         }
     }
 
@@ -62,7 +61,7 @@ public class BattleUIManager : MonoBehaviour
     {
         if (characterToUI.TryGetValue(character, out AvatarGroup uiGroup))
         {
-            uiGroup.UpdateUI(character.stats);
+            uiGroup.UpdateUI(character.stats, character.info);
         }
     }
 
@@ -70,7 +69,7 @@ public class BattleUIManager : MonoBehaviour
     {
         foreach (var pair in characterToUI)
         {
-            pair.Value.UpdateUI(pair.Key.stats);
+            pair.Value.UpdateUI(pair.Key.stats, pair.Key.info);
         }
 
     }
@@ -88,7 +87,6 @@ public class BattleUIManager : MonoBehaviour
     {
         if (battleManager == null)
         {
-            Debug.LogError("BattleUIManager: BattleManager chưa được gán.");
             return;
         }
 
@@ -100,7 +98,6 @@ public class BattleUIManager : MonoBehaviour
     {
         if (combatantButtonPrefab == null || combatantButtonContainer == null || statDisplayPanel == null)
         {
-            Debug.LogError("BattleUIManager: Thiếu tham chiếu UI (Button Prefab, Container, hoặc Stat Display)!");
             return;
         }
 

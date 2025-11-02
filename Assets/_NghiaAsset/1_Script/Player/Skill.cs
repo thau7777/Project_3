@@ -41,6 +41,7 @@ public class Skill : ScriptableObject
     {
         public StatType statToModify;
         public int durationTurns;
+        public Sprite icon;
     }
 
 
@@ -52,7 +53,8 @@ public class Skill : ScriptableObject
         public int durationTurns;
         public int baseDamagePerTurn;
         public FlyweightSettings debuffEffect;
-    }
+        public Sprite icon;
+    }
 
 
 }
@@ -103,6 +105,8 @@ public enum ElementType
     Poison,
     Lightning,
     Dark,
+    Frost,
+    Holy,
 
 }
 
@@ -113,3 +117,4 @@ public enum  DebuffType
     Poison,
     Stun,
 }
+
