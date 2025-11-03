@@ -35,6 +35,28 @@ public class Skill : ScriptableObject
     [ShowIfEnumValue("skillType", SkillType.Buff, SkillType.Shield)]
     public BuffSettings buffProperties;
 
+    [Header("Stack Properties")]
+    public StackApplicationTarget stackApplicationTarget;
+    public StackSetting stackSetting;
+
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self)]
+    public BuffSettings activatedBuff;
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Target)]
+    public DebuffSettings activatedDebuff;
+
+
+    [System.Serializable]
+    public struct StackSetting 
+    {
+        public bool isStackBuilder;
+        public int stackAmountPerUse;
+
+        public bool isStackFinisher;
+        public int stackThreshold;
+
+    }
+
+
 
     [System.Serializable]
     public struct BuffSettings
@@ -58,6 +80,15 @@ public class Skill : ScriptableObject
 
 
 }
+
+public enum StackApplicationTarget
+{
+    None,
+    Self,
+    Target,
+
+}
+ 
 
 public enum StatType
 {

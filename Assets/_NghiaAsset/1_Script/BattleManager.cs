@@ -37,6 +37,7 @@ namespace Turnbase
 
         public CharacterStatUI statDisplayPanel;
 
+        public BattleBuffManager turnbuffManager;
 
         void Start()
         {
@@ -98,6 +99,8 @@ namespace Turnbase
                     playerInstance.stats.currentShield = 0;
                 }
 
+                turnbuffManager.ProcessOnBattleStartPassives(playerInstance);
+
                 if (uiManager != null) uiManager.SpawnCharacterUI(playerInstance);
 
                 CharacterStateMachine playerStateMachine = playerInstance.GetComponent<CharacterStateMachine>();
@@ -135,6 +138,8 @@ namespace Turnbase
                 {
                     enemyInstance.stats.currentShield = 0;
                 }
+
+                turnbuffManager.ProcessOnBattleStartPassives(enemyInstance);
 
                 CharacterStateMachine enemyStateMachine = enemyInstance.GetComponent<CharacterStateMachine>();
                 if (enemyStateMachine != null)
@@ -303,6 +308,8 @@ namespace Turnbase
 
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
+
+            turnbuffManager.ProcessPassiveSkills(activeCharacter);
 
             if (activeCharacter.buffManager != null)
             {
@@ -519,7 +526,6 @@ namespace Turnbase
                 isProcessingTurn = false;
             }
         }
-
 
         private void CheckWinCondition()
         {

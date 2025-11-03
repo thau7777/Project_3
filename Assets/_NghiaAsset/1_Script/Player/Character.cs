@@ -93,6 +93,7 @@ namespace Turnbase
 
         [TabGroup("Skill")] public List<Skill> skills;
 
+        [TabGroup("Skill Passive")] public List<SkillPassive> passiveSkills;
 
         public bool isPlayer;
         public Character target;
@@ -259,6 +260,22 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} máu! Máu hiện tại: {stats.currentHP}");
         }
 
+        public void RestoreMana(int amount)
+        {
+            if (!isAlive) return;
+
+            stats.currentMP = Mathf.Min(stats.currentMP + amount, stats.maxMP);
+
+            UpdateOwnUI();
+
+            if (battleManager != null)
+            {
+                battleUIManager.UpdateCharacterUI(this);
+            }
+
+            Debug.Log($"{gameObject.name} hồi {amount} mana! Mana hiện tại: {stats.currentMP}");
+        }
+
         public void AddShield(int amount, int duration, Sprite icon, Flyweight vfxInstance = null)
         {
             if (buffManager != null)
@@ -416,7 +433,6 @@ namespace Turnbase
             }
 
 
-            // Lấy dữ liệu DEBUFF và thêm Icon
 
             if (debuffManager.burnTurnsRemaining > 0)
             {

@@ -30105,7 +30105,7 @@ MonoBehaviour:
     level: 0
   stats:
     maxHP: 2550
-    currentHP: 2550
+    currentHP: 1550
     maxMP: 2967
     currentMP: 150
     maxShield: 10000
@@ -30118,6 +30118,10 @@ MonoBehaviour:
     critDamage: 150
     agility: 111
   skills: []
+  passiveSkills:
+  - {fileID: 11400000, guid: 965e9d9cb6e618345b1221c4bbad6f36, type: 2}
+  - {fileID: 11400000, guid: 295792d135f95fb4cbf009420e6db822, type: 2}
+  - {fileID: 11400000, guid: 8b0bc2075266f3c4ab3617f43dc921ad, type: 2}
   isPlayer: 1
   target: {fileID: 0}
   targetMarker: {fileID: 1349848908112051574}
@@ -30162,19 +30166,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterBuffManager
   attackBuffTurnsRemaining: 0
+  originalBaseAttack: 0
   attackVFXInstance: {fileID: 0}
+  attackBuffIcon: {fileID: 0}
+  originalBaseMaxHP: 0
   maxHPBuffTurnsRemaining: 0
   maxHPVFXInstance: {fileID: 0}
+  maxHPBuffIcon: {fileID: 0}
+  originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
   defenseVFXInstance: {fileID: 0}
+  defenseBuffIcon: {fileID: 0}
+  originalBaseAgility: 0
   agilityBuffTurnsRemaining: 0
   agilityVFXInstance: {fileID: 0}
+  agilityBuffIcon: {fileID: 0}
   magicalAttackBuffTurnsRemaining: 0
+  magicalOriginalBaseAttack: 0
   magicalAttackVFXInstance: {fileID: 0}
+  magicalAttackBuffIcon: {fileID: 0}
+  magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
   magicalDefenseVFXInstance: {fileID: 0}
+  magicalDefenseBuffIcon: {fileID: 0}
+  baseShieldAmount: 0
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
+  shieldIcon: {fileID: 0}
 --- !u!114 &3643947891567202690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30190,11 +30208,14 @@ MonoBehaviour:
   burnTurnsRemaining: 0
   burnDamagePerTurn: 0
   burnVFXInstance: {fileID: 0}
+  burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
   poisonDamagePerTurn: 0
   poisonVFXInstance: {fileID: 0}
+  poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
+  stunIcon: {fileID: 0}
 --- !u!1 &8144461621592026007
 GameObject:
   m_ObjectHideFlags: 0
