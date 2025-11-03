@@ -197,7 +197,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// The different attack types.
+		/// The different physicalAttack types.
 		/// </summary>
 		private void Attacking()
 		{
@@ -205,7 +205,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// First attack in the AttackChain.
+		/// First physicalAttack in the AttackChain.
 		/// </summary>
 		public void Attack1()
 		{

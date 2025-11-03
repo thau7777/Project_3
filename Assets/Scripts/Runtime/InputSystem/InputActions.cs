@@ -263,31 +263,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""38fa99af-7564-46a5-93d8-92dc172399c5"",
             ""actions"": [
                 {
-                    ""name"": ""Navigate"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""c02e8333-fe4c-4417-be50-6c2f3393713e"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Submit"",
-                    ""type"": ""Button"",
-                    ""id"": ""23ff2bba-ae7f-48d8-893a-23f91257ec33"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Escape"",
-                    ""type"": ""Button"",
-                    ""id"": ""88403b65-35ac-4765-a4c2-eb4d2e9d6f50"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Look"",
@@ -306,6 +288,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""23ff2bba-ae7f-48d8-893a-23f91257ec33"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""88403b65-35ac-4765-a4c2-eb4d2e9d6f50"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Adjust"",
+                    ""type"": ""Value"",
+                    ""id"": ""2e393d06-bcb8-410e-96ca-e92cc3b91947"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -316,7 +325,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -327,7 +336,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -338,29 +347,29 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
                     ""id"": ""fd678f0f-7796-4694-bd82-21a0478609c3"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
                     ""id"": ""f25f251b-1285-4740-83c5-72bf29b5aba0"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -371,7 +380,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -382,7 +391,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -393,29 +402,29 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
                     ""id"": ""2c4b80d4-19c4-4a5e-937c-81e65a5f1f04"",
-                    ""path"": ""<XInputController>/dpad/left"",
+                    ""path"": ""<XInputController>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
                     ""id"": ""c1f2798d-ceaa-458c-9377-f8419abed3af"",
-                    ""path"": ""<XInputController>/dpad/right"",
+                    ""path"": ""<XInputController>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -426,7 +435,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -459,7 +468,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Escape"",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -470,7 +479,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Escape"",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -616,171 +625,114 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PressAnyButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""PopUpGame"",
-            ""id"": ""00a02b0f-d267-464e-b7d5-f233e6793b55"",
-            ""actions"": [
-                {
-                    ""name"": ""Naviagate"",
-                    ""type"": ""Value"",
-                    ""id"": ""28070395-4e0c-4f75-b595-30cf23a4924e"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Left Click"",
-                    ""type"": ""Button"",
-                    ""id"": ""7b2ef7d7-2dfd-433f-b7cb-12e213512edc"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Right Click"",
-                    ""type"": ""Button"",
-                    ""id"": ""4a878e6c-b530-44e8-abb9-d3d8d3048274"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""89b1e62a-82e2-4129-b417-31fa85f219d7"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Left Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""957d5d35-1faa-4a19-b778-6ac72bcc4ff9"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Right Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""2D Vector"",
-                    ""id"": ""058192e8-e8bb-4b52-a544-491f83c60cad"",
+                    ""id"": ""3ed8240e-1658-46a9-a734-e31bdd6d26d4"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""9b65d882-de84-45a1-a066-40661de4d2b1"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""id"": ""68a353b3-7cea-4187-994b-14466d39541c"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""dee4422b-9cad-4b57-b4fe-dd7baa4cb6b9"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""id"": ""5b0e7b4e-97ef-46e0-a160-b74fedf7325d"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""352cc35c-afbb-4580-9aa1-92fbc178bd2a"",
+                    ""id"": ""9b7ab09a-b4b4-4fab-b33c-7730fc5fa58f"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""df207c47-faec-4ce4-8a5c-4bef7f3e2ab7"",
+                    ""id"": ""edfb083b-864a-457f-b410-772088151e21"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""2D Vector"",
-                    ""id"": ""a77efc3e-d480-4c70-bc8f-b70505c97244"",
+                    ""id"": ""034118e8-f7b7-442c-891b-b5db6ab9b2fa"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""2302f429-f5a5-40d1-9171-3e6eae941426"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""id"": ""f2c1845d-445c-473c-9f7e-3da492663a90"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""51f9ef89-fb31-4ba8-96e9-2692f2b1df97"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""id"": ""6f7b0fd9-da8c-4e4f-9abc-0b929ac61cdb"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""3fd8255e-e2e9-4708-a3d6-dd5cf183fc24"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""id"": ""84381db3-b821-46fd-842d-b4c8b60c672e"",
+                    ""path"": ""<XInputController>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""967342de-b464-4800-ba0a-eaf726fe2edd"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""id"": ""602b188b-07e3-4ad9-9ec4-e8079eb2b1d1"",
+                    ""path"": ""<XInputController>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -804,16 +756,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTowerDefense = asset.FindActionMap("PlayerTowerDefense", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
-        m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
-        m_UI_Escape = m_UI.FindAction("Escape", throwIfNotFound: true);
+        m_UI_Move = m_UI.FindAction("Move", throwIfNotFound: true);
         m_UI_Look = m_UI.FindAction("Look", throwIfNotFound: true);
         m_UI_PressAnyButton = m_UI.FindAction("PressAnyButton", throwIfNotFound: true);
-        // PopUpGame
-        m_PopUpGame = asset.FindActionMap("PopUpGame", throwIfNotFound: true);
-        m_PopUpGame_Naviagate = m_PopUpGame.FindAction("Naviagate", throwIfNotFound: true);
-        m_PopUpGame_LeftClick = m_PopUpGame.FindAction("Left Click", throwIfNotFound: true);
-        m_PopUpGame_RightClick = m_PopUpGame.FindAction("Right Click", throwIfNotFound: true);
+        m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
+        m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
+        m_UI_Adjust = m_UI.FindAction("Adjust", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -823,7 +771,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerFPS.enabled, "This will cause a leak and performance issues, InputActions.PlayerFPS.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerTowerDefense.enabled, "This will cause a leak and performance issues, InputActions.PlayerTowerDefense.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_PopUpGame.enabled, "This will cause a leak and performance issues, InputActions.PopUpGame.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1294,11 +1241,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_Navigate;
-    private readonly InputAction m_UI_Submit;
-    private readonly InputAction m_UI_Escape;
+    private readonly InputAction m_UI_Move;
     private readonly InputAction m_UI_Look;
     private readonly InputAction m_UI_PressAnyButton;
+    private readonly InputAction m_UI_Submit;
+    private readonly InputAction m_UI_Cancel;
+    private readonly InputAction m_UI_Adjust;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1311,17 +1259,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "UI/Navigate".
+        /// Provides access to the underlying input action "UI/Move".
         /// </summary>
-        public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
-        /// <summary>
-        /// Provides access to the underlying input action "UI/Submit".
-        /// </summary>
-        public InputAction @Submit => m_Wrapper.m_UI_Submit;
-        /// <summary>
-        /// Provides access to the underlying input action "UI/Escape".
-        /// </summary>
-        public InputAction @Escape => m_Wrapper.m_UI_Escape;
+        public InputAction @Move => m_Wrapper.m_UI_Move;
         /// <summary>
         /// Provides access to the underlying input action "UI/Look".
         /// </summary>
@@ -1330,6 +1270,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/PressAnyButton".
         /// </summary>
         public InputAction @PressAnyButton => m_Wrapper.m_UI_PressAnyButton;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Submit".
+        /// </summary>
+        public InputAction @Submit => m_Wrapper.m_UI_Submit;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Cancel".
+        /// </summary>
+        public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Adjust".
+        /// </summary>
+        public InputAction @Adjust => m_Wrapper.m_UI_Adjust;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1356,21 +1308,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @Navigate.started += instance.OnNavigate;
-            @Navigate.performed += instance.OnNavigate;
-            @Navigate.canceled += instance.OnNavigate;
-            @Submit.started += instance.OnSubmit;
-            @Submit.performed += instance.OnSubmit;
-            @Submit.canceled += instance.OnSubmit;
-            @Escape.started += instance.OnEscape;
-            @Escape.performed += instance.OnEscape;
-            @Escape.canceled += instance.OnEscape;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
             @PressAnyButton.started += instance.OnPressAnyButton;
             @PressAnyButton.performed += instance.OnPressAnyButton;
             @PressAnyButton.canceled += instance.OnPressAnyButton;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+            @Adjust.started += instance.OnAdjust;
+            @Adjust.performed += instance.OnAdjust;
+            @Adjust.canceled += instance.OnAdjust;
         }
 
         /// <summary>
@@ -1382,21 +1337,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UIActions" />
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @Navigate.started -= instance.OnNavigate;
-            @Navigate.performed -= instance.OnNavigate;
-            @Navigate.canceled -= instance.OnNavigate;
-            @Submit.started -= instance.OnSubmit;
-            @Submit.performed -= instance.OnSubmit;
-            @Submit.canceled -= instance.OnSubmit;
-            @Escape.started -= instance.OnEscape;
-            @Escape.performed -= instance.OnEscape;
-            @Escape.canceled -= instance.OnEscape;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
             @PressAnyButton.started -= instance.OnPressAnyButton;
             @PressAnyButton.performed -= instance.OnPressAnyButton;
             @PressAnyButton.canceled -= instance.OnPressAnyButton;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+            @Adjust.started -= instance.OnAdjust;
+            @Adjust.performed -= instance.OnAdjust;
+            @Adjust.canceled -= instance.OnAdjust;
         }
 
         /// <summary>
@@ -1430,124 +1388,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
-
-    // PopUpGame
-    private readonly InputActionMap m_PopUpGame;
-    private List<IPopUpGameActions> m_PopUpGameActionsCallbackInterfaces = new List<IPopUpGameActions>();
-    private readonly InputAction m_PopUpGame_Naviagate;
-    private readonly InputAction m_PopUpGame_LeftClick;
-    private readonly InputAction m_PopUpGame_RightClick;
-    /// <summary>
-    /// Provides access to input actions defined in input action map "PopUpGame".
-    /// </summary>
-    public struct PopUpGameActions
-    {
-        private @InputActions m_Wrapper;
-
-        /// <summary>
-        /// Construct a new instance of the input action map wrapper class.
-        /// </summary>
-        public PopUpGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "PopUpGame/Naviagate".
-        /// </summary>
-        public InputAction @Naviagate => m_Wrapper.m_PopUpGame_Naviagate;
-        /// <summary>
-        /// Provides access to the underlying input action "PopUpGame/LeftClick".
-        /// </summary>
-        public InputAction @LeftClick => m_Wrapper.m_PopUpGame_LeftClick;
-        /// <summary>
-        /// Provides access to the underlying input action "PopUpGame/RightClick".
-        /// </summary>
-        public InputAction @RightClick => m_Wrapper.m_PopUpGame_RightClick;
-        /// <summary>
-        /// Provides access to the underlying input action map instance.
-        /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_PopUpGame; }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
-        public void Enable() { Get().Enable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
-        public void Disable() { Get().Disable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
-        public bool enabled => Get().enabled;
-        /// <summary>
-        /// Implicitly converts an <see ref="PopUpGameActions" /> to an <see ref="InputActionMap" /> instance.
-        /// </summary>
-        public static implicit operator InputActionMap(PopUpGameActions set) { return set.Get(); }
-        /// <summary>
-        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <param name="instance">Callback instance.</param>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
-        /// </remarks>
-        /// <seealso cref="PopUpGameActions" />
-        public void AddCallbacks(IPopUpGameActions instance)
-        {
-            if (instance == null || m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Add(instance);
-            @Naviagate.started += instance.OnNaviagate;
-            @Naviagate.performed += instance.OnNaviagate;
-            @Naviagate.canceled += instance.OnNaviagate;
-            @LeftClick.started += instance.OnLeftClick;
-            @LeftClick.performed += instance.OnLeftClick;
-            @LeftClick.canceled += instance.OnLeftClick;
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
-        }
-
-        /// <summary>
-        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <remarks>
-        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
-        /// </remarks>
-        /// <seealso cref="PopUpGameActions" />
-        private void UnregisterCallbacks(IPopUpGameActions instance)
-        {
-            @Naviagate.started -= instance.OnNaviagate;
-            @Naviagate.performed -= instance.OnNaviagate;
-            @Naviagate.canceled -= instance.OnNaviagate;
-            @LeftClick.started -= instance.OnLeftClick;
-            @LeftClick.performed -= instance.OnLeftClick;
-            @LeftClick.canceled -= instance.OnLeftClick;
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
-        }
-
-        /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />.
-        /// </summary>
-        /// <seealso cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />
-        public void RemoveCallbacks(IPopUpGameActions instance)
-        {
-            if (m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
-        /// </summary>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
-        /// </remarks>
-        /// <seealso cref="PopUpGameActions.AddCallbacks(IPopUpGameActions)" />
-        /// <seealso cref="PopUpGameActions.RemoveCallbacks(IPopUpGameActions)" />
-        /// <seealso cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />
-        public void SetCallbacks(IPopUpGameActions instance)
-        {
-            foreach (var item in m_Wrapper.m_PopUpGameActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_PopUpGameActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    /// <summary>
-    /// Provides a new <see cref="PopUpGameActions" /> instance referencing this action map.
-    /// </summary>
-    public PopUpGameActions @PopUpGame => new PopUpGameActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
     /// </summary>
@@ -1623,26 +1463,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Navigate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNavigate(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSubmit(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEscape(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -1657,34 +1483,26 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPressAnyButton(InputAction.CallbackContext context);
-    }
-    /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PopUpGame" which allows adding and removing callbacks.
-    /// </summary>
-    /// <seealso cref="PopUpGameActions.AddCallbacks(IPopUpGameActions)" />
-    /// <seealso cref="PopUpGameActions.RemoveCallbacks(IPopUpGameActions)" />
-    public interface IPopUpGameActions
-    {
         /// <summary>
-        /// Method invoked when associated input action "Naviagate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNaviagate(InputAction.CallbackContext context);
+        void OnSubmit(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Left Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnLeftClick(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Right Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Adjust" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRightClick(InputAction.CallbackContext context);
+        void OnAdjust(InputAction.CallbackContext context);
     }
 }
