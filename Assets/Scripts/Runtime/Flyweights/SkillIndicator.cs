@@ -142,7 +142,6 @@ public class SkillIndicator : Flyweight
         Stop();
         if (skillCastMethod == null)
         {
-            //UseSkill();
             ReturnToPool();
             return;
         }
@@ -168,14 +167,4 @@ public class SkillIndicator : Flyweight
         ReturnToPool();
     }
 
-    public void UseSkill()
-    {
-        if(Skill == null)
-        {
-            Debug.LogWarning("SkillIndicator: Skill FlyweightSettings is not assigned.");
-            return;
-        }
-        var skillFlyweight = FlyweightFactory.Spawn(Skill);
-        skillFlyweight.transform.position = transform.position;
-    }
 }
