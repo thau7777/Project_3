@@ -54,6 +54,9 @@ namespace Turnbase
         [HideInInspector] public Sprite shieldIcon;
 
 
+        [Header("Stack Manager")]
+        public Dictionary<string, StackData> activeStacks = new Dictionary<string, StackData>();
+
         void Awake()
         {
             character = GetComponent<Character>();
@@ -317,6 +320,71 @@ namespace Turnbase
             }
         }
 
+        public void ProcessSkillStacks(Skill skill, Character targetCharacter)
+        {
+            var stackSetting = skill.stackSetting;
+            var applicationTarget = skill.stackApplicationTarget;
+
+            if (applicationTarget == StackApplicationTarget.None || stackSetting.stackId == string.Empty)
+                return;
+
+            Character stackTarget = (applicationTarget == StackApplicationTarget.Self) ? character : targetCharacter;
+
+            if (stackTarget == null || !stackTarget.isAlive || stackTarget.buffManager == null) return;
+
+            CharacterBuffManager targetBuffManager = stackTarget.buffManager;
+            string stackId = stackSetting.stackId;
+
+            if (stackSetting.isStackBuilder)
+            {
+                if (!targetBuffManager.activeStacks.TryGetValue(stackId, out StackData currentStackData))
+                {
+                    currentStackData = new StackData
+                    {
+                        stackId = stackId,
+                        currentStacks = 0,
+                        icon = stackSetting.iconStack 
+                    };
+                    targetBuffManager.activeStacks.Add(stackId, currentStackData);
+                }
+
+                currentStackData.currentStacks += stackSetting.stackAmountPerUse;
+                Debug.Log($"[Stack Builder] {stackTarget.info.name} tích lũy Stack '{stackId}': +{stackSetting.stackAmountPerUse}. Tổng: {currentStackData.currentStacks}");
+            }
+
+            if (!targetBuffManager.activeStacks.TryGetValue(stackId, out StackData currentStackDataForFinisher))
+            {
+                return;
+            }
+
+
+            if (stackSetting.isStackFinisher)
+            {
+                if (currentStackDataForFinisher.currentStacks >= stackSetting.stackThreshold)
+                {
+                    Debug.Log($"🎉 [Stack Finisher] {stackTarget.info.name} đạt ngưỡng Stack '{stackId}' ({stackSetting.stackThreshold})! Kích hoạt hiệu ứng.");
+
+                    if (applicationTarget == StackApplicationTarget.Self && skill.activatedBuff.statToModify != StatType.None)
+                    {
+                        int buffAmount = skill.activatedBuff.amount;
+                        targetBuffManager.ApplyBuff(skill.activatedBuff, null, buffAmount);
+                    }
+                    else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
+                    {
+                        stackTarget.debuffManager.ApplyDebuff(skill.activatedDebuff);
+                        Debug.Log($"[Stack Finisher Activated] {stackTarget.info.name} nhận Debuff {skill.activatedDebuff.statToModify}");
+                    }
+
+                    currentStackDataForFinisher.currentStacks = 0;
+                    Debug.Log($"Stack '{stackId}' của {stackTarget.info.name} đã được Reset về 0.");
+                }
+            }
+
+            if (stackTarget.battleUIManager != null)
+            {
+                stackTarget.battleUIManager.UpdateCharacterUI(stackTarget);
+            }
+        }
 
         public void RemoveExpiredAttackBuff()
         {

@@ -27,27 +27,33 @@ MonoBehaviour:
   impactVFXDuration: 1
   buffProperties:
     statToModify: 0
+    amount: 0
     durationTurns: 0
     icon: {fileID: 0}
   stackApplicationTarget: 2
   stackSetting:
-    isStackBuilder: 0
+    isStackBuilder: 1
     stackAmountPerUse: 1
-    isStackFinisher: 0
+    stackId: 2
+    iconStack: {fileID: 21300000, guid: 2b8dfc6b4a0d7b34da5148ce448bab13, type: 3}
+    isStackFinisher: 1
     stackThreshold: 2
   activatedBuff:
-    statToModify: 0
-    durationTurns: 0
-    icon: {fileID: 0}
+    statToModify: 1
+    amount: 100
+    durationTurns: 5
+    icon: {fileID: 21300000, guid: a2f3c40c4c9866d4088ebfb23f087dd9, type: 3}
   activatedDebuff:
-    debuffType: 0
-    durationTurns: 0
-    baseDamagePerTurn: 0
-    debuffEffect: {fileID: 0}
-    icon: {fileID: 0}
+    statToModify: 2
+    durationTurns: 5
+    amount: 55
+    baseDamagePerTurn: 55
+    debuffEffect: {fileID: 11400000, guid: 9cfdda63e9194764e94e4d03a7d0c5fa, type: 2}
+    icon: {fileID: 21300000, guid: 23f1c7f4813926a4eb0076873aa5f265, type: 3}
   debuffProperties:
-    debuffType: 1
+    statToModify: 1
     durationTurns: 2
+    amount: 0
     baseDamagePerTurn: 500
     debuffEffect: {fileID: 11400000, guid: 40db79fc9e093254591a07a5ff5fda9f, type: 2}
     icon: {fileID: 21300000, guid: 094a287da71d8e24eb3914a12234ba98, type: 3}

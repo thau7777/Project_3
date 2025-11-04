@@ -99,7 +99,7 @@ namespace Turnbase
 
         public void LookCameraAtTarget(Character character)
         {
-            SetTargetAndOffset(character, Vector3.zero, Vector3.zero);
+            SetTargetAndOffset(character, Vector3.zero, Vector3.zero,true);
         }
 
 

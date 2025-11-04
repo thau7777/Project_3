@@ -73,6 +73,9 @@ namespace Turnbase
                     yield return null;
                 }
 
+                ApplyStatusEffectsAndStacks(user, target, skill);
+
+
                 if (skill.impactVFXDuration > 0)
                 {
                     yield return new WaitForSeconds(skill.impactVFXDuration);
@@ -81,6 +84,10 @@ namespace Turnbase
             else
             {
                 ApplyDamageInstant();
+
+                ApplyStatusEffectsAndStacks(user, target, skill);
+
+
             }
 
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;

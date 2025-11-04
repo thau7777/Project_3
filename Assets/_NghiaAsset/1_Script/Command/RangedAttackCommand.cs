@@ -53,12 +53,16 @@ namespace Turnbase
                     damageApplied = true;
                     SpawnImpactEffect(target.transform.position, skill);
 
-                    if (skill.debuffProperties.debuffType != DebuffType.None)
+                    if (skill.debuffProperties.statToModify != DebuffType.None)
                     {
                         target.debuffManager.ApplyDebuff(skill.debuffProperties);
                     }
                 }
             };
+
+            ApplyStatusEffectsAndStacks(user, target, skill);
+
+
 
             user.PrepareHitCallBack(hitAction);
 

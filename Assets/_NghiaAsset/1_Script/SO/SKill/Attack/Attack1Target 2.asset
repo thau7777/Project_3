@@ -27,9 +27,33 @@ MonoBehaviour:
   impactVFXDuration: 1
   buffProperties:
     statToModify: 0
+    amount: 0
     durationTurns: 0
+    icon: {fileID: 0}
+  stackApplicationTarget: 2
+  stackSetting:
+    isStackBuilder: 1
+    stackAmountPerUse: 1
+    stackId: 1
+    iconStack: {fileID: 21300000, guid: 965f4a1575b2a66448a303bbd345c471, type: 3}
+    isStackFinisher: 1
+    stackThreshold: 2
+  activatedBuff:
+    statToModify: 0
+    amount: 0
+    durationTurns: 0
+    icon: {fileID: 0}
+  activatedDebuff:
+    statToModify: 1
+    durationTurns: 5
+    amount: 50
+    baseDamagePerTurn: 50
+    debuffEffect: {fileID: 11400000, guid: 40db79fc9e093254591a07a5ff5fda9f, type: 2}
+    icon: {fileID: 21300000, guid: ac8445492d2131a459d4212043174f2f, type: 3}
   debuffProperties:
-    debuffType: 0
+    statToModify: 0
     durationTurns: 0
+    amount: 0
     baseDamagePerTurn: 0
     debuffEffect: {fileID: 0}
+    icon: {fileID: 0}

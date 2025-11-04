@@ -53,8 +53,9 @@ namespace Turnbase
                             Debug.Log($"{character.name} hồi phục {totalManaAmout} MP (Bao gồm {passiveSkills.effectValuePercentage * 100}% MP và {fixedMana} MP cố định) nhờ kỹ năng thụ động {passiveSkills.skillName}.");
 
                         }
-
                         break;
+
+                    
                     default:
                         break;
                 }
@@ -94,6 +95,14 @@ namespace Turnbase
 
                             Debug.Log($"{character.name} tăng tối đa HP vĩnh viễn thêm {totalIncreaseAmount} HP (Bao gồm {passiveSkills.effectValuePercentage * 100}% và {fixedIncrease} HP cố định) nhờ kỹ năng thụ động {passiveSkills.skillName}.");
                         }
+                        break;
+
+                    case PassiveEffectType.BonusPhysicalAttack:
+                        if (character.stats == null) continue;
+                        int bonusPA = Mathf.RoundToInt(passiveSkills.effectValue);
+                        int bonusPAPercent = Mathf.RoundToInt(character.stats.physicalAttack * passiveSkills.effectValuePercentage);
+                        character.stats.physicalAttack += bonusPA + bonusPAPercent;
+                        Debug.Log($"{character.name} nhận thêm {bonusPA + bonusPAPercent} Công vật lý nhờ kỹ năng thụ động {passiveSkills.skillName}.");
                         break;
 
                     default:

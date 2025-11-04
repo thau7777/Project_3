@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static Skill;
-using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
 public class Skill : ScriptableObject
@@ -37,8 +35,9 @@ public class Skill : ScriptableObject
 
     [Header("Stack Properties")]
     public StackApplicationTarget stackApplicationTarget;
-    public StackSetting stackSetting;
 
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self, StackApplicationTarget.Target)]
+    public StackSetting stackSetting;
     [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self)]
     public BuffSettings activatedBuff;
     [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Target)]
@@ -51,8 +50,13 @@ public class Skill : ScriptableObject
         public bool isStackBuilder;
         public int stackAmountPerUse;
 
+        public string stackId;
+        public Sprite iconStack;
+
         public bool isStackFinisher;
         public int stackThreshold;
+
+
 
     }
 
@@ -62,6 +66,7 @@ public class Skill : ScriptableObject
     public struct BuffSettings
     {
         public StatType statToModify;
+        public int amount;
         public int durationTurns;
         public Sprite icon;
     }
@@ -71,15 +76,20 @@ public class Skill : ScriptableObject
     [System.Serializable]
     public struct DebuffSettings 
     {
-        public DebuffType debuffType;
+        public DebuffType statToModify;
         public int durationTurns;
+        public int amount;
         public int baseDamagePerTurn;
         public FlyweightSettings debuffEffect;
         public Sprite icon;
+
     }
 
 
+
+
 }
+
 
 public enum StackApplicationTarget
 {
@@ -88,7 +98,6 @@ public enum StackApplicationTarget
     Target,
 
 }
- 
 
 public enum StatType
 {

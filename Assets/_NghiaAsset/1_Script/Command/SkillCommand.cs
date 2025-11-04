@@ -23,7 +23,34 @@ namespace Turnbase
 
         public abstract IEnumerator Execute();
 
+        protected void ApplyStatusEffectsAndStacks(Character user, Character target, Skill skill)
+        {
+            if (skill.debuffProperties.statToModify != DebuffType.None && target.debuffManager != null)
+            {
+                target.debuffManager.ApplyDebuff(skill.debuffProperties);
+            }
 
+            if ((skill.skillType == SkillType.Buff || skill.skillType == SkillType.Shield) && target.buffManager != null)
+            {
+                target.buffManager.ApplyBuff(
+                    skill.buffProperties,
+                    null,
+                    skill.buffProperties.amount 
+                );
+            }
+
+            if (user.buffManager != null)
+            {
+                user.buffManager.ProcessSkillStacks(skill, target);
+            }
+
+
+            user.UpdateOwnUI();
+            if (user.battleUIManager != null)
+            {
+                user.battleUIManager.UpdateCharacterUI(user);
+            }
+        }
 
         protected Flyweight SpawnImpactEffect(Vector3 position, Skill skill)
         {

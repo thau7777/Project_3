@@ -118,7 +118,7 @@ namespace Turnbase
 
         public void ApplyDebuff(Skill.DebuffSettings debuffSettings)
         {
-            if (debuffSettings.debuffType == DebuffType.None || debuffSettings.durationTurns <= 0)
+            if (debuffSettings.statToModify == DebuffType.None || debuffSettings.durationTurns <= 0)
                 return;
 
             Flyweight debuffVFX = null;
@@ -137,7 +137,7 @@ namespace Turnbase
                 }
             }
 
-            switch (debuffSettings.debuffType)
+            switch (debuffSettings.statToModify)
             {
                 case DebuffType.Burn:
                     ApplyBurnDebuff(

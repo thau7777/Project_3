@@ -3,10 +3,13 @@ using UnityEngine;
 public enum PassiveEffectType
 {
     None,
-    HealPerTurn, 
-    ManaPerTurn,
+    HealPerTurn,
     IncreasePermanentMaxHP,
+    ManaPerTurn,
     IncreasePermanentMaxMP,
+    BonusPhysicalAttack,
+    BonusMagicAttack,
+
 }
 
 public enum PassiveTiming

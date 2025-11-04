@@ -67,9 +67,15 @@ namespace Turnbase
                 aoeTarget.TakeDamage(finalDamage);
                 SpawnImpactEffect(aoeTarget.transform.position);
 
-                if (skill.debuffProperties.debuffType != DebuffType.None)
+                if (skill.debuffProperties.statToModify != DebuffType.None)
                 {
                     aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+
+                }
+
+                if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+                {
+                    user.buffManager.ProcessSkillStacks(skill, aoeTarget);
                 }
 
                 yield return new WaitForSeconds(TARGET_DELAY);

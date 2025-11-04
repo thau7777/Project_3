@@ -51,6 +51,14 @@ namespace Turnbase
     }
 
     [System.Serializable]
+    public class StackData
+    {
+        public string stackId; 
+        public int currentStacks;
+        public Sprite icon;
+    }
+
+    [System.Serializable]
     public class CharacterInfo
     {
         public string name;
@@ -102,7 +110,6 @@ namespace Turnbase
         public Animator animator;
 
         public float actionGauge;
-
 
         public Vector3 initialPosition;
         public Quaternion initialRotation;

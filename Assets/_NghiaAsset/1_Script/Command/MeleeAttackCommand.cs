@@ -82,6 +82,9 @@ namespace Turnbase
                 }
             };
 
+            ApplyStatusEffectsAndStacks(user, target, skill);
+
+
             user.PrepareHitCallBack(hitAction);
 
             user.animator.Play("Attack");
