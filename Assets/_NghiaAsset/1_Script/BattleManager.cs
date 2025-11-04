@@ -39,6 +39,10 @@ namespace Turnbase
 
         public BattleBuffManager turnbuffManager;
 
+        [Header("Battle Rules")]
+        public List<BattleRule> availableRules; 
+        private BattleRule currentRule = null;
+
         void Start()
         {
             SetupBattle();
@@ -46,6 +50,9 @@ namespace Turnbase
             {
                 uiManager.InitializeCombatantButtons(allCombatants, statDisplayPanel, this);
             }
+
+            ChooseRandomRule();
+
             StartCoroutine(DelayedStart());
         }
 
@@ -60,6 +67,16 @@ namespace Turnbase
                 {
                     OnParryAttempted();
                 }
+            }
+        }
+
+        public void ChooseRandomRule()
+        {
+            if (availableRules != null && availableRules.Count > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, availableRules.Count);
+                currentRule = availableRules[randomIndex];
+                Debug.Log($"[BATTLE START] Luật trận đấu được chọn: {currentRule.ruleName}");
             }
         }
 
@@ -308,6 +325,11 @@ namespace Turnbase
 
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
+
+            if (currentRule != null)
+            {
+                StartCoroutine(currentRule.ExecuteRule(this));
+            }
 
             turnbuffManager.ProcessPassiveSkills(activeCharacter);
 
