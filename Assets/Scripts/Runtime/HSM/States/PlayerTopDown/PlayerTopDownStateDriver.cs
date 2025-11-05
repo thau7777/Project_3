@@ -263,11 +263,11 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             if(location.ToString() == spawnPoint.name)
             {
                 Flyweight slashVFX = FlyweightFactory.Spawn(flyweightSettings);
-                slashVFX.Initialize(spawnPoint.position, transform.rotation);
+                slashVFX.FlyweightInitialize(spawnPoint.position, transform.rotation);
                 if (slashVFX is StraightProjectile)
                 {
                     var straightProjectile = slashVFX as StraightProjectile;
-                    straightProjectile.InitializeMovement(transform.forward, 10);
+                    straightProjectile.InitializeProjectile(transform.forward, 10,10);
                 }
                 break;
             }

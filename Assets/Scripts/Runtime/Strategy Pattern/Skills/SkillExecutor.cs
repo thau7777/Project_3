@@ -54,14 +54,13 @@ public class SkillExecutor : MonoBehaviour
             context.IsAiming = true;
             context.AimAnimName = _storedSkillData.Value.aimType.ToString();
 
-            _skillIndicator = FlyweightFactory.Spawn(_skillToCast.Definition.skillIndicator) as SkillIndicator;
-            _skillIndicator.Initialize(100);
+            
         }
         if (_skillToCast.Definition.CanCharge)
         {
             _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect ?? _skillToCast.Definition.FlyweightSettings);
             Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
-            _chargedSkillFlyweight.Initialize(spawnTransform.position, Quaternion.identity);
+            _chargedSkillFlyweight.FlyweightInitialize(spawnTransform.position);
 
             _chargedSkillFlyweight.transform.SetParent(spawnTransform);
 
@@ -73,7 +72,31 @@ public class SkillExecutor : MonoBehaviour
 
         }
 
-        if (isAimNeeded || _skillToCast.Definition.CanCharge) return;
+        if (isAimNeeded || _skillToCast.Definition.CanCharge)
+        {
+            if (!_skillToCast.Definition.useIndicator || !_skillToCast.Definition.skillIndicator) return;
+            _skillIndicator = FlyweightFactory.Spawn(_skillToCast.Definition.skillIndicator) as SkillIndicator;
+            switch (_skillToCast.Definition.skillIndicator.type)
+            {
+                default:
+                    break;
+                case FlyweightType.IndicatorStraightAlly:
+                {
+                    _skillIndicator.FlyweightInitialize(transform.position,transform.rotation);
+                    var followedIndicator = _skillIndicator as FollowedIndicator;
+                    followedIndicator.Initialize(transform, _skillToCast.Definition.Range * 12);
+                    break;
+                }
+                case FlyweightType.IndicatorCircleAlly:
+                {
+                        var circleIndicator = _skillIndicator as CircleIndicator;
+                        circleIndicator.Initialize();
+                        break;
+                }
+            }
+
+            return;
+        }
 
         onCastInstantly?.Invoke();
         CastSkill(context);
@@ -120,16 +143,8 @@ public class SkillExecutor : MonoBehaviour
         }
         if (_skillIndicator)
         {
-            if (_skillToCast.Definition.useWhenIndicatorFullyLocked)
-            {
-                _skillIndicator.OnSkillUse(_skillToCast.Definition.indicatorLockTime, ExecuteSkill);
-            }
-            else
-            {
-                _skillIndicator.OnSkillUse(0);
-            }
-                
-            
+            _skillIndicator.OnSkillUse(_skillToCast.Definition.indicatorLockTime, 
+                _skillToCast.Definition.indicatorLockTime > 0 ? ExecuteSkill : null);
             _skillIndicator = null;
         }
         string animName = _storedSkillData.Value.animName;

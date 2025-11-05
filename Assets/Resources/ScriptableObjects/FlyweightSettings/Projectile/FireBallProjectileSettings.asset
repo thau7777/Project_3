@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6995a929484ba6f499e19bbfc9aafe4d, type: 3}
   m_Name: FireBallProjectileSettings
   m_EditorClassIdentifier: Assembly-CSharp::MageBasicAttackSetting
-  type: 6
+  collectionCheck: 1
+  defaultCapacity: 10
+  maxPoolSize: 100
+  type: 7
   prefab: {fileID: 1268510034957800942, guid: 936cf9187a4320a4984db92d301a7997, type: 3}
-  <DespawnDelay>k__BackingField: 10
-  <HitVFXSettings>k__BackingField: {fileID: 11400000, guid: d8f37605311da014285b19ad1529a668, type: 2}
+  <ProjectileImpactVFX>k__BackingField: {fileID: 11400000, guid: d8f37605311da014285b19ad1529a668, type: 2}
   <DodgeLayers>k__BackingField:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 8

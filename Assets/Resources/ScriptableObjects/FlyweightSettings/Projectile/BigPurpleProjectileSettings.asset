@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6995a929484ba6f499e19bbfc9aafe4d, type: 3}
   m_Name: BigPurpleProjectileSettings
   m_EditorClassIdentifier: Assembly-CSharp::MageBasicAttackSetting
-  type: 4
+  collectionCheck: 1
+  defaultCapacity: 10
+  maxPoolSize: 100
+  type: 5
   prefab: {fileID: 3182468628813478123, guid: 7226fa1af0a6a924cac6a8375f09a5ca, type: 3}
-  <DespawnDelay>k__BackingField: 10
-  <HitVFXSettings>k__BackingField: {fileID: 11400000, guid: ddfa7cf79c88384419346477596266a3, type: 2}
-  <DodgeLayers>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 72
+  <ProjectileImpactVFX>k__BackingField: {fileID: 11400000, guid: ddfa7cf79c88384419346477596266a3, type: 2}

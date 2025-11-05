@@ -2,11 +2,15 @@ using UnityEngine;
 
 public abstract class Flyweight : MonoBehaviour
 {
+    [HideInInspector]
     public FlyweightSettings settings; // Intrinsic state
-    public void Initialize(Vector3 position, Quaternion rotation)
+    public void FlyweightInitialize(Vector3 position, Quaternion? rotation = null)
     {
         transform.position = position;
-        transform.rotation = rotation;
+        if(rotation.HasValue)
+            transform.rotation = rotation.Value;
+        else
+            transform.rotation = Quaternion.identity;
     }
     public void ReturnToPool()
     {

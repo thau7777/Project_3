@@ -5,6 +5,15 @@ public class OneShotVFXSettings : FlyweightSettings
 {
     [field:SerializeField]
     public float DespawnDelay { get; private set; }
+
+    [SerializeField]
+    private bool _couldDoDamage = false;
+    public bool CouldDoDamage => _couldDoDamage;
+
+    [ShowIf("_couldDoDamage")]
+    [MinMaxSlider(0,1)]
+    public Vector2 hitboxOnOffTime;
+
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);
@@ -15,6 +24,9 @@ public class OneShotVFXSettings : FlyweightSettings
 
         var flyweight = go.GetOrAdd<OneShotVFX>();
         flyweight.settings = this;
+
+        if (CouldDoDamage)
+            go.AddComponent<HitBoxHandler>();
 
         return flyweight;
     }

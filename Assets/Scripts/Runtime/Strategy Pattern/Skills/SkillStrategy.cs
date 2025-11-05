@@ -33,6 +33,9 @@ public class SkillStrategy : ScriptableObject, IStrategy
     public float Cooldown { get; private set; }
 
     [field: SerializeField]
+    public float Range { get; private set; }
+
+    [field: SerializeField]
     public bool NeedHoldStill { get; private set; }
 
     [SerializeField]
@@ -44,13 +47,15 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [ShowIf("_canCharge")]
     public int chargeLevel;
 
-    [ShowIf("_canCharge")]
+
+
+    public bool useIndicator;
+
+    [ShowIf("useIndicator")]
     public SkillIndicatorSettings skillIndicator;
 
-    [ShowIf("_canCharge")]
-    public bool useWhenIndicatorFullyLocked;
-    [ShowIf("useWhenIndicatorFullyLocked")]
-    public float indicatorLockTime;
+    [ShowIf("useIndicator")]
+    public float indicatorLockTime = 0;
 
     public void Execute(IStrategyContext context)
     {
@@ -87,10 +92,10 @@ public class SkillStrategy : ScriptableObject, IStrategy
         if (name == "Basic Dash") return;
 
         Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
-        flyweightObj.Initialize(context.spawnPos, context.origin.rotation);
+        flyweightObj.FlyweightInitialize(context.spawnPos);
         if (flyweightObj is StraightProjectile straightProjectile)
         {
-            straightProjectile.InitializeMovement(context.origin.forward, 10);
+            straightProjectile.InitializeProjectile(context.origin.forward, 10, Range);
         }
 
         
@@ -102,7 +107,8 @@ public class SkillStrategy : ScriptableObject, IStrategy
         if (context.chargedSkillFlyweight is StraightProjectile chargedSkillProjectile)
         {
             context.chargedSkillFlyweight.transform.SetParent(null);
-            chargedSkillProjectile.InitializeMovement(context.origin.forward, 10);
+            chargedSkillProjectile.transform.rotation = Quaternion.identity;
+            chargedSkillProjectile.InitializeProjectile(context.origin.forward, 10, Range);
         }
     }
 }

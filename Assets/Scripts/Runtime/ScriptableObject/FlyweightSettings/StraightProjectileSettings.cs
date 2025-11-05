@@ -3,9 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = " New Straight Projectile Settings", menuName = "Scriptable Objects/Flyweight/Straight Projectile Settings")]
 public class StraightProjectileSettings : FlyweightSettings
 {
-    [field: SerializeField]
-    public float DespawnDelay { get; private set; } = 5f;
 
+    [field: SerializeField]
+    public OneShotVFXSettings ProjectileImpactVFX { get; set; }
+
+    [field: SerializeField]
+    public LayerMask DodgeLayers { get; private set; }
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);

@@ -49,5 +49,12 @@ public enum FlyweightType
 
     TurnbaseSpawnPet,
 
-    CircleIndicator,
+    IndicatorCircleAlly,
+    IndicatorCircleEnemy,
+    IndicatorStraightAlly,
+    IndicatorStraightEnemy,
+    IndicatorConeAlly,
+    IndicatorConeEnemy,
+    IndicatorRectangleAlly,
+    IndicatorRectangleEnemy,
 }
