@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class SkillExecutor : MonoBehaviour
 {
-    [SerializeField] 
-    private List<SkillStrategy> _skillDatas;
+
+    [SerializeField]
+    private SkillStrategy[] _skillDatas = new SkillStrategy[4];
+    private SkillRuntimeInstance[] _skillInstance = new SkillRuntimeInstance[4];
+
     [SerializeField]
     private List<Transform> _skillSpawnPoints;
-
-
-    private List<SkillRuntimeInstance> _skillInstance;
 
     private SkillRuntimeInstance _skillToCast;
     private SkillDataForClass? _storedSkillData;
@@ -24,11 +24,15 @@ public class SkillExecutor : MonoBehaviour
     private SkillIndicator _skillIndicator;
     void Awake()
     {
-        _skillInstance = new List<SkillRuntimeInstance>();
-        foreach (var s in _skillDatas)
-            _skillInstance.Add(new SkillRuntimeInstance(s));
+        InitializeSkillInstance();
     }
-
+    private void InitializeSkillInstance()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            _skillInstance[i] = new SkillRuntimeInstance(_skillDatas[i]);
+        }
+    }
     // always get that skill data first if return ok then we can cast it later
     public bool SetSkillData(int index, CharacterClass characterClass)
     {
@@ -205,7 +209,7 @@ public class SkillExecutor : MonoBehaviour
     }
     public void AddOrReplaceSkill(int index, SkillStrategy newSkill)
     {
-        if (index < 0 || index >= _skillInstance.Count) return;
+        if (index < 0 || index >= 4) return;
         _skillInstance[index] = new SkillRuntimeInstance(newSkill);
     }
 }

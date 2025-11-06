@@ -92,7 +92,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
         if (name == "Basic Dash") return;
 
         Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
-        flyweightObj.FlyweightInitialize(context.spawnPos);
+        flyweightObj.FlyweightInitialize(context.spawnPos,context.origin.rotation);
         if (flyweightObj is StraightProjectile straightProjectile)
         {
             straightProjectile.InitializeProjectile(context.origin.forward, 10, Range);
@@ -110,5 +110,10 @@ public class SkillStrategy : ScriptableObject, IStrategy
             chargedSkillProjectile.transform.rotation = Quaternion.identity;
             chargedSkillProjectile.InitializeProjectile(context.origin.forward, 10, Range);
         }
+    }
+
+    public void UpdateStat()
+    {
+
     }
 }
