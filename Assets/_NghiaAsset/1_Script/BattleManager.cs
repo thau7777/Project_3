@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro; 
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
@@ -24,8 +24,7 @@ namespace Turnbase
 
         [Header("Enemies")]
         public Transform[] enemySlots;
-        public Character[] enemyPrefabs;
-
+        public EnemyEncounter encounterToLoad;
 
         public TurnOrderUI turnOrderUI;
 
@@ -39,8 +38,11 @@ namespace Turnbase
 
         public BattleBuffManager turnbuffManager;
 
+        private int currentWaveIndex = 0;
+        private bool isActionGaugeRunning = false;
+
         [Header("Battle Rules")]
-        public List<BattleRule> availableRules; 
+        public List<BattleRule> availableRules;
         private BattleRule currentRule = null;
 
         void Start()
@@ -53,7 +55,6 @@ namespace Turnbase
 
             ChooseRandomRule();
 
-            StartCoroutine(DelayedStart());
         }
 
         void Update()
@@ -80,11 +81,7 @@ namespace Turnbase
             }
         }
 
-        IEnumerator DelayedStart()
-        {
-            yield return null;
-            StartCoroutine(UpdateActionGauge());
-        }
+        
 
         public void ShowCombatantButtonsForFaction(bool showPlayers)
         {
@@ -130,40 +127,16 @@ namespace Turnbase
                 if (actionUI != null)
                 {
                     actionUI.SetOwner(playerInstance);
-
                     actionUI.Hide();
-
                     actionUI.OnParryAttempted += OnParryAttempted;
-
                     playerInstance.ownUI = actionUI;
                 }
             }
 
-            int enemyCount = Mathf.Min(enemySlots.Length, enemyPrefabs.Length);
-            for (int i = 0; i < enemyCount; i++)
+            currentWaveIndex = 0;
+            if (encounterToLoad != null && encounterToLoad.waves.Length > 0)
             {
-                Character enemyInstance = Instantiate(enemyPrefabs[i], enemySlots[i].position, enemySlots[i].rotation);
-                enemyInstance.transform.SetParent(enemySlots[i]);
-
-                enemyInstance.isPlayer = false;
-                allCombatants.Add(enemyInstance);
-                enemyInstance.initialPosition = enemySlots[i].position;
-                enemyInstance.battleManager = this;
-                enemyInstance.battleUIManager = this.uiManager;
-
-                if (enemyInstance.stats != null)
-                {
-                    enemyInstance.stats.currentShield = 0;
-                }
-
-                turnbuffManager.ProcessOnBattleStartPassives(enemyInstance);
-
-                CharacterStateMachine enemyStateMachine = enemyInstance.GetComponent<CharacterStateMachine>();
-                if (enemyStateMachine != null)
-                {
-                    enemyStateMachine.battleManager = this;
-
-                }
+                StartCoroutine(SpawnWave(currentWaveIndex));
             }
 
             foreach (Character combatant in allCombatants)
@@ -176,11 +149,111 @@ namespace Turnbase
             }
         }
 
+        private IEnumerator SpawnWave(int waveIndex)
+        {
+            if (encounterToLoad == null || waveIndex >= encounterToLoad.waves.Length)
+            {
+                CheckWinCondition(true);
+                yield break;
+            }
+
+            EnemyWave currentWave = encounterToLoad.waves[waveIndex];
+            Character[] enemiesToSpawn = currentWave.enemiesInWave;
+
+            Debug.Log($"[WAVE START] Bắt đầu đợt quái số {waveIndex + 1} với {enemiesToSpawn.Length} kẻ địch.");
+
+            yield return new WaitForSeconds(1.5f);
+
+
+            int enemyCount = Mathf.Min(enemySlots.Length, enemiesToSpawn.Length);
+            for (int i = 0; i < enemyCount; i++)
+            {
+                Character enemyPrefab = enemiesToSpawn[i];
+                if (enemyPrefab == null) continue;
+
+                Character enemyInstance = Instantiate(enemyPrefab, enemySlots[i].position, enemySlots[i].rotation);
+                enemyInstance.transform.SetParent(enemySlots[i]);
+
+                enemyInstance.isPlayer = false;
+                allCombatants.Add(enemyInstance);
+                enemyInstance.initialPosition = enemySlots[i].position;
+                enemyInstance.battleManager = this;
+                enemyInstance.battleUIManager = this.uiManager;
+
+                if (enemyInstance.stats != null) enemyInstance.stats.currentShield = 0;
+                turnbuffManager.ProcessOnBattleStartPassives(enemyInstance);
+
+                CharacterStateMachine enemyStateMachine = enemyInstance.GetComponent<CharacterStateMachine>();
+                if (enemyStateMachine != null)
+                {
+                    enemyStateMachine.battleManager = this;
+                }
+
+                if (enemyInstance.stateMachine != null)
+                {
+                    enemyInstance.stateMachine.SwitchState(enemyInstance.stateMachine.waitingState);
+                    enemyInstance.actionGauge = 0;
+                }
+
+                if (uiManager != null) uiManager.SpawnCharacterUI(enemyInstance);
+            }
+
+            if (turnOrderUI != null)
+            {
+                turnOrderUI.UpdateActionGaugeUI(allCombatants);
+            }
+
+            if (!isActionGaugeRunning)
+            {
+                isActionGaugeRunning = true;
+                StartCoroutine(UpdateActionGauge());
+            }
+        }
+
+        private void CheckWinCondition(bool finalWin = false)
+        {
+            if (finalWin)
+            {
+                Debug.Log("CHIẾN THẮNG! Tất cả các đợt quái đã bị đánh bại.");
+                StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+                return;
+            }
+        }
+
+        private void CheckWaveCondition()
+        {
+            var livingEnemiesInCurrentWave = allCombatants.Where(c => !c.isPlayer && c.isAlive).ToList();
+
+            if (livingEnemiesInCurrentWave.Count == 0)
+            {
+                currentWaveIndex++;
+
+                if (encounterToLoad != null && currentWaveIndex < encounterToLoad.waves.Length)
+                {
+                    Debug.Log($"--- HOÀN THÀNH ĐỢT {currentWaveIndex} ---");
+                    StartCoroutine(SpawnWave(currentWaveIndex));
+                }
+                else
+                {
+                    CheckWinCondition(true);
+                }
+            }
+            else
+            {
+                var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
+                if (livingPlayers.Count == 0)
+                {
+                    Debug.Log("THẤT BẠI! Tất cả người chơi đã bị hạ gục.");
+                    StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+                }
+            }
+        }
+
         private Transform FindFreePlayerSpawnSlot()
         {
             HashSet<Vector3> occupiedPositions = new HashSet<Vector3>(
-                        allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
-                    );
+                                allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
+                            );
 
             foreach (Transform slot in playerSpawnPoints)
             {
@@ -249,7 +322,6 @@ namespace Turnbase
                 }
 
 
-
                 return summonInstance;
             }
             else
@@ -258,6 +330,7 @@ namespace Turnbase
                 return null;
             }
         }
+
         public void RemoveCombatant(Character character)
         {
             if (allCombatants.Contains(character))
@@ -269,9 +342,8 @@ namespace Turnbase
                     turnOrderUI.UpdateActionGaugeUI(allCombatants);
                 }
 
-                CheckWinCondition();
+                CheckWaveCondition();
             }
-
         }
 
         private IEnumerator UpdateActionGauge()
@@ -311,7 +383,7 @@ namespace Turnbase
 
                         if (readyCharacters.Any())
                         {
-                            AdvanceTurn(readyCharacters.First());
+                            StartCoroutine(AdvanceTurn(readyCharacters.First()));
                         }
                     }
                 }
@@ -319,16 +391,31 @@ namespace Turnbase
             }
         }
 
-        public void AdvanceTurn(Character characterToAct)
+        public IEnumerator AdvanceTurn(Character characterToAct)
         {
-            if (activeCharacter != null) return;
+            if (activeCharacter != null) yield break;
 
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
+            yield return new WaitForSeconds(1f);
+            CameraAction.instance.LookCameraAtTarget(activeCharacter);
+
+            if (turnOrderUI != null)
+            {
+                turnOrderUI.HighlightActiveCharacter(activeCharacter);
+            }
+
             if (currentRule != null)
             {
-                StartCoroutine(currentRule.ExecuteRule(this));
+                yield return StartCoroutine(currentRule.ExecuteRule(this, activeCharacter));
+            }
+
+            if (!activeCharacter.isAlive)
+            {
+                Debug.Log($"{activeCharacter.name} đã bị hạ gục bởi Rule!");
+                EndTurn(activeCharacter);
+                yield break;
             }
 
             turnbuffManager.ProcessPassiveSkills(activeCharacter);
@@ -336,21 +423,25 @@ namespace Turnbase
             if (activeCharacter.buffManager != null)
             {
                 activeCharacter.buffManager.ProcessTurnStartDecay();
-
-                
             }
 
-            if(activeCharacter.debuffManager != null)
+            if (activeCharacter.debuffManager != null)
             {
                 activeCharacter.debuffManager.ApplyDoTDamage();
-
                 activeCharacter.debuffManager.ProcessTurnStartDecay();
+            }
 
+            if (!activeCharacter.isAlive)
+            {
+                Debug.Log($"{activeCharacter.name} đã bị hạ gục bởi Debuff DoT!");
+                activeCharacter.actionGauge = 0;
+                isProcessingTurn = false;
+                activeCharacter = null;
+                yield break;
             }
 
             if (activeCharacter.debuffManager.stunTurnsRemaining > 0)
             {
-
                 activeCharacter.actionGauge = 0;
                 if (activeCharacter.stateMachine != null)
                 {
@@ -359,22 +450,10 @@ namespace Turnbase
 
                 activeCharacter = null;
                 isProcessingTurn = false;
-
-                return;
+                yield break;
             }
 
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
-
-            if (!activeCharacter.isAlive)
-            {
-                Debug.Log($"{activeCharacter.name} đã bị hạ gục bởi Debuff DoT!");
-
-                activeCharacter.actionGauge = 0;
-                isProcessingTurn = false;
-                activeCharacter = null;
-                return;
-            }
-
 
             if (activeCharacter.isPlayer)
             {
@@ -397,22 +476,9 @@ namespace Turnbase
             }
             else
             {
-                StartCoroutine(EnemyTurn(activeCharacter));
+                yield return StartCoroutine(EnemyTurn(activeCharacter));
             }
 
-            StartCoroutine(DelayedStartTurn(activeCharacter));
-
-            if (turnOrderUI != null)
-            {
-                turnOrderUI.HighlightActiveCharacter(activeCharacter);
-            }
-        }
-
-
-        private IEnumerator DelayedStartTurn(Character character)
-        {
-            yield return new WaitForSeconds(2f);
-            CameraAction.instance.LookCameraAtTarget(character);
         }
 
 
@@ -546,17 +612,6 @@ namespace Turnbase
                     character.actionGauge = 0;
                 }
                 isProcessingTurn = false;
-            }
-        }
-
-        private void CheckWinCondition()
-        {
-            var livingEnemies = allCombatants.Where(c => !c.isPlayer && c.isAlive).ToList();
-
-            if (livingEnemies.Count == 0)
-            {
-                Debug.Log("CHIẾN THẮNG! Tất cả kẻ địch đã bị đánh bại.");
-                StartCoroutine(LoadMapSceneDelayed("Map", 2f));
             }
         }
 

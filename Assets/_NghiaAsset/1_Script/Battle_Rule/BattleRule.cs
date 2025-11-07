@@ -12,7 +12,7 @@ namespace Turnbase
         [TextArea(3, 5)]
         public string description = "Mô tả luật lệ này ảnh hưởng đến trận đấu như thế nào.";
 
-        public abstract IEnumerator ExecuteRule(BattleManager battleManager);
+        public abstract IEnumerator ExecuteRule(BattleManager battleManager, Character characterToAct);
 
         public virtual void ResetRule(BattleManager battleManager)
         {

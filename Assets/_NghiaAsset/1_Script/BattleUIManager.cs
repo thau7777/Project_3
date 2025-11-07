@@ -39,24 +39,39 @@ public class BattleUIManager : MonoBehaviour
 
     public void SpawnCharacterUI(Character character)
     {
-        if (AvatarGroupPrefab == null || UIContainer == null)
+        if (character.isPlayer)
         {
-            return;
+            if (AvatarGroupPrefab == null || UIContainer == null)
+            {
+                return;
+            }
+
+            GameObject uiInstance = Instantiate(AvatarGroupPrefab, UIContainer);
+
+            AvatarGroup uiGroup = uiInstance.GetComponent<AvatarGroup>();
+            if (uiGroup != null)
+            {
+                uiGroup.SetOwner(character);
+
+                characterToUI.Add(character, uiGroup);
+
+                uiGroup.UpdateUI(character.stats, character.info);
+            }
         }
-
-        GameObject uiInstance = Instantiate(AvatarGroupPrefab, UIContainer);
-
-        AvatarGroup uiGroup = uiInstance.GetComponent<AvatarGroup>();
-        if (uiGroup != null)
+        else
         {
-            uiGroup.SetOwner(character);
-
-            characterToUI.Add(character, uiGroup);
-
-            uiGroup.UpdateUI(character.stats, character.info);
+            AvatarGroup uiGroup = character.GetComponentInChildren<AvatarGroup>();
+            if (uiGroup != null)
+            {
+                uiGroup.SetOwner(character);
+                if (!characterToUI.ContainsKey(character))
+                {
+                    characterToUI.Add(character, uiGroup);
+                }
+                uiGroup.UpdateUI(character.stats, character.info);
+            }
         }
     }
-
     public void UpdateCharacterUI(Character character)
     {
         if (characterToUI.TryGetValue(character, out AvatarGroup uiGroup))

@@ -10,18 +10,13 @@ namespace Turnbase
         [Header("Cấu hình Luật")]
         public int damagePerTurn = 10;
 
-        public override IEnumerator ExecuteRule(BattleManager battleManager)
+        public override IEnumerator ExecuteRule(BattleManager battleManager, Character characterToAct)
         {
-            Debug.Log($"[BATTLE RULE] Kích hoạt luật: {ruleName} - Mất {damagePerTurn} HP mỗi lượt.");
-
-            foreach (Character combatant in battleManager.allCombatants)
+            Debug.Log($"[BATTLE RULE] ON");
+            if (characterToAct != null && characterToAct.isAlive)
             {
-                if (combatant.isAlive)
-                {
-                    combatant.TakeDamage(damagePerTurn);
-                }
+                characterToAct.TakeDamage(damagePerTurn);
             }
-
             yield return new WaitForSeconds(0.2f);
         }
 
