@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 
 namespace Turnbase
@@ -98,6 +99,8 @@ namespace Turnbase
         {
             Flyweight projectileInstance = FlyweightFactory.Spawn(skill.projectileSettings);
 
+            ElementType element = skill.elementType;
+
             if (projectileInstance != null)
             {
                 projectileInstance.Initialize(user.transform.position, targetLookRotation);
@@ -108,7 +111,7 @@ namespace Turnbase
                 {
                     Action hitCallback = () => { projectileHit = true; };
 
-                    projectileScript.Setup(target, skill, finalDamage, hitCallback);
+                    projectileScript.Setup(target, skill, finalDamage, element, hitCallback);
                 }
                 else
                 {
@@ -125,7 +128,8 @@ namespace Turnbase
 
         private void ApplyDamageInstant()
         {
-            target.TakeDamage(finalDamage);
+            ElementType element = skill.elementType;
+            target.TakeDamage(finalDamage, element);
             SpawnImpactEffect(target.transform.position, skill);
             projectileHit = true;
         }

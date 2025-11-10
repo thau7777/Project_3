@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using System;
+using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 
 namespace Turnbase
@@ -58,13 +59,16 @@ namespace Turnbase
 
         private IEnumerator ApplyDamageToTargets(List<Character> targets)
         {
+            ElementType element = skill.elementType;
+
             foreach (Character aoeTarget in targets)
             {
                 if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
                 int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
 
-                aoeTarget.TakeDamage(finalDamage);
+                aoeTarget.TakeDamage(finalDamage, element);
+
                 SpawnImpactEffect(aoeTarget.transform.position);
 
                 if (skill.debuffProperties.statToModify != DebuffType.None)

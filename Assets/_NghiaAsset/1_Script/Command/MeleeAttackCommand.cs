@@ -67,6 +67,7 @@ namespace Turnbase
 
         private IEnumerator PerformAttack()
         {
+            ElementType element = skill.elementType;
             finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
             damageApplied = false;
@@ -74,7 +75,7 @@ namespace Turnbase
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage);
+                    target.TakeDamage(finalDamage, element);
 
                     SpawnImpactEffect(target.transform.position, skill);
 

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using Turnbase;
+using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
@@ -10,12 +11,14 @@ namespace Turnbase
         [Header("Cấu hình Luật")]
         public int damagePerTurn = 10;
 
+        public ElementType element = ElementType.None;
+
         public override IEnumerator ExecuteRule(BattleManager battleManager, Character characterToAct)
         {
             Debug.Log($"[BATTLE RULE] ON");
             if (characterToAct != null && characterToAct.isAlive)
             {
-                characterToAct.TakeDamage(damagePerTurn);
+                characterToAct.TakeDamage(damagePerTurn, element);
             }
             yield return new WaitForSeconds(0.2f);
         }

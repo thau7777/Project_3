@@ -43,13 +43,15 @@ namespace Turnbase
 
         private IEnumerator PerformRangedAttack()
         {
+            ElementType element = skill.elementType;
+
             finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage);
+                    target.TakeDamage(finalDamage, element);
                     damageApplied = true;
                     SpawnImpactEffect(target.transform.position, skill);
 

@@ -564,6 +564,8 @@ namespace Turnbase
 
         public void OnParryAttempted()
         {
+            ElementType element = ElementType.None;
+
             if (activeCharacter != null && activeCharacter is Enemy enemy)
             {
                 Character target = enemy.target;
@@ -572,7 +574,7 @@ namespace Turnbase
                     target.isParryable = false;
 
                     int parryDamage = target.stats.physicalAttack * 1;
-                    enemy.TakeDamage(parryDamage);
+                    enemy.TakeDamage(parryDamage, element);
 
                     Time.timeScale = 0.5f;
 

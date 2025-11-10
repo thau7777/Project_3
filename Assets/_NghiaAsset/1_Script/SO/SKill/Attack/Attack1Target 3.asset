@@ -20,7 +20,7 @@ MonoBehaviour:
   animationTriggerName: Attack
   targetType: 2
   skillType: 1
-  elementType: 4
+  elementType: 3
   summonPrefab: []
   impactVFXPrefab: {fileID: 11400000, guid: 506af39b7d288944ca77971cd4dbc773, type: 2}
   projectileSettings: {fileID: 11400000, guid: dcbb133427ff3f24d9213570c035e6ae, type: 2}
@@ -44,14 +44,15 @@ MonoBehaviour:
     durationTurns: 5
     icon: {fileID: 21300000, guid: a2f3c40c4c9866d4088ebfb23f087dd9, type: 3}
   activatedDebuff:
-    statToModify: 2
+    statToModify: 1
     durationTurns: 5
     amount: 55
     baseDamagePerTurn: 55
     debuffEffect: {fileID: 11400000, guid: 9cfdda63e9194764e94e4d03a7d0c5fa, type: 2}
     icon: {fileID: 21300000, guid: 23f1c7f4813926a4eb0076873aa5f265, type: 3}
+  elementColorMap: {fileID: 11400000, guid: cace27fd984050c4eb3f4af839ea19a1, type: 2}
   debuffProperties:
-    statToModify: 1
+    statToModify: 0
     durationTurns: 2
     amount: 0
     baseDamagePerTurn: 500

@@ -34,12 +34,12 @@ namespace Turnbase
         private IEnumerator PerformStationaryAttack()
         {
             CalculateFinalDamage();
-
+            ElementType element = skill.elementType;
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage);
+                    target.TakeDamage(finalDamage, element);
                     damageApplied = true;
                     SpawnEffectAtTarget();
                 }

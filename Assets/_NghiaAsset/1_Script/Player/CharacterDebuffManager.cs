@@ -1,5 +1,6 @@
 ﻿using Turnbase;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
@@ -173,17 +174,18 @@ namespace Turnbase
         {
             if (!character.isAlive) return;
 
+            ElementType element = ElementType.None;
 
             if (burnTurnsRemaining > 0)
             {
                 Debug.Log($"{character.name} nhận sát thương từ Thiêu đốt: {burnDamagePerTurn}");
-                character.TakeDamage(burnDamagePerTurn);
+                character.TakeDamage(burnDamagePerTurn, element);
             }
 
             if (poisonDamagePerTurn > 0)
             {
                 Debug.Log($"{character.name} nhận sát thương từ Độc: {poisonDamagePerTurn}");
-                character.TakeDamage(poisonDamagePerTurn);
+                character.TakeDamage(poisonDamagePerTurn, element);
             }
         }
 

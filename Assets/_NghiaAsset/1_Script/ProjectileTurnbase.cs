@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
 using Turnbase;
+using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
@@ -12,13 +13,16 @@ namespace Turnbase
         private Skill skillData;
         private int damageAmount;
 
+        private ElementType projectileElement;
+
         private const float SPEED = 30f;
 
-        public void Setup(Character target, Skill skill, int damage, Action hitCallback)
+        public void Setup(Character target, Skill skill, int damage, ElementType element, Action hitCallback)
         {
             this.target = target;
             this.skillData = skill;
             this.damageAmount = damage;
+            this.projectileElement = element;
             this.onHitCallback = hitCallback;
 
             StartCoroutine(MoveToTarget());
@@ -51,7 +55,9 @@ namespace Turnbase
 
         private void ApplyImpact()
         {
-            target.TakeDamage(damageAmount);
+            ElementType element = projectileElement;
+
+            target.TakeDamage(damageAmount, element);
 
             SpawnImpactEffect(target.transform.position, skillData);
 

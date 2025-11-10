@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Turnbase;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
@@ -42,6 +43,9 @@ public class Skill : ScriptableObject
     public BuffSettings activatedBuff;
     [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Target)]
     public DebuffSettings activatedDebuff;
+
+    [Header("Color Lookup")]
+    public ElementColorMap elementColorMap;
 
 
     [System.Serializable]

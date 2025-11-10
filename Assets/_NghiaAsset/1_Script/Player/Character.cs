@@ -136,6 +136,7 @@ namespace Turnbase
 
         public RenderTexture RenderTexture;
 
+        public Transform damagePopupCanvasParent;
 
         public bool isAlive
         {
@@ -191,7 +192,7 @@ namespace Turnbase
         }
 
 
-        public void TakeDamage(int damageAmount)
+        public void TakeDamage(int damageAmount, ElementType damageElement)
         {
             int remainingDamage = damageAmount;
 
@@ -206,6 +207,17 @@ namespace Turnbase
             if (remainingDamage > 0)
             {
                 stats.currentHP -= remainingDamage;
+
+                Vector3 spawnPosition = transform.position;
+
+                Color popupColor = VFXManager.Instance.elementColorMap.GetColor(damageElement);
+
+                DamagePopup.Create(
+                    transform.position,
+                    remainingDamage,
+                    damagePopupCanvasParent,
+                    popupColor
+                );
                 Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
             }
             else if (damageAmount > 0)

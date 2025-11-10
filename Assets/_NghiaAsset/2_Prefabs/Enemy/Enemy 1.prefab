@@ -1455,6 +1455,7 @@ GameObject:
   - component: {fileID: 9145698497346757161}
   - component: {fileID: 1527328286654397455}
   - component: {fileID: -61178238854852435}
+  - component: {fileID: 1732808570604203036}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -1546,7 +1547,6 @@ MonoBehaviour:
   targetMarker: {fileID: 5109386890736583360}
   animator: {fileID: 3378854915989972298}
   actionGauge: 0
-  currentStacks: 0
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   battleManager: {fileID: 0}
@@ -1559,6 +1559,7 @@ MonoBehaviour:
   isParryWindowFinished: 0
   parryWindowDuration: 0
   RenderTexture: {fileID: 8400000, guid: eb0f6b72dafd90f4d9af784165865afc, type: 2}
+  damagePopupCanvasParent: {fileID: 626011186020759060}
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1655,6 +1656,18 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+--- !u!114 &1732808570604203036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918f2cc3e3724ab41b916f9717209a0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.DamagePopup
 --- !u!1 &8633805098435303522
 GameObject:
   m_ObjectHideFlags: 0
