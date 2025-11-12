@@ -72,6 +72,19 @@ public class BattleUIManager : MonoBehaviour
             }
         }
     }
+
+    public void RemoveCharacterUI(Character character)
+    {
+        if(characterToUI.TryGetValue(character, out AvatarGroup uiGroup))
+        {
+            if(character.isPlayer)
+            {
+                Destroy(uiGroup.gameObject, 2f);
+            }
+            characterToUI.Remove(character);
+        }
+    }
+
     public void UpdateCharacterUI(Character character)
     {
         if (characterToUI.TryGetValue(character, out AvatarGroup uiGroup))

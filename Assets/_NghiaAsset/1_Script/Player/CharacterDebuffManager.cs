@@ -1,4 +1,5 @@
-﻿using Turnbase;
+﻿using System.Collections;
+using Turnbase;
 using UnityEngine;
 using static UnityEditor.Rendering.FilterWindow;
 
@@ -170,25 +171,43 @@ namespace Turnbase
             }
         }
 
-        public void ApplyDoTDamage()
+        public IEnumerator ApplyDoTDamage()
         {
-            if (!character.isAlive) return;
+            const float damageDelay = 0.5f;
 
-            ElementType element = ElementType.None;
+            if (!character.isAlive) yield break;
+
+            const ElementType BURN_ELEMENT = ElementType.Fire;
+            const ElementType POISON_ELEMENT = ElementType.Poison; 
+
+            bool damageApplied = false;
 
             if (burnTurnsRemaining > 0)
             {
-                Debug.Log($"{character.name} nhận sát thương từ Thiêu đốt: {burnDamagePerTurn}");
-                character.TakeDamage(burnDamagePerTurn, element);
+                Debug.Log($"{character.info.name} nhận sát thương từ Thiêu đốt: {burnDamagePerTurn}");
+
+                character.TakeDamage(burnDamagePerTurn, BURN_ELEMENT);
+
+                damageApplied = true;
+
+                if (!character.isAlive) yield break;
+            }
+
+            if (damageApplied)
+            {
+                yield return new WaitForSeconds(damageDelay);
             }
 
             if (poisonDamagePerTurn > 0)
             {
-                Debug.Log($"{character.name} nhận sát thương từ Độc: {poisonDamagePerTurn}");
-                character.TakeDamage(poisonDamagePerTurn, element);
-            }
-        }
+                Debug.Log($"{character.info.name} nhận sát thương từ Độc: {poisonDamagePerTurn}");
 
+                character.TakeDamage(poisonDamagePerTurn, POISON_ELEMENT);
+
+                if (!character.isAlive) yield break;
+            }
+
+        }
 
         private void RemoveExpiredBurnDebuff()
         {

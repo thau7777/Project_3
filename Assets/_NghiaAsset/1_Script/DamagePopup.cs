@@ -22,11 +22,8 @@ namespace Turnbase
                 return null;
             }
 
-            // Truyền màu sắc vào Setup
-            damagePopup.Setup(damageAmount, color); // <-- TRUYỀN COLOR VÀO SETUP
-
-            // Hủy Popup sau 2 giây (đã thảo luận trước đó)
-            Destroy(damagePopupObject, 2f);
+            damagePopup.Setup(damageAmount, color); 
+            Destroy(damagePopupObject, 1f);
 
             return damagePopup;
         }
@@ -39,11 +36,10 @@ namespace Turnbase
             damageText = transform.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        public void Setup(int damageAmount, Color color) // <-- CẬP NHẬT SETUP ĐỂ NHẬN COLOR
+        public void Setup(int damageAmount, Color color)
         {
             if (damageText != null)
             {
-                // ÁP DỤNG MÀU LÊN TEXT
                 damageText.color = color;
                 damageText.text = damageAmount.ToString();
             }

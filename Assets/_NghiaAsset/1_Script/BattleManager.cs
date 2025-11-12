@@ -337,6 +337,11 @@ namespace Turnbase
             {
                 allCombatants.Remove(character);
 
+                if (uiManager != null)
+                {
+                    uiManager.RemoveCharacterUI(character);
+                }
+
                 if (turnOrderUI != null)
                 {
                     turnOrderUI.UpdateActionGaugeUI(allCombatants);
@@ -427,7 +432,7 @@ namespace Turnbase
 
             if (activeCharacter.debuffManager != null)
             {
-                activeCharacter.debuffManager.ApplyDoTDamage();
+                yield return StartCoroutine(activeCharacter.debuffManager.ApplyDoTDamage());
                 activeCharacter.debuffManager.ProcessTurnStartDecay();
             }
 
