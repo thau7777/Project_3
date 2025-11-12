@@ -162,7 +162,7 @@ namespace Turnbase
 
             Debug.Log($"[WAVE START] Bắt đầu đợt quái số {waveIndex + 1} với {enemiesToSpawn.Length} kẻ địch.");
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(3f);
 
 
             int enemyCount = Mathf.Min(enemySlots.Length, enemiesToSpawn.Length);

@@ -103,7 +103,10 @@ namespace Turnbase
             }
 
             yield return new WaitForSeconds(calculatedDuration);
-            yield return new WaitForSeconds(0.2f);
+
+            user.animator.Play("Idle");
+
+            yield return new WaitForSeconds(0.1f);
         }
 
 

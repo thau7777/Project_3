@@ -10,7 +10,6 @@ namespace Turnbase
 
         public override void OnEnter()
         {
-            stateMachine.character.animator.SetBool("IsIdle", true);
             Debug.Log(stateMachine.gameObject.name + " đã bắt đầu chờ lượt.");
 
 
