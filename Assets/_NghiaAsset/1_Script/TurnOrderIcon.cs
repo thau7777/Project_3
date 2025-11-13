@@ -47,6 +47,12 @@ namespace Turnbase
                 cameraViewManager.SetCameraView(characterOwner);
             }
 
+            if(character.isVirtualTracker)
+            {
+                avatarButton.interactable = false;
+                return;
+            }
+
 
             avatarButton.onClick.RemoveAllListeners();
             avatarButton.onClick.AddListener(ShowPanel);

@@ -135,8 +135,8 @@ public class BattleUIManager : MonoBehaviour
         }
 
         var filteredCombatants = allCombatants
-            .Where(c => c.isPlayer == showPlayers && c.isAlive)
-            .ToList();
+             .Where(c => c.isPlayer == showPlayers && c.isAlive && !c.isVirtualTracker)
+             .ToList();
 
         Character firstCombatant = null;
 

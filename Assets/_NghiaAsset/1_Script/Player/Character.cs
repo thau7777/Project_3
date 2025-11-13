@@ -104,6 +104,7 @@ namespace Turnbase
         [TabGroup("Skill Passive")] public List<SkillPassive> passiveSkills;
 
         public bool isPlayer;
+        public bool isVirtualTracker = false;
         public Character target;
         public GameObject targetMarker;
 

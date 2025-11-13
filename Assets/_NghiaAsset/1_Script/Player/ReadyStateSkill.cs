@@ -33,19 +33,23 @@ namespace Turnbase
                     break;
                 case SkillTargetType.Ally:
                     CameraAction.instance.TargetAllTeam();
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && c.isPlayer && c.isAlive && !c.isVirtualTracker);
                     break;
                 case SkillTargetType.Enemy:
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && !c.isPlayer && c.isAlive && !c.isVirtualTracker);
                     break;
                 case SkillTargetType.Allies:
                     CameraAction.instance.TargetAllTeam();
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && c.isPlayer && c.isAlive && !c.isVirtualTracker);
 
                     break;
                 case SkillTargetType.Enemies:
                     CameraAction.instance.TargetAllEnemies();
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && !c.isPlayer && c.isAlive && !c.isVirtualTracker);
                     break;
             }
 

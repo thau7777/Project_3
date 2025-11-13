@@ -45,6 +45,9 @@ namespace Turnbase
         public List<BattleRule> availableRules;
         private BattleRule currentRule = null;
 
+        [Header("Round Tracking")]
+        public RoundTracker roundTrackerPrefab;
+
         void Start()
         {
             SetupBattle();
@@ -131,6 +134,16 @@ namespace Turnbase
                     actionUI.OnParryAttempted += OnParryAttempted;
                     playerInstance.ownUI = actionUI;
                 }
+            }
+
+            if (roundTrackerPrefab != null)
+            {
+                RoundTracker trackerInstance = Instantiate(roundTrackerPrefab, Vector3.zero, Quaternion.identity);
+                trackerInstance.battleManager = this;
+                trackerInstance.stats.currentHP = trackerInstance.stats.maxHP;
+
+                allCombatants.Add(trackerInstance);
+                Debug.Log("[RoundTracker] đã được thêm vào danh sách chiến đấu.");
             }
 
             currentWaveIndex = 0;
@@ -403,6 +416,14 @@ namespace Turnbase
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
+            if (activeCharacter is RoundTracker roundTracker)
+            {
+                Debug.Log("[RoundTracker] Đến lượt. Thực thi Phase.");
+                roundTracker.ExecuteRoundPhase();
+                yield break; 
+            }
+
+
             yield return new WaitForSeconds(1f);
             CameraAction.instance.LookCameraAtTarget(activeCharacter);
 
@@ -459,6 +480,14 @@ namespace Turnbase
             }
 
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
+
+
+
+
+            if (activeCharacter.stateMachine != null)
+            {
+                activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.waitingState);
+            }
 
             if (activeCharacter.isPlayer)
             {
