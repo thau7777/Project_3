@@ -66,7 +66,7 @@ namespace Turnbase
 
             foreach (var charTarget in targetsToShield)
             {
-                Flyweight localShieldVFXInstance = SpawnContinuousEffect(
+                Flyweight2 localShieldVFXInstance = SpawnContinuousEffect(
                     charTarget.transform.position,
                     charTarget,
                     skill

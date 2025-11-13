@@ -211,14 +211,14 @@ namespace Turnbase
 
             if (newPet != null)
             {
-                FlyweightSettings effectToSpawn = skill.impactVFXPrefab;
+                FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
                 float vfxDuration = 2.0f;
 
                 if (effectToSpawn != null)
                 {
                     Vector3 position = newPet.transform.position;
 
-                    Flyweight effectInstance = FlyweightFactory.Spawn(effectToSpawn);
+                    Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
 
                     effectInstance.Initialize(position, Quaternion.identity);
 
@@ -242,12 +242,12 @@ namespace Turnbase
             yield break;
         }
 
-        private IEnumerator ReleaseVFXAfterDelay(Flyweight effect, float delay)
+        private IEnumerator ReleaseVFXAfterDelay(Flyweight2 effect, float delay)
         {
             yield return new WaitForSeconds(delay);
             if (effect != null)
             {
-                FlyweightFactory.ReturnToPool(effect);
+                FlyweightFactory2.ReturnToPool(effect);
             }
         }
 

@@ -58,7 +58,7 @@ namespace Turnbase
         {
             foreach (var charTarget in targetsToHeal)
             {
-                Flyweight effect = SpawnImpactEffect(charTarget.transform.position, skill);
+                Flyweight2 effect = SpawnImpactEffect(charTarget.transform.position, skill);
 
                 charTarget.Heal(skill.damage);
 
@@ -68,7 +68,7 @@ namespace Turnbase
 
                 if (effect != null)
                 {
-                    FlyweightFactory.ReturnToPool(effect);
+                    FlyweightFactory2.ReturnToPool(effect);
                 }
             }
         }

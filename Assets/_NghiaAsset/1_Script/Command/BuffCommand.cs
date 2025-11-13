@@ -64,7 +64,7 @@ namespace Turnbase
 
             foreach (var charTarget in targetsToBuff)
             {
-                Flyweight activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
+                Flyweight2 activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
 
                 switch (skill.buffProperties.statToModify)
                 {

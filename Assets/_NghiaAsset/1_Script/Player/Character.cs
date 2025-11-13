@@ -296,7 +296,7 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} mana! Mana hiện tại: {stats.currentMP}");
         }
 
-        public void AddShield(int amount, int duration, Sprite icon, Flyweight vfxInstance = null)
+        public void AddShield(int amount, int duration, Sprite icon, Flyweight2 vfxInstance = null)
         {
             if (buffManager != null)
             {
@@ -304,7 +304,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyAttackBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        public void ApplyAttackBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -312,7 +312,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        public void ApplyMaxHPBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -320,7 +320,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyDefenseBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        public void ApplyDefenseBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -328,7 +328,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyAgilityBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        public void ApplyAgilityBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
         {   
             if (buffManager != null)
             {
@@ -336,7 +336,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -344,7 +344,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight vfxInstance, Sprite icon)
+        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
