@@ -7,15 +7,15 @@ namespace Turnbase
     {
         new OneShotVFXSettings2 settings => (OneShotVFXSettings2)base.settings;
 
-        private void OnEnable()
+        public void SetupDespawn()
         {
             StartCoroutine(DespawnAfterDelay(settings.DespawnDelay));
         }
+
         IEnumerator DespawnAfterDelay(float delay)
         {
             yield return Helpers.GetWaitForSeconds(delay);
             FlyweightFactory2.ReturnToPool(this);
         }
     }
-
 }

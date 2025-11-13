@@ -37,6 +37,9 @@ namespace Turnbase
     {
         TB_Impact_Wind,
         Tb_Projectile_Fire,
+        Tb_DOT_Burn,
+        Tb_Healing,
+        Tb_MaxHeal,
 
     }
 

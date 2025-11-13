@@ -33,7 +33,7 @@ namespace Turnbase
         private IEnumerator AnimateHealUser()
         {
             user.animator.Play(skill.animationTriggerName);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
         }
 
         private List<Character> FindTargets()

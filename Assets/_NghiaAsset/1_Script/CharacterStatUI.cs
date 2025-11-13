@@ -82,7 +82,7 @@ namespace Turnbase
 
             return new List<StatData>
             {
-                new StatData { Name = "Tên", Value = info.name },
+                new StatData { Name = "Name", Value = info.name },
                 new StatData { Name = "Level", Value = info.level.ToString() },
 
                 new StatData { Name = "HP", Value = $"{stats.currentHP}/{stats.maxHP}" },
