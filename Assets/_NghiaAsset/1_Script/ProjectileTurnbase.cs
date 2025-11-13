@@ -6,7 +6,7 @@ using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
-    public class ProjectileTurnBase : Flyweight
+    public class ProjectileTurnBase : Flyweight2
     {
         private Character target;
         private Action onHitCallback;
@@ -50,7 +50,7 @@ namespace Turnbase
                 yield return new WaitForSeconds(releaseDelay);
             }
 
-            FlyweightFactory.ReturnToPool(this);
+            FlyweightFactory2.ReturnToPool(this);
         }
 
         private void ApplyImpact()

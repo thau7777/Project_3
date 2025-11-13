@@ -35,21 +35,8 @@ namespace Turnbase
     }
     public enum FlyweightType
     {
-        SmallSwordSlashVFX,
-        ShieldBashVFX,
-        SlashHitVFX,
-        PurpleProjectile,
-        PurpleHitVFX,
-        BigPurpleProjectile,
-        BigPurpleHitVFX,
-        FireBallProjectile,
-        FireBallExplosionVFX,
-        TopDownEnemySlime,
-        TopDownEnemyTurtle,
-        TurnbaseSpawnPet,
-        TurnbaseBuff,
-        TurnbaseImpact,
-        TurnbaseHeal,
+        TB_Impact_Wind,
+        Tb_Projectile_Fire,
 
     }
 
