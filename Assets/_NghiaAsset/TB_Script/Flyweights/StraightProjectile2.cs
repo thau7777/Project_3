@@ -86,7 +86,7 @@ namespace Turnbase
         }
         private void SpawnHitVFX()
         {
-            var projectileImpactFlyweight = FlyweightFactory.Spawn(_hitboxHandler.HitImpactEffect);
+            var projectileImpactFlyweight = FlyweightFactory2.Spawn(_hitboxHandler.HitImpactEffect);
             projectileImpactFlyweight.Initialize(transform.position, Quaternion.identity);
             if (projectileImpactScale != null)
                 projectileImpactFlyweight.transform.localScale = projectileImpactScale.Value;
