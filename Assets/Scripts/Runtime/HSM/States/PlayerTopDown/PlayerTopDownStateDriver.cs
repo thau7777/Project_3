@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public struct ClassWeaponData
@@ -264,11 +263,11 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             if(location.ToString() == spawnPoint.name)
             {
                 Flyweight slashVFX = FlyweightFactory.Spawn(flyweightSettings);
-                slashVFX.Initialize(spawnPoint.position, transform.rotation);
+                slashVFX.FlyweightInitialize(spawnPoint.position, transform.rotation);
                 if (slashVFX is StraightProjectile)
                 {
                     var straightProjectile = slashVFX as StraightProjectile;
-                    straightProjectile.InitializeMovement(transform.forward, 10);
+                    straightProjectile.InitializeProjectile(transform.forward, 10,10);
                 }
                 break;
             }
@@ -280,7 +279,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _context.IsAiming = false;
         _context.CastingSkill = -1;
         _context.IsDashing = false;
-        _executor.ClearSkillData();
+        //_executor.ClearSkillData();
     }
     public void OnAttackDone()
     {

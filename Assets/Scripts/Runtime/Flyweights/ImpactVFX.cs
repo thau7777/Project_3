@@ -5,7 +5,7 @@ public class ImpactVFX : Flyweight
 {
     public void Initialize(Vector3 position, Quaternion rotation, float duration)
     {
-        base.Initialize(position, rotation);
+        base.FlyweightInitialize(position, rotation);
 
         transform.position = position;
         transform.rotation = rotation;

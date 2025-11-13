@@ -36,17 +36,25 @@ public enum FlyweightType
     SmallSwordSlashVFX,
     ShieldBashVFX,
     SlashHitVFX,
+
     PurpleProjectile,
     PurpleHitVFX,
     BigPurpleProjectile,
     BigPurpleHitVFX,
     FireBallProjectile,
     FireBallExplosionVFX,
+
     TopDownEnemySlime,
     TopDownEnemyTurtle,
-    TurnbaseSpawnPet,
-    TurnbaseBuff,
-    TurnbaseImpact,
-    TurnbaseHeal,
 
+    TurnbaseSpawnPet,
+
+    IndicatorCircleAlly,
+    IndicatorCircleEnemy,
+    IndicatorStraightAlly,
+    IndicatorStraightEnemy,
+    IndicatorConeAlly,
+    IndicatorConeEnemy,
+    IndicatorRectangleAlly,
+    IndicatorRectangleEnemy,
 }

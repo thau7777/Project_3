@@ -96,7 +96,7 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    effectInstance.Initialize(position, Quaternion.identity);
+                    effectInstance.FlyweightInitialize(position, Quaternion.identity);
 
                 }
             }

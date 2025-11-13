@@ -4,18 +4,19 @@ using UnityEngine.InputSystem;
 
 public class UIActions : InputActions.IUIActions
 {
-    public Action<Vector2> onNavigate;
+    public Action<Vector2> onMove;
     public Action onSubmit;
-    public Action onEscape;
+    public Action onCancel;
     public Action<Vector2> onLook;
     public Action onPressAnyButton;
+    public Action<Vector2> onAdjust;
 
-    public void OnNavigate(InputAction.CallbackContext context)
+    public void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             var value = context.ReadValue<Vector2>();
-            onNavigate?.Invoke(value);
+            onMove?.Invoke(value);
         }
     }
 
@@ -25,10 +26,10 @@ public class UIActions : InputActions.IUIActions
             onSubmit?.Invoke();
     }
 
-    public void OnEscape(InputAction.CallbackContext context)
+    public void OnCancel(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onEscape?.Invoke();
+            onCancel?.Invoke();
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -44,5 +45,14 @@ public class UIActions : InputActions.IUIActions
     {
         if (context.performed)
             onPressAnyButton?.Invoke();
+    }
+
+    public void OnAdjust(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            var value = context.ReadValue<Vector2>();
+            onAdjust?.Invoke(value);
+        }
     }
 }

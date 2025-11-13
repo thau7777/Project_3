@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class SkillExecutor : MonoBehaviour
 {
-    [SerializeField] 
-    private List<SkillStrategy> _skillDatas;
+
+    [SerializeField]
+    private SkillStrategy[] _skillDatas = new SkillStrategy[4];
+    private SkillRuntimeInstance[] _skillInstance = new SkillRuntimeInstance[4];
+
     [SerializeField]
     private List<Transform> _skillSpawnPoints;
-
-
-    private List<SkillRuntimeInstance> _skillInstance;
 
     private SkillRuntimeInstance _skillToCast;
     private SkillDataForClass? _storedSkillData;
@@ -21,13 +21,18 @@ public class SkillExecutor : MonoBehaviour
     private Coroutine _chargeCoroutine;
     private Coroutine _lerpCoroutine;
 
+    private SkillIndicator _skillIndicator;
     void Awake()
     {
-        _skillInstance = new List<SkillRuntimeInstance>();
-        foreach (var s in _skillDatas)
-            _skillInstance.Add(new SkillRuntimeInstance(s));
+        InitializeSkillInstance();
     }
-
+    private void InitializeSkillInstance()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            _skillInstance[i] = new SkillRuntimeInstance(_skillDatas[i]);
+        }
+    }
     // always get that skill data first if return ok then we can cast it later
     public bool SetSkillData(int index, CharacterClass characterClass)
     {
@@ -52,12 +57,14 @@ public class SkillExecutor : MonoBehaviour
             // run aim anim first
             context.IsAiming = true;
             context.AimAnimName = _storedSkillData.Value.aimType.ToString();
+
+            
         }
         if (_skillToCast.Definition.CanCharge)
         {
             _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect ?? _skillToCast.Definition.FlyweightSettings);
             Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
-            _chargedSkillFlyweight.Initialize(spawnTransform.position, Quaternion.identity);
+            _chargedSkillFlyweight.FlyweightInitialize(spawnTransform.position);
 
             _chargedSkillFlyweight.transform.SetParent(spawnTransform);
 
@@ -69,7 +76,31 @@ public class SkillExecutor : MonoBehaviour
 
         }
 
-        if (isAimNeeded || _skillToCast.Definition.CanCharge) return;
+        if (isAimNeeded || _skillToCast.Definition.CanCharge)
+        {
+            if (!_skillToCast.Definition.useIndicator || !_skillToCast.Definition.skillIndicator) return;
+            _skillIndicator = FlyweightFactory.Spawn(_skillToCast.Definition.skillIndicator) as SkillIndicator;
+            switch (_skillToCast.Definition.skillIndicator.type)
+            {
+                default:
+                    break;
+                case FlyweightType.IndicatorStraightAlly:
+                {
+                    _skillIndicator.FlyweightInitialize(transform.position,transform.rotation);
+                    var followedIndicator = _skillIndicator as FollowedIndicator;
+                    followedIndicator.Initialize(transform, _skillToCast.Definition.Range * 12);
+                    break;
+                }
+                case FlyweightType.IndicatorCircleAlly:
+                {
+                        var circleIndicator = _skillIndicator as CircleIndicator;
+                        circleIndicator.Initialize();
+                        break;
+                }
+            }
+
+            return;
+        }
 
         onCastInstantly?.Invoke();
         CastSkill(context);
@@ -114,7 +145,12 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-
+        if (_skillIndicator)
+        {
+            _skillIndicator.OnSkillUse(_skillToCast.Definition.indicatorLockTime, 
+                _skillToCast.Definition.indicatorLockTime > 0 ? ExecuteSkill : null);
+            _skillIndicator = null;
+        }
         string animName = _storedSkillData.Value.animName;
         if (animName == "Dash") context.IsDashing = true;
         context.IsInSpecialMove = true;
@@ -150,7 +186,7 @@ public class SkillExecutor : MonoBehaviour
 
         _skillToCast.Cast(ctx);
 
-
+        ClearSkillData();
     }
     public void ClearSkillData()
     {
@@ -173,7 +209,7 @@ public class SkillExecutor : MonoBehaviour
     }
     public void AddOrReplaceSkill(int index, SkillStrategy newSkill)
     {
-        if (index < 0 || index >= _skillInstance.Count) return;
+        if (index < 0 || index >= 4) return;
         _skillInstance[index] = new SkillRuntimeInstance(newSkill);
     }
 }
