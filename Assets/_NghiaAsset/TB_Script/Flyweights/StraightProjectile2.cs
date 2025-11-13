@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Turnbase
 {
-    public class StraightProjectile2 : Flyweight
+    public class StraightProjectile2 : Flyweight2
     {
-        new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
+        new StraightProjectileSettings2 settings => (StraightProjectileSettings2)base.settings;
 
         private Vector3? _direction = null;
         private Rigidbody _rb;
@@ -82,11 +82,11 @@ namespace Turnbase
         public void DespawnFlyweight()
         {
             SpawnHitVFX();
-            FlyweightFactory.ReturnToPool(this);
+            FlyweightFactory2.ReturnToPool(this);
         }
         private void SpawnHitVFX()
         {
-            var projectileImpactFlyweight = FlyweightFactory2.Spawn(_hitboxHandler.HitImpactEffect);
+            var projectileImpactFlyweight = FlyweightFactory2.Spawn(settings);
             projectileImpactFlyweight.Initialize(transform.position, Quaternion.identity);
             if (projectileImpactScale != null)
                 projectileImpactFlyweight.transform.localScale = projectileImpactScale.Value;

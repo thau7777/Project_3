@@ -103,7 +103,7 @@ namespace Turnbase
 
             if (projectileInstance != null)
             {
-                projectileInstance.FlyweightInitialize(user.transform.position, targetLookRotation);
+                projectileInstance.Initialize(user.transform.position, targetLookRotation);
 
                 ProjectileTurnBase projectileScript = projectileInstance.GetComponent<ProjectileTurnBase>();
 

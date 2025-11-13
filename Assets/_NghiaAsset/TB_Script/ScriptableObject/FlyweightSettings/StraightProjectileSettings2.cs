@@ -3,22 +3,22 @@ using UnityEngine;
 namespace Turnbase
 {
     [CreateAssetMenu(fileName = " New Straight Projectile Settings", menuName = "Scriptable Objects/Flyweight Turnbase /Straight Projectile Settings")]
-    public class StraightProjectileSettings2 : FlyweightSettings
+    public class StraightProjectileSettings2 : FlyweightSettings2
     {
         [field: SerializeField]
         public float DespawnDelay { get; private set; } = 5f;
 
-        public override Flyweight Create()
+        public override Flyweight2 Create()
         {
             var go = Instantiate(prefab);
             go.name = prefab.name;
 
-            var flyweight = go.GetOrAdd<StraightProjectile>();
+            var flyweight = go.GetOrAdd<StraightProjectile2>();
             flyweight.settings = this;
 
             return flyweight;
         }
-        public override void OnGet(Flyweight f)
+        public override void OnGet(Flyweight2 f)
         {
             base.OnGet(f);
 
@@ -41,7 +41,7 @@ namespace Turnbase
                 rootPS.Play(true);
             }
         }
-        public override void OnRelease(Flyweight f)
+        public override void OnRelease(Flyweight2 f)
         {
             base.OnRelease(f);
 

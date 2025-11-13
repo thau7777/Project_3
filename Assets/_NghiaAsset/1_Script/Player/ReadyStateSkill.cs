@@ -220,7 +220,7 @@ namespace Turnbase
 
                     Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
 
-                    effectInstance.FlyweightInitialize(position, Quaternion.identity);
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                     stateMachine.StartCoroutine(ReleaseVFXAfterDelay(effectInstance, vfxDuration));
 

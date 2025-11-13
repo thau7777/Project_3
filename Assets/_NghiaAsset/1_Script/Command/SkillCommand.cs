@@ -63,7 +63,7 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    effectInstance.FlyweightInitialize(position, Quaternion.identity);
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                 }
             }
@@ -86,7 +86,7 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    effectInstance.FlyweightInitialize(position, Quaternion.identity); 
+                    effectInstance.Initialize(position, Quaternion.identity); 
                     
                     effectInstance.transform.SetParent(targetCharacter.transform);
                     effectInstance.transform.localPosition = Vector3.zero;
