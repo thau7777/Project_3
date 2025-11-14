@@ -542,6 +542,27 @@ namespace Turnbase
             Debug.Log($"Buff Magical Defense của {character.name} đã hết hạn và bị gỡ bỏ. Magical Defense hiện tại: {stats.magicDefense}");
         }
 
+        public bool IsBuffActive(StatType statType)
+        {
+            switch (statType)
+            {
+                case StatType.Attack:
+                    return attackBuffTurnsRemaining > 0;
+                case StatType.Defense:
+                    return defenseBuffTurnsRemaining > 0;
+                case StatType.Agility:
+                    return agilityBuffTurnsRemaining > 0;
+                case StatType.MaxHP:
+                    return maxHPBuffTurnsRemaining > 0;
+                case StatType.MagicalAttack:
+                    return magicalAttackBuffTurnsRemaining > 0;
+                case StatType.MagicalDefense:
+                    return magicalDefenseBuffTurnsRemaining > 0;
+                default:
+                    return false;
+            }
+        }
+
 
         public void ProcessTurnStartDecay()
         {

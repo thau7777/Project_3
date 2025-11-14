@@ -139,6 +139,8 @@ namespace Turnbase
 
         public Transform damagePopupCanvasParent;
 
+        public Skill selectedSkill { get; set; }
+
         public bool isAlive
         {
             get { return stats.currentHP > 0; }

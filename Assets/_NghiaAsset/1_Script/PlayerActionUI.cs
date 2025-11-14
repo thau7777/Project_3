@@ -307,8 +307,6 @@ namespace Turnbase
 
             OnSkillClicked();
 
-            Debug.Log($"OnSkillButtonClicked được gọi với kỹ năng: {selectedSkill.skillName} cho {currentCharacter.name}");
-
             EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
 
             playerActionsPanel.SetActive(false);
@@ -324,9 +322,6 @@ namespace Turnbase
 
         public void SetupSkillUI(List<Skill> skills)
         {
-            Debug.Log("SetupSkillUI được gọi.");
-
-
             List<Skill> damageSkills = skills.Where(s => s.skillType != SkillType.Summon).ToList();
 
             foreach (var b in skillButtons) b.gameObject.SetActive(false);

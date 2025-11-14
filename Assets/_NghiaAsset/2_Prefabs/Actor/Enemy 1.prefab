@@ -1529,8 +1529,8 @@ MonoBehaviour:
   stats:
     maxHP: 10000
     currentHP: 10000
-    maxMP: 119
-    currentMP: 119
+    maxMP: 100
+    currentMP: 100
     maxShield: 119
     currentShield: 0
     physicalAttack: 10
@@ -1540,7 +1540,9 @@ MonoBehaviour:
     crit: 0
     critDamage: 0
     agility: 100
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 5e3da1964380fc14e840322b1a48cd6c, type: 2}
+  - {fileID: 11400000, guid: 5324443a104dbb1478a5cc5ce01a2265, type: 2}
   passiveSkills: []
   isPlayer: 0
   isVirtualTracker: 0

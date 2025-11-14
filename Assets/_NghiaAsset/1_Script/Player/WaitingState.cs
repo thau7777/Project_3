@@ -10,7 +10,7 @@ namespace Turnbase
 
         public override void OnEnter()
         {
-            Debug.Log(stateMachine.gameObject.name + " đã bắt đầu chờ lượt.");
+            //Debug.Log(stateMachine.gameObject.name + " đã bắt đầu chờ lượt.");
 
 
         }
@@ -23,7 +23,7 @@ namespace Turnbase
         {
 
 
-            Debug.Log(stateMachine.gameObject.name + " đã kết thúc chờ lượt.");
+            //Debug.Log(stateMachine.gameObject.name + " đã kết thúc chờ lượt.");
         }
 
 
