@@ -58,7 +58,7 @@ namespace Turnbase
 
         private void ApplyBuffEffects(List<Character> targetsToBuff)
         {
-            int buffAmount = skill.damage;
+            int buffAmount = skill.buffProperties.amount;
             int buffDuration = skill.buffProperties.durationTurns;
             Sprite buffIcon = skill.buffProperties.icon;
 

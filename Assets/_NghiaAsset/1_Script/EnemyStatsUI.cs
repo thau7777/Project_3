@@ -29,6 +29,30 @@ namespace Turnbase
             UpdateUI();
         }
 
+        void OnEnable()
+        {
+            // Đăng ký lắng nghe
+            EventBusUI<StatusEffectChangedEvent>.Subscribe(OnStatusEffectChanged);
+
+            // Đảm bảo UI được cập nhật khi đối tượng UI được kích hoạt
+            UpdateUI();
+        }
+
+        void OnDisable()
+        {
+            // Hủy đăng ký để tránh lỗi và rò rỉ bộ nhớ (memory leak)
+            EventBusUI<StatusEffectChangedEvent>.Unsubscribe(OnStatusEffectChanged);
+        }
+
+        private void OnStatusEffectChanged(StatusEffectChangedEvent eventData)
+        {
+            // Chỉ cập nhật UI nếu nhân vật mục tiêu là chủ sở hữu của UI này
+            if (eventData.TargetCharacter == ownerCharacter)
+            {
+                UpdateUI();
+            }
+        }
+
         public void UpdateUI()
         {
             if (ownerCharacter == null) return;
@@ -113,6 +137,7 @@ namespace Turnbase
                     turnText.text = effect.TurnsRemaining.ToString();
                 }
             }
+
         }
     }
 }

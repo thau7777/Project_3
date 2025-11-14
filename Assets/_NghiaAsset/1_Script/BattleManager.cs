@@ -416,6 +416,12 @@ namespace Turnbase
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
+            if (activeCharacter.isAlive && activeCharacter.stats != null)
+            {
+                activeCharacter.stats.currentMP = Mathf.Min(activeCharacter.stats.currentMP + 20, activeCharacter.stats.maxMP);
+                Debug.Log($"[{activeCharacter.gameObject.name}] bắt đầu lượt và hồi 20 Mana.");
+            }
+
             if (activeCharacter is RoundTracker roundTracker)
             {
                 Debug.Log("[RoundTracker] Đến lượt. Thực thi Phase.");

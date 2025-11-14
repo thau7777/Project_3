@@ -28,13 +28,14 @@ namespace Turnbase
         private Character currentCharacter;
 
 
-        [TabGroup("Skill")] public List<Button> skillButtons;
+        [TabGroup("Skill")] public SkillEntryUI skillEntryPrefab;
         [TabGroup("Skill")] public GameObject PlayerSkillPanel;
 
-        [TabGroup("Summon")] public List<Button> summonButtons;
+        [TabGroup("Summon")] public SkillEntryUI summonEntryPrefab;
         [TabGroup("Summon")] public GameObject PlayerSummonPanel;
 
-
+        private List<SkillEntryUI> instantiatedSkillEntries = new List<SkillEntryUI>();
+        private List<SkillEntryUI> instantiatedSummonEntries = new List<SkillEntryUI>();
 
         [Header("Parry UI")]
         public Image parryFillImage;
@@ -259,36 +260,32 @@ namespace Turnbase
             }
         }
 
+
         public void SetupSummonUI(List<Skill> skills)
         {
             List<Skill> summonSkills = skills.Where(s => s.skillType == SkillType.Summon).ToList();
-            foreach (var b in summonButtons) b.gameObject.SetActive(false);
-            for (int i = 0; i < summonSkills.Count && i < summonButtons.Count; i++)
+
+            foreach (var entry in instantiatedSummonEntries)
             {
-                Button currentButton = summonButtons[i];
-                currentButton.onClick.RemoveAllListeners();
+                Destroy(entry.gameObject);
+            }
+            instantiatedSummonEntries.Clear();
 
-                Skill skillToUse = summonSkills[i];
-                Skill captured = skillToUse;
-                currentButton.onClick.AddListener(() => OnSkillButtonClicked(captured));
+            if (summonEntryPrefab == null)
+            {
+                Debug.LogError("Summon Entry Prefab chưa được gán!");
+                return;
+            }
 
-                Image buttonImage = currentButton.GetComponent<Image>();
-                if (buttonImage == null)
-                {
-                    buttonImage = currentButton.GetComponentInChildren<Image>();
-                }
+            foreach (Skill skillToUse in summonSkills)
+            {
+                SkillEntryUI newEntry = Instantiate(summonEntryPrefab, PlayerSummonPanel.transform);
 
-                if (buttonImage != null && skillToUse.icon != null)
-                {
-                    buttonImage.sprite = skillToUse.icon;
-                    buttonImage.color = Color.white;
-                }
+                newEntry.Setup(skillToUse, OnSkillButtonClicked);
 
-
-                currentButton.gameObject.SetActive(true);
+                instantiatedSummonEntries.Add(newEntry);
             }
         }
-
         private void OnSummonClicked()
         {
             Debug.Log("sử dụng Triệu hồi!");
@@ -320,40 +317,29 @@ namespace Turnbase
             confirmButton.gameObject.SetActive(true);
         }
 
+
         public void SetupSkillUI(List<Skill> skills)
         {
             List<Skill> damageSkills = skills.Where(s => s.skillType != SkillType.Summon).ToList();
 
-            foreach (var b in skillButtons) b.gameObject.SetActive(false);
-
-            for (int i = 0; i < damageSkills.Count && i < skillButtons.Count; i++)
+            foreach (var entry in instantiatedSkillEntries)
             {
-                Button currentButton = skillButtons[i];
-                currentButton.onClick.RemoveAllListeners();
+                Destroy(entry.gameObject);
+            }
+            instantiatedSkillEntries.Clear();
 
-                Skill skillToUse = damageSkills[i];
-                Skill captured = skillToUse;
-                currentButton.onClick.AddListener(() => OnSkillButtonClicked(captured));
+            if (skillEntryPrefab == null)
+            {
+                Debug.LogError("Skill Entry Prefab chưa được gán!");
+                return;
+            }
 
+            foreach (Skill skillToUse in damageSkills)
+            {
+                SkillEntryUI newEntry = Instantiate(skillEntryPrefab, PlayerSkillPanel.transform);
+                newEntry.Setup(skillToUse, OnSkillButtonClicked);
 
-                Image buttonImage = currentButton.GetComponent<Image>();
-                if (buttonImage == null)
-                {
-                    buttonImage = currentButton.GetComponentInChildren<Image>();
-                }
-
-                if (buttonImage != null && skillToUse.icon != null)
-                {
-                    buttonImage.sprite = skillToUse.icon;
-                    buttonImage.color = Color.white;
-                }
-                else if (buttonImage != null)
-                {
-                    buttonImage.sprite = null;
-                    buttonImage.color = new Color(1, 1, 1, 0);
-                }
-
-                currentButton.gameObject.SetActive(true);
+                instantiatedSkillEntries.Add(newEntry);
             }
         }
 

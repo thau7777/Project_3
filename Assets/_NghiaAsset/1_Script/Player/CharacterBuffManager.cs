@@ -95,10 +95,7 @@ namespace Turnbase
 
             Debug.Log(character.gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
         }
 
 
@@ -125,10 +122,7 @@ namespace Turnbase
 
             attackBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
             Debug.Log($"{character.name} đã nhận buff +{amount} Attack, hiệu lực {duration} lượt. Attack hiện tại: {stats.physicalAttack}");
         }
@@ -157,10 +151,8 @@ namespace Turnbase
 
             maxHPBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
 
             Debug.Log($"{character.name} đã nhận buff +{amount} MaxHP, hiệu lực {duration} lượt. MaxHP hiện tại: {stats.maxHP}");
         }
@@ -188,10 +180,8 @@ namespace Turnbase
 
             defenseBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
 
             Debug.Log($"{character.name} đã nhận buff +{amount} Defense, hiệu lực {duration} lượt. Defense hiện tại: {stats.physicalDefense}");
         }
@@ -219,10 +209,8 @@ namespace Turnbase
 
             agilityBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
 
             Debug.Log($"{character.name} đã nhận buff +{amount} Agility, hiệu lực {duration} lượt. Agility hiện tại: {stats.agility}");
         }
@@ -250,10 +238,8 @@ namespace Turnbase
 
             magicalAttackBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
 
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Attack, hiệu lực {duration} lượt. Magical Attack hiện tại: {stats.magicAttack}");
         }
@@ -281,10 +267,7 @@ namespace Turnbase
 
             magicalDefenseBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Defense, hiệu lực {duration} lượt. Magical Defense hiện tại: {stats.magicDefense}");
         }
@@ -560,6 +543,27 @@ namespace Turnbase
                     return magicalDefenseBuffTurnsRemaining > 0;
                 default:
                     return false;
+            }
+        }
+
+        public int GetBuffTurnsRemaining(StatType statType)
+        {
+            switch (statType)
+            {
+                case StatType.Attack:
+                    return attackBuffTurnsRemaining;
+                case StatType.Defense:
+                    return defenseBuffTurnsRemaining;
+                case StatType.Agility:
+                    return agilityBuffTurnsRemaining;
+                case StatType.MaxHP:
+                    return maxHPBuffTurnsRemaining;
+                case StatType.MagicalAttack:
+                    return magicalAttackBuffTurnsRemaining;
+                case StatType.MagicalDefense:
+                    return magicalDefenseBuffTurnsRemaining;
+                default:
+                    return 0; 
             }
         }
 

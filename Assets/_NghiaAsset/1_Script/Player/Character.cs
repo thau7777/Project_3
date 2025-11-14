@@ -141,6 +141,8 @@ namespace Turnbase
 
         public Skill selectedSkill { get; set; }
 
+        public EnemyStatsUI enemyStatsUI;
+
         public bool isAlive
         {
             get { return stats.currentHP > 0; }

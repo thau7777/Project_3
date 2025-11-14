@@ -12,6 +12,8 @@ namespace Turnbase
     {
         private Character currentCharacter;
 
+        public EnemyStatsUI enemyUI;
+
         public Dictionary<SkillType, int> currentSkillTypePool;
 
         private void Awake() 
@@ -89,12 +91,15 @@ namespace Turnbase
                 Debug.Log($"[AI]{gameObject.name} dùng kỹ năng: {chosenSkill.skillName} lên mục tiêu: {chosenTarget.gameObject.name}");
 
                 this.stats.currentMP -= chosenSkill.manaCost;
+                enemyUI.UpdateUI();
 
                 ConsumeSkillTypePool(chosenSkill.skillType);
 
                 stateMachine.SwitchState(new SkillAttackingState(stateMachine, chosenSkill));
 
                 EventBus<HidePanelEvent>.Raise(new HidePanelEvent(panelName: "EnemyUI"));
+
+                
             }
             else
             {

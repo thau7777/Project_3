@@ -114,7 +114,7 @@ namespace Turnbase
                 Skill defaultAttack = user.skills.FirstOrDefault();
                 if (defaultAttack != null)
                 {
-                    Debug.LogWarning("AI không chọn được skill, dùng skill mặc định.");
+                    Debug.LogWarning("AI không chọn được skill, đánh thường");
                     return (defaultAttack, playerTargets.FirstOrDefault());
                 }
             }
@@ -152,46 +152,52 @@ namespace Turnbase
                         return -5000f;
                     }
 
-                    // 2. Skill Power Score (Hồi máu)
-                    // GIẢM HỆ SỐ TỪ 2.5f xuống 1.0f, cân bằng với sát thương tấn công cơ bản
                     skillPowerScore = skill.damage * 1.0f;
                     tacticalScore = 0f;
 
-                    // 3. Tactical Score: CÁC NGƯỠNG RẤT KHẮT KHE
 
-                    // HÌNH PHẠT MẠNH: Nếu HP KHÔNG KHẨN CẤP (HP >= 50%)
                     if (hpPercent >= 0.5f)
                     {
-                        // Áp dụng hình phạt 500f. Điểm này rất khó để vượt qua nếu không có thưởng.
                         tacticalScore -= 500f;
                     }
 
-                    // THƯỞNG KHẨN CẤP: (HP < 50%)
                     if (hpPercent < 0.5f)
                     {
-                        tacticalScore += BONUS_CRITICAL_HEAL; // Thưởng 80f
+                        tacticalScore += BONUS_CRITICAL_HEAL;
                     }
-                    // THƯỞNG SIÊU KHẨN CẤP: (HP < 25%)
                     if (hpPercent < 0.25f)
                     {
-                        tacticalScore += BONUS_CRITICAL_HEAL; // Thêm 80f nữa
+                        tacticalScore += BONUS_CRITICAL_HEAL; 
                     }
                     break;
+
                 case SkillType.Buff:
                 case SkillType.Shield:
-                    // 1. Skill Power Score (Buff/Khiên)
-                    skillPowerScore = skill.buffProperties.amount * 10f; // Điểm dựa trên độ mạnh của Buff
+                    skillPowerScore = skill.buffProperties.amount * 10f;
 
-                    // 2. Tactical Score (Buff/Khiên)
-                    // Kiểm tra xem mục tiêu có bị thiếu Buff không (Tùy thuộc vào implementation của BuffManager)
-                    bool needsBuff = !target.buffManager.IsBuffActive(skill.buffProperties.statToModify);
-                    if (needsBuff)
+                    tacticalScore = 0f;
+
+                    int turnsRemaining = 0;
+                    if (skill.skillType == SkillType.Buff)
                     {
-                        tacticalScore += 50;
+                        turnsRemaining = target.buffManager.GetBuffTurnsRemaining(skill.buffProperties.statToModify);
+                    }
+                    else if (skill.skillType == SkillType.Shield)
+                    {
+                        turnsRemaining = target.buffManager.shieldTurnsRemaining;
+                    }
+
+                    if (turnsRemaining <= 0)
+                    {
+                        tacticalScore += 100f;
+                    }
+                    else if (turnsRemaining == 1)
+                    {
+                        tacticalScore += 50f;
                     }
                     else
                     {
-                        tacticalScore -= 50; // Tránh Buff trùng lặp
+                        tacticalScore -= 1000f;
                     }
                     break;
             }
