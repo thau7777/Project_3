@@ -47,63 +47,60 @@ namespace Turnbase
 
         private List<Character> GetTargets()
         {
+            List<Character> targets;
+
+
             if (user.isPlayer)
             {
-                return battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                targets = battleManager.allCombatants.FindAll(
+                    c => c != null &&
+                         !c.isPlayer &&
+                         c.isAlive &&
+                         !c.isVirtualTracker
+                );
             }
             else
             {
-                return battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                targets = battleManager.allCombatants.FindAll(
+                    c => c != null &&
+                         c.isPlayer &&
+                         c.isAlive &&
+                         !c.isVirtualTracker
+                );
             }
+
+            return targets;
         }
 
         private IEnumerator ApplyDamageToTargets(List<Character> targets)
         {
             ElementType element = skill.elementType;
 
-            Debug.Log($"[DamageAllCommand] Bắt đầu áp dụng sát thương tuần tự cho {targets.Count} mục tiêu.");
-
-            for (int i = 0; i < targets.Count; i++)
+            foreach (Character aoeTarget in targets)
             {
-                Character aoeTarget = targets[i];
-
                 if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
-                try
+                int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
+
+                aoeTarget.TakeDamage(finalDamage, element);
+
+                SpawnImpactEffect(aoeTarget.transform.position);
+
+                if (skill.debuffProperties.statToModify != DebuffType.None)
                 {
-                    int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
+                    aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
 
-                    Debug.Log($"[DamageAllCommand] Đánh mục tiêu {i + 1}/{targets.Count}: {aoeTarget.gameObject.name} với {finalDamage} sát thương.");
-
-                    aoeTarget.TakeDamage(finalDamage, element);
-
-                    SpawnImpactEffect(aoeTarget.transform.position);
-
-                    if (skill.debuffProperties.statToModify != DebuffType.None)
-                    {
-                        aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
-                    }
-
-                    if (skill.stackApplicationTarget == StackApplicationTarget.Target)
-                    {
-                        user.buffManager.ProcessSkillStacks(skill, aoeTarget);
-                    }
-
-                    // LƯU Ý: Loại bỏ yield return khỏi đây!
-                }
-                catch (System.Exception ex)
-                {
-                    // Bắt lỗi, in ra log và tiếp tục (không dừng Coroutine)
-                    Debug.LogError($"[DamageAllCommand] LỖI khi xử lý mục tiêu {aoeTarget.gameObject.name} (index {i}): {ex.Message}");
-
-                    // LƯU Ý: Loại bỏ yield return khỏi đây!
                 }
 
-                // Đặt yield return sau khối try-catch để nó luôn chạy và không gây lỗi biên dịch.
+                if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+                {
+                    user.buffManager.ProcessSkillStacks(skill, aoeTarget);
+                }
+
                 yield return new WaitForSeconds(TARGET_DELAY);
             }
-            Debug.Log("[DamageAllCommand] Đã hoàn thành xử lý tất cả mục tiêu.");
         }
+
         private void SpawnImpactEffect(Vector3 position)
         {
             FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
@@ -114,9 +111,10 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    effectInstance.Initialize(position, Quaternion.identity);
+                    ((ImpactVFX2)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
 
                 }
+
             }
         }
     }
