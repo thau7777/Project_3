@@ -13,6 +13,7 @@ namespace Turnbase
         {
             { SkillType.Heal, 50 },
             { SkillType.Buff, 50 },
+            { SkillType.Shield, 100 },
             { SkillType.MeleeAttack, 20 },
             { SkillType.RangedAttack, 20 },
             { SkillType.RangedProjectile, 20 },

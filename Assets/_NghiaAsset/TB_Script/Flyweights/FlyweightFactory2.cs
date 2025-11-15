@@ -40,6 +40,10 @@ namespace Turnbase
         Tb_DOT_Burn,
         Tb_Healing,
         Tb_MaxHeal,
+        Tb_Buff_P_Attack,
+        Tb_Buff_M_Attack,
+        Tb_Shield,
+
 
     }
 

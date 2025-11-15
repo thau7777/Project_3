@@ -141,7 +141,7 @@ namespace Turnbase
             foreach (var effect in effectsToShow)
             {
                 keysToRemove.Remove(effect.Name);
-                string displayValue = $"{effect.Detail} ({effect.TurnsRemaining} hiệp)";
+                string displayValue = $"{effect.Detail} ({effect.TurnsRemaining} turn)";
 
                 if (activeEffectEntries.TryGetValue(effect.Name, out StatusEffectEntry entry))
                 {

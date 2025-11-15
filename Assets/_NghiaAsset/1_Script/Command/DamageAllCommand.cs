@@ -61,31 +61,49 @@ namespace Turnbase
         {
             ElementType element = skill.elementType;
 
-            foreach (Character aoeTarget in targets)
+            Debug.Log($"[DamageAllCommand] Bắt đầu áp dụng sát thương tuần tự cho {targets.Count} mục tiêu.");
+
+            for (int i = 0; i < targets.Count; i++)
             {
+                Character aoeTarget = targets[i];
+
                 if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
-                int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
-
-                aoeTarget.TakeDamage(finalDamage, element);
-
-                SpawnImpactEffect(aoeTarget.transform.position);
-
-                if (skill.debuffProperties.statToModify != DebuffType.None)
+                try
                 {
-                    aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                    int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
 
+                    Debug.Log($"[DamageAllCommand] Đánh mục tiêu {i + 1}/{targets.Count}: {aoeTarget.gameObject.name} với {finalDamage} sát thương.");
+
+                    aoeTarget.TakeDamage(finalDamage, element);
+
+                    SpawnImpactEffect(aoeTarget.transform.position);
+
+                    if (skill.debuffProperties.statToModify != DebuffType.None)
+                    {
+                        aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                    }
+
+                    if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+                    {
+                        user.buffManager.ProcessSkillStacks(skill, aoeTarget);
+                    }
+
+                    // LƯU Ý: Loại bỏ yield return khỏi đây!
+                }
+                catch (System.Exception ex)
+                {
+                    // Bắt lỗi, in ra log và tiếp tục (không dừng Coroutine)
+                    Debug.LogError($"[DamageAllCommand] LỖI khi xử lý mục tiêu {aoeTarget.gameObject.name} (index {i}): {ex.Message}");
+
+                    // LƯU Ý: Loại bỏ yield return khỏi đây!
                 }
 
-                if (skill.stackApplicationTarget == StackApplicationTarget.Target)
-                {
-                    user.buffManager.ProcessSkillStacks(skill, aoeTarget);
-                }
-
+                // Đặt yield return sau khối try-catch để nó luôn chạy và không gây lỗi biên dịch.
                 yield return new WaitForSeconds(TARGET_DELAY);
             }
+            Debug.Log("[DamageAllCommand] Đã hoàn thành xử lý tất cả mục tiêu.");
         }
-
         private void SpawnImpactEffect(Vector3 position)
         {
             FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;

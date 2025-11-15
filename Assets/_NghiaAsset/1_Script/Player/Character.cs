@@ -369,7 +369,7 @@ namespace Turnbase
             {
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Lá chắn",
+                    Name = "Shield",
                     TurnsRemaining = buffManager.shieldTurnsRemaining,
                     Detail = $"{stats.currentShield} Shield",
                     IsBuff = true,
@@ -383,7 +383,7 @@ namespace Turnbase
                 int buffAmount = stats.physicalAttack - buffManager.originalBaseAttack;
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Tăng P.Attack",
+                    Name = "Increase P.Attack",
                     TurnsRemaining = buffManager.attackBuffTurnsRemaining,
                     Detail = $"+{buffAmount}",
                     IsBuff = true,
@@ -396,7 +396,7 @@ namespace Turnbase
                 int buffAmount = stats.physicalDefense - buffManager.originalBaseDefense;
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Tăng P.Defense",
+                    Name = "Increase P.Defense",
                     TurnsRemaining = buffManager.defenseBuffTurnsRemaining,
                     Detail = $"+{buffAmount}",
                     IsBuff = true,
@@ -409,7 +409,7 @@ namespace Turnbase
                 int buffAmount = stats.agility - buffManager.originalBaseAgility;
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Tăng Agility",
+                    Name = "Increase Agility",
                     TurnsRemaining = buffManager.agilityBuffTurnsRemaining,
                     Detail = $"+{buffAmount}",
                     IsBuff = true,
@@ -422,7 +422,7 @@ namespace Turnbase
                 int buffAmount = stats.maxHP - buffManager.originalBaseMaxHP;
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Tăng MaxHP",
+                    Name = "Increase MaxHP",
                     TurnsRemaining = buffManager.maxHPBuffTurnsRemaining,
                     Detail = $"+{buffAmount} MaxHP",
                     IsBuff = true,
@@ -435,7 +435,7 @@ namespace Turnbase
                 int buffAmount = stats.magicAttack - buffManager.magicalOriginalBaseAttack;
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Tăng M.Attack",
+                    Name = "Increase M.Attack",
                     TurnsRemaining = buffManager.magicalAttackBuffTurnsRemaining,
                     Detail = $"+{buffAmount}",
                     IsBuff = true,
@@ -448,7 +448,7 @@ namespace Turnbase
                 int buffAmount = stats.magicDefense - buffManager.magicalOriginalBaseDefense;
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Tăng M.Defense",
+                    Name = "Increase M.Defense",
                     TurnsRemaining = buffManager.magicalDefenseBuffTurnsRemaining,
                     Detail = $"+{buffAmount}",
                     IsBuff = true,
@@ -462,9 +462,9 @@ namespace Turnbase
             {
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Thiêu đốt",
+                    Name = "Burn",
                     TurnsRemaining = debuffManager.burnTurnsRemaining,
-                    Detail = $"{debuffManager.burnDamagePerTurn} Sát thương/lượt",
+                    Detail = $"{debuffManager.burnDamagePerTurn} Damage/turn",
                     IsBuff = false,
                     Icon = debuffManager.burnIcon
                 });
@@ -474,9 +474,9 @@ namespace Turnbase
             {
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Độc",
+                    Name = "Poison",
                     TurnsRemaining = debuffManager.poisonTurnsRemaining,
-                    Detail = $"{debuffManager.poisonDamagePerTurn} Sát thương/lượt",
+                    Detail = $"{debuffManager.poisonDamagePerTurn} Damage/turn",
                     IsBuff = false,
                     Icon = debuffManager.poisonIcon
                 });
@@ -486,9 +486,9 @@ namespace Turnbase
             {
                 effects.Add(new StatusEffectData
                 {
-                    Name = "Choáng",
+                    Name = "Stun",
                     TurnsRemaining = debuffManager.stunTurnsRemaining,
-                    Detail = "Không hành động",
+                    Detail = "Unable to act",
                     IsBuff = false,
                     Icon = debuffManager.stunIcon
                 });
