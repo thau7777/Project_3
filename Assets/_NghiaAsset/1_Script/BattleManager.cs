@@ -142,6 +142,8 @@ namespace Turnbase
                 trackerInstance.battleManager = this;
                 trackerInstance.stats.currentHP = trackerInstance.stats.maxHP;
 
+                trackerInstance.isVirtualTracker = true;
+
                 allCombatants.Add(trackerInstance);
                 Debug.Log("[RoundTracker] đã được thêm vào danh sách chiến đấu.");
             }
@@ -227,7 +229,6 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                Debug.Log("CHIẾN THẮNG! Tất cả các đợt quái đã bị đánh bại.");
                 StartCoroutine(LoadMapSceneDelayed("Map", 2f));
                 return;
             }
@@ -235,7 +236,9 @@ namespace Turnbase
 
         private void CheckWaveCondition()
         {
-            var livingEnemiesInCurrentWave = allCombatants.Where(c => !c.isPlayer && c.isAlive).ToList();
+            var livingEnemiesInCurrentWave = allCombatants
+                    .Where(c => !c.isPlayer && c.isAlive && !c.isVirtualTracker)
+                    .ToList();
 
             if (livingEnemiesInCurrentWave.Count == 0)
             {
@@ -243,7 +246,8 @@ namespace Turnbase
 
                 if (encounterToLoad != null && currentWaveIndex < encounterToLoad.waves.Length)
                 {
-                    Debug.Log($"--- HOÀN THÀNH ĐỢT {currentWaveIndex} ---");
+                    allCombatants.RemoveAll(c => c != null && !c.isPlayer && !c.isAlive);
+
                     StartCoroutine(SpawnWave(currentWaveIndex));
                 }
                 else
@@ -256,7 +260,6 @@ namespace Turnbase
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
-                    Debug.Log("THẤT BẠI! Tất cả người chơi đã bị hạ gục.");
                     StartCoroutine(LoadMapSceneDelayed("Map", 2f));
                 }
             }
@@ -646,6 +649,7 @@ namespace Turnbase
             {
                 EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
+                CameraAction.instance.TargetAllEnemies();
 
                 activeCharacter = null;
                 if (character.stateMachine != null)

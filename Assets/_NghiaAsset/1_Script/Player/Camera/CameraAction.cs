@@ -69,16 +69,10 @@ namespace Turnbase
             LookAtAnchorTransform(TargetAllPlayer, true);
         }
 
-        public void TargetAllEnemies()
+        public void TargetAllEnemies(bool teleportImmediately = false)
         {
-            LookAtAnchorTransform(TargetAllEnemy, true);
+            LookAtAnchorTransform(TargetAllEnemy, teleportImmediately);
         }
-
-        private void TargetAllCharacters()
-        {
-            LookAtAnchorTransform(CameraTargetAll, false);
-        }
-
 
 
         public void ResetCamera()
