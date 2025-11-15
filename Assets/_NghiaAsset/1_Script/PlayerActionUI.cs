@@ -20,7 +20,7 @@ namespace Turnbase
         public Button parryButton;
         public Button confirmButton;
         public Button summomonButton;
-        public Button confirmButton2;
+        public Button confirmButton2; 
         public Button cancelButton;
 
         public GameObject playerActionsPanel;
@@ -37,6 +37,8 @@ namespace Turnbase
         private List<SkillEntryUI> instantiatedSkillEntries = new List<SkillEntryUI>();
         private List<SkillEntryUI> instantiatedSummonEntries = new List<SkillEntryUI>();
 
+        private bool isWaitingForConfirmation = false;
+
         [Header("Parry UI")]
         public Image parryFillImage;
         public Sprite defaultParrySprite;
@@ -50,10 +52,39 @@ namespace Turnbase
 
         void Awake()
         {
-            playerActionsPanel2 = GameObject.Find("PlayerAction2");
+            GameObject actionPanel2 = GameObject.Find("PlayerAction2");
+            if (actionPanel2 != null)
+            {
+                playerActionsPanel2 = actionPanel2;
+            }
 
             battleManager = FindFirstObjectByType<BattleManager>();
 
+        }
+
+        void Update()
+        {
+            if (isWaitingForConfirmation)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Button activeConfirmButton = null;
+
+                    if (confirmButton2 != null && confirmButton2.gameObject.activeInHierarchy)
+                    {
+                        activeConfirmButton = confirmButton2;
+                    }
+                    else if (confirmButton != null && confirmButton.gameObject.activeInHierarchy)
+                    {
+                        activeConfirmButton = confirmButton;
+                    }
+
+                    if (activeConfirmButton != null)
+                    {
+                        OnConfirmClicked();
+                    }
+                }
+            }
         }
 
         private void Start()
@@ -67,6 +98,12 @@ namespace Turnbase
             parryButton.onClick.AddListener(OnParryClicked);
             confirmButton.onClick.AddListener(OnConfirmClicked);
             summomonButton.onClick.AddListener(OnSummonClicked);
+
+            if (cancelButton != null)
+            {
+                cancelButton.onClick.AddListener(OnCancelClicked);
+            }
+
 
             PlayerSkillPanel.gameObject.SetActive(false);
             PlayerSummonPanel.gameObject.SetActive(false);
@@ -112,6 +149,9 @@ namespace Turnbase
 
         public void OnCancelClicked()
         {
+            isWaitingForConfirmation = false;
+            selectedSkillToConfirm = null;
+
             CameraAction.instance.NormalCamera(currentCharacter);
 
             animator.Play("Idle");
@@ -127,12 +167,13 @@ namespace Turnbase
             confirmButton.gameObject.SetActive(false);
 
             EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
-
         }
 
 
         public void Hide()
         {
+            isWaitingForConfirmation = false;
+
             playerActionsPanel.SetActive(false);
             PlayerSkillPanel.SetActive(false);
             PlayerSummonPanel.SetActive(false);
@@ -183,6 +224,9 @@ namespace Turnbase
 
         private void OnAttackClicked()
         {
+            isWaitingForConfirmation = true;
+            selectedSkillToConfirm = null;
+
             Debug.Log("OnAttackClicked được gọi.");
 
             animator.Play("Idle");
@@ -201,7 +245,8 @@ namespace Turnbase
 
         private void OnSkillClicked()
         {
-            
+            isWaitingForConfirmation = false;
+
             switch (currentCharacter.characterClass)
             {
                 case CharacterClass.Sword_Shield:
@@ -256,6 +301,7 @@ namespace Turnbase
             }
             else
             {
+                SetupSkillUI(currentCharacter.skills);
                 PlayerSkillPanel.SetActive(true);
             }
         }
@@ -288,6 +334,9 @@ namespace Turnbase
         }
         private void OnSummonClicked()
         {
+            isWaitingForConfirmation = false;
+            selectedSkillToConfirm = null;
+
             Debug.Log("sử dụng Triệu hồi!");
             SetupSummonUI(currentCharacter.skills);
 
@@ -296,17 +345,23 @@ namespace Turnbase
             PlayerSummonPanel.SetActive(true);
             PlayerSkillPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
+
+            EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
+            playerActionsPanel.SetActive(false);
         }
 
         private void OnSkillButtonClicked(Skill selectedSkill)
         {
             if (currentCharacter == null) return;
 
-            OnSkillClicked();
+            isWaitingForConfirmation = true;
 
             EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
 
             playerActionsPanel.SetActive(false);
+
+            PlayerSkillPanel.SetActive(false);
+            PlayerSummonPanel.SetActive(false);
 
 
             currentCharacter.stateMachine.SwitchState(
@@ -314,7 +369,8 @@ namespace Turnbase
             );
 
             selectedSkillToConfirm = selectedSkill;
-            confirmButton.gameObject.SetActive(true);
+
+            if (confirmButton2 != null) confirmButton2.gameObject.SetActive(true);
         }
 
 
@@ -357,6 +413,8 @@ namespace Turnbase
 
         private void OnConfirmClicked()
         {
+            isWaitingForConfirmation = false;
+
             Debug.Log("OnConfirmClicked được gọi.");
 
             EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
@@ -365,10 +423,20 @@ namespace Turnbase
 
             if (currentCharacter == null) return;
 
+            if (confirmButton != null) confirmButton.gameObject.SetActive(false);
+            if (confirmButton2 != null) confirmButton2.gameObject.SetActive(false);
+
 
             if (currentCharacter.stateMachine.currentState is ReadyStateSkill currentState)
             {
                 Debug.Log("Gọi OnConfirm() của ReadyStateSkill.");
+
+                if (selectedSkillToConfirm == null)
+                {
+                    Debug.LogError("selectedSkillToConfirm bị null khi ở ReadyStateSkill! Hành động bị hủy.");
+                    currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.waitingState);
+                    return;
+                }
 
                 int manaCost = selectedSkillToConfirm.manaCost;
 
@@ -378,27 +446,25 @@ namespace Turnbase
                     currentCharacter.battleUIManager.UpdateCharacterUI(currentCharacter);
 
                     currentState.OnConfirm();
-                    PlayerSkillPanel.SetActive(false);
-                    PlayerSummonPanel.SetActive(false);
                 }
                 else
                 {
                     Debug.LogWarning($"{currentCharacter.name} không đủ Mana ({manaCost}) để dùng kỹ năng {selectedSkillToConfirm.skillName}!");
                     currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.waitingState);
-                    PlayerSkillPanel.SetActive(false);
-                    PlayerSummonPanel.SetActive(false);
                 }
-
-                PlayerSkillPanel.SetActive(false);
 
             }
             else if (currentCharacter.stateMachine.currentState is ReadyState)
             {
                 Debug.Log("Chuyển từ ReadyState sang AttackingState.");
                 currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.attackingState);
-
-                PlayerSkillPanel.SetActive(false);
             }
+
+            PlayerSkillPanel.SetActive(false);
+            PlayerSummonPanel.SetActive(false);
+            playerActionsPanel.SetActive(false);
+
+            selectedSkillToConfirm = null;
         }
     }
 

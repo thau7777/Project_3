@@ -93,11 +93,11 @@ namespace Turnbase
 
         public CharacterElement characterElement;
 
-        [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
-
         [TabGroup("Stats")] public CharacterInfo info;
 
         [TabGroup("Stats")] public CharacterStats stats;
+
+        [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
 
         [TabGroup("Skill")] public List<Skill> skills;
 

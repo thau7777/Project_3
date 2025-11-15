@@ -95,6 +95,11 @@ namespace Turnbase
 
             Debug.Log(character.gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
 
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
         }
 
@@ -121,6 +126,11 @@ namespace Turnbase
             attackBuffIcon = icon;
 
             attackBuffTurnsRemaining = duration;
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
@@ -151,6 +161,11 @@ namespace Turnbase
 
             maxHPBuffTurnsRemaining = duration;
 
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
 
@@ -179,6 +194,11 @@ namespace Turnbase
             defenseBuffIcon = icon;
 
             defenseBuffTurnsRemaining = duration;
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
@@ -209,6 +229,11 @@ namespace Turnbase
 
             agilityBuffTurnsRemaining = duration;
 
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
 
@@ -238,6 +263,11 @@ namespace Turnbase
 
             magicalAttackBuffTurnsRemaining = duration;
 
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
 
@@ -266,6 +296,11 @@ namespace Turnbase
             magicalDefenseBuffIcon = icon;
 
             magicalDefenseBuffTurnsRemaining = duration;
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
