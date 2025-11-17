@@ -25,9 +25,9 @@ namespace Turnbase
         private const float RANDOMNESS_FACTOR_MIN = -0.05f;
         private const float RANDOMNESS_FACTOR_MAX = 0.05f;
 
-        private const float BONUS_FINISHER = 100f;
-        private const float BONUS_CRITICAL_HEAL = 80f; 
-        private const float BONUS_DEBUFF = 50f; 
+        private const float BONUS_FINISHER = 1000f;
+        private const float BONUS_CRITICAL_HEAL = 80f;
+        private const float BONUS_DEBUFF = 50f;
         private const float BONUS_AOE_PER_TARGET = 75f;
 
         public (Skill chosenSkill, Character chosenTarget) DetermineBestAction(Character user, BattleManager battleManager)
@@ -71,7 +71,7 @@ namespace Turnbase
                     continue;
                 }
 
-                if (skill.targetType == SkillTargetType.Enemies) 
+                if (skill.targetType == SkillTargetType.Enemies)
                 {
                     if (playerTargets.Count == 0) continue;
 
@@ -133,12 +133,19 @@ namespace Turnbase
                 case SkillType.MeleeAttack:
                 case SkillType.RangedAttack:
                 case SkillType.RangedProjectile:
-                    skillPowerScore = DamageCalculator.GetFinalDamage(user, target, skill, battleManager) * 1.0f;
+                    float estimatedDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager) * 1.0f;
+                    skillPowerScore = estimatedDamage;
 
-                    if (target.stats.currentHP <= skillPowerScore && target.stats.currentHP > 0)
+                    if (target.stats.currentHP <= estimatedDamage && target.stats.currentHP > 0)
                     {
-                        tacticalScore += BONUS_FINISHER;
+                        skillPowerScore += target.stats.currentHP * 5f;
+                        tacticalScore += BONUS_FINISHER * 10;
                     }
+                    else
+                    {
+                        skillPowerScore *= 0.8f;
+                    }
+
                     if (skill.debuffProperties.statToModify != DebuffType.None)
                     {
                         tacticalScore += BONUS_DEBUFF;
@@ -157,7 +164,7 @@ namespace Turnbase
                     tacticalScore = 0f;
 
 
-                    if (hpPercent >= 0.5f)
+                    if (hpPercent >= 0.5f && hpPercent < 0.9f)
                     {
                         tacticalScore -= 500f;
                     }
@@ -168,13 +175,13 @@ namespace Turnbase
                     }
                     if (hpPercent < 0.25f)
                     {
-                        tacticalScore += BONUS_CRITICAL_HEAL; 
+                        tacticalScore += BONUS_CRITICAL_HEAL;
                     }
                     break;
 
                 case SkillType.Buff:
                 case SkillType.Shield:
-                    skillPowerScore = skill.buffProperties.amount * 10f;
+                    skillPowerScore = 10f;
 
                     tacticalScore = 0f;
 
@@ -250,7 +257,7 @@ namespace Turnbase
                 }
                 else if (skill.skillType == SkillType.Buff && !target.buffManager.IsBuffActive(skill.buffProperties.statToModify))
                 {
-                    totalHealScore += skill.buffProperties.amount * 10f;
+                    totalHealScore += 50f;
                 }
             }
 

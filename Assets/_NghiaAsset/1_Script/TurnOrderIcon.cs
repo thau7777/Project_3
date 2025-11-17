@@ -39,7 +39,8 @@ namespace Turnbase
 
             if (actionGaugeText != null)
             {
-                actionGaugeText.text = Mathf.RoundToInt(character.actionGauge).ToString();
+                float displayValue = Mathf.Min(character.actionGauge, 100f);
+                actionGaugeText.text = Mathf.RoundToInt(displayValue).ToString();
             }
 
             if (cameraViewManager != null)

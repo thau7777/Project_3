@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -32,7 +33,23 @@ namespace Turnbase
             return pool;
         }
 
+        public void ClearAllPools()
+        {
+            var keysToClear = pools.Keys.ToList();
+
+            foreach (var type in keysToClear)
+            {
+                if (pools.TryGetValue(type, out var pool))
+                {
+                    pool.Clear();
+
+                    pools.Remove(type);
+                }
+            }
+        }
+
     }
+
     public enum FlyweightType
     {
         TB_Impact_Wind,

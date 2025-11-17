@@ -422,7 +422,10 @@ namespace Turnbase
             if (activeCharacter.isAlive && activeCharacter.stats != null)
             {
                 activeCharacter.stats.currentMP = Mathf.Min(activeCharacter.stats.currentMP + 20, activeCharacter.stats.maxMP);
+                uiManager.UpdateAllCharacterUIs(allCombatants);
                 Debug.Log($"[{activeCharacter.gameObject.name}] bắt đầu lượt và hồi 20 Mana.");
+                
+
             }
 
             if (activeCharacter is RoundTracker roundTracker)
@@ -664,6 +667,9 @@ namespace Turnbase
         private IEnumerator LoadMapSceneDelayed(string sceneName, float delay)
         {
             yield return new WaitForSeconds(delay);
+
+            FlyweightFactory2.Instance.ClearAllPools();
+
             SceneManager.LoadScene(sceneName);
         }
     }
