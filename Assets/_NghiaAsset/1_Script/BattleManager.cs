@@ -48,6 +48,10 @@ namespace Turnbase
         [Header("Round Tracking")]
         public RoundTracker roundTrackerPrefab;
 
+        [Header("Round Limit")]
+        public int startRounds = 5;
+        private RoundTracker instantiatedRoundTracker;
+
         void Start()
         {
             SetupBattle();
@@ -145,12 +149,17 @@ namespace Turnbase
                 trackerInstance.isVirtualTracker = true;
 
                 allCombatants.Add(trackerInstance);
+                this.instantiatedRoundTracker = trackerInstance;
                 Debug.Log("[RoundTracker] đã được thêm vào danh sách chiến đấu.");
             }
 
             currentWaveIndex = 0;
             if (encounterToLoad != null && encounterToLoad.waves.Length > 0)
             {
+                if (uiManager != null)
+                {
+                    uiManager.UpdateWaveDisplay(currentWaveIndex + 1, encounterToLoad.waves.Length);
+                }
                 StartCoroutine(SpawnWave(currentWaveIndex));
             }
 
@@ -176,6 +185,11 @@ namespace Turnbase
             Character[] enemiesToSpawn = currentWave.enemiesInWave;
 
             Debug.Log($"[WAVE START] Bắt đầu đợt quái số {waveIndex + 1} với {enemiesToSpawn.Length} kẻ địch.");
+
+            if (encounterToLoad != null && uiManager != null)
+            {
+                uiManager.UpdateWaveDisplay(waveIndex + 1, encounterToLoad.waves.Length);
+            }
 
             yield return new WaitForSeconds(3f);
 
@@ -247,6 +261,11 @@ namespace Turnbase
                 if (encounterToLoad != null && currentWaveIndex < encounterToLoad.waves.Length)
                 {
                     allCombatants.RemoveAll(c => c != null && !c.isPlayer && !c.isAlive);
+
+                    if (uiManager != null)
+                    {
+                        uiManager.UpdateWaveDisplay(currentWaveIndex + 1, encounterToLoad.waves.Length);
+                    }
 
                     StartCoroutine(SpawnWave(currentWaveIndex));
                 }
@@ -431,8 +450,30 @@ namespace Turnbase
             if (activeCharacter is RoundTracker roundTracker)
             {
                 Debug.Log("[RoundTracker] Đến lượt. Thực thi Phase.");
+
                 roundTracker.ExecuteRoundPhase();
-                yield break; 
+
+                if (currentRule != null)
+                {
+                    yield return StartCoroutine(currentRule.ExecuteRule(this, activeCharacter));
+                    yield return new WaitForSeconds(3f);
+                    EndTurn(roundTracker);
+                    Debug.Log("BUff Rule");
+                }
+
+
+                if (roundTracker.currentRound <= -1)
+                {
+                    Debug.Log($"[LOSE CONDITION] Trận đấu kết thúc! Đã đạt đến giới hạn {startRounds} vòng đấu.");
+
+                    StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+
+                    activeCharacter = null;
+                    isProcessingTurn = true; 
+                    yield break;
+                }
+
+                yield break;
             }
 
 
@@ -444,10 +485,6 @@ namespace Turnbase
                 turnOrderUI.HighlightActiveCharacter(activeCharacter);
             }
 
-            if (currentRule != null)
-            {
-                yield return StartCoroutine(currentRule.ExecuteRule(this, activeCharacter));
-            }
 
             if (!activeCharacter.isAlive)
             {
@@ -607,6 +644,8 @@ namespace Turnbase
             currentParryWindow = null;
 
         }
+
+
 
         public void OnParryAttempted()
         {

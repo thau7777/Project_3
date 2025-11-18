@@ -5,7 +5,7 @@ namespace Turnbase
 {
     public class DamagePopup : MonoBehaviour
     {
-        public static DamagePopup Create(Vector3 position, int damageAmount, Transform parentTransform, Color color) // <-- THÊM THAM SỐ COLOR
+        public static DamagePopup Create(Vector3 position, int damageAmount, Transform parentTransform, Color color) 
         {
             GameObject damagePopupObject = Instantiate(
                 DamagePopupSpawn.i.pfdamagePopup,

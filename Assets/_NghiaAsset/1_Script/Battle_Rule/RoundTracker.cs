@@ -6,6 +6,7 @@ namespace Turnbase
     public class RoundTracker : Character
     {
         [Header("Thông số Vòng đấu")]
+        public int currentRound = 0;
         public int VIRTUAL_AGILITY = 100;
 
         void Awake()
@@ -43,10 +44,13 @@ namespace Turnbase
         {
             Debug.Log($"--- BẮT ĐẦU GIAI ĐOẠN: {info.name} ---");
             actionGauge = 0;
-
-            if (battleManager != null)
+            currentRound--;
+            if(battleManager != null)
             {
-                battleManager.EndTurn(this);
+                if(battleManager.availableRules == null)
+                {
+                    battleManager.EndTurn(this);
+                }
             }
         }
     }

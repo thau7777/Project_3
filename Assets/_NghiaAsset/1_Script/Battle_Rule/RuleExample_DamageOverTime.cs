@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 using Turnbase;
-using UnityEngine;
 using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
@@ -10,16 +12,49 @@ namespace Turnbase
     {
         [Header("Cấu hình Luật")]
         public int damagePerTurn = 10;
-
         public ElementType element = ElementType.None;
+
+        private IEnumerable<Character> GetTargetCombatants(BattleManager battleManager)
+        {
+            var baseTargets = battleManager.allCombatants
+                .Where(c => c != null && c.isAlive && !c.isVirtualTracker && c.stats != null);
+
+            switch (targetScope)
+            {
+                case TargetScope.Players:
+                    return baseTargets.Where(c => c.isPlayer);
+                case TargetScope.Enemies:
+                    return baseTargets.Where(c => !c.isPlayer);
+                case TargetScope.AllCombatants:
+                default:
+                    return baseTargets;
+            }
+        }
 
         public override IEnumerator ExecuteRule(BattleManager battleManager, Character characterToAct)
         {
-            Debug.Log($"[BATTLE RULE] ON");
-            if (characterToAct != null && characterToAct.isAlive)
+            if (!(characterToAct is RoundTracker))
             {
-                characterToAct.TakeDamage(damagePerTurn, element);
+                yield break;
             }
+
+            Debug.Log($"[BATTLE RULE] Kích hoạt Luật {ruleName} (Sát thương: {damagePerTurn}, Mục tiêu: {targetScope}).");
+
+            List<Character> targetCombatants = GetTargetCombatants(battleManager).ToList();
+
+            if (targetCombatants.Count == 0)
+            {
+                yield break;
+            }
+
+            foreach (var character in targetCombatants)
+            {
+                Debug.Log($"- Áp dụng sát thương DoT lên {character.name}: {damagePerTurn} ({element}).");
+                character.TakeDamage(damagePerTurn, element);
+            }
+
+            battleManager.uiManager?.UpdateAllCharacterUIs(battleManager.allCombatants);
+
             yield return new WaitForSeconds(0.2f);
         }
 

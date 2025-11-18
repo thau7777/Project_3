@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 
 namespace Turnbase
-{
-    [CreateAssetMenu(fileName = "Encounter_", menuName = "Battle/Enemy Encounter Config", order = 1)]
-    
+{    
     [System.Serializable]
     public class EnemyWave
     {
-        [Tooltip("Danh sách các Prefab kẻ địch trong đợt này.")]
         public Character[] enemiesInWave;
     }
 
