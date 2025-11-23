@@ -60,11 +60,7 @@ public class Skill : ScriptableObject
         public bool isStackFinisher;
         public int stackThreshold;
 
-
-
     }
-
-
 
     [System.Serializable]
     public struct BuffSettings
@@ -74,7 +70,6 @@ public class Skill : ScriptableObject
         public int durationTurns;
         public Sprite icon;
     }
-
 
     public DebuffSettings debuffProperties;
     [System.Serializable]
@@ -86,10 +81,10 @@ public class Skill : ScriptableObject
         public int baseDamagePerTurn;
         public FlyweightSettings2 debuffEffect;
         public Sprite icon;
-
     }
 
-
+    [Header("Timeline")]
+    public UnityEngine.Playables.PlayableAsset cameraTimeline;
 
 
 }

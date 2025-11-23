@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 using static UnityEditor.Rendering.FilterWindow;
 
 
@@ -76,6 +77,15 @@ namespace Turnbase
 
                 ApplyStatusEffectsAndStacks(user, target, skill);
 
+                //timeline
+                if (skill.cameraTimeline != null && battleManager.mainDirector != null)
+                {
+                    PlayableDirector director = battleManager.mainDirector;
+                    director.playableAsset = skill.cameraTimeline;
+
+                    director.Play();
+                }
+
 
                 if (skill.impactVFXDuration > 0)
                 {
@@ -90,6 +100,8 @@ namespace Turnbase
 
 
             }
+
+            
 
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(attackDuration);

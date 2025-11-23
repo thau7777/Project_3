@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-
+using UnityEngine.Playables;
 
 namespace Turnbase
 {
@@ -51,6 +51,9 @@ namespace Turnbase
         [Header("Round Limit")]
         public int startRounds = 5;
         private RoundTracker instantiatedRoundTracker;
+
+        [Header("Cinematics")]
+        public PlayableDirector mainDirector;
 
         void Start()
         {

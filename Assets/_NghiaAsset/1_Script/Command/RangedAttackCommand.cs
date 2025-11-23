@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.Playables;
 
 namespace Turnbase
 {
@@ -64,6 +64,14 @@ namespace Turnbase
 
             ApplyStatusEffectsAndStacks(user, target, skill);
 
+            //timeline
+            if (skill.cameraTimeline != null && battleManager.mainDirector != null)
+            {
+                PlayableDirector director = battleManager.mainDirector;
+                director.playableAsset = skill.cameraTimeline;
+
+                director.Play();
+            }
 
 
             user.PrepareHitCallBack(hitAction);
