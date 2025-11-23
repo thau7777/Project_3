@@ -67,68 +67,24 @@ namespace Turnbase
 
         private IEnumerator PerformAttack()
         {
-            int offensiveStat;
-            int defensiveStat;
-
-            switch (skill.elementType)
-            {
-                case ElementType.Magical:
-                case ElementType.Fire:
-                case ElementType.Ice:
-                case ElementType.Poison:
-                case ElementType.Lightning:
-                case ElementType.Dark:
-                    offensiveStat = user.stats.magicAttack;
-                    defensiveStat = target.stats.magicDefense;
-                    break;
-
-                case ElementType.Physical:
-                case ElementType.None:
-                default:
-                    offensiveStat = user.stats.physicalAttack;
-                    defensiveStat = target.stats.physicalDefense;
-                    break;
-            }
-
-            //st cơ bản -> giảmt trừ phòng thủ -> khắc chế nguyên tố -> chí mạng -> final damage
-
-            int rawDamage = offensiveStat * skill.damage;
-            float defenseMultiplier = 100f / (defensiveStat + 100f);
-
-            float damageBase = rawDamage * defenseMultiplier;
-
-            float elementMultiplier = GetElementMultiplier();
-
-            float preCritDamageFloat = damageBase * elementMultiplier;
-
-            bool isCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
-
-            if (isCrit)
-            {
-                float critMultiplier = (float)user.stats.critDamage / 100f;
-                preCritDamageFloat *= critMultiplier;
-            }
-
-            finalDamage = Mathf.RoundToInt(preCritDamageFloat);
-
-
-            if (rawDamage > 0)
-            {
-                finalDamage = Mathf.Max(1, finalDamage);
-            }
+            ElementType element = skill.elementType;
+            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
             damageApplied = false;
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage);
+                    target.TakeDamage(finalDamage, element);
 
                     SpawnImpactEffect(target.transform.position, skill);
 
                     damageApplied = true;
                 }
             };
+
+            ApplyStatusEffectsAndStacks(user, target, skill);
+
 
             user.PrepareHitCallBack(hitAction);
 
@@ -147,18 +103,12 @@ namespace Turnbase
             }
 
             yield return new WaitForSeconds(calculatedDuration);
-            yield return new WaitForSeconds(0.2f);
+
+            user.animator.Play("Idle");
+
+            yield return new WaitForSeconds(0.1f);
         }
 
-        private float GetElementMultiplier()
-        {
-            if (battleManager != null && battleManager.elementChart != null)
-            {
-                return battleManager.elementChart.GetMultiplier(skill.elementType, target.characterElement);
-            }
-
-            return 1.0f;
-        }
 
         private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
         {

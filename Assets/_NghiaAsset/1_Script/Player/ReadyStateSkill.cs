@@ -33,19 +33,23 @@ namespace Turnbase
                     break;
                 case SkillTargetType.Ally:
                     CameraAction.instance.TargetAllTeam();
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && c.isPlayer && c.isAlive && !c.isVirtualTracker);
                     break;
                 case SkillTargetType.Enemy:
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && !c.isPlayer && c.isAlive && !c.isVirtualTracker);
                     break;
                 case SkillTargetType.Allies:
                     CameraAction.instance.TargetAllTeam();
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && c.isPlayer && c.isAlive && !c.isVirtualTracker);
 
                     break;
                 case SkillTargetType.Enemies:
                     CameraAction.instance.TargetAllEnemies();
-                    possibleTargets = stateMachine.battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                    possibleTargets = stateMachine.battleManager.allCombatants
+                        .FindAll(c => c != null && !c.isPlayer && c.isAlive && !c.isVirtualTracker);
                     break;
             }
 
@@ -207,16 +211,16 @@ namespace Turnbase
 
             if (newPet != null)
             {
-                FlyweightSettings effectToSpawn = skill.impactVFXPrefab;
+                FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
                 float vfxDuration = 2.0f;
 
                 if (effectToSpawn != null)
                 {
                     Vector3 position = newPet.transform.position;
 
-                    Flyweight effectInstance = FlyweightFactory.Spawn(effectToSpawn);
+                    Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
 
-                    effectInstance.FlyweightInitialize(position, Quaternion.identity);
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                     stateMachine.StartCoroutine(ReleaseVFXAfterDelay(effectInstance, vfxDuration));
 
@@ -238,12 +242,12 @@ namespace Turnbase
             yield break;
         }
 
-        private IEnumerator ReleaseVFXAfterDelay(Flyweight effect, float delay)
+        private IEnumerator ReleaseVFXAfterDelay(Flyweight2 effect, float delay)
         {
             yield return new WaitForSeconds(delay);
             if (effect != null)
             {
-                FlyweightFactory.ReturnToPool(effect);
+                FlyweightFactory2.ReturnToPool(effect);
             }
         }
 

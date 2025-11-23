@@ -23,8 +23,8 @@ namespace Turnbase
 
             stateMachine.character.target = null;
 
-            enemies = stateMachine.battleManager.allCombatants.FindAll(c => !c.isPlayer);
-
+            enemies = stateMachine.battleManager.allCombatants
+                    .FindAll(c => !c.isPlayer && !c.isVirtualTracker && c.isAlive);
             if (enemies.Count > 0)
             {
                 currentIndex = 0;

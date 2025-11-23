@@ -57,6 +57,7 @@ namespace Turnbase
         {
             int shieldAmount = skill.damage;
             int durationTurns = skill.buffProperties.durationTurns;
+            Sprite shieldIcon = skill.buffProperties.icon;
 
             if (!targetsToShield.Any())
             {
@@ -65,13 +66,13 @@ namespace Turnbase
 
             foreach (var charTarget in targetsToShield)
             {
-                Flyweight localShieldVFXInstance = SpawnContinuousEffect(
+                Flyweight2 localShieldVFXInstance = SpawnContinuousEffect(
                     charTarget.transform.position,
                     charTarget,
                     skill
                 );
 
-                charTarget.AddShield(shieldAmount, durationTurns, localShieldVFXInstance);
+                charTarget.AddShield(shieldAmount, durationTurns, shieldIcon, localShieldVFXInstance);
 
                 Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield, hiệu lực {durationTurns} lượt.");
 

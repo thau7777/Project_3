@@ -1,24 +1,28 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
 using Turnbase;
+using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
-    public class ProjectileTurnBase : Flyweight
+    public class ProjectileTurnBase : Flyweight2
     {
         private Character target;
         private Action onHitCallback;
         private Skill skillData;
         private int damageAmount;
 
+        private ElementType projectileElement;
+
         private const float SPEED = 30f;
 
-        public void Setup(Character target, Skill skill, int damage, Action hitCallback)
+        public void Setup(Character target, Skill skill, int damage, ElementType element, Action hitCallback)
         {
             this.target = target;
             this.skillData = skill;
             this.damageAmount = damage;
+            this.projectileElement = element;
             this.onHitCallback = hitCallback;
 
             StartCoroutine(MoveToTarget());
@@ -46,12 +50,14 @@ namespace Turnbase
                 yield return new WaitForSeconds(releaseDelay);
             }
 
-            FlyweightFactory.ReturnToPool(this);
+            FlyweightFactory2.ReturnToPool(this);
         }
 
         private void ApplyImpact()
         {
-            target.TakeDamage(damageAmount);
+            ElementType element = projectileElement;
+
+            target.TakeDamage(damageAmount, element);
 
             SpawnImpactEffect(target.transform.position, skillData);
 
@@ -60,15 +66,15 @@ namespace Turnbase
 
         private void SpawnImpactEffect(Vector3 position, Skill skill)
         {
-            FlyweightSettings effectToSpawn = skill.impactVFXPrefab;
+            FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
 
             if (effectToSpawn != null)
             {
-                Flyweight effectInstance = FlyweightFactory.Spawn(effectToSpawn);
+                Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
 
                 if (effectInstance != null)
                 {
-                    ((ImpactVFX)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
+                    ((ImpactVFX2)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
                 }
             }
         }

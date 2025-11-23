@@ -39,22 +39,49 @@ public class BattleUIManager : MonoBehaviour
 
     public void SpawnCharacterUI(Character character)
     {
-        if (AvatarGroupPrefab == null || UIContainer == null)
+        if (character.isPlayer)
         {
-            Debug.LogError("Cần gán AvatarGroup Prefab VÀ UI Container trong BattleManager!");
-            return;
+            if (AvatarGroupPrefab == null || UIContainer == null)
+            {
+                return;
+            }
+
+            GameObject uiInstance = Instantiate(AvatarGroupPrefab, UIContainer);
+
+            AvatarGroup uiGroup = uiInstance.GetComponent<AvatarGroup>();
+            if (uiGroup != null)
+            {
+                uiGroup.SetOwner(character);
+
+                characterToUI.Add(character, uiGroup);
+
+                uiGroup.UpdateUI(character.stats, character.info);
+            }
         }
-
-        GameObject uiInstance = Instantiate(AvatarGroupPrefab, UIContainer);
-
-        AvatarGroup uiGroup = uiInstance.GetComponent<AvatarGroup>();
-        if (uiGroup != null)
+        else
         {
-            uiGroup.SetOwner(character);
+            AvatarGroup uiGroup = character.GetComponentInChildren<AvatarGroup>();
+            if (uiGroup != null)
+            {
+                uiGroup.SetOwner(character);
+                if (!characterToUI.ContainsKey(character))
+                {
+                    characterToUI.Add(character, uiGroup);
+                }
+                uiGroup.UpdateUI(character.stats, character.info);
+            }
+        }
+    }
 
-            characterToUI.Add(character, uiGroup);
-
-            uiGroup.UpdateUI(character.stats);
+    public void RemoveCharacterUI(Character character)
+    {
+        if(characterToUI.TryGetValue(character, out AvatarGroup uiGroup))
+        {
+            if(character.isPlayer)
+            {
+                Destroy(uiGroup.gameObject, 2f);
+            }
+            characterToUI.Remove(character);
         }
     }
 
@@ -62,7 +89,7 @@ public class BattleUIManager : MonoBehaviour
     {
         if (characterToUI.TryGetValue(character, out AvatarGroup uiGroup))
         {
-            uiGroup.UpdateUI(character.stats);
+            uiGroup.UpdateUI(character.stats, character.info);
         }
     }
 
@@ -70,7 +97,7 @@ public class BattleUIManager : MonoBehaviour
     {
         foreach (var pair in characterToUI)
         {
-            pair.Value.UpdateUI(pair.Key.stats);
+            pair.Value.UpdateUI(pair.Key.stats, pair.Key.info);
         }
 
     }
@@ -88,7 +115,6 @@ public class BattleUIManager : MonoBehaviour
     {
         if (battleManager == null)
         {
-            Debug.LogError("BattleUIManager: BattleManager chưa được gán.");
             return;
         }
 
@@ -100,7 +126,6 @@ public class BattleUIManager : MonoBehaviour
     {
         if (combatantButtonPrefab == null || combatantButtonContainer == null || statDisplayPanel == null)
         {
-            Debug.LogError("BattleUIManager: Thiếu tham chiếu UI (Button Prefab, Container, hoặc Stat Display)!");
             return;
         }
 
@@ -110,8 +135,8 @@ public class BattleUIManager : MonoBehaviour
         }
 
         var filteredCombatants = allCombatants
-            .Where(c => c.isPlayer == showPlayers && c.isAlive)
-            .ToList();
+             .Where(c => c.isPlayer == showPlayers && c.isAlive && !c.isVirtualTracker)
+             .ToList();
 
         Character firstCombatant = null;
 

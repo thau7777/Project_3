@@ -32,9 +32,9 @@ namespace Turnbase
             statDisplayPanel = statUIRef;
             battleManager = battleManagerRef;
 
-            if (avatarImage != null && character.stats.Avatar != null)
+            if (avatarImage != null && character.info.Avatar != null)
             {
-                avatarImage.sprite = character.stats.Avatar;
+                avatarImage.sprite = character.info.Avatar;
             }
 
             if (actionGaugeText != null)
@@ -45,6 +45,12 @@ namespace Turnbase
             if (cameraViewManager != null)
             {
                 cameraViewManager.SetCameraView(characterOwner);
+            }
+
+            if(character.isVirtualTracker)
+            {
+                avatarButton.interactable = false;
+                return;
             }
 
 

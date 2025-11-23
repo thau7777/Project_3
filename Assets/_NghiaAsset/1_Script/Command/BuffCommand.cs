@@ -60,35 +60,36 @@ namespace Turnbase
         {
             int buffAmount = skill.damage;
             int buffDuration = skill.buffProperties.durationTurns;
+            Sprite buffIcon = skill.buffProperties.icon;
 
             foreach (var charTarget in targetsToBuff)
             {
-                Flyweight activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
+                Flyweight2 activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
 
                 switch (skill.buffProperties.statToModify)
                 {
                     case StatType.Attack:
-                        charTarget.ApplyAttackBuff(buffAmount, buffDuration, activeVFX);
+                        charTarget.ApplyAttackBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
 
                     case StatType.MaxHP:
-                        charTarget.ApplyMaxHPBuff(buffAmount, buffDuration, activeVFX);
+                        charTarget.ApplyMaxHPBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
 
                     case StatType.Defense:
-                        charTarget.ApplyDefenseBuff(buffAmount, buffDuration, activeVFX);
+                        charTarget.ApplyDefenseBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
 
                     case StatType.Agility:
-                        charTarget.ApplyAgilityBuff(buffAmount, buffDuration, activeVFX);
+                        charTarget.ApplyAgilityBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
 
                     case StatType.MagicalAttack:
-                        charTarget.ApplyMagicAttackBuff(buffAmount, buffDuration, activeVFX);
+                        charTarget.ApplyMagicAttackBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
 
                     case StatType.MagicalDefense:
-                        charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration, activeVFX);
+                        charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
 
                     default:

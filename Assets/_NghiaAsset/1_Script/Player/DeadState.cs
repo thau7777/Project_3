@@ -41,7 +41,7 @@ namespace Turnbase
                 stateMachine.battleManager.RemoveCombatant(stateMachine.character);
             }
 
-            GameObject.Destroy(stateMachine.character.gameObject);
+            stateMachine.character.gameObject.SetActive(false);
         }
 
         public override void OnExit()

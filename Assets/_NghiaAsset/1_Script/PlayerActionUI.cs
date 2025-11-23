@@ -111,7 +111,9 @@ namespace Turnbase
 
         public void OnCancelClicked()
         {
-            CameraAction.instance.NormalAttack(currentCharacter, true);
+            CameraAction.instance.NormalCamera(currentCharacter);
+
+            animator.Play("Idle");
 
             if (currentCharacter != null && currentCharacter.isPlayer)
             {

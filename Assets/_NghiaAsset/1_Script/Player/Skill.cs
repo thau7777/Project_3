@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
+using Turnbase;
 using UnityEngine;
-using static Skill;
-using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skills/New Skill")]
 public class Skill : ScriptableObject
@@ -22,11 +21,11 @@ public class Skill : ScriptableObject
 
 
     [Header("Visual Effects")]
-    public FlyweightSettings impactVFXPrefab;
+    public FlyweightSettings2 impactVFXPrefab;
 
     [Header("Projectile & VFX")]
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
-    public FlyweightSettings projectileSettings;
+    public FlyweightSettings2 projectileSettings;
 
     public float impactVFXDuration = 1.0f;
 
@@ -35,12 +34,45 @@ public class Skill : ScriptableObject
     [ShowIfEnumValue("skillType", SkillType.Buff, SkillType.Shield)]
     public BuffSettings buffProperties;
 
+    [Header("Stack Properties")]
+    public StackApplicationTarget stackApplicationTarget;
+
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self, StackApplicationTarget.Target)]
+    public StackSetting stackSetting;
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self)]
+    public BuffSettings activatedBuff;
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Target)]
+    public DebuffSettings activatedDebuff;
+
+    [Header("Color Lookup")]
+    public ElementColorMap elementColorMap;
+
+
+    [System.Serializable]
+    public struct StackSetting 
+    {
+        public bool isStackBuilder;
+        public int stackAmountPerUse;
+
+        public string stackId;
+        public Sprite iconStack;
+
+        public bool isStackFinisher;
+        public int stackThreshold;
+
+
+
+    }
+
+
 
     [System.Serializable]
     public struct BuffSettings
     {
         public StatType statToModify;
+        public int amount;
         public int durationTurns;
+        public Sprite icon;
     }
 
 
@@ -48,12 +80,26 @@ public class Skill : ScriptableObject
     [System.Serializable]
     public struct DebuffSettings 
     {
-        public DebuffType debuffType;
+        public DebuffType statToModify;
         public int durationTurns;
+        public int amount;
         public int baseDamagePerTurn;
-        public FlyweightSettings debuffEffect;
-    }
+        public FlyweightSettings2 debuffEffect;
+        public Sprite icon;
 
+    }
+
+
+
+
+}
+
+
+public enum StackApplicationTarget
+{
+    None,
+    Self,
+    Target,
 
 }
 
@@ -103,6 +149,8 @@ public enum ElementType
     Poison,
     Lightning,
     Dark,
+    Frost,
+    Holy,
 
 }
 
@@ -113,3 +161,4 @@ public enum  DebuffType
     Poison,
     Stun,
 }
+

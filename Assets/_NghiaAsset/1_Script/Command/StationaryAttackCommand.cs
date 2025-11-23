@@ -34,12 +34,12 @@ namespace Turnbase
         private IEnumerator PerformStationaryAttack()
         {
             CalculateFinalDamage();
-
+            ElementType element = skill.elementType;
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage);
+                    target.TakeDamage(finalDamage, element);
                     damageApplied = true;
                     SpawnEffectAtTarget();
                 }
@@ -60,31 +60,8 @@ namespace Turnbase
 
         private void CalculateFinalDamage()
         {
-            int offensiveStat = user.stats.physicalAttack;
-            int defensiveStat = target.stats.physicalDefense;
+            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
-            int rawDamage = offensiveStat * skill.damage;
-
-            float defenseMultiplier = 100f / (defensiveStat + 100f);
-
-            float damageBase = rawDamage * defenseMultiplier;
-
-            float preCritDamageFloat = damageBase * 1.0f;
-
-            bool isCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
-
-            if (isCrit)
-            {
-                float critMultiplier = (float)user.stats.critDamage / 100f;
-                preCritDamageFloat *= critMultiplier;
-            }
-
-            finalDamage = Mathf.RoundToInt(preCritDamageFloat);
-
-            if (rawDamage > 0)
-            {
-                finalDamage = Mathf.Max(1, finalDamage);
-            }
         }
 
         private IEnumerator RotateBackToInitial()

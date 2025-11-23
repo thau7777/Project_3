@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5273458129412442991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6339963850431719533}
+  - component: {fileID: 4099315421075818728}
+  - component: {fileID: 400613998819692631}
+  m_Layer: 0
+  m_Name: RoundTracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6339963850431719533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5273458129412442991}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 675.9019, y: 380.36725, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4099315421075818728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5273458129412442991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd9ec6c60e23ba4698ba05a29e54abf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoundTracker
+  stateMachine: {fileID: 400613998819692631}
+  characterClass: 0
+  characterElement: 0
+  allClassProfiles: []
+  info:
+    name: 
+    Avatar: {fileID: 21300000, guid: a2f3c40c4c9866d4088ebfb23f087dd9, type: 3}
+    level: 0
+  stats:
+    maxHP: 0
+    currentHP: 0
+    maxMP: 0
+    currentMP: 0
+    maxShield: 0
+    currentShield: 0
+    physicalAttack: 0
+    physicalDefense: 0
+    magicAttack: 0
+    magicDefense: 0
+    crit: 0
+    critDamage: 0
+    agility: 0
+  skills: []
+  passiveSkills: []
+  isPlayer: 0
+  isVirtualTracker: 0
+  target: {fileID: 0}
+  targetMarker: {fileID: 0}
+  animator: {fileID: 0}
+  actionGauge: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  battleManager: {fileID: 0}
+  battleUIManager: {fileID: 0}
+  buffManager: {fileID: 0}
+  debuffManager: {fileID: 0}
+  isParryable: 0
+  ownUI: {fileID: 0}
+  isAttackReadyForParry: 0
+  isParryWindowFinished: 0
+  parryWindowDuration: 0
+  RenderTexture: {fileID: 0}
+  damagePopupCanvasParent: {fileID: 0}
+  VIRTUAL_AGILITY: 100
+--- !u!114 &400613998819692631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5273458129412442991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07735241a70faf42b68e34b8e727dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStateMachine
+  character: {fileID: 4099315421075818728}
+  battleManager: {fileID: 0}

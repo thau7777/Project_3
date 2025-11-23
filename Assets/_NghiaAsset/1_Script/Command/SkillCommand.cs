@@ -23,18 +23,47 @@ namespace Turnbase
 
         public abstract IEnumerator Execute();
 
-        protected Flyweight SpawnImpactEffect(Vector3 position, Skill skill)
+        protected void ApplyStatusEffectsAndStacks(Character user, Character target, Skill skill)
         {
-            FlyweightSettings settingsToSpawn = skill.impactVFXPrefab;
-            Flyweight effectInstance = null; 
+            if (skill.debuffProperties.statToModify != DebuffType.None && target.debuffManager != null)
+            {
+                target.debuffManager.ApplyDebuff(skill.debuffProperties);
+            }
+
+            if ((skill.skillType == SkillType.Buff || skill.skillType == SkillType.Shield) && target.buffManager != null)
+            {
+                target.buffManager.ApplyBuff(
+                    skill.buffProperties,
+                    null,
+                    skill.buffProperties.amount 
+                );
+            }
+
+            if (user.buffManager != null)
+            {
+                user.buffManager.ProcessSkillStacks(skill, target);
+            }
+
+
+            user.UpdateOwnUI();
+            if (user.battleUIManager != null)
+            {
+                user.battleUIManager.UpdateCharacterUI(user);
+            }
+        }
+
+        protected Flyweight2 SpawnImpactEffect(Vector3 position, Skill skill)
+        {
+            FlyweightSettings2 settingsToSpawn = skill.impactVFXPrefab;
+            Flyweight2 effectInstance = null; 
 
             if (settingsToSpawn != null)
             {
-                effectInstance = FlyweightFactory.Spawn(settingsToSpawn); 
+                effectInstance = FlyweightFactory2.Spawn(settingsToSpawn); 
 
                 if (effectInstance != null)
                 {
-                    effectInstance.FlyweightInitialize(position, Quaternion.identity);
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                 }
             }
@@ -46,18 +75,18 @@ namespace Turnbase
             return effectInstance; 
         }
 
-        protected Flyweight SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
+        protected Flyweight2 SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
-            FlyweightSettings settingsToSpawn = skill.impactVFXPrefab; 
-            Flyweight effectInstance = null; 
+            FlyweightSettings2 settingsToSpawn = skill.impactVFXPrefab; 
+            Flyweight2 effectInstance = null; 
 
             if (settingsToSpawn != null)
             {
-                effectInstance = FlyweightFactory.Spawn(settingsToSpawn); 
+                effectInstance = FlyweightFactory2.Spawn(settingsToSpawn); 
 
                 if (effectInstance != null)
                 {
-                    effectInstance.FlyweightInitialize(position, Quaternion.identity); 
+                    effectInstance.Initialize(position, Quaternion.identity); 
                     
                     effectInstance.transform.SetParent(targetCharacter.transform);
                     effectInstance.transform.localPosition = Vector3.zero;
