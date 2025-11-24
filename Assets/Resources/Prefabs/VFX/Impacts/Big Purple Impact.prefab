@@ -4914,6 +4914,8 @@ GameObject:
   - component: {fileID: 1163624368277504145}
   - component: {fileID: 1239290597879608544}
   - component: {fileID: 3796507856228386315}
+  - component: {fileID: -3946957955712764782}
+  - component: {fileID: 6936616109990452909}
   m_Layer: 0
   m_Name: Big Purple Impact
   m_TagString: Untagged
@@ -9809,6 +9811,46 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!136 &-3946957955712764782
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3823810518081401196}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6936616109990452909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3823810518081401196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144849a07d1333d4bad9c0edd571f79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
+  _knockbackForce: 20
+  <DodgeLayers>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 8
+  <HitImpactEffect>k__BackingField: {fileID: 0}
 --- !u!1 &5372210100807482970
 GameObject:
   m_ObjectHideFlags: 0

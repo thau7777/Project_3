@@ -17,7 +17,8 @@ public enum VFXSpawnLocation
     ShieldBash,
     LeftHand,
     RightHand,
-    AboveHead
+    AboveHead,
+    Projectile
 }
 [Serializable]
 public struct AttackData

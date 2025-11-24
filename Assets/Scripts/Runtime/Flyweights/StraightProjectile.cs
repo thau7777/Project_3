@@ -4,6 +4,7 @@ using UnityEngine;
 public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
+    private HitBoxHandler _hitBoxHandler;
 
     private Vector3? _direction = null;
     private Rigidbody _rb;
@@ -40,6 +41,7 @@ public class StraightProjectile : Flyweight
 
     public void InitializeProjectile(Vector3 direction, float speed, float range)
     {
+
         _direction = direction.normalized;
         _speed = speed;
         _range = range;

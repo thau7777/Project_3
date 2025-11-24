@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = " New Straight Projectile Settings", menuName = "Scriptable Objects/Flyweight/Straight Projectile Settings")]
@@ -21,50 +22,76 @@ public class StraightProjectileSettings : FlyweightSettings
     }
     public override void OnGet(Flyweight f)
     {
-        base.OnGet(f);
 
-        // Stop, clear and restart all ParticleSystems in this object (including children)
-        f.transform.ForEveryChild(child =>
+        f.transform.ForEveryChildDeep(child =>
         {
             var ps = child.GetComponent<ParticleSystem>();
+            var trail = child.GetComponent<TrailRenderer>();
+
             if (ps != null)
             {
                 ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 ps.Play(true);
             }
+
+            if (trail != null)
+            {
+                trail.enabled = true;
+                trail.Clear();
+            }
         });
 
-        // Also include root particle system if it has one
         var rootPS = f.GetComponent<ParticleSystem>();
+        var rootTrail = f.GetComponent<TrailRenderer>();
+
         if (rootPS != null)
         {
             rootPS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             rootPS.Play(true);
         }
+
+        if (rootTrail != null)
+        {
+            rootTrail.enabled = true;
+            rootTrail.Clear();
+        }
+
+        base.OnGet(f);
     }
+
+
     public override void OnRelease(Flyweight f)
     {
         base.OnRelease(f);
 
-        // Stop all ParticleSystems (including trails) to reset them
-        f.transform.ForEveryChild(child =>
+        f.transform.ForEveryChildDeep(child =>
         {
             var ps = child.GetComponent<ParticleSystem>();
             var trail = child.GetComponent<TrailRenderer>();
+
             if (ps != null)
                 ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
             if (trail != null)
+            {
+                trail.enabled = false; // IMPORTANT: disable BEFORE clearing
                 trail.Clear();
+            }
         });
 
-        // Stop root PS if any
         var rootPS = f.GetComponent<ParticleSystem>();
-        var trailRoot = f.GetComponent<TrailRenderer>();
+        var rootTrail = f.GetComponent<TrailRenderer>();
+
         if (rootPS != null)
             rootPS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        if (trailRoot != null)
-            trailRoot.Clear();
 
+        if (rootTrail != null)
+        {
+            rootTrail.enabled = false;
+            rootTrail.Clear();
+        }
     }
+
+
 
 }

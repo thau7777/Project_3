@@ -138,7 +138,6 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     {
         UseSKill(1, value, SaveDirToAttack);
     }
-    public void TestDash() => UseSKill(1, true, SaveDirToAttack);
     private void OnButtonQ(bool value)
     {
         UseSKill(2, value, SaveDirToAttack);
@@ -262,12 +261,12 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         {
             if(location.ToString() == spawnPoint.name)
             {
-                Flyweight slashVFX = FlyweightFactory.Spawn(flyweightSettings);
-                slashVFX.FlyweightInitialize(spawnPoint.position, transform.rotation);
+                Flyweight slashVFX = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
+                slashVFX.FlyweightInitialize(spawnPoint.position, transform.rotation); // set position
                 if (slashVFX is StraightProjectile)
                 {
                     var straightProjectile = slashVFX as StraightProjectile;
-                    straightProjectile.InitializeProjectile(transform.forward, 10,10);
+                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10);
                 }
                 break;
             }

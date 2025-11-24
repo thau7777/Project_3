@@ -11,6 +11,7 @@ public abstract class Flyweight : MonoBehaviour
             transform.rotation = rotation.Value;
         else
             transform.rotation = Quaternion.identity;
+
     }
     public void ReturnToPool()
     {

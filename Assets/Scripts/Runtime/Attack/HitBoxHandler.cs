@@ -13,7 +13,7 @@ public class HitBoxHandler : MonoBehaviour
 
 
     [field: SerializeField]
-    public OneShotVFXSettings HitImpactEffect;
+    public OneShotVFXSettings HitImpactEffect { get; private set; }
     private void Awake()
     {
         _origin = transform.root;

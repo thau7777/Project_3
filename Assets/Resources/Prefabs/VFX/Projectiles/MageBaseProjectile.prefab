@@ -11,13 +11,14 @@ GameObject:
   - component: {fileID: 6069295984717910369}
   - component: {fileID: 2477345035565852346}
   - component: {fileID: 2991293708650652239}
+  - component: {fileID: 2396395566119735545}
   m_Layer: 0
-  m_Name: Projectile_Mage_Basic
+  m_Name: MageBaseProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6069295984717910369
 Transform:
   m_ObjectHideFlags: 0
@@ -28,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.46, y: 1.32, z: -0.24}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6196682992483349132}
   m_Father: {fileID: 0}
@@ -80,7 +81,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4938311114822527344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -118,6 +119,29 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!136 &2396395566119735545
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938311114822527344}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.34
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0.41}
 --- !u!1001 &3693160711600860720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,6 +153,10 @@ PrefabInstance:
     - target: {fileID: 4902781039296221114, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
       propertyPath: m_Time
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4902781039296221114, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4902781039296221114, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
@@ -155,6 +183,10 @@ PrefabInstance:
       value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6249941258657119635, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6249941258657119635, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
       propertyPath: m_Parameters.colorGradient.key1.b
       value: 1
       objectReference: {fileID: 0}
@@ -172,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6249941258657119635, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.79166603
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7403834500226571452, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
       propertyPath: m_LocalScale.x
@@ -239,8 +271,12 @@ PrefabInstance:
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8897345380465783967, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897345380465783967, guid: dcb5f5d2330b2a64492484cfab5b6dd3, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.79166603
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

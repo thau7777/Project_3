@@ -547,7 +547,7 @@ MonoBehaviour:
   <DodgeLayers>k__BackingField:
     serializedVersion: 2
     m_Bits: 8
-  HitImpactEffect: {fileID: 11400000, guid: 381fdfc52c2e0254d80b67fcbe4c8310, type: 2}
+  <HitImpactEffect>k__BackingField: {fileID: 0}
 --- !u!1 &424424973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,7 +1319,7 @@ MonoBehaviour:
   <DodgeLayers>k__BackingField:
     serializedVersion: 2
     m_Bits: 8
-  HitImpactEffect: {fileID: 11400000, guid: 381fdfc52c2e0254d80b67fcbe4c8310, type: 2}
+  <HitImpactEffect>k__BackingField: {fileID: 0}
 --- !u!1 &1163420635
 GameObject:
   m_ObjectHideFlags: 0
@@ -2276,7 +2276,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 3321b3aae4269af4c8af9fad71cba6c2, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: _skillSpawnPoints.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillSpawnPoints.Array.data[0]'
@@ -2298,6 +2298,10 @@ PrefabInstance:
       propertyPath: '_skillSpawnPoints.Array.data[4]'
       value: 
       objectReference: {fileID: 1163420636}
+    - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_skillSpawnPoints.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1931607987}
     - target: {fileID: 2651793093342681632, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2591,12 +2595,16 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: _rotateSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: _locomotionSet
       value: 
-      objectReference: {fileID: 11400000, guid: d139eb56773700f438e79f994cf2190c, type: 2}
+      objectReference: {fileID: 11400000, guid: e24c46937ea281745958c97aad990fbd, type: 2}
     - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: _attackVfxSpawnPoints.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_attackVfxSpawnPoints.Array.data[0]'
@@ -2618,6 +2626,10 @@ PrefabInstance:
       propertyPath: '_attackVfxSpawnPoints.Array.data[4]'
       value: 
       objectReference: {fileID: 1163420636}
+    - target: {fileID: 4989350217652862228, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_attackVfxSpawnPoints.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1931607987}
     - target: {fileID: 5056328155543723227, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -3180,6 +3192,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4776089832414516250, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1163420636}
+    - targetCorrespondingSourceObject: {fileID: 4776089832414516250, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1931607987}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4365346870462592096, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       insertIndex: -1
@@ -3380,6 +3395,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876864893}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1931607986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1931607987}
+  m_Layer: 3
+  m_Name: Projectile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1931607987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931607986}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0.45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 217626790}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2047778056
 GameObject:
   m_ObjectHideFlags: 0
