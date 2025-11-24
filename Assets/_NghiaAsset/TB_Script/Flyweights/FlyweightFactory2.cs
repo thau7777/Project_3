@@ -60,6 +60,8 @@ namespace Turnbase
         Tb_Buff_P_Attack,
         Tb_Buff_M_Attack,
         Tb_Shield,
+        Tb_Paralysis,
+
 
 
     }

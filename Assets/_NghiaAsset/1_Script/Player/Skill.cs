@@ -131,6 +131,7 @@ public enum SkillType
     Special, 
     Summon,
     RangedProjectile,
+    DamageGlobal,
 }
 
 public enum ElementType
