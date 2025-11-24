@@ -2,7 +2,7 @@
 
 namespace Turnbase
 {
-    public class ContinuousVFX2 : Flyweight2
+    public class ContinuousVFX_TB : Flyweight_TB
     {
 
 

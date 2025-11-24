@@ -710,7 +710,7 @@ namespace Turnbase
         {
             yield return new WaitForSeconds(delay);
 
-            FlyweightFactory2.Instance.ClearAllPools();
+            FlyweightFactory_TB.Instance.ClearAllPools();
 
             SceneManager.LoadScene(sceneName);
         }

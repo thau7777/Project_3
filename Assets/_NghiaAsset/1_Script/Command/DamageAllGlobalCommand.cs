@@ -113,15 +113,15 @@ namespace Turnbase
 
         private void SpawnImpactEffect(Vector3 position)
         {
-            FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
+            FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
             if (effectToSpawn != null)
             {
-                Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
+                Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);
 
                 if (effectInstance != null)
                 {
-                    ((ImpactVFX2)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
+                    ((ImpactVFX_TB)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
                 }
             }
         }

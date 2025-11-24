@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Turnbase
 {
-    public abstract class Flyweight2 : MonoBehaviour
+    public abstract class Flyweight_TB : MonoBehaviour
     {
-        public FlyweightSettings2 settings;
+        public FlyweightSettings_TB settings;
         public void Initialize(Vector3 position, Quaternion rotation)
         {
             transform.position = position;
@@ -12,7 +12,7 @@ namespace Turnbase
         }
         public void ReturnToPool()
         {
-            FlyweightFactory2.ReturnToPool(this);
+            FlyweightFactory_TB.ReturnToPool(this);
         }
     }
 

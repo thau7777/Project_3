@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Turnbase
 {
-    public class OneShotVFX2 : Flyweight2
+    public class OneShotVFX_TB : Flyweight_TB
     {
-        new OneShotVFXSettings2 settings => (OneShotVFXSettings2)base.settings;
+        new OneShotVFXSettings_TB settings => (OneShotVFXSettings_TB)base.settings;
 
         public void SetupDespawn()
         {
@@ -15,7 +15,7 @@ namespace Turnbase
         IEnumerator DespawnAfterDelay(float delay)
         {
             yield return Helpers.GetWaitForSeconds(delay);
-            FlyweightFactory2.ReturnToPool(this);
+            FlyweightFactory_TB.ReturnToPool(this);
         }
     }
 }

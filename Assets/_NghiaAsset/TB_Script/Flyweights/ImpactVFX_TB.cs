@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Turnbase
 {
-    public class ImpactVFX2 : Flyweight2
+    public class ImpactVFX_TB : Flyweight_TB
     {
         public void Initialize(Vector3 position, Quaternion rotation, float duration)
         {
@@ -33,7 +33,7 @@ namespace Turnbase
 
             Debug.Log("ImpactVFX returned to pool after " + delay + " seconds.");
 
-            FlyweightFactory2.ReturnToPool(this);
+            FlyweightFactory_TB.ReturnToPool(this);
 
         }
     }

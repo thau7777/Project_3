@@ -13,18 +13,18 @@ namespace Turnbase
         [Header("Burn Debuff State")]
         [HideInInspector] public int burnTurnsRemaining = 0;
         [HideInInspector] public int burnDamagePerTurn = 0;
-        [HideInInspector] public Flyweight2 burnVFXInstance;
+        [HideInInspector] public Flyweight_TB burnVFXInstance;
         [HideInInspector] public Sprite burnIcon;
 
         [Header("Poison Debuff State")]
         [HideInInspector] public int poisonTurnsRemaining = 0;
         [HideInInspector] public int poisonDamagePerTurn = 0;
-        [HideInInspector] public Flyweight2 poisonVFXInstance;
+        [HideInInspector] public Flyweight_TB poisonVFXInstance;
         [HideInInspector] public Sprite poisonIcon;
 
         [Header("Stun Debuff State")]
         [HideInInspector] public int stunTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 stunVFXInstance;
+        [HideInInspector] public Flyweight_TB stunVFXInstance;
         [HideInInspector] public Sprite stunIcon;
 
 
@@ -38,7 +38,7 @@ namespace Turnbase
 
         }
 
-        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
@@ -66,7 +66,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận Debuff Thiêu đốt: **{burnDamagePerTurn} sát thương/lượt**, **{duration} lượt**.");
         }
 
-        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
@@ -92,7 +92,7 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận Debuff Độc: **{poisonDamagePerTurn} sát thương/lượt**, **{duration} lượt**.");
         }
 
-        public void ApplyStunDebuff(int duration, Flyweight2 newVfxInstance, Sprite icon)
+        public void ApplyStunDebuff(int duration, Flyweight_TB newVfxInstance, Sprite icon)
         {
             if (duration <= 0) return;
 
@@ -107,7 +107,7 @@ namespace Turnbase
             {
                 if (stunVFXInstance != null)
                 {
-                    FlyweightFactory2.ReturnToPool(stunVFXInstance);
+                    FlyweightFactory_TB.ReturnToPool(stunVFXInstance);
                 }
                 stunVFXInstance = newVfxInstance;
 
@@ -123,13 +123,13 @@ namespace Turnbase
             if (debuffSettings.statToModify == DebuffType.None || debuffSettings.durationTurns <= 0)
                 return;
 
-            Flyweight2 debuffVFX = null;
+            Flyweight_TB debuffVFX = null;
 
 
 
             if (debuffSettings.debuffEffect != null)
             {
-                debuffVFX = FlyweightFactory2.Spawn(debuffSettings.debuffEffect);
+                debuffVFX = FlyweightFactory_TB.Spawn(debuffSettings.debuffEffect);
 
                 if (debuffVFX != null)
                 {
@@ -242,7 +242,7 @@ namespace Turnbase
         {
             if (stunVFXInstance != null)
             {
-                FlyweightFactory2.ReturnToPool(stunVFXInstance);
+                FlyweightFactory_TB.ReturnToPool(stunVFXInstance);
                 stunVFXInstance = null;
             }
             stunTurnsRemaining = 0;

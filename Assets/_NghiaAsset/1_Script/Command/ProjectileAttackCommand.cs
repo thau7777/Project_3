@@ -109,7 +109,7 @@ namespace Turnbase
 
         private void SpawnProjectile()
         {
-            Flyweight2 projectileInstance = FlyweightFactory2.Spawn(skill.projectileSettings);
+            Flyweight_TB projectileInstance = FlyweightFactory_TB.Spawn(skill.projectileSettings);
 
             ElementType element = skill.elementType;
 

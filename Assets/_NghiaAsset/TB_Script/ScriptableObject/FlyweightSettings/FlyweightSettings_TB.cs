@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Turnbase
 {
-    public abstract class FlyweightSettings2 : ScriptableObject
+    public abstract class FlyweightSettings_TB : ScriptableObject
     {
         [TabGroup("Pool Settings")]
         public bool collectionCheck = true;
@@ -19,11 +19,11 @@ namespace Turnbase
         [TabGroup("Flyweight Info")]
         public GameObject prefab;
 
-        public abstract Flyweight2 Create();
+        public abstract Flyweight_TB Create();
 
-        public virtual void OnGet(Flyweight2 f) => f.gameObject.SetActive(true);
-        public virtual void OnRelease(Flyweight2 f) => f.gameObject.SetActive(false);
-        public virtual void OnDestroyPoolObject(Flyweight2 f) => Destroy(f.gameObject);
+        public virtual void OnGet(Flyweight_TB f) => f.gameObject.SetActive(true);
+        public virtual void OnRelease(Flyweight_TB f) => f.gameObject.SetActive(false);
+        public virtual void OnDestroyPoolObject(Flyweight_TB f) => Destroy(f.gameObject);
     }
 
 }

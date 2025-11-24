@@ -21,11 +21,11 @@ public class Skill : ScriptableObject
 
 
     [Header("Visual Effects")]
-    public FlyweightSettings2 impactVFXPrefab;
+    public FlyweightSettings_TB impactVFXPrefab;
 
     [Header("Projectile & VFX")]
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
-    public FlyweightSettings2 projectileSettings;
+    public FlyweightSettings_TB projectileSettings;
 
     public float impactVFXDuration = 1.0f;
 
@@ -79,7 +79,7 @@ public class Skill : ScriptableObject
         public int durationTurns;
         public int amount;
         public int baseDamagePerTurn;
-        public FlyweightSettings2 debuffEffect;
+        public FlyweightSettings_TB debuffEffect;
         public Sprite icon;
     }
 

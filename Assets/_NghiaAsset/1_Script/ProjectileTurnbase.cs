@@ -6,7 +6,7 @@ using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
-    public class ProjectileTurnBase : Flyweight2
+    public class ProjectileTurnBase : Flyweight_TB
     {
         private Character target;
         private Action onHitCallback;
@@ -50,7 +50,7 @@ namespace Turnbase
                 yield return new WaitForSeconds(releaseDelay);
             }
 
-            FlyweightFactory2.ReturnToPool(this);
+            FlyweightFactory_TB.ReturnToPool(this);
         }
 
         private void ApplyImpact()
@@ -66,15 +66,15 @@ namespace Turnbase
 
         private void SpawnImpactEffect(Vector3 position, Skill skill)
         {
-            FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
+            FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
             if (effectToSpawn != null)
             {
-                Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
+                Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);
 
                 if (effectInstance != null)
                 {
-                    ((ImpactVFX2)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
+                    ((ImpactVFX_TB)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
                 }
             }
         }

@@ -5,22 +5,22 @@ using UnityEngine.Pool;
 
 namespace Turnbase
 {
-    public class FlyweightFactory2 : PersistentSingleton<FlyweightFactory2>
+    public class FlyweightFactory_TB : PersistentSingleton<FlyweightFactory_TB>
     {
 
-        readonly Dictionary<FlyweightType, IObjectPool<Flyweight2>> pools = new();
+        readonly Dictionary<FlyweightType, IObjectPool<Flyweight_TB>> pools = new();
 
 
-        public static Flyweight2 Spawn(FlyweightSettings2 settings) => instance.GetPoolFor(settings)?.Get();
-        public static void ReturnToPool(Flyweight2 f) => instance.GetPoolFor(f.settings)?.Release(f);
+        public static Flyweight_TB Spawn(FlyweightSettings_TB settings) => instance.GetPoolFor(settings)?.Get();
+        public static void ReturnToPool(Flyweight_TB f) => instance.GetPoolFor(f.settings)?.Release(f);
 
-        IObjectPool<Flyweight2> GetPoolFor(FlyweightSettings2 settings)
+        IObjectPool<Flyweight_TB> GetPoolFor(FlyweightSettings_TB settings)
         {
-            IObjectPool<Flyweight2> pool;
+            IObjectPool<Flyweight_TB> pool;
 
             if (pools.TryGetValue(settings.type, out pool)) return pool;
 
-            pool = new ObjectPool<Flyweight2>(
+            pool = new ObjectPool<Flyweight_TB>(
                 settings.Create,
                 settings.OnGet,
                 settings.OnRelease,
