@@ -9,10 +9,6 @@ namespace Turnbase
         {
             base.Initialize(position, rotation);
 
-            transform.position = position;
-            transform.rotation = rotation;
-
-
             float finalDuration = duration;
 
             ParticleSystem particle = GetComponent<ParticleSystem>();

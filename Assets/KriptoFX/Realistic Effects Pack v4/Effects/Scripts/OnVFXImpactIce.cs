@@ -4,13 +4,22 @@ namespace Turnbase
 {
     public class OnVFXImpactIce : MonoBehaviour
     {
-        public GameObject parentVFX;
-        public GameObject vfxImpact;
+        public FlyweightSettings_TB impactIceSetting;
 
 
         private void OnDisable()
         {
-            Instantiate(vfxImpact,parentVFX.transform.position,parentVFX.transform.rotation);
+            var spawnedImpactIce = FlyweightFactory_TB.Spawn(impactIceSetting);
+
+            if(spawnedImpactIce)
+            {
+                spawnedImpactIce.transform.position = transform.position;
+                spawnedImpactIce.transform.rotation = transform.rotation;
+                spawnedImpactIce.transform.localScale = gameObject.transform.localScale;
+
+                spawnedImpactIce.gameObject.SetActive(true);
+            }
+            
         }
 
 

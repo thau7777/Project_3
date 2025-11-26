@@ -55,10 +55,6 @@ namespace Turnbase
                     damageApplied = true;
                     SpawnImpactEffect(target.transform.position, skill);
 
-                    if (skill.debuffProperties.statToModify != DebuffType.None)
-                    {
-                        target.debuffManager.ApplyDebuff(skill.debuffProperties);
-                    }
                 }
             };
 
@@ -81,6 +77,11 @@ namespace Turnbase
             while (!damageApplied)
             {
                 yield return null;
+            }
+
+            if (skill.impactVFXDuration > 0)
+            {
+                yield return new WaitForSeconds(skill.impactVFXDuration);
             }
 
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;

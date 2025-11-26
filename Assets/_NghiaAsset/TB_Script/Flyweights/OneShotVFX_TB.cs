@@ -7,8 +7,12 @@ namespace Turnbase
     {
         new OneShotVFXSettings_TB settings => (OneShotVFXSettings_TB)base.settings;
 
-        public void SetupDespawn()
+        public override void Initialize(Vector3 position, Quaternion rotation)
         {
+            base.Initialize(position, rotation);
+
+            StopAllCoroutines();
+
             StartCoroutine(DespawnAfterDelay(settings.DespawnDelay));
         }
 

@@ -5,7 +5,7 @@ namespace Turnbase
     public abstract class Flyweight_TB : MonoBehaviour
     {
         public FlyweightSettings_TB settings;
-        public void Initialize(Vector3 position, Quaternion rotation)
+        public virtual void Initialize(Vector3 position, Quaternion rotation)
         {
             transform.position = position;
             transform.rotation = rotation;

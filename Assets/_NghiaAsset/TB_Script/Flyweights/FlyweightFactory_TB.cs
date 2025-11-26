@@ -61,6 +61,11 @@ namespace Turnbase
         Tb_Buff_M_Attack,
         Tb_Shield,
         Tb_Paralysis,
+        Tb_IceImpact,
+        Tb_Ice,
+        Tb_Meteorite,
+
+
 
 
 

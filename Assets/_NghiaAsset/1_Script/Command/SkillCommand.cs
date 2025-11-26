@@ -59,7 +59,7 @@ namespace Turnbase
 
             if (settingsToSpawn != null)
             {
-                effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn); 
+                effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
 
                 if (effectInstance != null)
                 {
