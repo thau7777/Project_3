@@ -11,7 +11,7 @@ namespace Turnbase
     {
         public GameObject turnOrderIconPrefab;
 
-        public GameObject roundTrackerPrefab; // <--- Vẫn cần để gán prefab riêng
+        public GameObject roundTrackerPrefab; 
 
         public Transform turnOrderContainer;
 
@@ -29,30 +29,24 @@ namespace Turnbase
                 return;
             }
 
-            // 1. Sắp xếp tất cả các nhân vật (bao gồm cả Virtual Tracker nếu isAlive=true)
             List<Character> sortedCharacters = characters.Where(c => c.isAlive).OrderByDescending(c => c.actionGauge).ToList();
 
-            // 2. Xóa các Icon cũ
             foreach (var icon in turnOrderIcons)
             {
                 Destroy(icon.gameObject);
             }
             turnOrderIcons.Clear();
 
-            // 3. Khởi tạo Icon cho từng Character
             foreach (Character character in sortedCharacters)
             {
-                // Chọn prefab dựa trên loại Character
                 GameObject prefabToInstantiate;
 
                 if (character.isVirtualTracker)
                 {
-                    // Dùng prefab riêng cho Round Tracker
                     prefabToInstantiate = roundTrackerPrefab;
                 }
                 else
                 {
-                    // Dùng prefab mặc định cho Nhân vật
                     prefabToInstantiate = turnOrderIconPrefab;
                 }
 

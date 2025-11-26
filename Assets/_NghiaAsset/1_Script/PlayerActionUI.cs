@@ -20,7 +20,7 @@ namespace Turnbase
         public Button parryButton;
         public Button confirmButton;
         public Button summomonButton;
-        public Button confirmButton2; 
+        public Button actionButton; 
         public Button cancelButton;
 
         public GameObject playerActionsPanel;
@@ -70,9 +70,9 @@ namespace Turnbase
                 {
                     Button activeConfirmButton = null;
 
-                    if (confirmButton2 != null && confirmButton2.gameObject.activeInHierarchy)
+                    if (actionButton != null && actionButton.gameObject.activeInHierarchy)
                     {
-                        activeConfirmButton = confirmButton2;
+                        activeConfirmButton = actionButton;
                     }
                     else if (confirmButton != null && confirmButton.gameObject.activeInHierarchy)
                     {
@@ -98,11 +98,6 @@ namespace Turnbase
             parryButton.onClick.AddListener(OnParryClicked);
             confirmButton.onClick.AddListener(OnConfirmClicked);
             summomonButton.onClick.AddListener(OnSummonClicked);
-
-            if (cancelButton != null)
-            {
-                cancelButton.onClick.AddListener(OnCancelClicked);
-            }
 
 
             PlayerSkillPanel.gameObject.SetActive(false);
@@ -250,43 +245,21 @@ namespace Turnbase
             switch (currentCharacter.characterClass)
             {
                 case CharacterClass.Sword_Shield:
-                    animator.SetTrigger("Warrio_Cast");
+                    animator.Play("Warrio_Cast");
                     break;
                 case CharacterClass.Magical:
-                    animator.SetTrigger("Magic_Cast");
+                    animator.Play("Magic_Cast");
                     break;
                 case CharacterClass.Summon:
-                    animator.SetTrigger("Summon_Cast");
+                    animator.Play("Summon_Cast");
                     break;
                 default:
-                    animator.SetTrigger("Magic_Cast");
+                    animator.Play("Magic_Cast");
                     break;
             }
 
-            GameObject actionObject = GameObject.Find("Action");
-            GameObject cancelObject = GameObject.Find("Cancel");
+            ApplyButtonAction_Cancel();
 
-            if (actionObject != null)
-            {
-                confirmButton2 = actionObject.GetComponent<Button>();
-            }
-
-            if (cancelObject != null)
-            {
-                cancelButton = cancelObject.GetComponent<Button>();
-            }
-
-            if (confirmButton2 != null)
-            {
-                confirmButton2.onClick.RemoveAllListeners();
-                confirmButton2.onClick.AddListener(OnConfirmClicked);
-            }
-
-            if (cancelButton != null)
-            {
-                cancelButton.onClick.RemoveAllListeners();
-                cancelButton.onClick.AddListener(OnCancelClicked);
-            }
 
             CameraAction.instance.ReadySkill(currentCharacter);
 
@@ -334,6 +307,7 @@ namespace Turnbase
         }
         private void OnSummonClicked()
         {
+
             isWaitingForConfirmation = false;
             selectedSkillToConfirm = null;
 
@@ -342,12 +316,13 @@ namespace Turnbase
 
             CameraAction.instance.ReadySkill(currentCharacter);
 
+            ApplyButtonAction_Cancel();
+
             PlayerSummonPanel.SetActive(true);
             PlayerSkillPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
 
             EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
-            playerActionsPanel.SetActive(false);
         }
 
         private void OnSkillButtonClicked(Skill selectedSkill)
@@ -370,7 +345,36 @@ namespace Turnbase
 
             selectedSkillToConfirm = selectedSkill;
 
-            if (confirmButton2 != null) confirmButton2.gameObject.SetActive(true);
+            if (actionButton != null) actionButton.gameObject.SetActive(true);
+        }
+
+        private void ApplyButtonAction_Cancel()
+        {
+            GameObject actionObject = GameObject.Find("Action");
+            GameObject cancelObject = GameObject.Find("Cancel");
+            if (actionObject != null)
+            {
+                actionButton = actionObject.GetComponent<Button>();
+            }
+
+            if (cancelObject != null)
+            {
+                cancelButton = cancelObject.GetComponent<Button>();
+            }
+
+            if (actionButton != null)
+            {
+                actionButton.onClick.RemoveAllListeners();
+                actionButton.onClick.AddListener(OnConfirmClicked);
+            }
+
+            if (cancelButton != null)
+            {
+                cancelButton.onClick.RemoveAllListeners();
+                cancelButton.onClick.AddListener(OnCancelClicked);
+            }
+
+
         }
 
 
@@ -422,10 +426,6 @@ namespace Turnbase
             EventBus<HidePanelEvent>.Raise(new HidePanelEvent(panelName: "PlayerPanelControll"));
 
             if (currentCharacter == null) return;
-
-            if (confirmButton != null) confirmButton.gameObject.SetActive(false);
-            if (confirmButton2 != null) confirmButton2.gameObject.SetActive(false);
-
 
             if (currentCharacter.stateMachine.currentState is ReadyStateSkill currentState)
             {

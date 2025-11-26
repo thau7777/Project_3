@@ -329,6 +329,9 @@ namespace Turnbase
 
                 summonInstance.isPlayer = summoner.isPlayer;
 
+                summonInstance.battleManager = this;
+                summonInstance.initialPosition = petSpawnPosition;
+
                 PlayerActionUI actionUI = summonInstance.GetComponentInChildren<PlayerActionUI>(true);
                 if (actionUI != null)
                 {
@@ -339,8 +342,7 @@ namespace Turnbase
                 }
 
 
-                summonInstance.battleManager = this;
-                summonInstance.initialPosition = petSpawnPosition;
+                
 
                 CharacterStateMachine summonStateMachine = summonInstance.GetComponent<CharacterStateMachine>();
                 if (summonStateMachine != null)

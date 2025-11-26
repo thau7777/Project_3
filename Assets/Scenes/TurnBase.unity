@@ -522,7 +522,7 @@ PlayableDirector:
   m_GameObject: {fileID: 215960478}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: b36ba16f60387a14e820ca4f2f442cf4, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -532,11 +532,15 @@ PlayableDirector:
     value: {fileID: 363923600}
   - key: {fileID: 0}
     value: {fileID: 363923595}
+  - key: {fileID: 5068837241828340333, guid: b36ba16f60387a14e820ca4f2f442cf4, type: 2}
+    value: {fileID: 330585543}
   m_ExposedReferences:
     m_References:
     - 78fc1b2cb99320143bfa3eb25e0851c1: {fileID: 363923595}
     - 2ed03029e0687b34d8ae9e300db28721: {fileID: 363923595}
     - 059900a3e55beb1408244228ab28d4b3: {fileID: 363923595}
+    - 5696c64a4847c404fbeca5e88c9d5ed5: {fileID: 330585543}
+    - ee14f9a46b019384598cc37b17566770: {fileID: 363923595}
     - 4ebdad82688d53c4dbe050fc9f5e782e: {fileID: 330585543}
     - 57dc00ce280cbf94f930bf974b8cbf11: {fileID: 363923595}
     - d29db9bcff5c7a0479534b2e69877a12: {fileID: 363923595}
@@ -550,13 +554,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 215960478}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.19449165, w: 0.9809042}
+  m_LocalPosition: {x: -4.66, y: 3.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -22.43}
 --- !u!1 &225816676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,11 +1010,11 @@ GameObject:
   - component: {fileID: 363923600}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &363923596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,7 +1124,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 36.709, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 359, y: 0, z: 0}
 --- !u!95 &363923600
 Animator:
   serializedVersion: 7
@@ -1566,7 +1570,7 @@ MonoBehaviour:
   activeCharacter: {fileID: 0}
   isProcessingTurn: 0
   playerPrefabs:
-  - {fileID: 3404509342006786628, guid: 24a7881fbab9cad4699af3c9e9a91582, type: 3}
+  - {fileID: 3404509342006786628, guid: a880cabf23177fe48bf2fbe6626d6f75, type: 3}
   playerSpawnPoints:
   - {fileID: 346027862}
   - {fileID: 1871293695}

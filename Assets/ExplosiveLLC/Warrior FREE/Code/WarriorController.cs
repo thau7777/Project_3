@@ -219,10 +219,10 @@ namespace WarriorAnimsFREE
 		#region Locks
 
 		/// <summary>
-		/// Lock character movement and/or action, on a delay for a set time.
+		/// Lock character movement and/or actionButton, on a delay for a set time.
 		/// </summary>
 		/// <param name="lockMovement">If set to <c>true</c> lock movement.</param>
-		/// <param name="lockAction">If set to <c>true</c> lock action.</param>
+		/// <param name="lockAction">If set to <c>true</c> lock actionButton.</param>
 		/// <param name="timed">If set to <c>true</c> timed.</param>
 		/// <param name="delayTime">Delay time.</param>
 		/// <param name="lockTime">Lock time.</param>

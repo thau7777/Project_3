@@ -10,7 +10,9 @@ namespace Turnbase
         public Button skillButton;
         public Image skillIcon;
         public TextMeshProUGUI skillNameText; 
-        public TextMeshProUGUI manaCostText; 
+        public TextMeshProUGUI manaCostText;
+        public TextMeshProUGUI typeText;
+
 
         public Skill skillData { get; private set; }
 
@@ -33,6 +35,18 @@ namespace Turnbase
             {
                 manaCostText.text = skill.manaCost.ToString();
             }
+
+            if (typeText != null)
+            {
+                typeText.text = skill.elementType.ToString();
+
+                if(skill.elementType == ElementType.None)
+                {
+                    typeText.text = "";
+                }
+            }
+
+
 
             skillButton.onClick.RemoveAllListeners();
             skillButton.onClick.AddListener(() => clickAction.Invoke(skillData));

@@ -64,6 +64,12 @@ namespace Turnbase
         Tb_IceImpact,
         Tb_Ice,
         Tb_Meteorite,
+        Tb_Summon_blue,
+        Tb_Summon_red,
+        Tb_Summon_green,
+        Tb_Summon_yellow,
+
+
 
 
 
