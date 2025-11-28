@@ -1376,6 +1376,7 @@ GameObject:
   - component: {fileID: 9145698497346757161}
   - component: {fileID: 1527328286654397455}
   - component: {fileID: -7500645950520890881}
+  - component: {fileID: 228614209179218366}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Untagged
@@ -1484,7 +1485,7 @@ MonoBehaviour:
   parryWindowDuration: 0
   RenderTexture: {fileID: 8400000, guid: 73ad110cde4f35241810cc88902f98df, type: 2}
   damagePopupCanvasParent: {fileID: 626011186020759060}
-  enemyStatsUI: {fileID: 0}
+  enemyStatsUI: {fileID: 9145698497346757161}
   enemyUI: {fileID: 9145698497346757161}
 --- !u!114 &229363719538074653
 MonoBehaviour:
@@ -1541,6 +1542,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -1553,6 +1555,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -1582,6 +1585,23 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
+--- !u!114 &228614209179218366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: -5687909505730138963}
 --- !u!1 &8430056524065960636
 GameObject:
   m_ObjectHideFlags: 0

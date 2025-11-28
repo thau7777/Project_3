@@ -22329,7 +22329,7 @@ MonoBehaviour:
   parryButton: {fileID: 7890106057491487030}
   confirmButton: {fileID: 5687246636259999426}
   summomonButton: {fileID: 5340438238752412195}
-  confirmButton2: {fileID: 0}
+  actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 8881160727125362949}
   playerActionsPanel2: {fileID: 0}
@@ -27684,6 +27684,7 @@ GameObject:
   - component: {fileID: 6007067907109271698}
   - component: {fileID: -7072520419978499482}
   - component: {fileID: -2223283472756963618}
+  - component: {fileID: 9026406392181652209}
   m_Layer: 0
   m_Name: PlayerTB_Sword
   m_TagString: Player
@@ -27752,10 +27753,6 @@ MonoBehaviour:
   stateMachine: {fileID: 6007067907109271698}
   characterClass: 0
   characterElement: 0
-  allClassProfiles:
-  - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
-  - {fileID: 11400000, guid: 93dbbbec8c2df4447b3dd35f19171ece, type: 2}
-  - {fileID: 11400000, guid: 0a48ae65bdd5a38489ab5e9bfd188908, type: 2}
   info:
     name: Warrior
     Avatar: {fileID: 21300000, guid: a77279fe1cb44b34e9d62f4f9dc0fef4, type: 3}
@@ -27774,6 +27771,10 @@ MonoBehaviour:
     crit: 100
     critDamage: 150
     agility: 111
+  allClassProfiles:
+  - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
+  - {fileID: 11400000, guid: 93dbbbec8c2df4447b3dd35f19171ece, type: 2}
+  - {fileID: 11400000, guid: 0a48ae65bdd5a38489ab5e9bfd188908, type: 2}
   skills: []
   passiveSkills: []
   isPlayer: 1
@@ -27847,6 +27848,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -27859,6 +27861,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -27888,6 +27891,23 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
+--- !u!114 &9026406392181652209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: 0}
 --- !u!1 &8083655193775197940
 GameObject:
   m_ObjectHideFlags: 0

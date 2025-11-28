@@ -79,6 +79,7 @@ public class Skill : ScriptableObject
         public int durationTurns;
         public int amount;
         public int baseDamagePerTurn;
+        public float debuffValue;
         public FlyweightSettings_TB debuffEffect;
         public Sprite icon;
     }
@@ -156,5 +157,6 @@ public enum  DebuffType
     Burn,
     Poison,
     Stun,
+    DefReduction
 }
 

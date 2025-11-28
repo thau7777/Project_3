@@ -2104,6 +2104,7 @@ GameObject:
   - component: {fileID: 1527328286654397455}
   - component: {fileID: -61178238854852435}
   - component: {fileID: 1732808570604203036}
+  - component: {fileID: 2809809430769591448}
   m_Layer: 0
   m_Name: Tiger
   m_TagString: Untagged
@@ -2167,8 +2168,6 @@ MonoBehaviour:
   stateMachine: {fileID: 229363719538074653}
   characterClass: 4
   characterElement: 3
-  allClassProfiles:
-  - {fileID: 11400000, guid: 46a74bd952138ac4280daf5d3777cc4a, type: 2}
   info:
     name: Fish
     Avatar: {fileID: 21300000, guid: da2468054511f2346b07b100cb042414, type: 3}
@@ -2187,9 +2186,12 @@ MonoBehaviour:
     crit: 0
     critDamage: 0
     agility: 100
+  allClassProfiles:
+  - {fileID: 11400000, guid: 46a74bd952138ac4280daf5d3777cc4a, type: 2}
   skills: []
   passiveSkills: []
   isPlayer: 0
+  isVirtualTracker: 0
   target: {fileID: 0}
   targetMarker: {fileID: 5109386890736583360}
   animator: {fileID: 3378854915989972298}
@@ -2207,6 +2209,8 @@ MonoBehaviour:
   parryWindowDuration: 0
   RenderTexture: {fileID: 8400000, guid: eb0f6b72dafd90f4d9af784165865afc, type: 2}
   damagePopupCanvasParent: {fileID: 626011186020759060}
+  enemyStatsUI: {fileID: 0}
+  enemyUI: {fileID: 0}
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2240,6 +2244,7 @@ MonoBehaviour:
   statusEffectContainer: {fileID: 6425666115739322162}
   statusEffectIconPrefab: {fileID: 7859179616413668564, guid: 248734e81fd8df54e8eff7d6e9b93733, type: 3}
   elementMapping: {fileID: 11400000, guid: 67f64a4800e011c419210d4dacaded8d, type: 2}
+  dataProvider: {fileID: 0}
 --- !u!114 &1527328286654397455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2262,6 +2267,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -2274,6 +2280,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -2303,6 +2310,10 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2315,6 +2326,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918f2cc3e3724ab41b916f9717209a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.DamagePopup
+--- !u!114 &2809809430769591448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: 0}
 --- !u!1 &8204467009760788439
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,6 +2859,7 @@ MonoBehaviour:
   statusEffectContainer: {fileID: 6425666115739322162}
   statusEffectIconPrefab: {fileID: 7859179616413668564, guid: 248734e81fd8df54e8eff7d6e9b93733, type: 3}
   elementMapping: {fileID: 11400000, guid: 67f64a4800e011c419210d4dacaded8d, type: 2}
+  dataProvider: {fileID: 0}
 --- !u!1 &9195509603045521841
 GameObject:
   m_ObjectHideFlags: 0

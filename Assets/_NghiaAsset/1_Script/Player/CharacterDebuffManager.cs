@@ -27,6 +27,12 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB stunVFXInstance;
         [HideInInspector] public Sprite stunIcon;
 
+        [Header("Defense Reduction Debuff State")]
+        [HideInInspector] public int defReductionTurnsRemaining = 0;
+        [HideInInspector] public float defReductionPercentage = 0f; 
+        [HideInInspector] public Flyweight_TB defReductionVFXInstance;
+        [HideInInspector] public Sprite defReductionIcon;
+
 
         private void Awake()
         {
@@ -117,6 +123,35 @@ namespace Turnbase
             Debug.Log($"{character.name} đã bị Choáng trong **{duration} lượt**.");
         }
 
+        public void ApplyDefReductionDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        {
+            if (percentage <= 0 || duration <= 0) return;
+
+            if (percentage > defReductionPercentage)
+            {
+                defReductionPercentage = percentage;
+            }
+
+            defReductionTurnsRemaining = duration;
+
+            if (defReductionVFXInstance != null && defReductionVFXInstance != vfxInstance)
+            {
+                defReductionVFXInstance.ReturnToPool();
+            }
+            defReductionVFXInstance = vfxInstance;
+
+            defReductionIcon = icon;
+
+            if (character.buffManager != null)
+            {
+                character.buffManager.RecalculateDefenseStat();
+            }
+
+            character.UpdateOwnUI();
+
+            Debug.Log($"{character.name} đã nhận Debuff Giảm Phòng thủ: **{percentage * 100}%**, **{duration} lượt**.");
+        }
+
 
         public void ApplyDebuff(Skill.DebuffSettings debuffSettings)
         {
@@ -162,6 +197,15 @@ namespace Turnbase
 
                 case DebuffType.Stun:
                     ApplyStunDebuff(
+                        debuffSettings.durationTurns,
+                        debuffVFX,
+                        debuffSettings.icon
+                    );
+                    break;
+
+                case DebuffType.DefReduction:
+                    ApplyDefReductionDebuff(
+                        debuffSettings.debuffValue, 
                         debuffSettings.durationTurns,
                         debuffVFX,
                         debuffSettings.icon
@@ -253,6 +297,26 @@ namespace Turnbase
             Debug.Log($"Debuff Choáng của {character.name} đã hết hạn.");
         }
 
+        private void RemoveExpiredDefReductionDebuff()
+        {
+            if (defReductionVFXInstance != null)
+            {
+                FlyweightFactory_TB.ReturnToPool(defReductionVFXInstance);
+                defReductionVFXInstance = null;
+            }
+            defReductionPercentage = 0f;
+            defReductionTurnsRemaining = 0;
+
+            if (character.buffManager != null)
+            {
+                character.buffManager.RecalculateDefenseStat();
+            }
+
+            character.UpdateOwnUI();
+
+            Debug.Log($"Debuff Giảm Phòng thủ của {character.name} đã hết hạn.");
+        }
+
         public void ProcessTurnStartDecay()
         {
             bool uiUpdateNeeded = false;
@@ -284,6 +348,20 @@ namespace Turnbase
                 {
                     RemoveExpiredStunDebuff();
                     uiUpdateNeeded = true;
+                }
+            }
+
+            if (defReductionTurnsRemaining > 0)
+            {
+                defReductionTurnsRemaining--;
+                if (defReductionTurnsRemaining <= 0)
+                {
+                    RemoveExpiredDefReductionDebuff();
+                    uiUpdateNeeded = true;
+                }
+                else
+                {
+                    uiUpdateNeeded = true; 
                 }
             }
 

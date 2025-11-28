@@ -18,10 +18,15 @@ namespace Turnbase
         public ElementMapping elementMapping;
 
         private Character ownerCharacter;
+        private CharacterStatusDataProvider dataProvider;
 
         void Awake()
         {
             ownerCharacter = GetComponentInParent<Character>();
+            if (ownerCharacter != null)
+            {
+                dataProvider = ownerCharacter.GetComponent<CharacterStatusDataProvider>();
+            }
         }
 
         void Start()
@@ -60,7 +65,7 @@ namespace Turnbase
             UpdateShieldBar(stats);
             UpdateElementImage();
 
-            UpdateStatusEffects(ownerCharacter.GetActiveStatusEffects());
+            UpdateStatusEffects(dataProvider.GetActiveStatusEffects());
         }
 
         private void UpdateHpBar(CharacterStats stats)

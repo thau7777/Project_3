@@ -578,7 +578,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 127
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: eb0f6b72dafd90f4d9af784165865afc, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: c17001d67eebc5a4e8e790d1639c7706, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -1234,6 +1234,7 @@ GameObject:
   - component: {fileID: 1527328286654397455}
   - component: {fileID: -61178238854852435}
   - component: {fileID: 1732808570604203036}
+  - component: {fileID: -8763004789626390260}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -1299,7 +1300,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 3
   info:
-    name: Fish
+    name: Slime
     Avatar: {fileID: 21300000, guid: da2468054511f2346b07b100cb042414, type: 3}
     level: 0
   stats:
@@ -1338,7 +1339,7 @@ MonoBehaviour:
   isAttackReadyForParry: 0
   isParryWindowFinished: 0
   parryWindowDuration: 0
-  RenderTexture: {fileID: 8400000, guid: eb0f6b72dafd90f4d9af784165865afc, type: 2}
+  RenderTexture: {fileID: 8400000, guid: c17001d67eebc5a4e8e790d1639c7706, type: 2}
   damagePopupCanvasParent: {fileID: 626011186020759060}
   enemyStatsUI: {fileID: 9145698497346757161}
   enemyUI: {fileID: 9145698497346757161}
@@ -1397,6 +1398,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -1409,6 +1411,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -1438,6 +1441,10 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1450,6 +1457,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918f2cc3e3724ab41b916f9717209a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.DamagePopup
+--- !u!114 &-8763004789626390260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: -5687909505730138963}
 --- !u!1 &8449115653331383705
 GameObject:
   m_ObjectHideFlags: 0

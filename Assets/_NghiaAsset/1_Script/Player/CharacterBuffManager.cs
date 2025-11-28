@@ -25,6 +25,7 @@ namespace Turnbase
         [Header("Defense Buff")]
         [HideInInspector] public int originalBaseDefense = 0;
         [HideInInspector] public int defenseBuffTurnsRemaining = 0;
+        [HideInInspector] public int defenseBuffAmount = 0;
         [HideInInspector] public Flyweight_TB defenseVFXInstance;
         [HideInInspector] public Sprite defenseBuffIcon;
 
@@ -43,6 +44,7 @@ namespace Turnbase
         [Header("Magical Defense Buff")]
         [HideInInspector] public int magicalOriginalBaseDefense = 0;
         [HideInInspector] public int magicalDefenseBuffTurnsRemaining = 0;
+        [HideInInspector] public int magicalDefenseBuffAmount = 0;
         [HideInInspector] public Flyweight_TB magicalDefenseVFXInstance;
         [HideInInspector] public Sprite magicalDefenseBuffIcon;
 
@@ -54,6 +56,7 @@ namespace Turnbase
         [HideInInspector] public Sprite shieldIcon;
 
 
+
         [Header("Stack Manager")]
         public Dictionary<string, StackData> activeStacks = new Dictionary<string, StackData>();
 
@@ -63,6 +66,19 @@ namespace Turnbase
             if (character != null)
             {
                 stats = character.stats;
+                InitializeBaseStats();
+            }
+        }
+
+        public void InitializeBaseStats()
+        {
+            if (originalBaseDefense == 0 && stats.physicalDefense > 0)
+            {
+                originalBaseDefense = stats.physicalDefense;
+            }
+            if (magicalOriginalBaseDefense == 0 && stats.magicDefense > 0)
+            {
+                magicalOriginalBaseDefense = stats.magicDefense;
             }
         }
 
@@ -483,8 +499,6 @@ namespace Turnbase
         {
             if (defenseBuffTurnsRemaining > 0 || originalBaseDefense == 0) return;
 
-            stats.physicalDefense = originalBaseDefense;
-
             if (defenseVFXInstance != null)
             {
                 defenseVFXInstance.transform.SetParent(null);
@@ -495,6 +509,9 @@ namespace Turnbase
             originalBaseDefense = 0;
             defenseBuffTurnsRemaining = 0;
             defenseBuffIcon = null;
+            defenseBuffAmount = 0; 
+
+            RecalculateDefenseStat();
 
             Debug.Log($"Buff Defense của {character.name} đã hết hạn và bị gỡ bỏ. Defense hiện tại: {stats.physicalDefense}");
         }
@@ -544,7 +561,6 @@ namespace Turnbase
         {
             if (magicalDefenseBuffTurnsRemaining > 0 || magicalOriginalBaseDefense == 0) return;
 
-            stats.magicDefense = magicalOriginalBaseDefense;
 
             if (magicalDefenseVFXInstance != null)
             {
@@ -556,8 +572,51 @@ namespace Turnbase
             magicalOriginalBaseDefense = 0;
             magicalDefenseBuffTurnsRemaining = 0;
             magicalDefenseBuffIcon = null;
+            magicalDefenseBuffAmount = 0;
+
+            RecalculateDefenseStat();
 
             Debug.Log($"Buff Magical Defense của {character.name} đã hết hạn và bị gỡ bỏ. Magical Defense hiện tại: {stats.magicDefense}");
+        }
+
+        public void RecalculateDefenseStat()
+        {
+            if (character.debuffManager == null) return;
+            float defReductionPercentage = character.debuffManager.defReductionPercentage;
+
+            int finalPDef = originalBaseDefense;
+
+            if (defenseBuffTurnsRemaining > 0)
+            {
+                finalPDef += defenseBuffAmount;
+            }
+
+            if (defReductionPercentage > 0f)
+            {
+                float reduction = finalPDef * defReductionPercentage;
+                finalPDef -= Mathf.FloorToInt(reduction);
+            }
+
+            stats.physicalDefense = Mathf.Max(0, finalPDef);
+
+
+            int finalMDef = magicalOriginalBaseDefense;
+
+            if (magicalDefenseBuffTurnsRemaining > 0)
+            {
+                finalMDef += magicalDefenseBuffAmount;
+            }
+
+            if (defReductionPercentage > 0f)
+            {
+                float reduction = finalMDef * defReductionPercentage;
+                finalMDef -= Mathf.FloorToInt(reduction);
+            }
+
+            stats.magicDefense = Mathf.Max(0, finalMDef);
+
+            Debug.Log($"[{character.name}] Recalculate: PDef={stats.physicalDefense}, MDef={stats.magicDefense}. Debuff: -{defReductionPercentage * 100:F0}%");
+            character.UpdateOwnUI();
         }
 
         public bool IsBuffActive(StatType statType)

@@ -20749,7 +20749,7 @@ MonoBehaviour:
   parryButton: {fileID: 5464003140646516223}
   confirmButton: {fileID: 7513808343981707787}
   summomonButton: {fileID: 7833532196700471018}
-  confirmButton2: {fileID: 0}
+  actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 6767635835234788812}
   playerActionsPanel2: {fileID: 0}
@@ -27742,6 +27742,7 @@ GameObject:
   - component: {fileID: 6007067907109271698}
   - component: {fileID: 428602294126036014}
   - component: {fileID: 3643947891567202690}
+  - component: {fileID: 8832482024150264086}
   m_Layer: 0
   m_Name: PlayerTB_Mage
   m_TagString: Player
@@ -27888,6 +27889,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -27900,6 +27902,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -27929,6 +27932,23 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
+--- !u!114 &8832482024150264086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: 0}
 --- !u!1 &8144461621592026007
 GameObject:
   m_ObjectHideFlags: 0

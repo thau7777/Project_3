@@ -2,89 +2,10 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEditor.ShaderKeywordFilter;
-using HSM;
 
 
 namespace Turnbase
 {
-    public enum BattleState
-    {
-        Waiting,
-        Ready,
-        Attacking,
-        TakingDamage,
-        Dead,
-        Parrying,
-        Interrupted
-    }
-
-
-
-    [System.Serializable]
-    public enum CharacterClass
-    {
-        Sword_Shield,
-        Magical,
-        Summon,
-        Tank,
-        Enemy,
-
-
-    }
-
-    [System.Serializable]
-    public enum CharacterElement
-    {
-        None,
-        Physical,
-        Magical,
-        Fire,
-        Water,
-        Ice,
-        Poison,
-        Lightning,
-        Dark,
-        Frost,
-        Holy,
-
-    }
-
-    [System.Serializable]
-    public class StackData
-    {
-        public string stackId; 
-        public int currentStacks;
-        public Sprite icon;
-    }
-
-    [System.Serializable]
-    public class CharacterInfo
-    {
-        public string name;
-        public Sprite Avatar;
-        public int level;
-    }
-
-
-    [System.Serializable]
-    public class CharacterStats
-    {
-        public int maxHP;
-        public int currentHP;
-        public int maxMP;
-        public int currentMP;
-        public int maxShield;
-        public int currentShield;
-        public int physicalAttack;
-        public int physicalDefense;
-        public int magicAttack;
-        public int magicDefense;
-        public int crit;
-        public int critDamage;
-        public int agility;
-    }
-
     public class Character : MonoBehaviour
     {
         public CharacterStateMachine stateMachine;
@@ -156,6 +77,15 @@ namespace Turnbase
             buffManager = GetComponent<CharacterBuffManager>();
             debuffManager = GetComponent<CharacterDebuffManager>();
             animator = GetComponent<Animator>();
+
+            if (stats == null)
+            {
+                stats = GetComponent<CharacterStats>();
+            }
+            if (info == null)
+            {
+                info = GetComponent<CharacterInfo>();
+            }
 
 
             InitializeCharacterFrom(characterClass);
@@ -357,146 +287,6 @@ namespace Turnbase
         }
         #endregion
 
-        #region Lấy Dữ liệu Hiệu ứng (Cho CharacterStatUI)
-        public List<StatusEffectData> GetActiveStatusEffects()
-        {
-            List<StatusEffectData> effects = new List<StatusEffectData>();
-
-            if (buffManager == null || debuffManager == null) return effects;
-
-
-            if (buffManager.shieldTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Shield",
-                    TurnsRemaining = buffManager.shieldTurnsRemaining,
-                    Detail = $"{stats.currentShield} Shield",
-                    IsBuff = true,
-                    Icon = buffManager.shieldIcon
-
-                });
-            }
-
-            if (buffManager.attackBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.physicalAttack - buffManager.originalBaseAttack;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Increase P.Attack",
-                    TurnsRemaining = buffManager.attackBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.attackBuffIcon
-                });
-            }
-
-            if (buffManager.defenseBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.physicalDefense - buffManager.originalBaseDefense;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Increase P.Defense",
-                    TurnsRemaining = buffManager.defenseBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.defenseBuffIcon
-                });
-            }
-
-            if (buffManager.agilityBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.agility - buffManager.originalBaseAgility;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Increase Agility",
-                    TurnsRemaining = buffManager.agilityBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.agilityBuffIcon
-                });
-            }
-
-            if (buffManager.maxHPBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.maxHP - buffManager.originalBaseMaxHP;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Increase MaxHP",
-                    TurnsRemaining = buffManager.maxHPBuffTurnsRemaining,
-                    Detail = $"+{buffAmount} MaxHP",
-                    IsBuff = true,
-                    Icon = buffManager.maxHPBuffIcon
-                });
-            }
-
-            if (buffManager.magicalAttackBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.magicAttack - buffManager.magicalOriginalBaseAttack;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Increase M.Attack",
-                    TurnsRemaining = buffManager.magicalAttackBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.magicalAttackBuffIcon
-                });
-            }
-
-            if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.magicDefense - buffManager.magicalOriginalBaseDefense;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Increase M.Defense",
-                    TurnsRemaining = buffManager.magicalDefenseBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.magicalDefenseBuffIcon
-                });
-            }
-
-
-
-            if (debuffManager.burnTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Burn",
-                    TurnsRemaining = debuffManager.burnTurnsRemaining,
-                    Detail = $"{debuffManager.burnDamagePerTurn} Damage/turn",
-                    IsBuff = false,
-                    Icon = debuffManager.burnIcon
-                });
-            }
-
-            if (debuffManager.poisonTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Poison",
-                    TurnsRemaining = debuffManager.poisonTurnsRemaining,
-                    Detail = $"{debuffManager.poisonDamagePerTurn} Damage/turn",
-                    IsBuff = false,
-                    Icon = debuffManager.poisonIcon
-                });
-            }
-
-            if (debuffManager.stunTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Stun",
-                    TurnsRemaining = debuffManager.stunTurnsRemaining,
-                    Detail = "Unable to act",
-                    IsBuff = false,
-                    Icon = debuffManager.stunIcon
-                });
-            }
-
-            return effects;
-        }
-        #endregion    
     }
 
 }
