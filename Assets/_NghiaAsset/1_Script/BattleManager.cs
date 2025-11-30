@@ -567,6 +567,8 @@ namespace Turnbase
                 yield return StartCoroutine(EnemyTurn(activeCharacter));
             }
 
+            uiManager.UpdateAllCharacterUIs(allCombatants);
+
         }
 
 

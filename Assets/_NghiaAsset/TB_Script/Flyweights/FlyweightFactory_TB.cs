@@ -68,6 +68,10 @@ namespace Turnbase
         Tb_Summon_red,
         Tb_Summon_green,
         Tb_Summon_yellow,
+        Tb_CallOfThunder,
+        TB_StonesHit,
+
+
 
 
 

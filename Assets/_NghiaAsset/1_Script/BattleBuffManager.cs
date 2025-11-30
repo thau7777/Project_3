@@ -20,6 +20,8 @@ namespace Turnbase
                     continue;
                 }
 
+                int initialMaxHP = character.stats.maxHP;
+
                 switch (passiveSkills.effectType)
                 {
                     case PassiveEffectType.HealPerTurn:
@@ -55,7 +57,32 @@ namespace Turnbase
                         }
                         break;
 
-                    
+                    case PassiveEffectType.IncreasePermanentMaxHP:
+
+                        int percentIncrease = Mathf.RoundToInt(initialMaxHP * passiveSkills.effectValuePercentage);
+
+                        int fixedIncrease = Mathf.RoundToInt(passiveSkills.effectValue);
+
+                        int totalIncreaseAmount = percentIncrease + fixedIncrease;
+
+                        if (totalIncreaseAmount > 0)
+                        {
+                            character.stats.maxHP += totalIncreaseAmount;
+
+                            character.stats.currentHP += totalIncreaseAmount;
+
+                            Debug.Log($"{character.name} tăng tối đa HP vĩnh viễn thêm {totalIncreaseAmount} HP (Bao gồm {passiveSkills.effectValuePercentage * 100}% và {fixedIncrease} HP cố định) nhờ kỹ năng thụ động {passiveSkills.skillName}.");
+                        }
+                        break;
+                    case PassiveEffectType.BonusPhysicalAttack:
+                        if (character.stats == null) continue;
+                        int bonusPA = Mathf.RoundToInt(passiveSkills.effectValue);
+                        int bonusPAPercent = Mathf.RoundToInt(character.stats.physicalAttack * passiveSkills.effectValuePercentage);
+                        character.stats.physicalAttack += bonusPA + bonusPAPercent;
+                        Debug.Log($"{character.name} nhận thêm {bonusPA + bonusPAPercent} Công vật lý nhờ kỹ năng thụ động {passiveSkills.skillName}.");
+                        break;
+
+
                     default:
                         break;
                 }
