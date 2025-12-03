@@ -130,6 +130,7 @@ namespace Turnbase
         public void TakeDamage(int damageAmount, ElementType damageElement)
         {
             int remainingDamage = damageAmount;
+            int traildblaze = 20;
 
             if (stats.currentShield > 0)
             {
@@ -154,6 +155,33 @@ namespace Turnbase
                     popupColor
                 );
                 Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
+
+                if (this is Enemy enemyTarget)
+                {
+                    float elementMultiplier = 1.0f;
+
+                    if (battleManager != null && battleManager.elementChart != null)
+                    {
+                        elementMultiplier = battleManager.elementChart.GetMultiplier(damageElement, enemyTarget.characterElement);
+                    }
+
+                    if (elementMultiplier > 1.0f)
+                    {
+                        enemyTarget.traildblaze -= traildblaze;
+                        enemyTarget.traildblaze = Mathf.Max(0f, enemyTarget.traildblaze); 
+
+                        if (enemyTarget.enemyUI != null)
+                        {
+                            enemyTarget.enemyUI.UpdateTrailblazeBar(enemyTarget.traildblaze);
+                        }
+                        Debug.Log($"[{enemyTarget.gameObject.name}] Bị khắc chế! Traildblaze giảm xuống còn: {enemyTarget.traildblaze}");
+                    }
+                    else
+                    {
+                        Debug.Log($"[{enemyTarget.gameObject.name}] Không bị khắc chế ({elementMultiplier}). Traildblaze không giảm.");
+                    }
+                }
+
             }
             else if (damageAmount > 0)
             {

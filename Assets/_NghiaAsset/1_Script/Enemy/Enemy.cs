@@ -12,6 +12,8 @@ namespace Turnbase
     {
         private Character currentCharacter;
 
+        public float traildblaze = 100f;
+
         public EnemyStatsUI enemyUI;
 
         public Dictionary<SkillType, int> currentSkillTypePool;

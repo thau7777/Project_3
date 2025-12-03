@@ -9,6 +9,7 @@ namespace Turnbase
     {
         public Image hpBarFill;
         public Image mpBarFill;
+        public Image trailblazeFill;
         public Image shieldBarFill;
         public Image elementImage;
 
@@ -89,6 +90,20 @@ namespace Turnbase
             if (shieldBarFill != null && stats.maxHP > 0)
             {
                 shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxHP;
+            }
+        }
+
+        public void UpdateTrailblazeBar(float currentTrailblaze)
+        {
+            float maxTrailblaze = 100f;
+
+            if (maxTrailblaze > 0f)
+            {
+                trailblazeFill.fillAmount = currentTrailblaze / maxTrailblaze;
+            }
+            else
+            {
+                trailblazeFill.fillAmount = 0f;
             }
         }
 
