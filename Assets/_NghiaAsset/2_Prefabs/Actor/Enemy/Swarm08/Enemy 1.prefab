@@ -804,8 +804,8 @@ MonoBehaviour:
     Avatar: {fileID: 21300000, guid: da2468054511f2346b07b100cb042414, type: 3}
     level: 0
   stats:
-    maxHP: 1000
-    currentHP: 500
+    maxHP: 10000
+    currentHP: 10000
     maxMP: 100
     currentMP: 100
     maxShield: 119
@@ -825,7 +825,7 @@ MonoBehaviour:
   isPlayer: 0
   isVirtualTracker: 0
   target: {fileID: 0}
-  targetMarker: {fileID: 0}
+  targetMarker: {fileID: 3621458399591716412}
   animator: {fileID: 3378854915989972298}
   actionGauge: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -843,7 +843,16 @@ MonoBehaviour:
   damagePopupCanvasParent: {fileID: 8942522335287616232}
   enemyStatsUI: {fileID: 1338538099076997050}
   traildblaze: 100
+  isBroken: 0
   enemyUI: {fileID: 1338538099076997050}
+  BreakDebuffSettings:
+    statToModify: 5
+    durationTurns: 2
+    amount: 100
+    baseDamagePerTurn: 100
+    debuffValue: 100
+    debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
+    icon: {fileID: 21300000, guid: 9a2c1179c7643dc4fb8d5cc327d684bf, type: 3}
 --- !u!114 &1338538099076997050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,6 +956,9 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,6 +1257,11 @@ MonoBehaviour:
 --- !u!224 &3280516352909546446 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+  m_PrefabInstance: {fileID: 305606397485933549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3621458399591716412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3927062304922318289, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
   m_PrefabInstance: {fileID: 305606397485933549}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5216020307257980832 stripped

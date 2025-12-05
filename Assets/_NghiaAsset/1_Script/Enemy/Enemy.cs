@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
 
 
@@ -14,9 +15,14 @@ namespace Turnbase
 
         public float traildblaze = 100f;
 
+        public bool isBroken = false;
+
         public EnemyStatsUI enemyUI;
 
         public Dictionary<SkillType, int> currentSkillTypePool;
+
+        [Header("Break Status Settings")]
+        public Skill.DebuffSettings BreakDebuffSettings;
 
         private void Awake() 
         {
@@ -119,6 +125,35 @@ namespace Turnbase
             {
                 Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
                 transform.rotation = targetRotation;
+            }
+        }
+
+        public void RestoreFromBreak()
+        {
+            if (!isBroken) return;
+
+            traildblaze = 100f;
+            isBroken = false;
+
+            if (enemyUI != null)
+            {
+                enemyUI.UpdateUI();
+            }
+
+            Debug.Log($"[{gameObject.name}] Đã phục hồi sức bền (traildblaze) về {traildblaze} và hết Break.");
+        }
+
+        public void ApplyBreakStatus(Skill.DebuffSettings breakDebuffSettings)
+        {
+            if(isBroken) return;
+
+            isBroken = true;
+            Debug.Log($"{gameObject.name} đã bị Break!");
+
+            if (debuffManager != null)
+            {
+                debuffManager.ApplyDebuff(breakDebuffSettings);
+                Debug.Log($"[{gameObject.name}] Đã áp dụng Debuff Break: {breakDebuffSettings.statToModify}.");
             }
         }
     }

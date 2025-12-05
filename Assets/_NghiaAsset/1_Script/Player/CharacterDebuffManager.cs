@@ -33,6 +33,11 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB defReductionVFXInstance;
         [HideInInspector] public Sprite defReductionIcon;
 
+        [Header("Braek Debuff State")]
+        [HideInInspector] public int breakTurnsRemaining = 0;
+        [HideInInspector] public Flyweight_TB breakVFXInstance;
+        [HideInInspector] public Sprite breakIcon;
+
 
         private void Awake()
         {
@@ -152,6 +157,33 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận Debuff Giảm Phòng thủ: **{percentage * 100}%**, **{duration} lượt**.");
         }
 
+        public void ApplyBreakDebuff(int duration, Flyweight_TB newVfxInstance, Sprite icon)
+        {
+            if (duration <= 0) return;
+
+            breakTurnsRemaining = duration;
+
+            if (character.stateMachine != null)
+            {
+                character.stateMachine.SwitchState(character.stateMachine.stunnedState);
+                Debug.Log($"{character.name} đã bị Break trong **{duration} lượt**. vào sturnState");
+
+            }
+
+            if (newVfxInstance != null)
+            {
+                if (breakVFXInstance != null)
+                {
+                    FlyweightFactory_TB.ReturnToPool(breakVFXInstance);
+                }
+                breakVFXInstance = newVfxInstance;
+
+                breakIcon = icon;
+            }
+
+            Debug.Log($"{character.name} đã bị Break trong **{duration} lượt**.");
+        }
+
 
         public void ApplyDebuff(Skill.DebuffSettings debuffSettings)
         {
@@ -206,6 +238,14 @@ namespace Turnbase
                 case DebuffType.DefReduction:
                     ApplyDefReductionDebuff(
                         debuffSettings.debuffValue, 
+                        debuffSettings.durationTurns,
+                        debuffVFX,
+                        debuffSettings.icon
+                    );
+                    break;
+
+                case DebuffType.Break:
+                    ApplyBreakDebuff(
                         debuffSettings.durationTurns,
                         debuffVFX,
                         debuffSettings.icon
@@ -290,11 +330,40 @@ namespace Turnbase
                 stunVFXInstance = null;
             }
             stunTurnsRemaining = 0;
-            if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+
+            if (stunTurnsRemaining <= 0 && breakTurnsRemaining <= 0)
             {
-                character.stateMachine.SwitchState(character.stateMachine.waitingState);
+                if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+                {
+                    character.stateMachine.SwitchState(character.stateMachine.waitingState);
+                }
             }
             Debug.Log($"Debuff Choáng của {character.name} đã hết hạn.");
+        }
+
+        private void RemoveExpiredBreakDebuff()
+        {
+            if (breakVFXInstance != null)
+            {
+                FlyweightFactory_TB.ReturnToPool(breakVFXInstance);
+                breakVFXInstance = null;
+            }
+            breakTurnsRemaining = 0;
+
+            if (character is Enemy enemy)
+            {
+                enemy.RestoreFromBreak();
+            }
+
+            if (stunTurnsRemaining <= 0 && breakTurnsRemaining <= 0)
+            {
+                if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+                {
+                    character.stateMachine.SwitchState(character.stateMachine.waitingState);
+                }
+            }
+
+            Debug.Log($"Debuff Break của {character.name} đã hết hạn.");
         }
 
         private void RemoveExpiredDefReductionDebuff()
@@ -362,6 +431,16 @@ namespace Turnbase
                 else
                 {
                     uiUpdateNeeded = true; 
+                }
+            }
+
+            if (breakTurnsRemaining > 0)
+            {
+                breakTurnsRemaining--;
+                if (breakTurnsRemaining <= 0)
+                {
+                    RemoveExpiredBreakDebuff();
+                    uiUpdateNeeded = true;
                 }
             }
 

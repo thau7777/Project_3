@@ -65,7 +65,7 @@ namespace Turnbase
             UpdateMpBar(stats);
             UpdateShieldBar(stats);
             UpdateElementImage();
-
+            UpdateTrailblazeBar();
             UpdateStatusEffects(dataProvider.GetActiveStatusEffects());
         }
 
@@ -93,17 +93,28 @@ namespace Turnbase
             }
         }
 
-        public void UpdateTrailblazeBar(float currentTrailblaze)
+        public void UpdateTrailblazeBar()
         {
-            float maxTrailblaze = 100f;
+            if (!(ownerCharacter is Enemy enemyOwner))
+            {
+                Debug.LogError("EnemyStatsUI chỉ nên được sử dụng cho Enemy.");
+                return;
+            }
 
-            if (maxTrailblaze > 0f)
+            float currentTrailblaze = enemyOwner.traildblaze;
+
+            float maxTrailblaze = 100f; 
+
+            if (trailblazeFill != null && maxTrailblaze > 0f)
             {
                 trailblazeFill.fillAmount = currentTrailblaze / maxTrailblaze;
             }
             else
             {
-                trailblazeFill.fillAmount = 0f;
+                if (trailblazeFill != null)
+                {
+                    trailblazeFill.fillAmount = 0f;
+                }
             }
         }
 

@@ -157,6 +157,8 @@ public enum  DebuffType
     Burn,
     Poison,
     Stun,
-    DefReduction
+    DefReduction,
+    Break,
+
 }
 

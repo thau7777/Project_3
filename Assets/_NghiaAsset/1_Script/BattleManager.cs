@@ -520,7 +520,7 @@ namespace Turnbase
                 yield break;
             }
 
-            if (activeCharacter.debuffManager.stunTurnsRemaining > 0)
+            if (activeCharacter.debuffManager.stunTurnsRemaining > 0 || activeCharacter.debuffManager.breakTurnsRemaining > 0)
             {
                 activeCharacter.actionGauge = 0;
                 if (activeCharacter.stateMachine != null)
@@ -532,6 +532,7 @@ namespace Turnbase
                 isProcessingTurn = false;
                 yield break;
             }
+
 
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 

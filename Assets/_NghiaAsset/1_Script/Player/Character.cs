@@ -130,7 +130,7 @@ namespace Turnbase
         public void TakeDamage(int damageAmount, ElementType damageElement)
         {
             int remainingDamage = damageAmount;
-            int traildblaze = 20;
+            int traildblaze = 100;
 
             if (stats.currentShield > 0)
             {
@@ -172,13 +172,18 @@ namespace Turnbase
 
                         if (enemyTarget.enemyUI != null)
                         {
-                            enemyTarget.enemyUI.UpdateTrailblazeBar(enemyTarget.traildblaze);
+                            enemyTarget.enemyUI.UpdateUI();
                         }
                         Debug.Log($"[{enemyTarget.gameObject.name}] Bị khắc chế! Traildblaze giảm xuống còn: {enemyTarget.traildblaze}");
                     }
                     else
                     {
                         Debug.Log($"[{enemyTarget.gameObject.name}] Không bị khắc chế ({elementMultiplier}). Traildblaze không giảm.");
+                    }
+
+                    if(enemyTarget.traildblaze <= 0)
+                    {
+                        enemyTarget.ApplyBreakStatus(enemyTarget.BreakDebuffSettings);
                     }
                 }
 
