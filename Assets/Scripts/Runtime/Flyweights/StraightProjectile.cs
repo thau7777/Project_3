@@ -4,7 +4,6 @@ using UnityEngine;
 public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
-    private HitBoxHandler _hitBoxHandler;
 
     private Vector3? _direction = null;
     private Rigidbody _rb;
@@ -100,6 +99,7 @@ public class StraightProjectile : Flyweight
     {
         if ((settings.DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
+            if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
             DespawnFlyweight();
         }
     }

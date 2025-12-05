@@ -18,7 +18,8 @@ public enum VFXSpawnLocation
     LeftHand,
     RightHand,
     AboveHead,
-    Projectile
+    Projectile,
+    Mouse
 }
 [Serializable]
 public struct AttackData

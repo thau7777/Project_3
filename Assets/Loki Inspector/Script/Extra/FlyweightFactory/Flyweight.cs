@@ -15,6 +15,8 @@ public abstract class Flyweight : MonoBehaviour
     }
     public void ReturnToPool()
     {
+        if(gameObject.activeSelf)
         FlyweightFactory.ReturnToPool(this);
     }
+    
 }

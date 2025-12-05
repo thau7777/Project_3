@@ -11,6 +11,7 @@ public class EnemyTopdownDead : State
     {
         ctx.CurrentSpeed = 0; 
         ctx.Animator.CrossFade(ctx.DeadHash, 0, 0);
+        MinionsManager.Instance?.RemoveTargetedEnemy(ctx.RootTransform.gameObject);
     }
     protected override State GetTransition()
     {
