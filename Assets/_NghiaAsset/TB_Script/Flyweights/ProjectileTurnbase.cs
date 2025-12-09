@@ -68,13 +68,14 @@ namespace Turnbase
         {
             FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
+
             if (effectToSpawn != null)
             {
                 Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);
 
                 if (effectInstance != null)
                 {
-                    ((ImpactVFX_TB)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
+                    effectInstance.Initialize(position, Quaternion.identity);
                 }
             }
         }

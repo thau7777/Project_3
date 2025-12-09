@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
-using static UnityEditor.Rendering.FilterWindow;
+using System.Linq;
 
 
 namespace Turnbase
@@ -32,6 +31,13 @@ namespace Turnbase
                 user.animator.Play(skill.animationTriggerName);
             }
 
+            if (skill.cameraTimeline != null && battleManager.mainDirector != null)
+            {
+                PlayableDirector director = battleManager.mainDirector;
+                director.playableAsset = skill.cameraTimeline;
+                director.Play();
+            }
+
             yield return new WaitForSeconds(DAMAGE_START_DELAY);
 
             SpawnImpactEffect(new Vector3(0f, 0f, 0f));
@@ -45,7 +51,6 @@ namespace Turnbase
 
             if (battleManager != null)
             {
-
                 battleManager.EndTurn(user);
             }
         }
@@ -76,38 +81,62 @@ namespace Turnbase
             return targets;
         }
 
-        private IEnumerator ApplyDamageToTargets(List<Character> targets)
+        private void ApplySingleHitDamage(Character target, int damage)
         {
             ElementType element = skill.elementType;
+            target.TakeDamage(damage, element);
+        }
 
-            foreach (Character aoeTarget in targets)
+        private IEnumerator ApplyDamageToTargets(List<Character> targets)
+        {
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            float delayBetweenHits = skill.delayBetweenHits;
+
+            for (int i = 0; i < hits; i++)
             {
-                if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
-                int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
-
-                aoeTarget.TakeDamage(finalDamage, element);
-
-                if (skill.debuffProperties.statToModify != DebuffType.None)
+                foreach (Character aoeTarget in targets)
                 {
-                    aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                    if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
+                    int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
+
+                    int baseDamagePerHit = finalDamage / hits;
+                    int damageRemainder = finalDamage % hits;
+
+                    int currentHitDamage = baseDamagePerHit;
+                    if (i == hits - 1)
+                    {
+                        currentHitDamage += damageRemainder;
+                    }
+
+
+                    if (i == 0)
+                    {
+                        if (skill.debuffProperties.statToModify != DebuffType.None)
+                        {
+                            aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                        }
+
+                        if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+                        {
+                            user.buffManager.ProcessSkillStacks(skill, aoeTarget);
+                        }
+
+
+                    }
+
+
+                    ApplySingleHitDamage(aoeTarget, currentHitDamage);
+
+                    yield return new WaitForSeconds(TARGET_DELAY);
                 }
 
-                if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+
+                if (i < hits - 1)
                 {
-                    user.buffManager.ProcessSkillStacks(skill, aoeTarget);
+                    yield return new WaitForSeconds(delayBetweenHits);
                 }
-
-                if (skill.cameraTimeline != null && battleManager.mainDirector != null)
-                {
-                    PlayableDirector director = battleManager.mainDirector;
-                    director.playableAsset = skill.cameraTimeline;
-
-                    director.Play();
-                }
-
-                yield return new WaitForSeconds(TARGET_DELAY);
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 
+
 namespace Turnbase
 {
     public class RangedAttackCommand : SkillCommand
@@ -41,26 +42,51 @@ namespace Turnbase
             return lookRotation;
         }
 
+        private void ApplySingleHitDamage(int damage)
+        {
+            ElementType element = skill.elementType;
+            target.TakeDamage(damage, element);
+        }
+
+        private void ApplySingleHitDamageAndEffect(int damage)
+        {
+            ElementType element = skill.elementType;
+            target.TakeDamage(damage, element);
+            SpawnImpactEffect(target.transform.position, skill);
+        }
+
         private IEnumerator PerformRangedAttack()
         {
             ElementType element = skill.elementType;
 
             finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            float delayBetweenHits = skill.delayBetweenHits;
+
+            int baseDamagePerHit = finalDamage / hits;
+            int damageRemainder = finalDamage % hits;
+
+
+            int firstHitDamage = baseDamagePerHit;
+            if (hits == 1)
+            {
+                firstHitDamage += damageRemainder;
+            }
+
+
+            ApplyStatusEffectsAndStacks(user, target, skill);
+
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage, element);
+                    ApplySingleHitDamageAndEffect(firstHitDamage);
                     damageApplied = true;
-                    SpawnImpactEffect(target.transform.position, skill);
-
                 }
             };
 
-            ApplyStatusEffectsAndStacks(user, target, skill);
 
-            //timeline
             if (skill.cameraTimeline != null && battleManager.mainDirector != null)
             {
                 PlayableDirector director = battleManager.mainDirector;
@@ -74,18 +100,47 @@ namespace Turnbase
 
             user.animator.Play(skill.animationTriggerName);
 
-            while (!damageApplied)
+            float startTime = Time.time;
+            float timeout = 2.0f;
+
+
+            while (!damageApplied && Time.time < startTime + timeout)
             {
                 yield return null;
             }
+
+            if (!damageApplied)
+            {
+                Debug.LogWarning("First hit callback failed or timed out. Forcing damage.");
+                ApplySingleHitDamageAndEffect(firstHitDamage);
+            }
+
+
+
+            for (int i = 1; i < hits; i++)
+            {
+                yield return new WaitForSeconds(delayBetweenHits);
+
+                int currentHitDamage = baseDamagePerHit;
+
+                if (i == hits - 1)
+                {
+                    currentHitDamage += damageRemainder;
+                }
+
+
+                ApplySingleHitDamage(currentHitDamage);
+            }
+
 
             if (skill.impactVFXDuration > 0)
             {
                 yield return new WaitForSeconds(skill.impactVFXDuration);
             }
 
-            float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(attackDuration);
+
+            float animationTimeRemaining = user.animator.GetCurrentAnimatorStateInfo(0).length - (Time.time - startTime);
+            yield return new WaitForSeconds(Mathf.Max(0.1f, animationTimeRemaining));
         }
 
 

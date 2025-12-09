@@ -104,7 +104,6 @@ namespace Turnbase
 
             if (!damageApplied)
             {
-                Debug.LogWarning("First hit callback failed or timed out. Forcing damage.");
                 target.TakeDamage(baseDamagePerHit, element);
                 SpawnImpactEffect(target.transform.position, skill);
             }

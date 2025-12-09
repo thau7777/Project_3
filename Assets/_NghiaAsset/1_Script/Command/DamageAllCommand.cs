@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
 
 
 namespace Turnbase
@@ -49,7 +48,6 @@ namespace Turnbase
         {
             List<Character> targets;
 
-
             if (user.isPlayer)
             {
                 targets = battleManager.allCombatants.FindAll(
@@ -72,32 +70,70 @@ namespace Turnbase
             return targets;
         }
 
-        private IEnumerator ApplyDamageToTargets(List<Character> targets)
+        private void ApplySingleHitDamage(Character target, int damage)
         {
             ElementType element = skill.elementType;
+            target.TakeDamage(damage, element);
+        }
 
-            foreach (Character aoeTarget in targets)
+        private void ApplySingleHitDamageAndEffect(Character target, int damage)
+        {
+            ApplySingleHitDamage(target, damage);
+            SpawnImpactEffect(target.transform.position);
+        }
+
+        private IEnumerator ApplyDamageToTargets(List<Character> targets)
+        {
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            float delayBetweenHits = skill.delayBetweenHits;
+
+            for (int i = 0; i < hits; i++)
             {
-                if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
-                int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
-
-                aoeTarget.TakeDamage(finalDamage, element);
-
-                SpawnImpactEffect(aoeTarget.transform.position);
-
-                if (skill.debuffProperties.statToModify != DebuffType.None)
+                foreach (Character aoeTarget in targets)
                 {
-                    aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                    if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
+                    int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
+
+                    int baseDamagePerHit = finalDamage / hits;
+                    int damageRemainder = finalDamage % hits;
+
+                    int currentHitDamage = baseDamagePerHit;
+                    if (i == hits - 1)
+                    {
+                        currentHitDamage += damageRemainder;
+                    }
+
+
+                    if (i == 0)
+                    {
+                        if (skill.debuffProperties.statToModify != DebuffType.None)
+                        {
+                            aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                        }
+
+                        if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+                        {
+                            user.buffManager.ProcessSkillStacks(skill, aoeTarget);
+                        }
+
+                        ApplySingleHitDamageAndEffect(aoeTarget, currentHitDamage);
+                    }
+                    else
+                    {
+                        ApplySingleHitDamage(aoeTarget, currentHitDamage);
+                    }
+
+
+                    yield return new WaitForSeconds(TARGET_DELAY);
                 }
 
-                if (skill.stackApplicationTarget == StackApplicationTarget.Target)
-                {
-                    user.buffManager.ProcessSkillStacks(skill, aoeTarget);
-                }
 
-                yield return new WaitForSeconds(TARGET_DELAY);
+                if (i < hits - 1)
+                {
+                    yield return new WaitForSeconds(delayBetweenHits);
+                }
             }
         }
 
@@ -111,7 +147,7 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    ((ImpactVFX_TB)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
+                    effectInstance.Initialize(position, Quaternion.identity);
 
                 }
 
