@@ -47,6 +47,10 @@ public class Skill : ScriptableObject
     [Header("Color Lookup")]
     public ElementColorMap elementColorMap;
 
+    [Header("Multi-Hit")]
+    public int numberOfHits = 1;
+    public float delayBetweenHits = 0.1f;
+
 
     [System.Serializable]
     public struct StackSetting 
