@@ -100,6 +100,25 @@ public static class TransformExtensions
             action(parent.GetChild(i));
         }
     }
+    /// <summary>
+    /// Executes a specified action for every child of the given transform,
+    /// including all nested children at any depth.
+    /// </summary>
+    /// <param name="parent">The parent transform.</param>
+    /// <param name="action">The action to run on each child.</param>
+    public static void ForEveryChildDeep(this Transform parent, System.Action<Transform> action)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+
+            // execute the action on this child
+            action(child);
+
+            // recursively process this child's children
+            child.ForEveryChildDeep(action);
+        }
+    }
 
     [Obsolete("Renamed to ForEveryChild")]
     static void PerformActionOnChildren(this Transform parent, System.Action<Transform> action)

@@ -69,9 +69,17 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
     #endregion
 
+    #region SummonerStuffs
+    [SerializeField]
+    private GameObject _minionManagerPrefab;
+
+    private Vector3 _savedMousePosition;
+    #endregion
     #region Initialization
     private void Awake()
     {
+        if (_locomotionSet.characterClass == CharacterClass.Summoner)
+            Instantiate(_minionManagerPrefab);
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
@@ -138,7 +146,6 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     {
         UseSKill(1, value, SaveDirToAttack);
     }
-    public void TestDash() => UseSKill(1, true, SaveDirToAttack);
     private void OnButtonQ(bool value)
     {
         UseSKill(2, value, SaveDirToAttack);
@@ -175,6 +182,10 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             SaveDirToAttack();
             return;
         }
+
+        if (_locomotionSet.characterClass == CharacterClass.Summoner)
+            TrySaveMousePosition();
+
         if (!_context.IsAttacking)
         {
             _context.IsAttacking = true;
@@ -258,20 +269,51 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     }
     private void SpawnVFX(FlyweightSettings flyweightSettings, VFXSpawnLocation location)
     {
-        foreach(var spawnPoint in _attackVfxSpawnPoints)
+        if (location.ToString() == "Mouse")
         {
+            Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
+            vfx.transform.position = _savedMousePosition;
+            MinionsManager.Instance.RemoveAllTargetedEnemies();
+            return;
+        }
+        foreach (var spawnPoint in _attackVfxSpawnPoints)
+        {
+            
             if(location.ToString() == spawnPoint.name)
             {
-                Flyweight slashVFX = FlyweightFactory.Spawn(flyweightSettings);
-                slashVFX.FlyweightInitialize(spawnPoint.position, transform.rotation);
-                if (slashVFX is StraightProjectile)
+                Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
+                vfx.FlyweightInitialize(spawnPoint.position, transform.rotation); // set position
+                if (vfx is StraightProjectile)
                 {
-                    var straightProjectile = slashVFX as StraightProjectile;
-                    straightProjectile.InitializeProjectile(transform.forward, 10,10);
+                    var straightProjectile = vfx as StraightProjectile;
+                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10);
                 }
                 break;
             }
         }
+    }
+    private void TrySaveMousePosition()
+    {
+        if (!TryGetMouseWorldPosition(out Vector3 mouseWorld)) return;
+        _savedMousePosition = GetGroundPosition(mouseWorld);
+    }
+    private Vector3 GetGroundPosition(Vector3 worldPos)
+    {
+        if (Physics.Raycast(worldPos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("Ground")))
+            return hit.point + Vector3.up * 0.01f;
+        return worldPos + Vector3.up * 0.01f;
+    }
+
+    private bool TryGetMouseWorldPosition(out Vector3 worldPos)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+        {
+            worldPos = hit.point;
+            return true;
+        }
+        worldPos = Vector3.zero;
+        return false;
     }
     public void OnSkillDone()
     {

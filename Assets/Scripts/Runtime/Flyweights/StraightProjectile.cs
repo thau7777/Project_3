@@ -40,6 +40,7 @@ public class StraightProjectile : Flyweight
 
     public void InitializeProjectile(Vector3 direction, float speed, float range)
     {
+
         _direction = direction.normalized;
         _speed = speed;
         _range = range;
@@ -98,6 +99,7 @@ public class StraightProjectile : Flyweight
     {
         if ((settings.DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
+            if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
             DespawnFlyweight();
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = " New OneShotVFX Settings", menuName = "Scriptable Objects/Flyweight/OneShotVFX Settings")]
@@ -7,13 +8,60 @@ public class OneShotVFXSettings : FlyweightSettings
     public float DespawnDelay { get; private set; }
 
     [SerializeField]
-    private bool _couldDoDamage = false;
-    public bool CouldDoDamage => _couldDoDamage;
+    private bool _canDealDamage = false;
 
-    [ShowIf("_couldDoDamage")]
+    public bool CanDealDamage
+    {
+        get => _canDealDamage;
+        set
+        {
+            _canDealDamage = value;
+        }
+    }
+
+    [SerializeField]
+    [ShowIf("_canDealDamage")]
+    private int _damage = 40;
+
+    [SerializeField]
+    [ShowIf("_canDealDamage")]
+    private int _knockBackForce = 10;
+
+
+
+
+    [SerializeField]
+    private bool _canApplyEffect = false;
+
+    public bool CanApplyEffect
+    {
+        get => _canApplyEffect;
+        set
+        {
+            _canApplyEffect= value;
+        }
+    }
+
+    [ShowIf("_canApplyEffect")]
+    [SerializeField]
+    private List<Effect> _effectsToApplyList = new();
+
+
+    private bool _hasHitBox;
+    public bool HasHitBox => _hasHitBox;
+
+
+    [ShowIf("_hasHitBox")]
     [MinMaxSlider(0,1)]
     public Vector2 hitboxOnOffTime;
 
+    [ShowIf("_hasHitBox")]
+    public LayerMask dodgeLayers;
+
+    private void OnValidate()
+    {
+        _hasHitBox = _canDealDamage || _canApplyEffect;
+    }
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);
@@ -25,9 +73,25 @@ public class OneShotVFXSettings : FlyweightSettings
         var flyweight = go.GetOrAdd<OneShotVFX>();
         flyweight.settings = this;
 
-        if (CouldDoDamage)
-            go.AddComponent<HitBoxHandler>();
+        if (HasHitBox)
+        {
+            go.GetOrAdd<HitBoxHandler>().DodgeLayers = dodgeLayers;
+
+            if (CanDealDamage)
+            {
+                var damageDealer = go.GetOrAdd<DamageDealer>();
+                damageDealer.Damage = _damage;
+                damageDealer.KnockbackForce = _knockBackForce;
+            }
+            if (CanApplyEffect)
+            {
+                var effectApplier = go.GetOrAdd<EffectApplier>();
+                effectApplier.SetEffects(_effectsToApplyList);
+            }
+        }
+
 
         return flyweight;
     }
+
 }

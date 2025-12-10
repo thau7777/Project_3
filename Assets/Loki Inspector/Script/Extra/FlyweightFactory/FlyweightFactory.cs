@@ -57,4 +57,9 @@ public enum FlyweightType
     IndicatorConeEnemy,
     IndicatorRectangleAlly,
     IndicatorRectangleEnemy,
+
+    BasicSummonerAttack,
+    SummonerTargetVFX,
+    DogSlash_1,
+    DogSlash_2,
 }

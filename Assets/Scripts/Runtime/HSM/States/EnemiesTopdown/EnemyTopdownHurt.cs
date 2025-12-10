@@ -26,17 +26,16 @@ public class EnemyTopdownHurt : State
             OnEnter();
         }
         if(_elapsedTime >= _knockBackDuration)
+        {
+            ctx.CurrentSpeed = _targetSpeed;
             return;
+        }
 
         _elapsedTime += deltaTime;
 
         float t = Mathf.Clamp01(_elapsedTime / _knockBackDuration);
         ctx.CurrentSpeed = Mathf.Lerp(ctx.KnockbackForce, _targetSpeed, t);
 
-        if (_elapsedTime >= _knockBackDuration)
-        {
-            ctx.CurrentSpeed = _targetSpeed;
-        }
     }
     protected override State GetTransition()
     {

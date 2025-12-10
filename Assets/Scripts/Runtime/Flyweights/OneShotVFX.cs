@@ -17,6 +17,7 @@ public class OneShotVFX : Flyweight
         _collider = GetComponentInChildren<Collider>(true); // find collider automatically
         if (_collider != null)
             _collider.enabled = false; // always start disabled
+
     }
 
     private void OnEnable()
@@ -54,7 +55,7 @@ public class OneShotVFX : Flyweight
         {
             _elapsedTime += Time.deltaTime;
 
-            if (settings.CouldDoDamage && _collider != null)
+            if (settings.HasHitBox && _collider != null)
             {
                 // enable collider when time >= hitboxOnTime
                 if (!_collider.enabled && _elapsedTime >= _hitboxOnTime && _elapsedTime < _hitboxOffTime)

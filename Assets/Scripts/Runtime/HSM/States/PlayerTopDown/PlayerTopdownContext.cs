@@ -49,7 +49,7 @@ public class PlayerTopdownContext
 
     // Derived properties
     public CharacterClass CharacterClass => LocomotionSet.characterClass;
-    public bool IsRangeClass => CharacterClass == CharacterClass.Mage || CharacterClass == CharacterClass.Bow;
+    public bool IsRangeClass => CharacterClass == CharacterClass.Mage || CharacterClass == CharacterClass.Summoner;
 
     // Cached Animator Hashes
     public int StrafeStateHash => Animator.StringToHash("Strafe");
