@@ -67,39 +67,70 @@ namespace Turnbase
 
         private IEnumerator PerformAttack()
         {
+            ApplyStatusEffectsAndStacks(user, target, skill);
+
             ElementType element = skill.elementType;
-            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            float delayBetweenHits = skill.delayBetweenHits;
+
+            int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+
+            int baseDamagePerHit = totalDamage / hits;
+            int damageRemainder = totalDamage % hits;
 
             damageApplied = false;
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage, element);
-
+                    target.TakeDamage(baseDamagePerHit, element);
                     SpawnImpactEffect(target.transform.position, skill);
-
                     damageApplied = true;
                 }
             };
-
-            ApplyStatusEffectsAndStacks(user, target, skill);
-
 
             user.PrepareHitCallBack(hitAction);
 
             user.animator.Play("Attack");
 
-            while (!damageApplied)
+            float startTime = Time.time;
+            float timeout = 2.0f;
+
+            while (!damageApplied && Time.time < startTime + timeout)
             {
                 yield return null;
             }
 
+            if (!damageApplied)
+            {
+                target.TakeDamage(baseDamagePerHit, element);
+                SpawnImpactEffect(target.transform.position, skill);
+            }
+
+
+            for (int i = 1; i < hits; i++)
+            {
+                yield return new WaitForSeconds(delayBetweenHits);
+
+                int currentHitDamage = baseDamagePerHit;
+
+                if (i == hits - 1)
+                {
+                    currentHitDamage += damageRemainder;
+                }
+
+                target.TakeDamage(currentHitDamage, element);
+                SpawnImpactEffect(target.transform.position, skill);
+            }
+
             float calculatedDuration = 0.5f;
             AnimatorStateInfo stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+
             if (user.animator.HasState(0, Animator.StringToHash("Attack")))
             {
-                calculatedDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
+                calculatedDuration = stateInfo.length - (Time.time - startTime);
+                calculatedDuration = Mathf.Max(0.1f, calculatedDuration);
             }
 
             yield return new WaitForSeconds(calculatedDuration);

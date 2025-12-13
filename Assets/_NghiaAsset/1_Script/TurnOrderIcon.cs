@@ -12,6 +12,7 @@ namespace Turnbase
         public Button avatarButton;
 
         public TextMeshProUGUI actionGaugeText;
+        public TextMeshProUGUI roundTrackerText;
 
         [HideInInspector] public Character characterOwner;
 
@@ -32,14 +33,36 @@ namespace Turnbase
             statDisplayPanel = statUIRef;
             battleManager = battleManagerRef;
 
+            if (roundTrackerText != null)
+            {
+                roundTrackerText.gameObject.SetActive(false);
+            }
+
             if (avatarImage != null && character.info.Avatar != null)
             {
                 avatarImage.sprite = character.info.Avatar;
             }
 
+            if (character.isVirtualTracker)
+            {
+                avatarButton.interactable = false;
+
+                if (roundTrackerText != null && character is RoundTracker roundTracker)
+                {
+                    roundTrackerText.text = $"{roundTracker.currentRound}";
+                    roundTrackerText.gameObject.SetActive(true);
+                }
+
+                if (actionGaugeText != null)
+                {
+                    actionGaugeText.gameObject.SetActive(true);
+                }
+            }
+
             if (actionGaugeText != null)
             {
-                actionGaugeText.text = Mathf.RoundToInt(character.actionGauge).ToString();
+                float displayValue = Mathf.Min(character.actionGauge, 100f);
+                actionGaugeText.text = Mathf.RoundToInt(displayValue).ToString();
             }
 
             if (cameraViewManager != null)
@@ -47,15 +70,25 @@ namespace Turnbase
                 cameraViewManager.SetCameraView(characterOwner);
             }
 
-            if(character.isVirtualTracker)
-            {
-                avatarButton.interactable = false;
-                return;
-            }
-
-
             avatarButton.onClick.RemoveAllListeners();
             avatarButton.onClick.AddListener(ShowPanel);
+
+            UpdateDisplay();
+        }
+
+        public void UpdateDisplay()
+        {
+            if (characterOwner != null && actionGaugeText != null)
+            {
+                float displayValue = Mathf.Min(characterOwner.actionGauge, 100f);
+                actionGaugeText.text = Mathf.RoundToInt(displayValue).ToString();
+            }
+
+            if (characterOwner is RoundTracker roundTracker && roundTrackerText != null && characterOwner.isVirtualTracker)
+            {
+                roundTrackerText.text = $"{roundTracker.currentRound}";
+                roundTrackerText.gameObject.SetActive(true);
+            }
         }
 
         private void ShowPanel()

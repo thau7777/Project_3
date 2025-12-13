@@ -11,6 +11,8 @@ namespace Turnbase
     {
         public GameObject turnOrderIconPrefab;
 
+        public GameObject roundTrackerPrefab; 
+
         public Transform turnOrderContainer;
 
         public CharacterStatUI statDisplayPanel;
@@ -37,7 +39,24 @@ namespace Turnbase
 
             foreach (Character character in sortedCharacters)
             {
-                GameObject iconObj = Instantiate(turnOrderIconPrefab, turnOrderContainer);
+                GameObject prefabToInstantiate;
+
+                if (character.isVirtualTracker)
+                {
+                    prefabToInstantiate = roundTrackerPrefab;
+                }
+                else
+                {
+                    prefabToInstantiate = turnOrderIconPrefab;
+                }
+
+                if (prefabToInstantiate == null)
+                {
+                    Debug.LogError("Thiếu prefab! Vui lòng gán cả turnOrderIconPrefab và roundTrackerPrefab.");
+                    continue;
+                }
+
+                GameObject iconObj = Instantiate(prefabToInstantiate, turnOrderContainer);
 
                 TurnOrderIcon iconComponent = iconObj.GetComponent<TurnOrderIcon>();
 

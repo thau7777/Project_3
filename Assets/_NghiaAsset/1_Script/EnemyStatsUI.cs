@@ -9,6 +9,7 @@ namespace Turnbase
     {
         public Image hpBarFill;
         public Image mpBarFill;
+        public Image trailblazeFill;
         public Image shieldBarFill;
         public Image elementImage;
 
@@ -18,15 +19,40 @@ namespace Turnbase
         public ElementMapping elementMapping;
 
         private Character ownerCharacter;
+        private CharacterStatusDataProvider dataProvider;
 
         void Awake()
         {
             ownerCharacter = GetComponentInParent<Character>();
+            if (ownerCharacter != null)
+            {
+                dataProvider = ownerCharacter.GetComponent<CharacterStatusDataProvider>();
+            }
         }
 
         void Start()
         {
             UpdateUI();
+        }
+
+        void OnEnable()
+        {
+            EventBusUI<StatusEffectChangedEvent>.Subscribe(OnStatusEffectChanged);
+
+            UpdateUI();
+        }
+
+        void OnDisable()
+        {
+            EventBusUI<StatusEffectChangedEvent>.Unsubscribe(OnStatusEffectChanged);
+        }
+
+        private void OnStatusEffectChanged(StatusEffectChangedEvent eventData)
+        {
+            if (eventData.TargetCharacter == ownerCharacter)
+            {
+                UpdateUI();
+            }
         }
 
         public void UpdateUI()
@@ -39,8 +65,8 @@ namespace Turnbase
             UpdateMpBar(stats);
             UpdateShieldBar(stats);
             UpdateElementImage();
-
-            UpdateStatusEffects(ownerCharacter.GetActiveStatusEffects());
+            UpdateTrailblazeBar();
+            UpdateStatusEffects(dataProvider.GetActiveStatusEffects());
         }
 
         private void UpdateHpBar(CharacterStats stats)
@@ -64,6 +90,31 @@ namespace Turnbase
             if (shieldBarFill != null && stats.maxHP > 0)
             {
                 shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxHP;
+            }
+        }
+
+        public void UpdateTrailblazeBar()
+        {
+            if (!(ownerCharacter is Enemy enemyOwner))
+            {
+                Debug.LogError("EnemyStatsUI chỉ nên được sử dụng cho Enemy.");
+                return;
+            }
+
+            float currentTrailblaze = enemyOwner.traildblaze;
+
+            float maxTrailblaze = 100f; 
+
+            if (trailblazeFill != null && maxTrailblaze > 0f)
+            {
+                trailblazeFill.fillAmount = currentTrailblaze / maxTrailblaze;
+            }
+            else
+            {
+                if (trailblazeFill != null)
+                {
+                    trailblazeFill.fillAmount = 0f;
+                }
             }
         }
 
@@ -113,6 +164,7 @@ namespace Turnbase
                     turnText.text = effect.TurnsRemaining.ToString();
                 }
             }
+
         }
     }
 }

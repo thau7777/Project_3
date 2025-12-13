@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
+using UnityEngine.Playables;
 
 
 namespace Turnbase
@@ -58,52 +58,100 @@ namespace Turnbase
 
         private IEnumerator PerformProjectileAttack()
         {
-            CalculateFinalDamage();
+            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            float delayBetweenHits = skill.delayBetweenHits;
+
+            int baseDamagePerHit = finalDamage / hits;
+            int damageRemainder = finalDamage % hits;
+
+            bool isProjectile = skill.projectileSettings != null;
+            bool statusEffectsApplied = false;
 
             user.animator.Play(skill.animationTriggerName);
 
             float animationStartDelay = 0.5f;
             yield return new WaitForSeconds(animationStartDelay);
 
-            if (skill.projectileSettings != null)
+            for (int i = 0; i < hits; i++)
             {
-                SpawnProjectile();
-
-                while (!projectileHit)
+                int currentHitDamage = baseDamagePerHit;
+                if (i == hits - 1)
                 {
-                    yield return null;
+                    currentHitDamage += damageRemainder;
                 }
 
-                ApplyStatusEffectsAndStacks(user, target, skill);
-
-
-                if (skill.impactVFXDuration > 0)
+                if (i == 0 && !statusEffectsApplied)
                 {
-                    yield return new WaitForSeconds(skill.impactVFXDuration);
+                    ApplyStatusEffectsAndStacks(user, target, skill);
+                    statusEffectsApplied = true;
+                }
+
+                if (isProjectile)
+                {
+                    if (i == 0) 
+                    {
+                        projectileHit = false;
+                        SpawnProjectile(currentHitDamage);
+
+                        float startTime = Time.time;
+                        float timeout = 5.0f;
+                        while (!projectileHit && Time.time < startTime + timeout)
+                        {
+                            yield return null;
+                        }
+
+                        if (Time.time >= startTime + timeout)
+                        {
+                            Debug.LogError($"Projectile hit timed out for hit {i + 1}/{hits}. Forcing break.");
+                            break;
+                        }
+
+                        if (skill.cameraTimeline != null && battleManager.mainDirector != null)
+                        {
+                            PlayableDirector director = battleManager.mainDirector;
+                            director.playableAsset = skill.cameraTimeline;
+                            director.Play();
+                        }
+                    }
+                    else 
+                    {
+                        ApplySingleHitDamage(currentHitDamage);
+                        SpawnImpactEffect(target.transform.position, skill);
+                    }
+                }
+                else 
+                {
+                    ApplySingleHitDamage(currentHitDamage);
+                    SpawnImpactEffect(target.transform.position, skill);
+                }
+
+                if (i < hits - 1)
+                {
+                    yield return new WaitForSeconds(delayBetweenHits);
                 }
             }
-            else
+
+            if (isProjectile && skill.impactVFXDuration > 0)
             {
-                ApplyDamageInstant();
-
-                ApplyStatusEffectsAndStacks(user, target, skill);
-
-
+                yield return new WaitForSeconds(skill.impactVFXDuration);
             }
 
             float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(attackDuration);
+            yield return new WaitForSeconds(Mathf.Max(0.5f, attackDuration));
         }
 
-        private void SpawnProjectile()
+        private void SpawnProjectile(int damageForThisHit)
         {
-            Flyweight2 projectileInstance = FlyweightFactory2.Spawn(skill.projectileSettings);
+            Flyweight_TB projectileInstance = FlyweightFactory_TB.Spawn(skill.projectileSettings);
 
             ElementType element = skill.elementType;
 
             if (projectileInstance != null)
             {
-                projectileInstance.Initialize(user.transform.position, targetLookRotation);
+                Vector3 spawnPosition = user.transform.position + user.transform.forward * 0.5f + Vector3.up * 1f;
+                projectileInstance.Initialize(spawnPosition, targetLookRotation);
 
                 ProjectileTurnBase projectileScript = projectileInstance.GetComponent<ProjectileTurnBase>();
 
@@ -111,32 +159,19 @@ namespace Turnbase
                 {
                     Action hitCallback = () => { projectileHit = true; };
 
-                    projectileScript.Setup(target, skill, finalDamage, element, hitCallback);
+
+                    projectileScript.Setup(target, skill, damageForThisHit, element, hitCallback);
                 }
-                else
-                {
-                    Debug.LogError("Projectile prefab thiếu component ProjectileTurnBase.cs!");
-                    projectileHit = true;
-                }
+
             }
-            else
-            {
-                Debug.LogError("Không thể spawn projectile. Kiểm tra FlyweightSettings và Factory.");
-                projectileHit = true;
-            }
+
         }
 
-        private void ApplyDamageInstant()
+
+        private void ApplySingleHitDamage(int damage)
         {
             ElementType element = skill.elementType;
-            target.TakeDamage(finalDamage, element);
-            SpawnImpactEffect(target.transform.position, skill);
-            projectileHit = true;
-        }
-
-        private void CalculateFinalDamage()
-        {
-            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            target.TakeDamage(damage, element);
         }
 
         private IEnumerator RotateBackToInitial()

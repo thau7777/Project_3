@@ -13,45 +13,48 @@ namespace Turnbase
         [Header("Attack Buff")]
         [HideInInspector] public int attackBuffTurnsRemaining = 0;
         [HideInInspector] public int originalBaseAttack = 0;
-        [HideInInspector] public Flyweight2 attackVFXInstance;
+        [HideInInspector] public Flyweight_TB attackVFXInstance;
         [HideInInspector] public Sprite attackBuffIcon;
 
         [Header("MAX HP Buff")]
         [HideInInspector] public int originalBaseMaxHP = 0;
         [HideInInspector] public int maxHPBuffTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 maxHPVFXInstance;
+        [HideInInspector] public Flyweight_TB maxHPVFXInstance;
         [HideInInspector] public Sprite maxHPBuffIcon;
 
         [Header("Defense Buff")]
         [HideInInspector] public int originalBaseDefense = 0;
         [HideInInspector] public int defenseBuffTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 defenseVFXInstance;
+        [HideInInspector] public int defenseBuffAmount = 0;
+        [HideInInspector] public Flyweight_TB defenseVFXInstance;
         [HideInInspector] public Sprite defenseBuffIcon;
 
         [Header("Agility Buff")]
         [HideInInspector] public int originalBaseAgility = 0;
         [HideInInspector] public int agilityBuffTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 agilityVFXInstance;
+        [HideInInspector] public Flyweight_TB agilityVFXInstance;
         [HideInInspector] public Sprite agilityBuffIcon;
 
         [Header("Magical Attack Buff")]
         [HideInInspector] public int magicalAttackBuffTurnsRemaining = 0;
         [HideInInspector] public int magicalOriginalBaseAttack = 0;
-        [HideInInspector] public Flyweight2 magicalAttackVFXInstance;
+        [HideInInspector] public Flyweight_TB magicalAttackVFXInstance;
         [HideInInspector] public Sprite magicalAttackBuffIcon;
 
         [Header("Magical Defense Buff")]
         [HideInInspector] public int magicalOriginalBaseDefense = 0;
         [HideInInspector] public int magicalDefenseBuffTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 magicalDefenseVFXInstance;
+        [HideInInspector] public int magicalDefenseBuffAmount = 0;
+        [HideInInspector] public Flyweight_TB magicalDefenseVFXInstance;
         [HideInInspector] public Sprite magicalDefenseBuffIcon;
 
 
         [Header("Shield")]
         [HideInInspector] public int baseShieldAmount = 0;
         [HideInInspector] public int shieldTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 shieldVFXInstance;
+        [HideInInspector] public Flyweight_TB shieldVFXInstance;
         [HideInInspector] public Sprite shieldIcon;
+
 
 
         [Header("Stack Manager")]
@@ -63,10 +66,23 @@ namespace Turnbase
             if (character != null)
             {
                 stats = character.stats;
+                InitializeBaseStats();
             }
         }
 
-        public void AddShield(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void InitializeBaseStats()
+        {
+            if (originalBaseDefense == 0 && stats.physicalDefense > 0)
+            {
+                originalBaseDefense = stats.physicalDefense;
+            }
+            if (magicalOriginalBaseDefense == 0 && stats.magicDefense > 0)
+            {
+                magicalOriginalBaseDefense = stats.magicDefense;
+            }
+        }
+
+        public void AddShield(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0) return;
 
@@ -95,14 +111,16 @@ namespace Turnbase
 
             Debug.Log(character.gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
+
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
         }
 
 
-        public void ApplyAttackBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -125,15 +143,17 @@ namespace Turnbase
 
             attackBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
             Debug.Log($"{character.name} đã nhận buff +{amount} Attack, hiệu lực {duration} lượt. Attack hiện tại: {stats.physicalAttack}");
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyMaxHPBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -157,15 +177,18 @@ namespace Turnbase
 
             maxHPBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
+
             Debug.Log($"{character.name} đã nhận buff +{amount} MaxHP, hiệu lực {duration} lượt. MaxHP hiện tại: {stats.maxHP}");
         }
 
-        public void ApplyDefenseBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -188,15 +211,18 @@ namespace Turnbase
 
             defenseBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
+
             Debug.Log($"{character.name} đã nhận buff +{amount} Defense, hiệu lực {duration} lượt. Defense hiện tại: {stats.physicalDefense}");
         }
 
-        public void ApplyAgilityBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyAgilityBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -219,15 +245,18 @@ namespace Turnbase
 
             agilityBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
+
             Debug.Log($"{character.name} đã nhận buff +{amount} Agility, hiệu lực {duration} lượt. Agility hiện tại: {stats.agility}");
         }
 
-        public void ApplyMagicalAttackBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyMagicalAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -250,15 +279,18 @@ namespace Turnbase
 
             magicalAttackBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
+
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Attack, hiệu lực {duration} lượt. Magical Attack hiện tại: {stats.magicAttack}");
         }
 
-        public void ApplyMagicalDefenseBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyMagicalDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (amount <= 0 || duration <= 0) return;
 
@@ -281,16 +313,18 @@ namespace Turnbase
 
             magicalDefenseBuffTurnsRemaining = duration;
 
-            if (character.battleManager != null)
+            if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
+
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Defense, hiệu lực {duration} lượt. Magical Defense hiện tại: {stats.magicDefense}");
         }
 
 
-        public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight2 buffVFX, int amount)
+        public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount)
         {
             if (buffSettings.durationTurns <= 0) return;
 
@@ -465,8 +499,6 @@ namespace Turnbase
         {
             if (defenseBuffTurnsRemaining > 0 || originalBaseDefense == 0) return;
 
-            stats.physicalDefense = originalBaseDefense;
-
             if (defenseVFXInstance != null)
             {
                 defenseVFXInstance.transform.SetParent(null);
@@ -477,6 +509,9 @@ namespace Turnbase
             originalBaseDefense = 0;
             defenseBuffTurnsRemaining = 0;
             defenseBuffIcon = null;
+            defenseBuffAmount = 0; 
+
+            RecalculateDefenseStat();
 
             Debug.Log($"Buff Defense của {character.name} đã hết hạn và bị gỡ bỏ. Defense hiện tại: {stats.physicalDefense}");
         }
@@ -526,7 +561,6 @@ namespace Turnbase
         {
             if (magicalDefenseBuffTurnsRemaining > 0 || magicalOriginalBaseDefense == 0) return;
 
-            stats.magicDefense = magicalOriginalBaseDefense;
 
             if (magicalDefenseVFXInstance != null)
             {
@@ -538,8 +572,93 @@ namespace Turnbase
             magicalOriginalBaseDefense = 0;
             magicalDefenseBuffTurnsRemaining = 0;
             magicalDefenseBuffIcon = null;
+            magicalDefenseBuffAmount = 0;
+
+            RecalculateDefenseStat();
 
             Debug.Log($"Buff Magical Defense của {character.name} đã hết hạn và bị gỡ bỏ. Magical Defense hiện tại: {stats.magicDefense}");
+        }
+
+        public void RecalculateDefenseStat()
+        {
+            if (character.debuffManager == null) return;
+            float defReductionPercentage = character.debuffManager.defReductionPercentage;
+
+            int finalPDef = originalBaseDefense;
+
+            if (defenseBuffTurnsRemaining > 0)
+            {
+                finalPDef += defenseBuffAmount;
+            }
+
+            if (defReductionPercentage > 0f)
+            {
+                float reduction = finalPDef * defReductionPercentage;
+                finalPDef -= Mathf.FloorToInt(reduction);
+            }
+
+            stats.physicalDefense = Mathf.Max(0, finalPDef);
+
+
+            int finalMDef = magicalOriginalBaseDefense;
+
+            if (magicalDefenseBuffTurnsRemaining > 0)
+            {
+                finalMDef += magicalDefenseBuffAmount;
+            }
+
+            if (defReductionPercentage > 0f)
+            {
+                float reduction = finalMDef * defReductionPercentage;
+                finalMDef -= Mathf.FloorToInt(reduction);
+            }
+
+            stats.magicDefense = Mathf.Max(0, finalMDef);
+
+            Debug.Log($"[{character.name}] Recalculate: PDef={stats.physicalDefense}, MDef={stats.magicDefense}. Debuff: -{defReductionPercentage * 100:F0}%");
+            character.UpdateOwnUI();
+        }
+
+        public bool IsBuffActive(StatType statType)
+        {
+            switch (statType)
+            {
+                case StatType.Attack:
+                    return attackBuffTurnsRemaining > 0;
+                case StatType.Defense:
+                    return defenseBuffTurnsRemaining > 0;
+                case StatType.Agility:
+                    return agilityBuffTurnsRemaining > 0;
+                case StatType.MaxHP:
+                    return maxHPBuffTurnsRemaining > 0;
+                case StatType.MagicalAttack:
+                    return magicalAttackBuffTurnsRemaining > 0;
+                case StatType.MagicalDefense:
+                    return magicalDefenseBuffTurnsRemaining > 0;
+                default:
+                    return false;
+            }
+        }
+
+        public int GetBuffTurnsRemaining(StatType statType)
+        {
+            switch (statType)
+            {
+                case StatType.Attack:
+                    return attackBuffTurnsRemaining;
+                case StatType.Defense:
+                    return defenseBuffTurnsRemaining;
+                case StatType.Agility:
+                    return agilityBuffTurnsRemaining;
+                case StatType.MaxHP:
+                    return maxHPBuffTurnsRemaining;
+                case StatType.MagicalAttack:
+                    return magicalAttackBuffTurnsRemaining;
+                case StatType.MagicalDefense:
+                    return magicalDefenseBuffTurnsRemaining;
+                default:
+                    return 0; 
+            }
         }
 
 

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-
+using UnityEngine.Playables;
 
 namespace Turnbase
 {
@@ -47,6 +47,13 @@ namespace Turnbase
 
         [Header("Round Tracking")]
         public RoundTracker roundTrackerPrefab;
+
+        [Header("Round Limit")]
+        public int startRounds = 5;
+        private RoundTracker instantiatedRoundTracker;
+
+        [Header("Cinematics")]
+        public PlayableDirector mainDirector;
 
         void Start()
         {
@@ -142,13 +149,20 @@ namespace Turnbase
                 trackerInstance.battleManager = this;
                 trackerInstance.stats.currentHP = trackerInstance.stats.maxHP;
 
+                trackerInstance.isVirtualTracker = true;
+
                 allCombatants.Add(trackerInstance);
+                this.instantiatedRoundTracker = trackerInstance;
                 Debug.Log("[RoundTracker] đã được thêm vào danh sách chiến đấu.");
             }
 
             currentWaveIndex = 0;
             if (encounterToLoad != null && encounterToLoad.waves.Length > 0)
             {
+                if (uiManager != null)
+                {
+                    uiManager.UpdateWaveDisplay(currentWaveIndex + 1, encounterToLoad.waves.Length);
+                }
                 StartCoroutine(SpawnWave(currentWaveIndex));
             }
 
@@ -174,6 +188,11 @@ namespace Turnbase
             Character[] enemiesToSpawn = currentWave.enemiesInWave;
 
             Debug.Log($"[WAVE START] Bắt đầu đợt quái số {waveIndex + 1} với {enemiesToSpawn.Length} kẻ địch.");
+
+            if (encounterToLoad != null && uiManager != null)
+            {
+                uiManager.UpdateWaveDisplay(waveIndex + 1, encounterToLoad.waves.Length);
+            }
 
             yield return new WaitForSeconds(3f);
 
@@ -227,7 +246,6 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                Debug.Log("CHIẾN THẮNG! Tất cả các đợt quái đã bị đánh bại.");
                 StartCoroutine(LoadMapSceneDelayed("Map", 2f));
                 return;
             }
@@ -235,7 +253,9 @@ namespace Turnbase
 
         private void CheckWaveCondition()
         {
-            var livingEnemiesInCurrentWave = allCombatants.Where(c => !c.isPlayer && c.isAlive).ToList();
+            var livingEnemiesInCurrentWave = allCombatants
+                    .Where(c => !c.isPlayer && c.isAlive && !c.isVirtualTracker)
+                    .ToList();
 
             if (livingEnemiesInCurrentWave.Count == 0)
             {
@@ -243,7 +263,13 @@ namespace Turnbase
 
                 if (encounterToLoad != null && currentWaveIndex < encounterToLoad.waves.Length)
                 {
-                    Debug.Log($"--- HOÀN THÀNH ĐỢT {currentWaveIndex} ---");
+                    allCombatants.RemoveAll(c => c != null && !c.isPlayer && !c.isAlive);
+
+                    if (uiManager != null)
+                    {
+                        uiManager.UpdateWaveDisplay(currentWaveIndex + 1, encounterToLoad.waves.Length);
+                    }
+
                     StartCoroutine(SpawnWave(currentWaveIndex));
                 }
                 else
@@ -256,7 +282,6 @@ namespace Turnbase
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
-                    Debug.Log("THẤT BẠI! Tất cả người chơi đã bị hạ gục.");
                     StartCoroutine(LoadMapSceneDelayed("Map", 2f));
                 }
             }
@@ -304,6 +329,9 @@ namespace Turnbase
 
                 summonInstance.isPlayer = summoner.isPlayer;
 
+                summonInstance.battleManager = this;
+                summonInstance.initialPosition = petSpawnPosition;
+
                 PlayerActionUI actionUI = summonInstance.GetComponentInChildren<PlayerActionUI>(true);
                 if (actionUI != null)
                 {
@@ -314,8 +342,7 @@ namespace Turnbase
                 }
 
 
-                summonInstance.battleManager = this;
-                summonInstance.initialPosition = petSpawnPosition;
+                
 
                 CharacterStateMachine summonStateMachine = summonInstance.GetComponent<CharacterStateMachine>();
                 if (summonStateMachine != null)
@@ -416,11 +443,42 @@ namespace Turnbase
             activeCharacter = characterToAct;
             Debug.Log($"Đến lượt: {activeCharacter.gameObject.name}");
 
+            if (activeCharacter.isAlive && activeCharacter.stats != null)
+            {
+                activeCharacter.stats.currentMP = Mathf.Min(activeCharacter.stats.currentMP + 20, activeCharacter.stats.maxMP);
+                uiManager.UpdateAllCharacterUIs(allCombatants);
+                Debug.Log($"[{activeCharacter.gameObject.name}] bắt đầu lượt và hồi 20 Mana.");
+                
+
+            }
+
             if (activeCharacter is RoundTracker roundTracker)
             {
                 Debug.Log("[RoundTracker] Đến lượt. Thực thi Phase.");
+
                 roundTracker.ExecuteRoundPhase();
-                yield break; 
+
+                if (currentRule != null)
+                {
+                    yield return StartCoroutine(currentRule.ExecuteRule(this, activeCharacter));
+                    yield return new WaitForSeconds(3f);
+                    EndTurn(roundTracker);
+                    Debug.Log("BUff Rule");
+                }
+
+
+                if (roundTracker.currentRound <= -1)
+                {
+                    Debug.Log($"[LOSE CONDITION] Trận đấu kết thúc! Đã đạt đến giới hạn {startRounds} vòng đấu.");
+
+                    StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+
+                    activeCharacter = null;
+                    isProcessingTurn = true; 
+                    yield break;
+                }
+
+                yield break;
             }
 
 
@@ -432,10 +490,6 @@ namespace Turnbase
                 turnOrderUI.HighlightActiveCharacter(activeCharacter);
             }
 
-            if (currentRule != null)
-            {
-                yield return StartCoroutine(currentRule.ExecuteRule(this, activeCharacter));
-            }
 
             if (!activeCharacter.isAlive)
             {
@@ -466,7 +520,7 @@ namespace Turnbase
                 yield break;
             }
 
-            if (activeCharacter.debuffManager.stunTurnsRemaining > 0)
+            if (activeCharacter.debuffManager.stunTurnsRemaining > 0 || activeCharacter.debuffManager.breakTurnsRemaining > 0)
             {
                 activeCharacter.actionGauge = 0;
                 if (activeCharacter.stateMachine != null)
@@ -478,6 +532,7 @@ namespace Turnbase
                 isProcessingTurn = false;
                 yield break;
             }
+
 
             EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
@@ -512,6 +567,8 @@ namespace Turnbase
             {
                 yield return StartCoroutine(EnemyTurn(activeCharacter));
             }
+
+            uiManager.UpdateAllCharacterUIs(allCombatants);
 
         }
 
@@ -596,6 +653,8 @@ namespace Turnbase
 
         }
 
+
+
         public void OnParryAttempted()
         {
             ElementType element = ElementType.None;
@@ -640,6 +699,7 @@ namespace Turnbase
             {
                 EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
+                CameraAction.instance.TargetAllEnemies();
 
                 activeCharacter = null;
                 if (character.stateMachine != null)
@@ -654,6 +714,9 @@ namespace Turnbase
         private IEnumerator LoadMapSceneDelayed(string sceneName, float delay)
         {
             yield return new WaitForSeconds(delay);
+
+            FlyweightFactory_TB.Instance.ClearAllPools();
+
             SceneManager.LoadScene(sceneName);
         }
     }

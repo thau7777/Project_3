@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Turnbase;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,9 @@ public class BattleUIManager : MonoBehaviour
     public GameObject combatantButtonPrefab;
     public Transform combatantButtonContainer;
     public Button toggleButton;
+
+    [Header("Wave UI")]
+    public TextMeshProUGUI waveTextDisplay;
 
     private CharacterStatUI statDisplayPanel;
     private BattleManager battleManager;
@@ -163,6 +167,15 @@ public class BattleUIManager : MonoBehaviour
                 statDisplayPanel.HideStats();
             }
             
+        }
+
+    }
+
+    public void UpdateWaveDisplay(int currentWave, int totalWaves)
+    {
+        if (waveTextDisplay != null)
+        {
+            waveTextDisplay.text = $"Wave: {currentWave} / {totalWaves}";
         }
     }
 }

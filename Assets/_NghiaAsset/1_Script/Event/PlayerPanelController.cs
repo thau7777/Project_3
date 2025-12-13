@@ -44,7 +44,6 @@ namespace Turnbase
             if (e.panelName.Equals(panelID, System.StringComparison.OrdinalIgnoreCase))
             {
                 gameObject.SetActive(false);
-                Debug.Log($"Panel '{panelID}' ẩn thành công.");
             }
         }
 
@@ -53,7 +52,6 @@ namespace Turnbase
             if (e.panelName.Equals(panelID, System.StringComparison.OrdinalIgnoreCase))
             {
                 gameObject.SetActive(true);
-                Debug.Log($"Panel '{panelID}' hiện thành công.");
             }
         }
 
@@ -63,7 +61,6 @@ namespace Turnbase
             {
                 animator = GetComponent<Animator>();
                 animator.Play("OffUI");
-                Debug.Log($"Panel Action '{panelID}' hiện thành công.");
             }
         }
 
@@ -73,7 +70,6 @@ namespace Turnbase
             {
                 animator = GetComponent<Animator>();
                 animator.Play("OnUI");
-                Debug.Log($"Panel Action '{panelID}' hiện thành công.");
             }
         }
 

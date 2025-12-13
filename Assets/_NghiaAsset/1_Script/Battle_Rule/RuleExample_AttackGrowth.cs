@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 using Turnbase;
 
 namespace Turnbase
@@ -11,24 +13,52 @@ namespace Turnbase
         public int baseAttackIncrease = 100;
         public float percentageAttackIncrease = 0.10f;
 
+        private IEnumerable<Character> GetTargetCombatants(BattleManager battleManager)
+        {
+            var baseTargets = battleManager.allCombatants
+                .Where(c => c != null && c.isAlive && !c.isVirtualTracker && c.stats != null);
+
+            switch (targetScope)
+            {
+                case TargetScope.Players:
+                    return baseTargets.Where(c => c.isPlayer);
+                case TargetScope.Enemies:
+                    return baseTargets.Where(c => !c.isPlayer);
+                case TargetScope.AllCombatants:
+                default:
+                    return baseTargets;
+            }
+        }
+
         public override IEnumerator ExecuteRule(BattleManager battleManager, Character characterToAct)
         {
-            Debug.Log($"[BATTLE RULE] Luật {ruleName} được áp dụng lên {characterToAct.name}");
-
-            if (characterToAct != null && characterToAct.isAlive && characterToAct.stats != null)
+            if (!(characterToAct is RoundTracker))
             {
-                int percentageBonus = Mathf.RoundToInt(characterToAct.stats.physicalAttack * percentageAttackIncrease);
-
-                characterToAct.stats.physicalAttack += baseAttackIncrease;
-
-                characterToAct.stats.physicalAttack += percentageBonus;
-
-                Debug.Log($"- Tăng {baseAttackIncrease} ATK cơ bản.");
-
-                Debug.Log($"- Tăng {percentageAttackIncrease * 100}% ATK ");
+                yield break;
             }
 
-            yield return new WaitForSeconds(0.1f);
+            Debug.Log($"[BATTLE RULE] Kích hoạt Luật {ruleName} (Mục tiêu: {targetScope}).");
+
+            List<Character> targetCombatants = GetTargetCombatants(battleManager).ToList();
+
+            if (targetCombatants.Count == 0)
+            {
+                yield break;
+            }
+
+            foreach (var character in targetCombatants)
+            {
+                int percentageBonus = Mathf.RoundToInt(character.stats.physicalAttack * percentageAttackIncrease);
+                int totalIncrease = baseAttackIncrease + percentageBonus;
+
+                character.stats.physicalAttack += totalIncrease;
+
+                Debug.Log($"- Đã buff {character.name}: ATK +{totalIncrease} (Mới: {character.stats.physicalAttack}).");
+            }
+
+            battleManager.uiManager?.UpdateAllCharacterUIs(battleManager.allCombatants);
+
+            yield return new WaitForSeconds(0.2f);
         }
 
         public override void ResetRule(BattleManager battleManager)

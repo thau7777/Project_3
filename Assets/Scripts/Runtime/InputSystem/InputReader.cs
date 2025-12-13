@@ -86,6 +86,6 @@ public class InputReader : ScriptableObject
                 input.PopUpGame.Enable();
                 break;
         }
-        Debug.Log("switched action map to: " + map.ToString());
+        Debug.Log("switched actionButton map to: " + map.ToString());
     }
 }

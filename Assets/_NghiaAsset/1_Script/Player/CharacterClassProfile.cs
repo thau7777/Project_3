@@ -8,6 +8,10 @@ namespace Turnbase
     {
         public CharacterClass characterClass;
         public RuntimeAnimatorController animatorController;
+        [ShowIfEnumValue("characterClass", CharacterClass.Magical,
+                                           CharacterClass.Sword_Shield,
+                                           CharacterClass.Summon,
+                                           CharacterClass.Tank)]
         public List<Skill> initialSkills;
 
     }

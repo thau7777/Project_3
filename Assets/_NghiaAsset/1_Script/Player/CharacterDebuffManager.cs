@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using Turnbase;
 using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {
@@ -13,19 +12,30 @@ namespace Turnbase
         [Header("Burn Debuff State")]
         [HideInInspector] public int burnTurnsRemaining = 0;
         [HideInInspector] public int burnDamagePerTurn = 0;
-        [HideInInspector] public Flyweight2 burnVFXInstance;
+        [HideInInspector] public Flyweight_TB burnVFXInstance;
         [HideInInspector] public Sprite burnIcon;
 
         [Header("Poison Debuff State")]
         [HideInInspector] public int poisonTurnsRemaining = 0;
         [HideInInspector] public int poisonDamagePerTurn = 0;
-        [HideInInspector] public Flyweight2 poisonVFXInstance;
+        [HideInInspector] public Flyweight_TB poisonVFXInstance;
         [HideInInspector] public Sprite poisonIcon;
 
         [Header("Stun Debuff State")]
         [HideInInspector] public int stunTurnsRemaining = 0;
-        [HideInInspector] public Flyweight2 stunVFXInstance;
+        [HideInInspector] public Flyweight_TB stunVFXInstance;
         [HideInInspector] public Sprite stunIcon;
+
+        [Header("Defense Reduction Debuff State")]
+        [HideInInspector] public int defReductionTurnsRemaining = 0;
+        [HideInInspector] public float defReductionPercentage = 0f;
+        [HideInInspector] public Flyweight_TB defReductionVFXInstance;
+        [HideInInspector] public Sprite defReductionIcon;
+
+        [Header("Braek Debuff State")]
+        [HideInInspector] public int breakTurnsRemaining = 0;
+        [HideInInspector] public Flyweight_TB breakVFXInstance;
+        [HideInInspector] public Sprite breakIcon;
 
 
         private void Awake()
@@ -38,7 +48,7 @@ namespace Turnbase
 
         }
 
-        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
@@ -62,11 +72,9 @@ namespace Turnbase
             burnIcon = icon;
 
             character.UpdateOwnUI();
-
-            Debug.Log($"{character.name} đã nhận Debuff Thiêu đốt: **{burnDamagePerTurn} sát thương/lượt**, **{duration} lượt**.");
         }
 
-        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
@@ -89,10 +97,10 @@ namespace Turnbase
 
             poisonIcon = icon;
 
-            Debug.Log($"{character.name} đã nhận Debuff Độc: **{poisonDamagePerTurn} sát thương/lượt**, **{duration} lượt**.");
+            character.UpdateOwnUI();
         }
 
-        public void ApplyStunDebuff(int duration, Flyweight2 newVfxInstance, Sprite icon)
+        public void ApplyStunDebuff(int duration, Flyweight_TB newVfxInstance, Sprite icon)
         {
             if (duration <= 0) return;
 
@@ -107,14 +115,68 @@ namespace Turnbase
             {
                 if (stunVFXInstance != null)
                 {
-                    FlyweightFactory2.ReturnToPool(stunVFXInstance);
+                    FlyweightFactory_TB.ReturnToPool(stunVFXInstance);
                 }
                 stunVFXInstance = newVfxInstance;
 
-                stunIcon = icon;
+            }
+            stunIcon = icon;
+
+            character.UpdateOwnUI();
+        }
+
+        public void ApplyDefReductionDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        {
+            if (percentage <= 0 || duration <= 0) return;
+
+            if (percentage > defReductionPercentage)
+            {
+                defReductionPercentage = percentage;
             }
 
-            Debug.Log($"{character.name} đã bị Choáng trong **{duration} lượt**.");
+            defReductionTurnsRemaining = duration;
+
+            if (defReductionVFXInstance != null && defReductionVFXInstance != vfxInstance)
+            {
+                defReductionVFXInstance.ReturnToPool();
+            }
+            defReductionVFXInstance = vfxInstance;
+
+            defReductionIcon = icon;
+
+            if (character.buffManager != null)
+            {
+                character.buffManager.RecalculateDefenseStat();
+            }
+
+            character.UpdateOwnUI();
+        }
+
+        public void ApplyBreakDebuff(int duration, Flyweight_TB newVfxInstance, Sprite icon)
+        {
+            if (duration <= 0) return;
+
+            breakTurnsRemaining = duration;
+
+            if (character.stateMachine != null)
+            {
+                character.stateMachine.SwitchState(character.stateMachine.stunnedState);
+
+            }
+
+            if (newVfxInstance != null)
+            {
+                if (breakVFXInstance != null)
+                {
+                    FlyweightFactory_TB.ReturnToPool(breakVFXInstance);
+                }
+                breakVFXInstance = newVfxInstance;
+
+                breakIcon = icon;
+
+                character.UpdateOwnUI();
+
+            }
         }
 
 
@@ -123,13 +185,13 @@ namespace Turnbase
             if (debuffSettings.statToModify == DebuffType.None || debuffSettings.durationTurns <= 0)
                 return;
 
-            Flyweight2 debuffVFX = null;
+            Flyweight_TB debuffVFX = null;
 
 
 
             if (debuffSettings.debuffEffect != null)
             {
-                debuffVFX = FlyweightFactory2.Spawn(debuffSettings.debuffEffect);
+                debuffVFX = FlyweightFactory_TB.Spawn(debuffSettings.debuffEffect);
 
                 if (debuffVFX != null)
                 {
@@ -168,45 +230,100 @@ namespace Turnbase
                     );
                     break;
 
+                case DebuffType.DefReduction:
+                    ApplyDefReductionDebuff(
+                        debuffSettings.debuffValue,
+                        debuffSettings.durationTurns,
+                        debuffVFX,
+                        debuffSettings.icon
+                    );
+                    break;
+
+                case DebuffType.Break:
+                    ApplyBreakDebuff(
+                        debuffSettings.durationTurns,
+                        debuffVFX,
+                        debuffSettings.icon
+                    );
+                    break;
+
             }
         }
 
         public IEnumerator ApplyDoTDamage()
         {
-            const float damageDelay = 0.5f;
+            const float INTER_DOT_DELAY = 0.5f; 
+            const float TICK_DELAY = 0.15f;  
 
             if (!character.isAlive) yield break;
 
             const ElementType BURN_ELEMENT = ElementType.Fire;
-            const ElementType POISON_ELEMENT = ElementType.Poison; 
+            const ElementType POISON_ELEMENT = ElementType.Poison;
 
             bool damageApplied = false;
 
             if (burnTurnsRemaining > 0)
             {
-                Debug.Log($"{character.info.name} nhận sát thương từ Thiêu đốt: {burnDamagePerTurn}");
+                const int BURN_TICKS = 3;
+                int totalBurnDamage = burnDamagePerTurn;
+                int damagePerTick = totalBurnDamage / BURN_TICKS;
+                int remainder = totalBurnDamage % BURN_TICKS;
 
-                character.TakeDamage(burnDamagePerTurn, BURN_ELEMENT);
+                for (int i = 0; i < BURN_TICKS; i++)
+                {
+                    if (!character.isAlive) yield break;
 
-                damageApplied = true;
+                    int currentTickDamage = damagePerTick;
+                    if (i == BURN_TICKS - 1)
+                    {
+                        currentTickDamage += remainder;
+                    }
 
-                if (!character.isAlive) yield break;
+                    character.TakeDamage(currentTickDamage, BURN_ELEMENT);
+
+                    damageApplied = true;
+
+                    if (i < BURN_TICKS - 1)
+                    {
+                        yield return new WaitForSeconds(TICK_DELAY);
+                    }
+                }
             }
 
             if (damageApplied)
             {
-                yield return new WaitForSeconds(damageDelay);
+                yield return new WaitForSeconds(INTER_DOT_DELAY);
+                damageApplied = false; 
             }
 
-            if (poisonDamagePerTurn > 0)
+            if (poisonTurnsRemaining > 0)
             {
-                Debug.Log($"{character.info.name} nhận sát thương từ Độc: {poisonDamagePerTurn}");
+                const int POISON_TICKS = 2;
+                int totalPoisonDamage = poisonDamagePerTurn;
+                int damagePerTick = totalPoisonDamage / POISON_TICKS;
+                int remainder = totalPoisonDamage % POISON_TICKS;
 
-                character.TakeDamage(poisonDamagePerTurn, POISON_ELEMENT);
 
-                if (!character.isAlive) yield break;
+                for (int i = 0; i < POISON_TICKS; i++)
+                {
+                    if (!character.isAlive) yield break;
+
+                    int currentTickDamage = damagePerTick;
+                    if (i == POISON_TICKS - 1)
+                    {
+                        currentTickDamage += remainder;
+                    }
+
+                    character.TakeDamage(currentTickDamage, POISON_ELEMENT);
+
+                    damageApplied = true;
+
+                    if (i < POISON_TICKS - 1)
+                    {
+                        yield return new WaitForSeconds(TICK_DELAY);
+                    }
+                }
             }
-
         }
 
         private void RemoveExpiredBurnDebuff()
@@ -220,10 +337,6 @@ namespace Turnbase
 
             character.UpdateOwnUI();
 
-
-
-            Debug.Log($"Debuff Thiêu đốt của {character.name} đã hết hạn.");
-
         }
 
         private void RemoveExpiredPoisonDebuff()
@@ -234,23 +347,65 @@ namespace Turnbase
                 poisonVFXInstance = null;
             }
             poisonDamagePerTurn = 0;
-
-            Debug.Log($"Debuff Độc của {character.name} đã hết hạn.");
         }
 
         private void RemoveExpiredStunDebuff()
         {
             if (stunVFXInstance != null)
             {
-                FlyweightFactory2.ReturnToPool(stunVFXInstance);
+                FlyweightFactory_TB.ReturnToPool(stunVFXInstance);
                 stunVFXInstance = null;
             }
             stunTurnsRemaining = 0;
-            if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+
+            if (stunTurnsRemaining <= 0 && breakTurnsRemaining <= 0)
             {
-                character.stateMachine.SwitchState(character.stateMachine.waitingState);
+                if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+                {
+                    character.stateMachine.SwitchState(character.stateMachine.waitingState);
+                }
             }
-            Debug.Log($"Debuff Choáng của {character.name} đã hết hạn.");
+        }
+
+        private void RemoveExpiredBreakDebuff()
+        {
+            if (breakVFXInstance != null)
+            {
+                FlyweightFactory_TB.ReturnToPool(breakVFXInstance);
+                breakVFXInstance = null;
+            }
+            breakTurnsRemaining = 0;
+
+            if (character is Enemy enemy)
+            {
+                enemy.RestoreFromBreak();
+            }
+
+            if (stunTurnsRemaining <= 0 && breakTurnsRemaining <= 0)
+            {
+                if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+                {
+                    character.stateMachine.SwitchState(character.stateMachine.waitingState);
+                }
+            }
+        }
+
+        private void RemoveExpiredDefReductionDebuff()
+        {
+            if (defReductionVFXInstance != null)
+            {
+                FlyweightFactory_TB.ReturnToPool(defReductionVFXInstance);
+                defReductionVFXInstance = null;
+            }
+            defReductionPercentage = 0f;
+            defReductionTurnsRemaining = 0;
+
+            if (character.buffManager != null)
+            {
+                character.buffManager.RecalculateDefenseStat();
+            }
+
+            character.UpdateOwnUI();
         }
 
         public void ProcessTurnStartDecay()
@@ -283,6 +438,30 @@ namespace Turnbase
                 if (stunTurnsRemaining <= 0)
                 {
                     RemoveExpiredStunDebuff();
+                    uiUpdateNeeded = true;
+                }
+            }
+
+            if (defReductionTurnsRemaining > 0)
+            {
+                defReductionTurnsRemaining--;
+                if (defReductionTurnsRemaining <= 0)
+                {
+                    RemoveExpiredDefReductionDebuff();
+                    uiUpdateNeeded = true;
+                }
+                else
+                {
+                    uiUpdateNeeded = true;
+                }
+            }
+
+            if (breakTurnsRemaining > 0)
+            {
+                breakTurnsRemaining--;
+                if (breakTurnsRemaining <= 0)
+                {
+                    RemoveExpiredBreakDebuff();
                     uiUpdateNeeded = true;
                 }
             }

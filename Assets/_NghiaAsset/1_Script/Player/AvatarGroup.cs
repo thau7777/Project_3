@@ -19,16 +19,29 @@ namespace Turnbase
         public GameObject statusEffectIconPrefab;
 
         private Character ownerCharacter;
-
+        private CharacterStatusDataProvider dataProvider;
 
 
         private void Awake()
         {
             ownerCharacter = GetComponentInParent<Character>();
+            if (ownerCharacter != null)
+            {
+                dataProvider = ownerCharacter.GetComponent<CharacterStatusDataProvider>();
+            }
         }
         public void SetOwner(Character character)
         {
             ownerCharacter = character;
+            if (ownerCharacter != null)
+            {
+                dataProvider = ownerCharacter.GetComponent<CharacterStatusDataProvider>();
+                UpdateUI(ownerCharacter.stats, ownerCharacter.info);
+            }
+            else
+            {
+                dataProvider = null;
+            }
         }
 
         private void Start()
@@ -56,7 +69,7 @@ namespace Turnbase
             hpText.text = $"{stats.currentHP} / {stats.maxHP}";
             mpText.text = $"{stats.currentMP} / {stats.maxMP}";
 
-            UpdateStatusEffect(ownerCharacter.GetActiveStatusEffects());
+            UpdateStatusEffect(dataProvider.GetActiveStatusEffects());
         }
 
         public void UpdateStatusEffect(List<StatusEffectData> statusEffects)

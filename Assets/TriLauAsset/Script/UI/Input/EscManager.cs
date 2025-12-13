@@ -42,7 +42,7 @@ namespace MyRule
             //    case PanelType.CharacterStats:
             //        break;
             //    default:
-            //        return; // No action for other panels
+            //        return; // No actionButton for other panels
             //}
         }
     }

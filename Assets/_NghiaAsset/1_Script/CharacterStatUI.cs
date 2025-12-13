@@ -26,6 +26,7 @@ namespace Turnbase
         private Dictionary<string, StatEntry> activeStatEntries = new Dictionary<string, StatEntry>();
         private Dictionary<string, StatusEffectEntry> activeEffectEntries = new Dictionary<string, StatusEffectEntry>(); // Đã đổi kiểu dữ liệu
         private Character currentCharacter;
+        private CharacterStatusDataProvider currentDataProvider;
 
         void Start()
         {
@@ -49,6 +50,7 @@ namespace Turnbase
                 HideStats();
                 return;
             }
+            currentDataProvider = currentCharacter.GetComponent<CharacterStatusDataProvider>();
 
             characterName.text = currentCharacter.info.name;
             level.text = $"Lv. {currentCharacter.info.level}";
@@ -134,14 +136,14 @@ namespace Turnbase
         {
             if (currentCharacter == null) return;
 
-            List<StatusEffectData> effectsToShow = currentCharacter.GetActiveStatusEffects();
+            List<StatusEffectData> effectsToShow = currentDataProvider.GetActiveStatusEffects();
 
             HashSet<string> keysToRemove = new HashSet<string>(activeEffectEntries.Keys);
 
             foreach (var effect in effectsToShow)
             {
                 keysToRemove.Remove(effect.Name);
-                string displayValue = $"{effect.Detail} ({effect.TurnsRemaining} hiệp)";
+                string displayValue = $"{effect.Detail} ({effect.TurnsRemaining} turn)";
 
                 if (activeEffectEntries.TryGetValue(effect.Name, out StatusEffectEntry entry))
                 {

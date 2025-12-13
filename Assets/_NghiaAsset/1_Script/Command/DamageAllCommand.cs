@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
 
 
 namespace Turnbase
@@ -47,58 +46,111 @@ namespace Turnbase
 
         private List<Character> GetTargets()
         {
+            List<Character> targets;
+
             if (user.isPlayer)
             {
-                return battleManager.allCombatants.FindAll(c => c != null && !c.isPlayer && c.isAlive);
+                targets = battleManager.allCombatants.FindAll(
+                    c => c != null &&
+                         !c.isPlayer &&
+                         c.isAlive &&
+                         !c.isVirtualTracker
+                );
             }
             else
             {
-                return battleManager.allCombatants.FindAll(c => c != null && c.isPlayer && c.isAlive);
+                targets = battleManager.allCombatants.FindAll(
+                    c => c != null &&
+                         c.isPlayer &&
+                         c.isAlive &&
+                         !c.isVirtualTracker
+                );
             }
+
+            return targets;
+        }
+
+        private void ApplySingleHitDamage(Character target, int damage)
+        {
+            ElementType element = skill.elementType;
+            target.TakeDamage(damage, element);
+        }
+
+        private void ApplySingleHitDamageAndEffect(Character target, int damage)
+        {
+            ApplySingleHitDamage(target, damage);
+            SpawnImpactEffect(target.transform.position);
         }
 
         private IEnumerator ApplyDamageToTargets(List<Character> targets)
         {
-            ElementType element = skill.elementType;
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            float delayBetweenHits = skill.delayBetweenHits;
 
-            foreach (Character aoeTarget in targets)
+            for (int i = 0; i < hits; i++)
             {
-                if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
-                int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
-
-                aoeTarget.TakeDamage(finalDamage, element);
-
-                SpawnImpactEffect(aoeTarget.transform.position);
-
-                if (skill.debuffProperties.statToModify != DebuffType.None)
+                foreach (Character aoeTarget in targets)
                 {
-                    aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                    if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
+                    int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
+
+                    int baseDamagePerHit = finalDamage / hits;
+                    int damageRemainder = finalDamage % hits;
+
+                    int currentHitDamage = baseDamagePerHit;
+                    if (i == hits - 1)
+                    {
+                        currentHitDamage += damageRemainder;
+                    }
+
+
+                    if (i == 0)
+                    {
+                        if (skill.debuffProperties.statToModify != DebuffType.None)
+                        {
+                            aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                        }
+
+                        if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+                        {
+                            user.buffManager.ProcessSkillStacks(skill, aoeTarget);
+                        }
+
+                        ApplySingleHitDamageAndEffect(aoeTarget, currentHitDamage);
+                    }
+                    else
+                    {
+                        ApplySingleHitDamage(aoeTarget, currentHitDamage);
+                    }
+
+
+                    yield return new WaitForSeconds(TARGET_DELAY);
                 }
 
-                if (skill.stackApplicationTarget == StackApplicationTarget.Target)
-                {
-                    user.buffManager.ProcessSkillStacks(skill, aoeTarget);
-                }
 
-                yield return new WaitForSeconds(TARGET_DELAY);
+                if (i < hits - 1)
+                {
+                    yield return new WaitForSeconds(delayBetweenHits);
+                }
             }
         }
 
         private void SpawnImpactEffect(Vector3 position)
         {
-            FlyweightSettings2 effectToSpawn = skill.impactVFXPrefab;
+            FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
             if (effectToSpawn != null)
             {
-                Flyweight2 effectInstance = FlyweightFactory2.Spawn(effectToSpawn);
+                Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);
 
                 if (effectInstance != null)
                 {
                     effectInstance.Initialize(position, Quaternion.identity);
 
                 }
+
             }
         }
     }

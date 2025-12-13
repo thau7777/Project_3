@@ -58,13 +58,13 @@ namespace Turnbase
 
         private void ApplyBuffEffects(List<Character> targetsToBuff)
         {
-            int buffAmount = skill.damage;
+            int buffAmount = skill.buffProperties.amount;
             int buffDuration = skill.buffProperties.durationTurns;
             Sprite buffIcon = skill.buffProperties.icon;
 
             foreach (var charTarget in targetsToBuff)
             {
-                Flyweight2 activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
+                Flyweight_TB activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
 
                 switch (skill.buffProperties.statToModify)
                 {

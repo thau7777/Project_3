@@ -85,13 +85,13 @@ public static class TransformExtensions
     }
 
     /// <summary>
-    /// Executes a specified action for each child of a given transform.
+    /// Executes a specified actionButton for each child of a given transform.
     /// </summary>
     /// <param name="parent">The parent transform.</param>
-    /// <param name="action">The action to be performed on each child.</param>
+    /// <param name="action">The actionButton to be performed on each child.</param>
     /// <remarks>
-    /// This method iterates over all child transforms in reverse order and executes a given action on them.
-    /// The action is a delegate that takes a Transform as parameter.
+    /// This method iterates over all child transforms in reverse order and executes a given actionButton on them.
+    /// The actionButton is a delegate that takes a Transform as parameter.
     /// </remarks>
     public static void ForEveryChild(this Transform parent, System.Action<Transform> action)
     {

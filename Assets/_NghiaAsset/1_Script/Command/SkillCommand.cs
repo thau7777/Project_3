@@ -52,14 +52,14 @@ namespace Turnbase
             }
         }
 
-        protected Flyweight2 SpawnImpactEffect(Vector3 position, Skill skill)
+        protected Flyweight_TB SpawnImpactEffect(Vector3 position, Skill skill)
         {
-            FlyweightSettings2 settingsToSpawn = skill.impactVFXPrefab;
-            Flyweight2 effectInstance = null; 
+            FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab;
+            Flyweight_TB effectInstance = null; 
 
             if (settingsToSpawn != null)
             {
-                effectInstance = FlyweightFactory2.Spawn(settingsToSpawn); 
+                effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
 
                 if (effectInstance != null)
                 {
@@ -75,14 +75,14 @@ namespace Turnbase
             return effectInstance; 
         }
 
-        protected Flyweight2 SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
+        protected Flyweight_TB SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
-            FlyweightSettings2 settingsToSpawn = skill.impactVFXPrefab; 
-            Flyweight2 effectInstance = null; 
+            FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab; 
+            Flyweight_TB effectInstance = null; 
 
             if (settingsToSpawn != null)
             {
-                effectInstance = FlyweightFactory2.Spawn(settingsToSpawn); 
+                effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn); 
 
                 if (effectInstance != null)
                 {

@@ -21,11 +21,11 @@ public class Skill : ScriptableObject
 
 
     [Header("Visual Effects")]
-    public FlyweightSettings2 impactVFXPrefab;
+    public FlyweightSettings_TB impactVFXPrefab;
 
     [Header("Projectile & VFX")]
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
-    public FlyweightSettings2 projectileSettings;
+    public FlyweightSettings_TB projectileSettings;
 
     public float impactVFXDuration = 1.0f;
 
@@ -47,6 +47,10 @@ public class Skill : ScriptableObject
     [Header("Color Lookup")]
     public ElementColorMap elementColorMap;
 
+    [Header("Multi-Hit")]
+    public int numberOfHits = 1;
+    public float delayBetweenHits = 0.1f;
+
 
     [System.Serializable]
     public struct StackSetting 
@@ -60,11 +64,7 @@ public class Skill : ScriptableObject
         public bool isStackFinisher;
         public int stackThreshold;
 
-
-
     }
-
-
 
     [System.Serializable]
     public struct BuffSettings
@@ -75,7 +75,6 @@ public class Skill : ScriptableObject
         public Sprite icon;
     }
 
-
     public DebuffSettings debuffProperties;
     [System.Serializable]
     public struct DebuffSettings 
@@ -84,12 +83,13 @@ public class Skill : ScriptableObject
         public int durationTurns;
         public int amount;
         public int baseDamagePerTurn;
-        public FlyweightSettings2 debuffEffect;
+        public float debuffValue;
+        public FlyweightSettings_TB debuffEffect;
         public Sprite icon;
-
     }
 
-
+    [Header("Timeline")]
+    public UnityEngine.Playables.PlayableAsset cameraTimeline;
 
 
 }
@@ -136,6 +136,7 @@ public enum SkillType
     Special, 
     Summon,
     RangedProjectile,
+    DamageGlobal,
 }
 
 public enum ElementType
@@ -160,5 +161,8 @@ public enum  DebuffType
     Burn,
     Poison,
     Stun,
+    DefReduction,
+    Break,
+
 }
 

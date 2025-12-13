@@ -2,89 +2,10 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEditor.ShaderKeywordFilter;
-using HSM;
 
 
 namespace Turnbase
 {
-    public enum BattleState
-    {
-        Waiting,
-        Ready,
-        Attacking,
-        TakingDamage,
-        Dead,
-        Parrying,
-        Interrupted
-    }
-
-
-
-    [System.Serializable]
-    public enum CharacterClass
-    {
-        Sword_Shield,
-        Magical,
-        Summon,
-        Tank,
-        Enemy,
-
-
-    }
-
-    [System.Serializable]
-    public enum CharacterElement
-    {
-        None,
-        Physical,
-        Magical,
-        Fire,
-        Water,
-        Ice,
-        Poison,
-        Lightning,
-        Dark,
-        Frost,
-        Holy,
-
-    }
-
-    [System.Serializable]
-    public class StackData
-    {
-        public string stackId; 
-        public int currentStacks;
-        public Sprite icon;
-    }
-
-    [System.Serializable]
-    public class CharacterInfo
-    {
-        public string name;
-        public Sprite Avatar;
-        public int level;
-    }
-
-
-    [System.Serializable]
-    public class CharacterStats
-    {
-        public int maxHP;
-        public int currentHP;
-        public int maxMP;
-        public int currentMP;
-        public int maxShield;
-        public int currentShield;
-        public int physicalAttack;
-        public int physicalDefense;
-        public int magicAttack;
-        public int magicDefense;
-        public int crit;
-        public int critDamage;
-        public int agility;
-    }
-
     public class Character : MonoBehaviour
     {
         public CharacterStateMachine stateMachine;
@@ -93,11 +14,11 @@ namespace Turnbase
 
         public CharacterElement characterElement;
 
-        [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
-
         [TabGroup("Stats")] public CharacterInfo info;
 
         [TabGroup("Stats")] public CharacterStats stats;
+
+        [TabGroup("Class")] public List<CharacterClassProfile> allClassProfiles;
 
         [TabGroup("Skill")] public List<Skill> skills;
 
@@ -139,6 +60,10 @@ namespace Turnbase
 
         public Transform damagePopupCanvasParent;
 
+        public Skill selectedSkill { get; set; }
+
+        public EnemyStatsUI enemyStatsUI;
+
         public bool isAlive
         {
             get { return stats.currentHP > 0; }
@@ -152,6 +77,15 @@ namespace Turnbase
             buffManager = GetComponent<CharacterBuffManager>();
             debuffManager = GetComponent<CharacterDebuffManager>();
             animator = GetComponent<Animator>();
+
+            if (stats == null)
+            {
+                stats = GetComponent<CharacterStats>();
+            }
+            if (info == null)
+            {
+                info = GetComponent<CharacterInfo>();
+            }
 
 
             InitializeCharacterFrom(characterClass);
@@ -196,6 +130,7 @@ namespace Turnbase
         public void TakeDamage(int damageAmount, ElementType damageElement)
         {
             int remainingDamage = damageAmount;
+            int traildblaze = 100;
 
             if (stats.currentShield > 0)
             {
@@ -220,6 +155,38 @@ namespace Turnbase
                     popupColor
                 );
                 Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
+
+                if (this is Enemy enemyTarget)
+                {
+                    float elementMultiplier = 1.0f;
+
+                    if (battleManager != null && battleManager.elementChart != null)
+                    {
+                        elementMultiplier = battleManager.elementChart.GetMultiplier(damageElement, enemyTarget.characterElement);
+                    }
+
+                    if (elementMultiplier > 1.0f)
+                    {
+                        enemyTarget.traildblaze -= traildblaze;
+                        enemyTarget.traildblaze = Mathf.Max(0f, enemyTarget.traildblaze); 
+
+                        if (enemyTarget.enemyUI != null)
+                        {
+                            enemyTarget.enemyUI.UpdateUI();
+                        }
+                        Debug.Log($"[{enemyTarget.gameObject.name}] Bị khắc chế! Traildblaze giảm xuống còn: {enemyTarget.traildblaze}");
+                    }
+                    else
+                    {
+                        Debug.Log($"[{enemyTarget.gameObject.name}] Không bị khắc chế ({elementMultiplier}). Traildblaze không giảm.");
+                    }
+
+                    if(enemyTarget.traildblaze <= 0)
+                    {
+                        enemyTarget.ApplyBreakStatus(enemyTarget.BreakDebuffSettings);
+                    }
+                }
+
             }
             else if (damageAmount > 0)
             {
@@ -296,7 +263,7 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} mana! Mana hiện tại: {stats.currentMP}");
         }
 
-        public void AddShield(int amount, int duration, Sprite icon, Flyweight2 vfxInstance = null)
+        public void AddShield(int amount, int duration, Sprite icon, Flyweight_TB vfxInstance = null)
         {
             if (buffManager != null)
             {
@@ -304,7 +271,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyAttackBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -312,7 +279,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMaxHPBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyMaxHPBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -320,7 +287,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyDefenseBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -328,7 +295,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyAgilityBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyAgilityBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {   
             if (buffManager != null)
             {
@@ -336,7 +303,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -344,7 +311,7 @@ namespace Turnbase
             }
         }
 
-        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight2 vfxInstance, Sprite icon)
+        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (buffManager != null)
             {
@@ -353,146 +320,6 @@ namespace Turnbase
         }
         #endregion
 
-        #region Lấy Dữ liệu Hiệu ứng (Cho CharacterStatUI)
-        public List<StatusEffectData> GetActiveStatusEffects()
-        {
-            List<StatusEffectData> effects = new List<StatusEffectData>();
-
-            if (buffManager == null || debuffManager == null) return effects;
-
-
-            if (buffManager.shieldTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Lá chắn",
-                    TurnsRemaining = buffManager.shieldTurnsRemaining,
-                    Detail = $"{stats.currentShield} Shield",
-                    IsBuff = true,
-                    Icon = buffManager.shieldIcon
-
-                });
-            }
-
-            if (buffManager.attackBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.physicalAttack - buffManager.originalBaseAttack;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Tăng P.Attack",
-                    TurnsRemaining = buffManager.attackBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.attackBuffIcon
-                });
-            }
-
-            if (buffManager.defenseBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.physicalDefense - buffManager.originalBaseDefense;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Tăng P.Defense",
-                    TurnsRemaining = buffManager.defenseBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.defenseBuffIcon
-                });
-            }
-
-            if (buffManager.agilityBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.agility - buffManager.originalBaseAgility;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Tăng Agility",
-                    TurnsRemaining = buffManager.agilityBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.agilityBuffIcon
-                });
-            }
-
-            if (buffManager.maxHPBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.maxHP - buffManager.originalBaseMaxHP;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Tăng MaxHP",
-                    TurnsRemaining = buffManager.maxHPBuffTurnsRemaining,
-                    Detail = $"+{buffAmount} MaxHP",
-                    IsBuff = true,
-                    Icon = buffManager.maxHPBuffIcon
-                });
-            }
-
-            if (buffManager.magicalAttackBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.magicAttack - buffManager.magicalOriginalBaseAttack;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Tăng M.Attack",
-                    TurnsRemaining = buffManager.magicalAttackBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.magicalAttackBuffIcon
-                });
-            }
-
-            if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
-            {
-                int buffAmount = stats.magicDefense - buffManager.magicalOriginalBaseDefense;
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Tăng M.Defense",
-                    TurnsRemaining = buffManager.magicalDefenseBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
-                    IsBuff = true,
-                    Icon = buffManager.magicalDefenseBuffIcon
-                });
-            }
-
-
-
-            if (debuffManager.burnTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Thiêu đốt",
-                    TurnsRemaining = debuffManager.burnTurnsRemaining,
-                    Detail = $"{debuffManager.burnDamagePerTurn} Sát thương/lượt",
-                    IsBuff = false,
-                    Icon = debuffManager.burnIcon
-                });
-            }
-
-            if (debuffManager.poisonTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Độc",
-                    TurnsRemaining = debuffManager.poisonTurnsRemaining,
-                    Detail = $"{debuffManager.poisonDamagePerTurn} Sát thương/lượt",
-                    IsBuff = false,
-                    Icon = debuffManager.poisonIcon
-                });
-            }
-
-            if (debuffManager.stunTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Choáng",
-                    TurnsRemaining = debuffManager.stunTurnsRemaining,
-                    Detail = "Không hành động",
-                    IsBuff = false,
-                    Icon = debuffManager.stunIcon
-                });
-            }
-
-            return effects;
-        }
-        #endregion    
     }
 
 }
