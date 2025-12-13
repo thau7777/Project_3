@@ -1,14 +1,13 @@
 using UnityEngine;
-
 public class CircleIndicator : SkillIndicator
 {
     [Header("Indicator Settings")]
-    [SerializeField] private float moveSpeed = 5f;   // For circle indicator smooth follow
     private Transform _followTarget;
     bool _followMouse = false;
 
-    public void Initialize(Transform followTarget = null)
+    public void Initialize(float radius, Transform followTarget = null)
     {
+        _vfx.SetFloat("Size", radius);
         _followTarget = followTarget;
         // if follow target = null then follow mouse position
         _followMouse = followTarget == null;
@@ -17,7 +16,8 @@ public class CircleIndicator : SkillIndicator
     private void Update()
     {
         if (isMovementLocked) return;
-        if(_followMouse)
+
+        if (_followMouse)
             MoveToMouse();
         else
             MoveTowardTarget();
@@ -31,13 +31,13 @@ public class CircleIndicator : SkillIndicator
 
     private void MoveTowardTarget()
     {
-        if(!_followTarget && !_followMouse)
+        if (!_followTarget && !_followMouse)
         {
             ReturnToPool();
             return;
         }
-        Vector3 targetPosition = _followTarget.position;
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-    }
 
+        // Instant snap to target position - no lerp/interpolation
+        transform.position = _followTarget.position;
+    }
 }

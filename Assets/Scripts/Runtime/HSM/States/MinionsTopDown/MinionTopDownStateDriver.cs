@@ -26,6 +26,7 @@ public class MinionTopDownStateDriver : MonoBehaviour
 
         _animator = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
+        GetComponent<Damageable>().Initialize(_minionData.MaxHealth);
 
         _context = new MinionTopDownContext.Builder()
         .SetKind(minionData.Kind)
@@ -50,10 +51,7 @@ public class MinionTopDownStateDriver : MonoBehaviour
     {
         EventBus<SummonerTargetEvent>.Deregister(_summonerTargetEventBinding);
     }
-    private void OnDestroy()
-    {
-
-    }
+   
     private void Update()
     {
         _machine.Tick(Time.deltaTime);
@@ -70,7 +68,7 @@ public class MinionTopDownStateDriver : MonoBehaviour
         {
             _context.IsHurting = false;
         }
-        else if (stateInfo.IsTag("Dead"))
+        else if (stateInfo.IsTag("Die"))
         {
 
         }
@@ -79,8 +77,10 @@ public class MinionTopDownStateDriver : MonoBehaviour
     {
         var vfx = FlyweightFactory.Spawn(vfxSettings);
         vfx.FlyweightInitialize(transform.position, transform.rotation);
-    }
-    public void OnTakeDamage(int currentHealth, Vector3 knockBackDirection, float knockBackForce)
+        vfx.GetComponent<HitBoxHandler>().Origin = transform.gameObject;
+        vfx.GetComponent<DamageDealer>().Damage = _minionData.BaseAttackDamage;
+    } 
+    public void OnTakeDamage(GameObject sender, int currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {
         if (_context.IsDead) return;
         if (currentHealth <= 0)

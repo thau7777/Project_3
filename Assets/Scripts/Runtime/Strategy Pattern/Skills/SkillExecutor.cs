@@ -88,13 +88,13 @@ public class SkillExecutor : MonoBehaviour
                 {
                     _skillIndicator.FlyweightInitialize(transform.position,transform.rotation);
                     var followedIndicator = _skillIndicator as FollowedIndicator;
-                    followedIndicator.Initialize(transform, _skillToCast.Definition.Range * 12);
+                    followedIndicator.Initialize(transform, _skillToCast.Definition.Range * 12,3);
                     break;
                 }
                 case FlyweightType.IndicatorCircleAlly:
                 {
                         var circleIndicator = _skillIndicator as CircleIndicator;
-                        circleIndicator.Initialize();
+                        circleIndicator.Initialize(5);
                         break;
                 }
             }
@@ -147,9 +147,7 @@ public class SkillExecutor : MonoBehaviour
         }
         if (_skillIndicator)
         {
-            _skillIndicator.OnSkillUse(_skillToCast.Definition.indicatorLockTime, 
-                _skillToCast.Definition.indicatorLockTime > 0 ? ExecuteSkill : null);
-            _skillIndicator = null;
+            _skillIndicator.ReturnToPool();
         }
         string animName = _storedSkillData.Value.animName;
         if (animName == "Dash") context.IsDashing = true;

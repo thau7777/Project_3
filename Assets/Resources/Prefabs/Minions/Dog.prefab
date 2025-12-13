@@ -1651,6 +1651,7 @@ GameObject:
   - component: {fileID: 4914314247199032655}
   - component: {fileID: 5945912575050152541}
   - component: {fileID: 6699727335733242003}
+  - component: {fileID: 4462151752744613592}
   m_Layer: 10
   m_Name: Dog
   m_TagString: Untagged
@@ -1757,13 +1758,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   _layerIgnoreOnDeath:
     serializedVersion: 2
-    m_Bits: 1544
+    m_Bits: 3848
   OnTakeDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5945912575050152541}
+        m_TargetAssemblyTypeName: MinionTopDownStateDriver, Assembly-CSharp
+        m_MethodName: OnTakeDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHeal:
     m_PersistentCalls:
       m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4462151752744613592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6588988766945879554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbda965816c65b84888c980d945643f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
+  vfxMaterialDataList:
+  - {fileID: 11400000, guid: e40570b42b5f5394ebe5a8449c9eb93a, type: 2}
+  targetRenderer: {fileID: 8767395389985494274}
 --- !u!1 &6803198800274529416
 GameObject:
   m_ObjectHideFlags: 0

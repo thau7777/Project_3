@@ -11,7 +11,7 @@ public class EnemyTopdownAttack : State
  
     protected override void OnEnter()
     {
-        _targetLastPosition = ctx.TargetTransform.position;
+        _targetLastPosition = ctx.CurrentTargetTransform.position;
         ctx.CurrentSpeed = 0;
         //if (GetTransition() != null) return;
         ctx.Animator.CrossFade(ctx.AttackHash, 0,0);

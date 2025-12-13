@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = " New SkillIndicator Settings", menuName = "Scriptable Objects/Flyweight/SkillIndicator Settings")]
 public class SkillIndicatorSettings : FlyweightSettings
 {
-    public bool canLockIn;
     public LayerMask groundMask = ~0; // all layers by default
     public override Flyweight Create()
     {
@@ -14,11 +13,12 @@ public class SkillIndicatorSettings : FlyweightSettings
         switch (type)
         {
             case FlyweightType.IndicatorCircleAlly:
+            case FlyweightType.IndicatorCircleEnemy:
                 {
                     flyweight = go.GetOrAdd<CircleIndicator>();
                     break;
                 }
-            case FlyweightType.IndicatorStraightAlly:
+            default:
                 {
                     flyweight = go.GetOrAdd<FollowedIndicator>(); 
                     break;

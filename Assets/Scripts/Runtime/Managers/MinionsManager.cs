@@ -39,7 +39,7 @@ public class MinionsManager : Singleton<MinionsManager>
     {
         for(int i=0; i<minionsDataArray.Length; i++)
         {
-            if (minionsDataArray[i] == null) continue;
+            if (minionsDataArray[i] == null || minionsDataArray[i].IsDead) continue;
             var obj = Instantiate(minionsDataArray[i].MinionPrefab);
             obj.transform.position = PickRandomLocationAroundPlayer();
             obj.GetOrAdd<MinionTopDownStateDriver>().InitializeMinion(minionsDataArray[i]);
@@ -47,6 +47,19 @@ public class MinionsManager : Singleton<MinionsManager>
             _minionsSpawnedArray[i] = obj.GetComponent<MinionTopDownStateDriver>();
         }
 
+    }
+    public void Update()
+    {
+        UpdateReviveTime();
+    }
+    private void UpdateReviveTime()
+    {
+        for (int i = 0; i < minionsDataArray.Length; i++)
+        {
+            if (minionsDataArray[i] == null || !minionsDataArray[i].IsDead) continue;
+            float elapsedTime = minionsDataArray[i].ReviveElapsedTime + Time.deltaTime;
+            minionsDataArray[i].SetReviveElapsedTime(elapsedTime);
+        }
     }
 
     public void AddTargetedEnemies(GameObject enemy)

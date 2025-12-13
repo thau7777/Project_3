@@ -46,12 +46,16 @@ public enum FlyweightType
 
     TopDownEnemySlime,
     TopDownEnemyTurtle,
+    TopDownEnemyStraightAttackVFX,
+    BasicPlayerOnHitImpactVFX,
 
     TurnbaseSpawnPet,
 
     IndicatorCircleAlly,
     IndicatorCircleEnemy,
+    IndicatorStraightDashAlly,
     IndicatorStraightAlly,
+    IndicatorStraightDashEnemy,
     IndicatorStraightEnemy,
     IndicatorConeAlly,
     IndicatorConeEnemy,
@@ -62,4 +66,6 @@ public enum FlyweightType
     SummonerTargetVFX,
     DogSlash_1,
     DogSlash_2,
+
+    BasicChargeVFX,
 }

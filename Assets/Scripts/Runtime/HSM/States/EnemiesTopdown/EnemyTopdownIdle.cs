@@ -3,7 +3,6 @@ using HSM;
 public class EnemyTopdownIdle : State
 {
     readonly EnemyTopdownContext ctx;
-    float _moveDelayTime = 1;
     float _moveTimer = 0;
     public EnemyTopdownIdle(StateMachine machine, State parent, EnemyTopdownContext context) : base(machine, parent)
     {
@@ -20,7 +19,7 @@ public class EnemyTopdownIdle : State
     {
         _moveTimer += deltaTime;
         
-        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.TargetTransform.position);
+        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.CurrentTargetTransform.position);
     }
     
     protected override State GetTransition()
@@ -35,7 +34,13 @@ public class EnemyTopdownIdle : State
         }
         if (ctx.IsTargetInAttackRange())
         {
-            return ((EnemyTopdownRoot)Parent).Attack;
+            if(!ctx.IsBoss)
+                return ((EnemyTopdownRoot)Parent).Attack;
+
+            if(ctx.CheckAndPickRandomAttack())
+                return ((EnemyTopdownRoot)Parent).SpecialMove;
+
+            return null;
         }
         else
         {
@@ -43,7 +48,7 @@ public class EnemyTopdownIdle : State
             {
                 return ((EnemyTopdownRoot)Parent).Move;
             }
-            else if(_moveTimer >= _moveDelayTime)
+            else if(_moveTimer >= ctx.MovePauseDuration)
             {
                 return ((EnemyTopdownRoot)Parent).Move;
             }

@@ -4,7 +4,7 @@ public class EnemyTopdownMove : State
 {
     readonly EnemyTopdownContext ctx;
     Vector3 _targetLastPosition;
-    Vector3 _targetPosition => ctx.EnemyType == EnemyTopdownType.Slime ? _targetLastPosition : ctx.TargetTransform.position;
+    Vector3 _targetPosition => ctx.EnemyType == EnemyTopdownType.Slime ? _targetLastPosition : ctx.CurrentTargetTransform.position;
     public EnemyTopdownMove(StateMachine machine, State parent, EnemyTopdownContext context) : base(machine, parent)
     {
         ctx = context;
@@ -12,9 +12,8 @@ public class EnemyTopdownMove : State
     protected override void OnEnter()
     {
         if (ctx.EnemyType == EnemyTopdownType.Slime)
-            _targetLastPosition = ctx.TargetTransform.position;
+            _targetLastPosition = ctx.CurrentTargetTransform.position;
         ctx.CurrentSpeed = ctx.BaseMoveSpeed;
-        //if (GetTransition() != null) return;
         ctx.Animator.CrossFade(ctx.MoveHash, 0.1f);
     }
     protected override void OnUpdate(float deltaTime)
@@ -43,7 +42,13 @@ public class EnemyTopdownMove : State
                 ctx.IsDoneMoving = false;
                 if (ctx.IsTargetInAttackRange())
                 {
-                    return ((EnemyTopdownRoot)Parent).Attack;
+                    if (!ctx.IsBoss)
+                        return ((EnemyTopdownRoot)Parent).Attack;
+
+                    if (ctx.CheckAndPickRandomAttack())
+                        return ((EnemyTopdownRoot)Parent).SpecialMove;
+
+                    return ((EnemyTopdownRoot)Parent).Idle;
                 }
                 return ((EnemyTopdownRoot)Parent).Idle;
             }
@@ -52,7 +57,13 @@ public class EnemyTopdownMove : State
         {
             if (ctx.IsTargetInAttackRange())
             {
-                return ((EnemyTopdownRoot)Parent).Attack;
+                if (!ctx.IsBoss)
+                    return ((EnemyTopdownRoot)Parent).Attack;
+
+                if (ctx.CheckAndPickRandomAttack())
+                    return ((EnemyTopdownRoot)Parent).SpecialMove;
+
+                return null;
             }
         }
         
