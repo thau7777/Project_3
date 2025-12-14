@@ -23,7 +23,7 @@ public class EffectApplier : MonoBehaviour
     {
         _effectsToApply = effectList;
     }
-    public void ApplyEffect(GameObject target)
+    public void ApplyEffect(GameObject sender,GameObject target)
     {
         if (_effectsToApply == null)
         {
@@ -47,7 +47,7 @@ public class EffectApplier : MonoBehaviour
     // Overload to apply effect to this GameObject
     public void ApplyEffect()
     {
-        ApplyEffect(gameObject);
+        ApplyEffect(gameObject,gameObject);
     }
 
 }

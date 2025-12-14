@@ -6,16 +6,22 @@ public class Damageable : MonoBehaviour
     CharacterController _characterController;
 
     [SerializeField]
-    LayerMask _layerIgnoreOnDeath;
+    private LayerMask _layerIgnoreOnDeath;
+    private CharacterControllerLayerIgnoreController _ccLayerIgnoreController;
+
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
+    public float InvincibleDuration { get; set; } = 0.1f;
+    private float _invincibleElapsedTime = 0;
 
-    public UnityEvent<int, Vector3, float> OnTakeDamage;
+    public UnityEvent<GameObject,int, Vector3, float> OnTakeDamage;
     public UnityEvent<int> OnHeal;
+    public UnityEvent OnDeath;
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _ccLayerIgnoreController = gameObject.GetOrAdd<CharacterControllerLayerIgnoreController>();
     }
     public void Initialize(int maxHealth)
     {
@@ -24,32 +30,40 @@ public class Damageable : MonoBehaviour
     }
     private void OnEnable()
     {
-        ApplyIgnoreCollision(false);
+        _invincibleElapsedTime = 0;
     }
-    public void TakeDamage(int damage, Vector3 knockBackDirection, float knockBackForce)
+    private void Update()
     {
-        if (CurrentHealth == 0) return;
+        if(_invincibleElapsedTime > 0)
+            _invincibleElapsedTime -= Time.deltaTime;
+    }
+    public void TakeDamage(GameObject sender,int damage, Vector3 knockBackDirection, float knockBackForce)
+    {
+        if (CurrentHealth == 0 || _invincibleElapsedTime > 0) return;
+
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
-        OnTakeDamage?.Invoke(CurrentHealth, knockBackDirection, knockBackForce);
-        if (CurrentHealth == 0) ApplyIgnoreCollision(true);
+
+        if (CurrentHealth == 0)
+        {
+            ApplyIgnoreCollisionOnDeath(true);
+            OnDeath?.Invoke();
+            return;
+        }
+
+        _invincibleElapsedTime = InvincibleDuration;
+        OnTakeDamage?.Invoke(sender,CurrentHealth, knockBackDirection, knockBackForce);
+        
     }
     public void Heal(int amount)
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
     }
 
-    public void ApplyIgnoreCollision(bool ignore)
+    public void ApplyIgnoreCollisionOnDeath(bool ignore)
     {
-        // Find all active colliders in the scene
-        Collider[] allColliders = FindObjectsByType<Collider>(FindObjectsSortMode.None);
-
-        foreach (var col in allColliders)
-        {
-            // Check if the collider's layer is one of the layers in the mask
-            if (((1 << col.gameObject.layer) & _layerIgnoreOnDeath) != 0)
-            {
-                Physics.IgnoreCollision(_characterController, col, ignore);
-            }
-        }
+        if (ignore)
+            _ccLayerIgnoreController.ApplyLayerIgnore(_layerIgnoreOnDeath);
+        else
+            _ccLayerIgnoreController.ResetLayerIgnore();
     }
 } 

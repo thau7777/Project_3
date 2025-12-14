@@ -75,15 +75,19 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
     private Vector3 _savedMousePosition;
     #endregion
+
     #region Initialization
     private void Awake()
     {
         if (_locomotionSet.characterClass == CharacterClass.Summoner)
             Instantiate(_minionManagerPrefab);
+
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
+        GetComponent<Damageable>().Initialize(1000);
+
 
         _context = new PlayerTopdownContext.Builder()
         .SetBaseMoveSpeed(_baseMoveSpeed)

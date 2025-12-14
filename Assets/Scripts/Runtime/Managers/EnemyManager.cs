@@ -9,37 +9,46 @@ public class EnemyManager : Singleton<EnemyManager>
 
     [Header("Spawn Settings")]
     [SerializeField] private float _spawnInterval = 3f; // seconds between spawns
-    [SerializeField] private int _spawnCountPerWave = 3; // number of enemies per spawn cycle
+    [SerializeField] private int _minSpawnCountPerWave = 2; // minimum enemies per wave
+    [SerializeField] private int _maxSpawnCountPerWave = 5; // maximum enemies per wave
 
     private Transform _player;
     private Coroutine _spawnRoutine;
 
     // Allow runtime modification
-    public int SpawnCountPerWave
+    public int MinSpawnCountPerWave
     {
-        get => _spawnCountPerWave;
-        set => _spawnCountPerWave = Mathf.Max(0, value); // Prevent negative values
+        get => _minSpawnCountPerWave;
+        set => _minSpawnCountPerWave = Mathf.Max(0, value);
+    }
+
+    public int MaxSpawnCountPerWave
+    {
+        get => _maxSpawnCountPerWave;
+        set => _maxSpawnCountPerWave = Mathf.Max(_minSpawnCountPerWave, value); // Max must be >= Min
     }
 
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player")?.transform;
-
         if (_player == null)
         {
             Debug.LogError("EnemyManager: Player not found! Make sure your Player has the 'Player' tag.");
             return;
         }
+
         SetupSettings();
         _spawnRoutine = StartCoroutine(SpawnEnemiesLoop());
     }
+
     private void SetupSettings()
     {
-        foreach(var setting in _enemyTopDownSettings)
+        foreach (var setting in _enemyTopDownSettings)
         {
             setting.SetupSpawnSettings(_player, 10f);
         }
     }
+
     private IEnumerator SpawnEnemiesLoop()
     {
         while (true)
@@ -48,6 +57,7 @@ public class EnemyManager : Singleton<EnemyManager>
             yield return new WaitForSeconds(_spawnInterval);
         }
     }
+
     public void SetNewEnemyInitialHealth(int newHealth)
     {
         foreach (var setting in _enemyTopDownSettings)
@@ -64,7 +74,10 @@ public class EnemyManager : Singleton<EnemyManager>
             return;
         }
 
-        for (int i = 0; i < _spawnCountPerWave; i++)
+        // Generate random count between min and max (inclusive)
+        int spawnCount = Random.Range(_minSpawnCountPerWave, _maxSpawnCountPerWave + 1);
+
+        for (int i = 0; i < spawnCount; i++)
         {
             SpawnRandomly();
         }
@@ -80,7 +93,5 @@ public class EnemyManager : Singleton<EnemyManager>
             Debug.LogWarning("EnemyManager: Failed to spawn enemy from FlyweightFactory.");
             return;
         }
-
     }
-
 }

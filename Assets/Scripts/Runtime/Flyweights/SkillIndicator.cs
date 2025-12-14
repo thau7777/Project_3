@@ -25,8 +25,8 @@ public abstract class SkillIndicator : Flyweight
     {
         isMovementLocked = false;
 
-        if (!settings.canLockIn) return;
-            _vfx.SetFloat("LockInTime", 0);
+        if (_vfx.HasFloat("ChargeAmount"))
+            _vfx.SetFloat("ChargeAmount", 0);
     }
 
     private void OnDisable()
@@ -41,7 +41,7 @@ public abstract class SkillIndicator : Flyweight
     // -------------------------------------------------------------------------
    
     
-    private void Stop()
+    public void Stop()
     {
         isMovementLocked = true; // <--- freeze during lock-in
     }
@@ -66,36 +66,30 @@ public abstract class SkillIndicator : Flyweight
     // -------------------------------------------------------------------------
     // SKILL LOCK-IN
     // -------------------------------------------------------------------------
-    public void OnSkillUse(float lockDuration, Action skillCastMethod = null)
+    public void LockIndicator(float lockDuration)
     {
-        if (skillCastMethod == null)
+        if(!_vfx.HasFloat("ChargeAmount") || lockDuration == 0)
         {
             ReturnToPool();
             return;
         }
-
-        _vfx.SendEvent("Lock In");
-
         if (_lockInCoroutine != null)
             StopCoroutine(_lockInCoroutine);
-        _lockInCoroutine = StartCoroutine(StartLockIn(skillCastMethod, lockDuration));
+        _lockInCoroutine = StartCoroutine(StartLockIn(lockDuration));
     }
 
-    private IEnumerator StartLockIn(Action skillCastMethod, float lockDuration)
+    private IEnumerator StartLockIn(float lockDuration)
     {
-        Stop();
-
         float elapsed = 0f;
         while (elapsed < lockDuration)
         {
             elapsed += Time.deltaTime;
             float value = Mathf.Clamp01(elapsed / lockDuration);
-            _vfx.SetFloat("LockInTime", value);
+            _vfx.SetFloat("ChargeAmount", value);
             yield return null;
         }
 
-        _vfx.SetFloat("LockInTime", 1);
-        skillCastMethod?.Invoke();
+        _vfx.SetFloat("ChargeAmount", 1);
         ReturnToPool();
     }
 }

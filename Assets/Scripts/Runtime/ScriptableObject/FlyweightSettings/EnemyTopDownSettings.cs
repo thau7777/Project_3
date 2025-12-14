@@ -5,6 +5,7 @@ public class EnemyTopDownSettings : FlyweightSettings
 {
     [SerializeField] private float _spawnRadius = 10f;
     [SerializeField] private int _initialHealth = 100;
+    public float spawnAnimationTime = 0.5f;
     private Transform _player;
 
     public override Flyweight Create()
@@ -30,7 +31,7 @@ public class EnemyTopDownSettings : FlyweightSettings
     {
         Vector2 randomCircle = Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPosition = _player.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
-        spawnPosition.y = 0f;
+        spawnPosition.y = -1f;
         return spawnPosition;
     }
     public override void OnGet(Flyweight f)
@@ -38,6 +39,7 @@ public class EnemyTopDownSettings : FlyweightSettings
         f.GetComponent<Damageable>().Initialize(_initialHealth);
         f.transform.position = PickRandomLocationAroundPlayer();
         base.OnGet(f);
+        f.GetComponent<EnemyTopdownStateDriver>().StartSpawnAnim();
     }
     public override void OnRelease(Flyweight f)
     {

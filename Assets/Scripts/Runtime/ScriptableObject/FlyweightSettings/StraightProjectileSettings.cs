@@ -6,7 +6,7 @@ public class StraightProjectileSettings : FlyweightSettings
 {
 
     [field: SerializeField]
-    public OneShotVFXSettings ProjectileImpactVFX { get; set; }
+    public SimpleOneShotVFXSettings ProjectileImpactVFX { get; set; }
 
     [field: SerializeField]
     public LayerMask DodgeLayers { get; private set; }
