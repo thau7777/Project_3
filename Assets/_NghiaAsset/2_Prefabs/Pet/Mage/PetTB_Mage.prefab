@@ -2730,7 +2730,7 @@ MonoBehaviour:
   parryButton: {fileID: 8753874656911766885}
   confirmButton: {fileID: 6552284012243243665}
   summomonButton: {fileID: 6781936641884110448}
-  confirmButton2: {fileID: 0}
+  actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 8017378864562971990}
   playerActionsPanel2: {fileID: 0}
@@ -2756,6 +2756,7 @@ GameObject:
   - component: {fileID: 6007067907109271698}
   - component: {fileID: 428602294126036014}
   - component: {fileID: 8016999400321186779}
+  - component: {fileID: 5852031828466654290}
   m_Layer: 0
   m_Name: PetTB_Mage
   m_TagString: Player
@@ -2822,8 +2823,6 @@ MonoBehaviour:
   stateMachine: {fileID: 6007067907109271698}
   characterClass: 1
   characterElement: 0
-  allClassProfiles:
-  - {fileID: 11400000, guid: d030d73e839bafe4fa0a621f62d882e9, type: 2}
   info:
     name: Mage
     Avatar: {fileID: 21300000, guid: 79741450687ace542a5423643691cc22, type: 3}
@@ -2842,6 +2841,8 @@ MonoBehaviour:
     crit: 0
     critDamage: 0
     agility: 111
+  allClassProfiles:
+  - {fileID: 11400000, guid: d030d73e839bafe4fa0a621f62d882e9, type: 2}
   skills: []
   passiveSkills: []
   isPlayer: 1
@@ -2900,6 +2901,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -2912,6 +2914,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -2941,6 +2944,26 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
+--- !u!114 &5852031828466654290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: 0}
 --- !u!1 &8784865055039137925
 GameObject:
   m_ObjectHideFlags: 0

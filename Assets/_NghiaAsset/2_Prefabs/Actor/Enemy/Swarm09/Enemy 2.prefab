@@ -690,7 +690,16 @@ MonoBehaviour:
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
   traildblaze: 100
+  isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
+  BreakDebuffSettings:
+    statToModify: 5
+    durationTurns: 3
+    amount: 0
+    baseDamagePerTurn: 0
+    debuffValue: 0
+    debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
+    icon: {fileID: 21300000, guid: 965f4a1575b2a66448a303bbd345c471, type: 3}
 --- !u!114 &9145698497346757161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +803,9 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
 --- !u!114 &228614209179218366
 MonoBehaviour:
   m_ObjectHideFlags: 0
