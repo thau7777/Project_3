@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
-
+using System.Collections;
 
 namespace Turnbase
 {
     public class BattleBuffManager : MonoBehaviour
     {
+        public BattleManager battleManager;
 
         public void ProcessPassiveSkills(Character character)
         {
@@ -41,7 +42,7 @@ namespace Turnbase
                         break;
 
                     case PassiveEffectType.ManaPerTurn:
-                        if(character.stats == null) continue;
+                        if (character.stats == null) continue;
 
                         int percentMana = Mathf.RoundToInt(character.stats.maxMP * passiveSkills.effectValuePercentage);
 
@@ -49,7 +50,7 @@ namespace Turnbase
 
                         int totalManaAmout = percentMana + fixedMana;
 
-                        if(totalManaAmout > 0)
+                        if (totalManaAmout > 0)
                         {
                             character.RestoreMana(totalManaAmout);
                             Debug.Log($"{character.name} hồi phục {totalManaAmout} MP (Bao gồm {passiveSkills.effectValuePercentage * 100}% MP và {fixedMana} MP cố định) nhờ kỹ năng thụ động {passiveSkills.skillName}.");
@@ -134,6 +135,61 @@ namespace Turnbase
 
                     default:
                         break;
+                }
+            }
+        }
+
+        public void ProcessOnDeathPassives(Character character)
+        {
+            if (character == null || character.passiveSkills == null) return;
+
+            Debug.Log($"[PassiveCheck] Đang kiểm tra Passive OnDeath cho {character.name}.");
+
+            StartCoroutine(HandleOnDeathPassivesDelayed(character));
+        }
+
+        private IEnumerator HandleOnDeathPassivesDelayed(Character character)
+        {
+            foreach (var passive in character.passiveSkills)
+            {
+                if (passive == null || passive.applicationTiming != PassiveTiming.OnDeath)
+                {
+                    continue;
+                }
+
+                Debug.Log($"[Passive] {character.name} kích hoạt Passive OnDeath: {passive.skillName}");
+
+                switch (passive.effectType)
+                {
+                    case PassiveEffectType.SpawnMinionsOnDeath:
+                        yield return StartCoroutine(SpawnMinionsDelayed(character, passive, 3f));
+                        break;
+                }
+            }
+        }
+
+        private IEnumerator SpawnMinionsDelayed(Character deadCharacter, SkillPassive passive, float delay)
+        {
+            if (passive.minionPrefab == null || battleManager == null)
+            {
+                yield break;
+            }
+
+            yield return new WaitForSeconds(delay);
+
+            for (int i = 0; i < passive.minionCount; i++)
+            {
+                Vector3 spawnPosition = deadCharacter.gameObject.transform.position + Vector3.right * i * 0.5f;
+
+                Character minionInstance = battleManager.SpawnCombatant(
+                    passive.minionPrefab.gameObject,
+                    deadCharacter.isPlayer,
+                    spawnPosition
+                );
+
+                if (minionInstance != null)
+                {
+                    Debug.Log($"[Spawn] Đã triệu hồi quái con: {minionInstance.name} từ {deadCharacter.name}.");
                 }
             }
         }

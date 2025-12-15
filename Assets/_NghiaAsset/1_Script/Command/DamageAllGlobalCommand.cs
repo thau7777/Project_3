@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +14,7 @@ namespace Turnbase
         private Skill skill;
         private BattleManager battleManager;
 
-        private const float TARGET_DELAY = 0.05f;
-        private const float DAMAGE_START_DELAY = 1.5f;
+        private const float POST_ANIMATION_DELAY = 0.5f;
 
         public DamageAllGlobalCommand(Character user, Skill skill, BattleManager battleManager)
         {
@@ -33,21 +32,31 @@ namespace Turnbase
 
             if (skill.cameraTimeline != null && battleManager.mainDirector != null)
             {
-                PlayableDirector director = battleManager.mainDirector;
-                director.playableAsset = skill.cameraTimeline;
-                director.Play();
+                battleManager.mainDirector.playableAsset = skill.cameraTimeline;
+                battleManager.mainDirector.Play();
             }
-
-            yield return new WaitForSeconds(DAMAGE_START_DELAY);
 
             SpawnImpactEffect(new Vector3(0f, 0f, 0f));
 
-            List<Character> allTargets = GetTargets();
+            Action damageLogicCallback = () =>
+            {
+                List<Character> allTargets = GetTargets();
 
-            yield return ApplyDamageToTargets(allTargets);
+                battleManager.StartCoroutine(ApplyDamageToTargets(allTargets));
+            };
 
-            float totalAnimationDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(0.5f);
+            user.PrepareHitCallBack(damageLogicCallback);
+
+            float animationDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
+
+            if (skill.cameraTimeline != null && battleManager.mainDirector != null)
+            {
+                animationDuration = Mathf.Max(animationDuration, (float)skill.cameraTimeline.duration);
+            }
+
+            yield return new WaitForSeconds(animationDuration + POST_ANIMATION_DELAY);
+
+            user.PrepareHitCallBack(null);
 
             if (battleManager != null)
             {
@@ -63,18 +72,18 @@ namespace Turnbase
             {
                 targets = battleManager.allCombatants.FindAll(
                     c => c != null &&
-                         !c.isPlayer &&
-                         c.isAlive &&
-                         !c.isVirtualTracker
+                            !c.isPlayer &&
+                            c.isAlive &&
+                            !c.isVirtualTracker
                 );
             }
             else
             {
                 targets = battleManager.allCombatants.FindAll(
                     c => c != null &&
-                         c.isPlayer &&
-                         c.isAlive &&
-                         !c.isVirtualTracker
+                            c.isPlayer &&
+                            c.isAlive &&
+                            !c.isVirtualTracker
                 );
             }
 
@@ -91,6 +100,7 @@ namespace Turnbase
         {
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
             float delayBetweenHits = skill.delayBetweenHits;
+            float targetDelay = 0.05f;
 
             for (int i = 0; i < hits; i++)
             {
@@ -100,11 +110,10 @@ namespace Turnbase
                     if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
                     int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
-
                     int baseDamagePerHit = finalDamage / hits;
                     int damageRemainder = finalDamage % hits;
-
                     int currentHitDamage = baseDamagePerHit;
+
                     if (i == hits - 1)
                     {
                         currentHitDamage += damageRemainder;
@@ -122,14 +131,11 @@ namespace Turnbase
                         {
                             user.buffManager.ProcessSkillStacks(skill, aoeTarget);
                         }
-
-
                     }
-
 
                     ApplySingleHitDamage(aoeTarget, currentHitDamage);
 
-                    yield return new WaitForSeconds(TARGET_DELAY);
+                    yield return new WaitForSeconds(targetDelay);
                 }
 
 
@@ -150,7 +156,7 @@ namespace Turnbase
 
                 if (effectInstance != null)
                 {
-                    ((ImpactVFX_TB)effectInstance).Initialize(position, Quaternion.identity, skill.impactVFXDuration);
+                    effectInstance.Initialize(position, Quaternion.identity);
                 }
             }
         }

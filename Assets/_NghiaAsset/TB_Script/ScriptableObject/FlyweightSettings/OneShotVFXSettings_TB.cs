@@ -13,7 +13,7 @@ namespace Turnbase
             go.name = prefab.name;
 
             ParticleSystem particleSystem = prefab.GetComponentInChildren<ParticleSystem>();
-            DespawnDelay = particleSystem != null ? particleSystem.main.duration : 1f;
+            //DespawnDelay = particleSystem != null ? particleSystem.main.duration : 1f;
 
             var flyweight = go.GetOrAdd<OneShotVFX_TB>();
             flyweight.settings = this;

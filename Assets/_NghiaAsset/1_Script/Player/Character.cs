@@ -130,7 +130,7 @@ namespace Turnbase
         public void TakeDamage(int damageAmount, ElementType damageElement)
         {
             int remainingDamage = damageAmount;
-            int traildblaze = 100;
+            int traildblaze = 30;
 
             if (stats.currentShield > 0)
             {
@@ -176,10 +176,7 @@ namespace Turnbase
                         }
                         Debug.Log($"[{enemyTarget.gameObject.name}] Bị khắc chế! Traildblaze giảm xuống còn: {enemyTarget.traildblaze}");
                     }
-                    else
-                    {
-                        Debug.Log($"[{enemyTarget.gameObject.name}] Không bị khắc chế ({elementMultiplier}). Traildblaze không giảm.");
-                    }
+
 
                     if(enemyTarget.traildblaze <= 0)
                     {
@@ -200,15 +197,15 @@ namespace Turnbase
             {
                 battleUIManager.UpdateCharacterUI(this);
             }
+
             if (stats.currentHP <= 0)
             {
                 stats.currentHP = 0;
                 Debug.Log($"{gameObject.name} đã chết!");
+
+                ProcessOnDeathPassives();
+
                 stateMachine.SwitchState(stateMachine.deadState);
-                if (battleManager != null)
-                {
-                    battleManager.RemoveCombatant(this);
-                }
             }
             else
             {
@@ -216,6 +213,14 @@ namespace Turnbase
                 {
                     stateMachine.SwitchState(stateMachine.takingDamageState);
                 }
+            }
+        }
+
+        public void ProcessOnDeathPassives()
+        {
+            if (battleManager != null && battleManager.turnbuffManager != null)
+            {
+                battleManager.turnbuffManager.ProcessOnDeathPassives(this);
             }
         }
 
