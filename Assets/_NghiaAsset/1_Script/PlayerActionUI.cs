@@ -147,6 +147,9 @@ namespace Turnbase
             isWaitingForConfirmation = false;
             selectedSkillToConfirm = null;
 
+            attackButton.interactable = true;
+            skillButton.interactable = true;
+
             CameraAction.instance.NormalCamera(currentCharacter);
 
             animator.Play("Idle");
@@ -222,6 +225,11 @@ namespace Turnbase
             isWaitingForConfirmation = true;
             selectedSkillToConfirm = null;
 
+            attackButton.interactable = false;
+            skillButton.interactable = true;
+            summomonButton.interactable = true;
+
+
             Debug.Log("OnAttackClicked được gọi.");
 
             animator.Play("Idle");
@@ -241,6 +249,11 @@ namespace Turnbase
         private void OnSkillClicked()
         {
             isWaitingForConfirmation = false;
+
+            attackButton.interactable = true;
+            skillButton.interactable = false;
+            summomonButton.interactable = true;
+
 
             switch (currentCharacter.characterClass)
             {
@@ -311,6 +324,10 @@ namespace Turnbase
             isWaitingForConfirmation = false;
             selectedSkillToConfirm = null;
 
+            attackButton.interactable = true;
+            skillButton.interactable = true;
+            summomonButton.interactable = false;    
+
             Debug.Log("sử dụng Triệu hồi!");
             SetupSummonUI(currentCharacter.skills);
 
@@ -322,7 +339,6 @@ namespace Turnbase
             PlayerSkillPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
 
-            EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
         }
 
         private void OnSkillButtonClicked(Skill selectedSkill)
@@ -418,6 +434,10 @@ namespace Turnbase
         private void OnConfirmClicked()
         {
             isWaitingForConfirmation = false;
+
+            attackButton.interactable = true;
+            skillButton.interactable = true;
+            summomonButton.interactable = true;
 
             Debug.Log("OnConfirmClicked được gọi.");
 

@@ -12,7 +12,7 @@ namespace Turnbase
 {
     public class BattleManager : MonoBehaviour
     {
-        public List<Character> allCombatants = new List<Character>();
+        public List<Character> allCombatants = new List<Character>();
 
         public Character activeCharacter;
 
@@ -91,7 +91,7 @@ namespace Turnbase
             }
         }
 
-        
+
 
         public void ShowCombatantButtonsForFaction(bool showPlayers)
         {
@@ -246,7 +246,7 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+                StartCoroutine(LoadMapSceneDelayed("Map", 5f));
                 return;
             }
         }
@@ -254,8 +254,8 @@ namespace Turnbase
         private void CheckWaveCondition()
         {
             var livingEnemiesInCurrentWave = allCombatants
-                    .Where(c => !c.isPlayer && c.isAlive && !c.isVirtualTracker)
-                    .ToList();
+              .Where(c => !c.isPlayer && c.isAlive && !c.isVirtualTracker)
+              .ToList();
 
             if (livingEnemiesInCurrentWave.Count == 0)
             {
@@ -263,7 +263,7 @@ namespace Turnbase
 
                 if (encounterToLoad != null && currentWaveIndex < encounterToLoad.waves.Length)
                 {
-                    allCombatants.RemoveAll(c => c != null && !c.isPlayer && !c.isAlive);
+                    allCombatants.RemoveAll(c => c != null && !c.isPlayer && !c.isAlive);
 
                     if (uiManager != null)
                     {
@@ -282,26 +282,37 @@ namespace Turnbase
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
-                    StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+                    StartCoroutine(LoadMapSceneDelayed("Map", 3f));
                 }
             }
         }
 
-        private Transform FindFreePlayerSpawnSlot()
-        {
-            HashSet<Vector3> occupiedPositions = new HashSet<Vector3>(
-                                allCombatants.Where(c => c != null && c.isAlive).Select(c => c.transform.position)
-                            );
 
-            foreach (Transform slot in playerSpawnPoints)
+        private Transform FindFreePlayerSpawnSlot()
+        {
+            foreach (Transform slot in playerSpawnPoints)
             {
-                if (!occupiedPositions.Contains(slot.position))
+                bool isOccupied = false;
+                for (int i = 0; i < slot.childCount; i++)
+                {
+                    Transform child = slot.GetChild(i);
+                    Character character = child.GetComponent<Character>();
+                    if (character != null && character.isAlive)
+                    {
+                        isOccupied = true;
+                        break;
+                    }
+                }
+
+                if (!isOccupied)
                 {
                     return slot;
                 }
             }
             return null;
         }
+
+
 
         public Character SummonPet(Character summoner, GameObject petPrefab)
         {
@@ -340,9 +351,6 @@ namespace Turnbase
 
                     summonInstance.ownUI = actionUI;
                 }
-
-
-                
 
                 CharacterStateMachine summonStateMachine = summonInstance.GetComponent<CharacterStateMachine>();
                 if (summonStateMachine != null)
@@ -422,9 +430,9 @@ namespace Turnbase
                     {
                         isProcessingTurn = true;
                         var readyCharacters = allCombatants
-                            .Where(c => c.actionGauge >= 100 && c.isAlive)
-                            .OrderByDescending(c => c.actionGauge)
-                            .ToList();
+                         .Where(c => c.actionGauge >= 100 && c.isAlive)
+                         .OrderByDescending(c => c.actionGauge)
+                         .ToList();
 
                         if (readyCharacters.Any())
                         {
@@ -448,7 +456,7 @@ namespace Turnbase
                 activeCharacter.stats.currentMP = Mathf.Min(activeCharacter.stats.currentMP + 20, activeCharacter.stats.maxMP);
                 uiManager.UpdateAllCharacterUIs(allCombatants);
                 Debug.Log($"[{activeCharacter.gameObject.name}] bắt đầu lượt và hồi 20 Mana.");
-                
+
 
             }
 
@@ -474,7 +482,7 @@ namespace Turnbase
                     StartCoroutine(LoadMapSceneDelayed("Map", 2f));
 
                     activeCharacter = null;
-                    isProcessingTurn = true; 
+                    isProcessingTurn = true;
                     yield break;
                 }
 
@@ -692,7 +700,132 @@ namespace Turnbase
             }
         }
 
+        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
+        {
+            if (prefab == null)
+            {
+                Debug.LogError("[SpawnCombatant] Prefab rỗng!");
+                return null;
+            }
 
+            Transform[] slotArray = isPlayerFaction ? playerSpawnPoints : enemySlots;
+
+            Transform freeSlot = null;
+            Vector3 spawnPosition;
+            Quaternion spawnRotation;
+
+            if (isPlayerFaction)
+            {
+                freeSlot = FindFreePlayerSpawnSlot();
+            }
+            else 
+            {
+                if (slotArray.Length > 0)
+                {
+                    var occupiedEnemySlots = new HashSet<Transform>();
+                    foreach (Transform slot in enemySlots)
+                    {
+                        for (int i = 0; i < slot.childCount; i++)
+                        {
+                            Character character = slot.GetChild(i).GetComponent<Character>();
+                            if (character != null && character.isAlive)
+                            {
+                                occupiedEnemySlots.Add(slot);
+                                break;
+                            }
+                        }
+                    }
+
+                    var availableEnemySlots = slotArray.Where(slot => !occupiedEnemySlots.Contains(slot)).ToList();
+
+                    if (availableEnemySlots.Count > 0)
+                    {
+                        freeSlot = availableEnemySlots
+            .OrderBy(slot => Vector3.Distance(slot.position, positionHint))
+            .FirstOrDefault();
+                    }
+                }
+            }
+
+            if (freeSlot != null)
+            {
+                spawnPosition = freeSlot.position;
+                spawnRotation = freeSlot.rotation;
+            }
+            else
+            {
+                if (!isPlayerFaction)
+                {
+                    Debug.LogWarning($"[SpawnCombatant] Hủy spawn đơn vị địch {prefab.name}. Không còn slot trống.");
+                    return null;
+                }
+
+                spawnPosition = positionHint;
+                spawnRotation = Quaternion.identity;
+                Debug.LogWarning($"[SpawnCombatant] Không tìm được slot trống cho Player. Spawn tại vị trí gợi ý.");
+            }
+
+            GameObject instance = Instantiate(prefab, spawnPosition, spawnRotation);
+            Character characterInstance = instance.GetComponent<Character>();
+
+            if (characterInstance != null)
+            {
+                if (freeSlot != null)
+                {
+                    characterInstance.transform.SetParent(freeSlot);
+                    characterInstance.initialPosition = freeSlot.position;
+                }
+                else
+                {
+                    characterInstance.initialPosition = positionHint;
+                }
+
+                characterInstance.isPlayer = isPlayerFaction;
+
+                characterInstance.battleManager = this;
+
+                if (this.uiManager != null)
+                {
+                    characterInstance.battleUIManager = this.uiManager;
+                }
+
+                CharacterStateMachine characterStateMachine = characterInstance.GetComponent<CharacterStateMachine>();
+                if (characterStateMachine != null)
+                {
+                    characterStateMachine.battleManager = this;
+                    characterStateMachine.SwitchState(characterStateMachine.waitingState);
+                    characterInstance.actionGauge = 0;
+                }
+                if (uiManager != null) uiManager.SpawnCharacterUI(characterInstance);
+
+
+                allCombatants.Add(characterInstance);
+
+                if (characterInstance.stats != null)
+                {
+                    characterInstance.stats.currentHP = characterInstance.stats.maxHP;
+                    characterInstance.stats.currentMP = characterInstance.stats.maxMP;
+                    characterInstance.stats.currentShield = 0;
+                }
+
+                if (turnOrderUI != null)
+                {
+                    turnOrderUI.UpdateActionGaugeUI(allCombatants);
+                }
+
+                turnbuffManager.ProcessOnBattleStartPassives(characterInstance);
+
+                Debug.Log($"Đã spawn đơn vị mới: {characterInstance.name}. Faction: {(isPlayerFaction ? "Player" : "Enemy")}. Slot: {(freeSlot != null ? freeSlot.name : "None")}");
+            }
+            else
+            {
+                Destroy(instance);
+                Debug.LogError($"Prefab {prefab.name} không có component Character!");
+                return null;
+            }
+
+            return characterInstance;
+        }
         public void EndTurn(Character character)
         {
             if (character == activeCharacter)

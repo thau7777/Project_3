@@ -580,6 +580,8 @@ GameObject:
   - component: {fileID: 1527328286654397455}
   - component: {fileID: -7500645950520890881}
   - component: {fileID: 228614209179218366}
+  - component: {fileID: 6763714473923026347}
+  - component: {fileID: 5930411074134683441}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Untagged
@@ -690,7 +692,16 @@ MonoBehaviour:
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
   traildblaze: 100
+  isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
+  BreakDebuffSettings:
+    statToModify: 5
+    durationTurns: 3
+    amount: 0
+    baseDamagePerTurn: 0
+    debuffValue: 0
+    debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
+    icon: {fileID: 21300000, guid: 965f4a1575b2a66448a303bbd345c471, type: 3}
 --- !u!114 &9145698497346757161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +805,9 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
 --- !u!114 &228614209179218366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,6 +821,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
   character: {fileID: -5687909505730138963}
+--- !u!114 &6763714473923026347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbda965816c65b84888c980d945643f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
+  vfxMaterialDataList:
+  - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
+  targetRenderer: {fileID: 1681038574935733229}
+--- !u!114 &5930411074134683441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead553680eccfce47ab5e6589619c945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.EnemyAIController
 --- !u!1 &8430056524065960636
 GameObject:
   m_ObjectHideFlags: 0

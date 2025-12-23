@@ -86,7 +86,7 @@ namespace Turnbase
                     {
                         Debug.LogError($"Lỗi: Target marker bị thiếu trên nhân vật: {stateMachine.character.target.gameObject.name}. Vui lòng gán trong Inspector.");
                     }
-                    if (selectedSkill.skillType != SkillType.Buff && selectedSkill.skillType != SkillType.Heal)
+                    if (selectedSkill.skillType != SkillType.Buff && selectedSkill.skillType != SkillType.Heal && selectedSkill.skillType != SkillType.Shield)
                     {
                         RotateToTarget();
                     }
@@ -131,7 +131,7 @@ namespace Turnbase
 
                 Debug.Log("Đã chuyển mục tiêu sang: " + stateMachine.character.target.gameObject.name + " tại vị trí slot: " + currentIndex);
 
-                if (selectedSkill.skillType != SkillType.Buff && selectedSkill.skillType != SkillType.Heal)
+                if (selectedSkill.skillType != SkillType.Buff && selectedSkill.skillType != SkillType.Heal && selectedSkill.skillType != SkillType.Shield)
                 {
                     RotateToTarget();
                 }

@@ -2528,7 +2528,7 @@ MonoBehaviour:
   parryButton: {fileID: 926825166209101814}
   confirmButton: {fileID: 3408907834114885634}
   summomonButton: {fileID: 3152233296414975203}
-  confirmButton2: {fileID: 0}
+  actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 1937620497672716229}
   playerActionsPanel2: {fileID: 0}
@@ -2554,6 +2554,7 @@ GameObject:
   - component: {fileID: 6007067907109271698}
   - component: {fileID: -7072520419978499482}
   - component: {fileID: -4638524337439984294}
+  - component: {fileID: 8654578489053990261}
   m_Layer: 0
   m_Name: PetTB_Sword
   m_TagString: Player
@@ -2655,7 +2656,7 @@ MonoBehaviour:
   buffManager: {fileID: -7072520419978499482}
   debuffManager: {fileID: -4638524337439984294}
   isParryable: 0
-  ownUI: {fileID: 0}
+  ownUI: {fileID: 7408021519128791147}
   isAttackReadyForParry: 0
   isParryWindowFinished: 0
   parryWindowDuration: 0
@@ -2698,6 +2699,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -2710,6 +2712,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -2739,6 +2742,26 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
+--- !u!114 &8654578489053990261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: 0}
 --- !u!1 &8105846745597628921
 GameObject:
   m_ObjectHideFlags: 0

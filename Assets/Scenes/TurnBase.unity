@@ -534,15 +534,23 @@ PlayableDirector:
     value: {fileID: 363923595}
   - key: {fileID: 5068837241828340333, guid: b36ba16f60387a14e820ca4f2f442cf4, type: 2}
     value: {fileID: 330585543}
+  - key: {fileID: -4838607070413262475, guid: 2ead3827474497244873b912d0e1f91f, type: 2}
+    value: {fileID: 363923600}
+  - key: {fileID: -4838607070413262475, guid: 81d54ee5e1b811841b9b508b1531f59b, type: 2}
+    value: {fileID: 363923600}
   m_ExposedReferences:
     m_References:
     - 78fc1b2cb99320143bfa3eb25e0851c1: {fileID: 363923595}
     - 2ed03029e0687b34d8ae9e300db28721: {fileID: 363923595}
     - 059900a3e55beb1408244228ab28d4b3: {fileID: 363923595}
+    - a78193761ad7e4d4babeab5a309cdcb2: {fileID: 363923595}
     - 5696c64a4847c404fbeca5e88c9d5ed5: {fileID: 330585543}
+    - 788180de7dcd4eb4b96c321c361df002: {fileID: 363923595}
     - ee14f9a46b019384598cc37b17566770: {fileID: 363923595}
     - 4ebdad82688d53c4dbe050fc9f5e782e: {fileID: 330585543}
+    - 14b9e288c59f75a49b0a89082ec98be2: {fileID: 363923595}
     - 57dc00ce280cbf94f930bf974b8cbf11: {fileID: 363923595}
+    - 4d44a42f1fee1224d9d4a20071570b6a: {fileID: 363923595}
     - d29db9bcff5c7a0479534b2e69877a12: {fileID: 363923595}
     - 3b124371b280fa549bc9891da4e40a29: {fileID: 363923595}
     - 73acf75fae21bfa498d463033afa4287: {fileID: 363923595}
@@ -554,13 +562,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 215960478}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.19449165, w: 0.9809042}
-  m_LocalPosition: {x: -4.66, y: 3.14, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -22.43}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &225816676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,6 +1016,7 @@ GameObject:
   - component: {fileID: 363923598}
   - component: {fileID: 363923596}
   - component: {fileID: 363923600}
+  - component: {fileID: 363923601}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -1124,7 +1133,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 359, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 317, y: 0, z: 0}
 --- !u!95 &363923600
 Animator:
   serializedVersion: 7
@@ -1147,6 +1156,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &363923601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 363923595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019a7865c7c90d84b9e2ea594a8f3667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShaker
 --- !u!1 &388508676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,7 +1591,7 @@ MonoBehaviour:
   activeCharacter: {fileID: 0}
   isProcessingTurn: 0
   playerPrefabs:
-  - {fileID: 3404509342006786628, guid: 24a7881fbab9cad4699af3c9e9a91582, type: 3}
+  - {fileID: 3404509342006786628, guid: a880cabf23177fe48bf2fbe6626d6f75, type: 3}
   playerSpawnPoints:
   - {fileID: 346027862}
   - {fileID: 1871293695}
@@ -1657,6 +1678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c315552b22edd4b807dc201f20b4f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.BattleBuffManager
+  battleManager: {fileID: 498165806}
 --- !u!1 &525200339
 GameObject:
   m_ObjectHideFlags: 0

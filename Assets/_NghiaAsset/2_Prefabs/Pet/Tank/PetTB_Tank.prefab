@@ -1574,7 +1574,7 @@ MonoBehaviour:
   parryButton: {fileID: 6288264319539240674}
   confirmButton: {fileID: 8418923278652520726}
   summomonButton: {fileID: 8081185045527025143}
-  confirmButton2: {fileID: 0}
+  actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 4718389306977373905}
   playerActionsPanel2: {fileID: 0}
@@ -2175,6 +2175,7 @@ GameObject:
   - component: {fileID: 6007067907109271698}
   - component: {fileID: -7072520419978499482}
   - component: {fileID: 3329104644490259190}
+  - component: {fileID: 7449329136160823820}
   m_Layer: 0
   m_Name: PetTB_Tank
   m_TagString: Player
@@ -2241,8 +2242,6 @@ MonoBehaviour:
   stateMachine: {fileID: 6007067907109271698}
   characterClass: 3
   characterElement: 0
-  allClassProfiles:
-  - {fileID: 11400000, guid: 32fd48be8915402499dec203f5930513, type: 2}
   info:
     name: Rock
     Avatar: {fileID: 21300000, guid: 63ab6e4dff0aed744b7047d965f8ebd6, type: 3}
@@ -2261,6 +2260,8 @@ MonoBehaviour:
     crit: 0
     critDamage: 0
     agility: 111
+  allClassProfiles:
+  - {fileID: 11400000, guid: 32fd48be8915402499dec203f5930513, type: 2}
   skills: []
   passiveSkills: []
   isPlayer: 1
@@ -2319,6 +2320,7 @@ MonoBehaviour:
   maxHPBuffIcon: {fileID: 0}
   originalBaseDefense: 0
   defenseBuffTurnsRemaining: 0
+  defenseBuffAmount: 0
   defenseVFXInstance: {fileID: 0}
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
@@ -2331,6 +2333,7 @@ MonoBehaviour:
   magicalAttackBuffIcon: {fileID: 0}
   magicalOriginalBaseDefense: 0
   magicalDefenseBuffTurnsRemaining: 0
+  magicalDefenseBuffAmount: 0
   magicalDefenseVFXInstance: {fileID: 0}
   magicalDefenseBuffIcon: {fileID: 0}
   baseShieldAmount: 0
@@ -2360,6 +2363,26 @@ MonoBehaviour:
   stunTurnsRemaining: 0
   stunVFXInstance: {fileID: 0}
   stunIcon: {fileID: 0}
+  defReductionTurnsRemaining: 0
+  defReductionPercentage: 0
+  defReductionVFXInstance: {fileID: 0}
+  defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
+--- !u!114 &7449329136160823820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
+  character: {fileID: 0}
 --- !u!1 &8153286831749057183
 GameObject:
   m_ObjectHideFlags: 0

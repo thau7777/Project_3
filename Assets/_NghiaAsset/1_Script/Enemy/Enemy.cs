@@ -24,8 +24,12 @@ namespace Turnbase
         [Header("Break Status Settings")]
         public Skill.DebuffSettings BreakDebuffSettings;
 
+        private EnemyAIController aiController;
+
         private void Awake() 
         {
+            aiController = GetComponent<EnemyAIController>();
+
             if (currentSkillTypePool == null)
             {
                 currentSkillTypePool = new Dictionary<SkillType, int>();
@@ -79,7 +83,6 @@ namespace Turnbase
         {
             RegenerateSkillTypePool();
 
-            EnemyAIController aiController = new EnemyAIController();
             (Skill chosenSkill, Character chosenTarget) = aiController.DetermineBestAction(this, battleManager);
 
             if (chosenTarget != null && chosenSkill != null)
@@ -96,7 +99,6 @@ namespace Turnbase
 
                 CameraAction.instance.LookCameraAtTarget(this.target);
 
-                Debug.Log($"[AI]{gameObject.name} dùng kỹ năng: {chosenSkill.skillName} lên mục tiêu: {chosenTarget.gameObject.name}");
 
                 this.stats.currentMP -= chosenSkill.manaCost;
                 enemyUI.UpdateUI();
@@ -111,7 +113,6 @@ namespace Turnbase
             }
             else
             {
-                Debug.Log("[AI] Không tìm thấy mục tiêu khả dụng hoặc hành động phù hợp. Kết thúc lượt.");
                 stateMachine.battleManager.EndTurn(this);
             }
         }
@@ -140,7 +141,6 @@ namespace Turnbase
                 enemyUI.UpdateUI();
             }
 
-            Debug.Log($"[{gameObject.name}] Đã phục hồi sức bền (traildblaze) về {traildblaze} và hết Break.");
         }
 
         public void ApplyBreakStatus(Skill.DebuffSettings breakDebuffSettings)
@@ -148,12 +148,10 @@ namespace Turnbase
             if(isBroken) return;
 
             isBroken = true;
-            Debug.Log($"{gameObject.name} đã bị Break!");
 
             if (debuffManager != null)
             {
                 debuffManager.ApplyDebuff(breakDebuffSettings);
-                Debug.Log($"[{gameObject.name}] Đã áp dụng Debuff Break: {breakDebuffSettings.statToModify}.");
             }
         }
     }

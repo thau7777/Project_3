@@ -20,7 +20,7 @@ namespace Turnbase
         };
     }
 
-    public class EnemyAIController
+    public class EnemyAIController : MonoBehaviour
     {
         private const float RANDOMNESS_FACTOR_MIN = -0.05f;
         private const float RANDOMNESS_FACTOR_MAX = 0.05f;

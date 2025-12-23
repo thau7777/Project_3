@@ -1178,6 +1178,8 @@ GameObject:
   - component: {fileID: -61178238854852435}
   - component: {fileID: 1732808570604203036}
   - component: {fileID: 1419944415559526912}
+  - component: {fileID: 2515315043499388688}
+  - component: {fileID: 5626590007051990750}
   m_Layer: 0
   m_Name: TurtleShell
   m_TagString: Untagged
@@ -1286,7 +1288,16 @@ MonoBehaviour:
   damagePopupCanvasParent: {fileID: 9095930149043026862}
   enemyStatsUI: {fileID: 9145698497346757161}
   traildblaze: 100
+  isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
+  BreakDebuffSettings:
+    statToModify: 0
+    durationTurns: 0
+    amount: 0
+    baseDamagePerTurn: 0
+    debuffValue: 0
+    debuffEffect: {fileID: 0}
+    icon: {fileID: 0}
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,6 +1401,9 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  breakTurnsRemaining: 0
+  breakVFXInstance: {fileID: 0}
+  breakIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1415,6 +1429,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
   character: {fileID: -5687909505730138963}
+--- !u!114 &2515315043499388688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbda965816c65b84888c980d945643f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
+  vfxMaterialDataList:
+  - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
+  targetRenderer: {fileID: 6373987672534303604}
+--- !u!114 &5626590007051990750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead553680eccfce47ab5e6589619c945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.EnemyAIController
 --- !u!1 &8092740595859501947
 GameObject:
   m_ObjectHideFlags: 0

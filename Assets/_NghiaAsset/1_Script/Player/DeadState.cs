@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-
+using System.Collections.Generic;
+using System;
 
 namespace Turnbase
 {
     public class DeadState : BaseState
     {
+        private const int DISSOLVE_EFFECT_INDEX = 0;
+
         public DeadState(CharacterStateMachine stateMachine) : base(stateMachine) { }
 
         public override void OnEnter()
@@ -19,6 +21,15 @@ namespace Turnbase
             if (col != null)
             {
                 col.enabled = false;
+            }
+
+            ShaderEffectController shaderController = stateMachine.character.GetComponent<ShaderEffectController>();
+            if (shaderController != null)
+            {
+                if (shaderController.GetVFXCount() > DISSOLVE_EFFECT_INDEX)
+                {
+                    shaderController.PlayEffect(DISSOLVE_EFFECT_INDEX);
+                }
             }
 
             stateMachine.character.animator.SetTrigger("Die");
