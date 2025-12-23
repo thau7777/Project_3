@@ -1,8 +1,20 @@
-using UnityEngine;
 using HSM;
 using System.Collections;
-using UnityEngine.VFX;
 using System.Collections.Generic;
+using System.Drawing;
+using Turnbase;
+using UnityEngine;
+using UnityEngine.VFX;
+
+[System.Serializable]
+public struct EnemyAttackData
+{
+    public int index;
+    public OneShotVFXSettings vfx;
+    public float size;
+    public float duration;
+    public Vector3 offset;
+}
 public class EnemyTopdownStateDriver : Flyweight
 {
     #region References
@@ -35,10 +47,15 @@ public class EnemyTopdownStateDriver : Flyweight
 
     // Hide in inspector stuffs
     private SkillIndicator _skillIndicator;
-    private AdvanceOneShotVFX _chargeEffect;
+    private Flyweight _chargeEffect;
 
     public int MaxHealth { get; set; }
     public int CurrentHealth { get; set; }
+
+    // Normal Attack Stuff
+    [SerializeField]
+    [ShowIf("_isBoss", true)]
+    private List<EnemyAttackData> _attackList = new();
     #endregion
 
     [SerializeField]
@@ -120,22 +137,54 @@ public class EnemyTopdownStateDriver : Flyweight
     {
 
     }
-    public void OnAttackTrigger(FlyweightSettings vfxSettings)
+    public void OnSkillTrigger()
     {
-        var vfxFlyweight = FlyweightFactory.Spawn(vfxSettings);
-        vfxFlyweight.FlyweightInitialize(transform.position.With(y: transform.position.y + 0.35f, z: transform.position.z + 0.35f), transform.rotation);
+        OneShotVFXSettings vfxSettings = _context.EnemySpecialMoveData.skillEffect;
+        OneShotVFX vfx = FlyweightFactory.Spawn(vfxSettings) as OneShotVFX;
+
+        vfx.FlyweightInitialize(transform.position.Add(y:0.01f));
+        vfx.InitializeVFX(vfxSettings.DefaultSize, vfxSettings.DefaultLifeTime);
+    }
+    public void OnAttackTrigger(int index)
+    {
+        EnemyAttackData? attackData = null;
+        foreach (var AD in _attackList)
+        {
+            if (AD.index == index)
+            {
+                attackData = AD;
+                break;
+            }
+
+        }
+        if (attackData == null) return;
+        OneShotVFX vfx = FlyweightFactory.Spawn(attackData.Value.vfx) as OneShotVFX;
+
+        vfx.FlyweightInitialize(
+            transform.AddLocal(attackData.Value.offset.x, attackData.Value.offset.y, attackData.Value.offset.z),
+            transform.rotation);
+        vfx.InitializeVFX(attackData.Value.size, attackData.Value.duration);
     }
 
-    public void SpawnChargeEffect(float duration)
+    public void SpawnChargeEffect()
     {
-        _chargeEffect = FlyweightFactory.Spawn(_context.EnemySpecialMoveData.chargeEffect) as AdvanceOneShotVFX;
-        _chargeEffect.FlyweightInitialize(transform.position);
-        _chargeEffect.PlayEffect(duration,_context.EnemySpecialMoveData.chargeEffectSize);
+        var chargeSettings = _context.EnemySpecialMoveData.chargeEffect;
+        OneShotVFX vfx = FlyweightFactory.Spawn(chargeSettings) as OneShotVFX;
+
+        vfx.FlyweightInitialize(transform.position.Add(y: 0.01f));
+        vfx.InitializeVFX(chargeSettings.DefaultSize, _context.EnemySpecialMoveData.chargeDuration);
+
+        //_chargeEffect = FlyweightFactory.Spawn(_context.EnemySpecialMoveData.chargeEffect);
+        //_chargeEffect.FlyweightInitialize(transform.position);
+
     }
     public void ShowSkillIndicator()
     {
-        _skillIndicator = FlyweightFactory.Spawn(_context.EnemySpecialMoveData.indicator) as SkillIndicator;
-        if (_skillIndicator is FollowedIndicator)
+        var choseVFXSetting = _context.EnemySpecialMoveData.indicator;
+        var indicatorFlyweight = FlyweightFactory.Spawn(_context.EnemySpecialMoveData.indicator);
+        _skillIndicator = indicatorFlyweight as SkillIndicator;
+
+        if (indicatorFlyweight is FollowedIndicator)
         {
             _skillIndicator.FlyweightInitialize(_context.RootTransform.position);
             FollowedIndicator indicator = (FollowedIndicator)_skillIndicator;
@@ -152,8 +201,8 @@ public class EnemyTopdownStateDriver : Flyweight
     }
     public void LockIndicator(float duration)
     {
+        if (!_skillIndicator) return;
         _skillIndicator.LockIndicator(duration);
-        //after the lock we can use OnAttackTrigger to spawn the vfx hitbox stuff
     }
     public void StartSpawnAnim()
     {

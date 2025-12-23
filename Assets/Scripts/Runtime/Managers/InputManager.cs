@@ -19,7 +19,7 @@ public class InputManager : PersistentSingleton<InputManager>
     {
         switch (scene.name)
         {
-            case "TopDown":
+            case "TopDown": 
                 _inputReader.SwitchActionMap(ActionMap.PlayerTopDown);
                 break;
             case "TurnBased":

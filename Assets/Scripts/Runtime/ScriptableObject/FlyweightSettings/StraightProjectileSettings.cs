@@ -4,9 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = " New Straight Projectile Settings", menuName = "Scriptable Objects/Flyweight/Straight Projectile Settings")]
 public class StraightProjectileSettings : FlyweightSettings
 {
+    public float defaultSize = 1;
 
     [field: SerializeField]
-    public SimpleOneShotVFXSettings ProjectileImpactVFX { get; set; }
+    public OneShotVFXSettings ProjectileImpactVFX { get; set; }
+    public float defaultImpactVFXSize = 1;
 
     [field: SerializeField]
     public LayerMask DodgeLayers { get; private set; }

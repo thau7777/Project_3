@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = " New Decal Settings", menuName = "Scriptable Objects/Flyweight/Decal Settings")]
 public class DecalProjectorSettings : FlyweightSettings
 {
     public override Flyweight Create()

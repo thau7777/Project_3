@@ -95,7 +95,8 @@ public class SkillStrategy : ScriptableObject, IStrategy
         flyweightObj.FlyweightInitialize(context.spawnPos,context.origin.rotation);
         if (flyweightObj is StraightProjectile straightProjectile)
         {
-            straightProjectile.InitializeProjectile(context.origin.forward, 10, Range);
+            StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
+            straightProjectile.InitializeProjectile(context.origin.forward, 10, Range, projectileSettings.defaultSize);
         }
 
         
@@ -108,7 +109,9 @@ public class SkillStrategy : ScriptableObject, IStrategy
         {
             context.chargedSkillFlyweight.transform.SetParent(null);
             chargedSkillProjectile.transform.rotation = Quaternion.identity;
-            chargedSkillProjectile.InitializeProjectile(context.origin.forward, 10, Range);
+
+            StraightProjectileSettings projectileSettings = chargedSkillProjectile.settings as StraightProjectileSettings;
+            chargedSkillProjectile.InitializeProjectile(context.origin.forward, 10, Range, projectileSettings.defaultSize);
         }
     }
 

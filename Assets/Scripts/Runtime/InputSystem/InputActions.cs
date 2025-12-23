@@ -30,12 +30,12 @@ using UnityEngine.InputSystem.Utilities;
 /// public class Example : MonoBehaviour, MyActions.IPlayerActions
 /// {
 ///     private MyActions_Actions m_Actions;                  // Source code representation of asset.
-///     private MyActions_Actions.PlayerActions m_Player;     // Source code representation of actionButton map.
+///     private MyActions_Actions.PlayerActions m_Player;     // Source code representation of action map.
 ///
 ///     void Awake()
 ///     {
 ///         m_Actions = new MyActions_Actions();              // Create asset object.
-///         m_Player = m_Actions.Player;                      // Extract actionButton map object.
+///         m_Player = m_Actions.Player;                      // Extract action map object.
 ///         m_Player.AddCallbacks(this);                      // Register callback interface IPlayerActions.
 ///     }
 ///
@@ -56,13 +56,13 @@ using UnityEngine.InputSystem.Utilities;
 ///
 ///     #region Interface implementation of MyActions.IPlayerActions
 ///
-///     // Invoked when "Move" actionButton is either started, performed or canceled.
+///     // Invoked when "Move" action is either started, performed or canceled.
 ///     public void OnMove(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnMove: {context.ReadValue&lt;Vector2&gt;()}");
 ///     }
 ///
-///     // Invoked when "Attack" actionButton is either started, performed or canceled.
+///     // Invoked when "Attack" action is either started, performed or canceled.
 ///     public void OnAttack(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnAttack: {context.ReadValue&lt;float&gt;()}");
@@ -146,7 +146,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -157,7 +157,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -168,7 +168,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -179,7 +179,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -190,7 +190,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -201,7 +201,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""LeftClick"",
+                    ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -212,7 +212,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""RightClick"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -223,7 +223,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""SpaceBar"",
+                    ""action"": ""SpaceBar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -234,7 +234,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Button Q"",
+                    ""action"": ""Button Q"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -325,7 +325,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -336,7 +336,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -347,7 +347,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -358,7 +358,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -369,7 +369,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -380,7 +380,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -391,7 +391,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -402,7 +402,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -413,7 +413,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -424,7 +424,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -435,7 +435,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Move"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -446,7 +446,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Submit"",
+                    ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -457,7 +457,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Submit"",
+                    ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -468,7 +468,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Cancel"",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -479,7 +479,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Cancel"",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -490,7 +490,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -501,7 +501,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -512,7 +512,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -523,7 +523,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -534,7 +534,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -545,7 +545,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -556,7 +556,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -567,7 +567,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -578,7 +578,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -589,7 +589,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -600,7 +600,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Look"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -611,7 +611,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""PressAnyButton"",
+                    ""action"": ""PressAnyButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -622,7 +622,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""PressAnyButton"",
+                    ""action"": ""PressAnyButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -633,7 +633,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -644,7 +644,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -655,7 +655,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -666,7 +666,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -677,7 +677,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -688,7 +688,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -699,7 +699,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -710,7 +710,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -721,7 +721,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -732,7 +732,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Adjust"",
+                    ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -778,7 +778,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Left Click"",
+                    ""action"": ""Left Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -789,7 +789,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Right Click"",
+                    ""action"": ""Right Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -800,7 +800,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -811,7 +811,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -822,7 +822,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -833,7 +833,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -844,7 +844,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -855,7 +855,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -866,7 +866,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -877,7 +877,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -888,7 +888,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -899,7 +899,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""actionButton"": ""Naviagate"",
+                    ""action"": ""Naviagate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -1025,38 +1025,38 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerTopDown_SpaceBar;
     private readonly InputAction m_PlayerTopDown_ButtonQ;
     /// <summary>
-    /// Provides access to input actions defined in input actionButton map "PlayerTopDown".
+    /// Provides access to input actions defined in input action map "PlayerTopDown".
     /// </summary>
     public struct PlayerTopDownActions
     {
         private @InputActions m_Wrapper;
 
         /// <summary>
-        /// Construct a new instance of the input actionButton map wrapper class.
+        /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerTopDownActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input actionButton "PlayerTopDown/Move".
+        /// Provides access to the underlying input action "PlayerTopDown/Move".
         /// </summary>
         public InputAction @Move => m_Wrapper.m_PlayerTopDown_Move;
         /// <summary>
-        /// Provides access to the underlying input actionButton "PlayerTopDown/LeftClick".
+        /// Provides access to the underlying input action "PlayerTopDown/LeftClick".
         /// </summary>
         public InputAction @LeftClick => m_Wrapper.m_PlayerTopDown_LeftClick;
         /// <summary>
-        /// Provides access to the underlying input actionButton "PlayerTopDown/RightClick".
+        /// Provides access to the underlying input action "PlayerTopDown/RightClick".
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
         /// <summary>
-        /// Provides access to the underlying input actionButton "PlayerTopDown/SpaceBar".
+        /// Provides access to the underlying input action "PlayerTopDown/SpaceBar".
         /// </summary>
         public InputAction @SpaceBar => m_Wrapper.m_PlayerTopDown_SpaceBar;
         /// <summary>
-        /// Provides access to the underlying input actionButton "PlayerTopDown/ButtonQ".
+        /// Provides access to the underlying input action "PlayerTopDown/ButtonQ".
         /// </summary>
         public InputAction @ButtonQ => m_Wrapper.m_PlayerTopDown_ButtonQ;
         /// <summary>
-        /// Provides access to the underlying input actionButton map instance.
+        /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerTopDown; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
@@ -1125,7 +1125,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input actionButton callbacks via <see cref="PlayerTopDownActions.UnregisterCallbacks(IPlayerTopDownActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PlayerTopDownActions.UnregisterCallbacks(IPlayerTopDownActions)" />.
         /// </summary>
         /// <seealso cref="PlayerTopDownActions.UnregisterCallbacks(IPlayerTopDownActions)" />
         public void RemoveCallbacks(IPlayerTopDownActions instance)
@@ -1135,7 +1135,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input actionButton callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -1152,7 +1152,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Provides a new <see cref="PlayerTopDownActions" /> instance referencing this actionButton map.
+    /// Provides a new <see cref="PlayerTopDownActions" /> instance referencing this action map.
     /// </summary>
     public PlayerTopDownActions @PlayerTopDown => new PlayerTopDownActions(this);
 
@@ -1160,18 +1160,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerTurnBased;
     private List<IPlayerTurnBasedActions> m_PlayerTurnBasedActionsCallbackInterfaces = new List<IPlayerTurnBasedActions>();
     /// <summary>
-    /// Provides access to input actions defined in input actionButton map "PlayerTurnBased".
+    /// Provides access to input actions defined in input action map "PlayerTurnBased".
     /// </summary>
     public struct PlayerTurnBasedActions
     {
         private @InputActions m_Wrapper;
 
         /// <summary>
-        /// Construct a new instance of the input actionButton map wrapper class.
+        /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerTurnBasedActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input actionButton map instance.
+        /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerTurnBased; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
@@ -1210,7 +1210,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input actionButton callbacks via <see cref="PlayerTurnBasedActions.UnregisterCallbacks(IPlayerTurnBasedActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PlayerTurnBasedActions.UnregisterCallbacks(IPlayerTurnBasedActions)" />.
         /// </summary>
         /// <seealso cref="PlayerTurnBasedActions.UnregisterCallbacks(IPlayerTurnBasedActions)" />
         public void RemoveCallbacks(IPlayerTurnBasedActions instance)
@@ -1220,7 +1220,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input actionButton callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -1237,7 +1237,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Provides a new <see cref="PlayerTurnBasedActions" /> instance referencing this actionButton map.
+    /// Provides a new <see cref="PlayerTurnBasedActions" /> instance referencing this action map.
     /// </summary>
     public PlayerTurnBasedActions @PlayerTurnBased => new PlayerTurnBasedActions(this);
 
@@ -1245,18 +1245,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerFPS;
     private List<IPlayerFPSActions> m_PlayerFPSActionsCallbackInterfaces = new List<IPlayerFPSActions>();
     /// <summary>
-    /// Provides access to input actions defined in input actionButton map "PlayerFPS".
+    /// Provides access to input actions defined in input action map "PlayerFPS".
     /// </summary>
     public struct PlayerFPSActions
     {
         private @InputActions m_Wrapper;
 
         /// <summary>
-        /// Construct a new instance of the input actionButton map wrapper class.
+        /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerFPSActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input actionButton map instance.
+        /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerFPS; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
@@ -1295,7 +1295,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input actionButton callbacks via <see cref="PlayerFPSActions.UnregisterCallbacks(IPlayerFPSActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PlayerFPSActions.UnregisterCallbacks(IPlayerFPSActions)" />.
         /// </summary>
         /// <seealso cref="PlayerFPSActions.UnregisterCallbacks(IPlayerFPSActions)" />
         public void RemoveCallbacks(IPlayerFPSActions instance)
@@ -1305,7 +1305,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input actionButton callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -1322,7 +1322,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Provides a new <see cref="PlayerFPSActions" /> instance referencing this actionButton map.
+    /// Provides a new <see cref="PlayerFPSActions" /> instance referencing this action map.
     /// </summary>
     public PlayerFPSActions @PlayerFPS => new PlayerFPSActions(this);
 
@@ -1330,18 +1330,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerTowerDefense;
     private List<IPlayerTowerDefenseActions> m_PlayerTowerDefenseActionsCallbackInterfaces = new List<IPlayerTowerDefenseActions>();
     /// <summary>
-    /// Provides access to input actions defined in input actionButton map "PlayerTowerDefense".
+    /// Provides access to input actions defined in input action map "PlayerTowerDefense".
     /// </summary>
     public struct PlayerTowerDefenseActions
     {
         private @InputActions m_Wrapper;
 
         /// <summary>
-        /// Construct a new instance of the input actionButton map wrapper class.
+        /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerTowerDefenseActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input actionButton map instance.
+        /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerTowerDefense; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
@@ -1380,7 +1380,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input actionButton callbacks via <see cref="PlayerTowerDefenseActions.UnregisterCallbacks(IPlayerTowerDefenseActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PlayerTowerDefenseActions.UnregisterCallbacks(IPlayerTowerDefenseActions)" />.
         /// </summary>
         /// <seealso cref="PlayerTowerDefenseActions.UnregisterCallbacks(IPlayerTowerDefenseActions)" />
         public void RemoveCallbacks(IPlayerTowerDefenseActions instance)
@@ -1390,7 +1390,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input actionButton callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -1407,7 +1407,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Provides a new <see cref="PlayerTowerDefenseActions" /> instance referencing this actionButton map.
+    /// Provides a new <see cref="PlayerTowerDefenseActions" /> instance referencing this action map.
     /// </summary>
     public PlayerTowerDefenseActions @PlayerTowerDefense => new PlayerTowerDefenseActions(this);
 
@@ -1421,42 +1421,42 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_Adjust;
     /// <summary>
-    /// Provides access to input actions defined in input actionButton map "UI".
+    /// Provides access to input actions defined in input action map "UI".
     /// </summary>
     public struct UIActions
     {
         private @InputActions m_Wrapper;
 
         /// <summary>
-        /// Construct a new instance of the input actionButton map wrapper class.
+        /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input actionButton "UI/Move".
+        /// Provides access to the underlying input action "UI/Move".
         /// </summary>
         public InputAction @Move => m_Wrapper.m_UI_Move;
         /// <summary>
-        /// Provides access to the underlying input actionButton "UI/Look".
+        /// Provides access to the underlying input action "UI/Look".
         /// </summary>
         public InputAction @Look => m_Wrapper.m_UI_Look;
         /// <summary>
-        /// Provides access to the underlying input actionButton "UI/PressAnyButton".
+        /// Provides access to the underlying input action "UI/PressAnyButton".
         /// </summary>
         public InputAction @PressAnyButton => m_Wrapper.m_UI_PressAnyButton;
         /// <summary>
-        /// Provides access to the underlying input actionButton "UI/Submit".
+        /// Provides access to the underlying input action "UI/Submit".
         /// </summary>
         public InputAction @Submit => m_Wrapper.m_UI_Submit;
         /// <summary>
-        /// Provides access to the underlying input actionButton "UI/Cancel".
+        /// Provides access to the underlying input action "UI/Cancel".
         /// </summary>
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
         /// <summary>
-        /// Provides access to the underlying input actionButton "UI/Adjust".
+        /// Provides access to the underlying input action "UI/Adjust".
         /// </summary>
         public InputAction @Adjust => m_Wrapper.m_UI_Adjust;
         /// <summary>
-        /// Provides access to the underlying input actionButton map instance.
+        /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
@@ -1531,7 +1531,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input actionButton callbacks via <see cref="UIActions.UnregisterCallbacks(IUIActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIActions.UnregisterCallbacks(IUIActions)" />.
         /// </summary>
         /// <seealso cref="UIActions.UnregisterCallbacks(IUIActions)" />
         public void RemoveCallbacks(IUIActions instance)
@@ -1541,7 +1541,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input actionButton callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -1558,7 +1558,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Provides a new <see cref="UIActions" /> instance referencing this actionButton map.
+    /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
 
@@ -1569,30 +1569,30 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PopUpGame_LeftClick;
     private readonly InputAction m_PopUpGame_RightClick;
     /// <summary>
-    /// Provides access to input actions defined in input actionButton map "PopUpGame".
+    /// Provides access to input actions defined in input action map "PopUpGame".
     /// </summary>
     public struct PopUpGameActions
     {
         private @InputActions m_Wrapper;
 
         /// <summary>
-        /// Construct a new instance of the input actionButton map wrapper class.
+        /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PopUpGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input actionButton "PopUpGame/Naviagate".
+        /// Provides access to the underlying input action "PopUpGame/Naviagate".
         /// </summary>
         public InputAction @Naviagate => m_Wrapper.m_PopUpGame_Naviagate;
         /// <summary>
-        /// Provides access to the underlying input actionButton "PopUpGame/LeftClick".
+        /// Provides access to the underlying input action "PopUpGame/LeftClick".
         /// </summary>
         public InputAction @LeftClick => m_Wrapper.m_PopUpGame_LeftClick;
         /// <summary>
-        /// Provides access to the underlying input actionButton "PopUpGame/RightClick".
+        /// Provides access to the underlying input action "PopUpGame/RightClick".
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_PopUpGame_RightClick;
         /// <summary>
-        /// Provides access to the underlying input actionButton map instance.
+        /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PopUpGame; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
@@ -1649,7 +1649,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input actionButton callbacks via <see cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />.
         /// </summary>
         /// <seealso cref="PopUpGameActions.UnregisterCallbacks(IPopUpGameActions)" />
         public void RemoveCallbacks(IPopUpGameActions instance)
@@ -1659,7 +1659,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input actionButton callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -1676,46 +1676,46 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Provides a new <see cref="PopUpGameActions" /> instance referencing this actionButton map.
+    /// Provides a new <see cref="PopUpGameActions" /> instance referencing this action map.
     /// </summary>
     public PopUpGameActions @PopUpGame => new PopUpGameActions(this);
     /// <summary>
-    /// Interface to implement callback methods for all input actionButton callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="PlayerTopDownActions.AddCallbacks(IPlayerTopDownActions)" />
     /// <seealso cref="PlayerTopDownActions.RemoveCallbacks(IPlayerTopDownActions)" />
     public interface IPlayerTopDownActions
     {
         /// <summary>
-        /// Method invoked when associated input actionButton "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "LeftClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "LeftClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "RightClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "RightClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "SpaceBar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "SpaceBar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpaceBar(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Button Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Button Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
@@ -1723,7 +1723,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnButtonQ(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input actionButton callbacks associated with input actions defined by "PlayerTurnBased" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTurnBased" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="PlayerTurnBasedActions.AddCallbacks(IPlayerTurnBasedActions)" />
     /// <seealso cref="PlayerTurnBasedActions.RemoveCallbacks(IPlayerTurnBasedActions)" />
@@ -1731,7 +1731,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
     }
     /// <summary>
-    /// Interface to implement callback methods for all input actionButton callbacks associated with input actions defined by "PlayerFPS" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerFPS" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="PlayerFPSActions.AddCallbacks(IPlayerFPSActions)" />
     /// <seealso cref="PlayerFPSActions.RemoveCallbacks(IPlayerFPSActions)" />
@@ -1739,7 +1739,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
     }
     /// <summary>
-    /// Interface to implement callback methods for all input actionButton callbacks associated with input actions defined by "PlayerTowerDefense" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTowerDefense" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="PlayerTowerDefenseActions.AddCallbacks(IPlayerTowerDefenseActions)" />
     /// <seealso cref="PlayerTowerDefenseActions.RemoveCallbacks(IPlayerTowerDefenseActions)" />
@@ -1747,49 +1747,49 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
     }
     /// <summary>
-    /// Interface to implement callback methods for all input actionButton callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="UIActions.AddCallbacks(IUIActions)" />
     /// <seealso cref="UIActions.RemoveCallbacks(IUIActions)" />
     public interface IUIActions
     {
         /// <summary>
-        /// Method invoked when associated input actionButton "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLook(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "PressAnyButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "PressAnyButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPressAnyButton(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSubmit(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCancel(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Adjust" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Adjust" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
@@ -1797,28 +1797,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnAdjust(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input actionButton callbacks associated with input actions defined by "PopUpGame" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PopUpGame" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="PopUpGameActions.AddCallbacks(IPopUpGameActions)" />
     /// <seealso cref="PopUpGameActions.RemoveCallbacks(IPopUpGameActions)" />
     public interface IPopUpGameActions
     {
         /// <summary>
-        /// Method invoked when associated input actionButton "Naviagate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Naviagate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnNaviagate(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Left Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Left Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input actionButton "Right Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Right Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />

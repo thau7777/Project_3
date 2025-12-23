@@ -52,7 +52,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 56fc0b4f7d154039a7099564596a545b, type: 3}
   m_Controller: {fileID: 9100000, guid: 0ebaffb59519c0648b384af5fdb03060, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -136,6 +136,7 @@ MonoBehaviour:
   _isBoss: 1
   _bossSkillList:
   - {fileID: 11400000, guid: 9d85d6c9268244845b4e4538897b1969, type: 2}
+  _attackList: []
   _context:
     <CurrentTargetTransform>k__BackingField: {fileID: 0}
     <CurrentSpeed>k__BackingField: 0
@@ -338,7 +339,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 7113620311128232067, guid: 56fc0b4f7d154039a7099564596a545b, type: 3}
   m_Bones:

@@ -22,7 +22,7 @@ public class DamageDealer : MonoBehaviour
     }
 
     [field: SerializeField]
-    public SimpleOneShotVFXSettings HitImpactEffect { get; private set; }
+    public OneShotVFXSettings HitImpactEffect { get; private set; }
 
 
     private void Awake()
@@ -41,7 +41,7 @@ public class DamageDealer : MonoBehaviour
         }
     }
 
-    public void SetHitImpactVFX(SimpleOneShotVFXSettings vfxSetting)
+    public void SetHitImpactVFX(OneShotVFXSettings vfxSetting)
     {
         HitImpactEffect = vfxSetting;
     }
@@ -49,13 +49,17 @@ public class DamageDealer : MonoBehaviour
     {
         if (target.TryGetComponent<Damageable>(out var damageable))
         {
-            Debug.Log(target.name);
             if (damageable.CurrentHealth == 0) return;
             Vector3 hitDirection = target.transform.position - _origin.position;
             damageable.TakeDamage(sender,_damage, hitDirection.normalized, _knockbackForce); // Example damage value
 
             if (HitImpactEffect)
-                FlyweightFactory.Spawn(HitImpactEffect).transform.position = target.transform.position.Add(y: 1);
+            {
+                var obj = FlyweightFactory.Spawn(HitImpactEffect) as OneShotVFX;
+                obj.FlyweightInitialize(target.transform.position.Add(y: 1));
+                obj.InitializeVFX(HitImpactEffect.DefaultSize, HitImpactEffect.DefaultLifeTime);
+                
+            }
         }
     }
 }

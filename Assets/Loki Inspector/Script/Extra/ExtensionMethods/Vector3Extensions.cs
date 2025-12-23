@@ -16,7 +16,13 @@ public static class Vector3Extensions
     {
         return new Vector3(vector.x + x, vector.y + y, vector.z + z);
     }
-
+    public static Vector3 AddLocal(this Transform transform, float x = 0, float y = 0, float z = 0)
+    {
+        return transform.position +
+               transform.right * x +
+               transform.up * y +
+               transform.forward * z;
+    }
     /// <summary>
     /// Returns a Boolean indicating whether the current Vector3 is in a given range from another Vector3
     /// </summary>

@@ -41,8 +41,6 @@ public class EnemySpecialMoveData : ScriptableObject
     public float recoveryDuration = 1f;
 
     [FoldoutGroup("Attack Stuffs")]
-    public float damageAmount = 10f;
-    [FoldoutGroup("Attack Stuffs")]
     public LayerMask targetLayers;
 
     [FoldoutGroup("Skill Indicator Settings")]
@@ -59,20 +57,12 @@ public class EnemySpecialMoveData : ScriptableObject
     public float indicatorLength = 2f;
 
     [FoldoutGroup("Effects")]
-    public FlyweightSettings skillEffect;
+    public OneShotVFXSettings skillEffect;
     [FoldoutGroup("Effects")]
-    public float skillEffectSize;
-    [FoldoutGroup("Effects")]
-    public AdvanceOneShotVFXSettings chargeEffect;
-    [FoldoutGroup("Effects")]
-    public float chargeEffectSize;
+    public OneShotVFXSettings chargeEffect;
     [FoldoutGroup("Effects")]
     public AudioClip attackSound;
 
-    [FoldoutGroup("Special Behavior")]
-    public bool applyKnockback = false;
-    [FoldoutGroup("Special Behavior")]
-    public float knockbackForce = 5f;
 
     public float GetTotalDuration()
     {

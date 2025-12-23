@@ -108,6 +108,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         machine = builder.Build();
 
         InitializeClassWeapon(_locomotionSet.characterClass);
+
     }
     private void OnEnable()
     {
@@ -290,7 +291,14 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 if (vfx is StraightProjectile)
                 {
                     var straightProjectile = vfx as StraightProjectile;
-                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10);
+                    StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
+                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10, projectileSettings.defaultSize);
+                }
+                else if(vfx is OneShotVFX) 
+                {
+                    var oneshotVFX = vfx as OneShotVFX;
+                    var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
+                    oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
                 }
                 break;
             }

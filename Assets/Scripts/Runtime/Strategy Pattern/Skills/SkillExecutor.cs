@@ -164,19 +164,19 @@ public class SkillExecutor : MonoBehaviour
     private void ExecuteSkill()
     {
         if (_skillToCast == null || _storedSkillData == null) return;
-        if (_chargedSkillFlyweight && !_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
-        {
-            chargedProjectile.projectileImpactScale = _skillToCast.Definition.name switch
-            {
-                "Fireball" => _chargedSkillFlyweight.transform.localScale * 2f,
+        //if (_chargedSkillFlyweight && !_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
+        //{
+        //    chargedProjectile.projectileImpactScale = _skillToCast.Definition.name switch
+        //    {
+        //        "Fireball" => _chargedSkillFlyweight.transform.localScale * 2f,
                 
-                _ => null
-            };
-        }else if (_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight)
-        {
-            _chargedSkillFlyweight.ReturnToPool();
-            _chargedSkillFlyweight = null;
-        }
+        //        _ => null
+        //    };
+        //}else if (_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight)
+        //{
+        //    _chargedSkillFlyweight.ReturnToPool();
+        //    _chargedSkillFlyweight = null;
+        //}
 
 
         Vector3 spawnPos = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation).position;

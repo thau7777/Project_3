@@ -37,12 +37,11 @@ public enum FlyweightType
     ShieldBashVFX,
     SlashHitVFX,
 
-    PurpleProjectile,
-    PurpleHitVFX,
-    BigPurpleProjectile,
-    BigPurpleHitVFX,
+    MageProjectile,
+    BigMageProjectile,
+    MageProjectileExplosion,
     FireBallProjectile,
-    FireBallExplosionVFX,
+    FireBallExplosion,
 
     TopDownEnemySlime,
     TopDownEnemyTurtle,
@@ -67,5 +66,8 @@ public enum FlyweightType
     DogSlash_1,
     DogSlash_2,
 
-    BasicChargeVFX,
+    SlimeSlamChargeVFX,
+    SlimeSlamVFX,
+
+    BasicDecal,
 }

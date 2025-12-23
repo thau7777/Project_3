@@ -10,9 +10,7 @@ public class StraightProjectile : Flyweight
     private float _range;
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
-    private Vector3 _ogScale;
 
-    public Vector3? projectileImpactScale;
 
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
@@ -22,13 +20,10 @@ public class StraightProjectile : Flyweight
         _rb = gameObject.GetOrAdd<Rigidbody>();
         _direction = null;
         _rb.useGravity = false;
-        _ogScale = transform.localScale;
     }
 
     private void OnEnable()
     {
-        transform.localScale = _ogScale;
-        projectileImpactScale = null;
         _traveledDistance = 0f;
     }
 
@@ -37,7 +32,7 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(Vector3 direction, float speed, float range)
+    public void InitializeProjectile(Vector3 direction, float speed, float range, float size)
     {
 
         _direction = direction.normalized;
@@ -45,6 +40,8 @@ public class StraightProjectile : Flyweight
         _range = range;
         _startPosition = transform.position;
         _traveledDistance = 0f;
+
+        transform.localScale = new Vector3(size, size, size);
     }
 
     private void FixedUpdate()
@@ -90,8 +87,9 @@ public class StraightProjectile : Flyweight
         var projectileImpactFlyweight = FlyweightFactory.Spawn(settings.ProjectileImpactVFX);
         projectileImpactFlyweight.FlyweightInitialize(transform.position, Quaternion.identity);
 
-        if (projectileImpactScale != null)
-            projectileImpactFlyweight.transform.localScale = projectileImpactScale.Value;
+        var impactVFX = projectileImpactFlyweight as OneShotVFX;
+        OneShotVFXSettings impactVFXSettings = impactVFX.settings as OneShotVFXSettings;
+        impactVFX.InitializeVFX(settings.defaultImpactVFXSize, impactVFXSettings.DefaultLifeTime);
     }
 
     private void OnTriggerEnter(Collider other)

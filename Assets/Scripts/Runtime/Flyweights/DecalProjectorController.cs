@@ -6,6 +6,7 @@ public class DecalProjectorController : Flyweight
 {
     private DecalProjector _decalProjector;
     private Coroutine _fadeCoroutine;
+    private Material _materialInstance; // Store the unique material instance
 
     void Awake()
     {
@@ -14,10 +15,26 @@ public class DecalProjectorController : Flyweight
         {
             Debug.LogError("DecalProjector component not found!");
         }
+        else
+        {
+            // Create a unique material instance for this DecalProjector
+            _materialInstance = new Material(_decalProjector.material);
+            _decalProjector.material = _materialInstance;
+        }
     }
+
     private void OnEnable()
     {
-        _decalProjector.fadeFactor = 1;
+        ResetAllStat();
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up the material instance to prevent memory leaks
+        if (_materialInstance != null)
+        {
+            Destroy(_materialInstance);
+        }
     }
 
     // Set width of the decal projection
@@ -66,7 +83,15 @@ public class DecalProjectorController : Flyweight
     {
         if (_decalProjector == null || newMaterial == null) return;
 
-        _decalProjector.material = newMaterial;
+        // Clean up old material instance
+        if (_materialInstance != null)
+        {
+            Destroy(_materialInstance);
+        }
+
+        // Create new material instance
+        _materialInstance = new Material(newMaterial);
+        _decalProjector.material = _materialInstance;
     }
 
     // Set opacity immediately (0 to 1) - Uses DecalProjector's fadeFactor
@@ -104,21 +129,71 @@ public class DecalProjectorController : Flyweight
         if (_decalProjector == null) yield break;
 
         float startOpacity = _decalProjector.fadeFactor;
-        float elapsed = 0f;
+        float startFadeAmount = _materialInstance != null && _materialInstance.HasProperty("_FadeAmount")
+            ? _materialInstance.GetFloat("_FadeAmount")
+            : 1f - startOpacity; // FadeAmount is inverse of opacity
+        float targetFadeAmount = 1f - targetOpacity; // When opacity=0, FadeAmount=1
 
-        while (elapsed < duration)
+        float elapsed = 0f;
+        float fadeAmountElapsed = 0f;
+        float fadeAmountDuration = duration * 3f; // Make FadeAmount 50% slower
+
+        while (elapsed < duration || fadeAmountElapsed < fadeAmountDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            float currentOpacity = Mathf.Lerp(startOpacity, targetOpacity, t);
-            _decalProjector.fadeFactor = currentOpacity;
+            fadeAmountElapsed += Time.deltaTime;
+
+            // Update DecalProjector's fade factor (normal speed): 1 -> 0 when fading out
+            if (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                float currentOpacity = Mathf.Lerp(startOpacity, targetOpacity, t);
+                _decalProjector.fadeFactor = currentOpacity;
+            }
+            else
+            {
+                _decalProjector.fadeFactor = targetOpacity;
+            }
+
+            // Update material's FadeAmount (slower speed): 0 -> 1 when fading out
+            if (fadeAmountElapsed < fadeAmountDuration)
+            {
+                float tFade = fadeAmountElapsed / fadeAmountDuration;
+                float currentFadeAmount = Mathf.Lerp(startFadeAmount, targetFadeAmount, tFade);
+
+                if (_materialInstance != null && _materialInstance.HasProperty("_FadeAmount"))
+                {
+                    _materialInstance.SetFloat("_FadeAmount", currentFadeAmount);
+                }
+            }
+            else
+            {
+                if (_materialInstance != null && _materialInstance.HasProperty("_FadeAmount"))
+                {
+                    _materialInstance.SetFloat("_FadeAmount", targetFadeAmount);
+                }
+            }
 
             yield return null;
         }
 
-        // Ensure final value is set
+        // Ensure final values are set
         _decalProjector.fadeFactor = targetOpacity;
-        if(targetOpacity == 0)
+        if (_materialInstance != null && _materialInstance.HasProperty("_FadeAmount"))
+        {
+            _materialInstance.SetFloat("_FadeAmount", targetFadeAmount);
+        }
+
+        if (targetOpacity == 0)
             ReturnToPool();
+    }
+
+    private void ResetAllStat()
+    {
+        SetOpacity(1);
+        if (_materialInstance != null && _materialInstance.HasProperty("_FadeAmount"))
+        {
+            _materialInstance.SetFloat("_FadeAmount", 0);
+        }
     }
 }

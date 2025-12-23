@@ -50,7 +50,7 @@ public class InputReader : ScriptableObject
             input.UI.SetCallbacks(uiActions);
             input.PopUpGame.SetCallbacks(popUpGame);
         }
-        input.UI.Enable();
+        //input.UI.Enable();
     }
     private void DisableActions()
     {

@@ -25,7 +25,6 @@ public enum VFXSpawnLocation
 public struct AttackData
 {
     public string animName;
-    public float damage;
     public FlyweightSettings flyweightSettings;
     public VFXSpawnLocation spawnLocation;
     public float dashForce;

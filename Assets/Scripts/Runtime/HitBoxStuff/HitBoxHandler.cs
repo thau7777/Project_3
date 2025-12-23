@@ -10,8 +10,6 @@ public class HitBoxHandler : MonoBehaviour
 
     [field: SerializeField]
     public LayerMask DodgeLayers { get; set; }
-
-    public float VFXLifeTime { get; set; }
     public Vector2 HitboxOnOffTime { get; set; } // normalized 0-1 values
 
     public UnityEvent<GameObject, GameObject> OnColliderHit = new();
@@ -34,9 +32,12 @@ public class HitBoxHandler : MonoBehaviour
             _collider.enabled = false;
 
         if (_hitboxTimingRoutine != null)
+        {
             StopCoroutine(_hitboxTimingRoutine);
+            _hitboxTimingRoutine = null;
+        }
 
-        _hitboxTimingRoutine = StartCoroutine(HitboxTimingRoutine());
+        
     }
 
     private void OnDisable()
@@ -51,11 +52,16 @@ public class HitBoxHandler : MonoBehaviour
             _collider.enabled = false;
     }
 
-    private IEnumerator HitboxTimingRoutine()
+    public void StartHitBoxCoroutine(float lifeTime)
+    {
+        _hitboxTimingRoutine = StartCoroutine(HitboxTimingRoutine(lifeTime));
+    }
+
+    private IEnumerator HitboxTimingRoutine(float lifeTime)
     {
         // Calculate actual times from normalized values
-        float hitboxOnTime = HitboxOnOffTime.x * VFXLifeTime;
-        float hitboxOffTime = HitboxOnOffTime.y * VFXLifeTime;
+        float hitboxOnTime = HitboxOnOffTime.x * lifeTime;
+        float hitboxOffTime = HitboxOnOffTime.y * lifeTime;
 
         // Wait until it's time to enable
         if (hitboxOnTime > 0f)

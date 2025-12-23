@@ -59,6 +59,7 @@ public class EnemyTopdownSpecialMove : State
 
                     if (_elapsedTime >= ctx.EnemySpecialMoveData.chargeDuration)
                     {
+                        _elapsedTime = 0;
                         _currentSpecialMoveState = SpecialMoveState.Executing;
                         ctx.Animator.CrossFade(ctx.EnemySpecialMoveData.executeAnimationName, ctx.EnemySpecialMoveData.crossfadeDuration);
                     }
@@ -70,6 +71,7 @@ public class EnemyTopdownSpecialMove : State
                         ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.CurrentTargetTransform.position);
                     if (_elapsedTime >= ctx.EnemySpecialMoveData.executionDuration)
                     {
+                        _elapsedTime = 0;
                         _currentSpecialMoveState = SpecialMoveState.Recovering;
                         ctx.Animator.CrossFade(ctx.IdleHash, ctx.EnemySpecialMoveData.recoveryDuration);
                     }
@@ -80,7 +82,11 @@ public class EnemyTopdownSpecialMove : State
                     if (ctx.EnemySpecialMoveData.faceTargetState == EnemySpecialMoveData.FaceTargetState.Recovering)
                         ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.CurrentTargetTransform.position);
                     if (_elapsedTime >= ctx.EnemySpecialMoveData.recoveryDuration)
+                    {
+                        _elapsedTime = 0;
                         _currentSpecialMoveState = SpecialMoveState.Finished;
+                    }
+                        
                     break;
                 }
         }
