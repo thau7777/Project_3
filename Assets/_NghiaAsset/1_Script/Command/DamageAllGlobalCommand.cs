@@ -150,6 +150,8 @@ namespace Turnbase
         {
             FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
+            TB_AudioSkillManager.Instance.PlaySkillSound(skill.castSound);
+
             if (effectToSpawn != null)
             {
                 Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);

@@ -51,6 +51,10 @@ public class Skill : ScriptableObject
     public int numberOfHits = 1;
     public float delayBetweenHits = 0.1f;
 
+    [Header("Sound Effects")]
+    public SkillSound castSound;
+    public SkillSound impactSound;
+
 
     [System.Serializable]
     public struct StackSetting 
@@ -91,7 +95,13 @@ public class Skill : ScriptableObject
     [Header("Timeline")]
     public UnityEngine.Playables.PlayableAsset cameraTimeline;
 
-
+    [System.Serializable]
+    public struct SkillSound
+    {
+        public AudioClip clip;
+        [Range(0, 1)] public float volume;
+        [Range(0.1f, 2f)] public float pitch;
+    }
 }
 
 
