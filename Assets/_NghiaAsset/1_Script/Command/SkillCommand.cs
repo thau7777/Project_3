@@ -54,6 +54,16 @@ namespace Turnbase
 
         protected Flyweight_TB SpawnImpactEffect(Vector3 position, Skill skill)
         {
+            if (TB_AudioSkillManager.Instance != null && skill.impactSound.clip != null)
+            {
+                Debug.Log($"Đang phát âm thanh: {skill.impactSound.clip.name}");
+                TB_AudioSkillManager.Instance.PlaySkillSound(skill.impactSound);
+            }
+            else
+            {
+                Debug.LogWarning($"Không phát được sound! Instance: {TB_AudioSkillManager.Instance != null}, Clip: {skill.impactSound.clip != null}");
+            }
+
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab;
             Flyweight_TB effectInstance = null; 
 
@@ -77,6 +87,16 @@ namespace Turnbase
 
         protected Flyweight_TB SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
+            if (TB_AudioSkillManager.Instance != null && skill.impactSound.clip != null)
+            {
+                Debug.Log($"Đang phát âm thanh: {skill.impactSound.clip.name}");
+                TB_AudioSkillManager.Instance.PlaySkillSound(skill.impactSound);
+            }
+            else
+            {
+                Debug.LogWarning($"Không phát được sound! Instance: {TB_AudioSkillManager.Instance != null}, Clip: {skill.impactSound.clip != null}");
+            }
+
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab; 
             Flyweight_TB effectInstance = null; 
 

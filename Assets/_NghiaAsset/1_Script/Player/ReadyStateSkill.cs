@@ -174,7 +174,11 @@ namespace Turnbase
 
             if (selectedSkill.skillType == SkillType.Summon)
             {
-                stateMachine.StartCoroutine(PerformSummonRoutine(selectedSkill));
+                stateMachine.SwitchState(stateMachine.waitingState);
+
+                // Tạo và chạy lệnh Summon
+                ICommand summonCmd = new SummonCommand(stateMachine.character, null, selectedSkill);
+                stateMachine.StartCoroutine(summonCmd.Execute());
             }
             else
             {
@@ -186,61 +190,11 @@ namespace Turnbase
                 Debug.Log($"Xác nhận: Chuyển sang AttackingState cho kỹ năng '{selectedSkill.skillName}'");
                 stateMachine.SwitchState(new SkillAttackingState(stateMachine, selectedSkill));
             }
+
+            TB_AudioSkillManager.Instance.PlaySkillSound(selectedSkill.castSound);
+
         }
 
-        private IEnumerator PerformSummonRoutine(Skill skill)
-        {
-            Character user = stateMachine.character;
-
-            stateMachine.SwitchState(stateMachine.waitingState);
-
-            if (!string.IsNullOrEmpty(skill.animationTriggerName))
-            {
-                user.animator.Play(skill.animationTriggerName);
-            }
-
-            yield return new WaitForSeconds(0.5f); 
-
-            GameObject petPrefab = skill.summonPrefab.FirstOrDefault();
-            Character newPet = null;
-
-            if (petPrefab != null)
-            {
-                newPet = user.battleManager.SummonPet(user, petPrefab);
-            }
-
-            if (newPet != null)
-            {
-                FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
-                float vfxDuration = 2.0f;
-
-                if (effectToSpawn != null)
-                {
-                    Vector3 position = newPet.transform.position;
-
-                    Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);
-
-                    effectInstance.Initialize(position, Quaternion.identity);
-
-                    stateMachine.StartCoroutine(ReleaseVFXAfterDelay(effectInstance, vfxDuration));
-
-                    Debug.Log($"Đã Spawn VFX Triệu hồi '{skill.skillName}' sử dụng impactVFXPrefab tại vị trí Pet.");
-                }
-                else
-                {
-                    Debug.LogWarning($"Thiếu Prefab Impact VFX cho kỹ năng Triệu hồi: {skill.skillName}.");
-                }
-
-                yield return new WaitForSeconds(1.0f);
-            }
-            else
-            {
-                yield return new WaitForSeconds(1.0f);
-            }
-
-            user.battleManager.EndTurn(user);
-            yield break;
-        }
 
         private IEnumerator ReleaseVFXAfterDelay(Flyweight_TB effect, float delay)
         {
