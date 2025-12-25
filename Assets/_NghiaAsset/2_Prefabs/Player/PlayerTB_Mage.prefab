@@ -20749,6 +20749,7 @@ MonoBehaviour:
   parryButton: {fileID: 5464003140646516223}
   confirmButton: {fileID: 7513808343981707787}
   summomonButton: {fileID: 7833532196700471018}
+  itemButton: {fileID: 7334022262223458828}
   actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 6767635835234788812}
@@ -20757,6 +20758,8 @@ MonoBehaviour:
   PlayerSkillPanel: {fileID: 2353934936889864401}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 748ed40908065bc43932325459c51745, type: 3}
   PlayerSummonPanel: {fileID: 4556486913971983218}
+  itemEntryPrefab: {fileID: 3163969907839143040, guid: c3adcbf10b464cb49aebee29ccaf44a5, type: 3}
+  PlayerItemPanel: {fileID: 6949900750214925694}
   parryFillImage: {fileID: 8838577383631252050}
   defaultParrySprite: {fileID: 21300000, guid: 63be7197c60874147a5fb1f91704cfea, type: 3}
   readyParrySprite: {fileID: 21300000, guid: b79a56f910ade2b4f8bf0c8925a5f772, type: 3}
@@ -27832,6 +27835,9 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: d030d73e839bafe4fa0a621f62d882e9, type: 2}
   skills: []
+  item:
+  - {fileID: 11400000, guid: 94739275a84aeeb48aed2113f6d7c639, type: 2}
+  - {fileID: 11400000, guid: 10ce6117019c09243820bba989b6d8a2, type: 2}
   passiveSkills:
   - {fileID: 11400000, guid: 295792d135f95fb4cbf009420e6db822, type: 2}
   isPlayer: 1
@@ -31468,9 +31474,25 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3748308581709726980, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
   m_PrefabInstance: {fileID: 7633550946433556680}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6949900750214925694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 692661321099701686, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 7633550946433556680}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6971800517006987993 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 661780131409490449, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 7633550946433556680}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7334022262223458828 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 876086775593185988, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
   m_PrefabInstance: {fileID: 7633550946433556680}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

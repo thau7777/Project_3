@@ -22,6 +22,8 @@ namespace Turnbase
 
         [TabGroup("Skill")] public List<Skill> skills;
 
+        [TabGroup("Item")] public List<Tb_Item> item;
+
         [TabGroup("Skill Passive")] public List<SkillPassive> passiveSkills;
 
         public bool isPlayer;
