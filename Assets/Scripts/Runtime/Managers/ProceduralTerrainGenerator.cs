@@ -7,10 +7,10 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
     [Header("Height Generation")]
     [Range(0.001f, 0.1f)]
-    public float heightScale = 0.02f; // Small values for subtle variation
+    public float heightScale = 0.02f;
     [Range(1f, 50f)]
     public float noiseScale = 20f;
-    public int seed = 0; // Change for different terrains
+    public int seed = 0;
 
     [Header("Texture Layers (Assign in order)")]
     [Tooltip("0: Grass, 1: Dirt/Rock, 2: Sand/Path, etc.")]
@@ -45,7 +45,7 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     [Range(0.1f, 5f)]
     public float grassMaxScale = 1.5f;
     [Range(0f, 1f)]
-    public float grassDensity = 0.7f; // Probability of spawning at valid location
+    public float grassDensity = 0.7f;
     public Transform grassParent;
 
     [Header("Obstacles/Decorations (Rocks, Bushes, etc.)")]
@@ -56,13 +56,10 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     public float obstacleHeightMin = 0.1f;
     [Range(0f, 1f)]
     public float obstacleHeightMax = 0.7f;
-
-    // --- ADDED SCALE VARIABLES ---
     [Range(0.1f, 10f)]
     public float obstacleMinScale = 0.5f;
     [Range(0.1f, 10f)]
     public float obstacleMaxScale = 2.0f;
-
     public Transform obstacleParent;
 
     private TerrainData terrainData;
@@ -78,10 +75,13 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         if (terrain == null)
             terrain = GetComponent<Terrain>();
 
-        // 1. Create a temporary copy of the TerrainData so we don't corrupt the asset file
+        // CLEANUP FIRST - Remove all old generated content
+        CleanupAllGenerated();
+
+        // Create a temporary copy of the TerrainData
         terrain.terrainData = Instantiate(terrain.terrainData);
 
-        // 2. IMPORTANT: You must also update the Collider, or you will fall through the floor!
+        // Update the Collider
         if (terrain.GetComponent<TerrainCollider>())
         {
             terrain.GetComponent<TerrainCollider>().terrainData = terrain.terrainData;
@@ -105,6 +105,49 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         rng = new System.Random(seed);
 
         GenerateTerrain();
+    }
+
+    // === CLEANUP METHOD - Removes all old generated content ===
+    void CleanupAllGenerated()
+    {
+        Debug.Log("Cleaning up old generated content...");
+
+        // Clean up grass
+        if (grassParent != null)
+        {
+            int grassChildCount = grassParent.childCount;
+            while (grassParent.childCount > 0)
+            {
+                DestroyImmediate(grassParent.GetChild(0).gameObject);
+            }
+            Debug.Log($"Removed {grassChildCount} old grass objects");
+        }
+
+        // Clean up obstacles
+        if (obstacleParent != null)
+        {
+            int obstacleChildCount = obstacleParent.childCount;
+            while (obstacleParent.childCount > 0)
+            {
+                DestroyImmediate(obstacleParent.GetChild(0).gameObject);
+            }
+            Debug.Log($"Removed {obstacleChildCount} old obstacle objects");
+        }
+
+        // Clean up trees from terrain
+        if (terrain != null && terrain.terrainData != null)
+        {
+            int oldTreeCount = terrain.terrainData.treeInstances.Length;
+            terrain.terrainData.treeInstances = new TreeInstance[0];
+            if (oldTreeCount > 0)
+                Debug.Log($"Removed {oldTreeCount} old trees");
+        }
+
+        // Force garbage collection (optional but helpful)
+        System.GC.Collect();
+        Resources.UnloadUnusedAssets();
+
+        Debug.Log("Cleanup complete!");
     }
 
     void GenerateTerrain()
@@ -145,14 +188,12 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                 float xCoord = (float)x / heightmapResolution * noiseScale + offsetX;
                 float yCoord = (float)y / heightmapResolution * noiseScale + offsetY;
 
-                // Perlin noise gives values 0-1, multiply by small heightScale for subtle variation
                 heights[y, x] = Mathf.PerlinNoise(xCoord, yCoord) * heightScale;
             }
         }
 
-        // Important: Use SetHeightsDelayLOD for better performance and stability
         terrainData.SetHeightsDelayLOD(0, 0, heights);
-        terrain.Flush(); // Apply changes
+        terrain.Flush();
     }
 
     void PaintTextures()
@@ -183,13 +224,8 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                 int sampleX = Mathf.RoundToInt(normX * (heightmapRes - 1));
                 int sampleY = Mathf.RoundToInt(normY * (heightmapRes - 1));
 
-                // 1. Get the raw height (0.0 to 1.0 relative to total terrain height)
                 float rawHeight = terrainData.GetHeight(sampleY, sampleX) / terrainSize.y;
-
-                // 2. Calculate "Relative Height"
                 float height = Mathf.Clamp01(rawHeight / heightScale);
-
-                // Calculate slope
                 float slope = 1f - terrainData.GetInterpolatedNormal(normX, normY).y;
 
                 float noiseValue = Mathf.PerlinNoise(
@@ -199,7 +235,7 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
                 float[] weights = new float[terrainLayers.Length];
 
-                // Layer 0: Grass (Using your Slider)
+                // Layer 0: Grass
                 if (terrainLayers.Length > 0)
                 {
                     float heightWeight = (height > grassHeightThreshold) ? 1.0f : 0f;
@@ -207,14 +243,14 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                     weights[0] *= (0.5f + noiseValue * 0.5f);
                 }
 
-                // Layer 1: Rock/Dirt (Slope based OR very high up)
+                // Layer 1: Rock/Dirt
                 if (terrainLayers.Length > 1)
                 {
                     float slopeWeight = slope > rockSlopeThreshold ? slope : 0f;
                     weights[1] = slopeWeight + (height > 0.7f ? height : 0f);
                 }
 
-                // Layer 2: Sand/Path (Low areas)
+                // Layer 2: Sand/Path
                 if (terrainLayers.Length > 2)
                 {
                     weights[2] = (height < 0.3f ? (1f - height) : 0f) * noiseValue;
@@ -241,21 +277,18 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
     private void SetupTreeColliders(GameObject prefab)
     {
-        // 1. Remove the Mesh Collider (Terrain doesn't support it for trees)
         MeshCollider existingMeshCollider = prefab.GetComponent<MeshCollider>();
         if (existingMeshCollider != null)
         {
             DestroyImmediate(existingMeshCollider, true);
         }
 
-        // 2. Check if it already has a Capsule Collider
         CapsuleCollider capsule = prefab.GetComponent<CapsuleCollider>();
         if (capsule == null)
         {
             capsule = prefab.AddComponent<CapsuleCollider>();
         }
 
-        // 3. Auto-size the capsule based on the mesh bounds
         MeshRenderer meshRenderer = prefab.GetComponentInChildren<MeshRenderer>();
         if (meshRenderer != null)
         {
@@ -328,7 +361,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         }
     }
 
-    // --- FIX START: UPDATED SPAWN GRASS (Positions Fixed) ---
     void SpawnGrass()
     {
         if (grassPrefabs == null || grassPrefabs.Length == 0)
@@ -338,7 +370,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         }
 
         if (grassParent == null) grassParent = new GameObject("Grass").transform;
-        while (grassParent.childCount > 0) DestroyImmediate(grassParent.GetChild(0).gameObject);
 
         int spawnedCount = 0;
         int attemptCount = 0;
@@ -351,15 +382,12 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             float x = (float)rng.NextDouble();
             float z = (float)rng.NextDouble();
 
-            // 1. Calculate Absolute World Coordinates used for sampling
             float worldX = x * terrainData.size.x + terrain.transform.position.x;
             float worldZ = z * terrainData.size.z + terrain.transform.position.z;
 
-            // 2. Sample Height returns Y relative to terrain pivot, so we add terrain Y back
             float heightSample = terrain.SampleHeight(new Vector3(worldX, 0, worldZ));
             float worldY = heightSample + terrain.transform.position.y;
 
-            // Normalize height for the slider
             float normalizedHeight = Mathf.Clamp01((heightSample / terrainData.size.y) / heightScale);
 
             int alphaX = Mathf.FloorToInt(x * (alphamapResolution - 1));
@@ -372,7 +400,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                 grassWeight > 0.3f &&
                 (float)rng.NextDouble() < grassDensity)
             {
-                // 3. Create Vector with calculated WorldY
                 Vector3 position = new Vector3(worldX, worldY, worldZ);
 
                 GameObject grassPrefab = grassPrefabs[rng.Next(0, grassPrefabs.Length)];
@@ -386,17 +413,14 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"=== GRASS SPAWNING COMPLETE. Spawned: {spawnedCount} ===");
+        Debug.Log($"Spawned {spawnedCount} grass objects");
     }
-    // --- FIX END: GRASS ---
 
-    // --- FIX START: UPDATED OBSTACLES (Positions Fixed + Scaling Added) ---
     void SpawnObstacles()
     {
         if (obstaclePrefabs == null || obstaclePrefabs.Length == 0) return;
 
         if (obstacleParent == null) obstacleParent = new GameObject("Obstacles").transform;
-        while (obstacleParent.childCount > 0) DestroyImmediate(obstacleParent.GetChild(0).gameObject);
 
         int spawnedCount = 0;
 
@@ -405,15 +429,12 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             float x = (float)rng.NextDouble();
             float z = (float)rng.NextDouble();
 
-            // 1. Calculate Absolute World Coordinates
             float worldX = x * terrainData.size.x + terrain.transform.position.x;
             float worldZ = z * terrainData.size.z + terrain.transform.position.z;
 
-            // 2. Sample Height + Terrain Y
             float heightSample = terrain.SampleHeight(new Vector3(worldX, 0, worldZ));
             float worldY = heightSample + terrain.transform.position.y;
 
-            // Normalize height for the slider check
             float normalizedHeight = Mathf.Clamp01((heightSample / terrainData.size.y) / heightScale);
 
             float[,,] alphamap = terrainData.GetAlphamaps(Mathf.FloorToInt(x * (alphamapResolution - 1)), Mathf.FloorToInt(z * (alphamapResolution - 1)), 1, 1);
@@ -421,14 +442,12 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
             if (normalizedHeight >= obstacleHeightMin && normalizedHeight <= obstacleHeightMax && grassWeight > 0.5f)
             {
-                // 3. Use calculated WorldY
                 Vector3 position = new Vector3(worldX, worldY, worldZ);
 
                 GameObject obstaclePrefab = obstaclePrefabs[rng.Next(0, obstaclePrefabs.Length)];
 
                 Quaternion rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360f, 0);
 
-                // 4. New Scale Logic using Min/Max
                 float randomScale = obstacleMinScale + (float)rng.NextDouble() * (obstacleMaxScale - obstacleMinScale);
 
                 GameObject obstacle = Instantiate(obstaclePrefab, position, rotation, obstacleParent);
@@ -437,16 +456,31 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                 spawnedCount++;
             }
         }
-        Debug.Log($"Spawned {spawnedCount} obstacles with scale range {obstacleMinScale}-{obstacleMaxScale}");
+        Debug.Log($"Spawned {spawnedCount} obstacles");
     }
-    // --- FIX END: OBSTACLES ---
 
     [ContextMenu("Regenerate Terrain")]
     public void RegenerateTerrain()
     {
+        CleanupAllGenerated(); // Clean before regenerating
+
         seed = rng.Next(0, 100000);
         rng = new System.Random(seed);
         GenerateTerrain();
         Debug.Log($"Terrain Regenerated with Seed: {seed}");
+    }
+
+    [ContextMenu("Clear All Generated Content")]
+    public void ClearAllContent()
+    {
+        CleanupAllGenerated();
+        Debug.Log("All generated content cleared!");
+    }
+
+    // Clean up when script is disabled/destroyed
+    void OnDestroy()
+    {
+        Debug.Log("Terrain Generator destroyed - performing final cleanup");
+        // Note: We don't destroy the parent objects here as they might be needed
     }
 }
