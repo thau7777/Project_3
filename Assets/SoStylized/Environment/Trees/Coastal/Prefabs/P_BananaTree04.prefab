@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6ae6a7bf6db0b824cb59b19ee0230721, type: 3}
       propertyPath: m_Name
-      value: BananaTree04
+      value: P_BananaTree04
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -59,6 +59,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6ae6a7bf6db0b824cb59b19ee0230721, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7327561967608266087}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6ae6a7bf6db0b824cb59b19ee0230721, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5626737019030767790}
   m_SourcePrefab: {fileID: 100100000, guid: 6ae6a7bf6db0b824cb59b19ee0230721, type: 3}
 --- !u!1 &2554983660334149748 stripped
 GameObject:
@@ -84,6 +87,29 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4068400186752979361}
   m_Enabled: 1
+--- !u!136 &5626737019030767790
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2554983660334149748}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4134309
+  m_Height: 5.9532537
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.9766269, z: 0}
 --- !u!23 &4068400186752979361 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 6ae6a7bf6db0b824cb59b19ee0230721, type: 3}

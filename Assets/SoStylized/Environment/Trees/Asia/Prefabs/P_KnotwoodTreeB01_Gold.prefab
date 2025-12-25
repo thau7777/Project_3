@@ -49,11 +49,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1516767061449189088, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 724cab4c069e009428c96ba68d346f1b, type: 2}
     - target: {fileID: 237551945141493346, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: e063a586c70bbf7479a43b82e6eb9819, type: 2}
     - target: {fileID: 919132149155446097, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
@@ -61,7 +61,7 @@ PrefabInstance:
       value: P_KnotwoodTreeB01_Gold
       objectReference: {fileID: 0}
     - target: {fileID: 6754118376312877495, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: cd4c69d8988d47143af5a29abd96effb, type: 2}
     m_RemovedComponents: []
@@ -70,13 +70,44 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8486101124570739286}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3163270875305578931}
   m_SourcePrefab: {fileID: 100100000, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
 --- !u!4 &4777454003659353579 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
   m_PrefabInstance: {fileID: 5027798838792899072}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5262242542175549265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 075a314b2db2ecc42b025a2dda593cb6, type: 3}
+  m_PrefabInstance: {fileID: 5027798838792899072}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &3163270875305578931
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5262242542175549265}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.6145195
+  m_Height: 16.932575
+  m_Direction: 1
+  m_Center: {x: 0, y: 8.466288, z: 0}
 --- !u!1001 &8236531211932636605
 PrefabInstance:
   m_ObjectHideFlags: 0

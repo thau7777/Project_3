@@ -29,9 +29,24 @@ public class EnemyTopDownSettings : FlyweightSettings
     }
     private Vector3 PickRandomLocationAroundPlayer()
     {
+        // 1. Calculate random X and Z around player
         Vector2 randomCircle = Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPosition = _player.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
-        spawnPosition.y = -1f;
+
+        // 2. Find the exact height of the terrain surface at this X, Z
+        if (Terrain.activeTerrain != null)
+        {
+            float surfaceY = Terrain.activeTerrain.SampleHeight(spawnPosition) + Terrain.activeTerrain.transform.position.y;
+
+            // 3. Set the spawn point to be 2 units BELOW that surface
+            spawnPosition.y = surfaceY - 2f;
+        }
+        else
+        {
+            // Fallback if no terrain is found
+            spawnPosition.y = -2f;
+        }
+
         return spawnPosition;
     }
     public override void OnGet(Flyweight f)
