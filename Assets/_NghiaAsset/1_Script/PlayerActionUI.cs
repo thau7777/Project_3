@@ -267,6 +267,8 @@ namespace Turnbase
             summomonButton.interactable = true;
             itemButton.interactable = true;
 
+            Debug.Log("sử dụng Kỹ năng!");
+
 
             switch (currentCharacter.characterClass)
             {
@@ -303,6 +305,8 @@ namespace Turnbase
                 SetupSkillUI(currentCharacter.skills);
                 PlayerSkillPanel.SetActive(true);
             }
+            PlayerItemPanel.SetActive(false);
+
         }
 
 

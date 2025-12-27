@@ -23,21 +23,8 @@ namespace Turnbase
 
             Debug.Log($"{user.name} đang sử dụng {item.itemName} lên {target.name}");
 
-            switch (user.characterClass)
-            {
-                case CharacterClass.Sword_Shield:
-                    user.animator.Play("Warrio_Cast");
-                    break;
-                case CharacterClass.Magical:
-                    user.animator.Play("Magic_Cast");
-                    break;
-                case CharacterClass.Summon:
-                    user.animator.Play("Summon_Cast");
-                    break;
-                default:
-                    user.animator.Play("Magic_Cast");
-                    break;
-            }
+            user.animator.Play("Drinking");
+
 
             yield return new WaitForSeconds(0.8f);
 
