@@ -204,10 +204,6 @@ public class EnemyTopdownStateDriver : Flyweight
         if (!_skillIndicator) return;
         _skillIndicator.LockIndicator(duration);
     }
-    public void StartSpawnAnim()
-    {
-        StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationTime));
-    }
 
     public void StopMoving()
     {
@@ -217,25 +213,41 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         _context.CurrentSpeed = _context.IsInSpecialMove ? _context.EnemySpecialMoveData.movementSpeed : _context.BaseMoveSpeed;
     }
+    public void StartSpawnAnim()
+    {
+        StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationTime));
+    }
     public IEnumerator SpawnAnimationCoroutine(float duration)
     {
+        // 1. Disable Controller so we can move the transform manually
         _characterController.enabled = false;
+
         float elapsedTime = 0f;
-        Vector3 startPos = transform.position;
-        Vector3 targetPos = new Vector3(startPos.x, 0f, startPos.z);
+        Vector3 startPos = transform.position; // Assumes enemy is already spawned underground
+
+        // --- FIX START ---
+        // Calculate the actual surface height at this specific X, Z coordinate
+        // We add terrain.transform.position.y just in case the terrain object isn't at Y=0
+        float surfaceY = Terrain.activeTerrain.SampleHeight(startPos) + Terrain.activeTerrain.transform.position.y;
+
+        Vector3 targetPos = new Vector3(startPos.x, surfaceY, startPos.z);
+        // --- FIX END ---
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float normalizedTime = elapsedTime / duration;
 
-            // Lerp from y=-1 to y=0
-            transform.position = Vector3.Lerp(startPos, targetPos, normalizedTime);
+            // Optional: Use SmoothStep for a more natural "Emerge" movement (Start slow, end slow)
+            // If you want linear movement, just use 'normalizedTime' instead of 'curve'
+            float curve = Mathf.SmoothStep(0, 1, normalizedTime);
+
+            transform.position = Vector3.Lerp(startPos, targetPos, curve);
 
             yield return null;
         }
 
-        // Ensure final position is exact
+        // 2. Snap to exact target and re-enable controller
         transform.position = targetPos;
         _characterController.enabled = true;
     }
