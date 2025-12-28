@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using System.Linq;
+using UnityEngine;
 
 
 namespace Turnbase
@@ -65,6 +65,7 @@ namespace Turnbase
         public Skill selectedSkill { get; set; }
 
         public EnemyStatsUI enemyStatsUI;
+
 
         public bool isAlive
         {
@@ -146,6 +147,10 @@ namespace Turnbase
             {
                 stats.currentHP -= remainingDamage;
 
+                float intensity = Mathf.Clamp(remainingDamage * 0.01f, 0.1f, 0.5f);
+
+                EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.15f, intensity));
+
                 Vector3 spawnPosition = transform.position;
 
                 Color popupColor = VFXManager.Instance.elementColorMap.GetColor(damageElement);
@@ -184,6 +189,8 @@ namespace Turnbase
                     {
                         enemyTarget.ApplyBreakStatus(enemyTarget.BreakDebuffSettings);
                     }
+
+
                 }
 
             }
