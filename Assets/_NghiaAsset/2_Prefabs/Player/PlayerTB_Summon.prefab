@@ -22261,6 +22261,7 @@ MonoBehaviour:
   parryButton: {fileID: 1590782272674630539}
   confirmButton: {fileID: 3855636557377399935}
   summomonButton: {fileID: 3562872748008177822}
+  itemButton: {fileID: 4035295118377020536}
   actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 12641135990643640}
@@ -22269,6 +22270,8 @@ MonoBehaviour:
   PlayerSkillPanel: {fileID: 9037962207738695333}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 0c378e221269cfc49af870a0c15623f2, type: 3}
   PlayerSummonPanel: {fileID: 7132704899109498118}
+  itemEntryPrefab: {fileID: 3163969907839143040, guid: c3adcbf10b464cb49aebee29ccaf44a5, type: 3}
+  PlayerItemPanel: {fileID: 4446337119187645194}
   parryFillImage: {fileID: 2841629156007760934}
   defaultParrySprite: {fileID: 21300000, guid: 63be7197c60874147a5fb1f91704cfea, type: 3}
   readyParrySprite: {fileID: 21300000, guid: b79a56f910ade2b4f8bf0c8925a5f772, type: 3}
@@ -27706,6 +27709,7 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: 63b6b50764926834b9412854ed734732, type: 2}
   skills: []
+  item: []
   passiveSkills: []
   isPlayer: 1
   isVirtualTracker: 0
@@ -27727,6 +27731,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 574d4e3412d2c0d4aa57943900c62d23, type: 2}
   damagePopupCanvasParent: {fileID: 0}
   enemyStatsUI: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
 --- !u!114 &4313930177542392817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31486,6 +31491,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4035295118377020536 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 876086775593185988, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 3758328382649851580}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4397587214029958317 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 661780131409490449, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
@@ -31497,6 +31513,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4446337119187645194 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 692661321099701686, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 3758328382649851580}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5139679972537450289 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8321399167605039501, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}

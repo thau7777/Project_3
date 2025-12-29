@@ -66,6 +66,10 @@ namespace Turnbase
 
         public EnemyStatsUI enemyStatsUI;
 
+        public Transform projectileSpawnPoint;
+
+        public Transform buffEffectSpawnPoint;
+
 
         public bool isAlive
         {

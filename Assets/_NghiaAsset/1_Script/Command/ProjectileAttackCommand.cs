@@ -145,26 +145,29 @@ namespace Turnbase
         private void SpawnProjectile(int damageForThisHit)
         {
             Flyweight_TB projectileInstance = FlyweightFactory_TB.Spawn(skill.projectileSettings);
-
             ElementType element = skill.elementType;
 
             if (projectileInstance != null)
             {
-                Vector3 spawnPosition = user.transform.position + user.transform.forward * 0.5f + Vector3.up * 1f;
+                Vector3 spawnPosition;
+                if (user.projectileSpawnPoint != null)
+                {
+                    spawnPosition = user.projectileSpawnPoint.position;
+                }
+                else
+                {
+                    spawnPosition = user.transform.position + user.transform.forward * 0.5f + Vector3.up * 1f;
+                }
+
                 projectileInstance.Initialize(spawnPosition, targetLookRotation);
 
                 ProjectileTurnBase projectileScript = projectileInstance.GetComponent<ProjectileTurnBase>();
-
                 if (projectileScript != null)
                 {
                     Action hitCallback = () => { projectileHit = true; };
-
-
                     projectileScript.Setup(target, skill, damageForThisHit, element, hitCallback);
                 }
-
             }
-
         }
 
 

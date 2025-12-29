@@ -64,7 +64,23 @@ namespace Turnbase
 
             foreach (var charTarget in targetsToBuff)
             {
-                Flyweight_TB activeVFX = SpawnContinuousEffect(charTarget.transform.position, charTarget, skill);
+                Transform spawnPoint = charTarget.buffEffectSpawnPoint != null ? charTarget.buffEffectSpawnPoint : charTarget.transform;
+                Vector3 spawnPos = spawnPoint.position;
+
+                Flyweight_TB activeVFX = SpawnContinuousEffect(spawnPos, charTarget, skill);
+
+                if (activeVFX != null)
+                {
+                    activeVFX.transform.SetParent(spawnPoint);
+                    activeVFX.transform.localPosition = Vector3.zero; 
+                    activeVFX.transform.localRotation = Quaternion.identity; 
+
+                    Debug.Log($"[BUFF] Đã gán {activeVFX.name} vào {spawnPoint.name}");
+                }
+                else
+                {
+                    Debug.LogError("[BUFF] Không thể tạo activeVFX!");
+                }
 
                 switch (skill.buffProperties.statToModify)
                 {

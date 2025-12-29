@@ -199,7 +199,7 @@ MonoBehaviour:
     level: 0
   stats:
     maxHP: 1000
-    currentHP: 400
+    currentHP: 1000
     maxMP: 100
     currentMP: 100
     maxShield: 119
@@ -239,6 +239,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 85d70db4e1ef17b4ea2cca673f1b513c, type: 2}
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
+  projectileSpawnPoint: {fileID: 0}
   traildblaze: 100
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
@@ -2554,22 +2555,6 @@ PrefabInstance:
     - target: {fileID: 1148275806622620305, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_Name
       value: EnemyUI (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.000031727643
-      objectReference: {fileID: 0}
-    - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.0007612481
-      objectReference: {fileID: 0}
-    - target: {fileID: 6563456863629503439, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8658033708188352773, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_Pivot.x
