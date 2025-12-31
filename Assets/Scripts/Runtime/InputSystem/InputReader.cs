@@ -8,7 +8,8 @@ public enum ActionMap
     PlayerFPS,
     PlayerTowerDefense,
     UI,
-    PopUpGame
+    PopUpGame,
+    SpaceStation
 }
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "Scriptable Objects/InputReader")]
@@ -21,6 +22,7 @@ public class InputReader : ScriptableObject
     public PlayerTowerDefenseActions playerTowerDefenseActions;
     public UIActions uiActions;
     public PopUpGame popUpGame;
+    public SpaceStationActions spaceStationActions;
 
     private void OnEnable()
     {
@@ -40,6 +42,7 @@ public class InputReader : ScriptableObject
         playerTowerDefenseActions = new PlayerTowerDefenseActions();
         uiActions = new UIActions();
         popUpGame = new PopUpGame();
+        spaceStationActions = new SpaceStationActions();
         if (input == null)
         {
             input = new InputActions();
@@ -49,6 +52,7 @@ public class InputReader : ScriptableObject
             input.PlayerTowerDefense.SetCallbacks(playerTowerDefenseActions);
             input.UI.SetCallbacks(uiActions);
             input.PopUpGame.SetCallbacks(popUpGame);
+            input.SpaceStation.SetCallbacks(spaceStationActions);
         }
         //input.UI.Enable();
     }
@@ -61,6 +65,7 @@ public class InputReader : ScriptableObject
         input.PlayerTowerDefense.Disable();
         input.UI.Disable();
         input.PopUpGame.Disable();
+        input.SpaceStation.Disable();
     }
     public void SwitchActionMap(ActionMap map)
     {
@@ -84,6 +89,9 @@ public class InputReader : ScriptableObject
                 break;
             case ActionMap.PopUpGame:
                 input.PopUpGame.Enable();
+                break;
+            case ActionMap.SpaceStation:
+                input.SpaceStation.Enable();
                 break;
         }
         Debug.Log("switched actionButton map to: " + map.ToString());

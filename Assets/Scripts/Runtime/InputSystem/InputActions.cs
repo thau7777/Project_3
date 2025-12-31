@@ -904,6 +904,118 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""SpaceStation"",
+            ""id"": ""2686c542-8951-490b-8099-69867af5094b"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""e9079524-3695-4c4f-9670-47f84702b6b3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""1735d113-9a6c-41cb-9e33-2859e7b22a5a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Esc"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff79d6f1-4418-4aa0-b923-345044aaecc0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""5132d2ab-2435-47b2-837c-e7d87c7abaa7"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a34ffbf5-496c-487f-bda1-901164ca5969"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""123d44cc-e610-43bc-9ee4-c38cb4392eb0"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b6e287ef-c66c-49f5-a450-2fdc3dc3d484"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""df405f93-86ea-4029-9d98-d125f799cc75"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41d41a83-0e7c-43c1-8515-06743fb5ec51"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a8ddbd4-ed4e-472c-b5f8-31469443fe7f"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -934,6 +1046,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PopUpGame_Naviagate = m_PopUpGame.FindAction("Naviagate", throwIfNotFound: true);
         m_PopUpGame_LeftClick = m_PopUpGame.FindAction("Left Click", throwIfNotFound: true);
         m_PopUpGame_RightClick = m_PopUpGame.FindAction("Right Click", throwIfNotFound: true);
+        // SpaceStation
+        m_SpaceStation = asset.FindActionMap("SpaceStation", throwIfNotFound: true);
+        m_SpaceStation_Move = m_SpaceStation.FindAction("Move", throwIfNotFound: true);
+        m_SpaceStation_Interact = m_SpaceStation.FindAction("Interact", throwIfNotFound: true);
+        m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -944,6 +1061,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerTowerDefense.enabled, "This will cause a leak and performance issues, InputActions.PlayerTowerDefense.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PopUpGame.enabled, "This will cause a leak and performance issues, InputActions.PopUpGame.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_SpaceStation.enabled, "This will cause a leak and performance issues, InputActions.SpaceStation.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1679,6 +1797,124 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PopUpGameActions" /> instance referencing this action map.
     /// </summary>
     public PopUpGameActions @PopUpGame => new PopUpGameActions(this);
+
+    // SpaceStation
+    private readonly InputActionMap m_SpaceStation;
+    private List<ISpaceStationActions> m_SpaceStationActionsCallbackInterfaces = new List<ISpaceStationActions>();
+    private readonly InputAction m_SpaceStation_Move;
+    private readonly InputAction m_SpaceStation_Interact;
+    private readonly InputAction m_SpaceStation_Esc;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "SpaceStation".
+    /// </summary>
+    public struct SpaceStationActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public SpaceStationActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Move".
+        /// </summary>
+        public InputAction @Move => m_Wrapper.m_SpaceStation_Move;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Interact".
+        /// </summary>
+        public InputAction @Interact => m_Wrapper.m_SpaceStation_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Esc".
+        /// </summary>
+        public InputAction @Esc => m_Wrapper.m_SpaceStation_Esc;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_SpaceStation; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="SpaceStationActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(SpaceStationActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="SpaceStationActions" />
+        public void AddCallbacks(ISpaceStationActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="SpaceStationActions" />
+        private void UnregisterCallbacks(ISpaceStationActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="SpaceStationActions.UnregisterCallbacks(ISpaceStationActions)" />.
+        /// </summary>
+        /// <seealso cref="SpaceStationActions.UnregisterCallbacks(ISpaceStationActions)" />
+        public void RemoveCallbacks(ISpaceStationActions instance)
+        {
+            if (m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="SpaceStationActions.AddCallbacks(ISpaceStationActions)" />
+        /// <seealso cref="SpaceStationActions.RemoveCallbacks(ISpaceStationActions)" />
+        /// <seealso cref="SpaceStationActions.UnregisterCallbacks(ISpaceStationActions)" />
+        public void SetCallbacks(ISpaceStationActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SpaceStationActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="SpaceStationActions" /> instance referencing this action map.
+    /// </summary>
+    public SpaceStationActions @SpaceStation => new SpaceStationActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
     /// </summary>
@@ -1824,5 +2060,34 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "SpaceStation" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="SpaceStationActions.AddCallbacks(ISpaceStationActions)" />
+    /// <seealso cref="SpaceStationActions.RemoveCallbacks(ISpaceStationActions)" />
+    public interface ISpaceStationActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Esc" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEsc(InputAction.CallbackContext context);
     }
 }
