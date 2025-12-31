@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-public enum EnemyTopdownType
+public enum EnemyTopdownKind
 {
     Slime,
     Normal
@@ -24,7 +24,8 @@ public class EnemyTopdownContext
     public float KnockbackForce { get; set; }
     public float AttackRange { get; private set; }
     public bool IsBoss { get; private set; }
-    
+    public float StunDuration { get; set; }
+
     public Transform PlayerTransform { get; private set; }
 
     // State Properties
@@ -44,7 +45,7 @@ public class EnemyTopdownContext
     public int StunnedHash => Animator.StringToHash("Stunned");
     public int DeadHash => Animator.StringToHash("Dead");
 
-    public EnemyTopdownType EnemyType { get; set; }
+    public EnemyTopdownKind EnemyType { get; set; }
 
     public List<EnemySpecialMoveData> EnemySpecialMoveList { get; private set; }
     public EnemySpecialMoveData EnemySpecialMoveData { get; private set; }
@@ -132,7 +133,7 @@ public class EnemyTopdownContext
             return this;
         }
 
-        public Builder SetEnemyType(EnemyTopdownType type)
+        public Builder SetEnemyType(EnemyTopdownKind type)
         {
             ctx.EnemyType = type;
             return this;

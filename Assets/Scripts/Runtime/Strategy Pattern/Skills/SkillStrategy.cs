@@ -43,7 +43,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
     public bool CanCharge { get => _canCharge; private set => _canCharge = value; }
 
     [ShowIf("_canCharge")]
-    public FlyweightSettings chargingEffect;
+    public OneShotVFXSettings chargingEffect;
     [ShowIf("_canCharge")]
     public int chargeLevel;
 
@@ -66,7 +66,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
             ExecuteChargedSkill(skillContext);
     }
 
-    public SkillDataForClass? GetSkillDataByClass(CharacterClass characterClass)
+    public SkillDataForClass? GetSkillDataForClass(CharacterClass characterClass)
     {
         bool hasThatClass = false;
         foreach (var dataForClass in dataForClasses)

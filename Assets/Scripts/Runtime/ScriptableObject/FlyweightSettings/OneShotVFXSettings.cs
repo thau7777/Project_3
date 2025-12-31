@@ -46,6 +46,10 @@ public class OneShotVFXSettings : FlyweightSettings
     [TabGroup("Damage Settings")]
     private OneShotVFXSettings _hitImpactVFXSetting;
 
+    [SerializeField]
+    [ShowIf("_canDealDamage")]
+    [TabGroup("Damage Settings")]
+    private ElementalType _elementalType = ElementalType.Normal;
     #endregion
 
     #region Effect Settings
@@ -63,7 +67,7 @@ public class OneShotVFXSettings : FlyweightSettings
 
     [ShowIf("_canApplyEffect")]
     [SerializeField]
-    private List<Effect> _effectsToApplyList = new();
+    private List<EffectData> _effectsToApplyList = new();
 
     #endregion
 
@@ -117,7 +121,7 @@ public class OneShotVFXSettings : FlyweightSettings
                 var damageDealer = go.GetOrAdd<DamageDealer>();
                 damageDealer.Damage = _damage;
                 damageDealer.KnockbackForce = _knockBackForce;
-
+                damageDealer.ElementalType = _elementalType;
                 if (_hitImpactVFXSetting)
                     damageDealer.SetHitImpactVFX(_hitImpactVFXSetting);
             }

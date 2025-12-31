@@ -31,108 +31,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6159187748356199455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &17529469063944852
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5105891818390255342}
-  - component: {fileID: 8269314674012199380}
-  - component: {fileID: 7593880563250632508}
-  - component: {fileID: 70521456208704955}
-  m_Layer: 3
-  m_Name: HitBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5105891818390255342
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17529469063944852}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5953917757259853620}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &8269314674012199380
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17529469063944852}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.96
-  m_Height: 1.5
-  m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7593880563250632508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17529469063944852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 144849a07d1333d4bad9c0edd571f79a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
-  <DodgeLayers>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 8
-  OnColliderHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 70521456208704955}
-        m_TargetAssemblyTypeName: DamageDealer, Assembly-CSharp
-        m_MethodName: DealDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &70521456208704955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17529469063944852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0809c4c0574c10b44bd62230b15c0dd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
-  _damage: 40
-  _knockbackForce: 20
-  <HitImpactEffect>k__BackingField: {fileID: 11400000, guid: 381fdfc52c2e0254d80b67fcbe4c8310, type: 2}
 --- !u!1 &41828398200371527
 GameObject:
   m_ObjectHideFlags: 0
@@ -14865,108 +14763,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000059604645, y: 0.5418518, z: -0.010944426}
     m_Extent: {x: 0.8042782, y: 0.0767474, z: 0.11516765}
   m_DirtyAABB: 0
---- !u!1 &4365346870462592096
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1990277364852455862}
-  - component: {fileID: 8221309457387955570}
-  - component: {fileID: 2767711997270063315}
-  - component: {fileID: 5157482828248664979}
-  m_Layer: 3
-  m_Name: HitBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1990277364852455862
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4365346870462592096}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.57}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3667854963658125952}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &8221309457387955570
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4365346870462592096}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 1.0850438
-  m_Height: 3.0238054
-  m_Direction: 0
-  m_Center: {x: 0.093963265, y: 0, z: -0.438604}
---- !u!114 &2767711997270063315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4365346870462592096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 144849a07d1333d4bad9c0edd571f79a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
-  <DodgeLayers>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 8
-  OnColliderHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5157482828248664979}
-        m_TargetAssemblyTypeName: DamageDealer, Assembly-CSharp
-        m_MethodName: DealDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &5157482828248664979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4365346870462592096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0809c4c0574c10b44bd62230b15c0dd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
-  _damage: 40
-  _knockbackForce: 20
-  <HitImpactEffect>k__BackingField: {fileID: 11400000, guid: 381fdfc52c2e0254d80b67fcbe4c8310, type: 2}
 --- !u!1 &4401092498812145826
 GameObject:
   m_ObjectHideFlags: 0
@@ -17014,8 +16810,7 @@ Transform:
   m_LocalPosition: {x: 0.09, y: 1, z: 1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5105891818390255342}
+  m_Children: []
   m_Father: {fileID: 5995253034379992168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5334164768568575846
@@ -21364,8 +21159,11 @@ GameObject:
   - component: {fileID: 4776089832414516250}
   - component: {fileID: 6861064157226733339}
   - component: {fileID: 4186329194728952357}
+  - component: {fileID: 3364089100139059584}
   - component: {fileID: 4989350217652862228}
   - component: {fileID: 2645424129194304365}
+  - component: {fileID: 5181628910276376256}
+  - component: {fileID: 666373032690480960}
   m_Layer: 3
   m_Name: PlayerTopDown
   m_TagString: Player
@@ -21405,7 +21203,7 @@ Animator:
   m_GameObject: {fileID: 6542080249666751425}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 831f7229e82863e4d80ada075e09eba6, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1e0a63636a6e749428aae7ea53aca395, type: 2}
+  m_Controller: {fileID: 9100000, guid: 49b9f238aa8a81f4ea853b43c2db7e7b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -21442,6 +21240,33 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!54 &3364089100139059584
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  serializedVersion: 5
+  m_Mass: 10
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!114 &4989350217652862228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21493,6 +21318,7 @@ MonoBehaviour:
     <IsAttacking>k__BackingField: 0
     <IsInSpecialMove>k__BackingField: 0
     <IsNextAttackQueued>k__BackingField: 0
+  _minionManagerPrefab: {fileID: 6214416510671130543, guid: 47d1ade16e8999c49a65b75df8ca0155, type: 3}
 --- !u!114 &2645424129194304365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21517,6 +21343,45 @@ MonoBehaviour:
   - {fileID: 4029216477085738423}
   - {fileID: 2297538764890615871}
   - {fileID: 1273902654876412661}
+--- !u!114 &5181628910276376256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d47d67a0459b2dc42a2b24b0f64e7f36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Damageable
+  _layerIgnoreOnDeath:
+    serializedVersion: 2
+    m_Bits: 3840
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &666373032690480960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnoreController
+  _layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &6545051189959688109
 GameObject:
   m_ObjectHideFlags: 0
@@ -24614,8 +24479,7 @@ Transform:
   m_LocalPosition: {x: -0.019999996, y: 1.04, z: 1.1099999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1990277364852455862}
+  m_Children: []
   m_Father: {fileID: 5995253034379992168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7370931881256373274

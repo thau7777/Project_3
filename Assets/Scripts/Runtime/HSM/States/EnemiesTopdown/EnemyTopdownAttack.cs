@@ -25,6 +25,10 @@ public class EnemyTopdownAttack : State
         {
             return ((EnemyTopdownRoot)Parent).Dead;
         }
+        if (ctx.IsStunned)
+        {
+            return ((EnemyTopdownRoot)Parent).Stunned;
+        }
         if (ctx.IsHurting)
         {
             return ((EnemyTopdownRoot)Parent).Hurt;

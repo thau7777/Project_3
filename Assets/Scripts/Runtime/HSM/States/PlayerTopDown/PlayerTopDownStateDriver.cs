@@ -145,7 +145,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region Input Handlers
     private void OnRightClick(bool value)
     {
-        UseSKill(0, value, SaveDirToAttack);
+        //UseSKill(0, value, SaveDirToAttack);
     }
     private void OnSpaceBar(bool value)
     {
@@ -165,7 +165,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         {
             _executor.UseSkill(skillIndex, _locomotionSet.characterClass, _context, onCastInstantly);
         }
-        else if (_context.CastingSkill != -1) // currently charging skill
+        else if (_context.CastingSkill != -1) // currently charging skill or aiming
         {
             _executor.CastSkill(_context);
             onCastInstantly?.Invoke();

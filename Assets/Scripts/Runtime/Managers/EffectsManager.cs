@@ -9,12 +9,14 @@ public class EffectsManager : MonoBehaviour
     {
         public Effect effect;
         public float remainingTime;
+        public int currentStacks;
         public GameObject particleInstance;
 
-        public ActiveEffect(Effect eff, float time)
+        public ActiveEffect(Effect eff, float time, int stacks)
         {
             effect = eff;
             remainingTime = time;
+            currentStacks = stacks;
         }
     }
 
@@ -38,36 +40,34 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    public void AddEffect(Effect effect)
+    public void AddEffect(EffectData effectData)
     {
         // Find if an effect with the same name already exists
-        ActiveEffect existing = activeEffectsList.Find(ae => ae.effect.name == effect.name);
+        ActiveEffect existing = activeEffectsList.Find(ae => ae.effect.name == effectData.effect.name);
 
         if (existing != null)
         {
-            existing.remainingTime = effect.duration;
-            return;
-            // Check if modifiers are the same
-            //if (existing.effect.HasSameModifiers(effect))
-            //{
-            //    // Same modifiers, just refresh duration
-            //    existing.remainingTime = effect.duration;
-            //    Debug.Log($"Refreshed {effect.effectName} duration on {gameObject.name}");
-            //    return;
-            //}
-            //else
-            //{
-            //    // Different modifiers, remove old effect and apply new one
-            //    Debug.Log($"Replacing {effect.effectName} with new modifiers on {gameObject.name}");
-            //    RemoveEffect(existing);
-            //}
+            if(existing.effect.isStackable)
+            {
+                existing.currentStacks++;
+                if(existing.currentStacks >= existing.effect.stackRequired)
+                {
+                    // Trigger the effect
+                    existing.effect.OnApply(gameObject);
+                    existing.currentStacks = 0; // Reset stacks after applying
+                }
+             
+                return;
+            }
+            existing.remainingTime = effectData.effect.duration;
         }
 
         // Add new effect
-        ActiveEffect newEffect = new ActiveEffect(effect, effect.duration);
+        ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.effect.duration,1);
         activeEffectsList.Add(newEffect);
 
-        effect.OnApply(gameObject);
+        if(!effectData.effect.isStackable)
+            effectData.effect.OnApply(gameObject);
 
     }
 

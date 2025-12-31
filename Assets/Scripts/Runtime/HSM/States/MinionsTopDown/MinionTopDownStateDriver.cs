@@ -42,7 +42,6 @@ public class MinionTopDownStateDriver : MonoBehaviour
         _root = new MinionTopDownRoot(null, _context);
         _machine = new StateMachineBuilder(_root).Build();
 
-        gameObject.GetOrAdd<Damageable>().Initialize(minionData.MaxHealth);
 
         _summonerTargetEventBinding = new EventBinding<SummonerTargetEvent>(_context.SetEnemyTransform);
         EventBus<SummonerTargetEvent>.Register(_summonerTargetEventBinding);

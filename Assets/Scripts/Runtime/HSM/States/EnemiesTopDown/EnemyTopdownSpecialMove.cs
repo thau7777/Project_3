@@ -103,6 +103,11 @@ public class EnemyTopdownSpecialMove : State
         {
             return ((EnemyTopdownRoot)Parent).Dead;
         }
+        if (ctx.IsStunned)
+        {
+            ctx.IsInSpecialMove = false;
+            return ((EnemyTopdownRoot)Parent).Stunned;
+        }
         if (_currentSpecialMoveState == SpecialMoveState.Finished)
         {
             ctx.IsInSpecialMove = false;

@@ -20,16 +20,22 @@ public class EnemyTopdownStateDriver : Flyweight
     #region References
     private Animator _animator;
     private CharacterController _characterController;
+
+    [SerializeField]
+    private OneShotVFXSettings _stunVfxSettings;
+    [SerializeField]
+    private Transform _stunVfxSpawnTransform;
     #endregion
 
     #region Variables
+    //public EnemyTopDownSettings.ElementalType elementType;
     [SerializeField]
-    EnemyTopdownType _enemyType = EnemyTopdownType.Normal;
+    EnemyTopdownKind _enemyKind = EnemyTopdownKind.Normal;
 
     [SerializeField, FoldoutGroup("Movements")]
     float _moveSpeed = 2f;
     [SerializeField, FoldoutGroup("Movements")]
-    [ShowIfEnumValue("_enemyType", EnemyTopdownType.Slime)]
+    [ShowIfEnumValue("_enemyType", EnemyTopdownKind.Slime)]
     float _movePauseDuration = 1f;
     [SerializeField, FoldoutGroup("Movements")]
     float _rotateSpeed = 10f;
@@ -40,6 +46,7 @@ public class EnemyTopdownStateDriver : Flyweight
     // Boss stuff
     [SerializeField]
     private bool _isBoss;
+    public bool IsBoss => _isBoss;
     [ShowIf("_isBoss")]
     [SerializeField]
     private List<EnemySpecialMoveData> _bossSkillList = new();
@@ -78,14 +85,13 @@ public class EnemyTopdownStateDriver : Flyweight
             .SetMovePauseDuration(_movePauseDuration)
             .SetRotateSpeed(_rotateSpeed)
             .SetAttackRange(_attackRange)
-            .SetEnemyType(_enemyType)
+            .SetEnemyType(_enemyKind)
             .SetIsBoss(_isBoss)
             .SetSpecialMoveList(_bossSkillList)
             .Build();
 
         _root = new EnemyTopdownRoot(null, _context);
         _machine = new StateMachineBuilder(_root).Build();
-        GetComponent<Damageable>().Initialize(100);
     }
     private void Update()
     {
@@ -104,6 +110,8 @@ public class EnemyTopdownStateDriver : Flyweight
         }
         else if (stateInfo.IsTag("Hurt"))
         {
+            if(_context.IsStunned)
+                _animator.CrossFade(_context.StunnedHash, 0.1f);
             _context.IsHurting = false;
         }
         else if (stateInfo.IsTag("Dead"))
@@ -111,22 +119,44 @@ public class EnemyTopdownStateDriver : Flyweight
             FlyweightFactory.ReturnToPool(this);
         }
     }
-    public void OnTakeDamage(GameObject sender,int currentHealth, Vector3 knockBackDirection, float knockBackForce)
+    public void OnTakeDamage(GameObject sender,float currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {
         if(_context.IsDead) return;
 
+        _context.KnockbackDirection = knockBackDirection;
+        _context.KnockbackForce = knockBackForce;
+
+        if (_context.IsStunned)
+        {
+            _animator.Play(_context.HurtHash);
+            return;
+        }
+            
         if (!_context.IsHurting)
             _context.IsHurting = true;
         else 
             _context.IsMoreHurt = true;
 
-        _context.KnockbackDirection = knockBackDirection;
-        _context.KnockbackForce = knockBackForce;
 
-        if(sender.layer == LayerMask.NameToLayer("MinionTopDown"))
-            _context.SetCurrentTarget(sender.transform);
-        else 
-            _context.SetCurrentTarget(_context.PlayerTransform);
+
+        //if(sender.layer == LayerMask.NameToLayer("MinionTopDown"))
+        //    _context.SetCurrentTarget(sender.transform);
+        //else 
+        //    _context.SetCurrentTarget(_context.PlayerTransform);
+    }
+    public void OnStunned(float duration)
+    {
+        // spawn stun VFX here
+        if (_stunVfxSettings)
+        {
+            OneShotVFX stunVfx = FlyweightFactory.Spawn(_stunVfxSettings) as OneShotVFX;
+            OneShotVFXSettings oneShotVFXSettings = stunVfx.settings as OneShotVFXSettings;
+            stunVfx.FlyweightInitialize(_stunVfxSpawnTransform.position);
+            stunVfx.InitializeVFX(oneShotVFXSettings.DefaultSize, duration);
+        }
+
+        _context.IsStunned = true;
+        _context.StunDuration = duration;
     }
     public void OnDeath()
     {

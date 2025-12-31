@@ -58,7 +58,7 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
-    public void SetNewEnemyInitialHealth(int newHealth)
+    public void SetNewEnemyInitialHealth(float newHealth)
     {
         foreach (var setting in _enemyTopDownSettings)
         {

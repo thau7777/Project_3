@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EffectApplier : MonoBehaviour
 {
-    [SerializeField] private List<Effect> _effectsToApply;
+    [SerializeField] private List<EffectData> _effectsToApply;
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class EffectApplier : MonoBehaviour
             hitBoxHandler.OnColliderHit.RemoveListener(ApplyEffect);
         }
     }
-    public void SetEffects(List<Effect> effectList)
+    public void SetEffects(List<EffectData> effectList)
     {
         _effectsToApply = effectList;
     }
@@ -38,7 +38,7 @@ public class EffectApplier : MonoBehaviour
             manager = target.AddComponent<EffectsManager>();
         }
 
-        foreach (Effect effect in _effectsToApply)
+        foreach (EffectData effect in _effectsToApply)
         {
             manager.AddEffect(effect);
         }

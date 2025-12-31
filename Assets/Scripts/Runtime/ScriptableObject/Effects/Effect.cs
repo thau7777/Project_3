@@ -10,6 +10,10 @@ public class Effect : ScriptableObject
     public bool isPermanent;
     public EffectType effectType;
 
+    public bool isStackable;
+    [ShowIf("isStackable")]
+    public int stackRequired = 3;
+
     [Header("Stat Modifiers (Percentage)")]
     [Tooltip("Percentage modifier (e.g., 50 = +50%, -20 = -20%)")]
     public float healthModifierPercent = 0;
@@ -23,8 +27,6 @@ public class Effect : ScriptableObject
 
     public virtual void OnApply(GameObject target)
     {
-        Debug.Log($"Applied {name} to {target.name}");
-
         // Spawn particle effect if exists
         if (vfxSettings != null)
         {
@@ -57,8 +59,6 @@ public class Effect : ScriptableObject
 
     public virtual void OnRemove(GameObject target)
     {
-        Debug.Log($"Removed {name} from {target.name}");
-
         GetVfxFlyweightOnTarget(target)?.ReturnToPool();
         GetVfxFlyweightOnTarget(target)?.transform.SetParent(GameObject.Find("VFXStorage").transform);
 
@@ -86,4 +86,10 @@ public enum EffectType
     Buff,
     Debuff,
     Neutral
+}
+
+public struct EffectData
+{
+    public Effect effect;
+    public int stacksToApply;
 }
