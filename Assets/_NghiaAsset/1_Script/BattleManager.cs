@@ -246,7 +246,7 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                StartCoroutine(LoadMapSceneDelayed("Map", 5f));
+                TB_Menu.instance.ShowVictoryMenu();
                 return;
             }
         }
@@ -282,7 +282,7 @@ namespace Turnbase
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
-                    StartCoroutine(LoadMapSceneDelayed("Map", 3f));
+                    TB_Menu.instance.ShowVictoryMenu();
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace Turnbase
                 {
                     Debug.Log($"[LOSE CONDITION] Trận đấu kết thúc! Đã đạt đến giới hạn {startRounds} vòng đấu.");
 
-                    StartCoroutine(LoadMapSceneDelayed("Map", 2f));
+                    TB_Menu.instance.ShowVictoryMenu();
 
                     activeCharacter = null;
                     isProcessingTurn = true;
@@ -844,13 +844,13 @@ namespace Turnbase
             }
         }
 
-        private IEnumerator LoadMapSceneDelayed(string sceneName, float delay)
-        {
-            yield return new WaitForSeconds(delay);
+        //private IEnumerator LoadMapSceneDelayed(string sceneName, float delay)
+        //{
+        //    yield return new WaitForSeconds(delay);
 
-            FlyweightFactory_TB.Instance.ClearAllPools();
+        //    FlyweightFactory_TB.Instance.ClearAllPools();
 
-            SceneManager.LoadScene(sceneName);
-        }
+        //    SceneManager.LoadScene(sceneName);
+        //}
     }
 }

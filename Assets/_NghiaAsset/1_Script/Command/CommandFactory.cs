@@ -35,6 +35,9 @@ namespace Turnbase
                 case SkillType.DamageGlobal:
                     return new DamageAllGlobalCommand(user, skill, battleManager);
 
+                case SkillType.LaserAttack: 
+                    return new LaserAttackCommand(user, target, skill, battleManager);
+
                 default:
                     Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
                     return null;

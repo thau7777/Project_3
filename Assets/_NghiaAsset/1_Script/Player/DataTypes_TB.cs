@@ -41,6 +41,7 @@ namespace Turnbase
         Dark,
         Frost,
         Holy,
+        Normal,
 
     }
 

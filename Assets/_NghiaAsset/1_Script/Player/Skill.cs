@@ -147,6 +147,7 @@ public enum SkillType
     Summon,
     RangedProjectile,
     DamageGlobal,
+    LaserAttack,
 }
 
 public enum ElementType
@@ -162,6 +163,7 @@ public enum ElementType
     Dark,
     Frost,
     Holy,
+    Normal,
 
 }
 

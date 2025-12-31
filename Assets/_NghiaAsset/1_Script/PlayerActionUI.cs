@@ -20,6 +20,7 @@ namespace Turnbase
         public Button parryButton;
         public Button confirmButton;
         public Button summomonButton;
+        public Button itemButton;
         public Button actionButton; 
         public Button cancelButton;
 
@@ -34,8 +35,13 @@ namespace Turnbase
         [TabGroup("Summon")] public SkillEntryUI summonEntryPrefab;
         [TabGroup("Summon")] public GameObject PlayerSummonPanel;
 
+        [TabGroup("Item")] public ItemEntryUI itemEntryPrefab;
+        [TabGroup("Item")] public GameObject PlayerItemPanel;
+
+
         private List<SkillEntryUI> instantiatedSkillEntries = new List<SkillEntryUI>();
         private List<SkillEntryUI> instantiatedSummonEntries = new List<SkillEntryUI>();
+        private List<ItemEntryUI> instantiatedItemEntries = new List<ItemEntryUI>();
 
         private bool isWaitingForConfirmation = false;
 
@@ -98,10 +104,11 @@ namespace Turnbase
             parryButton.onClick.AddListener(OnParryClicked);
             confirmButton.onClick.AddListener(OnConfirmClicked);
             summomonButton.onClick.AddListener(OnSummonClicked);
-
+            itemButton.onClick.AddListener(OnItemClicked);
 
             PlayerSkillPanel.gameObject.SetActive(false);
             PlayerSummonPanel.gameObject.SetActive(false);
+            PlayerItemPanel.gameObject.SetActive(false);
 
 
             Hide();
@@ -162,6 +169,8 @@ namespace Turnbase
             playerActionsPanel.SetActive(true);
             PlayerSkillPanel.SetActive(false);
             PlayerSummonPanel.SetActive(false);
+            PlayerItemPanel.SetActive(false);
+
             confirmButton.gameObject.SetActive(false);
 
             EventBus<OffUIAction>.Raise(new OffUIAction(panelName: "PlayerAction2"));
@@ -228,6 +237,7 @@ namespace Turnbase
             attackButton.interactable = false;
             skillButton.interactable = true;
             summomonButton.interactable = true;
+            itemButton.interactable = true;
 
 
             Debug.Log("OnAttackClicked được gọi.");
@@ -244,6 +254,8 @@ namespace Turnbase
 
             PlayerSkillPanel.SetActive(false);
             PlayerSummonPanel.SetActive(false);
+            PlayerItemPanel.SetActive(false);
+
         }
 
         private void OnSkillClicked()
@@ -253,6 +265,9 @@ namespace Turnbase
             attackButton.interactable = true;
             skillButton.interactable = false;
             summomonButton.interactable = true;
+            itemButton.interactable = true;
+
+            Debug.Log("sử dụng Kỹ năng!");
 
 
             switch (currentCharacter.characterClass)
@@ -290,6 +305,8 @@ namespace Turnbase
                 SetupSkillUI(currentCharacter.skills);
                 PlayerSkillPanel.SetActive(true);
             }
+            PlayerItemPanel.SetActive(false);
+
         }
 
 
@@ -318,6 +335,35 @@ namespace Turnbase
                 instantiatedSummonEntries.Add(newEntry);
             }
         }
+
+        private void SetUPItemUI(List<Tb_Item> items)
+        {
+            foreach (var entry in instantiatedItemEntries)
+            {
+                if (entry != null) Destroy(entry.gameObject);
+            }
+            instantiatedItemEntries.Clear();
+
+            if (itemEntryPrefab == null)
+            {
+                Debug.LogError("Item Entry Prefab chưa được gán trong Inspector!");
+                return;
+            }
+
+            foreach (Tb_Item itemToUse in items)
+            {
+                if (itemToUse.quantity > 0)
+                {
+                    ItemEntryUI newEntry = Instantiate(itemEntryPrefab, PlayerItemPanel.transform);
+
+                    newEntry.SetUp(itemToUse, OnItemButtonClicked);
+
+                    instantiatedItemEntries.Add(newEntry);
+                }
+            }
+        }        
+        
+
         private void OnSummonClicked()
         {
 
@@ -326,7 +372,9 @@ namespace Turnbase
 
             attackButton.interactable = true;
             skillButton.interactable = true;
-            summomonButton.interactable = false;    
+            summomonButton.interactable = false;
+            itemButton.interactable = true;
+
 
             Debug.Log("sử dụng Triệu hồi!");
             SetupSummonUI(currentCharacter.skills);
@@ -337,9 +385,48 @@ namespace Turnbase
 
             PlayerSummonPanel.SetActive(true);
             PlayerSkillPanel.SetActive(false);
+            PlayerItemPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
 
         }
+
+        private void OnItemButtonClicked(Tb_Item selectedItem)
+        {
+            if (currentCharacter == null) return;
+
+            isWaitingForConfirmation = true;
+
+            EventBus<OnUIAction>.Raise(new OnUIAction(panelName: "PlayerAction2"));
+
+            playerActionsPanel.SetActive(false);
+            PlayerItemPanel.SetActive(false);
+
+            currentCharacter.stateMachine.SwitchState(new ReadyStateItem(currentCharacter.stateMachine, selectedItem));
+
+            if (actionButton != null) actionButton.gameObject.SetActive(true);
+
+            ApplyButtonAction_Cancel();
+        }
+
+        private void OnItemClicked()
+        {
+            isWaitingForConfirmation = false;
+            attackButton.interactable = true;
+            skillButton.interactable = true;
+            summomonButton.interactable = true;
+            itemButton.interactable = false;
+
+            Debug.Log("sử dụng Item!");
+            SetUPItemUI(currentCharacter.item);
+
+            PlayerSummonPanel.SetActive(false);
+            PlayerSkillPanel.SetActive(false);
+            PlayerItemPanel.SetActive(true);
+            confirmButton.gameObject.SetActive(false);
+
+        }
+
+
 
         private void OnSkillButtonClicked(Skill selectedSkill)
         {
@@ -438,6 +525,7 @@ namespace Turnbase
             attackButton.interactable = true;
             skillButton.interactable = true;
             summomonButton.interactable = true;
+            itemButton.interactable = true;
 
             Debug.Log("OnConfirmClicked được gọi.");
 
@@ -474,15 +562,29 @@ namespace Turnbase
                 }
 
             }
+            else if (currentCharacter.stateMachine.currentState is ReadyStateItem itemState)
+            {
+                Tb_Item selectedItem = itemState.SelectedItem;
+
+                if (selectedItem != null)
+                {
+                    itemState.OnConfirm();
+                }
+                else
+                {
+                    Debug.LogWarning("Không tìm thấy vật phẩm trong State!");
+                    currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.waitingState);
+                }
+            }
             else if (currentCharacter.stateMachine.currentState is ReadyState)
             {
-                Debug.Log("Chuyển từ ReadyState sang AttackingState.");
                 currentCharacter.stateMachine.SwitchState(currentCharacter.stateMachine.attackingState);
             }
 
             PlayerSkillPanel.SetActive(false);
             PlayerSummonPanel.SetActive(false);
             playerActionsPanel.SetActive(false);
+            PlayerItemPanel.SetActive(false);
 
             selectedSkillToConfirm = null;
         }

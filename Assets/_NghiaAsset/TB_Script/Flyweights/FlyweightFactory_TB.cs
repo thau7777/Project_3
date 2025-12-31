@@ -71,7 +71,8 @@ namespace Turnbase
         Tb_CallOfThunder,
         TB_StonesHit,
         Tb_DefReduction,
-
+        Tb_Buff_P_Def,
+        Tb_Buff_M_Def,
 
 
 

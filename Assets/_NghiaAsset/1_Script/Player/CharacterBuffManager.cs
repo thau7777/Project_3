@@ -195,6 +195,7 @@ namespace Turnbase
             if (defenseBuffTurnsRemaining <= 0)
             {
                 originalBaseDefense = stats.physicalDefense;
+                defenseBuffAmount = amount;
                 stats.physicalDefense += amount;
             }
             else
@@ -297,6 +298,7 @@ namespace Turnbase
             if (magicalDefenseBuffTurnsRemaining <= 0)
             {
                 magicalOriginalBaseDefense = stats.magicDefense;
+                magicalDefenseBuffAmount = amount;
                 stats.magicDefense += amount;
             }
             else

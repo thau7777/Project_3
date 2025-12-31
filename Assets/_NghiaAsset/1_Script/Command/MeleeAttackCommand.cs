@@ -26,7 +26,7 @@ namespace Turnbase
         public override IEnumerator Execute()
         {
             initialPosition = user.initialPosition;
-            float attackDistance = 1.5f;
+            float attackDistance = 2f;
             float direction = Mathf.Sign(target.transform.position.x - user.transform.position.x);
             destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
 
