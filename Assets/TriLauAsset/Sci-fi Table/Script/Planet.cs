@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyRule
 {
@@ -17,6 +18,21 @@ namespace MyRule
         public bool isDetailShown;
 
         private const float SNAP_THRESHOLD = 0.0001f;
+
+        private bool canActive = false;
+        private EventBinding<ScifitableActiveEvent> eventBinding;
+
+        private void OnEnable()
+        {
+            eventBinding = new EventBinding<ScifitableActiveEvent>(ActivePlanet);
+            EventBus<ScifitableActiveEvent>.Register(eventBinding);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ScifitableActiveEvent>.Deregister(eventBinding);
+            eventBinding = null;
+        }
 
         private void Start()
         {
@@ -57,12 +73,30 @@ namespace MyRule
         {
             highlightRing.SetActive(false);
             isDetailShown = true;
+            canActive = true;
         }
 
         public void HideDetailPlanet()
         {
             highlightRing.SetActive(true);
             isDetailShown = false;
+            canActive = false;
+        }
+
+        private void ActivePlanet(ScifitableActiveEvent obj)
+        {
+            if (!canActive) return;
+
+            switch (planetSO.planetType)
+            {
+                case PlanetType.GreenLand:
+                    SceneManager.LoadScene("BoardScene");
+                    break;
+                case PlanetType.Desert:
+                    break;
+                case PlanetType.IceLand:
+                    break;
+            }
         }
     }
 }

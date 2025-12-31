@@ -935,6 +935,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Actve"",
+                    ""type"": ""Button"",
+                    ""id"": ""abcc113e-50ff-45fb-a266-d85edf4bb60f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1014,6 +1023,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Esc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""829ac781-c387-40cd-be0b-5e50462ec274"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1051,6 +1071,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_SpaceStation_Move = m_SpaceStation.FindAction("Move", throwIfNotFound: true);
         m_SpaceStation_Interact = m_SpaceStation.FindAction("Interact", throwIfNotFound: true);
         m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
+        m_SpaceStation_Actve = m_SpaceStation.FindAction("Actve", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1804,6 +1825,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_SpaceStation_Move;
     private readonly InputAction m_SpaceStation_Interact;
     private readonly InputAction m_SpaceStation_Esc;
+    private readonly InputAction m_SpaceStation_Actve;
     /// <summary>
     /// Provides access to input actions defined in input action map "SpaceStation".
     /// </summary>
@@ -1827,6 +1849,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "SpaceStation/Esc".
         /// </summary>
         public InputAction @Esc => m_Wrapper.m_SpaceStation_Esc;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Actve".
+        /// </summary>
+        public InputAction @Actve => m_Wrapper.m_SpaceStation_Actve;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1862,6 +1888,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Esc.started += instance.OnEsc;
             @Esc.performed += instance.OnEsc;
             @Esc.canceled += instance.OnEsc;
+            @Actve.started += instance.OnActve;
+            @Actve.performed += instance.OnActve;
+            @Actve.canceled += instance.OnActve;
         }
 
         /// <summary>
@@ -1882,6 +1911,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Esc.started -= instance.OnEsc;
             @Esc.performed -= instance.OnEsc;
             @Esc.canceled -= instance.OnEsc;
+            @Actve.started -= instance.OnActve;
+            @Actve.performed -= instance.OnActve;
+            @Actve.canceled -= instance.OnActve;
         }
 
         /// <summary>
@@ -2089,5 +2121,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEsc(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Actve" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnActve(InputAction.CallbackContext context);
     }
 }

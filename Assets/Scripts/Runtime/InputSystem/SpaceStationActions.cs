@@ -7,6 +7,13 @@ public class SpaceStationActions : InputActions.ISpaceStationActions
     public Action onEsc;
     public Action onInteract;
     public Action<Vector2> onMove;
+    public Action onActve;
+
+    public void OnActve(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onActve?.Invoke();
+    }
 
     public void OnEsc(InputAction.CallbackContext context)
     {

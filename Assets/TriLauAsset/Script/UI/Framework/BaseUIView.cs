@@ -10,7 +10,8 @@ namespace MyRule.UI
         Credits,
         PauseMenu,
         Inventory,
-        CharacterStats
+        CharacterStats,
+        None
     }
 
     public abstract class BaseUIView : MonoBehaviour, IBaseUIView

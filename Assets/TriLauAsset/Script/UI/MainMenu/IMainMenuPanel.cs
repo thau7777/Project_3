@@ -5,10 +5,6 @@ namespace MyRule.UI
 {
     public interface IMainMenuPanel
     {
-        public ButtonView CurrentButton { get; set; }
-
-        void ShowMenuButtons();
-
-        void HideAnyButton();
+        public PanelType Type { get; set; }
     }
 }

@@ -20,4 +20,8 @@ namespace MyRule
     public struct ScifitableEscEvent : IEvent
     {
     }
+
+    public struct ScifitableActiveEvent : IEvent
+    {
+    }
 }

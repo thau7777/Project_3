@@ -9,4 +9,14 @@ namespace MyRule.UI
             Type = type;
         }
     }
+
+    public struct SwitchCamEvent : IEvent
+    {
+        public readonly int Cam;
+
+        public SwitchCamEvent(int cam)
+        {
+            Cam = cam;
+        }
+    }
 }
