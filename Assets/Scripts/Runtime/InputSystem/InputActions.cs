@@ -1036,6 +1036,34 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DiceRoll"",
+            ""id"": ""adc8a033-596a-4b42-aae7-9f1a535bcd50"",
+            ""actions"": [
+                {
+                    ""name"": ""TabMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf90226f-3bce-4c5b-84a6-ebab7e6bcd91"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e20ab447-43c0-472b-8698-496ac7b7273b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TabMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -1072,6 +1100,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_SpaceStation_Interact = m_SpaceStation.FindAction("Interact", throwIfNotFound: true);
         m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
         m_SpaceStation_Actve = m_SpaceStation.FindAction("Actve", throwIfNotFound: true);
+        // DiceRoll
+        m_DiceRoll = asset.FindActionMap("DiceRoll", throwIfNotFound: true);
+        m_DiceRoll_TabMenu = m_DiceRoll.FindAction("TabMenu", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1083,6 +1114,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PopUpGame.enabled, "This will cause a leak and performance issues, InputActions.PopUpGame.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_SpaceStation.enabled, "This will cause a leak and performance issues, InputActions.SpaceStation.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_DiceRoll.enabled, "This will cause a leak and performance issues, InputActions.DiceRoll.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1947,6 +1979,102 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="SpaceStationActions" /> instance referencing this action map.
     /// </summary>
     public SpaceStationActions @SpaceStation => new SpaceStationActions(this);
+
+    // DiceRoll
+    private readonly InputActionMap m_DiceRoll;
+    private List<IDiceRollActions> m_DiceRollActionsCallbackInterfaces = new List<IDiceRollActions>();
+    private readonly InputAction m_DiceRoll_TabMenu;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "DiceRoll".
+    /// </summary>
+    public struct DiceRollActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public DiceRollActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/TabMenu".
+        /// </summary>
+        public InputAction @TabMenu => m_Wrapper.m_DiceRoll_TabMenu;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_DiceRoll; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="DiceRollActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(DiceRollActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="DiceRollActions" />
+        public void AddCallbacks(IDiceRollActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DiceRollActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DiceRollActionsCallbackInterfaces.Add(instance);
+            @TabMenu.started += instance.OnTabMenu;
+            @TabMenu.performed += instance.OnTabMenu;
+            @TabMenu.canceled += instance.OnTabMenu;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="DiceRollActions" />
+        private void UnregisterCallbacks(IDiceRollActions instance)
+        {
+            @TabMenu.started -= instance.OnTabMenu;
+            @TabMenu.performed -= instance.OnTabMenu;
+            @TabMenu.canceled -= instance.OnTabMenu;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="DiceRollActions.UnregisterCallbacks(IDiceRollActions)" />.
+        /// </summary>
+        /// <seealso cref="DiceRollActions.UnregisterCallbacks(IDiceRollActions)" />
+        public void RemoveCallbacks(IDiceRollActions instance)
+        {
+            if (m_Wrapper.m_DiceRollActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="DiceRollActions.AddCallbacks(IDiceRollActions)" />
+        /// <seealso cref="DiceRollActions.RemoveCallbacks(IDiceRollActions)" />
+        /// <seealso cref="DiceRollActions.UnregisterCallbacks(IDiceRollActions)" />
+        public void SetCallbacks(IDiceRollActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DiceRollActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DiceRollActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="DiceRollActions" /> instance referencing this action map.
+    /// </summary>
+    public DiceRollActions @DiceRoll => new DiceRollActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
     /// </summary>
@@ -2128,5 +2256,20 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnActve(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "DiceRoll" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="DiceRollActions.AddCallbacks(IDiceRollActions)" />
+    /// <seealso cref="DiceRollActions.RemoveCallbacks(IDiceRollActions)" />
+    public interface IDiceRollActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "TabMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTabMenu(InputAction.CallbackContext context);
     }
 }
