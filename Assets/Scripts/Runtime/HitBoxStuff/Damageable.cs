@@ -1,48 +1,115 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Damageable : MonoBehaviour
 {
-    CharacterController _characterController;
 
     [SerializeField]
     private LayerMask _layerIgnoreOnDeath;
     private CharacterControllerLayerIgnoreController _ccLayerIgnoreController;
 
-    public int MaxHealth { get; private set; }
-    public int CurrentHealth { get; private set; }
+    public float MaxHealth { get; private set; }
+    public float CurrentHealth { get; private set; }
+
+    public bool hasShieldBreakingMechanic = false;
+    public float MaxShieldHealth { get; private set; }
+    public float ShieldHealth { get; private set; }
     public float InvincibleDuration { get; set; } = 0.1f;
     private float _invincibleElapsedTime = 0;
 
-    public UnityEvent<GameObject,int, Vector3, float> OnTakeDamage;
-    public UnityEvent<int> OnHeal;
+    private Coroutine _stunCoroutine;
+
+    public UnityEvent<GameObject,float, Vector3, float> OnTakeDamage;
     public UnityEvent OnDeath;
+    public UnityEvent<float> OnShieldBreak;
+
+    public StatusBarsUIController statusBarsUIController;
+    public GameObject HealthBarUI;
+    public GameObject ShieldBarUI;
 
     private void Awake()
     {
-        _characterController = GetComponent<CharacterController>();
         _ccLayerIgnoreController = gameObject.GetOrAdd<CharacterControllerLayerIgnoreController>();
     }
-    public void Initialize(int maxHealth)
+    public void Initialize(float maxHealth)
     {
         MaxHealth = maxHealth;
         CurrentHealth = maxHealth;
+        if(hasShieldBreakingMechanic)
+        {
+            MaxShieldHealth = MaxHealth / 2f;
+            ShieldHealth = MaxShieldHealth;
+        }
+        statusBarsUIController?.InitializeValue(CurrentHealth,MaxHealth,ShieldHealth, MaxShieldHealth);
+        if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
+        {
+            if(!enemy.IsBoss)
+            {
+                HealthBarUI?.SetActive(true);
+                if (hasShieldBreakingMechanic && ShieldBarUI != null)
+                {
+                    ShieldBarUI.SetActive(true);
+                }
+            }
+        }
+
     }
     private void OnEnable()
     {
         _invincibleElapsedTime = 0;
+    }
+    private void OnDisable()
+    {
+        if(_stunCoroutine != null)
+        {
+            StopCoroutine(_stunCoroutine);
+            _stunCoroutine = null;
+        }
+
+        if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
+        {
+            if (!enemy.IsBoss)
+            {
+                if (HealthBarUI != null)
+                {
+                    HealthBarUI.SetActive(false);
+                }
+                if (hasShieldBreakingMechanic && ShieldBarUI != null)
+                {
+                    ShieldBarUI.SetActive(false);
+                }
+            }
+        }
     }
     private void Update()
     {
         if(_invincibleElapsedTime > 0)
             _invincibleElapsedTime -= Time.deltaTime;
     }
-    public void TakeDamage(GameObject sender,int damage, Vector3 knockBackDirection, float knockBackForce)
+    public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0) return;
+        float finalDamage = damage;
 
-        CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
-
+        if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
+        {
+            EnemyTopDownSettings enemySettings = enemy.settings as EnemyTopDownSettings;
+            finalDamage = ElementalManager.Instance.CalculateDamage(damage, attackType, enemySettings.elementalType);
+        }
+        CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
+        statusBarsUIController?.UpdateHealth(CurrentHealth);
+        if (hasShieldBreakingMechanic && ShieldHealth > 0)
+        {
+            ShieldHealth = Mathf.Max(ShieldHealth - finalDamage, 0);
+            statusBarsUIController?.UpdateShield(ShieldHealth); 
+            if (ShieldHealth == 0)
+            {
+                OnShieldBreak?.Invoke(3);
+                StartStunCoroutine(3);
+            }
+        }
         if (CurrentHealth == 0)
         {
             ApplyIgnoreCollisionOnDeath(true);
@@ -50,13 +117,31 @@ public class Damageable : MonoBehaviour
             return;
         }
 
+        OnTakeDamage?.Invoke(sender, CurrentHealth, knockBackDirection, knockBackForce);
         _invincibleElapsedTime = InvincibleDuration;
-        OnTakeDamage?.Invoke(sender,CurrentHealth, knockBackDirection, knockBackForce);
+
         
     }
-    public void Heal(int amount)
+    private void StartStunCoroutine(float duration)
+    {
+        if (_stunCoroutine != null)
+        {
+            StopCoroutine(_stunCoroutine);
+        }
+        _stunCoroutine = StartCoroutine(StunRoutine(duration));
+    }
+
+    private IEnumerator StunRoutine(float duration)
+    {
+        yield return Helpers.GetWaitForSeconds(duration);
+        ShieldHealth = MaxShieldHealth;
+        statusBarsUIController?.UpdateShield(ShieldHealth);
+    }
+
+    public void Heal(float amount)
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
+        statusBarsUIController?.UpdateHealth(CurrentHealth);
     }
 
     public void ApplyIgnoreCollisionOnDeath(bool ignore)

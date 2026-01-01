@@ -105,6 +105,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: af27d632f75721640aa8499b2c88b4b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SingleMaterialWoodTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Smoothness:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -197,12 +201,12 @@ Material:
     - _Hue_Variation: 0.03
     - _IndirectLightInt: 2.6
     - _Keyword0: 1
-    - _LOD: 0
+    - _LOD: 1
     - _Max: 0
-    - _Max_Distance_Fade: 3
+    - _Max_Distance_Fade: 12
     - _Metallic: 0
     - _Min: 0
-    - _Min_Distance_Fade: 2
+    - _Min_Distance_Fade: 10
     - _Mode: 0
     - _ObjectDistanceForFade: 0
     - _OcclusionStrength: 1
@@ -221,6 +225,7 @@ Material:
     - _SSSMaskIntensity: 0
     - _SSSRange: 0.05
     - _SSS_Brightness: 1
+    - _SSS_Offset: 0
     - _SSS_Size: 0
     - _Scale1: -0.54
     - _SecondColorFade: 0.5
@@ -228,6 +233,7 @@ Material:
     - _SecondColorOverlayType: 0
     - _ShadowCutoffOffset: -30
     - _Shininess: 0.1
+    - _SingleMaterialLOD: 0
     - _Smoot: 1
     - _Smoothness: 0.52
     - _SmoothnessInt: 0
@@ -283,6 +289,7 @@ Material:
     - _Color: {r: 0.6445672, g: 0.85800004, b: 0.22623882, a: 1}
     - _Color0: {r: 0, g: 0.5110004, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Gradient_Color: {r: 0, g: 0, b: 0, a: 0}
     - _MainColor: {r: 0.6784314, g: 0.75294125, b: 0, a: 0}
     - _Main_Color: {r: 0, g: 0, b: 0, a: 1}
     - _Min_MAx: {r: -1, g: 1, b: 0, a: 0}

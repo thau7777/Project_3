@@ -23,14 +23,19 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     public float rockSlopeThreshold = 0.5f;
     public float textureNoiseScale = 15f;
 
-    [Header("Trees")]
+    [Header("Trees (Instantiated GameObjects)")]
     public GameObject[] treePrefabs;
-    [Range(0, 1000)]
-    public int treeCount = 100;
+    [Range(0, 100)]
+    public int treeCount = 10;
     [Range(0f, 1f)]
     public float treeHeightMin = 0.2f;
     [Range(0f, 1f)]
     public float treeHeightMax = 0.8f;
+    [Range(0.5f, 2f)]
+    public float treeMinScale = 0.8f;
+    [Range(0.5f, 2f)]
+    public float treeMaxScale = 1.2f;
+    public Transform treeParent;
 
     [Header("Grass (Instantiated GameObjects)")]
     public GameObject[] grassPrefabs;
@@ -48,19 +53,19 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     public float grassDensity = 0.7f;
     public Transform grassParent;
 
-    [Header("Obstacles/Decorations (Rocks, Bushes, etc.)")]
-    public GameObject[] obstaclePrefabs;
+    [Header("Decorations (Rocks, Bushes, etc.)")]
+    public GameObject[] decorationPrefabs;
     [Range(0, 2000)]
-    public int obstacleCount = 500;
+    public int decorationCount = 500;
     [Range(0f, 1f)]
-    public float obstacleHeightMin = 0.1f;
+    public float decorationHeightMin = 0.1f;
     [Range(0f, 1f)]
-    public float obstacleHeightMax = 0.7f;
+    public float decorationHeightMax = 0.7f;
     [Range(0.1f, 10f)]
-    public float obstacleMinScale = 0.5f;
+    public float decorationMinScale = 0.5f;
     [Range(0.1f, 10f)]
-    public float obstacleMaxScale = 2.0f;
-    public Transform obstacleParent;
+    public float decorationMaxScale = 2.0f;
+    public Transform decorationParent;
 
     private TerrainData terrainData;
     private int heightmapResolution;
@@ -78,15 +83,7 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         // CLEANUP FIRST - Remove all old generated content
         CleanupAllGenerated();
 
-        // Create a temporary copy of the TerrainData
-        terrain.terrainData = Instantiate(terrain.terrainData);
-
-        // Update the Collider
-        if (terrain.GetComponent<TerrainCollider>())
-        {
-            terrain.GetComponent<TerrainCollider>().terrainData = terrain.terrainData;
-        }
-
+        // Use the existing terrain data directly - no need to instantiate
         terrainData = terrain.terrainData;
         if (terrainData == null)
         {
@@ -102,6 +99,8 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         Debug.Log($"Alphamap Resolution: {alphamapResolution}");
         Debug.Log($"Detail Resolution: {detailResolution}");
 
+        // Use random seed each time for variety
+        seed = Random.Range(0, 100000);
         rng = new System.Random(seed);
 
         GenerateTerrain();
@@ -111,6 +110,17 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     void CleanupAllGenerated()
     {
         Debug.Log("Cleaning up old generated content...");
+
+        // Clean up trees
+        if (treeParent != null)
+        {
+            int treeChildCount = treeParent.childCount;
+            while (treeParent.childCount > 0)
+            {
+                DestroyImmediate(treeParent.GetChild(0).gameObject);
+            }
+            Debug.Log($"Removed {treeChildCount} old trees");
+        }
 
         // Clean up grass
         if (grassParent != null)
@@ -123,24 +133,15 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             Debug.Log($"Removed {grassChildCount} old grass objects");
         }
 
-        // Clean up obstacles
-        if (obstacleParent != null)
+        // Clean up decorations
+        if (decorationParent != null)
         {
-            int obstacleChildCount = obstacleParent.childCount;
-            while (obstacleParent.childCount > 0)
+            int decorationChildCount = decorationParent.childCount;
+            while (decorationParent.childCount > 0)
             {
-                DestroyImmediate(obstacleParent.GetChild(0).gameObject);
+                DestroyImmediate(decorationParent.GetChild(0).gameObject);
             }
-            Debug.Log($"Removed {obstacleChildCount} old obstacle objects");
-        }
-
-        // Clean up trees from terrain
-        if (terrain != null && terrain.terrainData != null)
-        {
-            int oldTreeCount = terrain.terrainData.treeInstances.Length;
-            terrain.terrainData.treeInstances = new TreeInstance[0];
-            if (oldTreeCount > 0)
-                Debug.Log($"Removed {oldTreeCount} old trees");
+            Debug.Log($"Removed {decorationChildCount} old decoration objects");
         }
 
         // Force garbage collection (optional but helpful)
@@ -160,17 +161,17 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         PaintTextures();
         Debug.Log("Textures complete!");
 
-        Debug.Log("Step 3: Placing trees...");
-        PlaceTrees();
+        Debug.Log("Step 3: Spawning trees...");
+        SpawnTrees();
         Debug.Log("Trees complete!");
 
         Debug.Log("Step 4: Spawning grass...");
         SpawnGrass();
         Debug.Log("Grass complete!");
 
-        Debug.Log("Step 5: Spawning obstacles/decorations...");
-        SpawnObstacles();
-        Debug.Log("Obstacles complete!");
+        Debug.Log("Step 5: Spawning decorations...");
+        SpawnDecorations();
+        Debug.Log("Decorations complete!");
 
         Debug.Log("=== Terrain Generation Complete ===");
     }
@@ -275,90 +276,54 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         terrainData.SetAlphamaps(0, 0, alphamap);
     }
 
-    private void SetupTreeColliders(GameObject prefab)
+    void SpawnTrees()
     {
-        MeshCollider existingMeshCollider = prefab.GetComponent<MeshCollider>();
-        if (existingMeshCollider != null)
+        if (treePrefabs == null || treePrefabs.Length == 0)
         {
-            DestroyImmediate(existingMeshCollider, true);
+            Debug.LogWarning("No tree prefabs assigned!");
+            return;
         }
 
-        CapsuleCollider capsule = prefab.GetComponent<CapsuleCollider>();
-        if (capsule == null)
-        {
-            capsule = prefab.AddComponent<CapsuleCollider>();
-        }
+        if (treeParent == null) treeParent = new GameObject("Trees").transform;
 
-        MeshRenderer meshRenderer = prefab.GetComponentInChildren<MeshRenderer>();
-        if (meshRenderer != null)
-        {
-            Bounds bounds = meshRenderer.bounds;
-            capsule.height = bounds.size.y;
-            capsule.radius = (bounds.size.x + bounds.size.z) / 4f * 0.15f;
-            capsule.center = new Vector3(0, capsule.height / 2f, 0);
-        }
-    }
-
-    void PlaceTrees()
-    {
-        if (treePrefabs == null || treePrefabs.Length == 0) return;
-
-        terrainData.treeInstances = new TreeInstance[0];
-        TreePrototype[] treePrototypes = new TreePrototype[treePrefabs.Length];
-
-        for (int i = 0; i < treePrefabs.Length; i++)
-        {
-            if (treePrefabs[i] != null)
-            {
-                SetupTreeColliders(treePrefabs[i]);
-                treePrototypes[i] = new TreePrototype { prefab = treePrefabs[i] };
-            }
-        }
-
-        terrainData.treePrototypes = treePrototypes;
-
-        TreeInstance[] trees = new TreeInstance[treeCount];
-        int treeIndex = 0;
+        int spawnedCount = 0;
 
         for (int i = 0; i < treeCount; i++)
         {
             float x = (float)rng.NextDouble();
             float z = (float)rng.NextDouble();
 
-            float rawHeight = terrainData.GetInterpolatedHeight(x, z) / terrainData.size.y;
-            float normalizedHeight = Mathf.Clamp01(rawHeight / heightScale);
+            float worldX = x * terrainData.size.x + terrain.transform.position.x;
+            float worldZ = z * terrainData.size.z + terrain.transform.position.z;
 
-            float[,,] alphamap = terrainData.GetAlphamaps(Mathf.FloorToInt(x * (alphamapResolution - 1)), Mathf.FloorToInt(z * (alphamapResolution - 1)), 1, 1);
+            float heightSample = terrain.SampleHeight(new Vector3(worldX, 0, worldZ));
+            float worldY = heightSample + terrain.transform.position.y;
+
+            float normalizedHeight = Mathf.Clamp01((heightSample / terrainData.size.y) / heightScale);
+
+            int alphaX = Mathf.FloorToInt(x * (alphamapResolution - 1));
+            int alphaY = Mathf.FloorToInt(z * (alphamapResolution - 1));
+            float[,,] alphamap = terrainData.GetAlphamaps(alphaX, alphaY, 1, 1);
             float grassWeight = alphamap[0, 0, 0];
 
             if (normalizedHeight >= treeHeightMin && normalizedHeight <= treeHeightMax && grassWeight > 0.5f)
             {
-                TreeInstance tree = new TreeInstance();
-                tree.position = new Vector3(x, rawHeight, z);
-                tree.prototypeIndex = rng.Next(0, treePrefabs.Length);
-                tree.widthScale = 0.8f + (float)rng.NextDouble() * 0.4f;
-                tree.heightScale = 0.8f + (float)rng.NextDouble() * 0.4f;
-                tree.color = Color.white;
-                tree.lightmapColor = Color.white;
+                Vector3 position = new Vector3(worldX, worldY, worldZ);
 
-                trees[treeIndex] = tree;
-                treeIndex++;
+                GameObject treePrefab = treePrefabs[rng.Next(0, treePrefabs.Length)];
+
+                Quaternion rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360f, 0);
+
+                float randomScale = treeMinScale + (float)rng.NextDouble() * (treeMaxScale - treeMinScale);
+
+                GameObject tree = Instantiate(treePrefab, position, rotation, treeParent);
+                tree.transform.localScale = Vector3.one * randomScale;
+
+                spawnedCount++;
             }
         }
 
-        if (treeIndex > 0)
-        {
-            System.Array.Resize(ref trees, treeIndex);
-            terrainData.treeInstances = trees;
-        }
-        terrainData.RefreshPrototypes();
-
-        TerrainCollider tc = terrain.GetComponent<TerrainCollider>();
-        if (tc != null)
-        {
-            tc.enabled = false;
-            tc.enabled = true;
-        }
+        Debug.Log($"Spawned {spawnedCount} trees");
     }
 
     void SpawnGrass()
@@ -416,15 +381,15 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         Debug.Log($"Spawned {spawnedCount} grass objects");
     }
 
-    void SpawnObstacles()
+    void SpawnDecorations()
     {
-        if (obstaclePrefabs == null || obstaclePrefabs.Length == 0) return;
+        if (decorationPrefabs == null || decorationPrefabs.Length == 0) return;
 
-        if (obstacleParent == null) obstacleParent = new GameObject("Obstacles").transform;
+        if (decorationParent == null) decorationParent = new GameObject("Decorations").transform;
 
         int spawnedCount = 0;
 
-        for (int i = 0; i < obstacleCount; i++)
+        for (int i = 0; i < decorationCount; i++)
         {
             float x = (float)rng.NextDouble();
             float z = (float)rng.NextDouble();
@@ -440,23 +405,23 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             float[,,] alphamap = terrainData.GetAlphamaps(Mathf.FloorToInt(x * (alphamapResolution - 1)), Mathf.FloorToInt(z * (alphamapResolution - 1)), 1, 1);
             float grassWeight = alphamap[0, 0, 0];
 
-            if (normalizedHeight >= obstacleHeightMin && normalizedHeight <= obstacleHeightMax && grassWeight > 0.5f)
+            if (normalizedHeight >= decorationHeightMin && normalizedHeight <= decorationHeightMax && grassWeight > 0.5f)
             {
                 Vector3 position = new Vector3(worldX, worldY, worldZ);
 
-                GameObject obstaclePrefab = obstaclePrefabs[rng.Next(0, obstaclePrefabs.Length)];
+                GameObject decorationPrefab = decorationPrefabs[rng.Next(0, decorationPrefabs.Length)];
 
                 Quaternion rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360f, 0);
 
-                float randomScale = obstacleMinScale + (float)rng.NextDouble() * (obstacleMaxScale - obstacleMinScale);
+                float randomScale = decorationMinScale + (float)rng.NextDouble() * (decorationMaxScale - decorationMinScale);
 
-                GameObject obstacle = Instantiate(obstaclePrefab, position, rotation, obstacleParent);
-                obstacle.transform.localScale = Vector3.one * randomScale;
+                GameObject decoration = Instantiate(decorationPrefab, position, rotation, decorationParent);
+                decoration.transform.localScale = Vector3.one * randomScale;
 
                 spawnedCount++;
             }
         }
-        Debug.Log($"Spawned {spawnedCount} obstacles");
+        Debug.Log($"Spawned {spawnedCount} decorations");
     }
 
     [ContextMenu("Regenerate Terrain")]
@@ -480,7 +445,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     // Clean up when script is disabled/destroyed
     void OnDestroy()
     {
-        Debug.Log("Terrain Generator destroyed - performing final cleanup");
-        // Note: We don't destroy the parent objects here as they might be needed
+        Debug.Log("Terrain Generator destroyed - cleanup complete");
     }
 }

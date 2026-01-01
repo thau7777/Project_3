@@ -6,8 +6,8 @@ public class DamageDealer : MonoBehaviour
 
     // get the damage from the settings if we have it and put it here, if we dont have the settings setup then use the default
     [SerializeField]
-    private int _damage = 40;
-    public int Damage
+    private float _damage = 40;
+    public float Damage
     {
         get { return _damage; }
         set { _damage = value; }
@@ -24,6 +24,7 @@ public class DamageDealer : MonoBehaviour
     [field: SerializeField]
     public OneShotVFXSettings HitImpactEffect { get; private set; }
 
+    public ElementalType ElementalType { get; set; }
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class DamageDealer : MonoBehaviour
         {
             if (damageable.CurrentHealth == 0) return;
             Vector3 hitDirection = target.transform.position - _origin.position;
-            damageable.TakeDamage(sender,_damage, hitDirection.normalized, _knockbackForce); // Example damage value
+            damageable.TakeDamage(sender,_damage, hitDirection.normalized, _knockbackForce, ElementalType); // Example damage value
 
             if (HitImpactEffect)
             {

@@ -4,10 +4,10 @@ using UnityEngine;
 public class EnemyTopDownSettings : FlyweightSettings
 {
     [SerializeField] private float _spawnRadius = 10f;
-    [SerializeField] private int _initialHealth = 100;
+    [SerializeField] private float _initialHealth = 100;
+    public ElementalType elementalType = ElementalType.Normal;
     public float spawnAnimationTime = 0.5f;
     private Transform _player;
-
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);
@@ -16,6 +16,7 @@ public class EnemyTopDownSettings : FlyweightSettings
         var flyweight = go.GetComponent<EnemyTopdownStateDriver>();
         flyweight.settings = this;
 
+        go.GetComponent<Damageable>().hasShieldBreakingMechanic = true;
         return flyweight;
     }
     public void SetupSpawnSettings(Transform player, float spawnRadius)
@@ -23,9 +24,10 @@ public class EnemyTopDownSettings : FlyweightSettings
         _player = player;
         _spawnRadius = spawnRadius;
     }
-    public void SetInitialHealthOnSpawn(int health)
+    public void SetInitialHealthOnSpawn(float health)
     {
         _initialHealth = Mathf.Max(1, health);
+
     }
     private Vector3 PickRandomLocationAroundPlayer()
     {
@@ -51,7 +53,8 @@ public class EnemyTopDownSettings : FlyweightSettings
     }
     public override void OnGet(Flyweight f)
     {
-        f.GetComponent<Damageable>().Initialize(_initialHealth);
+        Damageable enemyDamageable = f.GetComponent<Damageable>();
+        enemyDamageable.Initialize(_initialHealth);
         f.transform.position = PickRandomLocationAroundPlayer();
         base.OnGet(f);
         f.GetComponent<EnemyTopdownStateDriver>().StartSpawnAnim();

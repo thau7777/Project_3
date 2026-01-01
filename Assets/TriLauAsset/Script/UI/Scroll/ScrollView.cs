@@ -31,7 +31,7 @@ namespace MyRule.UI
 
         private void Start()
         {
-           // EventBus<SelectButtonEvent>.Raise(new SelectButtonEvent(buttons[0]));
+           //EventBus<SelectButtonEvent>.Raise(new SelectButtonEvent(buttons[0]));
         }
 
         public void ShowArrowUp() => arrowUp.SetActive(true);

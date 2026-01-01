@@ -128,7 +128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmallEnemyTopdownStateDriver
   settings: {fileID: 0}
-  _enemyType: 0
+  _stunVfxSettings: {fileID: 0}
+  _stunVfxSpawnTransform: {fileID: 0}
+  _enemyKind: 0
   _moveSpeed: 5
   _movePauseDuration: 2
   _rotateSpeed: 10
@@ -163,10 +165,8 @@ MonoBehaviour:
   _layerIgnoreOnDeath:
     serializedVersion: 2
     m_Bits: 3848
+  hasShieldBreakingMechanic: 0
   OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHeal:
     m_PersistentCalls:
       m_Calls: []
   OnDeath:
@@ -184,6 +184,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnShieldBreak:
+    m_PersistentCalls:
+      m_Calls: []
+  statusBarsUIController: {fileID: 0}
+  HealthBarUI: {fileID: 0}
+  ShieldBarUI: {fileID: 0}
 --- !u!114 &2801379407512645411
 MonoBehaviour:
   m_ObjectHideFlags: 0

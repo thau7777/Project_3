@@ -28,6 +28,10 @@ public class EnemyTopdownIdle : State
         {
             return ((EnemyTopdownRoot)Parent).Dead;
         }
+        if (ctx.IsStunned)
+        {
+            return ((EnemyTopdownRoot)Parent).Stunned;
+        }
         if (ctx.IsHurting)
         {
             return ((EnemyTopdownRoot)Parent).Hurt;
@@ -44,7 +48,7 @@ public class EnemyTopdownIdle : State
         }
         else
         {
-            if(ctx.EnemyType != EnemyTopdownType.Slime)
+            if(ctx.EnemyType != EnemyTopdownKind.Slime)
             {
                 return ((EnemyTopdownRoot)Parent).Move;
             }

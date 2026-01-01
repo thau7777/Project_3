@@ -43,6 +43,11 @@ public class EnemyTopdownHurt : State
         {
             return ((EnemyTopdownRoot)Parent).Dead;
         }
+        if (ctx.IsStunned)
+        {
+            ctx.IsHurting = false;
+            return ((EnemyTopdownRoot)Parent).Stunned;
+        }
         if (!ctx.IsHurting)
         {
             return ((EnemyTopdownRoot)Parent).Idle;

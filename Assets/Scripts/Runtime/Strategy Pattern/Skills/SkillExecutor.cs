@@ -36,7 +36,7 @@ public class SkillExecutor : MonoBehaviour
     // always get that skill data first if return ok then we can cast it later
     public bool SetSkillData(int index, CharacterClass characterClass)
     {
-        var skillData = _skillInstance[index].Definition.GetSkillDataByClass(characterClass);
+        var skillData = _skillInstance[index].Definition.GetSkillDataForClass(characterClass);
         if (skillData == null) return false;
         _skillToCast = _skillInstance[index];
         if(_skillToCast.IsOnCooldown) return false;
@@ -60,19 +60,23 @@ public class SkillExecutor : MonoBehaviour
 
             
         }
-        if (_skillToCast.Definition.CanCharge)
+        if (_skillToCast.Definition.CanCharge && _skillToCast.Definition.chargingEffect)
         {
             _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect ?? _skillToCast.Definition.FlyweightSettings);
             Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
+
             _chargedSkillFlyweight.FlyweightInitialize(spawnTransform.position);
+            var chargeEffectVFX = _chargedSkillFlyweight as OneShotVFX;
+            var chargeEffectVFXSettings = chargeEffectVFX.settings as OneShotVFXSettings;
+            chargeEffectVFX?.InitializeVFX(chargeEffectVFXSettings.DefaultSize, chargeEffectVFXSettings.DefaultLifeTime);
 
             _chargedSkillFlyweight.transform.SetParent(spawnTransform);
 
-            if (!_skillToCast.Definition.chargingEffect)
-            {
-                _chargeCoroutine = StartCoroutine(ChargeSkill(
-                    _chargedSkillFlyweight, _skillToCast.Definition.chargeLevel));
-            }
+            //if (!_skillToCast.Definition.chargingEffect)
+            //{
+            //    _chargeCoroutine = StartCoroutine(ChargeSkill(
+            //        _chargedSkillFlyweight, _skillToCast.Definition.chargeLevel));
+            //}
 
         }
 
@@ -145,17 +149,19 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-        if (_skillIndicator)
-        {
-            _skillIndicator.ReturnToPool();
-        }
         string animName = _storedSkillData.Value.animName;
         if (animName == "Dash") context.IsDashing = true;
         context.IsInSpecialMove = true;
         context.NeedHoldStill = _skillToCast.Definition.NeedHoldStill;
         context.SkillAnimName = animName;
     }
-
+    public void TurnOffSkillIndicator()
+    {
+        if (_skillIndicator)
+        {
+            _skillIndicator.ReturnToPool();
+        }
+    }
     // animation event
     public void OnSkillTrigger()
     {

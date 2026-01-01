@@ -20,30 +20,15 @@ namespace MyRule
 
         private void OnCancelPress(CancelPressEvent evt)
         {
-            EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.MainMenu));
-            //var currentPanel = UIStateMachine.Current;
-            //switch (currentPanel)
-            //{
-            //    case PanelType.Settings:
-            //        UIStateMachine.Pop();
-            //        Debug.Log("Popped Settings Panel");
-            //        EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(currentPanel));
-            //        break;
-            //    case PanelType.SaveFiles:
-            //        UIStateMachine.Pop();
-            //        EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(currentPanel));
-            //        break;
-            //    case PanelType.Credits:
-            //        break;
-            //    case PanelType.PauseMenu:
-            //        break;
-            //    case PanelType.Inventory:
-            //        break;
-            //    case PanelType.CharacterStats:
-            //        break;
-            //    default:
-            //        return; // No actionButton for other panels
-            //}
+            PanelType panelType = UIStateMachine.Pop();
+
+            Debug.Log("EscManager OnCancelPress Pop panelType: " + panelType);
+            if (panelType == PanelType.None)
+                return;
+
+            EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(panelType));
+
+            EventBus<SwitchCamEvent>.Raise(new SwitchCamEvent(1));
         }
     }
 }

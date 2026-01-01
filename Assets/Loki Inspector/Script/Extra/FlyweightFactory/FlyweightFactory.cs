@@ -45,6 +45,7 @@ public enum FlyweightType
 
     TopDownEnemySlime,
     TopDownEnemyTurtle,
+    TopDownEnemyBat,
     TopDownEnemyStraightAttackVFX,
     BasicPlayerOnHitImpactVFX,
 
