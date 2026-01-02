@@ -9,33 +9,35 @@ namespace MyRule.UI
         private bool hasTabPressed = false;
 
         private VisualElement root;
-        private VisualElement sigilStorage;
-        private VisualElement buttonConstraint;
-        private VisualElement fade;
+        //private VisualElement sigilStorage;
+        //private VisualElement buttonConstraint;
+        //private VisualElement fade;
         private Button rollButton;
-        private Button statsButton;
+        //private Button statsButton;
 
-        private EventBinding<SigilBoardEnterEvent> sigilBoardEventBinding;
-        private EventBinding<SigilBoardExitEvent> sigilBoardExitEventBinding;
+        //private EventBinding<SigilBoardEnterEvent> sigilBoardEventBinding;
+        //private EventBinding<SigilBoardExitEvent> sigilBoardExitEventBinding;
 
         private void OnEnable()
         {
-            sigilBoardEventBinding = new EventBinding<SigilBoardEnterEvent>(OnSigilBoardEnter);
-            EventBus<SigilBoardEnterEvent>.Register(sigilBoardEventBinding);
+            //sigilBoardEventBinding = new EventBinding<SigilBoardEnterEvent>(OnSigilBoardEnter);
+            //EventBus<SigilBoardEnterEvent>.Register(sigilBoardEventBinding);
 
-            sigilBoardExitEventBinding = new EventBinding<SigilBoardExitEvent>(evt => ShowHUD());
-            EventBus<SigilBoardExitEvent>.Register(sigilBoardExitEventBinding);
+            //sigilBoardExitEventBinding = new EventBinding<SigilBoardExitEvent>(evt => ShowHUD());
+            //EventBus<SigilBoardExitEvent>.Register(sigilBoardExitEventBinding);
 
-            inputReader.diceRollActions.onTab += ShowAllSigil;
+            //inputReader.diceRollActions.onTab += ShowAllSigil;
+            inputReader.diceRollActions.onRoll += OnRoll;
         }
 
         private void OnDisable()
         {
-            EventBus<SigilBoardEnterEvent>.Deregister(sigilBoardEventBinding);
+            //EventBus<SigilBoardEnterEvent>.Deregister(sigilBoardEventBinding);
 
-            EventBus<SigilBoardExitEvent>.Deregister(sigilBoardExitEventBinding);
+            //EventBus<SigilBoardExitEvent>.Deregister(sigilBoardExitEventBinding);
 
-            inputReader.diceRollActions.onTab -= ShowAllSigil;
+            //inputReader.diceRollActions.onTab -= ShowAllSigil;
+            inputReader.diceRollActions.onRoll -= OnRoll;
         }
 
         private void Awake()
@@ -43,55 +45,57 @@ namespace MyRule.UI
             var uiDocument = GetComponent<UIDocument>();
             root = uiDocument.rootVisualElement;
 
-            sigilStorage = root.Q<VisualElement>("SigilStorage");
-            buttonConstraint = root.Q<VisualElement>("ButtonConstraint");
-            fade = root.Q<VisualElement>("Fade");
-            rollButton = root.Q<Button>("RollButton");
-            statsButton = root.Q<Button>("StatsButton");
+            //sigilStorage = root.Q<VisualElement>("SigilStorage");
+            //buttonConstraint = root.Q<VisualElement>("ButtonConstraint");
+            //fade = root.Q<VisualElement>("Fade");
+            rollButton = root.Q<Button>("DiceRollButton");
+            //statsButton = root.Q<Button>("StatsButton");
 
-            inputReader.SwitchActionMap(ActionMap.PlayerFPS);
+            inputReader.SwitchActionMap(ActionMap.DiceRoll);
         }
 
         private void Start()
         {
-            rollButton.clicked += () =>
-            {
-                EventBus<DiceRollEvent>.Raise(new DiceRollEvent());
-            };
-            statsButton.clicked += () =>
-            {
-                EventBus<PlayerStatsShowEvent>.Raise(new PlayerStatsShowEvent());
-            };
+            rollButton.clicked += OnRoll;
+            //statsButton.clicked += () =>
+            //{
+            //    EventBus<PlayerStatsShowEvent>.Raise(new PlayerStatsShowEvent());
+            //};
         }
 
-        private void OnSigilBoardEnter(SigilBoardEnterEvent evt)
+        private void OnRoll()
         {
-            sigilStorage.AddToClassList("sigilStorage_hind");
-            buttonConstraint.AddToClassList("buttonConstraint_hind");
+            EventBus<DiceRollEvent>.Raise(new DiceRollEvent());
         }
 
-        public void ShowHUD()
-        {
-            sigilStorage.RemoveFromClassList("sigilStorage_hind");
-            buttonConstraint.RemoveFromClassList("buttonConstraint_hind");
-        }
+        //private void OnSigilBoardEnter(SigilBoardEnterEvent evt)
+        //{
+        //    sigilStorage.AddToClassList("sigilStorage_hind");
+        //    buttonConstraint.AddToClassList("buttonConstraint_hind");
+        //}
 
-        private void ShowAllSigil()
-        {
-            if (!hasTabPressed)
-            {
-                sigilStorage.AddToClassList("sigilStorage_showall");
-                buttonConstraint.AddToClassList("buttonConstraint_hind");
-                fade.style.display = DisplayStyle.Flex;
-                hasTabPressed = true;
-            }
-            else
-            {
-                sigilStorage.RemoveFromClassList("sigilStorage_showall");
-                buttonConstraint.RemoveFromClassList("buttonConstraint_hind");
-                fade.style.display = DisplayStyle.None;
-                hasTabPressed = false;
-            }
-        }
+        //public void ShowHUD()
+        //{
+        //    sigilStorage.RemoveFromClassList("sigilStorage_hind");
+        //    buttonConstraint.RemoveFromClassList("buttonConstraint_hind");
+        //}
+
+        //private void ShowAllSigil()
+        //{
+        //    if (!hasTabPressed)
+        //    {
+        //        sigilStorage.AddToClassList("sigilStorage_showall");
+        //        buttonConstraint.AddToClassList("buttonConstraint_hind");
+        //        fade.style.display = DisplayStyle.Flex;
+        //        hasTabPressed = true;
+        //    }
+        //    else
+        //    {
+        //        sigilStorage.RemoveFromClassList("sigilStorage_showall");
+        //        buttonConstraint.RemoveFromClassList("buttonConstraint_hind");
+        //        fade.style.display = DisplayStyle.None;
+        //        hasTabPressed = false;
+        //    }
+        //}
     }
 }
