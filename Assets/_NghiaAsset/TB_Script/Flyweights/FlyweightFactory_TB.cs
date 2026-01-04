@@ -80,6 +80,8 @@ namespace Turnbase
         Tb_DarkImpact2,
         Tb_LightningImpact1,
         Tb_LightningImpact2,
+        Tb_Reduction_speed,
+
 
 
 

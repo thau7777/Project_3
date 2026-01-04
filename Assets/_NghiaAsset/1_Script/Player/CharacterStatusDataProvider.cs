@@ -172,6 +172,32 @@ namespace Turnbase
                 });
             }
 
+            if (debuffManager.speedReductionTurnsRemaining > 0)
+            {
+                int percentageValue = Mathf.RoundToInt(debuffManager.speedReductionPercentage * 100);
+
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Decrease Speed",
+                    TurnsRemaining = debuffManager.speedReductionTurnsRemaining,
+                    Detail = $"-{percentageValue}% Speed",
+                    IsBuff = false,
+                    Icon = debuffManager.speedReductionIcon
+                });
+            }
+
+            if (debuffManager.breakTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Armor Break",
+                    TurnsRemaining = debuffManager.breakTurnsRemaining,
+                    Detail = "Increased damage taken",
+                    IsBuff = false,
+                    Icon = debuffManager.breakIcon
+                });
+            }
+
             return effects;
         }
         #endregion    
