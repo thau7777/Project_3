@@ -73,6 +73,15 @@ namespace Turnbase
         Tb_DefReduction,
         Tb_Buff_P_Def,
         Tb_Buff_M_Def,
+        Tb_IceImpact2,
+        Tb_IceCircle,
+        Tb_DOT_Posion,
+        Tb_DarkImpact1,
+        Tb_DarkImpact2,
+        Tb_LightningImpact1,
+        Tb_LightningImpact2,
+
+
 
 
 

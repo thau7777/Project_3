@@ -1,13 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro; 
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Turnbase
 {
     public class EnemyStatsUI : MonoBehaviour
     {
         public Image hpBarFill;
+        public Image hpBarFillDelay;
+        public float lerpSpeed = 2f;
+
         public Image mpBarFill;
         public Image trailblazeFill;
         public Image shieldBarFill;
@@ -20,6 +24,7 @@ namespace Turnbase
 
         private Character ownerCharacter;
         private CharacterStatusDataProvider dataProvider;
+        private Coroutine hpLerpCoroutine;
 
         void Awake()
         {
@@ -73,8 +78,28 @@ namespace Turnbase
         {
             if (hpBarFill != null)
             {
-                hpBarFill.fillAmount = (float)stats.currentHP / stats.maxHP;
+                float targetFill = (float)stats.currentHP / stats.maxHP;    
+                hpBarFill.fillAmount = targetFill;
+
+                if (hpBarFillDelay != null)
+                {
+                    if (hpLerpCoroutine != null) StopCoroutine(hpLerpCoroutine);
+                    hpLerpCoroutine = StartCoroutine(LerpHpDelayed(targetFill));
+                }
             }
+
+        }
+
+        private IEnumerator LerpHpDelayed(float targetFill)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            while (Mathf.Abs(hpBarFillDelay.fillAmount - targetFill) > 0.001f)
+            {
+                hpBarFillDelay.fillAmount = Mathf.Lerp(hpBarFillDelay.fillAmount, targetFill, Time.deltaTime * lerpSpeed);
+                yield return null;
+            }
+            hpBarFillDelay.fillAmount = targetFill;
         }
 
         private void UpdateMpBar(CharacterStats stats)

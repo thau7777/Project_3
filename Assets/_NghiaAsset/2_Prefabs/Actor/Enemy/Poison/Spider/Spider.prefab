@@ -1528,6 +1528,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b9f0378fdc37fea45a65f4586555afb9, type: 2}
   - {fileID: 11400000, guid: 5324443a104dbb1478a5cc5ce01a2265, type: 2}
   - {fileID: 11400000, guid: bc63979dc8c0dd949895ebd7940d515f, type: 2}
+  item: []
   passiveSkills: []
   isPlayer: 0
   isVirtualTracker: 0
@@ -1549,6 +1550,8 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: e56a8d7854275a34094c9ea57824790f, type: 2}
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
+  projectileSpawnPoint: {fileID: 0}
+  buffEffectSpawnPoint: {fileID: 0}
   traildblaze: 100
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
@@ -1573,6 +1576,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsUI
   hpBarFill: {fileID: 5337679758539715969}
+  hpBarFillDelay: {fileID: 6649383220706045998}
+  lerpSpeed: 2
   mpBarFill: {fileID: 6343429955527139453}
   trailblazeFill: {fileID: 414544424781297329}
   shieldBarFill: {fileID: 1279019492483649976}
@@ -1993,6 +1998,17 @@ MonoBehaviour:
 --- !u!114 &6343429955527139453 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5503044372404999245, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+  m_PrefabInstance: {fileID: 1465603218907984944}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6649383220706045998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5193077616005710878, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
   m_PrefabInstance: {fileID: 1465603218907984944}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
