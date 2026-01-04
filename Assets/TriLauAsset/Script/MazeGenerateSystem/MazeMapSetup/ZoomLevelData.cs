@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace MyRule
 {
-
     [CreateAssetMenu(fileName = "New Camera Settings", menuName = "Fantasy Kingdom/Camera Settings", order = 0)]
     public class CameraControllerSettings : ScriptableObject
     {

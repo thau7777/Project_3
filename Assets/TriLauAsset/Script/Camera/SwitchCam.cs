@@ -1,7 +1,7 @@
 using UnityEngine;
 using MyRule.UI;
 
-namespace MyRule.Camera
+namespace MyRule
 {
     public class SwitchCam : MonoBehaviour
     {

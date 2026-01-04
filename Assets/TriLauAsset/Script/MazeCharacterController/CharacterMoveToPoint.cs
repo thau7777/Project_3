@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
@@ -8,7 +9,6 @@ namespace MyRule
     {
         [Header("Target")]
         public Transform targetPoint;
-        public ShapeInfo shapeInfo;
 
         [Header("Speed")]
         [Tooltip("Tốc độ tăng MoveSpeed (0 -> 1)")]
@@ -36,22 +36,29 @@ namespace MyRule
 
         private static readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
 
-        private EventBinding<FirstShapeEvent> firstShapeEventBinding;
-        private EventBinding<MazeMoveEvent> mazeMoveEventBinding;
+        private Queue<Transform> pathPoints = new Queue<Transform>();
+
+        private EventBinding<MazeSetMovePosEvent> mazeMoveEventBinding;
+        private EventBinding<MazeMoveEvent> mazeMoveActionBinding;
+        private EventBinding<MazeJumpEvent> jumpEventBinding;
 
         private void OnEnable()
         {
-            firstShapeEventBinding = new EventBinding<FirstShapeEvent>(OnFirstShapeEvent);
-            EventBus<FirstShapeEvent>.Register(firstShapeEventBinding);
+            mazeMoveEventBinding = new EventBinding<MazeSetMovePosEvent>(SetTarget);
+            EventBus<MazeSetMovePosEvent>.Register(mazeMoveEventBinding);
 
-            mazeMoveEventBinding = new EventBinding<MazeMoveEvent>(OnMove);
-            EventBus<MazeMoveEvent>.Register(mazeMoveEventBinding);
+            mazeMoveActionBinding = new EventBinding<MazeMoveEvent>(OnMove);
+            EventBus<MazeMoveEvent>.Register(mazeMoveActionBinding);
+
+            jumpEventBinding = new EventBinding<MazeJumpEvent>(OnJump);
+            EventBus<MazeJumpEvent>.Register(jumpEventBinding);
         }
 
         private void OnDisable()
         {
-            EventBus<FirstShapeEvent>.Deregister(firstShapeEventBinding);
-            EventBus<MazeMoveEvent>.Deregister(mazeMoveEventBinding);
+            EventBus<MazeSetMovePosEvent>.Deregister(mazeMoveEventBinding);
+            EventBus<MazeMoveEvent>.Deregister(mazeMoveActionBinding);
+            EventBus<MazeJumpEvent>.Deregister(jumpEventBinding);
         }
 
         private void Awake()
@@ -80,6 +87,7 @@ namespace MyRule
             {
                 hasArrived = true;
                 Decelerate();
+                Stop();
                 return;
             }
 
@@ -91,40 +99,6 @@ namespace MyRule
                 Accelerate();
             else
                 Decelerate();
-        }
-
-        private void OnFirstShapeEvent(FirstShapeEvent evt)
-        {
-            shapeInfo = evt.shape;
-        }
-
-        private async void OnMove(MazeMoveEvent evt)
-        {
-            int steps = evt.steps;
-
-            while (steps > 0 && shapeInfo != null)
-            {
-                foreach (var shape in shapeInfo.pointsTarget)
-                {
-                    if (shape != null)
-                    {
-                        SetTarget(shape.transform);
-                        shapeInfo = shape;
-
-                        await UniTask.Delay(2400);
-
-                        EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(1));
-                        steps--;
-                        break;
-                    }
-                }
-            }
-
-            if (steps == 0 && shapeInfo != null)
-            {
-                await UniTask.Delay(1000);
-                EventBus<MazeGameplayEvent>.Raise(new MazeGameplayEvent(shapeInfo.shapeSO.shapeType));
-            }
         }
 
         private void RotateTowardsTarget()
@@ -177,13 +151,25 @@ namespace MyRule
             animator.SetFloat(MoveSpeedHash, moveSpeed);
         }
 
-        public void SetTarget(Transform newTarget)
+        private void SetTarget(MazeSetMovePosEvent evt)
         {
-            targetPoint = newTarget;
+            pathPoints.Enqueue(evt.target);
             hasArrived = false;
         }
 
-        public void Stop()
+        private async void OnMove()
+        {
+            while (pathPoints.Count > 0)
+            {
+                targetPoint = pathPoints.Dequeue();
+
+                await UniTask.Delay(3000);
+
+                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(1));
+            }
+        }
+
+        private void Stop()
         {
             targetPoint = null;
             hasArrived = true;
@@ -202,6 +188,11 @@ namespace MyRule
             }
 
             controller.Move(velocity * Time.deltaTime);
+        }
+
+        private void OnJump()
+        {
+            animator.SetTrigger("Jump");
         }
     }
 }

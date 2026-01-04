@@ -9,6 +9,7 @@ namespace MyRule
         public List<ShapeInfo> pointsTarget = new List<ShapeInfo>();
         public SpriteRenderer icon;
         public ShapeSO shapeSO;
+        public GameObject hightLight;
 
         private void Start()
         {
@@ -22,6 +23,8 @@ namespace MyRule
             {
                 icon.sprite = null;
             }
+
+            UnHightLight();
         }
 
         private void SnapToGround()
@@ -48,6 +51,15 @@ namespace MyRule
         public ShapeInfo GetTarget(int index)
         {
             return pointsTarget[index];
+        }
+
+        public void HightLight()
+        {
+            hightLight.SetActive(true);
+        }    
+        public void UnHightLight()
+        {
+            hightLight.SetActive(false);
         }
     }
 }
