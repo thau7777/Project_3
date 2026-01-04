@@ -32,7 +32,7 @@ namespace Turnbase
                 }
             }
 
-            stateMachine.character.animator.SetTrigger("Die");
+            stateMachine.character.animator.Play("Die");
 
             stateMachine.character.StartCoroutine(HandleDeath());
         }

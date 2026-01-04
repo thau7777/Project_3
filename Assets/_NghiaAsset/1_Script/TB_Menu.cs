@@ -9,6 +9,9 @@ namespace Turnbase
 
         public GameObject victoryMenu;
 
+        public GameObject loseMenu;
+
+
 
         public void Awake()
         {
@@ -28,6 +31,11 @@ namespace Turnbase
         public void ShowVictoryMenu()
         {
             victoryMenu.SetActive(true);
+        }
+
+        public void ShowLoseMenu()
+        {
+            loseMenu.SetActive(true);
         }
 
         public void LoadSceneMain()
