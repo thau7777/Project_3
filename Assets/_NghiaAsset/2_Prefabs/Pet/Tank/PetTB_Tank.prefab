@@ -1574,6 +1574,7 @@ MonoBehaviour:
   parryButton: {fileID: 6288264319539240674}
   confirmButton: {fileID: 8418923278652520726}
   summomonButton: {fileID: 8081185045527025143}
+  itemButton: {fileID: 0}
   actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 4718389306977373905}
@@ -1582,6 +1583,8 @@ MonoBehaviour:
   PlayerSkillPanel: {fileID: 4339980918372391884}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 0c378e221269cfc49af870a0c15623f2, type: 3}
   PlayerSummonPanel: {fileID: 2570300054878877807}
+  itemEntryPrefab: {fileID: 0}
+  PlayerItemPanel: {fileID: 0}
   parryFillImage: {fileID: 7365779791617229135}
   defaultParrySprite: {fileID: 21300000, guid: 63be7197c60874147a5fb1f91704cfea, type: 3}
   readyParrySprite: {fileID: 21300000, guid: b79a56f910ade2b4f8bf0c8925a5f772, type: 3}
@@ -2097,6 +2100,37 @@ Transform:
   - {fileID: 548217571793685959}
   m_Father: {fileID: 75167956460423509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7467608714922861635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5792128531332985526}
+  m_Layer: 0
+  m_Name: BuffEffectPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5792128531332985526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7467608714922861635}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.0108825, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7903996336568898809
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,6 +2230,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5792128531332985526}
   - {fileID: 6151036616290066654}
   - {fileID: 3626853615927178811}
   - {fileID: 1685052303867463974}
@@ -2263,6 +2298,7 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: 32fd48be8915402499dec203f5930513, type: 2}
   skills: []
+  item: []
   passiveSkills: []
   isPlayer: 1
   isVirtualTracker: 0
@@ -2284,6 +2320,8 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 20a183699e0de384c8e8786dec5f801e, type: 2}
   damagePopupCanvasParent: {fileID: 0}
   enemyStatsUI: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
+  buffEffectSpawnPoint: {fileID: 5792128531332985526}
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2325,6 +2363,7 @@ MonoBehaviour:
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
   agilityBuffTurnsRemaining: 0
+  agilityBuffAmount: 0
   agilityVFXInstance: {fileID: 0}
   agilityBuffIcon: {fileID: 0}
   magicalAttackBuffTurnsRemaining: 0
@@ -2367,6 +2406,10 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  speedReductionTurnsRemaining: 0
+  speedReductionPercentage: 0
+  speedReductionVFXInstance: {fileID: 0}
+  speedReductionIcon: {fileID: 0}
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}

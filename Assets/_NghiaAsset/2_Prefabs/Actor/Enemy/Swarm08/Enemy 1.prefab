@@ -351,6 +351,37 @@ Transform:
   - {fileID: 7877282687084073605}
   m_Father: {fileID: 8835788767518028874}
   m_LocalEulerAnglesHint: {x: -8.651581, y: 1.9538376, z: -27.41722}
+--- !u!1 &2600404078837697918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1665739094872808502}
+  m_Layer: 0
+  m_Name: BuffEffectPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1665739094872808502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600404078837697918}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.49653906, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2995417578015018773
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,6 +788,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1665739094872808502}
   - {fileID: 7993429176243601918}
   - {fileID: 6241244931517677398}
   - {fileID: 5147185560702354590}
@@ -846,6 +878,8 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: eb0f6b72dafd90f4d9af784165865afc, type: 2}
   damagePopupCanvasParent: {fileID: 8942522335287616232}
   enemyStatsUI: {fileID: 1338538099076997050}
+  projectileSpawnPoint: {fileID: 0}
+  buffEffectSpawnPoint: {fileID: 1665739094872808502}
   traildblaze: 100
   isBroken: 0
   enemyUI: {fileID: 1338538099076997050}
@@ -870,6 +904,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsUI
   hpBarFill: {fileID: 6519059756959457884}
+  hpBarFillDelay: {fileID: 0}
+  lerpSpeed: 2
   mpBarFill: {fileID: 5216020307257980832}
   trailblazeFill: {fileID: 1561522908153815404}
   shieldBarFill: {fileID: 131897729907967589}
@@ -934,6 +970,7 @@ MonoBehaviour:
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
   agilityBuffTurnsRemaining: 0
+  agilityBuffAmount: 0
   agilityVFXInstance: {fileID: 0}
   agilityBuffIcon: {fileID: 0}
   magicalAttackBuffTurnsRemaining: 0
@@ -976,6 +1013,10 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  speedReductionTurnsRemaining: 0
+  speedReductionPercentage: 0
+  speedReductionVFXInstance: {fileID: 0}
+  speedReductionIcon: {fileID: 0}
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
@@ -1170,6 +1211,14 @@ PrefabInstance:
     - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.0005510841
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00049334863
       objectReference: {fileID: 0}
     - target: {fileID: 8658033708188352773, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_Pivot.x
