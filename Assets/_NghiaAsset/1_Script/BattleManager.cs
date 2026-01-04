@@ -242,6 +242,8 @@ namespace Turnbase
             }
         }
 
+        //win
+
         private void CheckWinCondition(bool finalWin = false)
         {
             if (finalWin)
@@ -282,7 +284,7 @@ namespace Turnbase
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
-                    TB_Menu.instance.ShowVictoryMenu();
+                    TB_Menu.instance.ShowLoseMenu();
                 }
             }
         }
@@ -479,7 +481,7 @@ namespace Turnbase
                 {
                     Debug.Log($"[LOSE CONDITION] Trận đấu kết thúc! Đã đạt đến giới hạn {startRounds} vòng đấu.");
 
-                    TB_Menu.instance.ShowVictoryMenu();
+                    TB_Menu.instance.ShowLoseMenu();
 
                     activeCharacter = null;
                     isProcessingTurn = true;

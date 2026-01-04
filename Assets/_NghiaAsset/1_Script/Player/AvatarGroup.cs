@@ -1,7 +1,8 @@
-﻿using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 
 namespace Turnbase
@@ -10,6 +11,9 @@ namespace Turnbase
     {
         public Image avatar;
         public Image hpBar;
+        public Image hpBarDelayed;
+        public float hpLerpSpeed = 2f;
+
         public Image mpBar;
         public Image shieldBar;
         public TextMeshProUGUI hpText;
@@ -20,6 +24,7 @@ namespace Turnbase
 
         private Character ownerCharacter;
         private CharacterStatusDataProvider dataProvider;
+        private Coroutine hpLerpCoroutine;
 
 
         private void Awake()
@@ -63,13 +68,37 @@ namespace Turnbase
         public void UpdateUI(CharacterStats stats, CharacterInfo info)
         {
             avatar.sprite = info.Avatar;
-            hpBar.fillAmount = (float)stats.currentHP / stats.maxHP;
+
+            float targetFill = (float)stats.currentHP / stats.maxHP;
+            hpBar.fillAmount = targetFill;
+
+            if (hpBarDelayed != null)
+            {
+                if (hpLerpCoroutine != null) StopCoroutine(hpLerpCoroutine);
+                hpLerpCoroutine = StartCoroutine(LerpHpDelayed(targetFill));
+            }
+
             mpBar.fillAmount = (float)stats.currentMP / stats.maxMP;
             shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
             hpText.text = $"{stats.currentHP} / {stats.maxHP}";
             mpText.text = $"{stats.currentMP} / {stats.maxMP}";
 
-            UpdateStatusEffect(dataProvider.GetActiveStatusEffects());
+            if (dataProvider != null)
+            {
+                UpdateStatusEffect(dataProvider.GetActiveStatusEffects());
+            }
+        }
+
+        private IEnumerator LerpHpDelayed(float targetFill)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            while (Mathf.Abs(hpBarDelayed.fillAmount - targetFill) > 0.001f)
+            {
+                hpBarDelayed.fillAmount = Mathf.Lerp(hpBarDelayed.fillAmount, targetFill, Time.deltaTime * hpLerpSpeed);
+                yield return null;
+            }
+            hpBarDelayed.fillAmount = targetFill;
         }
 
         public void UpdateStatusEffect(List<StatusEffectData> statusEffects)
