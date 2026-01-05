@@ -12,7 +12,7 @@ public class OneShotVFX : Flyweight
 
     private void OnEnable()
     {
-        Damage = settings.Damage;
+        //Damage = settings.Damage;
         if (_despawnCoroutine != null)
         {
             StopCoroutine(_despawnCoroutine);
@@ -114,8 +114,8 @@ public class OneShotVFX : Flyweight
 
         if (settings.HasHitBox && !settings.UseParticleCollision) 
             GetComponent<HitBoxHandler>().StartHitBoxCoroutine(lifeTime);
-        if(settings.CanDealDamage)
-            GetComponent<DamageDealer>().Damage = Damage;
+        //if(settings.CanDealDamage)
+        //    GetComponent<DamageDealer>().Damage = Damage;
         _despawnCoroutine = StartCoroutine(LifetimeRoutine(lifeTime));
     }
     private IEnumerator LifetimeRoutine(float lifeTime)

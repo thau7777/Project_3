@@ -12,6 +12,7 @@ public class StraightProjectile : Flyweight
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
     public float Damage { get; set; }
+    public float _currentSize;
 
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
@@ -41,6 +42,7 @@ public class StraightProjectile : Flyweight
         _range = range;
         _startPosition = transform.position;
         _traveledDistance = 0f;
+        _currentSize = size;
 
         transform.localScale = new Vector3(size, size, size);
 
@@ -102,7 +104,7 @@ public class StraightProjectile : Flyweight
             damageDealer.Damage = Damage;
         }
 
-        impactVFX.InitializeVFX(settings.defaultImpactVFXSize, impactVFXSettings.DefaultLifeTime);
+        impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);
     }
 
     private void OnTriggerEnter(Collider other)
