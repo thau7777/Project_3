@@ -4,30 +4,33 @@ using UnityEngine;
 public class EnemyTopdownRoot : State
 {
     readonly EnemyTopdownContext ctx;
+    public EnemyTopdownSpawn Spawn;
     public EnemyTopdownIdle Idle;
     public EnemyTopdownMove Move;
+    public EnemyTopdownCharge Charge;
     public EnemyTopdownAttack Attack;
     public EnemyTopdownHurt Hurt;
     public EnemyTopdownDead Dead;
     public EnemyTopdownStunned Stunned;
-    public EnemyTopdownSpecialMove SpecialMove;
 
 
     private float verticalVelocity; // stored between frames
     public EnemyTopdownRoot(StateMachine machine, EnemyTopdownContext context) : base(machine, null)
     {
         ctx = context;
+        Spawn = new EnemyTopdownSpawn(machine, this, ctx);
         Idle = new EnemyTopdownIdle(machine, this, ctx);
         Move = new EnemyTopdownMove(machine, this, ctx);
+        Charge = new EnemyTopdownCharge(machine, this, ctx);
         Attack = new EnemyTopdownAttack(machine, this, ctx);
         Hurt = new EnemyTopdownHurt(machine, this, ctx);
         Dead = new EnemyTopdownDead(machine, this, ctx);
         Stunned = new EnemyTopdownStunned(machine, this, ctx);
-        if(ctx.IsBoss)
-        SpecialMove = new EnemyTopdownSpecialMove(machine, this, ctx);
     }
     public void UpdateRotation(float deltaTime, Vector3 targetPosition)
     {
+        if(ctx.ForceStopFacingTarget)
+            return;
         var toPlayer = (targetPosition - ctx.RootTransform.position);
 
         // Flatten the direction to only rotate on Y-axis
@@ -43,8 +46,6 @@ public class EnemyTopdownRoot : State
     protected override void OnUpdate(float deltaTime)
     {
         UpdateMovement(deltaTime);
-        if (ctx.IsBoss)
-            UpdateSpecialMoveCoolDown(deltaTime);
     }
     private void UpdateMovement(float deltaTime)
     {
@@ -65,11 +66,6 @@ public class EnemyTopdownRoot : State
         if (ctx.CharacterController.isGrounded && verticalVelocity < 0f)
             verticalVelocity = -1f; // small negative to keep grounded
     }
-    private void UpdateSpecialMoveCoolDown(float deltaTime)
-    {
-        if (ctx.IsBoss && !ctx.IsInSpecialMove)
-            ctx.BossAttackCoolDownTimer += deltaTime;
-    }
-    protected override State GetInitialState() => Idle;
+    protected override State GetInitialState() => Spawn;
     protected override State GetTransition() => null;
 }

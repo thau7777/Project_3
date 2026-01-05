@@ -34,7 +34,8 @@ public class OneShotVFXSettings : FlyweightSettings
     [SerializeField]
     [ShowIf("_canDealDamage")]
     [TabGroup("Damage Settings")]
-    private int _damage = 40;
+    private float _damage = 40;
+    public float Damage { get => _damage; set { _damage = value; } }
 
     [SerializeField]
     [ShowIf("_canDealDamage")]
@@ -46,10 +47,6 @@ public class OneShotVFXSettings : FlyweightSettings
     [TabGroup("Damage Settings")]
     private OneShotVFXSettings _hitImpactVFXSetting;
 
-    [SerializeField]
-    [ShowIf("_canDealDamage")]
-    [TabGroup("Damage Settings")]
-    private ElementalType _elementalType = ElementalType.Normal;
     #endregion
 
     #region Effect Settings
@@ -88,9 +85,15 @@ public class OneShotVFXSettings : FlyweightSettings
     #region HitBox Stuff
     private bool _hasHitBox;
     public bool HasHitBox => _hasHitBox;
+    private bool _useNormalColliders = false;
 
-
+    [SerializeField]
     [ShowIf("_hasHitBox")]
+    private bool _useParticleCollision = false;
+
+    public bool UseParticleCollision => _useParticleCollision;
+
+    [ShowIf("_useNormalColliders")]
     [MinMaxSlider(0, 1)]
     public Vector2 hitboxOnOffTime = new Vector2(0, 0.1f);
 
@@ -100,6 +103,7 @@ public class OneShotVFXSettings : FlyweightSettings
     private void OnValidate()
     {
         _hasHitBox = _canDealDamage || _canApplyEffect;
+        _useNormalColliders = _hasHitBox && !_useParticleCollision;
         _hasDecal = decalSettings;
     }
     public override Flyweight Create()
@@ -107,21 +111,22 @@ public class OneShotVFXSettings : FlyweightSettings
         var go = Instantiate(prefab);
         go.name = prefab.name;
 
-
         var flyweight = go.GetOrAdd<OneShotVFX>();
         flyweight.settings = this;
 
         if (HasHitBox)
         {
-            var hitboxHandler = go.GetOrAdd<HitBoxHandler>();
-            hitboxHandler.DodgeLayers = dodgeLayers;
-            hitboxHandler.HitboxOnOffTime = hitboxOnOffTime;
+            if (!_useParticleCollision)
+            {
+                var hitboxHandler = go.GetOrAdd<HitBoxHandler>();
+                hitboxHandler.DodgeLayers = dodgeLayers;
+                hitboxHandler.HitboxOnOffTime = hitboxOnOffTime;
+            }
             if (CanDealDamage)
             {
                 var damageDealer = go.GetOrAdd<DamageDealer>();
                 damageDealer.Damage = _damage;
                 damageDealer.KnockbackForce = _knockBackForce;
-                damageDealer.ElementalType = _elementalType;
                 if (_hitImpactVFXSetting)
                     damageDealer.SetHitImpactVFX(_hitImpactVFXSetting);
             }
@@ -141,6 +146,12 @@ public class OneShotVFXSettings : FlyweightSettings
     public override void OnGet(Flyweight f)
     {
         
+    }
+    public override void OnRelease(Flyweight f)
+    {
+        if (f.transform.parent != null)
+            f.transform.SetParent(GameObject.Find("VFXStorage").transform);
+        base.OnRelease(f);
     }
 
 }

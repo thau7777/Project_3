@@ -8,7 +8,6 @@ public class StraightProjectileSettings : FlyweightSettings
 
     [field: SerializeField]
     public OneShotVFXSettings ProjectileImpactVFX { get; set; }
-    public float defaultImpactVFXSize = 1;
 
     [field: SerializeField]
     public LayerMask DodgeLayers { get; private set; }

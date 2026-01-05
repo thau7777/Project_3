@@ -888,16 +888,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralTerrainGenerator
   terrain: {fileID: 1314410931}
-  heightScale: 0.0035
-  noiseScale: 6
+  flatHeight: 0
+  textureNoiseScale: 7
   seed: 0
   terrainLayers:
   - {fileID: 8574412962073106934, guid: 4b176bb83ac0b4a4f841d1a35883562f, type: 2}
-  - {fileID: 8574412962073106934, guid: 735c383f20b1bd04e9c427d0aa612006, type: 2}
   - {fileID: 8574412962073106934, guid: dd9551f9f04cf2743afb8c9e931b0194, type: 2}
-  grassHeightThreshold: 1
-  rockSlopeThreshold: 0.5
-  textureNoiseScale: 15
+  - {fileID: 8574412962073106934, guid: 735c383f20b1bd04e9c427d0aa612006, type: 2}
+  grassPercentage: 0.7
   treePrefabs:
   - {fileID: 6025389439302526993, guid: 16402f43de9da6f43859a010a4d5e239, type: 3}
   - {fileID: 4944280553967320908, guid: 8bd96f4d3289c1246b943d72ee41d622, type: 3}
@@ -961,10 +959,10 @@ MonoBehaviour:
   - {fileID: 1415734797324876703, guid: df15bc283c69ae24cab800be5199f8ba, type: 3}
   - {fileID: 5359138261187055257, guid: 09e3d3d69375d9c4f9f2121a74988020, type: 3}
   treeCount: 10
-  treeHeightMin: 0.2
-  treeHeightMax: 0.8
   treeMinScale: 0.8
   treeMaxScale: 1.2
+  treeSpawnLayer: 0
+  treeLayerWeightThreshold: 0.5
   treeParent: {fileID: 286532861}
   grassPrefabs:
   - {fileID: 5494261819123090599, guid: 633b9612b72146b489ff4caf0012c43a, type: 3}
@@ -972,11 +970,11 @@ MonoBehaviour:
   - {fileID: 9186505431023319501, guid: 125c78bb4241e1949a45c9a9db8c2ffb, type: 3}
   - {fileID: 8696666553989204739, guid: 17e7cbd9cc1261b4d8617c8eb5928264, type: 3}
   grassCount: 5123
-  grassHeightMin: 0.1
-  grassHeightMax: 0.7
   grassMinScale: 0.9
   grassMaxScale: 1.5
   grassDensity: 0.525
+  grassSpawnLayer: 0
+  grassLayerWeightThreshold: 0.3
   grassParent: {fileID: 1852138009}
   decorationPrefabs:
   - {fileID: 1564790060112024591, guid: 87a0af09d2b35624097b4d242b15553f, type: 3}
@@ -1019,10 +1017,10 @@ MonoBehaviour:
   - {fileID: 2399300363740695743, guid: 8f091b6ae1a1d12408115653bb0487e7, type: 3}
   - {fileID: 3987157583754692890, guid: 0910edd66791f064696c03c551e8dfb7, type: 3}
   decorationCount: 500
-  decorationHeightMin: 0.1
-  decorationHeightMax: 0.7
   decorationMinScale: 0.9
   decorationMaxScale: 1
+  decorationSpawnLayer: 0
+  decorationLayerWeightThreshold: 0.5
   decorationParent: {fileID: 741771507}
 --- !u!154 &1314410930
 TerrainCollider:
@@ -1193,7 +1191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1370029502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1207,11 +1205,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   _enemyTopDownSettings:
-  - {fileID: 11400000, guid: e7e29cbe8bfd58348bc6ff8368f7392c, type: 2}
-  - {fileID: 11400000, guid: dd0d22ebba02c234a91901a837cb6c55, type: 2}
-  _spawnInterval: 7
-  _minSpawnCountPerWave: 2
-  _maxSpawnCountPerWave: 3
+  - {fileID: 11400000, guid: 4e85053cdb8807b4eb808c8b5647a095, type: 2}
+  _spawnInterval: 100
+  _minSpawnCountPerWave: 1
+  _maxSpawnCountPerWave: 1
 --- !u!4 &1370029503
 Transform:
   m_ObjectHideFlags: 0
@@ -1410,6 +1407,6 @@ SceneRoots:
   - {fileID: 1366076854}
   - {fileID: 1052229928}
   - {fileID: 1846174643}
-  - {fileID: 1370029503}
   - {fileID: 456782329}
   - {fileID: 1335077798}
+  - {fileID: 1370029503}

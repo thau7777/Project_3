@@ -36,19 +36,21 @@ public class EnemyTopdownIdle : State
         {
             return ((EnemyTopdownRoot)Parent).Hurt;
         }
-        if (ctx.IsTargetInAttackRange())
+        if (ctx.IsTargetInMaxAttackRange())
         {
-            if(!ctx.IsBoss)
+            if (ctx.CheckAndPickRandomAttack())
+            {
+                if(ctx.CurrentEnemyAttackData.needCharge)
+                    return ((EnemyTopdownRoot)Parent).Charge;
                 return ((EnemyTopdownRoot)Parent).Attack;
-
-            if(ctx.CheckAndPickRandomAttack())
-                return ((EnemyTopdownRoot)Parent).SpecialMove;
-
-            return null;
+            }
+            if (ctx.DistanceToTarget < 1.5f)
+                return ((EnemyTopdownRoot)Parent).Idle;
+            return ((EnemyTopdownRoot)Parent).Move;
         }
         else
         {
-            if(ctx.EnemyType != EnemyTopdownKind.Slime)
+            if(ctx.EnemyType != EnemyTopdownMovementType.Slime)
             {
                 return ((EnemyTopdownRoot)Parent).Move;
             }
