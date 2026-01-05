@@ -243,8 +243,30 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             ""name"": ""PlayerTurnBased"",
             ""id"": ""fcc086d8-b5f6-4897-8fa5-88e4fd0c465a"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""36322a63-f7d4-4a16-b259-d018a4001816"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2a575830-dabf-4d97-86f3-16d513bf6ab9"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         },
         {
             ""name"": ""PlayerFPS"",
@@ -1097,6 +1119,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown_ButtonQ = m_PlayerTopDown.FindAction("Button Q", throwIfNotFound: true);
         // PlayerTurnBased
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
+        m_PlayerTurnBased_Test = m_PlayerTurnBased.FindAction("Test", throwIfNotFound: true);
         // PlayerFPS
         m_PlayerFPS = asset.FindActionMap("PlayerFPS", throwIfNotFound: true);
         // PlayerTowerDefense
@@ -1351,6 +1374,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // PlayerTurnBased
     private readonly InputActionMap m_PlayerTurnBased;
     private List<IPlayerTurnBasedActions> m_PlayerTurnBasedActionsCallbackInterfaces = new List<IPlayerTurnBasedActions>();
+    private readonly InputAction m_PlayerTurnBased_Test;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTurnBased".
     /// </summary>
@@ -1362,6 +1386,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerTurnBasedActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/Test".
+        /// </summary>
+        public InputAction @Test => m_Wrapper.m_PlayerTurnBased_Test;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1388,6 +1416,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerTurnBasedActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerTurnBasedActionsCallbackInterfaces.Add(instance);
+            @Test.started += instance.OnTest;
+            @Test.performed += instance.OnTest;
+            @Test.canceled += instance.OnTest;
         }
 
         /// <summary>
@@ -1399,6 +1430,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="PlayerTurnBasedActions" />
         private void UnregisterCallbacks(IPlayerTurnBasedActions instance)
         {
+            @Test.started -= instance.OnTest;
+            @Test.performed -= instance.OnTest;
+            @Test.canceled -= instance.OnTest;
         }
 
         /// <summary>
@@ -2157,6 +2191,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="PlayerTurnBasedActions.RemoveCallbacks(IPlayerTurnBasedActions)" />
     public interface IPlayerTurnBasedActions
     {
+        /// <summary>
+        /// Method invoked when associated input action "Test" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTest(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerFPS" which allows adding and removing callbacks.

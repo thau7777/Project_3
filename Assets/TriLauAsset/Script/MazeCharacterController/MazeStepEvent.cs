@@ -33,7 +33,12 @@ namespace MyRule
 
     public struct MazeMoveEvent : IEvent
     {
-        
+        public readonly ShapeInfo shapeInfo;
+
+        public MazeMoveEvent(ShapeInfo shapeInfo)
+        {
+            this.shapeInfo = shapeInfo;
+        }
     }
 
     public struct MazeJumpEvent : IEvent

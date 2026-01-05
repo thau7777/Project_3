@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyRule
 {
@@ -28,13 +29,14 @@ namespace MyRule
                     Debug.Log("Enter Boss Event");
                     break;
                 case ShapeType.Sigil:
-                    EventBus<SigilBoardEnterEvent>.Raise(new SigilBoardEnterEvent());
+                    EventBus<ShowSigilCardEvent>.Raise(new ShowSigilCardEvent(true));
                     Debug.Log("Enter Sigil Event");
                     break;
                 case ShapeType.Treasure:
                     Debug.Log("Enter Treasure Event");
                     break;
                 case ShapeType.Creeeps:
+                    SceneManager.LoadScene("TurnBase");
                     Debug.Log("Enter Creeps Event");
                     break;
                 case ShapeType.Recovery:

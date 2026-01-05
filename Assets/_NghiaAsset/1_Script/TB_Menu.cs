@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Turnbase
 {
@@ -10,6 +11,10 @@ namespace Turnbase
         public GameObject victoryMenu;
 
         public GameObject loseMenu;
+
+        public Button victoryCloseBtn;
+
+        public Button loseCloseBtn;
 
 
 
@@ -25,7 +30,11 @@ namespace Turnbase
             }
         }
 
-
+        private void Start()
+        {
+            victoryCloseBtn.onClick.AddListener(() => LoadSceneMain(true));
+            loseCloseBtn.onClick.AddListener(() => LoadSceneMain(false));
+        }
 
 
         public void ShowVictoryMenu()
@@ -38,10 +47,13 @@ namespace Turnbase
             loseMenu.SetActive(true);
         }
 
-        public void LoadSceneMain()
+        public void LoadSceneMain(bool result)
         {
-            FlyweightFactory_TB.Instance.ClearAllPools();
-            SceneManager.LoadScene("Map");
+            EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
+            SceneManager.LoadScene("BoardScene");
+
+            //FlyweightFactory_TB.Instance.ClearAllPools();
+            //SceneManager.LoadScene("Map");
         }
     }
 

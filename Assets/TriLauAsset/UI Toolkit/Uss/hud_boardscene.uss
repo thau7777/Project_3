@@ -42,7 +42,7 @@
 }
 
 .sigilButton_style {
-    background-image: url("project://database/Assets/TriLauAsset/Textures/UI/HUDBoard/Border3.png?fileID=2800000&guid=ec295563632357e43ad5b1025f0ba6df&type=3#Border3");
+    background-image: url('project://database/Assets/TriLauAsset/Textures/UI/HUDBoard/Border3.png?fileID=2800000&guid=ec295563632357e43ad5b1025f0ba6df&type=3#Border3');
     background-color: rgba(255, 255, 255, 0);
     border-top-width: 0;
     border-right-width: 0;
@@ -62,7 +62,7 @@
 }
 
 .sigilButton_style:hover {
-    background-image: url("project://database/Assets/TriLauAsset/Textures/UI/HUDBoard/Border3.png?fileID=2800000&guid=ec295563632357e43ad5b1025f0ba6df&type=3#Border3");
+    background-image: url('project://database/Assets/TriLauAsset/Textures/UI/HUDBoard/Border3.png?fileID=2800000&guid=ec295563632357e43ad5b1025f0ba6df&type=3#Border3');
     background-color: rgba(255, 255, 255, 0);
     border-top-width: 0;
     border-right-width: 0;
@@ -83,7 +83,7 @@
 }
 
 .sigilButton_style:active {
-    background-image: url("project://database/Assets/TriLauAsset/Textures/UI/HUDBoard/Border3.png?fileID=2800000&guid=ec295563632357e43ad5b1025f0ba6df&type=3#Border3");
+    background-image: url('project://database/Assets/TriLauAsset/Textures/UI/HUDBoard/Border3.png?fileID=2800000&guid=ec295563632357e43ad5b1025f0ba6df&type=3#Border3');
     background-color: rgba(255, 255, 255, 0);
     border-top-width: 0;
     border-right-width: 0;
@@ -131,4 +131,54 @@
     height: 900px;
     transition-timing-function: ease-in-out;
     transition-duration: 0.4s;
+}
+
+.defaultBtn_style {
+    flex-grow: 1;
+    width: 100%;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    background-position-x: center;
+    justify-content: space-between;
+    align-items: center;
+    translate: 0 0;
+    position: absolute;
+    top: auto;
+    left: auto;
+    height: 100%;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+}
+
+.defaultBtn_style_hidden {
+    translate: 0 120px;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+}
+
+.sigilBtn_style {
+    flex-grow: 1;
+    width: 100%;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    background-position-x: center;
+    justify-content: space-between;
+    align-items: center;
+    translate: 0 0;
+    position: absolute;
+    top: auto;
+    left: auto;
+    height: 100%;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+}
+
+.sigilBtn_style_hidden {
+    translate: 0 120px;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
 }

@@ -14,12 +14,13 @@ namespace MyRule
     public class NormalSigilSO : ScriptableObject
     {
         [Header("Sigil Info")]
-        public Texture2D sigilIcon;
+        public Sprite sigilIcon;
         public string sigilName;
         [TextArea(3, 10)]
         public string sigilDesTD;
         [TextArea(3, 10)]
         public string sigilDesTB;
+        public GameObject sigilPreb;
         public int rarity;
         public bool isActiveSigil;
         [ShowIf("isActiveSigil")]

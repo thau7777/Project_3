@@ -1,62 +1,72 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MyRule
 {
     public class CardRotator : MonoBehaviour
     {
-        [SerializeField] private float maxRotationX = 30.0f;
-        [SerializeField] private float maxRotationY = 30.0f;
-        [SerializeField] private float rotationSpeed = 90.0f;
-        [SerializeField] private float snapBackDuration = 0.1f;
+        [Header("Rotation")]
+        [SerializeField] private float maxRotationX = 30f;
+        [SerializeField] private float maxRotationY = 30f;
+        [SerializeField] private float rotationSpeed = 90f;
+        [SerializeField] private float snapBackDuration = 0.15f;
 
-        private bool isRotating = false;
-        private Coroutine snapBackRoutine = null;
+        [SerializeField] private Animator animator;
+
+        private bool canRotate = false;   // hover
+        private bool isRotating = false;  // drag lock
+
         private Vector3 rotationStartPos;
+        private Coroutine snapBackRoutine;
+
+        private Camera mainCam;
+
+        private void Awake()
+        {
+            mainCam = Camera.main;
+        }
 
         private void Update()
         {
-            var mousePos = Input.mousePosition;
-            mousePos.z = 1.0f;
+            if (!canRotate)
+                return;
 
-            //Debug.Log(mousePos);
+            var mouse = Mouse.current;
+            if (mouse == null) return;
 
-            if (!isRotating && Input.GetMouseButtonDown(0))
+            Vector3 mousePos = mouse.position.ReadValue();
+            mousePos.z = 1f;
+
+            if (!isRotating && canRotate && mouse.rightButton.wasPressedThisFrame)
             {
                 isRotating = true;
+                animator.enabled = false;
                 StopSnapBack();
-                rotationStartPos = Camera.main.ScreenToWorldPoint(mousePos);
+                rotationStartPos = mainCam.ScreenToWorldPoint(mousePos);
             }
 
-            if (isRotating && Input.GetMouseButtonUp(0))
+            if (isRotating && mouse.rightButton.wasReleasedThisFrame)
             {
                 isRotating = false;
+                canRotate = false;
+                animator.enabled = true;
                 StopSnapBack();
                 snapBackRoutine = StartCoroutine(SnapBack());
             }
 
             if (isRotating)
             {
-                var rotationCurrentPos = Camera.main.ScreenToWorldPoint(mousePos);
-                var offset = rotationCurrentPos - rotationStartPos;
+                var currentPos = mainCam.ScreenToWorldPoint(mousePos);
+                var offset = currentPos - rotationStartPos;
 
-                var xRotation = offset.x * -rotationSpeed;
-                var yRotation = offset.y * rotationSpeed;
+                float xRot = offset.x * -rotationSpeed;
+                float yRot = offset.y * rotationSpeed;
 
-                if (Mathf.Abs(xRotation) > maxRotationX)
-                {
-                    xRotation = maxRotationX * Mathf.Sign(xRotation);
-                }
+                xRot = -Mathf.Clamp(xRot, -maxRotationX, maxRotationX);
+                yRot = Mathf.Clamp(yRot, -maxRotationY, maxRotationY);
 
-                if (Mathf.Abs(yRotation) > maxRotationY)
-                {
-                    yRotation = maxRotationY * Mathf.Sign(yRotation);
-                }
-
-                transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
-
-                Debug.Log(new Vector2(xRotation, yRotation));
-                Debug.Log(rotationCurrentPos);
+                transform.localRotation = Quaternion.Euler(yRot, xRot, 0);
             }
         }
 
@@ -71,16 +81,32 @@ namespace MyRule
 
         private IEnumerator SnapBack()
         {
-            var startRotation = transform.rotation;
-            var endRotation = Quaternion.identity;
+            Quaternion start = transform.localRotation;
+            Quaternion end = Quaternion.identity;
 
-            for (float t = 0.0f; t < snapBackDuration; t += Time.deltaTime)
+            for (float t = 0; t < snapBackDuration; t += Time.deltaTime)
             {
-                transform.rotation = Quaternion.Slerp(startRotation, endRotation, t / snapBackDuration);
+                transform.localRotation = Quaternion.Slerp(start, end, t / snapBackDuration);
                 yield return null;
             }
 
-            transform.rotation = endRotation;
+            transform.localRotation = end;
+        }
+
+        private void OnMouseEnter()
+        {
+            canRotate = true;
+        }
+
+        private void OnMouseOver()
+        {
+            canRotate = true;
+        }
+
+        private void OnMouseExit()
+        {
+            if (!isRotating)
+                canRotate = false;
         }
     }
 }

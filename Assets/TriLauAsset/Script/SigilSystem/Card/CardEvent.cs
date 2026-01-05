@@ -12,5 +12,21 @@ namespace MyRule
         }
     }
 
+    public struct RollSigilCardEvent : IEvent
+    {
+    }
 
+    public struct DeleteSigilCardEvent : IEvent
+    {
+    }
+
+    public struct HoverSigilCardEvent : IEvent
+    {
+        public readonly Card card;
+
+        public HoverSigilCardEvent(Card card)
+        {
+            this.card = card;
+        }
+    }
 }

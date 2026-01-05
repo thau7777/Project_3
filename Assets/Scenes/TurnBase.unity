@@ -2546,6 +2546,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.TB_Menu
   victoryMenu: {fileID: 2023620243}
   loseMenu: {fileID: 397838002}
+  victoryCloseBtn: {fileID: 1163433777}
+  loseCloseBtn: {fileID: 966903855}
 --- !u!1 &525200339
 GameObject:
   m_ObjectHideFlags: 0
@@ -4653,6 +4655,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1591609226}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &881625832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 881625834}
+  - component: {fileID: 881625833}
+  m_Layer: 0
+  m_Name: TestTB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &881625833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881625832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca724f8a56f4f44fadf28ac3df25f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestTB
+  inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
+--- !u!4 &881625834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881625832}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 453.4338, y: 53.37926, z: 763.07574}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &881807300
 GameObject:
   m_ObjectHideFlags: 0
@@ -4994,19 +5041,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 966903856}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 498165811}
-        m_TargetAssemblyTypeName: Turnbase.TB_Menu, Assembly-CSharp
-        m_MethodName: LoadSceneMain
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &966903856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5540,19 +5575,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1163433778}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 498165811}
-        m_TargetAssemblyTypeName: Turnbase.TB_Menu, Assembly-CSharp
-        m_MethodName: LoadSceneMain
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1163433778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8471,6 +8494,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 75167956460423509, guid: 24a7881fbab9cad4699af3c9e9a91582, type: 3}
   m_PrefabInstance: {fileID: 698114369}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1886080844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1886080846}
+  - component: {fileID: 1886080845}
+  m_Layer: 0
+  m_Name: DataPersistence
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1886080845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886080844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c0504244affea4a9eeaaa832a85c89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DataPersistence
+  dataSO: {fileID: 11400000, guid: 1a357f423a97f394ea426ba11a0a9978, type: 2}
+--- !u!4 &1886080846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886080844}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 25.03839, y: 0.00036, z: -1.79856}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1913229290
 GameObject:
   m_ObjectHideFlags: 0
@@ -8650,7 +8718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211cb2e11955f5c4cb92b8b27e979429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VFXManager
-  elementColorMap: {fileID: 11400000, guid: cace27fd984050c4eb3f4af839ea19a1, type: 2}
+  elementColorMap: {fileID: 11400000, guid: 8dd365d758783584ba6ac74d099dd8ef, type: 2}
 --- !u!4 &1935273954
 Transform:
   m_ObjectHideFlags: 0
@@ -9089,3 +9157,5 @@ SceneRoots:
   - {fileID: 834042478}
   - {fileID: 1591609226}
   - {fileID: 1491182014}
+  - {fileID: 1886080846}
+  - {fileID: 881625834}
