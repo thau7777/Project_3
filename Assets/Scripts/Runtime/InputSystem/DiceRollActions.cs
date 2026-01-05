@@ -8,6 +8,16 @@ public class DiceRollActions : InputActions.IDiceRollActions
 
     public event Action onRoll;
 
+    public event Action onRightClick;
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onRightClick?.Invoke();
+        }
+    }
+
     public void OnRoll(InputAction.CallbackContext context)
     {
         if (context.performed)

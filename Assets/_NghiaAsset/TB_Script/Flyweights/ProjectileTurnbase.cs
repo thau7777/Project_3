@@ -2,7 +2,6 @@
 using System.Collections;
 using Turnbase;
 using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {

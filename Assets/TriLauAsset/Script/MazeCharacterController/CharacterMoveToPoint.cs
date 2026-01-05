@@ -9,6 +9,8 @@ namespace MyRule
     {
         [Header("Target")]
         public Transform targetPoint;
+        public DataSO dataSO;
+        public Transform cam;
 
         [Header("Speed")]
         [Tooltip("Tốc độ tăng MoveSpeed (0 -> 1)")]
@@ -29,6 +31,8 @@ namespace MyRule
 
         private CharacterController controller;
         private Vector3 velocity;
+
+        private ShapeInfo currentShape;
 
         private Animator animator;
         private float moveSpeed;
@@ -52,6 +56,12 @@ namespace MyRule
 
             jumpEventBinding = new EventBinding<MazeJumpEvent>(OnJump);
             EventBus<MazeJumpEvent>.Register(jumpEventBinding);
+
+            if (!dataSO.isFrist) 
+            {
+                transform.position = dataSO.playerPosInMaze;
+                cam.transform.position = transform.position;
+            }
         }
 
         private void OnDisable()
@@ -59,6 +69,9 @@ namespace MyRule
             EventBus<MazeSetMovePosEvent>.Deregister(mazeMoveEventBinding);
             EventBus<MazeMoveEvent>.Deregister(mazeMoveActionBinding);
             EventBus<MazeJumpEvent>.Deregister(jumpEventBinding);
+
+            dataSO.isFrist = false;
+            dataSO.playerPosInMaze = transform.position;
         }
 
         private void Awake()
@@ -157,8 +170,10 @@ namespace MyRule
             hasArrived = false;
         }
 
-        private async void OnMove()
+        private async void OnMove(MazeMoveEvent evt)
         {
+            currentShape = evt.shapeInfo;
+
             while (pathPoints.Count > 0)
             {
                 targetPoint = pathPoints.Dequeue();
@@ -173,6 +188,12 @@ namespace MyRule
         {
             targetPoint = null;
             hasArrived = true;
+
+            EventBus<MazeGameplayEvent>.Raise(
+                        new MazeGameplayEvent(
+                            currentShape.shapeSO.shapeType
+                        )
+                    );
         }
 
         void ApplyGravity()

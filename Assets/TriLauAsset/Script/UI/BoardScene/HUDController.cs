@@ -6,22 +6,28 @@ namespace MyRule.UI
     public class HUDController : MonoBehaviour
     {
         public InputReader inputReader;
+        public RuneSO runeSO;
+
         private bool hasTabPressed = false;
 
         private VisualElement root;
         //private VisualElement sigilStorage;
         //private VisualElement buttonConstraint;
         //private VisualElement fade;
-        private Button rollButton;
-        //private Button statsButton;
+        private VisualElement defaultBtn;
+        private VisualElement sigilBtn;
+        private Button diceRollBtn;
+        private Button statsBtn;
+        private Button sigilRollBtn;
+        private Button skipBtn;
 
-        //private EventBinding<SigilBoardEnterEvent> sigilBoardEventBinding;
+        private EventBinding<ShowSigilCardEvent> showSigilCardEventBinding;
         //private EventBinding<SigilBoardExitEvent> sigilBoardExitEventBinding;
 
         private void OnEnable()
         {
-            //sigilBoardEventBinding = new EventBinding<SigilBoardEnterEvent>(OnSigilBoardEnter);
-            //EventBus<SigilBoardEnterEvent>.Register(sigilBoardEventBinding);
+            showSigilCardEventBinding = new EventBinding<ShowSigilCardEvent>(OnSigilBoardEnter);
+            EventBus<ShowSigilCardEvent>.Register(showSigilCardEventBinding);
 
             //sigilBoardExitEventBinding = new EventBinding<SigilBoardExitEvent>(evt => ShowHUD());
             //EventBus<SigilBoardExitEvent>.Register(sigilBoardExitEventBinding);
@@ -48,7 +54,12 @@ namespace MyRule.UI
             //sigilStorage = root.Q<VisualElement>("SigilStorage");
             //buttonConstraint = root.Q<VisualElement>("ButtonConstraint");
             //fade = root.Q<VisualElement>("Fade");
-            rollButton = root.Q<Button>("DiceRollButton");
+            defaultBtn = root.Q<VisualElement>("DefaultBtn");
+            sigilBtn = root.Q<VisualElement>("SigilBtn");
+            diceRollBtn = root.Q<Button>("DiceRollBtn");
+            statsBtn = root.Q<Button>("StatsBtn");
+            sigilRollBtn = root.Q<Button>("SigilRollBtn");
+            skipBtn = root.Q<Button>("SkipBtn");
             //statsButton = root.Q<Button>("StatsButton");
 
             inputReader.SwitchActionMap(ActionMap.DiceRoll);
@@ -56,7 +67,8 @@ namespace MyRule.UI
 
         private void Start()
         {
-            rollButton.clicked += OnRoll;
+            diceRollBtn.clicked += OnRoll;
+            sigilRollBtn.clicked += OnSigilRoll;
             //statsButton.clicked += () =>
             //{
             //    EventBus<PlayerStatsShowEvent>.Raise(new PlayerStatsShowEvent());
@@ -68,11 +80,30 @@ namespace MyRule.UI
             EventBus<DiceRollEvent>.Raise(new DiceRollEvent());
         }
 
-        //private void OnSigilBoardEnter(SigilBoardEnterEvent evt)
-        //{
-        //    sigilStorage.AddToClassList("sigilStorage_hind");
-        //    buttonConstraint.AddToClassList("buttonConstraint_hind");
-        //}
+        private void OnSigilRoll()
+        {
+            if (runeSO.runeCount >= 2)
+            {
+                EventBus<RollSigilCardEvent>.Raise(new RollSigilCardEvent());
+                runeSO.runeCount -= 2;
+            }
+
+            return;
+        }
+
+        private void OnSigilBoardEnter(ShowSigilCardEvent evt)
+        {
+            if (evt.showing)
+            {
+                defaultBtn.AddToClassList("defaultBtn_style_hidden");
+                sigilBtn.RemoveFromClassList("sigilBtn_style_hidden");
+            }
+            else
+            {
+                defaultBtn.RemoveFromClassList("defaultBtn_style_hidden");
+                sigilBtn.AddToClassList("sigilBtn_style_hidden");
+            }
+        }
 
         //public void ShowHUD()
         //{

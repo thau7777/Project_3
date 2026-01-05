@@ -2,11 +2,6 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public struct SigilBoardEnterEvent : IEvent
-    {
-        
-    }
-
     public struct SigilBoardExitEvent : IEvent
     {
         

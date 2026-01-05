@@ -1,83 +1,112 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class CardRotator : MonoBehaviour
+namespace MyRule
 {
-    [SerializeField] private float maxRotationX = 30.0f;
-    [SerializeField] private float maxRotationY = 30.0f;
-    [SerializeField] private float rotationSpeed = 90.0f;
-    [SerializeField] private float snapBackDuration = 0.1f;
-
-    private bool isRotating = false;
-    private Coroutine snapBackRoutine = null;
-    private Vector3 rotationStartPos;
-
-    private void Update()
+    public class CardRotator : MonoBehaviour
     {
-        var mousePos = Input.mousePosition;
-        mousePos.z = 1.0f;
+        [Header("Rotation")]
+        [SerializeField] private float maxRotationX = 30f;
+        [SerializeField] private float maxRotationY = 30f;
+        [SerializeField] private float rotationSpeed = 90f;
+        [SerializeField] private float snapBackDuration = 0.15f;
 
-        //Debug.Log(mousePos);
+        [SerializeField] private Animator animator;
 
-        if (!isRotating && Input.GetMouseButtonDown(0))
+        private bool canRotate = false;   // hover
+        private bool isRotating = false;  // drag lock
+
+        private Vector3 rotationStartPos;
+        private Coroutine snapBackRoutine;
+
+        private Camera mainCam;
+
+        private void Awake()
         {
-            isRotating = true;
-            StopSnapBack();
-            rotationStartPos = Camera.main.ScreenToWorldPoint(mousePos);
+            mainCam = Camera.main;
         }
 
-        if (isRotating && Input.GetMouseButtonUp(0))
+        private void Update()
         {
-            isRotating = false;
-            StopSnapBack();
-            snapBackRoutine = StartCoroutine(SnapBack());
-        }
+            if (!canRotate)
+                return;
 
-        if (isRotating)
-        {
-            var rotationCurrentPos = Camera.main.ScreenToWorldPoint(mousePos);
-            var offset = rotationCurrentPos - rotationStartPos;
+            var mouse = Mouse.current;
+            if (mouse == null) return;
 
-            var xRotation = offset.x * -rotationSpeed;
-            var yRotation = offset.y * rotationSpeed;
+            Vector3 mousePos = mouse.position.ReadValue();
+            mousePos.z = 1f;
 
-            if (Mathf.Abs(xRotation) > maxRotationX)
+            if (!isRotating && canRotate && mouse.rightButton.wasPressedThisFrame)
             {
-                xRotation = maxRotationX * Mathf.Sign(xRotation);
+                isRotating = true;
+                animator.enabled = false;
+                StopSnapBack();
+                rotationStartPos = mainCam.ScreenToWorldPoint(mousePos);
             }
 
-            if (Mathf.Abs(yRotation) > maxRotationY)
+            if (isRotating && mouse.rightButton.wasReleasedThisFrame)
             {
-                yRotation = maxRotationY * Mathf.Sign(yRotation);
+                isRotating = false;
+                canRotate = false;
+                animator.enabled = true;
+                StopSnapBack();
+                snapBackRoutine = StartCoroutine(SnapBack());
             }
 
-            transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
+            if (isRotating)
+            {
+                var currentPos = mainCam.ScreenToWorldPoint(mousePos);
+                var offset = currentPos - rotationStartPos;
 
-            Debug.Log(new Vector2(xRotation, yRotation));
-            Debug.Log(rotationCurrentPos);
+                float xRot = offset.x * -rotationSpeed;
+                float yRot = offset.y * rotationSpeed;
+
+                xRot = -Mathf.Clamp(xRot, -maxRotationX, maxRotationX);
+                yRot = Mathf.Clamp(yRot, -maxRotationY, maxRotationY);
+
+                transform.localRotation = Quaternion.Euler(yRot, xRot, 0);
+            }
         }
-    }
 
-    private void StopSnapBack()
-    {
-        if(snapBackRoutine != null)
+        private void StopSnapBack()
         {
-            StopCoroutine(snapBackRoutine);
-            snapBackRoutine = null;
+            if (snapBackRoutine != null)
+            {
+                StopCoroutine(snapBackRoutine);
+                snapBackRoutine = null;
+            }
         }
-    }
 
-    private IEnumerator SnapBack()
-    {
-        var startRotation = transform.rotation;
-        var endRotation = Quaternion.identity;
-
-        for(float t = 0.0f; t < snapBackDuration; t += Time.deltaTime)
+        private IEnumerator SnapBack()
         {
-            transform.rotation = Quaternion.Slerp(startRotation, endRotation, t / snapBackDuration);
-            yield return null;
+            Quaternion start = transform.localRotation;
+            Quaternion end = Quaternion.identity;
+
+            for (float t = 0; t < snapBackDuration; t += Time.deltaTime)
+            {
+                transform.localRotation = Quaternion.Slerp(start, end, t / snapBackDuration);
+                yield return null;
+            }
+
+            transform.localRotation = end;
         }
 
-        transform.rotation = endRotation;
+        private void OnMouseEnter()
+        {
+            canRotate = true;
+        }
+
+        private void OnMouseOver()
+        {
+            canRotate = true;
+        }
+
+        private void OnMouseExit()
+        {
+            if (!isRotating)
+                canRotate = false;
+        }
     }
 }
