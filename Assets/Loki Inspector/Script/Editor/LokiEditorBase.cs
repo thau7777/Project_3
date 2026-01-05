@@ -25,10 +25,6 @@ public abstract class LokiEditorBase : Editor
         public override int GetHashCode() => Foldout.GetHashCode() ^ Tab.GetHashCode();
     }
 
-    private Dictionary<string, bool> _foldouts = new();
-    private int _selectedTab = 0;
-    private Dictionary<string, ReorderableList> _reorderables = new();
-
     public override void OnInspectorGUI()
     {
         // --- Edit Script Button (works for MonoBehaviour + ScriptableObject) ---
@@ -51,8 +47,14 @@ public abstract class LokiEditorBase : Editor
 
         serializedObject.Update();
 
+        DrawGroupedProperties(serializedObject, target.GetType(), "");
 
-        var type = target.GetType();
+        DrawButtons();
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    private void DrawGroupedProperties(SerializedObject serializedObj, Type type, string pathPrefix)
+    {
         var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         var normalProps = new List<SerializedProperty>();
@@ -64,8 +66,8 @@ public abstract class LokiEditorBase : Editor
         foreach (var field in fields)
         {
             if (field.IsDefined(typeof(HideInInspector))) continue;
-            var prop = serializedObject.FindProperty(field.Name);
-            if (prop == null || !ShouldShowField(field)) continue;
+            var prop = serializedObj.FindProperty(field.Name);
+            if (prop == null || !ShouldShowField(field, serializedObj.targetObject)) continue;
 
             var tabAttr = field.GetCustomAttribute<TabGroupAttribute>();
             var foldAttr = field.GetCustomAttribute<FoldoutGroupAttribute>();
@@ -79,7 +81,7 @@ public abstract class LokiEditorBase : Editor
                 {
                     if (existingTab != tab)
                     {
-                        string fieldKey = prop.name;
+                        string fieldKey = pathPrefix + prop.name;
                         foldoutErrors[fieldKey] = $"FoldoutGroup \"{foldout}\" is used in multiple TabGroups (\"{existingTab}\" vs \"{tab}\"). This is not allowed.";
                         continue;
                     }
@@ -116,19 +118,21 @@ public abstract class LokiEditorBase : Editor
             EditorGUILayout.HelpBox(kvp.Value, MessageType.Error);
 
         foreach (var p in normalProps)
-            DrawProperty(p);
+            DrawProperty(p, pathPrefix);
 
         foreach (var kvp in foldGroups)
         {
-            if (!_foldouts.ContainsKey(kvp.Key))
-                _foldouts[kvp.Key] = true;
+            string foldoutKey = GetFoldoutStateKey(serializedObj.targetObject, pathPrefix + kvp.Key);
+            bool foldoutState = SessionState.GetBool(foldoutKey, true);
 
-            _foldouts[kvp.Key] = EditorGUILayout.Foldout(_foldouts[kvp.Key], kvp.Key, true);
-            if (_foldouts[kvp.Key])
+            foldoutState = EditorGUILayout.Foldout(foldoutState, kvp.Key, true);
+            SessionState.SetBool(foldoutKey, foldoutState);
+
+            if (foldoutState)
             {
                 EditorGUI.indentLevel++;
                 foreach (var p in kvp.Value)
-                    DrawProperty(p);
+                    DrawProperty(p, pathPrefix);
                 EditorGUI.indentLevel--;
             }
         }
@@ -136,10 +140,14 @@ public abstract class LokiEditorBase : Editor
         if (tabGroups.Count > 0)
         {
             var groupNames = tabGroups.Keys.ToArray();
-            _selectedTab = GUILayout.Toolbar(_selectedTab, groupNames);
-            _selectedTab = Mathf.Clamp(_selectedTab, 0, groupNames.Length - 1);
+            string tabKey = GetTabStateKey(serializedObj.targetObject, pathPrefix);
 
-            var activeGroup = groupNames[_selectedTab];
+            int tabSelection = SessionState.GetInt(tabKey, 0);
+            tabSelection = DrawWrappingToolbar(tabSelection, groupNames);
+            tabSelection = Mathf.Clamp(tabSelection, 0, groupNames.Length - 1);
+            SessionState.SetInt(tabKey, tabSelection);
+
+            var activeGroup = groupNames[tabSelection];
             var foldoutMap = tabGroups[activeGroup];
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -149,23 +157,24 @@ public abstract class LokiEditorBase : Editor
                 if (string.IsNullOrEmpty(foldout))
                 {
                     foreach (var p in foldoutMap[foldout])
-                        DrawProperty(p);
+                        DrawProperty(p, pathPrefix);
                 }
                 else
                 {
-                    if (!_foldouts.ContainsKey(foldout))
-                        _foldouts[foldout] = true;
+                    string foldoutKey = GetFoldoutStateKey(serializedObj.targetObject, pathPrefix + foldout);
+                    bool foldoutState = SessionState.GetBool(foldoutKey, true);
 
                     EditorGUILayout.BeginHorizontal(LokiSpecialGUIStyle.GetFoldoutStyle());
-                    _foldouts[foldout] = EditorGUILayout.Foldout(_foldouts[foldout], foldout, true);
+                    foldoutState = EditorGUILayout.Foldout(foldoutState, foldout, true);
+                    SessionState.SetBool(foldoutKey, foldoutState);
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                    if (_foldouts[foldout])
+                    if (foldoutState)
                     {
                         EditorGUI.indentLevel++;
                         foreach (var p in foldoutMap[foldout])
-                            DrawProperty(p);
+                            DrawProperty(p, pathPrefix);
                         EditorGUI.indentLevel--;
                     }
                     EditorGUILayout.EndVertical();
@@ -174,19 +183,28 @@ public abstract class LokiEditorBase : Editor
 
             EditorGUILayout.EndVertical();
         }
-
-        DrawButtons();
-        serializedObject.ApplyModifiedProperties();
     }
 
-    private bool ShouldShowField(FieldInfo field)
+    private string GetFoldoutStateKey(UnityEngine.Object target, string foldoutName)
+    {
+        // Use a combination of script type and foldout name for consistency
+        return $"LokiEditor_Foldout_{target.GetType().Name}_{foldoutName}";
+    }
+
+    private string GetTabStateKey(UnityEngine.Object target, string pathPrefix)
+    {
+        // Use script type and path prefix for consistency
+        return $"LokiEditor_Tab_{target.GetType().Name}_{pathPrefix}";
+    }
+
+    private bool ShouldShowField(FieldInfo field, object targetObj)
     {
         var sif = field.GetCustomAttribute<ShowIfAttribute>();
         if (sif != null)
         {
             var cond = field.DeclaringType.GetField(sif.Condition, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             if (cond == null || cond.FieldType != typeof(bool)) return false;
-            bool val = (bool)cond.GetValue(target);
+            bool val = (bool)cond.GetValue(targetObj);
             if (sif.Invert) val = !val;
             if (!val) return false;
         }
@@ -196,19 +214,36 @@ public abstract class LokiEditorBase : Editor
         {
             var ef = field.DeclaringType.GetField(sien.EnumFieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             if (ef == null || !ef.FieldType.IsEnum) return false;
-            var cur = ef.GetValue(target);
+            var cur = ef.GetValue(targetObj);
             if (!sien.TargetValues.Contains(cur)) return false;
         }
 
         return true;
     }
 
-
-    private void DrawProperty(SerializedProperty prop)
+    private void DrawProperty(SerializedProperty prop, string pathPrefix)
     {
         var field = target.GetType().GetField(prop.name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        if (field == null) return;
+        if (field == null)
+        {
+            // For nested properties, try to find the field in the property path
+            EditorGUILayout.PropertyField(prop, true);
+            return;
+        }
 
+        // NEVER customize List / Array – let Unity handle it
+        if (prop.isArray && prop.propertyType != SerializedPropertyType.String)
+        {
+            EditorGUILayout.PropertyField(prop, true);
+            return;
+        }
+
+        DrawSingleProperty(prop, field);
+
+    }
+
+    private void DrawSingleProperty(SerializedProperty prop, FieldInfo field)
+    {
         bool prevEnabled = GUI.enabled;
         GUI.enabled = field.GetCustomAttribute<ReadOnlyAttribute>() == null;
 
@@ -223,7 +258,7 @@ public abstract class LokiEditorBase : Editor
             bool isAssigned = prop.propertyType switch
             {
                 SerializedPropertyType.ObjectReference => prop.objectReferenceValue != null,
-                _ => prop.propertyType != SerializedPropertyType.Generic // fallback
+                _ => prop.propertyType != SerializedPropertyType.Generic
             };
 
             if (!isAssigned)
@@ -289,6 +324,79 @@ public abstract class LokiEditorBase : Editor
                     m.Invoke(target, null);
             }
         }
+    }
+
+    private int DrawWrappingToolbar(int selected, string[] options)
+    {
+        if (options == null || options.Length == 0) return selected;
+
+        int newSelected = selected;
+        float maxWidth = EditorGUIUtility.currentViewWidth - 40; // Account for margins
+        float currentLineWidth = 0;
+        int buttonIndex = 0;
+
+        EditorGUILayout.BeginVertical();
+
+        while (buttonIndex < options.Length)
+        {
+            EditorGUILayout.BeginHorizontal();
+
+            while (buttonIndex < options.Length)
+            {
+                // Calculate button width
+                GUIContent content = new GUIContent(options[buttonIndex]);
+                Vector2 size = GUI.skin.button.CalcSize(content);
+                float buttonWidth = Mathf.Max(size.x + 20, 80); // Min width of 80
+
+                // Check if button fits on current line
+                if (currentLineWidth + buttonWidth > maxWidth && currentLineWidth > 0)
+                {
+                    // Start new line
+                    break;
+                }
+
+                // Draw button with clear visual distinction for selected tab
+                bool isSelected = buttonIndex == selected;
+
+                Color originalBgColor = GUI.backgroundColor;
+                Color originalContentColor = GUI.contentColor;
+
+                if (isSelected)
+                {
+                    // Make selected tab very obvious with bright blue background
+                    GUI.backgroundColor = new Color(0.3f, 0.6f, 1f, 1f); // Bright blue
+                    GUI.contentColor = Color.white;
+                }
+
+                GUIStyle style = new GUIStyle(GUI.skin.button);
+                if (isSelected)
+                {
+                    style.fontStyle = FontStyle.Bold;
+                    style.normal.textColor = Color.white;
+                    style.hover.textColor = Color.white;
+                    style.active.textColor = Color.white;
+                }
+
+                if (GUILayout.Button(options[buttonIndex], style, GUILayout.MinWidth(buttonWidth)))
+                {
+                    newSelected = buttonIndex;
+                }
+
+                // Restore colors
+                GUI.backgroundColor = originalBgColor;
+                GUI.contentColor = originalContentColor;
+
+                currentLineWidth += buttonWidth + 2; // +2 for spacing
+                buttonIndex++;
+            }
+
+            EditorGUILayout.EndHorizontal();
+            currentLineWidth = 0;
+        }
+
+        EditorGUILayout.EndVertical();
+
+        return newSelected;
     }
 
     protected bool TryParseColor(string name, out Color color)

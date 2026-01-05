@@ -277,8 +277,22 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         if (location.ToString() == "Mouse")
         {
             Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
-            vfx.transform.position = _savedMousePosition;
-            MinionsManager.Instance.RemoveAllTargetedEnemies();
+
+            vfx.FlyweightInitialize(_savedMousePosition);
+            if(vfx is OneShotVFX) 
+            {
+                var oneshotVFX = vfx as OneShotVFX;
+                var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
+                if(oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
+                    hitBoxHandler.DodgeLayers = _locomotionSet.CurrentAttackData.dodgeLayers;
+                if(oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
+                    damageDealer.Damage = _locomotionSet.CurrentAttackData.damage;
+                oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
+            }
+            if (flyweightSettings.name == "SummonerBasicAttack")
+            {
+                MinionsManager.Instance.RemoveAllTargetedEnemies();
+            }
             return;
         }
         foreach (var spawnPoint in _attackVfxSpawnPoints)
@@ -291,14 +305,24 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 if (vfx is StraightProjectile)
                 {
                     var straightProjectile = vfx as StraightProjectile;
-                    StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
-                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10, projectileSettings.defaultSize);
+                    straightProjectile.InitializeProjectile(
+                        spawnPoint.forward, 
+                        _locomotionSet.CurrentAttackData.projectileSpeed, 
+                        _locomotionSet.CurrentAttackData.projectileDuration,
+                        _locomotionSet.CurrentAttackData.size, 
+                        _locomotionSet.CurrentAttackData.damage);
                 }
                 else if(vfx is OneShotVFX) 
                 {
                     var oneshotVFX = vfx as OneShotVFX;
                     var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
-                    oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
+
+                    if (oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
+                        hitBoxHandler.DodgeLayers = _locomotionSet.CurrentAttackData.dodgeLayers;
+                    if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
+                        damageDealer.Damage = _locomotionSet.CurrentAttackData.damage;
+
+                    oneshotVFX.InitializeVFX(_locomotionSet.CurrentAttackData.size, oneshotSettings.DefaultLifeTime);
                 }
                 break;
             }
