@@ -45,13 +45,11 @@ public class Damageable : MonoBehaviour
         statusBarsUIController?.InitializeValue(CurrentHealth,MaxHealth,ShieldHealth, MaxShieldHealth);
         if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
         {
-            if(!enemy.IsBoss)
+            if (HealthBarUI != null)
+                HealthBarUI.SetActive(true);
+            if (hasShieldBreakingMechanic && ShieldBarUI != null)
             {
-                HealthBarUI?.SetActive(true);
-                if (hasShieldBreakingMechanic && ShieldBarUI != null)
-                {
-                    ShieldBarUI.SetActive(true);
-                }
+                ShieldBarUI.SetActive(true);
             }
         }
 
@@ -70,16 +68,13 @@ public class Damageable : MonoBehaviour
 
         if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
         {
-            if (!enemy.IsBoss)
+            if (HealthBarUI != null)
             {
-                if (HealthBarUI != null)
-                {
-                    HealthBarUI.SetActive(false);
-                }
-                if (hasShieldBreakingMechanic && ShieldBarUI != null)
-                {
-                    ShieldBarUI.SetActive(false);
-                }
+                HealthBarUI.SetActive(false);
+            }
+            if (hasShieldBreakingMechanic && ShieldBarUI != null)
+            {
+                ShieldBarUI.SetActive(false);
             }
         }
     }
@@ -87,6 +82,27 @@ public class Damageable : MonoBehaviour
     {
         if(_invincibleElapsedTime > 0)
             _invincibleElapsedTime -= Time.deltaTime;
+    }
+    private void OnParticleCollision(GameObject other)
+    {
+        if(other.TryGetComponent<OneShotVFX>(out var oneShotVfx))
+        {
+            OneShotVFXSettings vfxSettings = oneShotVfx.settings as OneShotVFXSettings;
+            if(vfxSettings.dodgeLayers.Contains(gameObject.layer)) return;
+        }
+        //else if(other.TryGetComponent<ContinousVFX>(out var continousVFX))
+        //{
+
+        //}
+        if (other.TryGetComponent<DamageDealer>(out var damageDealer))
+        {
+            Vector3 hitDirection = transform.position - other.transform.position;
+            damageDealer.DealDamage(other, gameObject);
+        }
+        if(other.TryGetComponent<EffectApplier>(out var effectApplier))
+        {
+            effectApplier.ApplyEffect(other, gameObject);
+        }
     }
     public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType)
     {

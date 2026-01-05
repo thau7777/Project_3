@@ -3,7 +3,6 @@ using HSM;
 public class EnemyTopdownAttack : State
 {
     readonly EnemyTopdownContext ctx;
-    Vector3 _targetLastPosition;
     public EnemyTopdownAttack(StateMachine machine, State parent, EnemyTopdownContext context) : base(machine, parent)
     {
         ctx = context;
@@ -11,13 +10,29 @@ public class EnemyTopdownAttack : State
  
     protected override void OnEnter()
     {
-        _targetLastPosition = ctx.CurrentTargetTransform.position;
-        ctx.CurrentSpeed = 0;
-        //if (GetTransition() != null) return;
-        ctx.Animator.CrossFade(ctx.AttackHash, 0,0);
+        if (ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.ExecutingOnly &&
+            ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.Full)
+            ctx.CurrentSpeed = ctx.CurrentEnemyAttackData.movementSpeed;
+        else
+            ctx.CurrentSpeed = 0;
+
+        if (ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.ExecutingOnly ||
+            ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.Full)
+            ctx.RotateSpeed = ctx.CurrentEnemyAttackData.rotateSpeed;
+        else
+            ctx.RotateSpeed = ctx.BaseRotateSpeed;
+
+        ctx.IsAttacking = true;
+        ctx.Animator.CrossFade(ctx.CurrentEnemyAttackData.executeAnimationName, 0,0);
     }protected override void OnUpdate(float deltaTime)
     {
-        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime,_targetLastPosition);
+        if(ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.ExecutingOnly ||
+            ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.Full)
+            ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.CurrentTargetTransform.position);
+
+        if (ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.ExecutingOnly &&
+            ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.Full)
+            ctx.MoveDir = (ctx.CurrentTargetTransform.position - ctx.RootTransform.position).normalized;
     }
     protected override State GetTransition()
     {
@@ -29,14 +44,46 @@ public class EnemyTopdownAttack : State
         {
             return ((EnemyTopdownRoot)Parent).Stunned;
         }
-        if (ctx.IsHurting)
+        if (!ctx.IsAttacking)
         {
-            return ((EnemyTopdownRoot)Parent).Hurt;
-        }
-        if (ctx.IsDoneAttacking)
-        {
-            ctx.IsDoneAttacking = false;
-            return ((EnemyTopdownRoot)Parent).Idle;
+            if (ctx.EnemyType == EnemyTopdownMovementType.Range)
+            {
+
+                // In optimal range - can attack
+                if (ctx.DistanceToTarget >= ctx.MinRangeDistance &&
+                    ctx.DistanceToTarget <= ctx.MaxRangeDistance &&
+                    ctx.CheckAndPickRandomAttack())
+                {
+                    if (ctx.CurrentEnemyAttackData.needCharge)
+                        return ((EnemyTopdownRoot)Parent).Charge;
+                    return ((EnemyTopdownRoot)Parent).Attack;
+
+                    // Stay in move state to maintain optimal distance
+                }
+                if(ctx.DistanceToTarget < 1.5f)
+                    return ((EnemyTopdownRoot)Parent).Idle;
+                return ((EnemyTopdownRoot)Parent).Move;
+                // Continue moving to get into optimal range
+            }
+            else
+            {
+                if (ctx.IsTargetInMaxAttackRange())
+                {
+                    if (ctx.CheckAndPickRandomAttack())
+                    {
+                        if (ctx.CurrentEnemyAttackData.needCharge)
+                            return ((EnemyTopdownRoot)Parent).Charge;
+                        return ((EnemyTopdownRoot)Parent).Attack;
+                    }
+                    if (ctx.DistanceToTarget < 1.5f)
+                        return ((EnemyTopdownRoot)Parent).Idle;
+                    return ((EnemyTopdownRoot)Parent).Move;
+                }
+                return ((EnemyTopdownRoot)Parent).Move;
+
+
+
+            }
         }
         return null;
     }

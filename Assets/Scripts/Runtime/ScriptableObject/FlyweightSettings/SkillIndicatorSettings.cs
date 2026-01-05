@@ -30,10 +30,12 @@ public class SkillIndicatorSettings : FlyweightSettings
         return flyweight;
     }
 
-    //public override void OnGet(Flyweight f)
-    //{
-
-    //}
+    public override void OnRelease(Flyweight f)
+    {
+        if(f.transform.parent != null)
+            f.transform.SetParent(null);
+        base.OnRelease(f);
+    }
 }
 
 

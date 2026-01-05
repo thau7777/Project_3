@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 /// <summary>
-/// Controls shader effects on a renderer using VFXMaterialData scriptable objects
+/// Controls shader effects on multiple renderers using VFXMaterialData scriptable objects
 /// </summary>
 public class ShaderEffectController : MonoBehaviour
 {
@@ -13,25 +13,37 @@ public class ShaderEffectController : MonoBehaviour
     public List<VFXMaterialData> vfxMaterialDataList = new List<VFXMaterialData>();
 
     [Header("References")]
-    [Tooltip("The renderer component (auto-assigned if null)")]
-    public Renderer targetRenderer;
+    [Tooltip("List of renderer components to apply effects to (auto-assigned if empty)")]
+    public List<Renderer> targetRenderers = new List<Renderer>();
 
     // Internal state
-    private Material originalMaterial;
-    private Material currentEffectMaterial;
+    private Dictionary<Renderer, Material> originalMaterials = new Dictionary<Renderer, Material>();
+    private Dictionary<Renderer, Material> currentEffectMaterials = new Dictionary<Renderer, Material>();
     private Coroutine activeCoroutine;
 
     private void Awake()
     {
-        if (targetRenderer == null)
-            targetRenderer = GetComponent<Renderer>();
+        // Auto-assign renderers if list is empty
+        if (targetRenderers.Count == 0)
+        {
+            Renderer renderer = GetComponent<Renderer>();
+            if (renderer != null)
+                targetRenderers.Add(renderer);
+        }
 
-        if (targetRenderer != null)
-            originalMaterial = targetRenderer.sharedMaterial;
+        // Store original materials for each renderer
+        foreach (var renderer in targetRenderers)
+        {
+            if (renderer != null)
+            {
+                originalMaterials[renderer] = renderer.sharedMaterial;
+            }
+        }
     }
+
     private void OnEnable()
     {
-        RestoreOriginalMaterial();
+        RestoreOriginalMaterials();
     }
 
     /// <summary>
@@ -74,9 +86,9 @@ public class ShaderEffectController : MonoBehaviour
             return;
         }
 
-        if (targetRenderer == null)
+        if (targetRenderers.Count == 0)
         {
-            Debug.LogError("Target renderer is null!");
+            Debug.LogError("Target renderers list is empty!");
             return;
         }
 
@@ -92,7 +104,7 @@ public class ShaderEffectController : MonoBehaviour
     }
 
     /// <summary>
-    /// Stop the currently playing effect and restore original material
+    /// Stop the currently playing effect and restore original materials
     /// </summary>
     public void StopEffect()
     {
@@ -102,22 +114,28 @@ public class ShaderEffectController : MonoBehaviour
             activeCoroutine = null;
         }
 
-        RestoreOriginalMaterial();
+        RestoreOriginalMaterials();
     }
 
     private IEnumerator PlayEffectCoroutine(VFXMaterialData data)
     {
-        // Create instance of effect material
-        currentEffectMaterial = new Material(data.effectMaterial);
-
-        // Copy textures if enabled
-        if (data.copyTextures && originalMaterial != null)
+        // Create instance of effect material for each renderer
+        foreach (var renderer in targetRenderers)
         {
-            CopyTextures(originalMaterial, currentEffectMaterial, data.textureMappings);
-        }
+            if (renderer == null) continue;
 
-        // Apply effect material to renderer
-        targetRenderer.material = currentEffectMaterial;
+            Material effectMaterial = new Material(data.effectMaterial);
+            currentEffectMaterials[renderer] = effectMaterial;
+
+            // Copy textures if enabled
+            if (data.copyTextures && originalMaterials.ContainsKey(renderer) && originalMaterials[renderer] != null)
+            {
+                CopyTextures(originalMaterials[renderer], effectMaterial, data.textureMappings);
+            }
+
+            // Apply effect material to renderer
+            renderer.material = effectMaterial;
+        }
 
         // Animate the shader property
         float elapsed = 0f;
@@ -128,18 +146,31 @@ public class ShaderEffectController : MonoBehaviour
             float curveValue = data.curve.Evaluate(t);
             float propertyValue = Mathf.Lerp(data.startValue, data.endValue, curveValue);
 
-            currentEffectMaterial.SetFloat(data.propertyName, propertyValue);
+            // Update property on all effect materials
+            foreach (var kvp in currentEffectMaterials)
+            {
+                if (kvp.Value != null)
+                {
+                    kvp.Value.SetFloat(data.propertyName, propertyValue);
+                }
+            }
 
             yield return null;
         }
 
-        // Ensure final value is set
-        currentEffectMaterial.SetFloat(data.propertyName, data.endValue);
+        // Ensure final value is set on all materials
+        foreach (var kvp in currentEffectMaterials)
+        {
+            if (kvp.Value != null)
+            {
+                kvp.Value.SetFloat(data.propertyName, data.endValue);
+            }
+        }
 
-        // Restore original material if requested
+        // Restore original materials if requested
         if (data.restoreOnComplete)
         {
-            RestoreOriginalMaterial();
+            RestoreOriginalMaterials();
         }
 
         activeCoroutine = null;
@@ -166,27 +197,38 @@ public class ShaderEffectController : MonoBehaviour
         }
     }
 
-    private void RestoreOriginalMaterial()
+    private void RestoreOriginalMaterials()
     {
-        if (targetRenderer != null && originalMaterial != null)
+        foreach (var renderer in targetRenderers)
         {
-            targetRenderer.material = originalMaterial;
+            if (renderer != null && originalMaterials.ContainsKey(renderer) && originalMaterials[renderer] != null)
+            {
+                renderer.material = originalMaterials[renderer];
+            }
         }
 
-        if (currentEffectMaterial != null)
+        // Clean up instanced materials
+        foreach (var kvp in currentEffectMaterials)
         {
-            Destroy(currentEffectMaterial);
-            currentEffectMaterial = null;
+            if (kvp.Value != null)
+            {
+                Destroy(kvp.Value);
+            }
         }
+        currentEffectMaterials.Clear();
     }
 
     private void OnDestroy()
     {
-        // Clean up instanced material
-        if (currentEffectMaterial != null)
+        // Clean up all instanced materials
+        foreach (var kvp in currentEffectMaterials)
         {
-            Destroy(currentEffectMaterial);
+            if (kvp.Value != null)
+            {
+                Destroy(kvp.Value);
+            }
         }
+        currentEffectMaterials.Clear();
     }
 
     #region Public Helper Methods
@@ -215,6 +257,47 @@ public class ShaderEffectController : MonoBehaviour
     public bool IsPlaying()
     {
         return activeCoroutine != null;
+    }
+
+    /// <summary>
+    /// Add a renderer to the target list
+    /// </summary>
+    public void AddRenderer(Renderer renderer)
+    {
+        if (renderer != null && !targetRenderers.Contains(renderer))
+        {
+            targetRenderers.Add(renderer);
+            originalMaterials[renderer] = renderer.sharedMaterial;
+        }
+    }
+
+    /// <summary>
+    /// Remove a renderer from the target list
+    /// </summary>
+    public void RemoveRenderer(Renderer renderer)
+    {
+        if (renderer != null)
+        {
+            targetRenderers.Remove(renderer);
+
+            if (originalMaterials.ContainsKey(renderer))
+                originalMaterials.Remove(renderer);
+
+            if (currentEffectMaterials.ContainsKey(renderer))
+            {
+                if (currentEffectMaterials[renderer] != null)
+                    Destroy(currentEffectMaterials[renderer]);
+                currentEffectMaterials.Remove(renderer);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Get the number of target renderers
+    /// </summary>
+    public int GetRendererCount()
+    {
+        return targetRenderers.Count;
     }
 
     #endregion

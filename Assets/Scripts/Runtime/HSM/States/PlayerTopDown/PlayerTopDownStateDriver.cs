@@ -292,7 +292,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 {
                     var straightProjectile = vfx as StraightProjectile;
                     StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
-                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10, projectileSettings.defaultSize);
+                    straightProjectile.InitializeProjectile(spawnPoint.forward, 10,10, projectileSettings.defaultSize, 40);
                 }
                 else if(vfx is OneShotVFX) 
                 {

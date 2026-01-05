@@ -4,13 +4,14 @@ using UnityEngine;
 public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
+    public LayerMask DodgeLayers { get; set; }
     private Vector3? _direction = null;
     private Rigidbody _rb;
     private float _speed;
     private float _range;
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
-
+    public float Damage { get; set; }
 
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
@@ -32,7 +33,7 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(Vector3 direction, float speed, float range, float size)
+    public void InitializeProjectile(Vector3 direction, float speed, float range, float size,float damage)
     {
 
         _direction = direction.normalized;
@@ -42,6 +43,8 @@ public class StraightProjectile : Flyweight
         _traveledDistance = 0f;
 
         transform.localScale = new Vector3(size, size, size);
+
+        Damage = damage;
     }
 
     private void FixedUpdate()
@@ -86,15 +89,25 @@ public class StraightProjectile : Flyweight
     {
         var projectileImpactFlyweight = FlyweightFactory.Spawn(settings.ProjectileImpactVFX);
         projectileImpactFlyweight.FlyweightInitialize(transform.position, Quaternion.identity);
+        if(projectileImpactFlyweight.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
+        {
+            hitBoxHandler.DodgeLayers = DodgeLayers;
+        }
 
         var impactVFX = projectileImpactFlyweight as OneShotVFX;
         OneShotVFXSettings impactVFXSettings = impactVFX.settings as OneShotVFXSettings;
+
+        if(impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
+        {
+            damageDealer.Damage = Damage;
+        }
+
         impactVFX.InitializeVFX(settings.defaultImpactVFXSize, impactVFXSettings.DefaultLifeTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((settings.DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
+        if ((DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
             if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
             DespawnFlyweight();

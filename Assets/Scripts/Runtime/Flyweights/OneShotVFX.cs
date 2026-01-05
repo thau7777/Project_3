@@ -6,11 +6,13 @@ using UnityEngine.VFX;
 public class OneShotVFX : Flyweight
 {
     new OneShotVFXSettings settings => (OneShotVFXSettings)base.settings;
+    public float Damage { get; set; }
     private Coroutine _despawnCoroutine;
     private Coroutine _decalSpawnCoroutine;
 
     private void OnEnable()
     {
+        Damage = settings.Damage;
         if (_despawnCoroutine != null)
         {
             StopCoroutine(_despawnCoroutine);
@@ -81,10 +83,12 @@ public class OneShotVFX : Flyweight
             Debug.LogWarning($"Unsupported property type: {typeof(T)} for property: {propertyName}");
         }
     }
-    public void InitializeVFX(float size, float lifeTime)
+    public void InitializeVFX(float size, float lifeTime, Transform parent = null)
     {
         gameObject.SetActive(true);
         transform.localScale = new Vector3(size, size, size);
+        if(parent)
+            transform.SetParent(parent);
         if (settings.useAdvanceSettings)
         {
             //CheckAndSetProperty(settings.sizeName, size);
@@ -108,9 +112,10 @@ public class OneShotVFX : Flyweight
             }
         }
 
-        if (settings.HasHitBox) 
+        if (settings.HasHitBox && !settings.UseParticleCollision) 
             GetComponent<HitBoxHandler>().StartHitBoxCoroutine(lifeTime);
-
+        if(settings.CanDealDamage)
+            GetComponent<DamageDealer>().Damage = Damage;
         _despawnCoroutine = StartCoroutine(LifetimeRoutine(lifeTime));
     }
     private IEnumerator LifetimeRoutine(float lifeTime)

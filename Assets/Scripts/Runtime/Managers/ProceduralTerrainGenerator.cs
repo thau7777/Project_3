@@ -5,72 +5,72 @@ public class ProceduralTerrainGenerator : MonoBehaviour
     [Header("Terrain Reference")]
     public Terrain terrain;
 
-    [Header("Height Generation")]
-    [Range(0.001f, 0.1f)]
-    public float heightScale = 0.02f;
+    [Header("Terrain Height (Optional)")]
+    [Tooltip("Set to 0 for completely flat terrain")]
+    [Range(0f, 0.1f)]
+    public float flatHeight = 0f;
+
+    [Header("Texture Noise Settings")]
     [Range(1f, 50f)]
-    public float noiseScale = 20f;
+    public float textureNoiseScale = 15f;
     public int seed = 0;
 
     [Header("Texture Layers (Assign in order)")]
     [Tooltip("0: Grass, 1: Dirt/Rock, 2: Sand/Path, etc.")]
     public TerrainLayer[] terrainLayers;
 
-    [Header("Texture Painting Settings")]
+    [Header("Layer Distribution Settings")]
+    [Tooltip("Percentage of terrain that will be grass (Layer 0)")]
     [Range(0f, 1f)]
-    public float grassHeightThreshold = 0.3f;
-    [Range(0f, 1f)]
-    public float rockSlopeThreshold = 0.5f;
-    public float textureNoiseScale = 15f;
+    public float grassPercentage = 0.8f;
 
     [Header("Trees (Instantiated GameObjects)")]
     public GameObject[] treePrefabs;
     [Range(0, 100)]
     public int treeCount = 10;
-    [Range(0f, 1f)]
-    public float treeHeightMin = 0.2f;
-    [Range(0f, 1f)]
-    public float treeHeightMax = 0.8f;
     [Range(0.5f, 2f)]
     public float treeMinScale = 0.8f;
     [Range(0.5f, 2f)]
     public float treeMaxScale = 1.2f;
+    [Tooltip("Spawn trees only on specific layer (0 = Grass)")]
+    public int treeSpawnLayer = 0;
+    [Range(0f, 1f)]
+    public float treeLayerWeightThreshold = 0.5f;
     public Transform treeParent;
 
     [Header("Grass (Instantiated GameObjects)")]
     public GameObject[] grassPrefabs;
     [Range(0, 10000)]
     public int grassCount = 2000;
-    [Range(0f, 1f)]
-    public float grassHeightMin = 0.1f;
-    [Range(0f, 1f)]
-    public float grassHeightMax = 0.7f;
     [Range(0.1f, 5f)]
     public float grassMinScale = 0.5f;
     [Range(0.1f, 5f)]
     public float grassMaxScale = 1.5f;
     [Range(0f, 1f)]
     public float grassDensity = 0.7f;
+    [Tooltip("Spawn grass only on specific layer (0 = Grass)")]
+    public int grassSpawnLayer = 0;
+    [Range(0f, 1f)]
+    public float grassLayerWeightThreshold = 0.3f;
     public Transform grassParent;
 
     [Header("Decorations (Rocks, Bushes, etc.)")]
     public GameObject[] decorationPrefabs;
     [Range(0, 2000)]
     public int decorationCount = 500;
-    [Range(0f, 1f)]
-    public float decorationHeightMin = 0.1f;
-    [Range(0f, 1f)]
-    public float decorationHeightMax = 0.7f;
     [Range(0.1f, 10f)]
     public float decorationMinScale = 0.5f;
     [Range(0.1f, 10f)]
     public float decorationMaxScale = 2.0f;
+    [Tooltip("Spawn decorations on specific layer (-1 = any layer)")]
+    public int decorationSpawnLayer = -1;
+    [Range(0f, 1f)]
+    public float decorationLayerWeightThreshold = 0.5f;
     public Transform decorationParent;
 
     private TerrainData terrainData;
     private int heightmapResolution;
     private int alphamapResolution;
-    private int detailResolution;
     private System.Random rng;
 
     void Start()
@@ -80,10 +80,8 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         if (terrain == null)
             terrain = GetComponent<Terrain>();
 
-        // CLEANUP FIRST - Remove all old generated content
         CleanupAllGenerated();
 
-        // Use the existing terrain data directly - no need to instantiate
         terrainData = terrain.terrainData;
         if (terrainData == null)
         {
@@ -93,25 +91,20 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
         heightmapResolution = terrainData.heightmapResolution;
         alphamapResolution = terrainData.alphamapResolution;
-        detailResolution = terrainData.detailResolution;
 
         Debug.Log($"Heightmap Resolution: {heightmapResolution}");
         Debug.Log($"Alphamap Resolution: {alphamapResolution}");
-        Debug.Log($"Detail Resolution: {detailResolution}");
 
-        // Use random seed each time for variety
         seed = Random.Range(0, 100000);
         rng = new System.Random(seed);
 
         GenerateTerrain();
     }
 
-    // === CLEANUP METHOD - Removes all old generated content ===
     void CleanupAllGenerated()
     {
         Debug.Log("Cleaning up old generated content...");
 
-        // Clean up trees
         if (treeParent != null)
         {
             int treeChildCount = treeParent.childCount;
@@ -122,7 +115,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             Debug.Log($"Removed {treeChildCount} old trees");
         }
 
-        // Clean up grass
         if (grassParent != null)
         {
             int grassChildCount = grassParent.childCount;
@@ -133,7 +125,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             Debug.Log($"Removed {grassChildCount} old grass objects");
         }
 
-        // Clean up decorations
         if (decorationParent != null)
         {
             int decorationChildCount = decorationParent.childCount;
@@ -144,7 +135,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             Debug.Log($"Removed {decorationChildCount} old decoration objects");
         }
 
-        // Force garbage collection (optional but helpful)
         System.GC.Collect();
         Resources.UnloadUnusedAssets();
 
@@ -153,12 +143,12 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
     void GenerateTerrain()
     {
-        Debug.Log("Step 1: Generating heights...");
-        GenerateHeights();
-        Debug.Log("Heights complete!");
+        Debug.Log("Step 1: Setting terrain height...");
+        SetTerrainHeight();
+        Debug.Log("Height set complete!");
 
-        Debug.Log("Step 2: Painting textures...");
-        PaintTextures();
+        Debug.Log("Step 2: Painting textures based on noise...");
+        PaintTexturesWithNoise();
         Debug.Log("Textures complete!");
 
         Debug.Log("Step 3: Spawning trees...");
@@ -176,20 +166,16 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         Debug.Log("=== Terrain Generation Complete ===");
     }
 
-    void GenerateHeights()
+    void SetTerrainHeight()
     {
+        // Create a flat terrain or set uniform height
         float[,] heights = new float[heightmapResolution, heightmapResolution];
-        float offsetX = rng.Next(0, 10000);
-        float offsetY = rng.Next(0, 10000);
 
         for (int y = 0; y < heightmapResolution; y++)
         {
             for (int x = 0; x < heightmapResolution; x++)
             {
-                float xCoord = (float)x / heightmapResolution * noiseScale + offsetX;
-                float yCoord = (float)y / heightmapResolution * noiseScale + offsetY;
-
-                heights[y, x] = Mathf.PerlinNoise(xCoord, yCoord) * heightScale;
+                heights[y, x] = flatHeight;
             }
         }
 
@@ -197,7 +183,7 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         terrain.Flush();
     }
 
-    void PaintTextures()
+    void PaintTexturesWithNoise()
     {
         if (terrainLayers == null || terrainLayers.Length == 0)
         {
@@ -209,11 +195,12 @@ public class ProceduralTerrainGenerator : MonoBehaviour
 
         int paintResolution = Mathf.Min(alphamapResolution, 512);
         float[,,] alphamap = new float[paintResolution, paintResolution, terrainLayers.Length];
+
         float offsetX = rng.Next(0, 10000);
         float offsetY = rng.Next(0, 10000);
 
-        Vector3 terrainSize = terrainData.size;
-        int heightmapRes = terrainData.heightmapResolution;
+        int grassCount = 0;
+        int otherCount = 0;
 
         for (int y = 0; y < paintResolution; y++)
         {
@@ -222,58 +209,50 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                 float normX = (float)x / paintResolution;
                 float normY = (float)y / paintResolution;
 
-                int sampleX = Mathf.RoundToInt(normX * (heightmapRes - 1));
-                int sampleY = Mathf.RoundToInt(normY * (heightmapRes - 1));
-
-                float rawHeight = terrainData.GetHeight(sampleY, sampleX) / terrainSize.y;
-                float height = Mathf.Clamp01(rawHeight / heightScale);
-                float slope = 1f - terrainData.GetInterpolatedNormal(normX, normY).y;
-
+                // Generate noise value (0-1) to determine if this is grass or other
                 float noiseValue = Mathf.PerlinNoise(
                     normX * textureNoiseScale + offsetX,
                     normY * textureNoiseScale + offsetY
                 );
 
-                float[] weights = new float[terrainLayers.Length];
-
-                // Layer 0: Grass
-                if (terrainLayers.Length > 0)
+                // 80% grass, 20% other layers - simple threshold
+                if (noiseValue < grassPercentage)
                 {
-                    float heightWeight = (height > grassHeightThreshold) ? 1.0f : 0f;
-                    weights[0] = heightWeight * (1f - slope);
-                    weights[0] *= (0.5f + noiseValue * 0.5f);
-                }
-
-                // Layer 1: Rock/Dirt
-                if (terrainLayers.Length > 1)
-                {
-                    float slopeWeight = slope > rockSlopeThreshold ? slope : 0f;
-                    weights[1] = slopeWeight + (height > 0.7f ? height : 0f);
-                }
-
-                // Layer 2: Sand/Path
-                if (terrainLayers.Length > 2)
-                {
-                    weights[2] = (height < 0.3f ? (1f - height) : 0f) * noiseValue;
-                }
-
-                // Normalize weights
-                float totalWeight = 0f;
-                for (int i = 0; i < weights.Length; i++) totalWeight += weights[i];
-
-                if (totalWeight > 0.001f)
-                {
-                    for (int i = 0; i < weights.Length; i++)
-                        alphamap[y, x, i] = weights[i] / totalWeight;
+                    // This is grass (Layer 0)
+                    alphamap[y, x, 0] = 1f;
+                    grassCount++;
                 }
                 else
                 {
-                    alphamap[y, x, 0] = 1f;
+                    // This is NOT grass - pick randomly from other layers
+                    if (terrainLayers.Length > 1)
+                    {
+                        // Use a different noise to pick which layer
+                        float layerNoise = Mathf.PerlinNoise(
+                            normX * textureNoiseScale * 0.5f + offsetX + 500,
+                            normY * textureNoiseScale * 0.5f + offsetY + 500
+                        );
+
+                        // Map noise to other layers (1, 2, 3, etc.)
+                        int selectedLayer = 1 + Mathf.FloorToInt(layerNoise * (terrainLayers.Length - 1));
+                        selectedLayer = Mathf.Clamp(selectedLayer, 1, terrainLayers.Length - 1);
+
+                        alphamap[y, x, selectedLayer] = 1f;
+                    }
+                    else
+                    {
+                        // Only one layer available, use grass
+                        alphamap[y, x, 0] = 1f;
+                    }
+                    otherCount++;
                 }
             }
         }
 
         terrainData.SetAlphamaps(0, 0, alphamap);
+
+        float actualGrassPercentage = (float)grassCount / (paintResolution * paintResolution) * 100f;
+        Debug.Log($"Textures painted: {actualGrassPercentage:F1}% grass, {100 - actualGrassPercentage:F1}% other layers");
     }
 
     void SpawnTrees()
@@ -299,21 +278,18 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             float heightSample = terrain.SampleHeight(new Vector3(worldX, 0, worldZ));
             float worldY = heightSample + terrain.transform.position.y;
 
-            float normalizedHeight = Mathf.Clamp01((heightSample / terrainData.size.y) / heightScale);
-
+            // Check terrain layer at this position
             int alphaX = Mathf.FloorToInt(x * (alphamapResolution - 1));
             int alphaY = Mathf.FloorToInt(z * (alphamapResolution - 1));
             float[,,] alphamap = terrainData.GetAlphamaps(alphaX, alphaY, 1, 1);
-            float grassWeight = alphamap[0, 0, 0];
 
-            if (normalizedHeight >= treeHeightMin && normalizedHeight <= treeHeightMax && grassWeight > 0.5f)
+            float layerWeight = alphamap[0, 0, treeSpawnLayer];
+
+            if (layerWeight > treeLayerWeightThreshold)
             {
                 Vector3 position = new Vector3(worldX, worldY, worldZ);
-
                 GameObject treePrefab = treePrefabs[rng.Next(0, treePrefabs.Length)];
-
                 Quaternion rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360f, 0);
-
                 float randomScale = treeMinScale + (float)rng.NextDouble() * (treeMaxScale - treeMinScale);
 
                 GameObject tree = Instantiate(treePrefab, position, rotation, treeParent);
@@ -323,7 +299,7 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"Spawned {spawnedCount} trees");
+        Debug.Log($"Spawned {spawnedCount} trees on layer {treeSpawnLayer}");
     }
 
     void SpawnGrass()
@@ -353,22 +329,17 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             float heightSample = terrain.SampleHeight(new Vector3(worldX, 0, worldZ));
             float worldY = heightSample + terrain.transform.position.y;
 
-            float normalizedHeight = Mathf.Clamp01((heightSample / terrainData.size.y) / heightScale);
-
+            // Check terrain layer at this position
             int alphaX = Mathf.FloorToInt(x * (alphamapResolution - 1));
             int alphaY = Mathf.FloorToInt(z * (alphamapResolution - 1));
             float[,,] alphamap = terrainData.GetAlphamaps(alphaX, alphaY, 1, 1);
-            float grassWeight = alphamap[0, 0, 0];
 
-            if (normalizedHeight >= grassHeightMin &&
-                normalizedHeight <= grassHeightMax &&
-                grassWeight > 0.3f &&
-                (float)rng.NextDouble() < grassDensity)
+            float layerWeight = alphamap[0, 0, grassSpawnLayer];
+
+            if (layerWeight > grassLayerWeightThreshold && (float)rng.NextDouble() < grassDensity)
             {
                 Vector3 position = new Vector3(worldX, worldY, worldZ);
-
                 GameObject grassPrefab = grassPrefabs[rng.Next(0, grassPrefabs.Length)];
-
                 Quaternion rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360f, 0);
                 float scale = grassMinScale + (float)rng.NextDouble() * (grassMaxScale - grassMinScale);
 
@@ -378,7 +349,7 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"Spawned {spawnedCount} grass objects");
+        Debug.Log($"Spawned {spawnedCount} grass objects on layer {grassSpawnLayer}");
     }
 
     void SpawnDecorations()
@@ -400,19 +371,29 @@ public class ProceduralTerrainGenerator : MonoBehaviour
             float heightSample = terrain.SampleHeight(new Vector3(worldX, 0, worldZ));
             float worldY = heightSample + terrain.transform.position.y;
 
-            float normalizedHeight = Mathf.Clamp01((heightSample / terrainData.size.y) / heightScale);
+            // Check terrain layer at this position
+            int alphaX = Mathf.FloorToInt(x * (alphamapResolution - 1));
+            int alphaY = Mathf.FloorToInt(z * (alphamapResolution - 1));
+            float[,,] alphamap = terrainData.GetAlphamaps(alphaX, alphaY, 1, 1);
 
-            float[,,] alphamap = terrainData.GetAlphamaps(Mathf.FloorToInt(x * (alphamapResolution - 1)), Mathf.FloorToInt(z * (alphamapResolution - 1)), 1, 1);
-            float grassWeight = alphamap[0, 0, 0];
+            bool shouldSpawn = false;
 
-            if (normalizedHeight >= decorationHeightMin && normalizedHeight <= decorationHeightMax && grassWeight > 0.5f)
+            if (decorationSpawnLayer < 0)
+            {
+                // Spawn on any layer
+                shouldSpawn = true;
+            }
+            else if (decorationSpawnLayer < terrainLayers.Length)
+            {
+                float layerWeight = alphamap[0, 0, decorationSpawnLayer];
+                shouldSpawn = layerWeight > decorationLayerWeightThreshold;
+            }
+
+            if (shouldSpawn)
             {
                 Vector3 position = new Vector3(worldX, worldY, worldZ);
-
                 GameObject decorationPrefab = decorationPrefabs[rng.Next(0, decorationPrefabs.Length)];
-
                 Quaternion rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360f, 0);
-
                 float randomScale = decorationMinScale + (float)rng.NextDouble() * (decorationMaxScale - decorationMinScale);
 
                 GameObject decoration = Instantiate(decorationPrefab, position, rotation, decorationParent);
@@ -421,15 +402,17 @@ public class ProceduralTerrainGenerator : MonoBehaviour
                 spawnedCount++;
             }
         }
-        Debug.Log($"Spawned {spawnedCount} decorations");
+
+        string layerInfo = decorationSpawnLayer < 0 ? "any layer" : $"layer {decorationSpawnLayer}";
+        Debug.Log($"Spawned {spawnedCount} decorations on {layerInfo}");
     }
 
     [ContextMenu("Regenerate Terrain")]
     public void RegenerateTerrain()
     {
-        CleanupAllGenerated(); // Clean before regenerating
+        CleanupAllGenerated();
 
-        seed = rng.Next(0, 100000);
+        seed = Random.Range(0, 100000);
         rng = new System.Random(seed);
         GenerateTerrain();
         Debug.Log($"Terrain Regenerated with Seed: {seed}");
@@ -442,7 +425,6 @@ public class ProceduralTerrainGenerator : MonoBehaviour
         Debug.Log("All generated content cleared!");
     }
 
-    // Clean up when script is disabled/destroyed
     void OnDestroy()
     {
         Debug.Log("Terrain Generator destroyed - cleanup complete");
