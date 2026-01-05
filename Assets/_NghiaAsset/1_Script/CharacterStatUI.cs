@@ -24,7 +24,7 @@ namespace Turnbase
         public GameObject statPanel;
 
         private Dictionary<string, StatEntry> activeStatEntries = new Dictionary<string, StatEntry>();
-        private Dictionary<string, StatusEffectEntry> activeEffectEntries = new Dictionary<string, StatusEffectEntry>(); // Đã đổi kiểu dữ liệu
+        private Dictionary<string, StatusEffectEntry> activeEffectEntries = new Dictionary<string, StatusEffectEntry>();
         private Character currentCharacter;
         private CharacterStatusDataProvider currentDataProvider;
 

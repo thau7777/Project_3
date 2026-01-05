@@ -12,7 +12,6 @@ namespace MyRule.UI
         private int count = 0;
 
         private EventBinding<MovePressEvent> movePressedEventBinding;
-        private EventBinding<SelectButtonEvent> selectButtonEventBinding;
 
         public ScrollPresenter(IScrollView scrollView)
         {
@@ -22,9 +21,6 @@ namespace MyRule.UI
 
             movePressedEventBinding = new EventBinding<MovePressEvent>(HandleMoveEvent);
             EventBus<MovePressEvent>.Register(movePressedEventBinding);
-
-            selectButtonEventBinding = new EventBinding<SelectButtonEvent>(HandleSelectEvent);
-            EventBus<SelectButtonEvent>.Register(selectButtonEventBinding);
         }
 
         public void HandleMoveEvent(MovePressEvent movePressEvent)
@@ -39,13 +35,6 @@ namespace MyRule.UI
             }
         }
 
-        public void HandleSelectEvent(SelectButtonEvent selectButtonEvent)
-        {
-            if (view.Contents == null || count == 0) return;
-
-            ScrollTo(view.Contents[currentIndex].gameObject);
-        }
-
         private void Move(int direction)
         {
             if (view.Contents == null || count == 0) return;
@@ -53,6 +42,8 @@ namespace MyRule.UI
             currentIndex = Mathf.Clamp(currentIndex + direction, 0, count - 1);
 
             EventBus<SelectButtonEvent>.Raise(new SelectButtonEvent(view.Contents[currentIndex]));
+
+            ScrollTo(view.Contents[currentIndex].gameObject);
 
             ShowArrows(currentIndex, count);
         }
@@ -96,7 +87,6 @@ namespace MyRule.UI
             view = null;
 
             EventBus<MovePressEvent>.Deregister(movePressedEventBinding);
-            EventBus<SelectButtonEvent>.Deregister(selectButtonEventBinding);
         }
     }
 }

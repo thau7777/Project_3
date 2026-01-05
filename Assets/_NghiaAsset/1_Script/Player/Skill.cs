@@ -175,6 +175,8 @@ public enum  DebuffType
     Stun,
     DefReduction,
     Break,
+    SpeedReduction,
+
 
 }
 

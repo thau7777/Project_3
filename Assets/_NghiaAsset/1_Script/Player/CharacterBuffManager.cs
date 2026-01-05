@@ -32,6 +32,7 @@ namespace Turnbase
         [Header("Agility Buff")]
         [HideInInspector] public int originalBaseAgility = 0;
         [HideInInspector] public int agilityBuffTurnsRemaining = 0;
+        [HideInInspector] public int agilityBuffAmount = 0;
         [HideInInspector] public Flyweight_TB agilityVFXInstance;
         [HideInInspector] public Sprite agilityBuffIcon;
 
@@ -79,6 +80,10 @@ namespace Turnbase
             if (magicalOriginalBaseDefense == 0 && stats.magicDefense > 0)
             {
                 magicalOriginalBaseDefense = stats.magicDefense;
+            }
+            if (originalBaseAgility == 0 && stats.agility > 0)
+            {
+                originalBaseAgility = stats.agility;
             }
         }
 
@@ -227,15 +232,13 @@ namespace Turnbase
         {
             if (amount <= 0 || duration <= 0) return;
 
-            if (agilityBuffTurnsRemaining <= 0)
+            if (originalBaseAgility <= 0)
             {
                 originalBaseAgility = stats.agility;
-                stats.agility += amount;
             }
-            else
-            {
-                Debug.Log($"Buff Agility của {character.name} đã được làm mới thời gian.");
-            }
+
+            agilityBuffAmount = amount;
+            agilityBuffTurnsRemaining = duration;
 
             if (agilityVFXInstance != null && agilityVFXInstance != vfxInstance)
             {
@@ -244,7 +247,7 @@ namespace Turnbase
             agilityVFXInstance = vfxInstance;
             agilityBuffIcon = icon;
 
-            agilityBuffTurnsRemaining = duration;
+            RecalculateSpeedStat();
 
             if (character.battleUIManager != null)
             {
@@ -253,8 +256,7 @@ namespace Turnbase
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
-
-            Debug.Log($"{character.name} đã nhận buff +{amount} Agility, hiệu lực {duration} lượt. Agility hiện tại: {stats.agility}");
+            Debug.Log($"{character.name} đã nhận buff +{amount} Agility. Agility thực tế sau tính toán: {stats.agility}");
         }
 
         public void ApplyMagicalAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
@@ -523,8 +525,6 @@ namespace Turnbase
         {
             if (agilityBuffTurnsRemaining > 0 || originalBaseAgility == 0) return;
 
-            stats.agility = originalBaseAgility;
-
             if (agilityVFXInstance != null)
             {
                 agilityVFXInstance.transform.SetParent(null);
@@ -532,11 +532,13 @@ namespace Turnbase
                 agilityVFXInstance = null;
             }
 
-            originalBaseAgility = 0;
             agilityBuffTurnsRemaining = 0;
+            agilityBuffAmount = 0;
             agilityBuffIcon = null;
 
-            Debug.Log($"Buff Agility của {character.name} đã hết hạn và bị gỡ bỏ. Agility hiện tại: {stats.agility}");
+            RecalculateSpeedStat();
+
+            Debug.Log($"Buff Agility của {character.name} đã hết hạn. Agility hiện tại: {stats.agility}");
         }
 
         public void RemoveExpiredMagicalAttackBuff()
@@ -621,6 +623,31 @@ namespace Turnbase
             character.UpdateOwnUI();
         }
 
+        public void RecalculateSpeedStat()
+        {
+            if (character.debuffManager == null) return;
+
+            float speedReductionPercentage = character.debuffManager.speedReductionPercentage;
+
+            int finalAgility = originalBaseAgility;
+
+            if (agilityBuffTurnsRemaining > 0)
+            {
+                finalAgility += agilityBuffAmount;
+            }
+
+            if (speedReductionPercentage > 0f)
+            {
+                float reduction = finalAgility * speedReductionPercentage;
+                finalAgility -= Mathf.FloorToInt(reduction);
+            }
+
+            stats.agility = Mathf.Max(0, finalAgility);
+
+            Debug.Log($"[{character.name}] Recalculate: Agility={stats.agility}. Debuff: -{speedReductionPercentage * 100:F0}%");
+            character.UpdateOwnUI();
+        }
+
         public bool IsBuffActive(StatType statType)
         {
             switch (statType)
@@ -668,71 +695,72 @@ namespace Turnbase
         {
             bool uiUpdateNeeded = false;
 
-            if (character.buffManager.attackBuffTurnsRemaining > 0)
+            if (attackBuffTurnsRemaining > 0)
             {
-                character.buffManager.attackBuffTurnsRemaining--;
-                if (character.buffManager.attackBuffTurnsRemaining <= 0)
+                attackBuffTurnsRemaining--;
+                if (attackBuffTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredAttackBuff();
+                    RemoveExpiredAttackBuff();
                     uiUpdateNeeded = true;
                 }
             }
 
-            if (character.buffManager.maxHPBuffTurnsRemaining > 0)
+            if (maxHPBuffTurnsRemaining > 0)
             {
-                character.buffManager.maxHPBuffTurnsRemaining--;
-                if (character.buffManager.maxHPBuffTurnsRemaining <= 0)
+                maxHPBuffTurnsRemaining--;
+                if (maxHPBuffTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredMaxHPBuff();
+                    RemoveExpiredMaxHPBuff();
                     uiUpdateNeeded = true;
                 }
             }
 
-            if (character.buffManager.defenseBuffTurnsRemaining > 0)
+            if (defenseBuffTurnsRemaining > 0)
             {
-                character.buffManager.defenseBuffTurnsRemaining--;
-                if (character.buffManager.defenseBuffTurnsRemaining <= 0)
+                defenseBuffTurnsRemaining--;
+                if (defenseBuffTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredDefenseBuff();
+                    RemoveExpiredDefenseBuff();
                     uiUpdateNeeded = true;
                 }
             }
 
-            if (character.buffManager.agilityBuffTurnsRemaining > 0)
+            if (agilityBuffTurnsRemaining > 0)
             {
-                character.buffManager.agilityBuffTurnsRemaining--;
-                if (character.buffManager.agilityBuffTurnsRemaining <= 0)
+                agilityBuffTurnsRemaining--;
+                if (agilityBuffTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredAgilityBuff();
+                    RemoveExpiredAgilityBuff();
                     uiUpdateNeeded = true;
                 }
             }
 
-            if (character.buffManager.shieldTurnsRemaining > 0)
+            if (shieldTurnsRemaining > 0)
             {
-                character.buffManager.shieldTurnsRemaining--;
-                if (character.buffManager.shieldTurnsRemaining <= 0)
+                shieldTurnsRemaining--;
+                if (shieldTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredShield();
+                    RemoveExpiredShield();
                     uiUpdateNeeded = true;
                 }
             }
 
-            if (character.buffManager.magicalDefenseBuffTurnsRemaining > 0)
+            if (magicalDefenseBuffTurnsRemaining > 0)
             {
-                character.buffManager.magicalDefenseBuffTurnsRemaining--;
-                if (character.buffManager.magicalDefenseBuffTurnsRemaining <= 0)
+                magicalDefenseBuffTurnsRemaining--;
+                if (magicalDefenseBuffTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredMagicalDefenseBuff();
+                    RemoveExpiredMagicalDefenseBuff();
                     uiUpdateNeeded = true;
                 }
             }
-            if (character.buffManager.magicalAttackBuffTurnsRemaining > 0)
+
+            if (magicalAttackBuffTurnsRemaining > 0)
             {
-                character.buffManager.magicalAttackBuffTurnsRemaining--;
-                if (character.buffManager.magicalAttackBuffTurnsRemaining <= 0)
+                magicalAttackBuffTurnsRemaining--;
+                if (magicalAttackBuffTurnsRemaining <= 0)
                 {
-                    character.buffManager.RemoveExpiredMagicalAttackBuff();
+                    RemoveExpiredMagicalAttackBuff();
                     uiUpdateNeeded = true;
                 }
             }

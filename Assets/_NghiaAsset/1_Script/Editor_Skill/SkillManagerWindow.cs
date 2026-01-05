@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Turnbase
 {
+#if UNITY_EDITOR
     public class SkillManagerWindow : EditorWindow
     {
         // --- Biến lưu trữ trạng thái ---
@@ -444,4 +445,5 @@ namespace Turnbase
             return result;
         }
     }
+#endif
 }

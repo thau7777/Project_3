@@ -3,7 +3,6 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using Turnbase;
-using static UnityEditor.Rendering.FilterWindow;
 
 namespace Turnbase
 {

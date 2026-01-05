@@ -2610,6 +2610,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
   m_Center: {x: -0.000000059604645, y: 0, z: 0.00000005960467}
+--- !u!1 &7418241155613349787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8777450255854127542}
+  m_Layer: 0
+  m_Name: BuffEffectPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8777450255854127542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418241155613349787}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.3632905, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8083454903267841439
 GameObject:
   m_ObjectHideFlags: 0
@@ -2648,6 +2679,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8777450255854127542}
   - {fileID: 821222720362574608}
   - {fileID: 821222720362574610}
   - {fileID: 5147185560702354590}
@@ -2698,7 +2730,7 @@ MonoBehaviour:
     level: 0
   stats:
     maxHP: 1000
-    currentHP: 400
+    currentHP: 1000
     maxMP: 100
     currentMP: 100
     maxShield: 119
@@ -2738,6 +2770,8 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 5290aaf5d407fc548b1b68a8be148446, type: 2}
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
+  projectileSpawnPoint: {fileID: 0}
+  buffEffectSpawnPoint: {fileID: 8777450255854127542}
   traildblaze: 100
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
@@ -2762,6 +2796,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsUI
   hpBarFill: {fileID: 5337679758539715969}
+  hpBarFillDelay: {fileID: 6649383220706045998}
+  lerpSpeed: 2
   mpBarFill: {fileID: 6343429955527139453}
   trailblazeFill: {fileID: 414544424781297329}
   shieldBarFill: {fileID: 1279019492483649976}
@@ -2810,6 +2846,7 @@ MonoBehaviour:
   defenseBuffIcon: {fileID: 0}
   originalBaseAgility: 0
   agilityBuffTurnsRemaining: 0
+  agilityBuffAmount: 0
   agilityVFXInstance: {fileID: 0}
   agilityBuffIcon: {fileID: 0}
   magicalAttackBuffTurnsRemaining: 0
@@ -2852,6 +2889,10 @@ MonoBehaviour:
   defReductionPercentage: 0
   defReductionVFXInstance: {fileID: 0}
   defReductionIcon: {fileID: 0}
+  speedReductionTurnsRemaining: 0
+  speedReductionPercentage: 0
+  speedReductionVFXInstance: {fileID: 0}
+  speedReductionIcon: {fileID: 0}
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
@@ -3182,6 +3223,17 @@ MonoBehaviour:
 --- !u!114 &6343429955527139453 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5503044372404999245, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+  m_PrefabInstance: {fileID: 1465603218907984944}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6649383220706045998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5193077616005710878, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
   m_PrefabInstance: {fileID: 1465603218907984944}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

@@ -243,8 +243,30 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             ""name"": ""PlayerTurnBased"",
             ""id"": ""fcc086d8-b5f6-4897-8fa5-88e4fd0c465a"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""36322a63-f7d4-4a16-b259-d018a4001816"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2a575830-dabf-4d97-86f3-16d513bf6ab9"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         },
         {
             ""name"": ""PlayerFPS"",
@@ -904,6 +926,186 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""SpaceStation"",
+            ""id"": ""2686c542-8951-490b-8099-69867af5094b"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""e9079524-3695-4c4f-9670-47f84702b6b3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""1735d113-9a6c-41cb-9e33-2859e7b22a5a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Esc"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff79d6f1-4418-4aa0-b923-345044aaecc0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Actve"",
+                    ""type"": ""Button"",
+                    ""id"": ""abcc113e-50ff-45fb-a266-d85edf4bb60f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""5132d2ab-2435-47b2-837c-e7d87c7abaa7"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a34ffbf5-496c-487f-bda1-901164ca5969"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""123d44cc-e610-43bc-9ee4-c38cb4392eb0"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b6e287ef-c66c-49f5-a450-2fdc3dc3d484"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""df405f93-86ea-4029-9d98-d125f799cc75"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41d41a83-0e7c-43c1-8515-06743fb5ec51"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a8ddbd4-ed4e-472c-b5f8-31469443fe7f"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""829ac781-c387-40cd-be0b-5e50462ec274"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""DiceRoll"",
+            ""id"": ""adc8a033-596a-4b42-aae7-9f1a535bcd50"",
+            ""actions"": [
+                {
+                    ""name"": ""TabMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf90226f-3bce-4c5b-84a6-ebab7e6bcd91"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Roll"",
+                    ""type"": ""Button"",
+                    ""id"": ""60335a20-fe04-4c48-9428-af3f8de91a98"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e20ab447-43c0-472b-8698-496ac7b7273b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TabMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f21acea6-2ac0-4275-8ea2-afeb771ce68e"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -917,6 +1119,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown_ButtonQ = m_PlayerTopDown.FindAction("Button Q", throwIfNotFound: true);
         // PlayerTurnBased
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
+        m_PlayerTurnBased_Test = m_PlayerTurnBased.FindAction("Test", throwIfNotFound: true);
         // PlayerFPS
         m_PlayerFPS = asset.FindActionMap("PlayerFPS", throwIfNotFound: true);
         // PlayerTowerDefense
@@ -934,6 +1137,16 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PopUpGame_Naviagate = m_PopUpGame.FindAction("Naviagate", throwIfNotFound: true);
         m_PopUpGame_LeftClick = m_PopUpGame.FindAction("Left Click", throwIfNotFound: true);
         m_PopUpGame_RightClick = m_PopUpGame.FindAction("Right Click", throwIfNotFound: true);
+        // SpaceStation
+        m_SpaceStation = asset.FindActionMap("SpaceStation", throwIfNotFound: true);
+        m_SpaceStation_Move = m_SpaceStation.FindAction("Move", throwIfNotFound: true);
+        m_SpaceStation_Interact = m_SpaceStation.FindAction("Interact", throwIfNotFound: true);
+        m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
+        m_SpaceStation_Actve = m_SpaceStation.FindAction("Actve", throwIfNotFound: true);
+        // DiceRoll
+        m_DiceRoll = asset.FindActionMap("DiceRoll", throwIfNotFound: true);
+        m_DiceRoll_TabMenu = m_DiceRoll.FindAction("TabMenu", throwIfNotFound: true);
+        m_DiceRoll_Roll = m_DiceRoll.FindAction("Roll", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -944,6 +1157,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerTowerDefense.enabled, "This will cause a leak and performance issues, InputActions.PlayerTowerDefense.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PopUpGame.enabled, "This will cause a leak and performance issues, InputActions.PopUpGame.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_SpaceStation.enabled, "This will cause a leak and performance issues, InputActions.SpaceStation.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_DiceRoll.enabled, "This will cause a leak and performance issues, InputActions.DiceRoll.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1159,6 +1374,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // PlayerTurnBased
     private readonly InputActionMap m_PlayerTurnBased;
     private List<IPlayerTurnBasedActions> m_PlayerTurnBasedActionsCallbackInterfaces = new List<IPlayerTurnBasedActions>();
+    private readonly InputAction m_PlayerTurnBased_Test;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTurnBased".
     /// </summary>
@@ -1170,6 +1386,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerTurnBasedActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/Test".
+        /// </summary>
+        public InputAction @Test => m_Wrapper.m_PlayerTurnBased_Test;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1196,6 +1416,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerTurnBasedActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerTurnBasedActionsCallbackInterfaces.Add(instance);
+            @Test.started += instance.OnTest;
+            @Test.performed += instance.OnTest;
+            @Test.canceled += instance.OnTest;
         }
 
         /// <summary>
@@ -1207,6 +1430,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="PlayerTurnBasedActions" />
         private void UnregisterCallbacks(IPlayerTurnBasedActions instance)
         {
+            @Test.started -= instance.OnTest;
+            @Test.performed -= instance.OnTest;
+            @Test.canceled -= instance.OnTest;
         }
 
         /// <summary>
@@ -1679,6 +1905,242 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PopUpGameActions" /> instance referencing this action map.
     /// </summary>
     public PopUpGameActions @PopUpGame => new PopUpGameActions(this);
+
+    // SpaceStation
+    private readonly InputActionMap m_SpaceStation;
+    private List<ISpaceStationActions> m_SpaceStationActionsCallbackInterfaces = new List<ISpaceStationActions>();
+    private readonly InputAction m_SpaceStation_Move;
+    private readonly InputAction m_SpaceStation_Interact;
+    private readonly InputAction m_SpaceStation_Esc;
+    private readonly InputAction m_SpaceStation_Actve;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "SpaceStation".
+    /// </summary>
+    public struct SpaceStationActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public SpaceStationActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Move".
+        /// </summary>
+        public InputAction @Move => m_Wrapper.m_SpaceStation_Move;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Interact".
+        /// </summary>
+        public InputAction @Interact => m_Wrapper.m_SpaceStation_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Esc".
+        /// </summary>
+        public InputAction @Esc => m_Wrapper.m_SpaceStation_Esc;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Actve".
+        /// </summary>
+        public InputAction @Actve => m_Wrapper.m_SpaceStation_Actve;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_SpaceStation; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="SpaceStationActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(SpaceStationActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="SpaceStationActions" />
+        public void AddCallbacks(ISpaceStationActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
+            @Actve.started += instance.OnActve;
+            @Actve.performed += instance.OnActve;
+            @Actve.canceled += instance.OnActve;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="SpaceStationActions" />
+        private void UnregisterCallbacks(ISpaceStationActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
+            @Actve.started -= instance.OnActve;
+            @Actve.performed -= instance.OnActve;
+            @Actve.canceled -= instance.OnActve;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="SpaceStationActions.UnregisterCallbacks(ISpaceStationActions)" />.
+        /// </summary>
+        /// <seealso cref="SpaceStationActions.UnregisterCallbacks(ISpaceStationActions)" />
+        public void RemoveCallbacks(ISpaceStationActions instance)
+        {
+            if (m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="SpaceStationActions.AddCallbacks(ISpaceStationActions)" />
+        /// <seealso cref="SpaceStationActions.RemoveCallbacks(ISpaceStationActions)" />
+        /// <seealso cref="SpaceStationActions.UnregisterCallbacks(ISpaceStationActions)" />
+        public void SetCallbacks(ISpaceStationActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SpaceStationActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SpaceStationActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="SpaceStationActions" /> instance referencing this action map.
+    /// </summary>
+    public SpaceStationActions @SpaceStation => new SpaceStationActions(this);
+
+    // DiceRoll
+    private readonly InputActionMap m_DiceRoll;
+    private List<IDiceRollActions> m_DiceRollActionsCallbackInterfaces = new List<IDiceRollActions>();
+    private readonly InputAction m_DiceRoll_TabMenu;
+    private readonly InputAction m_DiceRoll_Roll;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "DiceRoll".
+    /// </summary>
+    public struct DiceRollActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public DiceRollActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/TabMenu".
+        /// </summary>
+        public InputAction @TabMenu => m_Wrapper.m_DiceRoll_TabMenu;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/Roll".
+        /// </summary>
+        public InputAction @Roll => m_Wrapper.m_DiceRoll_Roll;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_DiceRoll; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="DiceRollActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(DiceRollActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="DiceRollActions" />
+        public void AddCallbacks(IDiceRollActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DiceRollActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DiceRollActionsCallbackInterfaces.Add(instance);
+            @TabMenu.started += instance.OnTabMenu;
+            @TabMenu.performed += instance.OnTabMenu;
+            @TabMenu.canceled += instance.OnTabMenu;
+            @Roll.started += instance.OnRoll;
+            @Roll.performed += instance.OnRoll;
+            @Roll.canceled += instance.OnRoll;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="DiceRollActions" />
+        private void UnregisterCallbacks(IDiceRollActions instance)
+        {
+            @TabMenu.started -= instance.OnTabMenu;
+            @TabMenu.performed -= instance.OnTabMenu;
+            @TabMenu.canceled -= instance.OnTabMenu;
+            @Roll.started -= instance.OnRoll;
+            @Roll.performed -= instance.OnRoll;
+            @Roll.canceled -= instance.OnRoll;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="DiceRollActions.UnregisterCallbacks(IDiceRollActions)" />.
+        /// </summary>
+        /// <seealso cref="DiceRollActions.UnregisterCallbacks(IDiceRollActions)" />
+        public void RemoveCallbacks(IDiceRollActions instance)
+        {
+            if (m_Wrapper.m_DiceRollActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="DiceRollActions.AddCallbacks(IDiceRollActions)" />
+        /// <seealso cref="DiceRollActions.RemoveCallbacks(IDiceRollActions)" />
+        /// <seealso cref="DiceRollActions.UnregisterCallbacks(IDiceRollActions)" />
+        public void SetCallbacks(IDiceRollActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DiceRollActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DiceRollActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="DiceRollActions" /> instance referencing this action map.
+    /// </summary>
+    public DiceRollActions @DiceRoll => new DiceRollActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTopDown" which allows adding and removing callbacks.
     /// </summary>
@@ -1729,6 +2191,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="PlayerTurnBasedActions.RemoveCallbacks(IPlayerTurnBasedActions)" />
     public interface IPlayerTurnBasedActions
     {
+        /// <summary>
+        /// Method invoked when associated input action "Test" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTest(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerFPS" which allows adding and removing callbacks.
@@ -1824,5 +2293,63 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "SpaceStation" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="SpaceStationActions.AddCallbacks(ISpaceStationActions)" />
+    /// <seealso cref="SpaceStationActions.RemoveCallbacks(ISpaceStationActions)" />
+    public interface ISpaceStationActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Esc" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEsc(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Actve" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnActve(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "DiceRoll" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="DiceRollActions.AddCallbacks(IDiceRollActions)" />
+    /// <seealso cref="DiceRollActions.RemoveCallbacks(IDiceRollActions)" />
+    public interface IDiceRollActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "TabMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTabMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Roll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRoll(InputAction.CallbackContext context);
     }
 }

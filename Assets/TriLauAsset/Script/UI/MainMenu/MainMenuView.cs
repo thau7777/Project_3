@@ -7,11 +7,16 @@ namespace MyRule.UI
     {
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject menuButtonsPanel;
-        [SerializeField] private ButtonView anyButton;
+
+        private PanelType panelType;
+
+        public PanelType Type
+        {
+            get => panelType;
+            set => panelType = value;
+        }
 
         private MainMenuPresenter presenter;
-
-        public ButtonView CurrentButton { get; set; }
 
         protected override void OnEnable()
         {
@@ -20,8 +25,6 @@ namespace MyRule.UI
             presenter = new MainMenuPresenter(this, this);
 
             panelType = PanelType.MainMenu;
-
-            CurrentButton = anyButton;
         }
 
         protected override void OnDisable()
@@ -36,14 +39,8 @@ namespace MyRule.UI
         {
             base.Start();
 
-            anyButton.Select();
-
-            UIStateMachine.Reset(PanelType.MainMenu);
+            panelType = PanelType.MainMenu;
         }
-
-        public void ShowMenuButtons() => menuButtonsPanel.SetActive(true);
-
-        public void HideAnyButton() => anyButton.gameObject.SetActive(false);
 
         public override void Show() => mainMenuPanel.SetActive(true);
 

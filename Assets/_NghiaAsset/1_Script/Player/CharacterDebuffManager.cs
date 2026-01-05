@@ -32,6 +32,12 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB defReductionVFXInstance;
         [HideInInspector] public Sprite defReductionIcon;
 
+        [Header("Speed Reduction Debuff State")]
+        [HideInInspector] public int speedReductionTurnsRemaining = 0;
+        [HideInInspector] public float speedReductionPercentage = 0f;
+        [HideInInspector] public Flyweight_TB speedReductionVFXInstance;
+        [HideInInspector] public Sprite speedReductionIcon;
+
         [Header("Braek Debuff State")]
         [HideInInspector] public int breakTurnsRemaining = 0;
         [HideInInspector] public Flyweight_TB breakVFXInstance;
@@ -179,6 +185,35 @@ namespace Turnbase
             }
         }
 
+        public void ApplySpeedReductionDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        {
+            if (percentage <= 0 || duration <= 0) return;
+
+            if (percentage > speedReductionPercentage)
+            {
+                speedReductionPercentage = percentage;
+            }
+
+            speedReductionTurnsRemaining = duration;
+
+            if (speedReductionVFXInstance != null && speedReductionVFXInstance != vfxInstance)
+            {
+                speedReductionVFXInstance.ReturnToPool();
+            }
+
+            speedReductionVFXInstance = vfxInstance;
+            speedReductionIcon = icon;
+
+            if (character.buffManager != null)
+            {
+                character.buffManager.RecalculateSpeedStat();
+            }
+
+            character.UpdateOwnUI();
+
+            Debug.Log($"[Debuff] {character.name} bị giảm {percentage * 100}% Speed trong {duration} lượt.");
+        }
+
 
         public void ApplyDebuff(Skill.DebuffSettings debuffSettings)
         {
@@ -195,8 +230,18 @@ namespace Turnbase
 
                 if (debuffVFX != null)
                 {
-                    debuffVFX.transform.SetParent(character.transform);
+                    Transform targetParent = character.buffEffectSpawnPoint != null ? character.buffEffectSpawnPoint : character.transform;
+
+                    // Tham số false giúp object con thừa hưởng trực tiếp tỉ lệ của cha
+                    debuffVFX.transform.SetParent(targetParent, false);
+
+                    // Sau khi setParent với false, localPosition/Rotation/Scale thường sẽ tự về chuẩn
                     debuffVFX.transform.localPosition = Vector3.zero;
+                    debuffVFX.transform.localRotation = Quaternion.identity;
+
+                    // Đảm bảo localScale là 1 để nó nhân chính xác với scale của cha (ví dụ 1 * 5 = 5)
+                    debuffVFX.transform.localScale = Vector3.one;
+
                     debuffVFX.gameObject.SetActive(true);
                 }
             }
@@ -232,6 +277,15 @@ namespace Turnbase
 
                 case DebuffType.DefReduction:
                     ApplyDefReductionDebuff(
+                        debuffSettings.debuffValue,
+                        debuffSettings.durationTurns,
+                        debuffVFX,
+                        debuffSettings.icon
+                    );
+                    break;
+
+                case DebuffType.SpeedReduction:
+                    ApplySpeedReductionDebuff(
                         debuffSettings.debuffValue,
                         debuffSettings.durationTurns,
                         debuffVFX,
@@ -408,6 +462,28 @@ namespace Turnbase
             character.UpdateOwnUI();
         }
 
+        public void RemoveExpiredSpeedReductionDebuff()
+        {
+            speedReductionPercentage = 0f;
+            speedReductionTurnsRemaining = 0;
+
+            if (speedReductionVFXInstance != null)
+            {
+                speedReductionVFXInstance.transform.SetParent(null);
+                speedReductionVFXInstance.ReturnToPool();
+                speedReductionVFXInstance = null;
+            }
+
+            speedReductionIcon = null;
+
+            if (character.buffManager != null)
+            {
+                character.buffManager.RecalculateSpeedStat();
+            }
+
+            Debug.Log($"Debuff giảm Speed của {character.name} đã hết hạn.");
+        }
+
         public void ProcessTurnStartDecay()
         {
             bool uiUpdateNeeded = false;
@@ -450,8 +526,14 @@ namespace Turnbase
                     RemoveExpiredDefReductionDebuff();
                     uiUpdateNeeded = true;
                 }
-                else
+            }
+
+            if (speedReductionTurnsRemaining > 0)
+            {
+                speedReductionTurnsRemaining--;
+                if (speedReductionTurnsRemaining <= 0)
                 {
+                    RemoveExpiredSpeedReductionDebuff();
                     uiUpdateNeeded = true;
                 }
             }
