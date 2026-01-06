@@ -9,6 +9,7 @@ namespace Turnbase
         private BattleManager battleManager;
         private float rotationDuration = 0.25f;
         private Quaternion targetLookRotation;
+        private bool damageApplied = false;
 
         public LaserAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
             : base(user, target, skill)
@@ -30,37 +31,70 @@ namespace Turnbase
 
         private IEnumerator PerformLaserAttack()
         {
-            int finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
-
-            user.animator.Play(skill.animationTriggerName);
-
-            float animationLeadIn = 0.5f;
-            yield return new WaitForSeconds(animationLeadIn);
-
-            Transform spawnPoint = user.projectileSpawnPoint != null ? user.projectileSpawnPoint : user.transform;
-            Vector3 startPos = user.projectileSpawnPoint != null ?
-                               user.projectileSpawnPoint.position :
-                               user.transform.position + Vector3.up * 1.2f;
-
-            GameObject laserInstance = null;
-            if (skill.projectileSettings != null && skill.projectileSettings.prefab != null)
+            float delay = 0f;
+            if (skill.lazerSettings is OneShotVFXSettings_TB vfxSettings)
             {
-                laserInstance = UnityEngine.Object.Instantiate(skill.projectileSettings.prefab.gameObject);
-
-                battleManager.StartCoroutine(UpdateLaserPositions(laserInstance, spawnPoint, target.transform));
+                delay = vfxSettings.DespawnDelay;
             }
 
-            ApplyStatusEffectsAndStacks(user, target, skill);
-            target.TakeDamage(finalDamage, skill.elementType);
+            int finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            damageApplied = false;
 
-            EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.2f, 0.4f));
+            Action hitAction = () =>
+            {
+                if (!damageApplied)
+                {
+                    ApplyStatusEffectsAndStacks(user, target, skill);
+                    target.TakeDamage(finalDamage, skill.elementType);
 
-            SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
+                    EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.2f, 0.4f));
+                    SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
+
+                    damageApplied = true;
+                }
+            };
+
+            user.PrepareHitCallBack(hitAction);
+            user.animator.Play(skill.animationTriggerName);
+
+            if (delay > 0)
+            {
+                yield return new WaitForSeconds(delay);
+            }
+
+            Transform spawnPoint = user.SkillSpawnPoint != null ? user.SkillSpawnPoint : user.transform;
+            Flyweight_TB laserFlyweight = null;
+
+            if (skill.lazerSettings != null)
+            {
+                laserFlyweight = FlyweightFactory_TB.Spawn(skill.lazerSettings);
+
+                if (laserFlyweight != null)
+                {
+                    laserFlyweight.Initialize(spawnPoint.position, spawnPoint.rotation);
+
+                    laserFlyweight.transform.SetParent(spawnPoint);
+                    laserFlyweight.transform.localPosition = Vector3.zero;
+                    laserFlyweight.transform.localRotation = Quaternion.identity;
+
+                    battleManager.StartCoroutine(UpdateLaserPositions(laserFlyweight.gameObject, spawnPoint, target.transform));
+                }
+            }
+
+            float startTime = Time.time;
+            float timeout = 2.0f;
+
+            while (!damageApplied && Time.time < startTime + timeout)
+            {
+                yield return null;
+            }
+
+            if (!damageApplied) hitAction.Invoke();
 
             float laserDuration = skill.impactVFXDuration > 0 ? skill.impactVFXDuration : 1.0f;
             yield return new WaitForSeconds(laserDuration);
 
-            if (laserInstance != null) UnityEngine.Object.Destroy(laserInstance);
+
         }
 
         private IEnumerator UpdateLaserPositions(GameObject laser, Transform start, Transform end)
@@ -81,7 +115,7 @@ namespace Turnbase
             }
         }
 
-        #region Rotation Logic (Giống ProjectileCommand)
+        #region Rotation Logic (Giữ nguyên)
         private Quaternion GetTargetLookRotation()
         {
             Vector3 direction = (target.transform.position - user.transform.position).normalized;

@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using System;
+using UnityEngine.UIElements;
 
 
 namespace Turnbase
@@ -87,6 +88,26 @@ namespace Turnbase
                     target.TakeDamage(baseDamagePerHit, element);
                     SpawnImpactEffect(target.transform.position, skill);
                     damageApplied = true;
+
+                    FlyweightSettings_TB settingsToSpawn = skill.meleeSettings;
+                    if (settingsToSpawn != null)
+                    {
+                        Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
+
+                        if (effectInstance != null)
+                        {
+                            Vector3 spawnPos = user.SkillSpawnPoint != null ?
+                                               user.SkillSpawnPoint.position :
+                                               user.transform.position;
+
+                            Quaternion spawnRot = user.SkillSpawnPoint != null ?
+                                                 user.SkillSpawnPoint.rotation :
+                                                 Quaternion.identity;
+
+                            effectInstance.Initialize(spawnPos, spawnRot);
+
+                        }
+                    }
                 }
             };
 
@@ -177,5 +198,7 @@ namespace Turnbase
             }
             user.transform.rotation = endRotation;
         }
+
+
     }
 }

@@ -66,7 +66,7 @@ namespace Turnbase
 
         public EnemyStatsUI enemyStatsUI;
 
-        public Transform projectileSpawnPoint;
+        public Transform SkillSpawnPoint;
 
         public Transform buffEffectSpawnPoint;
 

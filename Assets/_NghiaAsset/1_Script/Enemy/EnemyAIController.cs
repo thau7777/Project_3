@@ -132,19 +132,18 @@ namespace Turnbase
             {
                 case SkillType.MeleeAttack:
                 case SkillType.RangedAttack:
+                case SkillType.LaserAttack:
                 case SkillType.RangedProjectile:
-                    float estimatedDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager) * 1.0f;
-                    skillPowerScore = estimatedDamage;
+                    float estimatedDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+                    skillPowerScore = estimatedDamage * 1.2f;
 
                     if (target.stats.currentHP <= estimatedDamage && target.stats.currentHP > 0)
                     {
-                        skillPowerScore += target.stats.currentHP * 5f;
-                        tacticalScore += BONUS_FINISHER * 10;
+                        tacticalScore += BONUS_FINISHER;
                     }
-                    else
-                    {
-                        skillPowerScore *= 0.8f;
-                    }
+
+                    float targetHpPercent = (float)target.stats.currentHP / target.stats.maxHP;
+                    tacticalScore += (1f - targetHpPercent) * 50f;
 
                     if (skill.debuffProperties.statToModify != DebuffType.None)
                     {

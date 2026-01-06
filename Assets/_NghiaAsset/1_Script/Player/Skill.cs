@@ -23,9 +23,17 @@ public class Skill : ScriptableObject
     [Header("Visual Effects")]
     public FlyweightSettings_TB impactVFXPrefab;
 
+    [Header("Melee & VFX")]
+    [ShowIfEnumValue("skillType", SkillType.MeleeAttack)]
+    public FlyweightSettings_TB meleeSettings;
+
     [Header("Projectile & VFX")]
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
     public FlyweightSettings_TB projectileSettings;
+
+    [Header("Lazer & VFX")]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack)]
+    public FlyweightSettings_TB lazerSettings;
 
     public float impactVFXDuration = 1.0f;
 
