@@ -12,7 +12,7 @@ public class FollowedIndicator : SkillIndicator
             transform.SetParent(user);
         _user = user;
         rotateTowardMouse = isPlayerUser;
-        if (_vfx.HasFloat("Width") && _vfx.HasFloat("Length"))
+        if (_vfx.HasFloat("Width") && _vfx.HasFloat("Length")) 
         {
             _vfx.SetFloat("Width", width);
             _vfx.SetFloat("Length", length);
