@@ -941,6 +941,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""4aaa348d-af35-4b68-a93b-6a165ea69122"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""1735d113-9a6c-41cb-9e33-2859e7b22a5a"",
@@ -1056,6 +1065,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Actve"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7bbfabf-9c9f-49c1-b0cd-e94114b49e03"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1140,6 +1160,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // SpaceStation
         m_SpaceStation = asset.FindActionMap("SpaceStation", throwIfNotFound: true);
         m_SpaceStation_Move = m_SpaceStation.FindAction("Move", throwIfNotFound: true);
+        m_SpaceStation_Look = m_SpaceStation.FindAction("Look", throwIfNotFound: true);
         m_SpaceStation_Interact = m_SpaceStation.FindAction("Interact", throwIfNotFound: true);
         m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
         m_SpaceStation_Actve = m_SpaceStation.FindAction("Actve", throwIfNotFound: true);
@@ -1910,6 +1931,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_SpaceStation;
     private List<ISpaceStationActions> m_SpaceStationActionsCallbackInterfaces = new List<ISpaceStationActions>();
     private readonly InputAction m_SpaceStation_Move;
+    private readonly InputAction m_SpaceStation_Look;
     private readonly InputAction m_SpaceStation_Interact;
     private readonly InputAction m_SpaceStation_Esc;
     private readonly InputAction m_SpaceStation_Actve;
@@ -1928,6 +1950,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "SpaceStation/Move".
         /// </summary>
         public InputAction @Move => m_Wrapper.m_SpaceStation_Move;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Look".
+        /// </summary>
+        public InputAction @Look => m_Wrapper.m_SpaceStation_Look;
         /// <summary>
         /// Provides access to the underlying input action "SpaceStation/Interact".
         /// </summary>
@@ -1969,6 +1995,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1992,6 +2021,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -2308,6 +2340,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLook(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

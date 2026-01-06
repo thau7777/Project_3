@@ -16,10 +16,6 @@ namespace MyRule
     {
     }
 
-    public struct DeleteSigilCardEvent : IEvent
-    {
-    }
-
     public struct HoverSigilCardEvent : IEvent
     {
         public readonly Card card;
