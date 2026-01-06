@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 namespace Turnbase
 {
-    public class FlyweightFactory_TB : PersistentSingleton<FlyweightFactory_TB>
+    public class FlyweightFactory_TB : Singleton<FlyweightFactory_TB>
     {
 
         readonly Dictionary<FlyweightType, IObjectPool<Flyweight_TB>> pools = new();
