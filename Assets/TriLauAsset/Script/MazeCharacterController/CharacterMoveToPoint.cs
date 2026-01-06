@@ -178,7 +178,7 @@ namespace MyRule
             {
                 targetPoint = pathPoints.Dequeue();
 
-                await UniTask.Delay(3000);
+                await UniTask.Delay(2400);
 
                 EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(1));
             }
