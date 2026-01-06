@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -20,7 +20,7 @@ public static class RequiredFieldValidator
             if (behaviour.gameObject == null) continue; // skip broken behaviours
 
             if (!ValidateObjectFields(behaviour, behaviour.gameObject.name, logError))
-                allGood = false; 
+                allGood = false;  
         }
 
 

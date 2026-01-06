@@ -1,22 +1,17 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UIElements;
-using System.Reflection;
 using System.Linq;
 using System.IO;
 
-[InitializeOnLoad]
-public static class SceneSwitcherToolbar
+public class SceneSwitcherWindow : EditorWindow
 {
     private static string[] sceneNames = new string[0];
-    private static int selectedIndex = 0;
-    private static string lastActiveScene = "";
-    private static VisualElement toolbarUI;
-
-    private static float positionOffset = 180f; // Move closer to Play button
-    private static float dropdownBoxHeight = 20f; // Dropdown button height
+    private static string[] scenePaths = new string[0];
+    private int selectedIndex = 0;
+    private Vector2 scrollPosition;
+    private string searchFilter = "";
 
     private static bool fetchAllScenes
     {
@@ -24,122 +19,203 @@ public static class SceneSwitcherToolbar
         set => EditorPrefs.SetBool("SceneSwitcher_FetchAllScenes", value);
     }
 
-    static SceneSwitcherToolbar()
+    [MenuItem("Window/Scene Switcher %&s")] // Ctrl+Alt+S shortcut
+    public static void ShowWindow()
+    {
+        var window = GetWindow<SceneSwitcherWindow>("Scene Switcher");
+        window.minSize = new Vector2(300, 200);
+        window.Show();
+    }
+
+    private void OnEnable()
     {
         RefreshSceneList();
         SelectCurrentScene();
 
-        // Listen for when EditorBuildSettings changes (build scenes updated)
         EditorBuildSettings.sceneListChanged += RefreshSceneList;
-
-        // Listen for project asset changes (added/removed .unity files)
         EditorApplication.projectChanged += RefreshSceneList;
-
-        EditorSceneManager.activeSceneChangedInEditMode += (prev, current) => UpdateSceneSelection();
-        EditorApplication.playModeStateChanged += OnPlayModeChanged;
-
-        EditorApplication.delayCall += AddToolbarUI;
+        EditorSceneManager.activeSceneChangedInEditMode += OnSceneChanged;
     }
 
-
-    static void AddToolbarUI()
+    private void OnDisable()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
-            return;
-
-        var toolbarType = typeof(Editor).Assembly.GetType("UnityEditor.Toolbar");
-        if (toolbarType == null) return;
-
-        var toolbars = Resources.FindObjectsOfTypeAll(toolbarType);
-        if (toolbars.Length == 0) return;
-
-        var toolbar = toolbars[0];
-        var rootField = toolbarType.GetField("m_Root", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (rootField == null) return;
-
-        var root = rootField.GetValue(toolbar) as VisualElement;
-        if (root == null) return;
-
-        var leftContainer = root.Q("ToolbarZoneLeftAlign");
-        if (leftContainer == null) return;
-
-        // Remove old UI if it exists to prevent duplication
-        if (toolbarUI != null)
-        {
-            leftContainer.Remove(toolbarUI);
-        }
-
-        toolbarUI = new IMGUIContainer(OnGUI);
-        toolbarUI.style.marginLeft = positionOffset;
-
-        leftContainer.Add(toolbarUI);
+        EditorBuildSettings.sceneListChanged -= RefreshSceneList;
+        EditorApplication.projectChanged -= RefreshSceneList;
+        EditorSceneManager.activeSceneChangedInEditMode -= OnSceneChanged;
     }
 
-    static void OnGUI()
+    private void OnSceneChanged(UnityEngine.SceneManagement.Scene prev, UnityEngine.SceneManagement.Scene current)
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
-            return;
+        SelectCurrentScene();
+        Repaint();
+    }
 
-        CheckAndRefreshScenes();
+    private void OnGUI()
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.ExpandHeight(true));
 
-        if (selectedIndex >= sceneNames.Length)
-            selectedIndex = 0;
+        // Header
+        DrawHeader();
 
-        bool isPlaying = EditorApplication.isPlaying; // Check if in Play Mode
+        GUILayout.Space(5);
 
-        GUILayout.BeginHorizontal();
+        // Search bar
+        DrawSearchBar();
 
-        // Fetch all scenes toggle button (Disabled in Play Mode)
-        EditorGUI.BeginDisabledGroup(isPlaying);
-        bool newFetchAllScenes = GUILayout.Toggle(fetchAllScenes, "All Scenes", "Button", GUILayout.Height(dropdownBoxHeight));
+        GUILayout.Space(5);
+
+        // Scene list
+        DrawSceneList();
+
+        EditorGUILayout.EndVertical();
+
+        // Footer with refresh button
+        DrawFooter();
+    }
+
+    private void DrawHeader()
+    {
+        EditorGUILayout.BeginHorizontal();
+
+        GUILayout.Label("Scene Switcher", EditorStyles.boldLabel);
+
+        GUILayout.FlexibleSpace();
+
+        // Toggle for all scenes vs build scenes
+        bool newFetchAllScenes = GUILayout.Toggle(fetchAllScenes, fetchAllScenes ? "All Scenes" : "Build Scenes", "Button");
         if (newFetchAllScenes != fetchAllScenes)
         {
             fetchAllScenes = newFetchAllScenes;
             RefreshSceneList();
-            SelectCurrentScene();
         }
-        EditorGUI.EndDisabledGroup();
 
-        // Scene dropdown with the currently selected scene displayed (Disabled in Play Mode)
-        EditorGUI.BeginDisabledGroup(isPlaying);
-        GUIStyle popupStyle = new GUIStyle(EditorStyles.popup)
-        {
-            fixedHeight = dropdownBoxHeight
-        };
-
-        int newIndex = EditorGUILayout.Popup(selectedIndex, sceneNames, popupStyle, GUILayout.Width(150), GUILayout.Height(dropdownBoxHeight));
-
-        if (newIndex != selectedIndex)
-        {
-            selectedIndex = newIndex;
-            LoadScene(sceneNames[selectedIndex]);
-        }
-        EditorGUI.EndDisabledGroup();
-
-        GUILayout.EndHorizontal();
+        EditorGUILayout.EndHorizontal();
     }
 
-    static void RefreshSceneList()
+    private void DrawSearchBar()
+    {
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Search:", GUILayout.Width(50));
+        searchFilter = EditorGUILayout.TextField(searchFilter);
+        if (GUILayout.Button("×", GUILayout.Width(20)))
+        {
+            searchFilter = "";
+            GUI.FocusControl(null);
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void DrawSceneList()
+    {
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+        string currentSceneName = Path.GetFileNameWithoutExtension(EditorSceneManager.GetActiveScene().path);
+
+        // Filter scenes based on search
+        var filteredScenes = sceneNames
+            .Select((name, index) => new { name, index })
+            .Where(x => string.IsNullOrEmpty(searchFilter) ||
+                       x.name.ToLower().Contains(searchFilter.ToLower()))
+            .ToArray();
+
+        if (filteredScenes.Length == 0)
+        {
+            EditorGUILayout.HelpBox("No scenes found matching your search.", MessageType.Info);
+        }
+        else
+        {
+            foreach (var scene in filteredScenes)
+            {
+                bool isCurrentScene = scene.name == currentSceneName;
+
+                EditorGUILayout.BeginHorizontal();
+
+                // Highlight current scene
+                if (isCurrentScene)
+                {
+                    GUI.backgroundColor = new Color(0.3f, 0.7f, 1f);
+                }
+
+                // Scene button
+                string buttonLabel = isCurrentScene ? $"● {scene.name}" : scene.name;
+                if (GUILayout.Button(buttonLabel, GUILayout.Height(25)))
+                {
+                    if (!isCurrentScene)
+                    {
+                        LoadScene(scene.index);
+                    }
+                }
+
+                GUI.backgroundColor = Color.white;
+
+                // Add to build button (only show if in "All Scenes" mode)
+                if (fetchAllScenes)
+                {
+                    bool inBuildSettings = EditorBuildSettings.scenes
+                        .Any(s => Path.GetFileNameWithoutExtension(s.path) == scene.name);
+
+                    if (!inBuildSettings)
+                    {
+                        if (GUILayout.Button("+", GUILayout.Width(25), GUILayout.Height(25)))
+                        {
+                            AddSceneToBuildSettings(scenePaths[scene.index]);
+                        }
+                    }
+                }
+
+                EditorGUILayout.EndHorizontal();
+                GUILayout.Space(2);
+            }
+        }
+
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawFooter()
+    {
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+        GUILayout.Label($"{sceneNames.Length} scene(s)", EditorStyles.miniLabel);
+
+        GUILayout.FlexibleSpace();
+
+        if (GUILayout.Button("Refresh", EditorStyles.toolbarButton, GUILayout.Width(60)))
+        {
+            RefreshSceneList();
+        }
+
+        if (GUILayout.Button("Build Settings", EditorStyles.toolbarButton, GUILayout.Width(100)))
+        {
+            EditorWindow.GetWindow(System.Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
+        }
+
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void RefreshSceneList()
     {
         if (EditorApplication.isPlayingOrWillChangePlaymode)
             return;
 
         if (fetchAllScenes)
         {
-            // Fetch all scenes from the Assets folder
-            sceneNames = Directory.GetFiles("Assets", "*.unity", SearchOption.AllDirectories)
+            var allScenes = Directory.GetFiles("Assets", "*.unity", SearchOption.AllDirectories);
+            scenePaths = allScenes;
+            sceneNames = allScenes
                 .Select(path => Path.GetFileNameWithoutExtension(path))
                 .ToArray();
         }
         else
         {
-            // Only include scenes that exist and are enabled in Build Settings
             var validScenes = EditorBuildSettings.scenes
                 .Where(scene => scene.enabled && File.Exists(scene.path))
+                .ToArray();
+
+            scenePaths = validScenes.Select(s => s.path).ToArray();
+            sceneNames = validScenes
                 .Select(scene => Path.GetFileNameWithoutExtension(scene.path))
                 .ToArray();
 
-            // Detect deleted scenes still listed in Build Settings
             var missingScenes = EditorBuildSettings.scenes
                 .Where(s => s.enabled && !File.Exists(s.path))
                 .Select(s => Path.GetFileNameWithoutExtension(s.path))
@@ -148,112 +224,34 @@ public static class SceneSwitcherToolbar
             if (missingScenes.Length > 0)
             {
                 Debug.LogWarning(
-                    $"<color=orange>Scene Switcher:</color> Ignored {missingScenes.Length} missing scene(s) still listed in Build Settings:\n" +
+                    $"<color=orange>Scene Switcher:</color> {missingScenes.Length} missing scene(s) in Build Settings:\n" +
                     string.Join(", ", missingScenes)
                 );
             }
-
-            sceneNames = validScenes;
         }
 
         SelectCurrentScene();
-
-        // Refresh toolbar UI
-        if (toolbarUI != null)
-            toolbarUI.MarkDirtyRepaint();
+        Repaint();
     }
 
-
-    static void CheckAndRefreshScenes()
+    private void SelectCurrentScene()
     {
-        // Avoid refreshing if playing or switching play mode
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        string currentScene = Path.GetFileNameWithoutExtension(EditorSceneManager.GetActiveScene().path);
+        selectedIndex = System.Array.IndexOf(sceneNames, currentScene);
+        if (selectedIndex == -1) selectedIndex = 0;
+    }
+
+    private void LoadScene(int index)
+    {
+        if (index < 0 || index >= scenePaths.Length)
             return;
 
-        // Compute a hash of all scene names to detect change efficiently
-        string[] currentScenes = fetchAllScenes
-            ? Directory.GetFiles("Assets", "*.unity", SearchOption.AllDirectories)
-                .Select(Path.GetFileNameWithoutExtension)
-                .ToArray()
-            : EditorBuildSettings.scenes
-                .Where(scene => scene.enabled)
-                .Select(scene => Path.GetFileNameWithoutExtension(scene.path))
-                .ToArray();
+        string scenePath = scenePaths[index];
 
-        // Generate a simple checksum (string join)
-        string currentHash = string.Join(",", currentScenes);
-        string lastHash = string.Join(",", sceneNames);
-
-        if (currentHash != lastHash)
-        {
-            sceneNames = currentScenes;
-            SelectCurrentScene();
-        }
-    }
-
-
-    static void SelectCurrentScene()
-    {
-        string currentScene = Path.GetFileNameWithoutExtension(EditorSceneManager.GetActiveScene().path);
-        int index = System.Array.IndexOf(sceneNames, currentScene);
-
-        if (index != -1)
-        {
-            selectedIndex = index;
-            lastActiveScene = currentScene;
-        }
-        else
-        {
-            // Append "(not in build index)" if the scene isn't listed
-            string notInBuildName = currentScene + " (not in build index)";
-
-            // Insert it at the beginning or replace first element
-            sceneNames = new[] { notInBuildName }.Concat(sceneNames).ToArray();
-            selectedIndex = 0;
-            lastActiveScene = currentScene;
-        }
-    }
-
-    static void UpdateSceneSelection()
-    {
-        string currentScene = Path.GetFileNameWithoutExtension(EditorSceneManager.GetActiveScene().path);
-        if (currentScene != lastActiveScene)
-        {
-            lastActiveScene = currentScene;
-
-            // Remove any previous "(not in build index)" label to avoid duplicates
-            sceneNames = sceneNames.Where(name => !name.EndsWith(" (not in build index)")).ToArray();
-
-            SelectCurrentScene();
-        }
-    }
-
-
-    static void LoadScene(string sceneName)
-    {
-        string scenePath = null;
-
-        if (fetchAllScenes)
-        {
-            scenePath = Directory.GetFiles("Assets", "*.unity", SearchOption.AllDirectories)
-                .FirstOrDefault(path => Path.GetFileNameWithoutExtension(path) == sceneName);
-        }
-        else
-        {
-            var buildScene = EditorBuildSettings.scenes
-                .FirstOrDefault(scene => scene.enabled && Path.GetFileNameWithoutExtension(scene.path) == sceneName);
-
-            if (buildScene.path != null && File.Exists(buildScene.path))
-                scenePath = buildScene.path;
-        }
-
-        // Check if scene actually exists before loading
         if (string.IsNullOrEmpty(scenePath) || !File.Exists(scenePath))
         {
-            Debug.LogWarning(
-                $"<color=orange>Scene Switcher:</color> Scene \"{sceneName}\" could not be found or has been deleted.\n" +
-                $"Please remove it from Build Settings or re-add the file."
-            );
+            Debug.LogWarning($"<color=orange>Scene Switcher:</color> Scene not found: {sceneNames[index]}");
+            RefreshSceneList();
             return;
         }
 
@@ -263,13 +261,33 @@ public static class SceneSwitcherToolbar
         }
     }
 
-
-    static void OnPlayModeChanged(PlayModeStateChange state)
+    private void AddSceneToBuildSettings(string scenePath)
     {
-        if (state == PlayModeStateChange.EnteredPlayMode || state == PlayModeStateChange.ExitingPlayMode)
+        var scenes = EditorBuildSettings.scenes.ToList();
+
+        if (!scenes.Any(s => s.path == scenePath))
         {
-            EditorApplication.delayCall += () => AddToolbarUI();
+            scenes.Add(new EditorBuildSettingsScene(scenePath, true));
+            EditorBuildSettings.scenes = scenes.ToArray();
+            Debug.Log($"<color=green>Scene Switcher:</color> Added '{Path.GetFileName(scenePath)}' to Build Settings");
+            RefreshSceneList();
         }
+    }
+}
+
+// Optional: Add a toolbar icon for quick access
+[InitializeOnLoad]
+public static class SceneSwitcherQuickAccess
+{
+    static SceneSwitcherQuickAccess()
+    {
+        // Add menu item to quickly open current scene's folder
+        EditorApplication.contextualPropertyMenu += OnPropertyContextMenu;
+    }
+
+    private static void OnPropertyContextMenu(GenericMenu menu, SerializedProperty property)
+    {
+        menu.AddItem(new GUIContent("Scene Switcher/Open Window"), false, () => SceneSwitcherWindow.ShowWindow());
     }
 }
 #endif
