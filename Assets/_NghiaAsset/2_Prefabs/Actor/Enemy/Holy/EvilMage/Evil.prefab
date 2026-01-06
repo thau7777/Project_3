@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &304807613552767370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1225420673059721897}
+  m_Layer: 0
+  m_Name: EffectSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1225420673059721897
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304807613552767370}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8859291, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1238012036913397889
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,6 +2468,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5487942906043496920}
+  - {fileID: 1225420673059721897}
   - {fileID: 1238012036913700033}
   - {fileID: 1238012036913700059}
   - {fileID: 5147185560702354590}
@@ -2502,7 +2534,7 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: e17f4668808bb334396ba67fbdee4c63, type: 2}
   skills:
-  - {fileID: 11400000, guid: cd988eac6e635514a9268ef1775345b7, type: 2}
+  - {fileID: 11400000, guid: c939b5e93a43a3a47a65b29befa0b8a6, type: 2}
   item: []
   passiveSkills:
   - {fileID: 11400000, guid: 0f15e4bd46597fe4081b5fefe4e2a3d0, type: 2}
@@ -2526,7 +2558,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: a5c9cbaf5faaf9d478934270718a8d14, type: 2}
   damagePopupCanvasParent: {fileID: 8942522335287616232}
   enemyStatsUI: {fileID: 1338538099076997050}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 1225420673059721897}
   buffEffectSpawnPoint: {fileID: 5487942906043496920}
   traildblaze: 100
   isBroken: 0
@@ -2576,7 +2608,7 @@ MonoBehaviour:
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
   - {fileID: 11400000, guid: e40570b42b5f5394ebe5a8449c9eb93a, type: 2}
-  targetRenderer: {fileID: 1238012036901834219}
+  targetRenderers: []
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0

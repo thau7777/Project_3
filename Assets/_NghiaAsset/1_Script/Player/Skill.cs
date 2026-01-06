@@ -34,6 +34,8 @@ public class Skill : ScriptableObject
     [Header("Lazer & VFX")]
     [ShowIfEnumValue("skillType", SkillType.LaserAttack)]
     public FlyweightSettings_TB lazerSettings;
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack)]
+    public float laserVFXDuration = 5;
 
     public float impactVFXDuration = 1.0f;
 

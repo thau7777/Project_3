@@ -31,12 +31,6 @@ namespace Turnbase
 
         private IEnumerator PerformLaserAttack()
         {
-            float delay = 0f;
-            if (skill.lazerSettings is OneShotVFXSettings_TB vfxSettings)
-            {
-                delay = vfxSettings.DespawnDelay;
-            }
-
             int finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
             damageApplied = false;
 
@@ -57,10 +51,7 @@ namespace Turnbase
             user.PrepareHitCallBack(hitAction);
             user.animator.Play(skill.animationTriggerName);
 
-            if (delay > 0)
-            {
-                yield return new WaitForSeconds(delay);
-            }
+            
 
             Transform spawnPoint = user.SkillSpawnPoint != null ? user.SkillSpawnPoint : user.transform;
             Flyweight_TB laserFlyweight = null;
@@ -81,6 +72,14 @@ namespace Turnbase
                 }
             }
 
+            float delay = 0f;
+            if (skill.lazerSettings is OneShotVFXSettings_TB vfxSettings)
+            {
+                delay = vfxSettings.DespawnDelay;
+            }
+
+            if (delay > 0) yield return new WaitForSeconds(delay);
+
             float startTime = Time.time;
             float timeout = 2.0f;
 
@@ -91,7 +90,7 @@ namespace Turnbase
 
             if (!damageApplied) hitAction.Invoke();
 
-            float laserDuration = skill.impactVFXDuration > 0 ? skill.impactVFXDuration : 1.0f;
+            float laserDuration = skill.laserVFXDuration;
             yield return new WaitForSeconds(laserDuration);
 
 

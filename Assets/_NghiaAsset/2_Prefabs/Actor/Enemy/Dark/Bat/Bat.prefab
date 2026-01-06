@@ -159,6 +159,37 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &3637609181784160487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5317237348798930907}
+  m_Layer: 0
+  m_Name: SpawnEffectPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5317237348798930907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3637609181784160487}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.050065726, y: 0.6994938, z: 0.07671103}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5078486164885527424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,6 +1552,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5317237348798930907}
   - {fileID: 9178387815659303356}
   - {fileID: 5078486164885424058}
   - {fileID: 5078486164885424056}
@@ -1611,7 +1643,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 92891b3f563608346a0f0da8e807f8fd, type: 2}
   damagePopupCanvasParent: {fileID: 8942522335287616232}
   enemyStatsUI: {fileID: 1338538099076997050}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 5317237348798930907}
   buffEffectSpawnPoint: {fileID: 9178387815659303356}
   traildblaze: 100
   isBroken: 0
@@ -1661,7 +1693,7 @@ MonoBehaviour:
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
   - {fileID: 11400000, guid: e40570b42b5f5394ebe5a8449c9eb93a, type: 2}
-  targetRenderer: {fileID: 5078486164880250522}
+  targetRenderers: []
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
