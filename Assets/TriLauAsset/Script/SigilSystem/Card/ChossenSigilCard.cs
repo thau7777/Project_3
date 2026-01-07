@@ -36,7 +36,7 @@ namespace MyRule
 
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                EventBus<DeleteSigilCardEvent>.Raise(new DeleteSigilCardEvent());
+                EventBus<ShowSigilCardEvent>.Raise(new ShowSigilCardEvent(false));
 
                 hoverCard = null;
             }

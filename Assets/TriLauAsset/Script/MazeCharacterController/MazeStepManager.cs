@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.Rendering.ProbeAdjustmentVolume;
 
 namespace MyRule
 {
@@ -125,8 +124,6 @@ namespace MyRule
                     break;
                 }
             }
-
-            await UniTask.Delay(500);
 
             if (canMove)
             {

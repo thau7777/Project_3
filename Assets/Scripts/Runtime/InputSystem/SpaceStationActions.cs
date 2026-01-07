@@ -8,6 +8,7 @@ public class SpaceStationActions : InputActions.ISpaceStationActions
     public Action onInteract;
     public Action<Vector2> onMove;
     public Action onActve;
+    public Action<Vector2> onLook;
 
     public void OnActve(InputAction.CallbackContext context)
     {
@@ -25,6 +26,18 @@ public class SpaceStationActions : InputActions.ISpaceStationActions
     {
         if (context.performed)
             onInteract?.Invoke();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onLook?.Invoke(context.ReadValue<Vector2>());
+        }
+        else if (context.canceled)
+        {
+            onLook?.Invoke(Vector2.zero);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)

@@ -8,12 +8,10 @@ namespace MyRule
     {
         [SerializeField] private int delayTime = 1;
         [SerializeField] private GroupSigil groupSigil;
-
-        private List<Card> cards = new List<Card>(3);
+        [SerializeField] private List<Card> cards = new List<Card>();
 
         private EventBinding<ShowSigilCardEvent> showSigilCardEventBinding;
         private EventBinding<RollSigilCardEvent> rollSigilCardEventBinding;
-        private EventBinding<DeleteSigilCardEvent> deleteSigilCardEventBinding;
 
         private void OnEnable()
         {
@@ -22,21 +20,24 @@ namespace MyRule
 
             rollSigilCardEventBinding = new EventBinding<RollSigilCardEvent>(RollSigilHandler);
             EventBus<RollSigilCardEvent>.Register(rollSigilCardEventBinding);
-
-            deleteSigilCardEventBinding = new EventBinding<DeleteSigilCardEvent>(Delete);
-            EventBus<DeleteSigilCardEvent>.Register(deleteSigilCardEventBinding);
         }
 
         private void OnDisable()
         {
             EventBus<ShowSigilCardEvent>.Deregister(showSigilCardEventBinding);
             EventBus<RollSigilCardEvent>.Deregister(rollSigilCardEventBinding);
-            EventBus<DeleteSigilCardEvent>.Deregister(deleteSigilCardEventBinding);
         }
 
-        private void ShowCardsHandler(ShowSigilCardEvent evt)
+        private async void ShowCardsHandler(ShowSigilCardEvent evt)
         {
-            SpawnCard(evt.showing);
+            if (evt.showing)
+            {
+                SpawnCard(evt.showing);
+            }
+            else
+            {
+                await DeleteCard();
+            }
         }
 
         private async void SpawnCard(bool evt)
@@ -56,11 +57,6 @@ namespace MyRule
             }
         }
 
-        private async void Delete()
-        {
-            await DeleteCard();
-        }
-
         private async UniTask DeleteCard()
         {
             foreach (var card in cards)
@@ -75,6 +71,8 @@ namespace MyRule
 
         private async void RollSigilHandler(RollSigilCardEvent evt)
         {
+            Debug.Log("roll");
+
             await DeleteCard();
 
             SpawnCard(true);
