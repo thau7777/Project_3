@@ -687,6 +687,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1855,6 +1856,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -1927,6 +1929,7 @@ GameObject:
   - component: {fileID: 1732808570604203036}
   - component: {fileID: 2522553426522064454}
   - component: {fileID: 1413853046790887180}
+  - component: {fileID: 9217365973248063873}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -2014,9 +2017,7 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: e17f4668808bb334396ba67fbdee4c63, type: 2}
   skills:
-  - {fileID: 11400000, guid: 8aa35c1b03a091148933b0021689e397, type: 2}
-  - {fileID: 11400000, guid: b78cacfb875cba44baa3c8676019013d, type: 2}
-  - {fileID: 11400000, guid: 5f90ede2135627b429d4058407962180, type: 2}
+  - {fileID: 11400000, guid: b61f531235b2df444b1ab1aaf224acd0, type: 2}
   item: []
   passiveSkills:
   - {fileID: 11400000, guid: 0f15e4bd46597fe4081b5fefe4e2a3d0, type: 2}
@@ -2040,7 +2041,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: d4858776b77702941bc2e52a5e569c75, type: 2}
   damagePopupCanvasParent: {fileID: 8942522335287616232}
   enemyStatsUI: {fileID: 1338538099076997050}
-  projectileSpawnPoint: {fileID: 5708550048419758135}
+  SkillSpawnPoint: {fileID: 8749735198349419614}
   buffEffectSpawnPoint: {fileID: 4071404061262648030}
   traildblaze: 100
   isBroken: 0
@@ -2219,6 +2220,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead553680eccfce47ab5e6589619c945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.EnemyAIController
+--- !u!114 &9217365973248063873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b85d7cb95699e64fa64429a202923ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterAnimationDispatcher
 --- !u!1001 &305606397485933549
 PrefabInstance:
   m_ObjectHideFlags: 0

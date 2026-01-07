@@ -332,6 +332,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1544,6 +1545,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -1685,6 +1687,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6987138538120768530
 GameObject:
@@ -1920,7 +1923,8 @@ MonoBehaviour:
     agility: 100
   allClassProfiles:
   - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 0e4cd3b13775c96409c16de9d5c56f9a, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0

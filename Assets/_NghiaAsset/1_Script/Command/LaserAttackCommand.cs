@@ -33,6 +33,7 @@ namespace Turnbase
         {
             int finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
             damageApplied = false;
+            bool effectTriggered = false; 
 
             Action hitAction = () =>
             {
@@ -40,49 +41,47 @@ namespace Turnbase
                 {
                     ApplyStatusEffectsAndStacks(user, target, skill);
                     target.TakeDamage(finalDamage, skill.elementType);
-
                     EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.2f, 0.4f));
                     SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
-
                     damageApplied = true;
                 }
             };
-
             user.PrepareHitCallBack(hitAction);
+
+            Action spawnAction = () =>
+            {
+                if (effectTriggered) return;
+
+                Transform spawnPoint = user.SkillSpawnPoint != null ? user.SkillSpawnPoint : user.transform;
+                if (skill.lazerSettings != null)
+                {
+                    Flyweight_TB laserFlyweight = FlyweightFactory_TB.Spawn(skill.lazerSettings);
+                    if (laserFlyweight != null)
+                    {
+                        laserFlyweight.Initialize(spawnPoint.position, spawnPoint.rotation);
+                        laserFlyweight.transform.SetParent(spawnPoint);
+                        laserFlyweight.transform.localPosition = Vector3.zero;
+                        laserFlyweight.transform.localRotation = Quaternion.identity;
+
+                        battleManager.StartCoroutine(UpdateLaserPositions(laserFlyweight.gameObject, spawnPoint, target.transform));
+                    }
+                }
+                effectTriggered = true;
+            };
+
+            if (user.TryGetComponent(out CharacterAnimationDispatcher dispatcher))
+            {
+                dispatcher.SetSpawnCallback(spawnAction);
+            }
+            else
+            {
+                spawnAction.Invoke();
+            }
+
             user.animator.Play(skill.animationTriggerName);
 
-            
-
-            Transform spawnPoint = user.SkillSpawnPoint != null ? user.SkillSpawnPoint : user.transform;
-            Flyweight_TB laserFlyweight = null;
-
-            if (skill.lazerSettings != null)
-            {
-                laserFlyweight = FlyweightFactory_TB.Spawn(skill.lazerSettings);
-
-                if (laserFlyweight != null)
-                {
-                    laserFlyweight.Initialize(spawnPoint.position, spawnPoint.rotation);
-
-                    laserFlyweight.transform.SetParent(spawnPoint);
-                    laserFlyweight.transform.localPosition = Vector3.zero;
-                    laserFlyweight.transform.localRotation = Quaternion.identity;
-
-                    battleManager.StartCoroutine(UpdateLaserPositions(laserFlyweight.gameObject, spawnPoint, target.transform));
-                }
-            }
-
-            float delay = 0f;
-            if (skill.lazerSettings is OneShotVFXSettings_TB vfxSettings)
-            {
-                delay = vfxSettings.DespawnDelay;
-            }
-
-            if (delay > 0) yield return new WaitForSeconds(delay);
-
             float startTime = Time.time;
-            float timeout = 2.0f;
-
+            float timeout = 2.5f;
             while (!damageApplied && Time.time < startTime + timeout)
             {
                 yield return null;
@@ -90,10 +89,7 @@ namespace Turnbase
 
             if (!damageApplied) hitAction.Invoke();
 
-            float laserDuration = skill.laserVFXDuration;
-            yield return new WaitForSeconds(laserDuration);
-
-
+            yield return new WaitForSeconds(skill.laserVFXDuration);
         }
 
         private IEnumerator UpdateLaserPositions(GameObject laser, Transform start, Transform end)
@@ -114,7 +110,7 @@ namespace Turnbase
             }
         }
 
-        #region Rotation Logic (Giữ nguyên)
+        #region Rotation 
         private Quaternion GetTargetLookRotation()
         {
             Vector3 direction = (target.transform.position - user.transform.position).normalized;
