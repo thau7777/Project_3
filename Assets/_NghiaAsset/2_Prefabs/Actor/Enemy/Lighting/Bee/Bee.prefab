@@ -587,6 +587,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -953,6 +954,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -1465,8 +1467,7 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
   skills:
-  - {fileID: 11400000, guid: d13dcba399a87834fbbbfb985a09188e, type: 2}
-  - {fileID: 11400000, guid: 5324443a104dbb1478a5cc5ce01a2265, type: 2}
+  - {fileID: 11400000, guid: 8f2a1ac71a534f0428897c90afd28162, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -1489,7 +1490,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: db9c8990a537d3e4080a2d1d945cb0c4, type: 2}
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 20219120422887858}
   traildblaze: 100
   isBroken: 0

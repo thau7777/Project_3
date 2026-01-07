@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3811732012673779990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751085731066260930}
+  m_Layer: 0
+  m_Name: EffectSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1751085731066260930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3811732012673779990}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.46851677, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5578527828917850769
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,6 +782,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -905,6 +937,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -997,6 +1030,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1343660029674395783}
+  - {fileID: 1751085731066260930}
   - {fileID: 5578527828917358299}
   - {fileID: 5578527828917358323}
   - {fileID: 5147185560702354590}
@@ -1060,11 +1094,9 @@ MonoBehaviour:
     critDamage: 0
     agility: 100
   allClassProfiles:
-  - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
+  - {fileID: 11400000, guid: 2a1561a5d7b34844d8bf2d083a860fc6, type: 2}
   skills:
-  - {fileID: 11400000, guid: b9f0378fdc37fea45a65f4586555afb9, type: 2}
-  - {fileID: 11400000, guid: 5324443a104dbb1478a5cc5ce01a2265, type: 2}
-  - {fileID: 11400000, guid: bc63979dc8c0dd949895ebd7940d515f, type: 2}
+  - {fileID: 11400000, guid: 7108fa51155ff0f458acf58d64aa0089, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -1087,7 +1119,7 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 2adad2e592117384e9b2aaac64bb9839, type: 2}
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 1751085731066260930}
   buffEffectSpawnPoint: {fileID: 1343660029674395783}
   traildblaze: 100
   isBroken: 0
@@ -1240,7 +1272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  targetRenderer: {fileID: 5578527828923064313}
+  targetRenderers: []
 --- !u!114 &5930411074134683441
 MonoBehaviour:
   m_ObjectHideFlags: 0

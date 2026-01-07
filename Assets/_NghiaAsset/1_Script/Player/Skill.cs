@@ -30,6 +30,8 @@ public class Skill : ScriptableObject
     [Header("Projectile & VFX")]
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
     public FlyweightSettings_TB projectileSettings;
+    [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
+    public bool useSkillSpawnPoint2;
 
     [Header("Lazer & VFX")]
     [ShowIfEnumValue("skillType", SkillType.LaserAttack)]

@@ -903,6 +903,37 @@ Transform:
   - {fileID: 4518839897648761910}
   m_Father: {fileID: 4343388303896887658}
   m_LocalEulerAnglesHint: {x: 9.325055e-16, y: 180, z: 98.92272}
+--- !u!1 &5822327356119005136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4059547329376632589}
+  m_Layer: 0
+  m_Name: BuffEffectPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4059547329376632589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5822327356119005136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.4365236, z: 0.6966579}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5967672951702797081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1117,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -1430,6 +1462,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7856659647398015970}
+  - {fileID: 4059547329376632589}
   - {fileID: 3946267067773236052}
   - {fileID: 1612698258774501617}
   - {fileID: 5147185560702354590}
@@ -1493,11 +1526,9 @@ MonoBehaviour:
     critDamage: 0
     agility: 100
   allClassProfiles:
-  - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
+  - {fileID: 11400000, guid: 45bc4cd7e6358274b902e5746b53785f, type: 2}
   skills:
-  - {fileID: 11400000, guid: b9f0378fdc37fea45a65f4586555afb9, type: 2}
-  - {fileID: 11400000, guid: 5324443a104dbb1478a5cc5ce01a2265, type: 2}
-  - {fileID: 11400000, guid: bc63979dc8c0dd949895ebd7940d515f, type: 2}
+  - {fileID: 11400000, guid: fddab20035257134d880ffa27a6290ba, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -1520,7 +1551,8 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: fb87a27136a6cac45b84ac3598dad2b7, type: 2}
   damagePopupCanvasParent: {fileID: 7814129726238307637}
   enemyStatsUI: {fileID: 9145698497346757161}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 4059547329376632589}
+  SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 7856659647398015970}
   traildblaze: 100
   isBroken: 0
@@ -1673,7 +1705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  targetRenderer: {fileID: 4461347161773892123}
+  targetRenderers: []
 --- !u!114 &5930411074134683441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2019,6 +2051,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0

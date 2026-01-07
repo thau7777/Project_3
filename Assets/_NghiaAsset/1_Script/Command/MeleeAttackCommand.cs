@@ -113,7 +113,7 @@ namespace Turnbase
 
             user.PrepareHitCallBack(hitAction);
 
-            user.animator.Play("Attack");
+            user.animator.Play(skill.animationTriggerName);
 
             float startTime = Time.time;
             float timeout = 2.0f;

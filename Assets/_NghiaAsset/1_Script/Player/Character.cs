@@ -68,6 +68,8 @@ namespace Turnbase
 
         public Transform SkillSpawnPoint;
 
+        public Transform SkillSpawnPoint2;
+
         public Transform buffEffectSpawnPoint;
 
 
