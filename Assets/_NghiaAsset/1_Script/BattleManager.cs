@@ -676,10 +676,12 @@ namespace Turnbase
                 {
                     target.isParryable = false;
 
+                    enemy.isAttackBlocked = true;
+
                     int parryDamage = target.stats.physicalAttack * 1;
                     enemy.TakeDamage(parryDamage, element);
 
-                    Time.timeScale = 0.5f;
+                    //Time.timeScale = 0.5f;
 
                     if (currentParryWindow != null)
                     {

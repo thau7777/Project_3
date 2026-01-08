@@ -72,6 +72,7 @@ namespace Turnbase
 
         public Transform buffEffectSpawnPoint;
 
+        public bool isAttackBlocked = false;
 
         public bool isAlive
         {
@@ -246,8 +247,14 @@ namespace Turnbase
 
         public void TriggerDamage()
         {
-            damageCallback?.Invoke();
+            if (isAttackBlocked)
+            {
+                Debug.Log($"[PARRY] Đòn đánh của {gameObject.name} đã bị chặn, không gây sát thương!");
+                isAttackBlocked = false; 
+                return;
+            }
 
+            damageCallback?.Invoke();
         }
 
         #region Heal and Buffs Methods
