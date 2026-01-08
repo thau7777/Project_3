@@ -79,6 +79,8 @@ namespace Turnbase
             get { return stats.currentHP > 0; }
         }
 
+        public bool isParrySuccessful = false;
+
 
 
         void Awake()
@@ -139,6 +141,13 @@ namespace Turnbase
 
         public void TakeDamage(int damageAmount, ElementType damageElement)
         {
+            Debug.Log($"<color=yellow>[CHECK]</color> {gameObject.name} gọi TakeDamage. isAttackBlocked hiện tại là: {this.isAttackBlocked}");
+            if (this.isAttackBlocked)
+            {
+                Debug.Log($"<color=cyan>[BLOCK SUCCESS]</color> {gameObject.name} chặn damage thành công!");
+                return;
+            }
+
             int remainingDamage = damageAmount;
             int traildblaze = 30;
 
@@ -247,11 +256,10 @@ namespace Turnbase
 
         public void TriggerDamage()
         {
-            if (isAttackBlocked)
+            if (this.isAttackBlocked)
             {
-                Debug.Log($"[PARRY] Đòn đánh của {gameObject.name} đã bị chặn, không gây sát thương!");
-                isAttackBlocked = false; 
-                return;
+                Debug.Log($"[CANCEL] {gameObject.name} bị Parry nên đòn đánh bị hủy!");
+                return; 
             }
 
             damageCallback?.Invoke();

@@ -55,6 +55,10 @@ namespace Turnbase
         [Header("Cinematics")]
         public PlayableDirector mainDirector;
 
+        public ParryMiniGame parryUI;
+
+        public bool isMiniGameRunning = false;
+
         void Start()
         {
             SetupBattle();
@@ -582,37 +586,43 @@ namespace Turnbase
 
         }
 
-
         private IEnumerator EnemyTurn(Character enemy)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
+            Enemy enemyComp = enemy.GetComponent<Enemy>();
+            enemyComp.PrepareTurn();
 
-            Enemy enemyComponent = enemy.GetComponent<Enemy>();
-            if (enemyComponent != null)
+            Character playerTarget = enemyComp.target;
+
+            if (playerTarget != null && playerTarget.isPlayer)
             {
-                enemyComponent.PerformTurn();
+                bool miniGameFinished = false;
+                playerTarget.isParrySuccessful = false;
+
+                parryUI.StartGame(2.5f, (isSuccess) => {
+                    if (isSuccess)
+                    {
+                        playerTarget.isAttackBlocked = true;
+                        enemyComp.isAttackBlocked = true;
+
+                        Debug.Log("<color=green>[SYSTEM]</color> Mini-game thành công, đã KHÓA sát thương.");
+                        OnParryAttempted();
+                    }
+                    else
+                    {
+                        playerTarget.isAttackBlocked = false;
+                        enemyComp.isAttackBlocked = false;
+
+                        Debug.Log("<color=red>[SYSTEM]</color> Mini-game thất bại! Người chơi sẽ nhận sát thương.");
+                    }
+                    miniGameFinished = true;
+                });
+
+                yield return new WaitUntil(() => miniGameFinished);
+                yield return new WaitForSeconds(0.5f);
             }
 
-            if (enemy.target != null)
-            {
-                float startTime = 0f;
-                float endTime = 0f;
-
-                yield return new WaitUntil(() => enemy.isAttackReadyForParry == true);
-                startTime = Time.time;
-                enemy.isAttackReadyForParry = false;
-                enemy.isParryWindowFinished = false;
-
-
-                yield return new WaitUntil(() => enemy.isParryWindowFinished == true);
-                endTime = Time.time;
-                enemy.isParryWindowFinished = false;
-
-                float duration = endTime - startTime;
-                enemy.parryWindowDuration = duration;
-
-                StartParryWindow(enemy, enemy.target, duration);
-            }
+            enemyComp.ExecuteTurn();
         }
 
         public void StartParryWindow(Character enemy, Character target, float duration)
@@ -667,42 +677,24 @@ namespace Turnbase
 
         public void OnParryAttempted()
         {
-            ElementType element = ElementType.None;
-
             if (activeCharacter != null && activeCharacter is Enemy enemy)
             {
                 Character target = enemy.target;
-                if (target != null && target.isParryable)
+                if (target != null)
                 {
-                    target.isParryable = false;
-
                     enemy.isAttackBlocked = true;
+                    target.isAttackBlocked = true;
+                    target.isParrySuccessful = true;
 
-                    int parryDamage = target.stats.physicalAttack * 1;
-                    enemy.TakeDamage(parryDamage, element);
+                    Debug.Log($"<color=green>[SYSTEM]</color> Đã set isAttackBlocked = true cho {target.name}");
 
-                    //Time.timeScale = 0.5f;
+                    int parryDamage = Mathf.RoundToInt(target.stats.physicalAttack * 1.5f);
+                    enemy.TakeDamage(parryDamage, ElementType.None);
 
-                    if (currentParryWindow != null)
-                    {
-                        StopCoroutine(currentParryWindow);
-                        currentParryWindow = null;
-                        if (target.ownUI != null)
-                        {
-                            target.ownUI.ShowParryUI(false);
-                            target.ownUI.SetParrySprite(false);
-                        }
-                    }
-
-                    activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.interruptedState);
-                    target.stateMachine.SwitchState(target.stateMachine.parryingState);
-                }
-                else
-                {
-                    Debug.Log("Parry không thành công!");
                 }
             }
         }
+
 
         public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
         {

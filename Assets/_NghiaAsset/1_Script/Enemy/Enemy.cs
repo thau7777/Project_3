@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
-using Random = UnityEngine.Random;
 
 
 namespace Turnbase
@@ -44,16 +43,28 @@ namespace Turnbase
             }
         }
 
-        public void Animation_ReadyParry()
+        public void Animation_CheckParryResult()
         {
-            isAttackReadyForParry = true;
-        }
+            if (target != null && target.isAttackBlocked)
+            {
+                Debug.Log($"<color=orange>[PARRY HIT]</color> {gameObject.name} bị khựng lại do bị phản đòn!");
 
-        public void Animation_EndParry()
-        {
-            isParryWindowFinished = true;
-        }
+                if (stateMachine != null)
+                {
+                    stateMachine.SwitchState(new InterruptedState(stateMachine));
+                }
 
+                if (target.stateMachine != null)
+                {
+                    target.stateMachine.SwitchState(target.stateMachine.parryingState);
+                    Debug.Log($"<color=green>[PARRY HIT]</color> Chuyển {target.gameObject.name} sang trạng thái ParryingState!");
+                }
+
+            }
+
+
+            
+        }
 
         public void ConsumeSkillTypePool(SkillType type)
         {
@@ -79,37 +90,36 @@ namespace Turnbase
             }
         }
 
-        public void PerformTurn()
+        public void PrepareTurn()
         {
             RegenerateSkillTypePool();
-
             (Skill chosenSkill, Character chosenTarget) = aiController.DetermineBestAction(this, battleManager);
 
             if (chosenTarget != null && chosenSkill != null)
             {
                 this.target = chosenTarget;
                 this.selectedSkill = chosenSkill;
+            }
+        }
 
-                if (chosenSkill.skillType != SkillType.Buff &&
-                    chosenSkill.skillType != SkillType.Shield &&
-                    chosenSkill.skillType != SkillType.Heal)
+        public void ExecuteTurn()
+        {
+            if (target != null && selectedSkill != null)
+            {
+                if (selectedSkill.skillType != SkillType.Buff &&
+                    selectedSkill.skillType != SkillType.Shield &&
+                    selectedSkill.skillType != SkillType.Heal)
                 {
-                    RotateToTarget(chosenTarget.transform.position);
+                    RotateToTarget(target.transform.position);
                 }
 
                 CameraAction.instance.LookCameraAtTarget(this.target);
-
-
-                this.stats.currentMP -= chosenSkill.manaCost;
+                this.stats.currentMP -= selectedSkill.manaCost;
                 enemyUI.UpdateUI();
+                ConsumeSkillTypePool(selectedSkill.skillType);
 
-                ConsumeSkillTypePool(chosenSkill.skillType);
-
-                stateMachine.SwitchState(new SkillAttackingState(stateMachine, chosenSkill));
-
+                stateMachine.SwitchState(new SkillAttackingState(stateMachine, selectedSkill));
                 EventBus<HidePanelEvent>.Raise(new HidePanelEvent(panelName: "EnemyUI"));
-
-                
             }
             else
             {

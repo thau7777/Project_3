@@ -33,10 +33,12 @@ namespace Turnbase
 
             yield return MoveToTarget(destination);
             yield return PerformAttack();
+            Debug.Log($"<color=orange>[FLOW]</color> Vừa thoát PerformAttack. Giá trị target.isAttackBlocked trước khi reset: {target.isAttackBlocked}");
             yield return MoveBackToInitialPosition(initialPosition);
             yield return RotateBackToInitial();
 
             battleManager.EndTurn(user);
+
         }
         private IEnumerator MoveToTarget(Vector3 dest)
         {
@@ -71,96 +73,69 @@ namespace Turnbase
             ApplyStatusEffectsAndStacks(user, target, skill);
 
             ElementType element = skill.elementType;
-
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
             float delayBetweenHits = skill.delayBetweenHits;
 
             int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
-
             int baseDamagePerHit = totalDamage / hits;
             int damageRemainder = totalDamage % hits;
 
             damageApplied = false;
+
             Action hitAction = () =>
             {
-                if (!damageApplied)
+                if (damageApplied) return;
+
+                if (target.isAttackBlocked)
                 {
-                    target.TakeDamage(baseDamagePerHit, element);
-                    SpawnImpactEffect(target.transform.position, skill);
                     damageApplied = true;
+                    return;
+                }
 
-                    FlyweightSettings_TB settingsToSpawn = skill.meleeSettings;
-                    if (settingsToSpawn != null)
+                target.TakeDamage(baseDamagePerHit, element);
+                SpawnImpactEffect(target.transform.position, skill);
+                damageApplied = true;
+
+                FlyweightSettings_TB settingsToSpawn = skill.meleeSettings;
+                if (settingsToSpawn != null)
+                {
+                    Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
+                    if (effectInstance != null)
                     {
-                        Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
-
-                        if (effectInstance != null)
-                        {
-                            Vector3 spawnPos = user.SkillSpawnPoint != null ?
-                                               user.SkillSpawnPoint.position :
-                                               user.transform.position;
-
-                            Quaternion spawnRot = user.SkillSpawnPoint != null ?
-                                                 user.SkillSpawnPoint.rotation :
-                                                 Quaternion.identity;
-
-                            effectInstance.Initialize(spawnPos, spawnRot);
-
-                        }
+                        Vector3 spawnPos = user.SkillSpawnPoint != null ? user.SkillSpawnPoint.position : user.transform.position;
+                        effectInstance.Initialize(spawnPos, user.transform.rotation);
                     }
                 }
             };
 
             user.PrepareHitCallBack(hitAction);
-
             user.animator.Play(skill.animationTriggerName);
 
-            float startTime = Time.time;
-            float timeout = 2.0f;
-
-            while (!damageApplied && Time.time < startTime + timeout)
+            while (!damageApplied)
             {
+                if (user.stateMachine.currentState is InterruptedState)
+                {
+                    Debug.Log("<color=red>[COROUTINE]</color> PerformAttack đã yield break (Dừng code chém).");
+                    yield break;
+                }
                 yield return null;
             }
 
-            if (!damageApplied)
-            {
-                target.TakeDamage(baseDamagePerHit, element);
-                SpawnImpactEffect(target.transform.position, skill);
-            }
-
-
             for (int i = 1; i < hits; i++)
             {
+                if (user.stateMachine.currentState is InterruptedState || target.isAttackBlocked)
+                    yield break;
+
                 yield return new WaitForSeconds(delayBetweenHits);
 
-                int currentHitDamage = baseDamagePerHit;
-
-                if (i == hits - 1)
-                {
-                    currentHitDamage += damageRemainder;
-                }
-
+                int currentHitDamage = baseDamagePerHit + (i == hits - 1 ? damageRemainder : 0);
                 target.TakeDamage(currentHitDamage, element);
                 SpawnImpactEffect(target.transform.position, skill);
             }
 
-            float calculatedDuration = 0.5f;
-            AnimatorStateInfo stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
-
-            if (user.animator.HasState(0, Animator.StringToHash("Attack")))
-            {
-                calculatedDuration = stateInfo.length - (Time.time - startTime);
-                calculatedDuration = Mathf.Max(0.1f, calculatedDuration);
-            }
-
-            yield return new WaitForSeconds(calculatedDuration);
-
+            yield return new WaitForSeconds(0.5f);
             user.animator.Play("Idle");
-
-            yield return new WaitForSeconds(0.1f);
         }
-
 
         private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
         {
