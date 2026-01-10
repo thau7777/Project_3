@@ -28373,11 +28373,12 @@ MonoBehaviour:
     magicAttack: 100
     magicDefense: 10
     crit: 100
-    critDamage: 500
-    agility: 1
+    critDamage: 100
+    agility: 111
   allClassProfiles:
   - {fileID: 11400000, guid: f2bb29f02316b1e4aa5b898e132dc7ac, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 5e3da1964380fc14e840322b1a48cd6c, type: 2}
   item:
   - {fileID: 11400000, guid: 94739275a84aeeb48aed2113f6d7c639, type: 2}
   - {fileID: 11400000, guid: 10ce6117019c09243820bba989b6d8a2, type: 2}
@@ -28404,7 +28405,10 @@ MonoBehaviour:
   damagePopupCanvasParent: {fileID: 0}
   enemyStatsUI: {fileID: 0}
   SkillSpawnPoint: {fileID: 3706692817351515224}
+  SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 2679676773879030577}
+  isAttackBlocked: 0
+  isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0

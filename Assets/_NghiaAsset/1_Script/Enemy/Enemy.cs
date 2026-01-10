@@ -60,10 +60,15 @@ namespace Turnbase
                     Debug.Log($"<color=green>[PARRY HIT]</color> Chuyển {target.gameObject.name} sang trạng thái ParryingState!");
                 }
 
+
+                StartCoroutine(DelayedCameraShake(0.3f));
             }
+        }
 
-
-            
+        private IEnumerator DelayedCameraShake(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.15f, 0.3f));
         }
 
         public void ConsumeSkillTypePool(SkillType type)

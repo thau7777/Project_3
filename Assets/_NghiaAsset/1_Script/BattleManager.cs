@@ -605,6 +605,11 @@ namespace Turnbase
                         playerTarget.isAttackBlocked = true;
                         enemyComp.isAttackBlocked = true;
 
+                        if (playerTarget.animator != null)
+                        {
+                            playerTarget.animator.Play("Standing");
+                        }
+
                         Debug.Log("<color=green>[SYSTEM]</color> Mini-game thành công, đã KHÓA sát thương.");
                         OnParryAttempted();
                     }
@@ -829,6 +834,12 @@ namespace Turnbase
                 EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
                 CameraAction.instance.TargetAllEnemies();
+
+                foreach (var c in allCombatants)
+                {
+                    c.isAttackBlocked = false;
+                    c.isParrySuccessful = false; 
+                }
 
                 activeCharacter = null;
                 if (character.stateMachine != null)

@@ -89,6 +89,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &5132337947428327636
 SphereCollider:
@@ -731,6 +732,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -2559,7 +2561,7 @@ MonoBehaviour:
   parryButton: {fileID: 926825166209101814}
   confirmButton: {fileID: 3408907834114885634}
   summomonButton: {fileID: 3152233296414975203}
-  itemButton: {fileID: 0}
+  itemButton: {fileID: 2508251141820729349}
   actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 1937620497672716229}
@@ -2568,8 +2570,8 @@ MonoBehaviour:
   PlayerSkillPanel: {fileID: 7467650043950934744}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 0c378e221269cfc49af870a0c15623f2, type: 3}
   PlayerSummonPanel: {fileID: 8661358630346918267}
-  itemEntryPrefab: {fileID: 0}
-  PlayerItemPanel: {fileID: 0}
+  itemEntryPrefab: {fileID: 3163969907839143040, guid: c3adcbf10b464cb49aebee29ccaf44a5, type: 3}
+  PlayerItemPanel: {fileID: 2845068341383239543}
   parryFillImage: {fileID: 4440646200570933339}
   defaultParrySprite: {fileID: 21300000, guid: 63be7197c60874147a5fb1f91704cfea, type: 3}
   readyParrySprite: {fileID: 21300000, guid: b79a56f910ade2b4f8bf0c8925a5f772, type: 3}
@@ -2676,7 +2678,8 @@ MonoBehaviour:
     agility: 111
   allClassProfiles:
   - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: d13dcba399a87834fbbbfb985a09188e, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 1
@@ -2699,8 +2702,11 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: ed1fef46a43cd7940b677ad15cc22228, type: 2}
   damagePopupCanvasParent: {fileID: 0}
   enemyStatsUI: {fileID: 0}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 0}
+  SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 3702487629804660082}
+  isAttackBlocked: 0
+  isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3118,6 +3124,22 @@ MonoBehaviour:
 --- !u!1 &1937620497672716229 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3748308581709726980, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 3379781474266348225}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2508251141820729349 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 876086775593185988, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 3379781474266348225}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2845068341383239543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 692661321099701686, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
   m_PrefabInstance: {fileID: 3379781474266348225}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2866674057229994192 stripped

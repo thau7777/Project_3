@@ -60,7 +60,6 @@ namespace Turnbase
         {
             if (!isGameActive) return;
 
-            // 1. Nhập chuỗi mũi tên
             if (currentInputIndex < requiredSequence.Count)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) ||
@@ -74,7 +73,6 @@ namespace Turnbase
                     }
                     else
                     {
-                        // Bấm sai hướng
                         arrowImages[currentInputIndex].color = failColor;
                         hasFailedSequence = true;
                         currentInputIndex++;
@@ -84,7 +82,6 @@ namespace Turnbase
                 }
             }
 
-            // 2. Nhấn Space để chốt kết quả ngay lập tức
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 CheckResult();
@@ -102,7 +99,6 @@ namespace Turnbase
 
         private void CheckResult()
         {
-            // Điều kiện thắng duy nhất: Đã bấm đủ số phím và không có phím nào bị bấm sai
             bool isSequenceComplete = (currentInputIndex == requiredSequence.Count) && !hasFailedSequence;
 
             if (isSequenceComplete)

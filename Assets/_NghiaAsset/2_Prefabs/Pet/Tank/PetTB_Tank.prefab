@@ -315,6 +315,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &5132337947428327636
 SphereCollider:
@@ -667,6 +668,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -823,6 +825,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1043,6 +1046,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -2297,7 +2301,8 @@ MonoBehaviour:
     agility: 111
   allClassProfiles:
   - {fileID: 11400000, guid: 32fd48be8915402499dec203f5930513, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: d13dcba399a87834fbbbfb985a09188e, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 1
@@ -2320,8 +2325,11 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 20a183699e0de384c8e8786dec5f801e, type: 2}
   damagePopupCanvasParent: {fileID: 0}
   enemyStatsUI: {fileID: 0}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 0}
+  SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 5792128531332985526}
+  isAttackBlocked: 0
+  isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0
