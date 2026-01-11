@@ -47,21 +47,27 @@ namespace Turnbase
         {
             if (target != null && target.isAttackBlocked)
             {
-                Debug.Log($"<color=orange>[PARRY HIT]</color> {gameObject.name} bị khựng lại do bị phản đòn!");
-
-                if (stateMachine != null)
+                if (target.isParrySuccessful)
                 {
-                    stateMachine.SwitchState(new InterruptedState(stateMachine));
+                    Debug.Log($"<color=orange>[PARRY HIT]</color> {gameObject.name} bị khựng!");
+
+                    if (stateMachine != null)
+                        stateMachine.SwitchState(new InterruptedState(stateMachine));
+
+                    if (target.stateMachine != null)
+                        target.stateMachine.SwitchState(target.stateMachine.parryingState);
+
+                    StartCoroutine(DelayedCameraShake(0.3f));
                 }
 
-                if (target.stateMachine != null)
-                {
-                    target.stateMachine.SwitchState(target.stateMachine.parryingState);
-                    Debug.Log($"<color=green>[PARRY HIT]</color> Chuyển {target.gameObject.name} sang trạng thái ParryingState!");
-                }
+            }
+        }
 
-
-                StartCoroutine(DelayedCameraShake(0.3f));
+        public void Animation_TriggerEvade(float duration)
+        {
+            if (battleManager != null && target != null)
+            {
+                battleManager.TriggerEvadeOnly(duration, target, this);
             }
         }
 

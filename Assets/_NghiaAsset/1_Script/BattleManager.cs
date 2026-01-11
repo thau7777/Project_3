@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-using UnityEngine.Playables;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Turnbase
 {
@@ -57,6 +59,8 @@ namespace Turnbase
 
         public ParryMiniGame parryUI;
 
+        public EvadeMiniGame evadeUI;
+
         public bool isMiniGameRunning = false;
 
         void Start()
@@ -82,6 +86,7 @@ namespace Turnbase
                 {
                     OnParryAttempted();
                 }
+
             }
         }
 
@@ -596,38 +601,52 @@ namespace Turnbase
 
             if (playerTarget != null && playerTarget.isPlayer)
             {
-                bool miniGameFinished = false;
+                bool parryWindowFinished = false;
                 playerTarget.isParrySuccessful = false;
+                playerTarget.isAttackBlocked = false;
+                enemyComp.isAttackBlocked = false;
 
                 parryUI.StartGame(1.5f, (isSuccess) => {
+                    parryWindowFinished = true; 
                     if (isSuccess)
                     {
                         playerTarget.isAttackBlocked = true;
                         enemyComp.isAttackBlocked = true;
-
-                        if (playerTarget.animator != null)
-                        {
-                            playerTarget.animator.Play("Standing");
-                        }
-
-                        Debug.Log("<color=green>[SYSTEM]</color> Mini-game thành công, đã KHÓA sát thương.");
+                        if (playerTarget.animator != null) playerTarget.animator.Play("Standing");
                         OnParryAttempted();
                     }
-                    else
-                    {
-                        playerTarget.isAttackBlocked = false;
-                        enemyComp.isAttackBlocked = false;
-
-                        Debug.Log("<color=red>[SYSTEM]</color> Mini-game thất bại! Người chơi sẽ nhận sát thương.");
-                    }
-                    miniGameFinished = true;
                 });
 
-                yield return new WaitUntil(() => miniGameFinished);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitUntil(() => parryWindowFinished || !parryUI.gameObject.activeSelf);
+                yield return new WaitForSeconds(0.2f); 
             }
 
             enemyComp.ExecuteTurn();
+        }
+
+        public void TriggerEvadeOnly(float duration, Character player, Enemy enemy)
+        {
+            if (player.isAttackBlocked) return;
+
+            Time.timeScale = 0.2f;
+
+            evadeUI.StartGame(duration, (isSuccess) => {
+                
+                Time.timeScale = 1.0f;
+
+                if (isSuccess)
+                {
+
+                    player.isAttackBlocked = true;
+                    enemy.isAttackBlocked = true;
+
+                    if (enemy.stateMachine != null)
+                        enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
+
+                    if (player.stateMachine != null)
+                        player.stateMachine.SwitchState(new AvoidState(player.stateMachine));
+                }
+            });
         }
 
         public void StartParryWindow(Character enemy, Character target, float duration)
@@ -696,6 +715,33 @@ namespace Turnbase
                     int parryDamage = Mathf.RoundToInt(target.stats.physicalAttack * 1.5f);
                     enemy.TakeDamage(parryDamage, ElementType.None);
 
+                }
+            }
+        }
+
+        public void OnEvadeAttempted(Character evader, Enemy attacker)
+        {
+            if (evader != null && attacker != null)
+            {
+                attacker.isAttackBlocked = true;
+                evader.isAttackBlocked = true;
+                evader.isParrySuccessful = false;
+
+                Debug.Log($"<color=cyan>[SYSTEM]</color> {evader.name} né đòn từ {attacker.name}!");
+
+                if (evader.stateMachine != null && evader.stateMachine.avoidState != null)
+                {
+                    evader.stateMachine.SwitchState(evader.stateMachine.avoidState);
+                    Debug.LogWarning("Đã nhảy vào avoid state thành công!");
+                }
+                else
+                {
+                    Debug.LogError("StateMachine hoặc avoidState của target bị NULL!");
+                }
+
+                if (attacker.stateMachine != null)
+                {
+                    attacker.stateMachine.SwitchState(new InterruptedState(attacker.stateMachine));
                 }
             }
         }
