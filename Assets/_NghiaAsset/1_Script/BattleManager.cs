@@ -599,7 +599,7 @@ namespace Turnbase
                 bool miniGameFinished = false;
                 playerTarget.isParrySuccessful = false;
 
-                parryUI.StartGame(2.5f, (isSuccess) => {
+                parryUI.StartGame(1.5f, (isSuccess) => {
                     if (isSuccess)
                     {
                         playerTarget.isAttackBlocked = true;
