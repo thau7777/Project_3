@@ -20,6 +20,7 @@ namespace Turnbase
         public ParryingState parryingState;
         public InterruptedState interruptedState;
         public StunnedState stunnedState;
+        public AvoidState avoidState;
 
 
         private void Awake()
@@ -35,6 +36,7 @@ namespace Turnbase
             parryingState = new ParryingState(this);
             interruptedState = new InterruptedState(this);
             stunnedState = new StunnedState(this);
+            avoidState = new AvoidState(this);
         }
 
         void Start()

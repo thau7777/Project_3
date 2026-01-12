@@ -150,9 +150,14 @@ namespace Turnbase
             if (projectileInstance != null)
             {
                 Vector3 spawnPosition;
-                if (user.projectileSpawnPoint != null)
+
+                if (skill.useSkillSpawnPoint2 && user.SkillSpawnPoint2 != null)
                 {
-                    spawnPosition = user.projectileSpawnPoint.position;
+                    spawnPosition = user.SkillSpawnPoint2.position;
+                }
+                else if (user.SkillSpawnPoint != null)
+                {
+                    spawnPosition = user.SkillSpawnPoint.position;
                 }
                 else
                 {
