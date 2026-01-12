@@ -9,33 +9,11 @@ namespace MyRule
     {
         public static PlanetManager instance;
 
-        public List<Planet> planets;
+        [SerializeField] private List<Planet> planets;
+        [SerializeField] private CinemachineCamera planetCam;
         public Planet planetTargetd;
 
-        public CinemachineCamera planetCam;
-
         public bool isPlanetShow;
-
-        private EventBinding<ScifitableInteractEvent> interactBinding;
-        private EventBinding<ScifitableEscEvent> escBinding;
-
-        private void OnEnable()
-        {
-            interactBinding = new EventBinding<ScifitableInteractEvent>(OnInteract);
-            EventBus<ScifitableInteractEvent>.Register(interactBinding);
-
-            escBinding = new EventBinding<ScifitableEscEvent>(OnEscape);
-            EventBus<ScifitableEscEvent>.Register(escBinding);
-        }
-
-        private void OnDisable()
-        {
-            EventBus<ScifitableInteractEvent>.Deregister(interactBinding);
-            interactBinding = null;
-
-            EventBus<ScifitableEscEvent>.Deregister(escBinding);
-            escBinding = null;
-        }
 
         private void Awake()
         {
@@ -53,7 +31,7 @@ namespace MyRule
 
         // ===================== INPUT =====================
 
-        public void OnInteract()
+        public void Interact()
         {
             if (isPlanetShow) return;
             if (planetTargetd == null) return;
@@ -69,7 +47,7 @@ namespace MyRule
             isPlanetShow = true;
         }
 
-        public void OnEscape()
+        public void Escape()
         {
             if (!isPlanetShow) return;
 

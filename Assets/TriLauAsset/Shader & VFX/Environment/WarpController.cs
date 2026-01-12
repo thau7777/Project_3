@@ -67,18 +67,15 @@ namespace MyRule
 
             holdTimer -= Time.deltaTime;
 
-            // Cylinder2 Power: 0 → 1 trong hold
             float powerT = Mathf.Clamp01(1f - (holdTimer / holdDuration));
             cylinder2.material.SetFloat("_Power", powerT);
 
-            // ===== Lens bắt đầu chạy khi còn 1s hold =====
             float lensStartTime = holdDuration - lensStartBeforeHoldEnd;
 
             if (!lensReducing && holdTimer <= lensStartTime)
             {
                 lensReducing = true;
 
-                // reset lens timer để chạy mượt
                 lensTimer = lensReduceDuration;
             }
 
@@ -101,7 +98,6 @@ namespace MyRule
             amount = t;
             effect.SetFloat("WarpAmount", amount);
 
-            // Cylinder Active: 1 → 0 cùng thời gian warp
             cylinder1.material.SetFloat("_Active", t);
             cylinder2.material.SetFloat("_Active", t);
 

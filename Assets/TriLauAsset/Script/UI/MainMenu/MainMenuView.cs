@@ -8,9 +8,7 @@ namespace MyRule.UI
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject menuButtonsPanel;
 
-        private PanelType panelType;
-
-        public PanelType Type
+        public PanelType PType
         {
             get => panelType;
             set => panelType = value;

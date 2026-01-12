@@ -33,10 +33,12 @@ namespace MyRule.UI
             label.style.display = DisplayStyle.None;
 
             await UniTask.Delay(10000);
-
             label.style.display = DisplayStyle.Flex;
 
             Play();
+
+            await UniTask.Delay(6000);
+            label.style.display = DisplayStyle.None;
         }
 
         public void Play()

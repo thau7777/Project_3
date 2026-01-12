@@ -5,6 +5,6 @@ namespace MyRule.UI
 {
     public interface IMainMenuPanel
     {
-        public PanelType Type { get; set; }
+        public PanelType PType { get; set; }
     }
 }
