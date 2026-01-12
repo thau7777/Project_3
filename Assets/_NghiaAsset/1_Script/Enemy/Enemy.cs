@@ -51,11 +51,9 @@ namespace Turnbase
                 {
                     Debug.Log($"<color=orange>[PARRY HIT]</color> {gameObject.name} bị khựng!");
 
-                    this.isAttackBlocked = false;
 
-                    this.TakeDamage(target.stats.physicalAttack + target.stats.magicAttack , ElementType.Normal);
+                    this.TakeDamage(target.stats.physicalAttack + target.stats.magicAttack , ElementType.Normal, true);
 
-                    this.isAttackBlocked = true;
 
                     if (stateMachine != null)
                         stateMachine.SwitchState(new InterruptedState(stateMachine));

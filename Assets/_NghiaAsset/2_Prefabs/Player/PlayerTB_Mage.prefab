@@ -28088,6 +28088,7 @@ GameObject:
   - component: {fileID: 428602294126036014}
   - component: {fileID: 3643947891567202690}
   - component: {fileID: 8832482024150264086}
+  - component: {fileID: -4996430161403432769}
   m_Layer: 0
   m_Name: PlayerTB_Mage
   m_TagString: Player
@@ -28171,9 +28172,9 @@ MonoBehaviour:
     maxShield: 10000
     currentShield: 0
     physicalAttack: 100
-    physicalDefense: 100
+    physicalDefense: 0
     magicAttack: 100
-    magicDefense: 10
+    magicDefense: 0
     crit: 100
     critDamage: 100
     agility: 1
@@ -28209,6 +28210,7 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 2679676773879030577}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
@@ -28314,6 +28316,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
   character: {fileID: 3404509342006786628}
+--- !u!114 &-4996430161403432769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
 --- !u!1 &8144461621592026007
 GameObject:
   m_ObjectHideFlags: 0

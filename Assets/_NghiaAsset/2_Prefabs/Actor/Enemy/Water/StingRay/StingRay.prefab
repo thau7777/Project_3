@@ -1542,6 +1542,7 @@ GameObject:
   - component: {fileID: 228614209179218366}
   - component: {fileID: 6763714473923026347}
   - component: {fileID: 5930411074134683441}
+  - component: {fileID: 9116332993593318601}
   m_Layer: 0
   m_Name: StingRay
   m_TagString: Untagged
@@ -1657,6 +1658,7 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 7856659647398015970}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
   traildblaze: 100
   isBroken: 0
@@ -1822,6 +1824,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead553680eccfce47ab5e6589619c945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.EnemyAIController
+--- !u!114 &9116332993593318601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
 --- !u!1 &8578392234437826219
 GameObject:
   m_ObjectHideFlags: 0
