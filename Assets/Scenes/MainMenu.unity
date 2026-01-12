@@ -2572,7 +2572,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.UI.UIInputHandler
   inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
-  cooldown: 0.2
 --- !u!1 &1138232852
 GameObject:
   m_ObjectHideFlags: 0
@@ -5280,6 +5279,9 @@ VisualEffect:
       - m_Value: 30
         m_Name: DisolveScale
         m_Overridden: 1
+      - m_Value: 0
+        m_Name: FlareAngle
+        m_Overridden: 0
     m_Vector2f:
       m_Array:
       - m_Value: {x: -0.1, y: 0}
