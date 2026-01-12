@@ -11,23 +11,34 @@ namespace MyRule
         [SerializeField] private float smoothSpeed;
         private Vector3 velocity;
 
-        private bool canMove = false;
+        private bool canMove = true;
         private Vector2 movement;
         private Vector2 moveDir;
 
         [SerializeField] private float gravity = -9.81f;
         [SerializeField] private float groundStickForce = -2f;
-        [SerializeField] private float acceleration = 1.5f;
-        [SerializeField] private float deceleration = 1.5f;
+        //[SerializeField] private float acceleration = 1.5f;
+        //[SerializeField] private float deceleration = 1.5f;
+
+        private EventBinding<ScifitableInteractEvent> interactEventBinding;
+        private EventBinding<ScifitableExitEvent> exitEventBinding;
 
         private void OnEnable()
         {
             inputReader.spaceStationActions.onMove += OnMove;
+
+            interactEventBinding = new EventBinding<ScifitableInteractEvent>(OnHolotableInteract);
+            EventBus<ScifitableInteractEvent>.Register(interactEventBinding);
+            exitEventBinding = new EventBinding<ScifitableExitEvent>(OnHolotableExit);
+            EventBus<ScifitableExitEvent>.Register(exitEventBinding);
         }
 
         private void OnDisable()
         {
             inputReader.spaceStationActions.onMove -= OnMove;
+
+            EventBus<ScifitableInteractEvent>.Deregister(interactEventBinding);
+            EventBus<ScifitableExitEvent>.Deregister(exitEventBinding);
         }
 
         private void Start()
@@ -67,7 +78,18 @@ namespace MyRule
 
         private void OnMove(Vector2 value)
         {
-            moveDir = value;
+            if (!canMove) moveDir = Vector2.zero;
+            else moveDir = value;
+        }
+
+        private void OnHolotableInteract()
+        {
+            canMove = false;
+        }
+
+        private void OnHolotableExit()
+        {
+            canMove = true;
         }
     }
 }

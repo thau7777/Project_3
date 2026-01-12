@@ -49,9 +49,7 @@ namespace MyRule.UI
                 case ButtonType.LoadGameButton:
                     {
                         EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.SaveFiles));
-                        EventBus<SwitchCamEvent>.Raise(new SwitchCamEvent(3));
 
-                        await UniTask.Delay(1000);
                         await LoadGame();
 
                         break;
@@ -88,7 +86,7 @@ namespace MyRule.UI
 
         private UniTask LoadGame()
         {
-            SceneManager.LoadScene("SpaceStationScene");
+            Loader.Load(Loader.Scene.SpaceStationScene);
             return UniTask.CompletedTask;
         }
     }

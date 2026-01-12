@@ -16,8 +16,8 @@ namespace MyRule
 
         async void StartRumble()
         {
-            //await AsyncUtils.WaitForSeconds(1f);
-            //RumblePulse(0.5f, 0.5f, 1.4f);
+            await AsyncUtils.WaitForSeconds(1f);
+            RumblePulse(0.5f, 0.5f, 1.4f);
         }    
 
         public void RumbleOnStart()

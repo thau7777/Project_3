@@ -29,7 +29,7 @@ namespace MyRule.UI
             {
                 baseView.Hide();
 
-                UIStateMachine.Push(view.Type);
+                UIStateMachine.Push(view.PType);
             }
         }
 

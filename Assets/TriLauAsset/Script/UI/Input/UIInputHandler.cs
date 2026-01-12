@@ -7,9 +7,6 @@ namespace MyRule.UI
         [Header("UI References")]
         [SerializeField] private InputReader inputReader;
 
-        [Header("Settings")]
-        [SerializeField] private float cooldown = 0.2f;
-
         private float lastMove;
 
         private void OnEnable()
