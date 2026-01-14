@@ -90,13 +90,15 @@ namespace MyRule
             switch (planetSO.planetType)
             {
                 case PlanetType.GreenLand:
-                    SceneManager.LoadScene("BoardScene");
+                    Loader.Load(Loader.Scene.BoardScene);
                     break;
                 case PlanetType.Desert:
                     break;
                 case PlanetType.IceLand:
                     break;
             }
+
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }

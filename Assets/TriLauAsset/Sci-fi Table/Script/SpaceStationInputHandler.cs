@@ -1,3 +1,4 @@
+using MyRule.CommandPattern;
 using UnityEngine;
 
 
@@ -5,7 +6,9 @@ namespace MyRule
 {
     public class SpaceStationInputHandler : MonoBehaviour
     {
-        public InputReader inputReader;
+        [SerializeField] private InputReader inputReader;
+        [SerializeField] private HoloTable holoTable;
+        [SerializeField] private PlanetManager planetManager;
 
         private void OnEnable()
         {
@@ -25,6 +28,11 @@ namespace MyRule
             inputReader.spaceStationActions.onActve -= OnActive;
         }
 
+        private void Start()
+        {
+
+        }
+
         private void OnMove(Vector2 movement)
         {
             EventBus<ScifiMouseMoveEvent>.Raise(new ScifiMouseMoveEvent(movement));
@@ -32,12 +40,23 @@ namespace MyRule
 
         private void OnInteract()
         {
-            EventBus<ScifitableInteractEvent>.Raise(new ScifitableInteractEvent());
+            if (holoTable == null || planetManager == null) return;
+
+            if (!holoTable.HasActive)
+            {
+                ICommand command = new HoloTableInteractCommand(holoTable);
+                CommandInvoker.ExecuteCommand(command);
+            }
+            else
+            {
+                ICommand command = new PlanetCommand(planetManager);
+                CommandInvoker.ExecuteCommand(command);
+            }
         }
 
         private void OnEsc()
         {
-            EventBus<ScifitableEscEvent>.Raise(new ScifitableEscEvent());
+            CommandInvoker.UndoCommand();
         }
 
         private void OnActive()

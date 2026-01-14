@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-using UnityEngine.Playables;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Turnbase
 {
@@ -55,6 +57,12 @@ namespace Turnbase
         [Header("Cinematics")]
         public PlayableDirector mainDirector;
 
+        public ParryMiniGame parryUI;
+
+        public EvadeMiniGame evadeUI;
+
+        public bool isMiniGameRunning = false;
+
         void Start()
         {
             SetupBattle();
@@ -78,6 +86,7 @@ namespace Turnbase
                 {
                     OnParryAttempted();
                 }
+
             }
         }
 
@@ -582,37 +591,62 @@ namespace Turnbase
 
         }
 
-
         private IEnumerator EnemyTurn(Character enemy)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
+            Enemy enemyComp = enemy.GetComponent<Enemy>();
+            enemyComp.PrepareTurn();
 
-            Enemy enemyComponent = enemy.GetComponent<Enemy>();
-            if (enemyComponent != null)
+            Character playerTarget = enemyComp.target;
+
+            if (playerTarget != null && playerTarget.isPlayer)
             {
-                enemyComponent.PerformTurn();
+                bool parryWindowFinished = false;
+                playerTarget.isParrySuccessful = false;
+                playerTarget.isAttackBlocked = false;
+                enemyComp.isAttackBlocked = false;
+
+                parryUI.StartGame(1.5f, (isSuccess) => {
+                    parryWindowFinished = true; 
+                    if (isSuccess)
+                    {
+                        playerTarget.isAttackBlocked = true;
+                        enemyComp.isAttackBlocked = true;
+                        if (playerTarget.animator != null) playerTarget.animator.Play("Standing");
+                        OnParryAttempted();
+                    }
+                });
+
+                yield return new WaitUntil(() => parryWindowFinished || !parryUI.gameObject.activeSelf);
+                yield return new WaitForSeconds(0.2f); 
             }
 
-            if (enemy.target != null)
-            {
-                float startTime = 0f;
-                float endTime = 0f;
+            enemyComp.ExecuteTurn();
+        }
 
-                yield return new WaitUntil(() => enemy.isAttackReadyForParry == true);
-                startTime = Time.time;
-                enemy.isAttackReadyForParry = false;
-                enemy.isParryWindowFinished = false;
+        public void TriggerEvadeOnly(float duration, Character player, Enemy enemy)
+        {
+            if (player.isAttackBlocked) return;
 
+            Time.timeScale = 0.2f;
 
-                yield return new WaitUntil(() => enemy.isParryWindowFinished == true);
-                endTime = Time.time;
-                enemy.isParryWindowFinished = false;
+            evadeUI.StartGame(duration, (isSuccess) => {
+                
+                Time.timeScale = 1.0f;
 
-                float duration = endTime - startTime;
-                enemy.parryWindowDuration = duration;
+                if (isSuccess)
+                {
 
-                StartParryWindow(enemy, enemy.target, duration);
-            }
+                    player.isAttackBlocked = true;
+                    enemy.isAttackBlocked = true;
+
+                    if (enemy.stateMachine != null)
+                        enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
+
+                    if (player.stateMachine != null)
+                        player.stateMachine.SwitchState(new AvoidState(player.stateMachine));
+                }
+            });
         }
 
         public void StartParryWindow(Character enemy, Character target, float duration)
@@ -667,40 +701,51 @@ namespace Turnbase
 
         public void OnParryAttempted()
         {
-            ElementType element = ElementType.None;
-
             if (activeCharacter != null && activeCharacter is Enemy enemy)
             {
                 Character target = enemy.target;
-                if (target != null && target.isParryable)
+                if (target != null)
                 {
-                    target.isParryable = false;
+                    enemy.isAttackBlocked = true;
+                    target.isAttackBlocked = true;
+                    target.isParrySuccessful = true;
 
-                    int parryDamage = target.stats.physicalAttack * 1;
-                    enemy.TakeDamage(parryDamage, element);
+                    Debug.Log($"<color=green>[SYSTEM]</color> Đã set isAttackBlocked = true cho {target.name}");
 
-                    Time.timeScale = 0.5f;
+                    int parryDamage = Mathf.RoundToInt(target.stats.physicalAttack * 1.5f);
+                    enemy.TakeDamage(parryDamage, ElementType.None);
 
-                    if (currentParryWindow != null)
-                    {
-                        StopCoroutine(currentParryWindow);
-                        currentParryWindow = null;
-                        if (target.ownUI != null)
-                        {
-                            target.ownUI.ShowParryUI(false);
-                            target.ownUI.SetParrySprite(false);
-                        }
-                    }
-
-                    activeCharacter.stateMachine.SwitchState(activeCharacter.stateMachine.interruptedState);
-                    target.stateMachine.SwitchState(target.stateMachine.parryingState);
-                }
-                else
-                {
-                    Debug.Log("Parry không thành công!");
                 }
             }
         }
+
+        public void OnEvadeAttempted(Character evader, Enemy attacker)
+        {
+            if (evader != null && attacker != null)
+            {
+                attacker.isAttackBlocked = true;
+                evader.isAttackBlocked = true;
+                evader.isParrySuccessful = false;
+
+                Debug.Log($"<color=cyan>[SYSTEM]</color> {evader.name} né đòn từ {attacker.name}!");
+
+                if (evader.stateMachine != null && evader.stateMachine.avoidState != null)
+                {
+                    evader.stateMachine.SwitchState(evader.stateMachine.avoidState);
+                    Debug.LogWarning("Đã nhảy vào avoid state thành công!");
+                }
+                else
+                {
+                    Debug.LogError("StateMachine hoặc avoidState của target bị NULL!");
+                }
+
+                if (attacker.stateMachine != null)
+                {
+                    attacker.stateMachine.SwitchState(new InterruptedState(attacker.stateMachine));
+                }
+            }
+        }
+
 
         public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
         {
@@ -835,6 +880,12 @@ namespace Turnbase
                 EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent(panelName: "EnemyUI"));
 
                 CameraAction.instance.TargetAllEnemies();
+
+                foreach (var c in allCombatants)
+                {
+                    c.isAttackBlocked = false;
+                    c.isParrySuccessful = false; 
+                }
 
                 activeCharacter = null;
                 if (character.stateMachine != null)

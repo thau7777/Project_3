@@ -66,15 +66,20 @@ namespace Turnbase
 
         public EnemyStatsUI enemyStatsUI;
 
-        public Transform projectileSpawnPoint;
+        public Transform SkillSpawnPoint;
+
+        public Transform SkillSpawnPoint2;
 
         public Transform buffEffectSpawnPoint;
 
+        public bool isAttackBlocked = false;
 
         public bool isAlive
         {
             get { return stats.currentHP > 0; }
         }
+
+        public bool isParrySuccessful = false;
 
 
 
@@ -136,6 +141,13 @@ namespace Turnbase
 
         public void TakeDamage(int damageAmount, ElementType damageElement)
         {
+            Debug.Log($"<color=yellow>[CHECK]</color> {gameObject.name} gọi TakeDamage. isAttackBlocked hiện tại là: {this.isAttackBlocked}");
+            if (this.isAttackBlocked)
+            {
+                Debug.Log($"<color=cyan>[BLOCK SUCCESS]</color> {gameObject.name} chặn damage thành công!");
+                return;
+            }
+
             int remainingDamage = damageAmount;
             int traildblaze = 30;
 
@@ -244,8 +256,13 @@ namespace Turnbase
 
         public void TriggerDamage()
         {
-            damageCallback?.Invoke();
+            if (this.isAttackBlocked)
+            {
+                Debug.Log($"[CANCEL] {gameObject.name} bị Parry nên đòn đánh bị hủy!");
+                return; 
+            }
 
+            damageCallback?.Invoke();
         }
 
         #region Heal and Buffs Methods

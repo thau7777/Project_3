@@ -82,6 +82,54 @@ namespace Turnbase
         Tb_LightningImpact2,
         Tb_Reduction_speed,
 
+        Tb_SlashNormal,
+        Tb_SlashDark,
+        Tb_SlashLight,
+        Tb_SlashWater,
+        Tb_SlashFire,
+        Tb_SlashPoison,
+        Tb_SlashFrost,
+        Tb_SlashHoly,
+
+        Tb_Impact_Light,
+        Tb_Impact_Poison,
+        Tb_Impact_Water,
+        Tb_Impact_Fire,
+        Tb_Impact_Dark,
+        Tb_Impact_Frost,
+        Tb_Impact_Holy,
+
+        Tb_Projectile_Light,
+        Tb_Projectile_Poison,
+        Tb_Projectile_Water,
+        Tb_Projectile_Dark,
+        Tb_Projectile_Frost,
+        Tb_Projectile_Holy,
+
+        Tb_Chot_Water,
+        Tb_Chot_Frost1,
+        Tb_Chot_Frost2,
+        Tb_SlashDark2,
+
+        Tb_baseAttack,
+        Tb_Projectile_Gai1,
+        Tb_Projectile_Gai2,
+
+        Tb_Laser_Fire,
+        Tb_Laser_Light,
+        Tb_Laser_Water,
+        Tb_Laser_Poison,
+        Tb_Laser_Dark,
+        Tb_Laser_Frost,
+        Tb_Laser_Holy,
+
+        Impact_Holy2,
+        Circle_Ice,
+
+
+
+
+
 
 
 

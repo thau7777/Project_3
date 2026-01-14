@@ -14,9 +14,9 @@ namespace MyRule
 
     public struct SigilChosenEvent : IEvent
     {
-        public readonly NormalSigilSO normalSigilSO;
+        public readonly SigilSO normalSigilSO;
 
-        public SigilChosenEvent(NormalSigilSO normalSigilSO)
+        public SigilChosenEvent(SigilSO normalSigilSO)
         {
             this.normalSigilSO = normalSigilSO;
         }

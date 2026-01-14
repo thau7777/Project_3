@@ -7,7 +7,6 @@ namespace MyRule
     {
         public GameObject cam1;
         public GameObject cam2;
-        public GameObject cam3;
 
         private EventBinding<SwitchCamEvent> switchCamEventBinding;
 
@@ -26,14 +25,12 @@ namespace MyRule
         {
             cam1.SetActive(true);
             cam2.SetActive(false);
-            cam3.SetActive(false);
         }
 
         private void SwithCamera(SwitchCamEvent evt)
         {
             cam1.SetActive(false);
             cam2.SetActive(false);
-            cam3.SetActive(false);
 
             if (evt.Cam == 1)
             {
@@ -42,10 +39,6 @@ namespace MyRule
             else if (evt.Cam == 2)
             {
                 cam2.SetActive(true);
-            }
-            else if (evt.Cam == 3)
-            {
-                cam3.SetActive(true);
             }
         }
     }

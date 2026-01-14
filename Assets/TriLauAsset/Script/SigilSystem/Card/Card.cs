@@ -11,6 +11,10 @@ namespace MyRule
         [SerializeField] private TextMeshProUGUI sigilNameTxt;
         [SerializeField] private TextMeshProUGUI sigilDescTxt;
 
+        private SigilSO sigilSO;
+
+        public SigilSO SigilSO => sigilSO;
+
         private bool showing = false;
 
         public bool Showing
@@ -29,8 +33,9 @@ namespace MyRule
             animator = GetComponent<Animator>();
         }
 
-        public void SetSigil(NormalSigilSO normalSigilSO)
+        public void SetSigil(SigilSO normalSigilSO)
         {
+            sigilSO = normalSigilSO;
             if (sigilImg != null) sigilImg.sprite = normalSigilSO.sigilIcon;
             sigilNameTxt.text = normalSigilSO.sigilName;
             sigilDescTxt.text = normalSigilSO.sigilDesTD;

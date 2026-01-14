@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace MyRule
@@ -36,6 +34,8 @@ namespace MyRule
 
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
+                EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(hoverCard.SigilSO));
+
                 EventBus<ShowSigilCardEvent>.Raise(new ShowSigilCardEvent(false));
 
                 hoverCard = null;

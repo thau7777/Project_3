@@ -46,7 +46,7 @@ namespace MyRule
 
             for (int i = 0; i < 3; i++)
             {
-                NormalSigilSO sigilSO = GetWeightedRandom();
+                SigilSO sigilSO = GetWeightedRandom();
                 Card card = Instantiate(sigilSO.sigilPreb, transform).GetComponent<Card>();
                 cards.Add(card);
                 card.transform.localPosition = new Vector3(x, -1000, 0);
@@ -78,7 +78,7 @@ namespace MyRule
             SpawnCard(true);
         }
 
-        private NormalSigilSO GetWeightedRandom()
+        private SigilSO GetWeightedRandom()
         {
             int totalWeight = 0;
             foreach (var s in groupSigil.normalSigil)

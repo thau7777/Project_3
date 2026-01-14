@@ -8,7 +8,7 @@ namespace MyRule.UI
         public InputReader inputReader;
         public RuneSO runeSO;
 
-        private bool hasTabPressed = false;
+        //private bool hasTabPressed = false;
 
         private VisualElement root;
         private VisualElement defaultBtn;
