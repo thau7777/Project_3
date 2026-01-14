@@ -170,28 +170,43 @@ namespace Turnbase
 
         private IEnumerator SpawnMinionsDelayed(Character deadCharacter, SkillPassive passive, float delay)
         {
-            if (passive.minionPrefab == null || battleManager == null)
+            if (passive.minionPrefab == null || battleManager == null || deadCharacter == null)
             {
                 yield break;
             }
 
+            Vector3 deathPosition = deadCharacter.transform.position;
+            bool side = deadCharacter.isPlayer;
+
             yield return new WaitForSeconds(delay);
+
+            if (battleManager.turnHandler != null)
+                battleManager.turnHandler.isProcessingTurn = true;
 
             for (int i = 0; i < passive.minionCount; i++)
             {
-                Vector3 spawnPosition = deadCharacter.gameObject.transform.position + Vector3.right * i * 0.5f;
+                Vector3 spawnOffset = new Vector3(i * 1.2f, 0, 0);
+                Vector3 spawnPosition = deathPosition + spawnOffset;
 
                 Character minionInstance = battleManager.SpawnCombatant(
                     passive.minionPrefab.gameObject,
-                    deadCharacter.isPlayer,
+                    side,
                     spawnPosition
                 );
 
                 if (minionInstance != null)
                 {
-                    Debug.Log($"[Spawn] Đã triệu hồi quái con: {minionInstance.name} từ {deadCharacter.name}.");
+                    Debug.Log($"<color=magenta>[SPAWN]</color> Triệu hồi đệ: {minionInstance.name}");
                 }
             }
+
+            yield return new WaitForEndOfFrame();
+
+            if (battleManager.turnHandler != null)
+                battleManager.turnHandler.isProcessingTurn = false;
+
+            if (battleManager.turnOrderUI != null)
+                battleManager.turnOrderUI.UpdateActionGaugeUI(battleManager.allCombatants);
         }
 
 

@@ -1615,8 +1615,8 @@ MonoBehaviour:
     Avatar: {fileID: 21300000, guid: eab280a9e33e0074ba4e2eb448ee62d6, type: 3}
     level: 0
   stats:
-    maxHP: 1000
-    currentHP: 1000
+    maxHP: 300
+    currentHP: 300
     maxMP: 100
     currentMP: 100
     maxShield: 119
@@ -2233,9 +2233,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 75167956460423509}
     m_Modifications:
+    - target: {fileID: 278932268575025290, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1148275806622620305, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_Name
-      value: EnemyUI (1)
+      value: EnemyUI
       objectReference: {fileID: 0}
     - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_SizeDelta.x
