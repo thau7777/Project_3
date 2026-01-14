@@ -34,13 +34,13 @@ public class OneShotVFXSettings : FlyweightSettings
     [SerializeField]
     [ShowIf("_canDealDamage")]
     [TabGroup("Damage Settings")]
-    private float _damage = 40;
-    public float Damage { get => _damage; set { _damage = value; } }
+    private float _defaultDamage = 40;
+    public float Damage { get => _defaultDamage; set { _defaultDamage = value; } }
 
     [SerializeField]
     [ShowIf("_canDealDamage")]
     [TabGroup("Damage Settings")]
-    private int _knockBackForce = 10;
+    private int _defaultKnockBackForce = 10;
 
     [SerializeField]
     [ShowIf("_canDealDamage")]
@@ -98,7 +98,7 @@ public class OneShotVFXSettings : FlyweightSettings
     public Vector2 hitboxOnOffTime = new Vector2(0, 0.1f);
 
     [ShowIf("_hasHitBox")]
-    public LayerMask dodgeLayers;
+    public LayerMask defaultDodgeLayers;
     #endregion
     private void OnValidate()
     {
@@ -119,14 +119,14 @@ public class OneShotVFXSettings : FlyweightSettings
             if (!_useParticleCollision)
             {
                 var hitboxHandler = go.GetOrAdd<HitBoxHandler>();
-                hitboxHandler.DodgeLayers = dodgeLayers;
+                hitboxHandler.DodgeLayers = defaultDodgeLayers;
                 hitboxHandler.HitboxOnOffTime = hitboxOnOffTime;
             }
             if (CanDealDamage)
             {
                 var damageDealer = go.GetOrAdd<DamageDealer>();
-                damageDealer.Damage = _damage;
-                damageDealer.KnockbackForce = _knockBackForce;
+                damageDealer.Damage = _defaultDamage;
+                damageDealer.KnockbackForce = _defaultKnockBackForce;
                 if (_hitImpactVFXSetting)
                     damageDealer.SetHitImpactVFX(_hitImpactVFXSetting);
             }
@@ -149,8 +149,9 @@ public class OneShotVFXSettings : FlyweightSettings
     }
     public override void OnRelease(Flyweight f)
     {
-        if (f.transform.parent != null)
-            f.transform.SetParent(GameObject.Find("VFXStorage").transform);
+        if (f.transform.parent != null) 
+            f.transform.SetParent(GameObject.Find("VFXStorage").transform ?? null);
+
         base.OnRelease(f);
     }
 

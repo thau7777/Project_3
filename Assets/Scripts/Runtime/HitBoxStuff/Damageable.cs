@@ -88,7 +88,7 @@ public class Damageable : MonoBehaviour
         if(other.TryGetComponent<OneShotVFX>(out var oneShotVfx))
         {
             OneShotVFXSettings vfxSettings = oneShotVfx.settings as OneShotVFXSettings;
-            if(vfxSettings.dodgeLayers.Contains(gameObject.layer)) return;
+            if(vfxSettings.defaultDodgeLayers.Contains(gameObject.layer)) return;
         }
         //else if(other.TryGetComponent<ContinousVFX>(out var continousVFX))
         //{

@@ -22,8 +22,9 @@ MonoBehaviour:
       width: 2383
       height: 694
     contents: 
-    theme: Classic
+    theme: 
     textSize: Small
+    colorTheme: 1
   - title: Calculation of Y Rotation
     position:
       serializedVersion: 2
@@ -32,8 +33,9 @@ MonoBehaviour:
       width: 1870
       height: 435
     contents: 
-    theme: Classic
+    theme: 
     textSize: Small
+    colorTheme: 1
   - title: Calculation of Velocity
     position:
       serializedVersion: 2
@@ -42,8 +44,9 @@ MonoBehaviour:
       width: 1010
       height: 262
     contents: 
-    theme: Classic
+    theme: 
     textSize: Small
+    colorTheme: 1
   categories:
   - name: Timing
     collapsed: 1
@@ -361,22 +364,6 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: MeteorSpawnDelay
-    path: MeteorSpawnDelay
-    tooltip: Delay of the Spawn of the Meteor. Changes the Speed of the Meteor.
-    space: -1
-    spaceable: 0
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.7
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
   - name: MeteorSpawn
     path: MeteorSpawn
     tooltip: Local Spawn Location of the Meteor. DON'T put X to exactly 0.
@@ -389,6 +376,22 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"x":4.0,"y":4.0,"z":0.0}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: MeteorSpawnDelay
+    path: MeteorSpawnDelay
+    tooltip: Delay of the Spawn of the Meteor. Changes the Speed of the Meteor.
+    space: -1
+    spaceable: 0
+    sheetType: m_Float
+    realType: Single
+    defaultValue:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 0.7
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -506,7 +509,7 @@ MonoBehaviour:
     enumValues: []
     descendantCount: 0
   m_ImportDependencies: []
-  m_GraphVersion: 18
+  m_GraphVersion: 19
   m_ResourceVersion: 1
   m_SubgraphDependencies: []
   m_CategoryPath: 
@@ -522,10 +525,6 @@ VisualEffectResource:
     m_RendererSettings:
       motionVectorGenerationMode: 0
       shadowCastingMode: 1
-      rayTracingMode: 0
-      receiveShadows: 0
-      reflectionProbeUsage: 0
-      lightProbeUsage: 0
     m_CullingFlags: 3
     m_UpdateMode: 0
     m_PreWarmDeltaTime: 0.05
@@ -1535,7 +1534,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614614}
   m_ExposedName: Dissapation
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 1
   m_Category: Timing
   m_Min:
     m_Type:
@@ -2859,7 +2858,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614685}
   m_ExposedName: MeteorSpawn
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 2
   m_Category: Timing
   m_Min:
     m_Type:
@@ -9651,7 +9650,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615206}
   m_ExposedName: MeteorSpawnDelay
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 3
   m_Category: Timing
   m_Min:
     m_Type:
@@ -23368,7 +23367,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616949}
   m_ExposedName: BrightColor
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 4
   m_Category: Color
   m_Min:
     m_Type:
@@ -23642,7 +23641,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616955}
   m_ExposedName: DarkColor
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 5
   m_Category: Color
   m_Min:
     m_Type:
@@ -23919,7 +23918,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616961}
   m_ExposedName: UseLUT
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 6
   m_Category: Color
   m_Min:
     m_Type:
@@ -24048,7 +24047,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616963}
   m_ExposedName: LUT
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 7
   m_Category: Color
   m_Min:
     m_Type:
@@ -24177,7 +24176,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616965}
   m_ExposedName: ColorOverTime
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 8
   m_Category: Color
   m_Min:
     m_Type:
@@ -24294,7 +24293,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616967}
   m_ExposedName: MakeGlowWithBloom
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 9
   m_Category: Color
   m_Min:
     m_Type:
@@ -30005,6 +30004,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618591}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -38141,6 +38141,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618646}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -38837,6 +38838,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618676}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -40549,6 +40551,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618731}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -42015,6 +42018,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618765}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -43018,6 +43022,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618798}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -44822,6 +44827,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618849}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -45978,6 +45984,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618888}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -47635,6 +47642,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618932}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -49037,6 +49045,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661618969}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -50716,6 +50725,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661619022}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -52042,6 +52052,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661619060}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -53132,6 +53143,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661619090}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -54973,6 +54985,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661619144}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -56703,6 +56716,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661619194}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0

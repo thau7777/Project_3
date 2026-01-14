@@ -4,10 +4,10 @@ public class FollowedIndicator : SkillIndicator
     [SerializeField]
     private Transform _user;
     private bool rotateTowardMouse = false; // toggle between target or mouse
-
+    private bool isPlayerUser;
     public void Initialize(Transform user, float width, float length)
     {
-        bool isPlayerUser = user.gameObject.layer == LayerMask.NameToLayer("Player");
+        isPlayerUser = user.gameObject.layer == LayerMask.NameToLayer("Player");
         if (!isPlayerUser)
             transform.SetParent(user);
         _user = user;
@@ -31,7 +31,8 @@ public class FollowedIndicator : SkillIndicator
             return;
 
         // Follow user position
-        transform.position = _user.position;
+        if (isPlayerUser)
+            transform.position = _user.position;
 
         // Rotate toward target or mouse
         if (rotateTowardMouse)

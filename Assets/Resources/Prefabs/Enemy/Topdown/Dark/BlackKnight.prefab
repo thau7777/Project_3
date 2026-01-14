@@ -819,6 +819,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4160646652258579358
 GameObject:
@@ -899,6 +900,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1728,6 +1730,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7723411793191090637
 GameObject:
@@ -1936,13 +1939,14 @@ MonoBehaviour:
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0.316519, y: 1.545694, z: 1.354471}
     rotationOffset: {x: 0, y: 0, z: 0}
-    targetLayers:
+    dodgeLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 0
     coolDown: 3
     weight: 1
     minRange: 0
     maxRange: 2
+    damage: 10
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 2324f60e336e2c347badbd0f66d355f4, type: 2}
@@ -1951,6 +1955,7 @@ MonoBehaviour:
     skillSize: 1.2
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -1966,13 +1971,14 @@ MonoBehaviour:
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 1.14905, z: 3.1}
     rotationOffset: {x: 0, y: 0, z: 0}
-    targetLayers:
+    dodgeLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 0
     coolDown: 3
     weight: 0
     minRange: 2
     maxRange: 3
+    damage: 10
     executeAnimationName: Attack3
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
@@ -1981,6 +1987,7 @@ MonoBehaviour:
     skillSize: 1.2
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -1992,6 +1999,18 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 2
     indicatorLength: 2
+  _context:
+    <CurrentTargetTransform>k__BackingField: {fileID: 0}
+    <CurrentSpeed>k__BackingField: 0
+    <MoveDir>k__BackingField: {x: 0, y: 0, z: 0}
+    <IsSpawning>k__BackingField: 0
+    <IsMoving>k__BackingField: 0
+    <IsCharging>k__BackingField: 0
+    <IsAttacking>k__BackingField: 0
+    <IsHurting>k__BackingField: 0
+    <IsMoreHurt>k__BackingField: 0
+    <IsStunned>k__BackingField: 0
+    <IsDead>k__BackingField: 0
 --- !u!114 &2526036880848289037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2094,7 +2113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
   _layersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &6526840212380848127
 MonoBehaviour:
   m_ObjectHideFlags: 0

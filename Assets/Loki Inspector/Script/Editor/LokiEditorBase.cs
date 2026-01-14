@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
+[CanEditMultipleObjects]
 public abstract class LokiEditorBase : Editor
 {
     private struct GroupKey : IEquatable<GroupKey>
@@ -24,6 +25,7 @@ public abstract class LokiEditorBase : Editor
         public bool Equals(GroupKey other) => Foldout == other.Foldout && Tab == other.Tab;
         public override int GetHashCode() => Foldout.GetHashCode() ^ Tab.GetHashCode();
     }
+
 
     public override void OnInspectorGUI()
     {
@@ -187,15 +189,15 @@ public abstract class LokiEditorBase : Editor
 
     private string GetFoldoutStateKey(UnityEngine.Object target, string foldoutName)
     {
-        // Use a combination of script type and foldout name for consistency
-        return $"LokiEditor_Foldout_{target.GetType().Name}_{foldoutName}";
+        return $"LokiEditor_Foldout_{target.GetInstanceID()}_{foldoutName}";
     }
+
 
     private string GetTabStateKey(UnityEngine.Object target, string pathPrefix)
     {
-        // Use script type and path prefix for consistency
-        return $"LokiEditor_Tab_{target.GetType().Name}_{pathPrefix}";
+        return $"LokiEditor_Tab_{target.GetInstanceID()}_{pathPrefix}";
     }
+
 
     private bool ShouldShowField(FieldInfo field, object targetObj)
     {

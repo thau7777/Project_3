@@ -38,10 +38,7 @@ public enum FlyweightType
     SlashHitVFX,
 
     MageProjectile,
-    BigMageProjectile,
     MageProjectileExplosion,
-    FireBallProjectile,
-    FireBallExplosion,
 
     TopDownEnemySlime,
     TopDownEnemyTurtle,
@@ -76,9 +73,9 @@ public enum FlyweightType
     TopDownEnemyDemonKing,
     TopDownEnemyDragon,
     AttackWarningVFX,
-    FireBallCharge_1,
-    FireBallProjectile_1,
-    FireBallExplosion_1,
+    Charge_Fire_1,
+    Projectile_Fire_1,
+    Explosion_Fire_1,
     TopDownEnemyNagaWizard,
     TopDownEnemySalamander,
     SpearThrustIceVFX,
@@ -123,4 +120,7 @@ public enum FlyweightType
     Thrust_Water,
     Spell_Water_1,
     EnemyTopDownStingray,
+    ChainLightning_LineRenderer,
+    ChainLightning_ImpactVFX,
+    BasicChargeBuff,
 }

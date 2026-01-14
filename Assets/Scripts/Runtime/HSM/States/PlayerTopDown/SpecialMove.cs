@@ -15,7 +15,6 @@ public class SpecialMove : State
     protected override void OnEnter()
     {
         ctx.Animator.CrossFade(ctx.SkillAnimName, 0.1f);
-
     }
     protected override State GetTransition()
     {
