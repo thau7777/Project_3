@@ -36,7 +36,7 @@ public class Strafe : State
         }
 
         ctx.RotateDir = lastLookDir;
-        if (ctx.NeedHoldStill)
+        if (ctx.NeedHoldStillWhileExecuteWhenAiming)
         {
             ctx.TargetMoveSpeed = 0;
             ctx.MoveDir = Vector3.zero;

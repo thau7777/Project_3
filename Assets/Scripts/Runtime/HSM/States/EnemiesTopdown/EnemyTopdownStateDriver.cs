@@ -201,13 +201,13 @@ public class EnemyTopdownStateDriver : Flyweight
             
         else if (vfx is StraightProjectile)
         {
-            (vfx as StraightProjectile).DodgeLayers = _context.CurrentEnemyAttackData.dodgeLayers;
             (vfx as StraightProjectile).InitializeProjectile(
                 transform.forward, 
                 _context.CurrentEnemyAttackData.projectileSpeed, 
                 _context.CurrentEnemyAttackData.skillDuration, 
                 _context.CurrentEnemyAttackData.skillSize,
-                _context.CurrentEnemyAttackData.damage);
+                _context.CurrentEnemyAttackData.damage,
+                _context.CurrentEnemyAttackData.dodgeLayers);
         }
 
         if (_chargeEffect)
@@ -243,7 +243,7 @@ public class EnemyTopdownStateDriver : Flyweight
         {
             _skillIndicator.FlyweightInitialize(_context.CurrentEnemyAttackData.skillSpawnTransform.position);
             CircleIndicator indicator = (CircleIndicator)_skillIndicator;
-            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth, _context.CurrentEnemyAttackData.skillSpawnTransform);
+            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth,Mathf.Infinity, _context.CurrentEnemyAttackData.skillSpawnTransform);
         }
     }
     public void LockIndicator(float duration)

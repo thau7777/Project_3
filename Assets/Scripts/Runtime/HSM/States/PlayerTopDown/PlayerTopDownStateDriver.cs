@@ -247,8 +247,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         float dashForce;
         if (_context.IsInSpecialMove)
         {
-            isDashForward = _executor.StoredSkillData.Value.isDashForward;
-            dashForce = _executor.StoredSkillData.Value.dashForce;
+            isDashForward = _executor.StoredSkillDataForClass.Value.isDashForward;
+            dashForce = _executor.StoredSkillDataForClass.Value.dashForce;
             
         }
         else
@@ -310,7 +310,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                         _locomotionSet.CurrentAttackData.projectileSpeed, 
                         _locomotionSet.CurrentAttackData.projectileDuration,
                         _locomotionSet.CurrentAttackData.size, 
-                        _locomotionSet.CurrentAttackData.damage);
+                        _locomotionSet.CurrentAttackData.damage,
+                        _locomotionSet.CurrentAttackData.dodgeLayers);
                 }
                 else if(vfx is OneShotVFX) 
                 {

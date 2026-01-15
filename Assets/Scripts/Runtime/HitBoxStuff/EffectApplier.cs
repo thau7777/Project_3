@@ -5,6 +5,10 @@ public class EffectApplier : MonoBehaviour
 {
     [SerializeField] private List<EffectData> _effectsToApply;
 
+    //private void OnEnable()
+    //{
+        
+    //}
     private void Awake()
     {
         if (TryGetComponent<HitBoxHandler>(out var hitBoxHandler))

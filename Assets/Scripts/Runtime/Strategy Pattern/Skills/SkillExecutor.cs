@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillExecutor : MonoBehaviour
@@ -15,13 +13,15 @@ public class SkillExecutor : MonoBehaviour
     private List<Transform> _skillSpawnPoints;
 
     private SkillRuntimeInstance _skillToCast;
-    private SkillDataForClass? _storedSkillData;
-    public SkillDataForClass? StoredSkillData => _storedSkillData;
+    private SkillDataForClass? _storedSkillDataForClass;
+    public SkillDataForClass? StoredSkillDataForClass => _storedSkillDataForClass;
     private Flyweight _chargedSkillFlyweight;
     private Coroutine _chargeCoroutine;
     private Coroutine _lerpCoroutine;
 
     private SkillIndicator _skillIndicator;
+    [SerializeField]
+    private GameObject _skillRangeIndicator;
     void Awake()
     {
         InitializeSkillInstance();
@@ -37,11 +37,10 @@ public class SkillExecutor : MonoBehaviour
     public bool SetSkillData(int index, CharacterClass characterClass)
     {
         var skillData = _skillInstance[index].Definition.GetSkillDataForClass(characterClass);
-        if (skillData == null) return false;
-        _skillToCast = _skillInstance[index];
-        if(_skillToCast.IsOnCooldown) return false;
+        if (skillData == null || _skillInstance[index].IsOnCooldown) return false;
         // store the data for the cast
-        _storedSkillData = skillData;
+        _skillToCast = _skillInstance[index];
+        _storedSkillDataForClass = skillData;
         return true;
     }
     public void UseSkill(int index, CharacterClass characterClass,PlayerTopdownContext context, Action onCastInstantly = null)
@@ -50,27 +49,27 @@ public class SkillExecutor : MonoBehaviour
 
         context.IsNextAttackQueued = false;
         context.CastingSkill = index;
-        bool isAimNeeded = _storedSkillData.Value.aimType != AimType.None;
+        bool isAimNeeded = _storedSkillDataForClass.Value.aimType != AimType.None;
         context.IsUseSkillByUpperBody = isAimNeeded;
         if (isAimNeeded)
         {
             // run aim anim first
             context.IsAiming = true;
-            context.AimAnimName = _storedSkillData.Value.aimType.ToString();
-
-            
+            context.AimAnimName = _storedSkillDataForClass.Value.aimType.ToString();
         }
         if (_skillToCast.Definition.CanCharge && _skillToCast.Definition.chargingEffect)
         {
-            _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect ?? _skillToCast.Definition.FlyweightSettings);
-            Transform spawnTransform = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation);
+            _chargedSkillFlyweight = FlyweightFactory.Spawn(_skillToCast.Definition.chargingEffect);
+            Transform chargeSpawnTransform = GetSkillSpawnTransform(_skillToCast.Definition.chargeVFXSpawnLocation);
 
-            _chargedSkillFlyweight.FlyweightInitialize(spawnTransform.position);
-            var chargeEffectVFX = _chargedSkillFlyweight as OneShotVFX;
-            var chargeEffectVFXSettings = chargeEffectVFX.settings as OneShotVFXSettings;
-            chargeEffectVFX?.InitializeVFX(chargeEffectVFXSettings.DefaultSize, chargeEffectVFXSettings.DefaultLifeTime);
+            _chargedSkillFlyweight.FlyweightInitialize(chargeSpawnTransform.position);
+            if(_chargedSkillFlyweight is OneShotVFX _chargeOneShotVfx)
+            {
+                var chargeEffectVFXSettings = _chargeOneShotVfx.settings as OneShotVFXSettings;
+                _chargeOneShotVfx.InitializeVFX(chargeEffectVFXSettings.DefaultSize, chargeEffectVFXSettings.DefaultLifeTime);
+            }
 
-            _chargedSkillFlyweight.transform.SetParent(spawnTransform);
+            _chargedSkillFlyweight.transform.SetParent(chargeSpawnTransform);
 
             //if (!_skillToCast.Definition.chargingEffect)
             //{
@@ -79,7 +78,6 @@ public class SkillExecutor : MonoBehaviour
             //}
 
         }
-
         if (isAimNeeded || _skillToCast.Definition.CanCharge)
         {
             if (!_skillToCast.Definition.useIndicator || !_skillToCast.Definition.skillIndicator) return;
@@ -92,13 +90,18 @@ public class SkillExecutor : MonoBehaviour
                 {
                     _skillIndicator.FlyweightInitialize(transform.position,transform.rotation);
                     var followedIndicator = _skillIndicator as FollowedIndicator;
-                    followedIndicator.Initialize(transform, _skillToCast.Definition.Range * 12,3);
+                    followedIndicator.Initialize(transform, _skillToCast.Definition.indicatorWidth, _skillToCast.Definition.indicatorLength);
                     break;
                 }
                 case FlyweightType.IndicatorCircleAlly:
                 {
-                        var circleIndicator = _skillIndicator as CircleIndicator;
-                        circleIndicator.Initialize(5);
+                    var circleIndicator = _skillIndicator as CircleIndicator;
+                    circleIndicator.Initialize(_skillToCast.Definition.indicatorWidth, _skillToCast.Definition.Range);
+
+                    if(!_skillRangeIndicator.activeSelf)
+                        _skillRangeIndicator.SetActive(true);
+
+                    _skillRangeIndicator.transform.localScale = new Vector3(_skillToCast.Definition.Range, 1, _skillToCast.Definition.Range);
                         break;
                 }
             }
@@ -110,32 +113,32 @@ public class SkillExecutor : MonoBehaviour
         CastSkill(context);
     }
 
-    private IEnumerator ChargeSkill(Flyweight chargingObject,int totalLevel)
-    {
-        int currentLevel = 0;
-        while (currentLevel < totalLevel)
-        {
-            yield return Helpers.GetWaitForSeconds(2f);
-            currentLevel++;
+    //private IEnumerator ChargeSkill(Flyweight chargingObject,int totalLevel)
+    //{
+    //    int currentLevel = 0;
+    //    while (currentLevel < totalLevel)
+    //    {
+    //        yield return Helpers.GetWaitForSeconds(2f);
+    //        currentLevel++;
 
-            Vector3 startScale = chargingObject.transform.localScale;
-            Vector3 targetScale = startScale + Vector3.one * 0.3f;
+    //        Vector3 startScale = chargingObject.transform.localScale;
+    //        Vector3 targetScale = startScale + Vector3.one * 0.3f;
 
-            if (_lerpCoroutine != null)
-                StopCoroutine(_lerpCoroutine);
+    //        if (_lerpCoroutine != null)
+    //            StopCoroutine(_lerpCoroutine);
 
-            _lerpCoroutine = StartCoroutine(Helpers.LerpValue(
-                startScale,
-                targetScale,
-                0.5f,
-                Vector3.Lerp,
-                value => chargingObject.transform.localScale = value
-            ));
+    //        _lerpCoroutine = StartCoroutine(Helpers.LerpValue(
+    //            startScale,
+    //            targetScale,
+    //            0.5f,
+    //            Vector3.Lerp,
+    //            value => chargingObject.transform.localScale = value
+    //        ));
 
 
-        }
-        yield break;
-    }
+    //    }
+    //    yield break;
+    //}
     public void CastSkill(PlayerTopdownContext context)// run the actual skill animation
     {
         if(_chargeCoroutine != null)
@@ -149,33 +152,32 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-        string animName = _storedSkillData.Value.animName;
+        if (!_skillToCast.Definition.CheckSpecialCondition(context.RootTransform))
+        {
+            Debug.Log("Special condition not met for skill: " + _skillToCast.Definition.name);
+            //context.IsAiming = false;
+            return;
+        }
+
+        string animName = _storedSkillDataForClass.Value.animName;
         if (animName == "Dash") context.IsDashing = true;
         context.IsInSpecialMove = true;
-        context.NeedHoldStill = _skillToCast.Definition.NeedHoldStill;
+        context.NeedHoldStillWhileExecuteWhenAiming = _skillToCast.Definition.NeedHoldStill;
         context.SkillAnimName = animName;
     }
-    public void TurnOffSkillIndicator()
-    {
-        if (_skillIndicator)
-        {
-            _skillIndicator.ReturnToPool();
-        }
-    }
-    // animation event
     public void OnSkillTrigger()
     {
         ExecuteSkill();
     }
     private void ExecuteSkill()
     {
-        if (_skillToCast == null || _storedSkillData == null) return;
+        if (_skillToCast == null || _storedSkillDataForClass == null) return;
         //if (_chargedSkillFlyweight && !_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
         //{
         //    chargedProjectile.projectileImpactScale = _skillToCast.Definition.name switch
         //    {
         //        "Fireball" => _chargedSkillFlyweight.transform.localScale * 2f,
-                
+
         //        _ => null
         //    };
         //}else if (_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight)
@@ -185,17 +187,18 @@ public class SkillExecutor : MonoBehaviour
         //}
 
 
-        Vector3 spawnPos = GetSkillSpawnTransform(_storedSkillData.Value.spawnLocation).position;
-        var ctx = new SkillStrategyContext(transform, spawnPos, _chargedSkillFlyweight);
+        Transform spawnTransform = GetSkillSpawnTransform(_storedSkillDataForClass.Value.spawnLocation);
+        var ctx = new SkillStrategyContext(transform, spawnTransform, _storedSkillDataForClass.Value.positionOffset, _chargedSkillFlyweight);
 
         _skillToCast.Cast(ctx);
 
         ClearSkillData();
     }
+
     public void ClearSkillData()
     {
         _skillToCast = null;
-        _storedSkillData = null;
+        _storedSkillDataForClass = null;
         _chargedSkillFlyweight = null;
     }
     private Transform GetSkillSpawnTransform(VFXSpawnLocation location)
@@ -211,6 +214,18 @@ public class SkillExecutor : MonoBehaviour
         }
         return skillSpawnTransform;
     }
+    public void TurnOffSkillIndicator()
+    {
+        if (_skillIndicator)
+        {
+            _skillIndicator.ReturnToPool();
+        }
+        if(_skillRangeIndicator.activeSelf)
+        
+        _storedSkillDataForClass = null;
+        _chargedSkillFlyweight = null;
+    }
+  
     public void AddOrReplaceSkill(int index, SkillStrategy newSkill)
     {
         if (index < 0 || index >= 4) return;

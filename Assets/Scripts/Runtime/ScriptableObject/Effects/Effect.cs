@@ -6,12 +6,13 @@ using System.Collections.Generic;
 public class Effect : ScriptableObject
 {
     public Sprite icon;
-    public float duration;
     public bool isPermanent;
     public EffectType effectType;
+    public float durationOnApply = 5f;
 
     public bool isStackable;
     [ShowIf("isStackable")]
+    [Range(2, 10)]
     public int stackRequired = 3;
 
     [Header("Stat Modifiers (Percentage)")]
@@ -22,7 +23,6 @@ public class Effect : ScriptableObject
     public float defenseModifierPercent = 0;
 
     [Header("Visual Feedback")]
-    public Color effectColor = Color.white;
     public FlyweightSettings vfxSettings;
 
     public virtual void OnApply(GameObject target)
@@ -65,6 +65,7 @@ public class Effect : ScriptableObject
     }
     public Flyweight GetVfxFlyweightOnTarget(GameObject target)
     {
+        if (!vfxSettings) return null;
         Transform foundTransform = target.transform.Find(vfxSettings.prefab.name);
         if (foundTransform == null)
             return null;
@@ -88,8 +89,10 @@ public enum EffectType
     Neutral
 }
 
+[System.Serializable]
 public struct EffectData
 {
     public Effect effect;
+    public float duration;
     public int stacksToApply;
 }

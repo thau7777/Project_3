@@ -10,7 +10,6 @@ public class EffectsManager : MonoBehaviour
         public Effect effect;
         public float remainingTime;
         public int currentStacks;
-        public GameObject particleInstance;
 
         public ActiveEffect(Effect eff, float time, int stacks)
         {
@@ -28,7 +27,7 @@ public class EffectsManager : MonoBehaviour
 
             ae.effect.OnUpdate(gameObject, Time.deltaTime);
 
-            if (!ae.effect.isPermanent)
+            if (!ae.effect.isPermanent && ae.remainingTime > 0)
             {
                 ae.remainingTime -= Time.deltaTime;
 
@@ -54,20 +53,26 @@ public class EffectsManager : MonoBehaviour
                 {
                     // Trigger the effect
                     existing.effect.OnApply(gameObject);
+                    existing.remainingTime = effectData.effect.durationOnApply;
                     existing.currentStacks = 0; // Reset stacks after applying
                 }
-             
+                else
+                    existing.remainingTime = effectData.duration;
                 return;
             }
-            existing.remainingTime = effectData.effect.duration;
+            existing.remainingTime = effectData.effect.durationOnApply;
+            return;
         }
 
         // Add new effect
-        ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.effect.duration,1);
+        ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.duration, effectData.stacksToApply);
         activeEffectsList.Add(newEffect);
 
-        if(!effectData.effect.isStackable)
+        if(!effectData.effect.isStackable || effectData.effect.isStackable && effectData.stacksToApply == 1)
+        {
             effectData.effect.OnApply(gameObject);
+            newEffect.remainingTime = effectData.effect.durationOnApply;
+        }
 
     }
 
