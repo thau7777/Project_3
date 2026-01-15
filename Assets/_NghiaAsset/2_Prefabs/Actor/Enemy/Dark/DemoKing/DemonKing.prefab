@@ -1730,7 +1730,8 @@ Transform:
   m_LocalPosition: {x: 6.8925486e-12, y: 7.836149e-12, z: 1.5400018e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6352719373248158460}
   m_Father: {fileID: 3391143360357004666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &873352435078480802
@@ -1958,6 +1959,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1847510336798507757}
   - {fileID: 8910076449283122436}
   - {fileID: 3127914914784857066}
   - {fileID: 1422260187614378637}
@@ -2006,7 +2008,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 8
   info:
-    name: Brid
+    name: DemonKing
     Avatar: {fileID: 21300000, guid: eab280a9e33e0074ba4e2eb448ee62d6, type: 3}
     level: 0
   stats:
@@ -2053,6 +2055,7 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 1422260187614378637}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
   traildblaze: 100
   isBroken: 0
@@ -2065,6 +2068,7 @@ MonoBehaviour:
     debuffValue: 0
     debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
     icon: {fileID: 21300000, guid: 965f4a1575b2a66448a303bbd345c471, type: 3}
+  telegraphManager: {fileID: 0}
 --- !u!114 &9145698497346757161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2632,6 +2636,37 @@ Transform:
   - {fileID: 3332405540582803524}
   m_Father: {fileID: 199643283746394542}
   m_LocalEulerAnglesHint: {x: 1.8825591, y: 65.00099, z: -0.10493413}
+--- !u!1 &9171433410506904113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6352719373248158460}
+  m_Layer: 0
+  m_Name: TelegraphEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6352719373248158460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171433410506904113}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.00000085680966, y: 0.119411945, z: 2.8896177}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4212438461630882604}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1465603218907984944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2826,3 +2861,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1001 &5235417659963660050
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 75167956460423509}
+    m_Modifications:
+    - target: {fileID: 385235503507965228, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_Name
+      value: TelegraphEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200628991392338734, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: telegraphSpawnPoint
+      value: 
+      objectReference: {fileID: 6352719373248158460}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.6716939
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.0561442
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+--- !u!4 &1847510336798507757 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+  m_PrefabInstance: {fileID: 5235417659963660050}
+  m_PrefabAsset: {fileID: 0}

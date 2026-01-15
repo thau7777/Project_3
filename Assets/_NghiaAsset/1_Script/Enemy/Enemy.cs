@@ -23,6 +23,9 @@ namespace Turnbase
         [Header("Break Status Settings")]
         public Skill.DebuffSettings BreakDebuffSettings;
 
+        [Header("Visual Effects")]
+        public TelegraphEffect telegraphManager;
+
         private EnemyAIController aiController;
 
         private void Awake() 
@@ -41,6 +44,7 @@ namespace Turnbase
                     currentSkillTypePool.Add(skillType, SkillResource.MAX_POOL);
                 }
             }
+            telegraphManager = GetComponentInChildren<TelegraphEffect>();
         }
 
         public void Animation_StartAnticipation()
@@ -54,6 +58,12 @@ namespace Turnbase
 
         public void Animation_TriggerEvent(float duration)
         {
+            if (telegraphManager != null)
+            {
+                telegraphManager.Play(duration);
+                Debug.LogWarning("Telegraph effect played.");  
+            }
+
             if (battleManager != null && target != null && !target.isAttackBlocked)
             {
                 battleManager.TriggerEvadeOnly(duration, target, this);

@@ -1114,6 +1114,37 @@ Transform:
   - {fileID: 3372937951301393246}
   m_Father: {fileID: 7266215525654467085}
   m_LocalEulerAnglesHint: {x: -18.957338, y: -3.9929051, z: -45.027634}
+--- !u!1 &4279550720042859532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1963156696000306395}
+  m_Layer: 0
+  m_Name: TelegraphEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1963156696000306395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4279550720042859532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8316084, y: -0.91530025, z: 0.475352}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2367502281729237208}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4586349915332833036
 GameObject:
   m_ObjectHideFlags: 0
@@ -2260,6 +2291,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7912481115668628491}
   - {fileID: 8560286331879864867}
   - {fileID: 5194050828931888902}
   - {fileID: 3875247492464931570}
@@ -2308,7 +2340,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 4
   info:
-    name: Brid
+    name: Fishman
     Avatar: {fileID: 21300000, guid: eab280a9e33e0074ba4e2eb448ee62d6, type: 3}
     level: 0
   stats:
@@ -2356,6 +2388,7 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 5194050828931888902}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
   traildblaze: 100
   isBroken: 0
@@ -2368,6 +2401,7 @@ MonoBehaviour:
     debuffValue: 0
     debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
     icon: {fileID: 21300000, guid: 965f4a1575b2a66448a303bbd345c471, type: 3}
+  telegraphManager: {fileID: 0}
 --- !u!114 &9145698497346757161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2551,7 +2585,8 @@ Transform:
   m_LocalPosition: {x: -0.03286149, y: 0.003398872, z: -0.004620252}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1963156696000306395}
   m_Father: {fileID: 1959725811771553394}
   m_LocalEulerAnglesHint: {x: -40.5766, y: -124.31256, z: -156.06244}
 --- !u!33 &6817062359075157694
@@ -3223,3 +3258,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1001 &4380484992202330612
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 75167956460423509}
+    m_Modifications:
+    - target: {fileID: 385235503507965228, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_Name
+      value: TelegraphEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200628991392338734, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: telegraphSpawnPoint
+      value: 
+      objectReference: {fileID: 1963156696000306395}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.6716939
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.0561442
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+--- !u!4 &7912481115668628491 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5837892461141956095, guid: 0b317b292597b9e44a92239847e0679f, type: 3}
+  m_PrefabInstance: {fileID: 4380484992202330612}
+  m_PrefabAsset: {fileID: 0}
