@@ -126,6 +126,34 @@ namespace Turnbase
         Impact_Holy2,
         Circle_Ice,
 
+        Spell_Lightning_2,
+        Spell_ChainLightning,
+        Basic_Charge_Buff,
+
+        Spell_Poison_1,
+        Spell_Poison_2,
+        Spell_Poison_3,
+        Spell_Poison_4,
+
+        Spell_Fire_1,
+        Spell_Fire_2,
+        Spell_Fire_3,
+        Spell_Fire_4,
+        Spell_Fire_5,
+
+        Spell_Water_1,
+        Spell_Water_2,
+        Spell_Water_3,
+        Spell_Water_4,
+
+        Spell_Ice_1, 
+        Spell_Ice_2,
+        Spell_Ice_3,
+        Spell_Ice_4, 
+
+        Spell_Holy_1,
+        Spell_Holy_2,
+        Spell_holy_3,
 
 
 
