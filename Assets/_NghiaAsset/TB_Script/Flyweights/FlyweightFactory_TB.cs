@@ -154,6 +154,12 @@ namespace Turnbase
         Spell_Holy_1,
         Spell_Holy_2,
         Spell_holy_3,
+        Spell_Holy_4,
+
+        Spell_Dark_1,
+        Spell_Dark_2,
+        Spell_Dark_3,
+        Spell_Dark_4,
 
 
 
