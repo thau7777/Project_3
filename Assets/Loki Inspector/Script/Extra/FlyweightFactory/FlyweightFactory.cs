@@ -6,7 +6,7 @@ public class FlyweightFactory : PersistentSingleton<FlyweightFactory>
 {
 
     readonly Dictionary<FlyweightType, IObjectPool<Flyweight>> pools = new();
-
+    
 
     public static Flyweight Spawn(FlyweightSettings settings) => instance.GetPoolFor(settings)?.Get();
     public static void ReturnToPool(Flyweight f) => instance.GetPoolFor(f.settings)?.Release(f);
