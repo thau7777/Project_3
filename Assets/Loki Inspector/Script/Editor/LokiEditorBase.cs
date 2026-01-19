@@ -286,28 +286,7 @@ public abstract class LokiEditorBase : Editor
             labelStyle.fontStyle = labelAttr.FontStyle;
         }
 
-        if (field.GetCustomAttribute<MinMaxSliderAttribute>() is MinMaxSliderAttribute mms
-            && prop.propertyType == SerializedPropertyType.Vector2)
-        {
-            Vector2 v = prop.vector2Value;
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(labelContent);
-            v.x = EditorGUILayout.FloatField(v.x, GUILayout.Width(50));
-            EditorGUILayout.MinMaxSlider(ref v.x, ref v.y, mms.Min, mms.Max);
-            v.y = EditorGUILayout.FloatField(v.y, GUILayout.Width(50));
-            EditorGUILayout.EndHorizontal();
-
-            if (mms.EnforceMinMaxDistance > 0f && (v.y - v.x) < mms.EnforceMinMaxDistance)
-                v.y = v.x + mms.EnforceMinMaxDistance;
-
-            v.x = Mathf.Clamp(v.x, mms.Min, mms.Max);
-            v.y = Mathf.Clamp(v.y, mms.Min, mms.Max);
-            prop.vector2Value = v;
-        }
-        else
-        {
-            EditorGUILayout.PropertyField(prop, labelContent, true);
-        }
+        EditorGUILayout.PropertyField(prop, labelContent, true);
 
         if (hasCustomColor)
             GUI.color = originalColor;

@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-
 public class TopDownGameManager : Singleton<TopDownGameManager>
 {
     private void Start()
@@ -16,7 +15,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
 
     private async void StartMatch()
     {
-        await UniTask.Delay(3000);
+        await UniTask.Delay(2000);
 
     }
 }

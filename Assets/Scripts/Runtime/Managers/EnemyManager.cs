@@ -43,13 +43,19 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
-    private void SpawnEnemies(List<EnemyTopDownSettings> enemies)
+    private void SpawnEnemies()
     {
         if (_enemiesList == null || _enemiesList.Count == 0)
         {
             Debug.LogWarning("EnemyManager: No enemy settings assigned!");
             return;
         }
-
+        int spawnCount = 3;
+        for(int i = 0; i < _enemiesList.Count; i++)
+        {
+            FlyweightFactory.Spawn(_enemiesList[i]);
+            if (i + 1 >= spawnCount)
+                break;
+        }
     }
 }

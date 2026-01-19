@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public enum AimType
 {
     None,
@@ -31,6 +31,7 @@ public enum SkillCondition
 [CreateAssetMenu(fileName = "New Skill", menuName = "Scriptable Objects/StrategyPattern/Skill")]
 public class SkillStrategy : ScriptableObject, IStrategy
 {
+    #region Skill Condition
     [TabGroup("Skill Condition")]
     [SerializeField]
     protected SkillCondition _specialCondition = SkillCondition.None;
@@ -49,10 +50,15 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [ShowIfEnumValue("_specialCondition", SkillCondition.InMousePosition)]
     [SerializeField]
     protected LayerMask groundLayer;
-
+    #endregion
     [TabGroup("Skill Data For Classes")]
     [SerializeField]
     protected List<SkillDataForClass> dataForClasses;
+
+    #region Skill Settings
+    [TabGroup("Skill Settings")]
+    [SerializeField]
+    private Image _skillImage;
 
     [TabGroup("Skill Settings")]
     [SerializeField]
@@ -117,6 +123,9 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [ShowIf("_canCharge")]
     public int chargeLevel = 1;
 
+    #endregion
+
+    #region Skill Indicator Settings
     [TabGroup("Skill Indicator Settings")]
     public bool useIndicator;
 
@@ -132,14 +141,20 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [ShowIf("useIndicator")]
     public float indicatorLength = 1;
 
-    [TabGroup("Buff / Debuff To User Settings")]
+    #endregion
+
+    #region Effects Settings
+    [TabGroup("Effects Settings")]
     [SerializeField]
     private bool _hasBuffOrDebuffToUser;
 
-    [TabGroup("Buff / Debuff To User Settings")]
+    [TabGroup("Effects Settings")]
     [ShowIf("_hasBuffOrDebuffToUser")]
     [SerializeField]
     private List<EffectData> _effectsToApply = new List<EffectData>();
+
+    #endregion
+
     private void OnValidate()
     {
         _isProjectile = FlyweightSettings is StraightProjectileSettings;
