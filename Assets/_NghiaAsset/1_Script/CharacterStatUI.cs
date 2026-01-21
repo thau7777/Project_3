@@ -31,10 +31,6 @@ namespace Turnbase
         public Button statsTabButton; 
         public Button skillsTabButton;
 
-        [Header("Scroll View Roots (Để ẩn/hiện)")]
-        public GameObject statsScrollView;
-        public GameObject skillScrollView;
-
         [Header("Tooltip Reference")]
         public SkillTooltipUI skillTooltip;
 

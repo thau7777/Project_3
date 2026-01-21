@@ -32,40 +32,37 @@ namespace Turnbase
             destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
 
             yield return MoveToTarget(destination);
-            yield return PerformAttack();
-            Debug.Log($"<color=orange>[FLOW]</color> Vừa thoát PerformAttack. Giá trị target.isAttackBlocked trước khi reset: {target.isAttackBlocked}");
+
+            int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
+
+            for (int i = 0; i < totalAttacks; i++)
+            {
+                if (!target.isAlive) break;
+
+                yield return PerformAttack();
+
+                if (i < totalAttacks - 1 && target.isAlive)
+                {
+                    if (target.isAttackBlocked)
+                    {
+                        user.animator.Play("Hit", 0, 0f);
+                        yield return new WaitForSeconds(0.6f); 
+                        target.isAttackBlocked = false; 
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(0.2f);
+                    }
+
+                    user.animator.Play("Idle");
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+
             yield return MoveBackToInitialPosition(initialPosition);
             yield return RotateBackToInitial();
 
             battleManager.EndTurn(user);
-
-        }
-        private IEnumerator MoveToTarget(Vector3 dest)
-        {
-            user.animator.SetBool("IsRunning", true);
-            while (Vector3.Distance(user.transform.position, dest) > 0.1f)
-            {
-                user.transform.position = Vector3.MoveTowards(user.transform.position, dest, moveSpeed * Time.deltaTime);
-
-                Vector3 lookDirection = (target.transform.position - user.transform.position).normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
-
-                user.transform.rotation = Quaternion.Slerp(
-                    user.transform.rotation,
-                    targetRotation,
-                    Time.deltaTime * (1f / rotationDuration) * 5f
-                );
-
-                yield return null;
-            }
-
-            user.animator.SetBool("IsRunning", false);
-            user.transform.position = dest;
-
-            Vector3 finalLookDirection = (target.transform.position - user.transform.position).normalized;
-            user.transform.rotation = Quaternion.LookRotation(new Vector3(finalLookDirection.x, 0, finalLookDirection.z));
-
-            yield return null;
         }
 
         private IEnumerator PerformAttack()
@@ -96,10 +93,9 @@ namespace Turnbase
                 SpawnImpactEffect(target.transform.position, skill);
                 damageApplied = true;
 
-                FlyweightSettings_TB settingsToSpawn = skill.meleeSettings;
-                if (settingsToSpawn != null)
+                if (skill.meleeSettings != null)
                 {
-                    Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
+                    Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(skill.meleeSettings);
                     if (effectInstance != null)
                     {
                         Vector3 spawnPos = user.SkillSpawnPoint != null ? user.SkillSpawnPoint.position : user.transform.position;
@@ -109,23 +105,18 @@ namespace Turnbase
             };
 
             user.PrepareHitCallBack(hitAction);
-            user.animator.Play(skill.animationTriggerName);
+            user.animator.Play(skill.animationTriggerName, 0, 0f);
 
             while (!damageApplied)
             {
-                if (user.stateMachine.currentState is InterruptedState)
-                {
-                    Debug.Log("<color=red>[COROUTINE]</color> PerformAttack đã yield break (Dừng code chém).");
-                    yield break;
-                }
                 yield return null;
             }
 
+            if (target.isAttackBlocked) yield break;
+
             for (int i = 1; i < hits; i++)
             {
-                if (user.stateMachine.currentState is InterruptedState || target.isAttackBlocked)
-                    yield break;
-
+                if (!target.isAlive) yield break;
                 yield return new WaitForSeconds(delayBetweenHits);
 
                 int currentHitDamage = baseDamagePerHit + (i == hits - 1 ? damageRemainder : 0);
@@ -133,8 +124,36 @@ namespace Turnbase
                 SpawnImpactEffect(target.transform.position, skill);
             }
 
-            yield return new WaitForSeconds(0.5f);
-            user.animator.Play("Idle");
+            yield return new WaitForSeconds(0.3f);
+        }
+
+
+        private IEnumerator MoveToTarget(Vector3 dest)
+        {
+            user.animator.SetBool("IsRunning", true);
+            while (Vector3.Distance(user.transform.position, dest) > 0.1f)
+            {
+                user.transform.position = Vector3.MoveTowards(user.transform.position, dest, moveSpeed * Time.deltaTime);
+
+                Vector3 lookDirection = (target.transform.position - user.transform.position).normalized;
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
+
+                user.transform.rotation = Quaternion.Slerp(
+                    user.transform.rotation,
+                    targetRotation,
+                    Time.deltaTime * (1f / rotationDuration) * 5f
+                );
+
+                yield return null;
+            }
+
+            user.animator.SetBool("IsRunning", false);
+            user.transform.position = dest;
+
+            Vector3 finalLookDirection = (target.transform.position - user.transform.position).normalized;
+            user.transform.rotation = Quaternion.LookRotation(new Vector3(finalLookDirection.x, 0, finalLookDirection.z));
+
+            yield return null;
         }
 
         private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
