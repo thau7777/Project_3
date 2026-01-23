@@ -117,7 +117,6 @@ public class EnemyTopdownContext
                 CurrentEnemyAttackData.skillSpawnTransform = CurrentTargetTransform;
                 break;
             default:
-                Debug.Log("Use the custom spawn transform set in the EnemyAttackData");
                 break;
         }
         return true;

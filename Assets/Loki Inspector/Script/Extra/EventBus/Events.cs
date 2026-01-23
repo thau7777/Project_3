@@ -22,3 +22,4 @@ public struct TopDownStartGameEvent : IEvent
 {
     
 }
+public struct TopDownPlayerDeadEvent : IEvent { }

@@ -272,6 +272,7 @@ public class EnemyTopdownStateDriver : Flyweight
     public IEnumerator SpawnAnimationCoroutine(float duration)
     {
         _context.IsSpawning = true;
+
         // 1. Disable Controller so we can move the transform manually
         _characterController.enabled = false;
 
@@ -279,11 +280,29 @@ public class EnemyTopdownStateDriver : Flyweight
         Vector3 startPos = transform.position; // Assumes enemy is already spawned underground
 
         // --- FIX START ---
-        // Calculate the actual surface height at this specific X, Z coordinate
-        // We add terrain.transform.position.y just in case the terrain object isn't at Y=0
-        float surfaceY = Terrain.activeTerrain.SampleHeight(startPos) + Terrain.activeTerrain.transform.position.y;
+        // Raycast upward from current position to find the ground surface
+        Vector3 targetPos = startPos;
 
-        Vector3 targetPos = new Vector3(startPos.x, surfaceY, startPos.z);
+        if (Physics.Raycast(startPos, Vector3.up, out RaycastHit hit, 100f, LayerMask.GetMask("Ground")))
+        {
+            // Found ground above, set target to surface level
+            targetPos = new Vector3(startPos.x, hit.point.y, startPos.z);
+        }
+        else
+        {
+            // Fallback: Raycast downward from high above to find ground
+            Vector3 rayStart = new Vector3(startPos.x, startPos.y + 100f, startPos.z);
+
+            if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit downHit, 200f, LayerMask.GetMask("Ground")))
+            {
+                targetPos = new Vector3(startPos.x, downHit.point.y, startPos.z);
+            }
+            else
+            {
+                Debug.LogWarning("Could not find ground surface for spawn animation!");
+                targetPos = new Vector3(startPos.x, startPos.y + 2f, startPos.z); // Emergency fallback
+            }
+        }
         // --- FIX END ---
 
         while (elapsedTime < duration)

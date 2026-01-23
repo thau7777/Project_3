@@ -4,18 +4,13 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
 {
     private void Start()
     {
-        
-
-    }
-
-    private void GenerateWaveData()
-    {
+        StartMatch();
 
     }
 
     private async void StartMatch()
     {
         await UniTask.Delay(2000);
-
+        EventBus<TopDownStartGameEvent>.Raise(new TopDownStartGameEvent());
     }
 }

@@ -2,15 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : Singleton<EnemyManager>
+public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 {
     [Header("Enemy Settings")]
     [SerializeField] private List<EnemyTopDownSettings> _enemiesList;
 
+    private EventBinding<TopDownStartGameEvent> _startGameEventBinding;
 
     private Transform _player;
 
- 
+    private void OnEnable()
+    {
+        _startGameEventBinding = new EventBinding<TopDownStartGameEvent>(SpawnEnemies);
+        EventBus<TopDownStartGameEvent>.Register(_startGameEventBinding);
+    }
+
+    private void OnDisable()
+    {
+        EventBus<TopDownStartGameEvent>.Deregister(_startGameEventBinding);
+    }
 
     private void Start()
     {
@@ -51,11 +61,9 @@ public class EnemyManager : Singleton<EnemyManager>
             return;
         }
         int spawnCount = 3;
-        for(int i = 0; i < _enemiesList.Count; i++)
+        for(int i = 0; i < spawnCount; i++)
         {
             FlyweightFactory.Spawn(_enemiesList[i]);
-            if (i + 1 >= spawnCount)
-                break;
         }
     }
 }
