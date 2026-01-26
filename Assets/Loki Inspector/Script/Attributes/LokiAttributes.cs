@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 #region Conditional Attributes
@@ -68,17 +68,30 @@ public class RequiredAttribute : PropertyAttribute { }
 /// - grey
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-public class LabelTextAttribute : Attribute
+public class LabelTextAttribute : PropertyAttribute  // ← Changed from Attribute to PropertyAttribute
 {
+    public enum LabelColor
+    {
+        None,
+        red,
+        green,
+        blue,
+        yellow,
+        cyan,
+        magenta,
+        white,
+        black,
+        gray,
+        orange,
+    }
     public string Label { get; }
     public string ColorName { get; }
     public int FontSize { get; }
     public FontStyle FontStyle { get; }
-
-    public LabelTextAttribute(string label = null, string colorName = null, int fontSize = 0, FontStyle fontStyle = FontStyle.Normal)
+    public LabelTextAttribute(string label = null, LabelColor color = LabelColor.None, int fontSize = 0, FontStyle fontStyle = FontStyle.Normal)
     {
         Label = label;
-        ColorName = colorName;
+        ColorName = color.ToString();
         FontSize = fontSize;
         FontStyle = fontStyle;
     }

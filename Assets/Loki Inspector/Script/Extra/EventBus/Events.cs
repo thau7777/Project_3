@@ -18,3 +18,8 @@ public struct SummonerTargetEvent : IEvent
         target = newTarget;
     }
 }
+public struct TopDownStartGameEvent : IEvent
+{
+    
+}
+public struct TopDownPlayerDeadEvent : IEvent { }
