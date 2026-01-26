@@ -9,6 +9,11 @@ namespace Turnbase
     {
         private BattleManager bm;
 
+        [Header("Spawn Settings")]
+        public FlyweightSettings_TB spawnEffectSettings;
+        public float riseDuration = 0.8f;
+        public float sinkDepth = 2.5f;
+
         public void Initialize(BattleManager manager)
         {
             bm = manager;
@@ -60,6 +65,15 @@ namespace Turnbase
             Vector3 spawnPosition = freeSlot != null ? freeSlot.position : positionHint;
             Quaternion spawnRotation = freeSlot != null ? freeSlot.rotation : Quaternion.identity;
 
+            if (spawnEffectSettings != null)
+            {
+                Flyweight_TB effect = FlyweightFactory_TB.Spawn(spawnEffectSettings);
+                if (effect != null)
+                {
+                    effect.Initialize(spawnPosition, Quaternion.identity);
+                }
+            }
+
             GameObject instance = Instantiate(prefab, spawnPosition, spawnRotation);
             Character characterInstance = instance.GetComponent<Character>();
 
@@ -74,6 +88,8 @@ namespace Turnbase
             characterInstance.isPlayer = isPlayerFaction;
             characterInstance.battleManager = bm;
             characterInstance.battleUIManager = bm.uiManager;
+
+            StartCoroutine(RiseFromBelow(characterInstance.transform, spawnPosition));
 
             CharacterStateMachine stateMachine = characterInstance.GetComponent<CharacterStateMachine>();
             if (stateMachine != null)
@@ -110,6 +126,23 @@ namespace Turnbase
             bm.turnbuffManager.ProcessOnBattleStartPassives(characterInstance);
 
             return characterInstance;
+        }
+
+        private IEnumerator RiseFromBelow(Transform target, Vector3 finalPos)
+        {
+            Vector3 startPos = finalPos + Vector3.down * sinkDepth;
+            target.position = startPos;
+            float elapsed = 0f;
+
+            while (elapsed < riseDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / riseDuration;
+                target.position = Vector3.Lerp(startPos, finalPos, Mathf.SmoothStep(0, 1, t));
+                yield return null;
+            }
+
+            target.position = finalPos;
         }
 
         public Transform FindFreeSlot(Transform[] slots, Vector3 positionHint)

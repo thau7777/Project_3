@@ -330,6 +330,13 @@ namespace Turnbase
                     turnOrderUI.UpdateActionGaugeUI(allCombatants);
                 }
 
+                if (activeCharacter == character)
+                {
+                    activeCharacter = null;
+                    isProcessingTurn = false;
+                    if (turnHandler != null) turnHandler.isProcessingTurn = false;
+                }
+
                 CheckWaveCondition();
             }
         }
@@ -348,7 +355,7 @@ namespace Turnbase
                     enemy.isAttackBlocked = true;
 
                     if (enemy.stateMachine != null)
-                        enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
+                        //enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
 
                     if (player.stateMachine != null)
                         player.stateMachine.SwitchState(new AvoidState(player.stateMachine));
@@ -368,10 +375,11 @@ namespace Turnbase
                     enemy.isAttackBlocked = true;
 
                     if (enemy.stateMachine != null)
-                        enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
+                        //enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
 
                     if (player.stateMachine != null)
-                        player.stateMachine.SwitchState(new AvoidState(player.stateMachine));
+                        player.stateMachine.SwitchState(new ParryingState(player.stateMachine));
+
                 }
             });
         }

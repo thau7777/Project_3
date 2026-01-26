@@ -3586,7 +3586,9 @@ Transform:
   m_LocalPosition: {x: 0.37249, y: 0, z: -0.62678}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 878176329}
+  - {fileID: 1585435769}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &498165808
@@ -6071,6 +6073,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b021a90e14461774d92a6df9b20e5d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.BattleSpawner
+  spawnEffectSettings: {fileID: 11400000, guid: 4cb071f04f80478478d1c7e7ea9ffc01, type: 2}
+  riseDuration: 0.8
+  sinkDepth: 2.5
 --- !u!4 &878176329
 Transform:
   m_ObjectHideFlags: 0
@@ -6079,12 +6084,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878176327}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.47343, y: 0, z: 1.21771}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.10094, y: 0, z: 1.84449}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 498165807}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &881625832
 GameObject:
@@ -9597,12 +9602,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585435767}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.47343, y: 0, z: 1.21771}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.10094, y: 0, z: 1.84449}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 498165807}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1589067580
 GameObject:
@@ -12442,6 +12447,4 @@ SceneRoots:
   - {fileID: 325222966}
   - {fileID: 1478758518}
   - {fileID: 401672540}
-  - {fileID: 878176329}
-  - {fileID: 1585435769}
   - {fileID: 827172578}

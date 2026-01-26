@@ -75,17 +75,9 @@ namespace Turnbase
         {
             if (target != null && target.isAttackBlocked && target.isParrySuccessful)
             {
-                Debug.Log($"<color=orange>[PARRY SUCCESS]</color> {gameObject.name} bị phản đòn!");
+                Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn nhịp này.");
 
-                this.TakeDamage(target.stats.physicalAttack + target.stats.magicAttack, ElementType.Normal, true);
-
-                if (stateMachine != null)
-                    stateMachine.SwitchState(new InterruptedState(stateMachine));
-
-                if (target.stateMachine != null)
-                    target.stateMachine.SwitchState(target.stateMachine.parryingState);
-
-                StartCoroutine(DelayedCameraShake(0.3f));
+                StartCoroutine(DelayedCameraShake(0.1f));
             }
         }
 

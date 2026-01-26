@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
-
 
 namespace Turnbase
 {
@@ -13,8 +11,6 @@ namespace Turnbase
         private BattleManager battleManager;
 
         private bool damageApplied = false;
-        private int finalDamage;
-
         private Vector3 initialPosition;
         private Vector3 destination;
 
@@ -27,33 +23,67 @@ namespace Turnbase
         public override IEnumerator Execute()
         {
             initialPosition = user.initialPosition;
-            float attackDistance = 2f;
-            float direction = Mathf.Sign(target.transform.position.x - user.transform.position.x);
-            destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
-
-            yield return MoveToTarget(destination);
-
             int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
 
             for (int i = 0; i < totalAttacks; i++)
             {
                 if (!target.isAlive) break;
 
+                float attackDistance = 2f;
+                float direction = Mathf.Sign(target.transform.position.x - user.transform.position.x);
+                destination = target.transform.position - new Vector3(direction * attackDistance, 0, 0);
+                yield return MoveToTarget(destination);
+
+                target.isAttackBlocked = false;
+                target.isParrySuccessful = false;
+                user.isAttackBlocked = false;
+
                 yield return PerformAttack();
 
-                if (i < totalAttacks - 1 && target.isAlive)
+                bool isLastAttack = (i == totalAttacks - 1);
+
+                if (target.isAttackBlocked)
                 {
-                    if (target.isAttackBlocked)
+                    if (!isLastAttack)
                     {
                         user.animator.Play("Hit", 0, 0f);
-                        yield return new WaitForSeconds(0.6f); 
-                        target.isAttackBlocked = false; 
+                        yield return new WaitForSeconds(0.6f);
+                        user.animator.Play("Idle");
+                        yield return new WaitForSeconds(0.1f);
                     }
                     else
                     {
-                        yield return new WaitForSeconds(0.2f);
-                    }
+                        int counterDamage = target.stats.physicalAttack + target.stats.magicAttack;
 
+                        user.TakeDamage(counterDamage, ElementType.Normal, true);
+
+                        if (user == null || !user.isAlive)
+                        {
+                            Debug.Log($"<color=red>[FIX]</color> {user?.name} đã chết do phản đòn. Kết thúc lượt ngay.");
+
+                            battleManager.isProcessingTurn = false;
+                            if (battleManager.turnHandler != null)
+                                battleManager.turnHandler.isProcessingTurn = false;
+
+                            battleManager.activeCharacter = null;
+
+                            battleManager.CheckWaveCondition();
+
+                            yield break;
+                        }
+
+                        if (user.stateMachine != null)
+                        {
+                            user.stateMachine.SwitchState(new InterruptedState(user.stateMachine));
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
+                        break;
+                    }
+                }
+                else
+                {
+                    if (!isLastAttack) yield return new WaitForSeconds(0.2f);
                     user.animator.Play("Idle");
                     yield return new WaitForSeconds(0.1f);
                 }
@@ -67,16 +97,6 @@ namespace Turnbase
 
         private IEnumerator PerformAttack()
         {
-            ApplyStatusEffectsAndStacks(user, target, skill);
-
-            ElementType element = skill.elementType;
-            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
-            float delayBetweenHits = skill.delayBetweenHits;
-
-            int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
-            int baseDamagePerHit = totalDamage / hits;
-            int damageRemainder = totalDamage % hits;
-
             damageApplied = false;
 
             Action hitAction = () =>
@@ -89,44 +109,41 @@ namespace Turnbase
                     return;
                 }
 
-                target.TakeDamage(baseDamagePerHit, element);
+                int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+                int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+                int baseDamagePerHit = totalDamage / hits;
+
+                target.TakeDamage(baseDamagePerHit, skill.elementType);
                 SpawnImpactEffect(target.transform.position, skill);
                 damageApplied = true;
-
-                if (skill.meleeSettings != null)
-                {
-                    Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(skill.meleeSettings);
-                    if (effectInstance != null)
-                    {
-                        Vector3 spawnPos = user.SkillSpawnPoint != null ? user.SkillSpawnPoint.position : user.transform.position;
-                        effectInstance.Initialize(spawnPos, user.transform.rotation);
-                    }
-                }
             };
 
             user.PrepareHitCallBack(hitAction);
             user.animator.Play(skill.animationTriggerName, 0, 0f);
 
-            while (!damageApplied)
+            while (!damageApplied) yield return null;
+
+            int extraHits = (skill.numberOfHits > 0 ? skill.numberOfHits : 1) - 1;
+            if (extraHits > 0)
             {
-                yield return null;
-            }
+                int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+                int baseDamagePerHit = totalDamage / (extraHits + 1);
+                int damageRemainder = totalDamage % (extraHits + 1);
 
-            if (target.isAttackBlocked) yield break;
+                for (int j = 0; j < extraHits; j++)
+                {
+                    if (target.isAttackBlocked || !target.isAlive) yield break;
 
-            for (int i = 1; i < hits; i++)
-            {
-                if (!target.isAlive) yield break;
-                yield return new WaitForSeconds(delayBetweenHits);
+                    yield return new WaitForSeconds(skill.delayBetweenHits);
 
-                int currentHitDamage = baseDamagePerHit + (i == hits - 1 ? damageRemainder : 0);
-                target.TakeDamage(currentHitDamage, element);
-                SpawnImpactEffect(target.transform.position, skill);
+                    int currentHitDamage = baseDamagePerHit + (j == extraHits - 1 ? damageRemainder : 0);
+                    target.TakeDamage(currentHitDamage, skill.elementType);
+                    SpawnImpactEffect(target.transform.position, skill);
+                }
             }
 
             yield return new WaitForSeconds(0.3f);
         }
-
 
         private IEnumerator MoveToTarget(Vector3 dest)
         {
@@ -135,25 +152,16 @@ namespace Turnbase
             {
                 user.transform.position = Vector3.MoveTowards(user.transform.position, dest, moveSpeed * Time.deltaTime);
 
-                Vector3 lookDirection = (target.transform.position - user.transform.position).normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
-
-                user.transform.rotation = Quaternion.Slerp(
-                    user.transform.rotation,
-                    targetRotation,
-                    Time.deltaTime * (1f / rotationDuration) * 5f
-                );
-
+                Vector3 dir = (target.transform.position - user.transform.position).normalized;
+                if (dir != Vector3.zero)
+                {
+                    Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                    user.transform.rotation = Quaternion.Slerp(user.transform.rotation, lookRot, Time.deltaTime * 15f);
+                }
                 yield return null;
             }
-
             user.animator.SetBool("IsRunning", false);
             user.transform.position = dest;
-
-            Vector3 finalLookDirection = (target.transform.position - user.transform.position).normalized;
-            user.transform.rotation = Quaternion.LookRotation(new Vector3(finalLookDirection.x, 0, finalLookDirection.z));
-
-            yield return null;
         }
 
         private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
@@ -163,15 +171,12 @@ namespace Turnbase
             {
                 user.transform.position = Vector3.MoveTowards(user.transform.position, initialPos, moveSpeed * Time.deltaTime);
 
-                Vector3 returnLookDirection = (target.transform.position - user.transform.position).normalized;
-                Quaternion returnRotation = Quaternion.LookRotation(new Vector3(returnLookDirection.x, 0, returnLookDirection.z));
-
-                user.transform.rotation = Quaternion.Slerp(
-                    user.transform.rotation,
-                    returnRotation,
-                    Time.deltaTime * (1f / rotationDuration) * 5f
-                );
-
+                Vector3 dir = (initialPos - user.transform.position).normalized;
+                if (dir != Vector3.zero)
+                {
+                    Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                    user.transform.rotation = Quaternion.Slerp(user.transform.rotation, lookRot, Time.deltaTime * 15f);
+                }
                 yield return null;
             }
             user.animator.SetBool("IsRunning", false);
@@ -180,19 +185,15 @@ namespace Turnbase
 
         private IEnumerator RotateBackToInitial()
         {
-            Quaternion startRotation = user.transform.rotation;
-            Quaternion endRotation = user.initialRotation;
-
             float elapsed = 0f;
+            Quaternion startRot = user.transform.rotation;
             while (elapsed < rotationDuration)
             {
-                user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
+                user.transform.rotation = Quaternion.Slerp(startRot, user.initialRotation, elapsed / rotationDuration);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-            user.transform.rotation = endRotation;
+            user.transform.rotation = user.initialRotation;
         }
-
-
     }
 }
