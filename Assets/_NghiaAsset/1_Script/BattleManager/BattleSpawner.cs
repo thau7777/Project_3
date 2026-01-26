@@ -9,10 +9,15 @@ namespace Turnbase
     {
         private BattleManager bm;
 
-        [Header("Spawn Settings")]
-        public FlyweightSettings_TB spawnEffectSettings;
-        public float riseDuration = 0.8f;
-        public float sinkDepth = 2.5f;
+        [Header("Enemy Spawn Settings")]
+        public FlyweightSettings_TB enemySpawnEffect;
+        public float enemyRiseDuration = 0.8f;
+        public float enemySinkDepth = 2.5f;
+
+        [Header("Player Spawn Settings")]
+        public float playerMoveDuration = 1.0f;
+        // Khoảng cách Player sẽ bắt đầu so với vị trí Slot mặc định (Ví dụ: x = -3)
+        public Vector3 playerOffsetFromSlot = new Vector3(3f, 0f, 0f);
 
         public void Initialize(BattleManager manager)
         {
@@ -62,19 +67,10 @@ namespace Turnbase
             Transform[] slotArray = isPlayerFaction ? bm.playerSpawnPoints : bm.enemySlots;
             Transform freeSlot = FindFreeSlot(slotArray, positionHint);
 
-            Vector3 spawnPosition = freeSlot != null ? freeSlot.position : positionHint;
+            Vector3 finalPosition = freeSlot != null ? freeSlot.position : positionHint;
             Quaternion spawnRotation = freeSlot != null ? freeSlot.rotation : Quaternion.identity;
 
-            if (spawnEffectSettings != null)
-            {
-                Flyweight_TB effect = FlyweightFactory_TB.Spawn(spawnEffectSettings);
-                if (effect != null)
-                {
-                    effect.Initialize(spawnPosition, Quaternion.identity);
-                }
-            }
-
-            GameObject instance = Instantiate(prefab, spawnPosition, spawnRotation);
+            GameObject instance = Instantiate(prefab, finalPosition, spawnRotation);
             Character characterInstance = instance.GetComponent<Character>();
 
             if (characterInstance == null)
@@ -84,13 +80,54 @@ namespace Turnbase
             }
 
             if (freeSlot != null) characterInstance.transform.SetParent(freeSlot);
-            characterInstance.initialPosition = spawnPosition;
+            characterInstance.initialPosition = finalPosition;
             characterInstance.isPlayer = isPlayerFaction;
             characterInstance.battleManager = bm;
             characterInstance.battleUIManager = bm.uiManager;
 
-            StartCoroutine(RiseFromBelow(characterInstance.transform, spawnPosition));
+            // --- PHÂN CHIA LOGIC XUẤT HIỆN ---
+            if (isPlayerFaction)
+            {
+                // Player: Di chuyển từ vị trí (Slot - Offset) tới vị trí Slot
+                Vector3 startPos = finalPosition + playerOffsetFromSlot;
+                StartCoroutine(MoveToPosition(characterInstance.transform, startPos, finalPosition, playerMoveDuration));
+            }
+            else
+            {
+                // Enemy: Tạo hiệu ứng VFX và trồi lên từ dưới đất ngay tại Slot
+                if (enemySpawnEffect != null)
+                {
+                    Flyweight_TB effect = FlyweightFactory_TB.Spawn(enemySpawnEffect);
+                    if (effect != null) effect.Initialize(finalPosition, Quaternion.identity);
+                }
+                Vector3 startPos = finalPosition + Vector3.down * enemySinkDepth;
+                StartCoroutine(MoveToPosition(characterInstance.transform, startPos, finalPosition, enemyRiseDuration));
+            }
 
+            // Thiết lập StateMachine, Stats và UI
+            SetupCharacter(characterInstance);
+
+            return characterInstance;
+        }
+
+        private IEnumerator MoveToPosition(Transform target, Vector3 startPos, Vector3 finalPos, float duration)
+        {
+            target.position = startPos;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                target.position = Vector3.Lerp(startPos, finalPos, Mathf.SmoothStep(0, 1, t));
+                yield return null;
+            }
+
+            target.position = finalPos;
+        }
+
+        private void SetupCharacter(Character characterInstance)
+        {
             CharacterStateMachine stateMachine = characterInstance.GetComponent<CharacterStateMachine>();
             if (stateMachine != null)
             {
@@ -124,25 +161,6 @@ namespace Turnbase
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
 
             bm.turnbuffManager.ProcessOnBattleStartPassives(characterInstance);
-
-            return characterInstance;
-        }
-
-        private IEnumerator RiseFromBelow(Transform target, Vector3 finalPos)
-        {
-            Vector3 startPos = finalPos + Vector3.down * sinkDepth;
-            target.position = startPos;
-            float elapsed = 0f;
-
-            while (elapsed < riseDuration)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / riseDuration;
-                target.position = Vector3.Lerp(startPos, finalPos, Mathf.SmoothStep(0, 1, t));
-                yield return null;
-            }
-
-            target.position = finalPos;
         }
 
         public Transform FindFreeSlot(Transform[] slots, Vector3 positionHint)

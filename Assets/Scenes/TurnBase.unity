@@ -3621,7 +3621,7 @@ MonoBehaviour:
   activeCharacter: {fileID: 0}
   isProcessingTurn: 0
   playerPrefabs:
-  - {fileID: 3404509342006786628, guid: 24a7881fbab9cad4699af3c9e9a91582, type: 3}
+  - {fileID: 3404509342006786628, guid: a880cabf23177fe48bf2fbe6626d6f75, type: 3}
   playerSpawnPoints:
   - {fileID: 346027862}
   - {fileID: 1871293695}
@@ -6151,9 +6151,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b021a90e14461774d92a6df9b20e5d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.BattleSpawner
-  spawnEffectSettings: {fileID: 11400000, guid: 4cb071f04f80478478d1c7e7ea9ffc01, type: 2}
-  riseDuration: 0.8
-  sinkDepth: 2.5
+  enemySpawnEffect: {fileID: 11400000, guid: 4cb071f04f80478478d1c7e7ea9ffc01, type: 2}
+  enemyRiseDuration: 0.8
+  enemySinkDepth: 2.5
+  playerMoveDuration: 1
+  playerOffsetFromSlot: {x: 3, y: 0, z: 0}
 --- !u!4 &878176329
 Transform:
   m_ObjectHideFlags: 0
@@ -6823,7 +6825,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 171.75, y: 80}
-  m_Spacing: {x: 0, y: 9.36}
+  m_Spacing: {x: 0, y: 15.43}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &1078538285
