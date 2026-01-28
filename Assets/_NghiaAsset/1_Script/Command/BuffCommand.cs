@@ -21,6 +21,8 @@ namespace Turnbase
         {
             Debug.Log($"{user.name} dùng skill Buff {skill.buffProperties.statToModify}!");
 
+            ApplyStatusEffectsAndStacks(user, target, skill);
+
             yield return AnimateBuffUser();
 
             List<Character> targetsToBuff = FindTargets();

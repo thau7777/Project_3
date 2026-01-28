@@ -27947,6 +27947,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7625648100237600775}
   - {fileID: 456659417944698266}
   - {fileID: 4340418039292990916}
   - {fileID: 1685052303867463974}
@@ -28040,10 +28041,11 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 574d4e3412d2c0d4aa57943900c62d23, type: 2}
   damagePopupCanvasParent: {fileID: 6917735384610084353}
   enemyStatsUI: {fileID: 0}
-  SkillSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 7625648100237600775}
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 456659417944698266}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
@@ -31061,6 +31063,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000044703484, y: -0.29421413, z: 0.028345339}
     m_Extent: {x: 0.27361107, y: 0.46532512, z: 0.16705385}
   m_DirtyAABB: 0
+--- !u!1 &9024314734718061985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7625648100237600775}
+  m_Layer: 0
+  m_Name: BuffEffectPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7625648100237600775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9024314734718061985}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.263201, z: 0.54782987}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75167956460423509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9081375520760569731
 GameObject:
   m_ObjectHideFlags: 0

@@ -232,14 +232,11 @@ namespace Turnbase
                 {
                     Transform targetParent = character.buffEffectSpawnPoint != null ? character.buffEffectSpawnPoint : character.transform;
 
-                    // Tham số false giúp object con thừa hưởng trực tiếp tỉ lệ của cha
                     debuffVFX.transform.SetParent(targetParent, false);
 
-                    // Sau khi setParent với false, localPosition/Rotation/Scale thường sẽ tự về chuẩn
                     debuffVFX.transform.localPosition = Vector3.zero;
                     debuffVFX.transform.localRotation = Quaternion.identity;
 
-                    // Đảm bảo localScale là 1 để nó nhân chính xác với scale của cha (ví dụ 1 * 5 = 5)
                     debuffVFX.transform.localScale = Vector3.one;
 
                     debuffVFX.gameObject.SetActive(true);

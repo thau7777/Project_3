@@ -74,6 +74,8 @@ namespace Turnbase
 
         public bool isAttackBlocked = false;
 
+        [HideInInspector] public HealthSystem healthSystem;
+
         public bool isAlive
         {
             get { return stats.currentHP > 0; }
@@ -89,6 +91,8 @@ namespace Turnbase
             buffManager = GetComponent<CharacterBuffManager>();
             debuffManager = GetComponent<CharacterDebuffManager>();
             animator = GetComponent<Animator>();
+
+
 
             if (stats == null)
             {
@@ -139,106 +143,19 @@ namespace Turnbase
         }
 
 
-        public void TakeDamage(int damageAmount, ElementType damageElement)
+        public void TakeDamage(int amount, ElementType element, bool ignoreBlock = false)
         {
-            Debug.Log($"<color=yellow>[CHECK]</color> {gameObject.name} gọi TakeDamage. isAttackBlocked hiện tại là: {this.isAttackBlocked}");
-            if (this.isAttackBlocked)
+            if (healthSystem == null)
             {
-                Debug.Log($"<color=cyan>[BLOCK SUCCESS]</color> {gameObject.name} chặn damage thành công!");
-                return;
-            }
-
-            int remainingDamage = damageAmount;
-            int traildblaze = 30;
-
-            if (stats.currentShield > 0)
-            {
-                int shieldAbsorb = Mathf.Min(stats.currentShield, remainingDamage);
-                stats.currentShield -= shieldAbsorb;
-                remainingDamage -= shieldAbsorb;
-                Debug.Log(gameObject.name + " hấp thụ " + shieldAbsorb + " sát thương bằng lá chắn. Lá chắn còn lại: " + stats.currentShield);
-
-            }
-            if (remainingDamage > 0)
-            {
-                stats.currentHP -= remainingDamage;
-
-                float intensity = Mathf.Clamp(remainingDamage * 0.01f, 0.1f, 0.5f);
-
-                EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.15f, intensity));
-
-                Vector3 spawnPosition = transform.position;
-
-                Color popupColor = VFXManager.Instance.elementColorMap.GetColor(damageElement);
-
-                DamagePopup.Create(
-                    transform.position,
-                    remainingDamage,
-                    damagePopupCanvasParent,
-                    popupColor
-                );
-                Debug.Log(gameObject.name + " nhận " + remainingDamage + " sát thương. Máu còn lại: " + stats.currentHP);
-
-                if (this is Enemy enemyTarget)
+                healthSystem = GetComponent<HealthSystem>();
+                if (healthSystem == null)
                 {
-                    float elementMultiplier = 1.0f;
-
-                    if (battleManager != null && battleManager.elementChart != null)
-                    {
-                        elementMultiplier = battleManager.elementChart.GetMultiplier(damageElement, enemyTarget.characterElement);
-                    }
-
-                    if (elementMultiplier > 1.0f)
-                    {
-                        enemyTarget.traildblaze -= traildblaze;
-                        enemyTarget.traildblaze = Mathf.Max(0f, enemyTarget.traildblaze); 
-
-                        if (enemyTarget.enemyUI != null)
-                        {
-                            enemyTarget.enemyUI.UpdateUI();
-                        }
-                        Debug.Log($"[{enemyTarget.gameObject.name}] Bị khắc chế! Traildblaze giảm xuống còn: {enemyTarget.traildblaze}");
-                    }
-
-
-                    if(enemyTarget.traildblaze <= 0)
-                    {
-                        enemyTarget.ApplyBreakStatus(enemyTarget.BreakDebuffSettings);
-                    }
-
-
+                    healthSystem = gameObject.AddComponent<HealthSystem>();
                 }
-
-            }
-            else if (damageAmount > 0)
-            {
-                Debug.Log(gameObject.name + " không nhận sát thương do lá chắn còn đủ.");
+                healthSystem.Init(this);
             }
 
-
-            UpdateOwnUI();
-
-            if (battleManager != null)
-            {
-                battleUIManager.UpdateCharacterUI(this);
-            }
-
-            if (stats.currentHP <= 0)
-            {
-                stats.currentHP = 0;
-                Debug.Log($"{gameObject.name} đã chết!");
-
-                ProcessOnDeathPassives();
-
-                stateMachine.SwitchState(stateMachine.deadState);
-            }
-            else
-            {
-                if (damageAmount > 0)
-                {
-                    stateMachine.SwitchState(stateMachine.takingDamageState);
-                }
-            }
+            healthSystem.TakeDamage(amount, element, ignoreBlock);
         }
 
         public void ProcessOnDeathPassives()
@@ -256,13 +173,15 @@ namespace Turnbase
 
         public void TriggerDamage()
         {
+            // Không dùng return ở đây nữa
             if (this.isAttackBlocked)
             {
-                Debug.Log($"[CANCEL] {gameObject.name} bị Parry nên đòn đánh bị hủy!");
-                return; 
+                Debug.Log($"[LOG] {gameObject.name} bị chặn, nhưng vẫn gửi callback để giải phóng Command.");
             }
 
             damageCallback?.Invoke();
+            // Sau khi gọi xong nên null để tránh gọi trùng lặp nếu animation loop
+            damageCallback = null;
         }
 
         #region Heal and Buffs Methods
