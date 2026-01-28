@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using static Skill;
 
 public class SkillExecutor : MonoBehaviour
 {
 
     [SerializeField]
-    private SkillStrategy[] _skillDatas = new SkillStrategy[4];
-    private SkillRuntimeInstance[] _skillInstance = new SkillRuntimeInstance[4];
+    private SkillSlotInfo[] _skillSlotInfos = new SkillSlotInfo[6];
+    private SkillRuntimeInstance[] _skillInstance;
 
     [SerializeField]
     private List<Transform> _skillSpawnPoints;
@@ -22,20 +25,64 @@ public class SkillExecutor : MonoBehaviour
     private SkillIndicator _skillIndicator;
     [SerializeField]
     private GameObject _skillRangeIndicator;
+
+
+    [SerializeField]
+    private float _currentMana;
+    [SerializeField]
+    private float _maxMana;
+    public UnityEvent<float, float> OnManaChanged;
+
     void Awake()
+    {
+        InitializeMana(100);
+    }
+    private void Start()
     {
         InitializeSkillInstance();
     }
+    private void InitializeMana(float maxMana)
+    {
+        _maxMana = maxMana;
+        _currentMana = maxMana;
+        OnManaChanged?.Invoke(_currentMana, _maxMana);
+    }
     private void InitializeSkillInstance()
     {
-        for(int i = 0; i < 4; i++)
+        int skillCount = _skillSlotInfos.ToList().FindAll(sd => sd.HasSkill).Count;
+        _skillInstance = new SkillRuntimeInstance[skillCount];
+
+        int currentSkillCount = 0;
+        foreach (var skillData in _skillSlotInfos)
         {
-            _skillInstance[i] = new SkillRuntimeInstance(_skillDatas[i]);
+            if (skillData.HasSkill)
+            {
+                _skillInstance[currentSkillCount] = new SkillRuntimeInstance(skillData);
+                currentSkillCount++;
+            }
+
         }
+        EventBus<TopDownInitializeSkillsEvent>.Raise(new TopDownInitializeSkillsEvent(_skillInstance));
+    }
+    public void RestoreMana(float amount)
+    {
+        _currentMana = Mathf.Min(_maxMana, _currentMana + amount);
+        OnManaChanged?.Invoke(_currentMana, _maxMana);
+    }
+    public void ConsumeMana(float amount)
+    {
+        _currentMana = Mathf.Max(0, _currentMana - amount);
+        OnManaChanged?.Invoke(_currentMana, _maxMana);
+    }
+    public void IncreaseMaxMana(float amount)
+    {
+        _maxMana += amount;
+        OnManaChanged?.Invoke(_currentMana, _maxMana);
     }
     // always get that skill data first if return ok then we can cast it later
     public bool SetSkillData(int index, CharacterClass characterClass)
     {
+        if(index < 0 || !_skillSlotInfos[index].HasSkill) return false;
         var skillData = _skillInstance[index].Definition.GetSkillDataForClass(characterClass);
         if (skillData == null || _skillInstance[index].IsOnCooldown) return false;
         // store the data for the cast
@@ -113,32 +160,6 @@ public class SkillExecutor : MonoBehaviour
         CastSkill(context);
     }
 
-    //private IEnumerator ChargeSkill(Flyweight chargingObject,int totalLevel)
-    //{
-    //    int currentLevel = 0;
-    //    while (currentLevel < totalLevel)
-    //    {
-    //        yield return Helpers.GetWaitForSeconds(2f);
-    //        currentLevel++;
-
-    //        Vector3 startScale = chargingObject.transform.localScale;
-    //        Vector3 targetScale = startScale + Vector3.one * 0.3f;
-
-    //        if (_lerpCoroutine != null)
-    //            StopCoroutine(_lerpCoroutine);
-
-    //        _lerpCoroutine = StartCoroutine(Helpers.LerpValue(
-    //            startScale,
-    //            targetScale,
-    //            0.5f,
-    //            Vector3.Lerp,
-    //            value => chargingObject.transform.localScale = value
-    //        ));
-
-
-    //    }
-    //    yield break;
-    //}
     public void CastSkill(PlayerTopdownContext context)// run the actual skill animation
     {
         if(_chargeCoroutine != null)
@@ -164,6 +185,8 @@ public class SkillExecutor : MonoBehaviour
         context.IsInSpecialMove = true;
         context.NeedHoldStillWhileExecuteWhenAiming = _skillToCast.Definition.NeedHoldStill;
         context.SkillAnimName = animName;
+
+        ConsumeMana(_skillToCast.Definition.ManaCost);
     }
     public void OnSkillTrigger()
     {
@@ -172,23 +195,8 @@ public class SkillExecutor : MonoBehaviour
     private void ExecuteSkill()
     {
         if (_skillToCast == null || _storedSkillDataForClass == null) return;
-        //if (_chargedSkillFlyweight && !_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight is StraightProjectile chargedProjectile)
-        //{
-        //    chargedProjectile.projectileImpactScale = _skillToCast.Definition.name switch
-        //    {
-        //        "Fireball" => _chargedSkillFlyweight.transform.localScale * 2f,
-
-        //        _ => null
-        //    };
-        //}else if (_skillToCast.Definition.chargingEffect && _chargedSkillFlyweight)
-        //{
-        //    _chargedSkillFlyweight.ReturnToPool();
-        //    _chargedSkillFlyweight = null;
-        //}
-
-
-        Transform spawnTransform = GetSkillSpawnTransform(_storedSkillDataForClass.Value.spawnLocation);
-        var ctx = new SkillStrategyContext(transform, spawnTransform, _storedSkillDataForClass.Value.positionOffset, _chargedSkillFlyweight);
+        Transform spawnTransform = GetSkillSpawnTransform(_skillToCast.Definition.spawnLocation);
+        var ctx = new SkillStrategyContext(transform, spawnTransform, _skillToCast.Definition.positionOffset, _skillToCast.Definition.rotationOffset, _chargedSkillFlyweight);
 
         _skillToCast.Cast(ctx);
 
@@ -226,9 +234,9 @@ public class SkillExecutor : MonoBehaviour
         _chargedSkillFlyweight = null;
     }
   
-    public void AddOrReplaceSkill(int index, SkillStrategy newSkill)
+    public void AddOrReplaceSkill(int index, SkillSlotInfo newSkillInfo)
     {
         if (index < 0 || index >= 4) return;
-        _skillInstance[index] = new SkillRuntimeInstance(newSkill);
+        _skillInstance[index] = new SkillRuntimeInstance(newSkillInfo);
     }
 }

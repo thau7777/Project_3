@@ -13,13 +13,7 @@ public class DamageDealer : MonoBehaviour
         set { _damage = value; }
     }
 
-    [SerializeField]
-    private float _knockbackForce = 10f;
-    public float KnockbackForce
-    {
-        get => _knockbackForce;
-        set { _knockbackForce = value; }
-    }
+    public float KnockbackForce { get; set; }
 
     [field: SerializeField]
     public OneShotVFXSettings HitImpactEffect { get; private set; }
@@ -51,16 +45,10 @@ public class DamageDealer : MonoBehaviour
         if (target.TryGetComponent<Damageable>(out var damageable))
         {
             if (damageable.CurrentHealth == 0) return;
-            Vector3 hitDirection = target.transform.position - _origin.position;
-            damageable.TakeDamage(sender,_damage, hitDirection.normalized, _knockbackForce, ElementalType); // Example damage value
+            Vector3 hitDirection = target.transform.position - sender.transform.position;
+            damageable.TakeDamage(sender,_damage, hitDirection.normalized, KnockbackForce, ElementalType, HitImpactEffect); // Example damage value
 
-            if (HitImpactEffect)
-            {
-                var obj = FlyweightFactory.Spawn(HitImpactEffect) as OneShotVFX;
-                obj.FlyweightInitialize(target.transform.position.Add(y: 1));
-                obj.InitializeVFX(HitImpactEffect.DefaultSize, HitImpactEffect.DefaultLifeTime);
-                
-            }
+            
         }
     }
 }

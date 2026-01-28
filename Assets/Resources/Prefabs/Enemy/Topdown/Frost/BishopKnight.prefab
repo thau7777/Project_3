@@ -152,6 +152,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &577254468727138056
 GameObject:
@@ -459,11 +460,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0.6, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 2
     weight: 0
     minRange: 0
     maxRange: 3
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 183d266ab277ad7408d353bfcccd48b9, type: 2}
@@ -472,6 +476,7 @@ MonoBehaviour:
     skillSize: 2
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -489,11 +494,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: -5, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 2
     weight: 0
     minRange: 0
     maxRange: 3
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 5b02568e9086c254d93345a5132b72c8, type: 2}
@@ -502,6 +510,7 @@ MonoBehaviour:
     skillSize: 2
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -513,6 +522,18 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 2
     indicatorLength: 2
+  _context:
+    <CurrentTargetTransform>k__BackingField: {fileID: 0}
+    <CurrentSpeed>k__BackingField: 0
+    <MoveDir>k__BackingField: {x: 0, y: 0, z: 0}
+    <IsSpawning>k__BackingField: 0
+    <IsMoving>k__BackingField: 0
+    <IsCharging>k__BackingField: 0
+    <IsAttacking>k__BackingField: 0
+    <IsHurting>k__BackingField: 0
+    <IsMoreHurt>k__BackingField: 0
+    <IsStunned>k__BackingField: 0
+    <IsDead>k__BackingField: 0
 --- !u!114 &3127953449440492598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,6 +550,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.1
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -586,9 +608,12 @@ MonoBehaviour:
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8515916403747737610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,6 +1330,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1696,6 +1722,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7957825635049002140
 GameObject:

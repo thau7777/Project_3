@@ -43,21 +43,23 @@ public class Attack : State
     }
     protected override void OnExit()
     {
+        ctx.IsAttacking = false;
+        ctx.IsNextAttackQueued = false;
         if (ctx.IsRangeClass)
             ctx.Animator.Play("Empty State", ctx.UpperBodyLayerIndex);
     }
     protected override State GetTransition()
     {
+        if (ctx.IsHurting)
+        {
+            return ((Grounded)Parent).Hurt;
+        }
         if (ctx.IsAiming)
         {
-            ctx.IsAttacking = false;
-
             return ((Grounded)Parent).Strafe;
         }
         if (ctx.IsInSpecialMove)
         {
-            ctx.IsAttacking = false;
-
             return ((Grounded)Parent).SpecialMove;
         }
         if (!ctx.IsAttacking)

@@ -120,6 +120,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Shift"",
+                    ""type"": ""Button"",
+                    ""id"": ""f07a66c5-54a6-4088-ba9d-9c2b2bec5599"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SpaceBar"",
                     ""type"": ""Button"",
                     ""id"": ""e1b11398-1a81-4e00-9fd9-0de71ddab5c3"",
@@ -295,6 +304,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""T"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""280f985f-35f5-49f8-9b5f-9e4f94d64d1b"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1217,6 +1237,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_LeftClick = m_PlayerTopDown.FindAction("LeftClick", throwIfNotFound: true);
         m_PlayerTopDown_RightClick = m_PlayerTopDown.FindAction("RightClick", throwIfNotFound: true);
+        m_PlayerTopDown_Shift = m_PlayerTopDown.FindAction("Shift", throwIfNotFound: true);
         m_PlayerTopDown_SpaceBar = m_PlayerTopDown.FindAction("SpaceBar", throwIfNotFound: true);
         m_PlayerTopDown_Q = m_PlayerTopDown.FindAction("Q", throwIfNotFound: true);
         m_PlayerTopDown_E = m_PlayerTopDown.FindAction("E", throwIfNotFound: true);
@@ -1343,6 +1364,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_LeftClick;
     private readonly InputAction m_PlayerTopDown_RightClick;
+    private readonly InputAction m_PlayerTopDown_Shift;
     private readonly InputAction m_PlayerTopDown_SpaceBar;
     private readonly InputAction m_PlayerTopDown_Q;
     private readonly InputAction m_PlayerTopDown_E;
@@ -1371,6 +1393,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerTopDown/RightClick".
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Shift".
+        /// </summary>
+        public InputAction @Shift => m_Wrapper.m_PlayerTopDown_Shift;
         /// <summary>
         /// Provides access to the underlying input action "PlayerTopDown/SpaceBar".
         /// </summary>
@@ -1426,6 +1452,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
+            @Shift.started += instance.OnShift;
+            @Shift.performed += instance.OnShift;
+            @Shift.canceled += instance.OnShift;
             @SpaceBar.started += instance.OnSpaceBar;
             @SpaceBar.performed += instance.OnSpaceBar;
             @SpaceBar.canceled += instance.OnSpaceBar;
@@ -1461,6 +1490,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
+            @Shift.started -= instance.OnShift;
+            @Shift.performed -= instance.OnShift;
+            @Shift.canceled -= instance.OnShift;
             @SpaceBar.started -= instance.OnSpaceBar;
             @SpaceBar.performed -= instance.OnSpaceBar;
             @SpaceBar.canceled -= instance.OnSpaceBar;
@@ -2319,6 +2351,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Shift" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShift(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "SpaceBar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

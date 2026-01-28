@@ -74,6 +74,6 @@ public class CircleIndicator : SkillIndicator
         }
 
         // Instant snap to target position - no lerp/interpolation
-        transform.position = _followTarget.position;
+        transform.position = _followTarget.position.Add(y:groundOffset);
     }
 }

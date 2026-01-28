@@ -114,6 +114,7 @@ public class StraightProjectile : Flyweight
         if ((DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
             if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
+            print("StraightProjectile hit: " + other.gameObject.name);
             DespawnFlyweight();
         }
     }
