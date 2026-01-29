@@ -1,9 +1,11 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
+
 
 
 namespace Turnbase
@@ -13,7 +15,6 @@ namespace Turnbase
         public Character Owner { get; private set; }
 
         public BattleManager battleManager;
-
 
         public Button attackButton;
         public Button skillButton;
@@ -56,6 +57,8 @@ namespace Turnbase
 
         [SerializeField] private Skill selectedSkillToConfirm;
 
+        private PlayerTurnBasedActions inputLogic;
+
         void Awake()
         {
             GameObject actionPanel2 = GameObject.Find("PlayerAction2");
@@ -66,32 +69,10 @@ namespace Turnbase
 
             battleManager = FindFirstObjectByType<BattleManager>();
 
+
         }
 
-        void Update()
-        {
-            if (isWaitingForConfirmation)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    Button activeConfirmButton = null;
 
-                    if (actionButton != null && actionButton.gameObject.activeInHierarchy)
-                    {
-                        activeConfirmButton = actionButton;
-                    }
-                    else if (confirmButton != null && confirmButton.gameObject.activeInHierarchy)
-                    {
-                        activeConfirmButton = confirmButton;
-                    }
-
-                    if (activeConfirmButton != null)
-                    {
-                        OnConfirmClicked();
-                    }
-                }
-            }
-        }
 
         private void Start()
         {
@@ -110,21 +91,57 @@ namespace Turnbase
             PlayerSummonPanel.gameObject.SetActive(false);
             PlayerItemPanel.gameObject.SetActive(false);
 
+            
 
             Hide();
         }
 
         public void SetOwner(Character owner)
         {
+            if (inputLogic != null)
+            {
+                inputLogic.QEvent -= OnAttackClicked;
+                inputLogic.EEvent -= OnSkillClicked;
+                inputLogic.REvent -= OnItemClicked;
+                inputLogic.SpaceEvent -= OnConfirmClicked;
+                inputLogic.EscapeEvent -= OnCancelClicked;
+                inputLogic.SummonEvent -= OnSummonClicked;
+            }
+
             Owner = owner;
             currentCharacter = owner;
 
             if (Owner != null)
             {
                 battleManager = Owner.battleManager;
+                inputLogic = Owner.stateMachine.inputLogic;
+
+                if (inputLogic != null)
+                {
+                    inputLogic.QEvent += OnAttackClicked;   // Phím Q: Tấn công
+                    inputLogic.EEvent += OnSkillClicked;    // Phím E: Kỹ năng
+                    inputLogic.REvent += OnItemClicked;     // Phím R: Vật phẩm
+                    inputLogic.SpaceEvent += OnConfirmClicked; // Phím Space: Xác nhận
+                    inputLogic.EscapeEvent += OnCancelClicked;      // Phím Esc: Hủy/Quay lại
+                    inputLogic.SummonEvent += OnSummonClicked;      // Phím F: Triệu hồi
+
+                }
             }
 
             Hide();
+        }
+
+        private void OnDestroy()
+        {
+            if (inputLogic != null)
+            {
+                inputLogic.QEvent -= OnAttackClicked;
+                inputLogic.EEvent -= OnSkillClicked;
+                inputLogic.REvent -= OnItemClicked;
+                inputLogic.SpaceEvent -= OnConfirmClicked;
+                inputLogic.EscapeEvent -= OnCancelClicked;
+                inputLogic.SummonEvent -= OnSummonClicked;
+            }
         }
 
         public void ShowUI()
@@ -231,6 +248,8 @@ namespace Turnbase
 
         private void OnAttackClicked()
         {
+            if (!playerActionsPanel.activeInHierarchy) return;
+
             isWaitingForConfirmation = true;
             selectedSkillToConfirm = null;
 
@@ -260,6 +279,8 @@ namespace Turnbase
 
         private void OnSkillClicked()
         {
+            if (!playerActionsPanel.activeInHierarchy) return;
+
             isWaitingForConfirmation = false;
 
             attackButton.interactable = true;
@@ -504,6 +525,19 @@ namespace Turnbase
 
                 instantiatedSkillEntries.Add(newEntry);
             }
+            if (instantiatedSkillEntries.Count > 0)
+            {
+                StartCoroutine(FocusFirstSkill());
+            }
+        }
+
+        private IEnumerator FocusFirstSkill()
+        {
+            yield return new WaitForEndOfFrame();
+            if (instantiatedSkillEntries.Count > 0)
+            {
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(instantiatedSkillEntries[0].gameObject);
+            }
         }
 
         private void OnParryClicked()
@@ -520,6 +554,21 @@ namespace Turnbase
 
         private void OnConfirmClicked()
         {
+            if (PlayerSkillPanel.activeInHierarchy || PlayerSummonPanel.activeInHierarchy || PlayerItemPanel.activeInHierarchy)
+            {
+                GameObject currentSelected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+                if (currentSelected != null)
+                {
+                    var skillEntry = currentSelected.GetComponent<SkillEntryUI>();
+                    if (skillEntry != null) { skillEntry.SelectThisSkill(); return; }
+
+                    var itemEntry = currentSelected.GetComponent<ItemEntryUI>();
+                    if (itemEntry != null) { itemEntry.SelectThisItem(); return; } 
+                }
+            }
+
+            if (!isWaitingForConfirmation) return;
+
             isWaitingForConfirmation = false;
 
             attackButton.interactable = true;

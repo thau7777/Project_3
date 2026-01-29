@@ -11,8 +11,12 @@ namespace Turnbase
         private List<Character> enemies;
         private int currentIndex;
 
-        public ReadyState(CharacterStateMachine stateMachine) : base(stateMachine) { }
+        private PlayerTurnBasedActions inputLogic;
 
+        public ReadyState(CharacterStateMachine stateMachine, PlayerTurnBasedActions input) : base(stateMachine)
+        {
+            this.inputLogic = input;
+        }
         public override void OnEnter()
         {
             stateMachine.character.animator.SetBool("IsIdle", true);
@@ -44,22 +48,20 @@ namespace Turnbase
             {
                 stateMachine.character.target = null;
             }
+
+            if (stateMachine.character.isPlayer && inputLogic != null)
+            {
+                inputLogic.LeftEvent += HandleMoveLeft;
+                inputLogic.RightEvent += HandleMoveRight;
+            }
         }
+
+        private void HandleMoveLeft() => UpdateTarget(-1);
+        private void HandleMoveRight() => UpdateTarget(1);
 
         public override void OnUpdate()
         {
-            if (stateMachine.character.isPlayer)
-            {
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    UpdateTarget(-1);
-                }
-
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    UpdateTarget(1);
-                }
-            }
+            
         }
 
         private void UpdateTarget(int direction)
@@ -86,6 +88,11 @@ namespace Turnbase
 
         public override void OnExit()
         {
+            if (stateMachine.character.isPlayer && inputLogic != null)
+            {
+                inputLogic.LeftEvent -= HandleMoveLeft;
+                inputLogic.RightEvent -= HandleMoveRight;
+            }
             ShowTargetMarker(false);
         }
 
