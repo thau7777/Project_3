@@ -7,6 +7,8 @@ public class PlayerTopdownContext
     // Core properties
     public float CurrentMoveSpeed { get; set; }   // smoothed speed
     [field: SerializeField] public float TargetMoveSpeed { get; set; }    // desired speed
+    public Vector3 KnockBackDirection { get; set; }
+    public float KnockbackForce { get; set; }
     [field: SerializeField] public Vector2 MoveInput { get; set; }
     public Vector3 MoveDir { get; set; }
     public Vector3 DesiredMoveDir { get; set; }
@@ -16,13 +18,10 @@ public class PlayerTopdownContext
     // States
 
     [field: SerializeField] public bool IsAiming { get; set; }
-
     [field: SerializeField] public bool IsDashing { get; set; }
-
     [field: SerializeField] public bool IsAttacking { get; set; }
-
     [field: SerializeField] public bool IsInSpecialMove { get; set; }
-
+    [field: SerializeField] public bool IsHurting { get; set; }
     [field: SerializeField] public bool IsNextAttackQueued { get; set; }
     public string FirstAttackAnimName { get; set; }
     public string SkillAnimName { get; set; }
@@ -54,6 +53,7 @@ public class PlayerTopdownContext
     // Cached Animator Hashes
     public int StrafeStateHash => Animator.StringToHash("Strafe");
     public int MovementStateHash => Animator.StringToHash("Movement");
+    public int HurtStateHash => Animator.StringToHash("Hurt");
     public int MoveSpeedHash => Animator.StringToHash("MoveSpeed");
     public int InputXHash => Animator.StringToHash("MoveDirX");
     public int InputYHash => Animator.StringToHash("MoveDirY");

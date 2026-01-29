@@ -559,6 +559,7 @@ namespace Turnbase
                 GameObject currentSelected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
                 if (currentSelected != null)
                 {
+                    // Thử lấy component SkillEntry hoặc ItemEntry
                     var skillEntry = currentSelected.GetComponent<SkillEntryUI>();
                     if (skillEntry != null) { skillEntry.SelectThisSkill(); return; }
 

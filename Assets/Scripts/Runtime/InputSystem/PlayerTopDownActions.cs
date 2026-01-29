@@ -9,7 +9,12 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
     public Action onLeftClick;
     public Action<bool> onRightClick;
     public Action<bool> onSpaceBar;
+    public Action<bool> onShift;
     public Action<bool> onButtonQ;
+    public Action<bool> onButtonE;
+    public Action<bool> onButtonR;
+    public Action<bool> onButtonT;
+
 
     public void OnLeftClick(InputAction.CallbackContext context)
     {
@@ -46,7 +51,13 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
         else if (context.canceled)
             onRightClick?.Invoke(false);
     }
-
+    public void OnShift(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onShift?.Invoke(true);
+        else if (context.canceled)
+            onShift?.Invoke(false);
+    }
     public void OnSpaceBar(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -65,16 +76,26 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
 
     public void OnE(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        if (context.performed)
+            onButtonE?.Invoke(true);
+        else if (context.canceled)
+            onButtonE?.Invoke(false);
     }
 
     public void OnR(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        if (context.performed)
+            onButtonR?.Invoke(true);
+        else if (context.canceled)
+            onButtonR?.Invoke(false);
     }
 
     public void OnT(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        if (context.performed)
+            onButtonT?.Invoke(true);
+        else if (context.canceled)
+            onButtonT?.Invoke(false);
     }
+
 }

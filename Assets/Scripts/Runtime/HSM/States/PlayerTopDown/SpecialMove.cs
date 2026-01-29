@@ -18,6 +18,11 @@ public class SpecialMove : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsHurting)
+        {
+            ctx.IsInSpecialMove = false;
+            return ((Grounded)Parent).Hurt;
+        }
         if (!ctx.IsInSpecialMove)
         { 
             if (ctx.MoveInput != Vector2.zero)

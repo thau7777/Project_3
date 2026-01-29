@@ -86,7 +86,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
-        GetComponent<Damageable>().Initialize(1000);
+        GetComponent<Damageable>().Initialize(500);
 
 
         _context = new PlayerTopdownContext.Builder()
@@ -114,17 +114,23 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     {
         _inputReader.playerTopDownActions.onMove += OnMove;
         _inputReader.playerTopDownActions.onLeftClick += OnLeftClick;
-        _inputReader.playerTopDownActions.onRightClick += OnRightClick;
         _inputReader.playerTopDownActions.onSpaceBar += OnSpaceBar;
+        _inputReader.playerTopDownActions.onShift += OnShift;
         _inputReader.playerTopDownActions.onButtonQ += OnButtonQ;
+        _inputReader.playerTopDownActions.onButtonE += OnButtonE;
+        _inputReader.playerTopDownActions.onButtonR += OnButtonR;
+        _inputReader.playerTopDownActions.onButtonT += OnButtonT;
     }
     private void OnDisable()
     {
         _inputReader.playerTopDownActions.onMove -= OnMove;
         _inputReader.playerTopDownActions.onLeftClick -= OnLeftClick;
-        _inputReader.playerTopDownActions.onRightClick -= OnRightClick;
         _inputReader.playerTopDownActions.onSpaceBar -= OnSpaceBar;
+        _inputReader.playerTopDownActions.onShift -= OnShift;
         _inputReader.playerTopDownActions.onButtonQ -= OnButtonQ;
+        _inputReader.playerTopDownActions.onButtonE -= OnButtonE;
+        _inputReader.playerTopDownActions.onButtonR -= OnButtonR;
+        _inputReader.playerTopDownActions.onButtonT -= OnButtonT;
     }
 
 
@@ -143,9 +149,9 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #endregion
 
     #region Input Handlers
-    private void OnRightClick(bool value)
+    private void OnShift(bool value)
     {
-        //UseSKill(0, value, SaveDirToAttack);
+        UseSKill(0, value, SaveDirToAttack);
     }
     private void OnSpaceBar(bool value)
     {
@@ -154,6 +160,18 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     private void OnButtonQ(bool value)
     {
         UseSKill(2, value, SaveDirToAttack);
+    }
+    private void OnButtonE(bool value)
+    {
+        UseSKill(3, value, SaveDirToAttack);
+    }
+    private void OnButtonR(bool value)
+    {
+        UseSKill(4, value, SaveDirToAttack);
+    }
+    private void OnButtonT(bool value)
+    {
+        UseSKill(5, value, SaveDirToAttack);
     }
     private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
     {
@@ -235,7 +253,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #endregion
 
     #region Animation Events
-    public void OnAttackAnimStart()
+    public void ApplyRotation()
     {
         _context.RotateDir = _context.IsDashing ? (_context.DesiredMoveDir == Vector3.zero ? transform.forward : _context.DesiredMoveDir) : _rotateDirOnAttack;
     }
@@ -352,6 +370,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         worldPos = Vector3.zero;
         return false;
     }
+
+    
     public void OnSkillDone()
     {
         _context.IsInSpecialMove = false;
@@ -371,7 +391,10 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _context.IsNextAttackQueued = false;
         _animator.Play(_locomotionSet.QueuedAttackData.animName, _context.IsRangeClass ? _context.UpperBodyLayerIndex : 0,0);
     }
-
+    public void OnHurtDone()
+    {
+        _context.IsHurting = false;
+    }
     // must have to reset physicalAttack cycle when physicalAttack animation exits maybe by other state entering
     public void OnAttackAnimExit()
     {
@@ -379,6 +402,16 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         if (_context.IsAttacking)
             return;
         _locomotionSet.ResetAttackAnimCycle();
+    }
+    #endregion
+
+    #region Outside Calls
+    public void OnTakeDamage(GameObject sender, float currentHealth, Vector3 knockBackDirection, float knockBackForce)
+    {
+        _context.IsHurting = true;
+
+        _context.KnockBackDirection = knockBackDirection;
+        _context.KnockbackForce = knockBackForce;
     }
     #endregion
 }

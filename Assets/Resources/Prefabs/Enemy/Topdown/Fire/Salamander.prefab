@@ -945,11 +945,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 1
     weight: 0
     minRange: 0
     maxRange: 1.5
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
@@ -958,6 +961,7 @@ MonoBehaviour:
     skillSize: 1
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -975,11 +979,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 3
     weight: 0
     minRange: 2
     maxRange: 10
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: f0702732e90c3574aa2d5450348854c3, type: 2}
@@ -988,6 +995,7 @@ MonoBehaviour:
     skillSize: 1
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -1005,11 +1013,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 5
     weight: 0
     minRange: 2
     maxRange: 10
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack3
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: eabd184b0599bb948b4bda7af7e354bd, type: 2}
@@ -1018,6 +1029,7 @@ MonoBehaviour:
     skillSize: 1
     executionSound: {fileID: 0}
     movementSpeed: 0
+    rotateSpeed: 10
     faceTargetState: 3
     lockMovementState: 3
     needCharge: 0
@@ -1029,6 +1041,18 @@ MonoBehaviour:
     indicator: {fileID: 11400000, guid: 0ac5d30c27e5652428860850b2851f6d, type: 2}
     indicatorWidth: 2
     indicatorLength: 2
+  _context:
+    <CurrentTargetTransform>k__BackingField: {fileID: 0}
+    <CurrentSpeed>k__BackingField: 0
+    <MoveDir>k__BackingField: {x: 0, y: 0, z: 0}
+    <IsSpawning>k__BackingField: 0
+    <IsMoving>k__BackingField: 0
+    <IsCharging>k__BackingField: 0
+    <IsAttacking>k__BackingField: 0
+    <IsHurting>k__BackingField: 0
+    <IsMoreHurt>k__BackingField: 0
+    <IsStunned>k__BackingField: 0
+    <IsDead>k__BackingField: 0
 --- !u!114 &1010523470871252595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1045,6 +1069,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.1
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -1102,9 +1127,12 @@ MonoBehaviour:
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8427007000349434816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1624,6 +1652,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0

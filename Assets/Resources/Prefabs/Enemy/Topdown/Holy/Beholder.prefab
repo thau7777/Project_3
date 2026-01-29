@@ -684,11 +684,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 6
     weight: 0
     minRange: 5
     maxRange: 10
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Skill_1
     crossfadeDuration: 0
     skillEffect: {fileID: 11400000, guid: b3e67274cda219a449153e7ab0775a68, type: 2}
@@ -715,11 +718,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 2
     weight: 0
     minRange: 2
     maxRange: 10
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0
     skillEffect: {fileID: 11400000, guid: f6a1c85f3dd9cca41af59a6b5c7b01bb, type: 2}
@@ -746,11 +752,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 1
     weight: 0
     minRange: 0
     maxRange: 2
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0
     skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
@@ -799,6 +808,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.1
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -856,9 +866,12 @@ MonoBehaviour:
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3494576099919352330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1235,6 +1248,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0

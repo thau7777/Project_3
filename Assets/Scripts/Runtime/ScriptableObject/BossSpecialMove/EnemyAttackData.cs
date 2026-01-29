@@ -36,6 +36,9 @@ public class EnemyAttackData
     public float minRange;
     public float maxRange;
     public float damage = 10;
+    public float knockBackForce = 10f;
+    public float stunTime = 0f;
+
 
     [Header("Execute Settings")]
     public string executeAnimationName = "Attack1";

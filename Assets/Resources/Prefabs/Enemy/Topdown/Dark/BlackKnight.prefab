@@ -1941,12 +1941,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 2816
     coolDown: 3
     weight: 1
     minRange: 0
     maxRange: 2
     damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 2324f60e336e2c347badbd0f66d355f4, type: 2}
@@ -1973,12 +1975,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 2816
     coolDown: 3
     weight: 0
     minRange: 2
     maxRange: 3
     damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack3
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
@@ -2027,6 +2031,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.1
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -2084,9 +2089,12 @@ MonoBehaviour:
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6826083189585053063
 MonoBehaviour:
   m_ObjectHideFlags: 0

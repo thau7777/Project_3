@@ -171,7 +171,7 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         if (_context.CurrentEnemyAttackData.skillEffect == null) return;
         Transform spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform;
-        if (_skillIndicator && _skillIndicator.isMovementLocked)
+        if (_skillIndicator)
         {
             spawnTransform = _skillIndicator.transform;
             _skillIndicator = null;
@@ -187,10 +187,12 @@ public class EnemyTopdownStateDriver : Flyweight
         {
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
             {
+                hitBoxHandler.Origin = transform.root.gameObject;
                 hitBoxHandler.DodgeLayers = _context.CurrentEnemyAttackData.dodgeLayers;
             }
             if(vfx.TryGetComponent<DamageDealer>(out var damageDealer))
             {
+                damageDealer.KnockbackForce = _context.CurrentEnemyAttackData.knockBackForce;
                 damageDealer.Damage = _context.CurrentEnemyAttackData.damage;
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
@@ -235,15 +237,16 @@ public class EnemyTopdownStateDriver : Flyweight
 
         if (indicatorFlyweight is FollowedIndicator)
         {
-            _skillIndicator.FlyweightInitialize(_context.RootTransform.position, _context.RootTransform.rotation);
+            _skillIndicator.FlyweightInitialize(_context.RootTransform.position.Add(y:0.1f), _context.RootTransform.rotation);
             FollowedIndicator indicator = (FollowedIndicator)_skillIndicator;
             indicator.Initialize(_context.RootTransform, _context.CurrentEnemyAttackData.indicatorWidth, _context.CurrentEnemyAttackData.indicatorLength);
         }
         else
         {
-            _skillIndicator.FlyweightInitialize(_context.CurrentEnemyAttackData.skillSpawnTransform.position);
+            Transform target = _context.CurrentEnemyAttackData.spawnType == EnemyAttackData.SpawnType.AtTarget ? _context.PlayerTransform : null;
+            _skillIndicator.FlyweightInitialize(target.position.Add(y: 0.1f));
             CircleIndicator indicator = (CircleIndicator)_skillIndicator;
-            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth,Mathf.Infinity, _context.CurrentEnemyAttackData.skillSpawnTransform);
+            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth,Mathf.Infinity, target);
         }
     }
     public void LockIndicator(float duration)
