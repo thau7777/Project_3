@@ -124,4 +124,5 @@ public enum FlyweightType
     ChainLightning_ImpactVFX,
     BasicChargeBuff,
     EnemySpawnVFX,
+    PlayerDashVFX,
 }

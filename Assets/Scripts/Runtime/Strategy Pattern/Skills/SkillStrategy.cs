@@ -15,8 +15,6 @@ public struct SkillDataForClass
 {
     public CharacterClass characterClass;
     public string animName;
-    public VFXSpawnLocation spawnLocation;
-    public Vector3 positionOffset;
     public bool isDashForward;
     public float dashForce;
     public AimType aimType;
@@ -25,7 +23,15 @@ public struct SkillDataForClass
 public enum SkillCondition
 {
     None,
-    InMousePosition
+    InMousePosition,
+    EnoughMana
+}
+[Serializable]
+public struct SkillSlotInfo
+{
+    public bool HasSkill => skillStrategy != null;
+    public int slotIndex;
+    public SkillStrategy skillStrategy;
 }
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Scriptable Objects/StrategyPattern/Skill")]
@@ -51,14 +57,14 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [SerializeField]
     protected LayerMask groundLayer;
     #endregion
+
     [TabGroup("Skill Data For Classes")]
     [SerializeField]
     protected List<SkillDataForClass> dataForClasses;
 
     #region Skill Settings
     [TabGroup("Skill Settings")]
-    [SerializeField]
-    private Image _skillImage;
+    public Sprite skillIcon;
 
     [TabGroup("Skill Settings")]
     [SerializeField]
@@ -66,9 +72,24 @@ public class SkillStrategy : ScriptableObject, IStrategy
     public FlyweightSettings FlyweightSettings => _mainSkillVfxSettings;
 
     [TabGroup("Skill Settings")]
+    [SerializeField]
+    private float _manaCost = 20;
+    public float ManaCost => _manaCost;
+
+    [TabGroup("Skill Settings")]
+    public VFXSpawnLocation spawnLocation;
+
+    [TabGroup("Skill Settings")]
     [ShowIf("_isProjectile", true)]
     [SerializeField]
     private bool _setParentToUser;
+
+    [TabGroup("Skill Settings")]
+    public Vector3 positionOffset = Vector3.zero;
+
+    [TabGroup("Skill Settings")]
+    [ShowIf("_isProjectile", true)]
+    public Quaternion rotationOffset;
 
     [TabGroup("Skill Settings")]
     [SerializeField]
@@ -256,7 +277,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
         if (FlyweightSettings == null) return;
         Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
         Vector3 spawnPosition = context.spawnTransform.AddLocal(context.positionOffset.x, context.positionOffset.y, context.positionOffset.z);
-        flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation);
+        flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation * context.rotationOffset);
 
         if (flyweightObj is StraightProjectile straightProjectile)
         {

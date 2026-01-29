@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1183983290039493146}
   - component: {fileID: 8773991002819646142}
   - component: {fileID: 1366843240124670105}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spell_Light_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4833,7 +4833,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &8773991002819646142
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4879,6 +4879,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4910,7 +4911,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!136 &1366843240124670105
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4945,7 +4945,7 @@ GameObject:
   - component: {fileID: 1719051673305069483}
   - component: {fileID: 1240013286095735616}
   - component: {fileID: 5185250828015308701}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9762,7 +9762,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &5185250828015308701
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9809,6 +9809,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 1
@@ -9840,7 +9841,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &7630067774942560200
 GameObject:
   m_ObjectHideFlags: 0
@@ -9852,7 +9852,7 @@ GameObject:
   - component: {fileID: 5804180419470688236}
   - component: {fileID: 23460605763929078}
   - component: {fileID: 4955169738642024308}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Glow (Explosion)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14669,7 +14669,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &4955169738642024308
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -14715,6 +14715,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -14746,7 +14747,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &8170688658584015148
 GameObject:
   m_ObjectHideFlags: 0
@@ -14758,7 +14758,7 @@ GameObject:
   - component: {fileID: 1411971543850875562}
   - component: {fileID: 3563795231000722450}
   - component: {fileID: 3272712293504862416}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14788,14 +14788,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8170688658584015148}
   m_Enabled: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -14885,7 +14885,7 @@ GameObject:
   - component: {fileID: 930767333522247924}
   - component: {fileID: 2938678690717478955}
   - component: {fileID: 6121996555705925428}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: 'Glow '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19711,7 +19711,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &6121996555705925428
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19757,6 +19757,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -19788,4 +19789,3 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0

@@ -19,7 +19,7 @@ public class HitBoxHandler : MonoBehaviour
 
     private void Awake()
     {
-        Origin = transform.gameObject;
+        Origin = transform.root.gameObject;
         _collider = GetComponent<Collider>();
 
         if (_collider != null)
