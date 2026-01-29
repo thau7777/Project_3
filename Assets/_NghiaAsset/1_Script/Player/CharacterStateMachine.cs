@@ -22,14 +22,24 @@ namespace Turnbase
         public StunnedState stunnedState;
         public AvoidState avoidState;
 
+        private InputActions controls;
+        public PlayerTurnBasedActions inputLogic = new PlayerTurnBasedActions();
+
+
 
         private void Awake()
         {
             character = GetComponent<Character>();
 
             battleManager = FindFirstObjectByType<BattleManager>();
+
+            controls = new InputActions();
+
+            controls.PlayerTurnBased.SetCallbacks(inputLogic);
+
+
             waitingState = new WaitingState(this);
-            readyState = new ReadyState(this);
+            //readyState = new ReadyState(this);
             attackingState = new AttackingState(this);
             takingDamageState = new TakingDamageState(this);
             deadState = new DeadState(this);
@@ -41,6 +51,7 @@ namespace Turnbase
 
         void Start()
         {
+            readyState = new ReadyState(this, inputLogic);
             SwitchState(waitingState);
 
         }
@@ -67,6 +78,18 @@ namespace Turnbase
             currentState = newState;
             currentState.OnEnter();
         }
+
+        void OnEnable()
+        {
+            if (controls == null) controls = new InputActions();
+            controls.Enable();
+        }
+
+        void OnDisable()
+        {
+            controls.Disable();
+        }
+
 
 
     }

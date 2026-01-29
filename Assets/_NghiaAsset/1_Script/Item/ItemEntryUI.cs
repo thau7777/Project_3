@@ -38,6 +38,11 @@ namespace Turnbase
             ItemButton.onClick.AddListener(() => clickAction.Invoke(ItemData));
         }
 
+        public void SelectThisItem()
+        {
+            ItemButton.onClick.Invoke();
+        }
+
     }
 
 

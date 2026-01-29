@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,6 +50,11 @@ namespace Turnbase
 
             skillButton.onClick.RemoveAllListeners();
             skillButton.onClick.AddListener(() => clickAction.Invoke(skillData));
+        }
+
+        public void SelectThisSkill()
+        {
+            skillButton.onClick.Invoke();
         }
     }
 }
