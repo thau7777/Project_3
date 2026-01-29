@@ -104,7 +104,6 @@ namespace Turnbase
                 inputLogic.EEvent -= OnSkillClicked;
                 inputLogic.REvent -= OnItemClicked;
                 inputLogic.SpaceEvent -= OnConfirmClicked;
-                inputLogic.EscapeEvent -= OnCancelClicked;
                 inputLogic.SummonEvent -= OnSummonClicked;
             }
 
@@ -122,7 +121,6 @@ namespace Turnbase
                     inputLogic.EEvent += OnSkillClicked;    // Phím E: Kỹ năng
                     inputLogic.REvent += OnItemClicked;     // Phím R: Vật phẩm
                     inputLogic.SpaceEvent += OnConfirmClicked; // Phím Space: Xác nhận
-                    inputLogic.EscapeEvent += OnCancelClicked;      // Phím Esc: Hủy/Quay lại
                     inputLogic.SummonEvent += OnSummonClicked;      // Phím F: Triệu hồi
 
                 }
@@ -139,7 +137,6 @@ namespace Turnbase
                 inputLogic.EEvent -= OnSkillClicked;
                 inputLogic.REvent -= OnItemClicked;
                 inputLogic.SpaceEvent -= OnConfirmClicked;
-                inputLogic.EscapeEvent -= OnCancelClicked;
                 inputLogic.SummonEvent -= OnSummonClicked;
             }
         }

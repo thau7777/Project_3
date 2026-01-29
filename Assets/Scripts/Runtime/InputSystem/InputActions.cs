@@ -343,15 +343,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Test"",
-                    ""type"": ""Button"",
-                    ""id"": ""37c619ca-f2b2-442f-978c-69731d8fce79"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Q"",
                     ""type"": ""Button"",
                     ""id"": ""86817ba9-a3e9-4802-a1eb-599f09b85b64"",
@@ -395,24 +386,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""S"",
-                    ""type"": ""Button"",
-                    ""id"": ""cbec01df-21d3-4c4b-b41d-97f2eb861fbc"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""W"",
-                    ""type"": ""Button"",
-                    ""id"": ""58596a46-0650-49e1-aa4d-efeca561f71e"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -435,17 +408,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""D"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8141ed45-0cbe-4262-993e-39808fe398c5"",
-                    ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Test"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -501,28 +463,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""F"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b1b85c35-794d-42a4-96e3-7348580271b4"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""S"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1a723a8d-adc7-4e52-b3ac-c776c8494609"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""W"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1427,14 +1367,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
         m_PlayerTurnBased_A = m_PlayerTurnBased.FindAction("A", throwIfNotFound: true);
         m_PlayerTurnBased_D = m_PlayerTurnBased.FindAction("D", throwIfNotFound: true);
-        m_PlayerTurnBased_Test = m_PlayerTurnBased.FindAction("Test", throwIfNotFound: true);
         m_PlayerTurnBased_Q = m_PlayerTurnBased.FindAction("Q", throwIfNotFound: true);
         m_PlayerTurnBased_Space = m_PlayerTurnBased.FindAction("Space", throwIfNotFound: true);
         m_PlayerTurnBased_E = m_PlayerTurnBased.FindAction("E", throwIfNotFound: true);
         m_PlayerTurnBased_R = m_PlayerTurnBased.FindAction("R", throwIfNotFound: true);
         m_PlayerTurnBased_F = m_PlayerTurnBased.FindAction("F", throwIfNotFound: true);
-        m_PlayerTurnBased_S = m_PlayerTurnBased.FindAction("S", throwIfNotFound: true);
-        m_PlayerTurnBased_W = m_PlayerTurnBased.FindAction("W", throwIfNotFound: true);
         // PlayerFPS
         m_PlayerFPS = asset.FindActionMap("PlayerFPS", throwIfNotFound: true);
         // PlayerTowerDefense
@@ -1736,14 +1673,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerTurnBasedActions> m_PlayerTurnBasedActionsCallbackInterfaces = new List<IPlayerTurnBasedActions>();
     private readonly InputAction m_PlayerTurnBased_A;
     private readonly InputAction m_PlayerTurnBased_D;
-    private readonly InputAction m_PlayerTurnBased_Test;
     private readonly InputAction m_PlayerTurnBased_Q;
     private readonly InputAction m_PlayerTurnBased_Space;
     private readonly InputAction m_PlayerTurnBased_E;
     private readonly InputAction m_PlayerTurnBased_R;
     private readonly InputAction m_PlayerTurnBased_F;
-    private readonly InputAction m_PlayerTurnBased_S;
-    private readonly InputAction m_PlayerTurnBased_W;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTurnBased".
     /// </summary>
@@ -1764,10 +1698,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @D => m_Wrapper.m_PlayerTurnBased_D;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTurnBased/Test".
-        /// </summary>
-        public InputAction @Test => m_Wrapper.m_PlayerTurnBased_Test;
-        /// <summary>
         /// Provides access to the underlying input action "PlayerTurnBased/Q".
         /// </summary>
         public InputAction @Q => m_Wrapper.m_PlayerTurnBased_Q;
@@ -1787,14 +1717,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerTurnBased/F".
         /// </summary>
         public InputAction @F => m_Wrapper.m_PlayerTurnBased_F;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerTurnBased/S".
-        /// </summary>
-        public InputAction @S => m_Wrapper.m_PlayerTurnBased_S;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerTurnBased/W".
-        /// </summary>
-        public InputAction @W => m_Wrapper.m_PlayerTurnBased_W;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1827,9 +1749,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @D.started += instance.OnD;
             @D.performed += instance.OnD;
             @D.canceled += instance.OnD;
-            @Test.started += instance.OnTest;
-            @Test.performed += instance.OnTest;
-            @Test.canceled += instance.OnTest;
             @Q.started += instance.OnQ;
             @Q.performed += instance.OnQ;
             @Q.canceled += instance.OnQ;
@@ -1845,12 +1764,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @F.started += instance.OnF;
             @F.performed += instance.OnF;
             @F.canceled += instance.OnF;
-            @S.started += instance.OnS;
-            @S.performed += instance.OnS;
-            @S.canceled += instance.OnS;
-            @W.started += instance.OnW;
-            @W.performed += instance.OnW;
-            @W.canceled += instance.OnW;
         }
 
         /// <summary>
@@ -1868,9 +1781,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @D.started -= instance.OnD;
             @D.performed -= instance.OnD;
             @D.canceled -= instance.OnD;
-            @Test.started -= instance.OnTest;
-            @Test.performed -= instance.OnTest;
-            @Test.canceled -= instance.OnTest;
             @Q.started -= instance.OnQ;
             @Q.performed -= instance.OnQ;
             @Q.canceled -= instance.OnQ;
@@ -1886,12 +1796,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @F.started -= instance.OnF;
             @F.performed -= instance.OnF;
             @F.canceled -= instance.OnF;
-            @S.started -= instance.OnS;
-            @S.performed -= instance.OnS;
-            @S.canceled -= instance.OnS;
-            @W.started -= instance.OnW;
-            @W.performed -= instance.OnW;
-            @W.canceled -= instance.OnW;
         }
 
         /// <summary>
@@ -2704,13 +2608,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnD(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Test" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnTest(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -2745,20 +2642,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnF(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "S" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnS(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "W" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnW(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerFPS" which allows adding and removing callbacks.
