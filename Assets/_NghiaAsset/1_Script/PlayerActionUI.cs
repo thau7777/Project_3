@@ -305,25 +305,14 @@ namespace Turnbase
             }
 
             ApplyButtonAction_Cancel();
-
-
             CameraAction.instance.ReadySkill(currentCharacter);
 
             PlayerSummonPanel.SetActive(false);
-
-
+            PlayerItemPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
 
-            if (PlayerSkillPanel.activeSelf == true)
-            {
-                PlayerSkillPanel.SetActive(false);
-            }
-            else
-            {
-                SetupSkillUI(currentCharacter.skills);
-                PlayerSkillPanel.SetActive(true);
-            }
-            PlayerItemPanel.SetActive(false);
+            SetupSkillUI(currentCharacter.skills);
+            PlayerSkillPanel.SetActive(true);
 
         }
 

@@ -16,7 +16,6 @@ namespace Turnbase
 
         [Header("Player Spawn Settings")]
         public float playerMoveDuration = 1.0f;
-        // Khoảng cách Player sẽ bắt đầu so với vị trí Slot mặc định (Ví dụ: x = -3)
         public Vector3 playerOffsetFromSlot = new Vector3(3f, 0f, 0f);
 
         public void Initialize(BattleManager manager)
@@ -85,16 +84,13 @@ namespace Turnbase
             characterInstance.battleManager = bm;
             characterInstance.battleUIManager = bm.uiManager;
 
-            // --- PHÂN CHIA LOGIC XUẤT HIỆN ---
             if (isPlayerFaction)
             {
-                // Player: Di chuyển từ vị trí (Slot - Offset) tới vị trí Slot
                 Vector3 startPos = finalPosition + playerOffsetFromSlot;
                 StartCoroutine(MoveToPosition(characterInstance.transform, startPos, finalPosition, playerMoveDuration));
             }
             else
             {
-                // Enemy: Tạo hiệu ứng VFX và trồi lên từ dưới đất ngay tại Slot
                 if (enemySpawnEffect != null)
                 {
                     Flyweight_TB effect = FlyweightFactory_TB.Spawn(enemySpawnEffect);
@@ -104,7 +100,6 @@ namespace Turnbase
                 StartCoroutine(MoveToPosition(characterInstance.transform, startPos, finalPosition, enemyRiseDuration));
             }
 
-            // Thiết lập StateMachine, Stats và UI
             SetupCharacter(characterInstance);
 
             return characterInstance;
@@ -112,6 +107,9 @@ namespace Turnbase
 
         private IEnumerator MoveToPosition(Transform target, Vector3 startPos, Vector3 finalPos, float duration)
         {
+            Animator anim = target.GetComponentInChildren<Animator>();
+            anim.Play("walk");
+
             target.position = startPos;
             float elapsed = 0f;
 
@@ -124,6 +122,8 @@ namespace Turnbase
             }
 
             target.position = finalPos;
+
+            anim.Play("Idle");
         }
 
         private void SetupCharacter(Character characterInstance)

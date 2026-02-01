@@ -2766,7 +2766,7 @@ MonoBehaviour:
   parryButton: {fileID: 8753874656911766885}
   confirmButton: {fileID: 6552284012243243665}
   summomonButton: {fileID: 6781936641884110448}
-  itemButton: {fileID: 0}
+  itemButton: {fileID: 6300435913847427734}
   actionButton: {fileID: 0}
   cancelButton: {fileID: 0}
   playerActionsPanel: {fileID: 8017378864562971990}
@@ -2775,8 +2775,8 @@ MonoBehaviour:
   PlayerSkillPanel: {fileID: 1297828532280111179}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 0c378e221269cfc49af870a0c15623f2, type: 3}
   PlayerSummonPanel: {fileID: 978389160695665640}
-  itemEntryPrefab: {fileID: 0}
-  PlayerItemPanel: {fileID: 0}
+  itemEntryPrefab: {fileID: 3163969907839143040, guid: c3adcbf10b464cb49aebee29ccaf44a5, type: 3}
+  PlayerItemPanel: {fileID: 5970377413263592932}
   parryFillImage: {fileID: 5188397716198910664}
   defaultParrySprite: {fileID: 21300000, guid: 63be7197c60874147a5fb1f91704cfea, type: 3}
   readyParrySprite: {fileID: 21300000, guid: b79a56f910ade2b4f8bf0c8925a5f772, type: 3}
@@ -2897,6 +2897,7 @@ GameObject:
   - component: {fileID: 428602294126036014}
   - component: {fileID: 8016999400321186779}
   - component: {fileID: 5852031828466654290}
+  - component: {fileID: 5233595062444666678}
   m_Layer: 0
   m_Name: PetTB_Mage
   m_TagString: Player
@@ -2967,7 +2968,7 @@ MonoBehaviour:
   characterElement: 0
   info:
     name: Mage
-    Avatar: {fileID: 21300000, guid: 79741450687ace542a5423643691cc22, type: 3}
+    Avatar: {fileID: 21300000, guid: 19d02bfe3300b0f4d89e240d0fceb628, type: 3}
     level: 0
   stats:
     maxHP: 255
@@ -2984,7 +2985,7 @@ MonoBehaviour:
     critDamage: 0
     agility: 111
   allClassProfiles:
-  - {fileID: 11400000, guid: d030d73e839bafe4fa0a621f62d882e9, type: 2}
+  - {fileID: 11400000, guid: 59f9fbd11d6c8c24d848226c854ecc35, type: 2}
   skills:
   - {fileID: 11400000, guid: 5e3da1964380fc14e840322b1a48cd6c, type: 2}
   item: []
@@ -3013,6 +3014,7 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 6484325543369926762}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
@@ -3117,7 +3119,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d803e45b737abad46a92d8d36885273a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
-  character: {fileID: 0}
+  character: {fileID: 3404509342006786628}
+--- !u!114 &5233595062444666678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
 --- !u!1 &8784865055039137925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3387,6 +3401,22 @@ MonoBehaviour:
 --- !u!114 &5938212537211916867 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 661780131409490449, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 6577464730319544402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5970377413263592932 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 692661321099701686, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 6577464730319544402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6300435913847427734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 876086775593185988, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
   m_PrefabInstance: {fileID: 6577464730319544402}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
