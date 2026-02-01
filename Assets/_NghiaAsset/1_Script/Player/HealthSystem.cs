@@ -13,7 +13,7 @@ namespace Turnbase
             owner = character;
         }
 
-        public void TakeDamage(Character attacker, int damageAmount, ElementType damageElement, bool ignoreBlock = false)
+        public void TakeDamage(Character attacker, int damageAmount, ElementType damageElement, bool ignoreBlock = false, bool isCrit = false)
         {
             if (!ignoreBlock && owner.isAttackBlocked)
             {
@@ -32,7 +32,7 @@ namespace Turnbase
 
             if (remainingDamage > 0)
             {
-                ApplyCoreDamage(remainingDamage, damageElement);
+                ApplyCoreDamage(remainingDamage, damageElement, isCrit);
             }
 
             owner.UpdateOwnUI();
@@ -44,14 +44,22 @@ namespace Turnbase
             CheckLifeStatus(attacker, remainingDamage);
         }
 
-        private void ApplyCoreDamage(int damage, ElementType element)
+        private void ApplyCoreDamage(int damage, ElementType element, bool isCrit)
         {
+            bool finalCrit = isCrit || DamageCalculator.IsLastHitCrit;
             owner.stats.currentHP -= damage;
+
+            if (finalCrit) 
+            {
+                Debug.Log($"<color=yellow>[CRITICAL HIT!]</color> {owner.name} nhận sát thương chí mạng...");
+            }
+
+
             float intensity = Mathf.Clamp(damage * 0.01f, 0.1f, 0.5f);
             EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.15f, intensity));
 
             Color popupColor = VFXManager.Instance.elementColorMap.GetColor(element);
-            DamagePopup.Create(owner.transform.position, damage, owner.damagePopupCanvasParent, popupColor);
+            DamagePopup.Create(owner.transform.position, damage, owner.damagePopupCanvasParent, popupColor, finalCrit);
 
             if (owner is Enemy enemyTarget)
             {

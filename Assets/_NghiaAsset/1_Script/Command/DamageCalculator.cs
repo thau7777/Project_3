@@ -4,6 +4,7 @@ namespace Turnbase
 {
     public static class DamageCalculator
     {
+        public static bool IsLastHitCrit;
         public static int GetFinalDamage(Character user, Character target, Skill skill, BattleManager battleManager)
         {
             int offensiveStat;
@@ -17,12 +18,37 @@ namespace Turnbase
                 case ElementType.Poison:
                 case ElementType.Lightning:
                 case ElementType.Dark:
+                case ElementType.Water:
+                case ElementType.Frost:
+                case ElementType.Holy:
                     offensiveStat = user.stats.magicAttack;
                     defensiveStat = target.stats.magicDefense;
+
+                    //xuyên phòng thủ phép 
+                    foreach (var passive in user.passiveSkills)
+                    {
+                        if (passive is Passive_MagicPenetration magicPen)
+                        {
+                            defensiveStat = magicPen.GetReducedDefense(defensiveStat);
+                        }
+                    }
                     break;
 
                 case ElementType.Physical:
                 case ElementType.None:
+                    offensiveStat = user.stats.physicalAttack;
+                    defensiveStat = target.stats.physicalDefense;
+
+                    //xuyên phong thủ vật lý
+                    foreach (var passive in user.passiveSkills)
+                    {
+                        if (passive is Passive_ArmorPenetration armorPen)
+                        {
+                            defensiveStat = armorPen.GetReducedDefense(defensiveStat);
+                        }
+                    }
+                    break;
+
                 default:
                     offensiveStat = user.stats.physicalAttack;
                     defensiveStat = target.stats.physicalDefense;
@@ -34,17 +60,33 @@ namespace Turnbase
 
             int rawDamage = offensiveStat * skill.damage;
 
+            if (skill.manaCost <= 0)
+            {
+                foreach (var passive in user.passiveSkills)
+                {
+                    if (passive is Passive_BasicAttackBoost boost)
+                    {
+                        rawDamage = boost.ApplyBoost(rawDamage);
+                    }
+                }
+            }
+
             float defenseMultiplier = 100f / (defensiveStat + 100f);
             float damageBase = rawDamage * defenseMultiplier;
 
             float elementMultiplier = GetElementMultiplier(skill, target, battleManager);
             float preCritDamageFloat = damageBase * elementMultiplier;
 
-            bool isCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
-            if (isCrit)
+            IsLastHitCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
+            // Thêm vào ngay sau dòng tính isCrit
+            Debug.Log($"[CALC] Tỉ lệ Crit: {user.stats.crit} | Kết quả Roll: {IsLastHitCrit}");
+
+            if (IsLastHitCrit)
             {
+                float oldDamage = preCritDamageFloat;
                 float critMultiplier = (float)user.stats.critDamage / 100f;
                 preCritDamageFloat *= critMultiplier;
+                Debug.Log($"[CALC] Đã nhân Crit: {oldDamage} -> {preCritDamageFloat} (Multiplier: {critMultiplier})");
             }
 
             int finalDamage = Mathf.RoundToInt(preCritDamageFloat);

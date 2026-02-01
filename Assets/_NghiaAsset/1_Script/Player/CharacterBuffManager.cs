@@ -409,7 +409,7 @@ namespace Turnbase
                     }
                     else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
                     {
-                        stackTarget.debuffManager.ApplyDebuff(skill.activatedDebuff);
+                        stackTarget.debuffManager.ApplyDebuff(character, skill.activatedDebuff);
                         Debug.Log($"[Stack Finisher Activated] {stackTarget.info.name} nhận Debuff {skill.activatedDebuff.statToModify}");
                     }
 

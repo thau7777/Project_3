@@ -182,7 +182,7 @@ namespace Turnbase
 
             if (debuffManager != null)
             {
-                debuffManager.ApplyDebuff(breakDebuffSettings);
+                debuffManager.ApplyDebuff(null, breakDebuffSettings);
             }
         }
     }

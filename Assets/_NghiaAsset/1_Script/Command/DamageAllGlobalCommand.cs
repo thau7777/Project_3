@@ -124,7 +124,7 @@ namespace Turnbase
                     {
                         if (skill.debuffProperties.statToModify != DebuffType.None)
                         {
-                            aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                            aoeTarget.debuffManager.ApplyDebuff(user, skill.debuffProperties);
                         }
 
                         if (skill.stackApplicationTarget == StackApplicationTarget.Target)

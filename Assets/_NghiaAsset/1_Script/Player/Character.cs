@@ -151,7 +151,7 @@ namespace Turnbase
         }
 
 
-        public void TakeDamage(Character attacker, int amount, ElementType element, bool ignoreBlock = false)
+        public void TakeDamage(Character attacker, int amount, ElementType element, bool ignoreBlock = false, bool isCrit = false)
         {
             if (healthSystem == null)
             {
@@ -163,7 +163,10 @@ namespace Turnbase
                 healthSystem.Init(this);
             }
 
-            healthSystem.TakeDamage(attacker, amount, element, ignoreBlock);
+            healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
+
+            Color elementColor = Color.white;
+            EventBusUI<DamageEvent>.Raise(new DamageEvent(transform.position, amount, elementColor, isCrit));
         }
 
         public void ProcessOnDeathPassives()
