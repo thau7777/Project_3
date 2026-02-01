@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -130,6 +131,13 @@ namespace Turnbase
                 skills.Clear();
                 skills.AddRange(targetProfile.initialSkills);
             }
+
+            if (targetProfile.initialPassiveSkills != null) 
+            {
+                passiveSkills.Clear();
+                passiveSkills.AddRange(targetProfile.initialPassiveSkills);
+                Debug.Log($"[LOG] Đã nạp {passiveSkills.Count} nội tại cho {gameObject.name}");
+            }
         }
 
         public void UpdateOwnUI()
@@ -143,7 +151,7 @@ namespace Turnbase
         }
 
 
-        public void TakeDamage(int amount, ElementType element, bool ignoreBlock = false)
+        public void TakeDamage(Character attacker, int amount, ElementType element, bool ignoreBlock = false)
         {
             if (healthSystem == null)
             {
@@ -155,7 +163,7 @@ namespace Turnbase
                 healthSystem.Init(this);
             }
 
-            healthSystem.TakeDamage(amount, element, ignoreBlock);
+            healthSystem.TakeDamage(attacker, amount, element, ignoreBlock);
         }
 
         public void ProcessOnDeathPassives()

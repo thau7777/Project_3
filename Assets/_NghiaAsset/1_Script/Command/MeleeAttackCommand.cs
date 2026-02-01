@@ -55,7 +55,7 @@ namespace Turnbase
                     {
                         int counterDamage = target.stats.physicalAttack + target.stats.magicAttack;
 
-                        user.TakeDamage(counterDamage, ElementType.Normal, true);
+                        user.TakeDamage(target, counterDamage, ElementType.Normal, true);
 
                         if (user == null || !user.isAlive)
                         {
@@ -113,7 +113,7 @@ namespace Turnbase
                 int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
                 int baseDamagePerHit = totalDamage / hits;
 
-                target.TakeDamage(baseDamagePerHit, skill.elementType);
+                target.TakeDamage(user, baseDamagePerHit, skill.elementType); 
                 SpawnImpactEffect(target.transform.position, skill);
                 damageApplied = true;
             };
@@ -137,7 +137,7 @@ namespace Turnbase
                     yield return new WaitForSeconds(skill.delayBetweenHits);
 
                     int currentHitDamage = baseDamagePerHit + (j == extraHits - 1 ? damageRemainder : 0);
-                    target.TakeDamage(currentHitDamage, skill.elementType);
+                    target.TakeDamage(user, baseDamagePerHit, skill.elementType);
                     SpawnImpactEffect(target.transform.position, skill);
                 }
             }

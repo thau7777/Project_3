@@ -31,6 +31,12 @@ namespace Turnbase
 
         private IEnumerator PerformLaserAttack()
         {
+            if (skill.cameraTimeline != null && battleManager.mainDirector != null)
+            {
+                battleManager.mainDirector.playableAsset = skill.cameraTimeline;
+                battleManager.mainDirector.Play();
+            }
+
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
             int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
             int baseDamagePerHit = totalDamage / hits;
@@ -46,7 +52,7 @@ namespace Turnbase
                 {
                     ApplyStatusEffectsAndStacks(user, target, skill);
 
-                    target.TakeDamage(baseDamagePerHit, skill.elementType);
+                    target.TakeDamage(user, baseDamagePerHit, skill.elementType);
                     EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.2f, 0.4f));
                     SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
 
@@ -104,11 +110,12 @@ namespace Turnbase
                 yield return new WaitForSeconds(delayBetweenHits);
 
                 int currentHitDamage = baseDamagePerHit + (i == hits - 1 ? damageRemainder : 0);
-                target.TakeDamage(currentHitDamage, skill.elementType);
-
+                target.TakeDamage(user, currentHitDamage, skill.elementType);
                 EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.1f, 0.2f));
                 SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
             }
+
+
 
             yield return new WaitForSeconds(skill.laserVFXDuration);
         }

@@ -93,7 +93,7 @@ namespace Turnbase
         private void ApplySingleHitDamage(Character target, int damage)
         {
             ElementType element = skill.elementType;
-            target.TakeDamage(damage, element);
+            target.TakeDamage(user,damage, element);
         }
 
         private IEnumerator ApplyDamageToTargets(List<Character> targets)

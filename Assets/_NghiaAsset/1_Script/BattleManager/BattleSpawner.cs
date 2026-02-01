@@ -15,7 +15,7 @@ namespace Turnbase
         public float enemySinkDepth = 2.5f;
 
         [Header("Player Spawn Settings")]
-        public float playerMoveDuration = 1.0f;
+        public float playerMoveDuration = 0.3f;
         public Vector3 playerOffsetFromSlot = new Vector3(3f, 0f, 0f);
 
         public void Initialize(BattleManager manager)

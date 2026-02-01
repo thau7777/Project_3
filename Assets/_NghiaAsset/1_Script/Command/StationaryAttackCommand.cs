@@ -39,7 +39,7 @@ namespace Turnbase
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage, element);
+                    target.TakeDamage(user, finalDamage, element);
                     damageApplied = true;
                     SpawnEffectAtTarget();
                 }

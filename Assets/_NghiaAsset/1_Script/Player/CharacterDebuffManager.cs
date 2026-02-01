@@ -330,8 +330,7 @@ namespace Turnbase
                         currentTickDamage += remainder;
                     }
 
-                    character.TakeDamage(currentTickDamage, BURN_ELEMENT);
-
+                    character.TakeDamage(null, currentTickDamage, BURN_ELEMENT);
                     damageApplied = true;
 
                     if (i < BURN_TICKS - 1)
@@ -365,8 +364,7 @@ namespace Turnbase
                         currentTickDamage += remainder;
                     }
 
-                    character.TakeDamage(currentTickDamage, POISON_ELEMENT);
-
+                    character.TakeDamage(null, currentTickDamage, BURN_ELEMENT);
                     damageApplied = true;
 
                     if (i < POISON_TICKS - 1)

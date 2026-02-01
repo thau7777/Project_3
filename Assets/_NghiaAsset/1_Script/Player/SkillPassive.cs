@@ -23,6 +23,8 @@ namespace Turnbase
         OnTurnStart,
 
         OnDeath,
+        OnKill,
+
 
     }
 
@@ -42,7 +44,11 @@ namespace Turnbase
         [Header("Spawn Minion Settings (If PassiveEffectType is SpawnMinionsOnDeath)")]
         public Character minionPrefab;
         public int minionCount = 1;
+
+
+        public virtual void OnKill(Character killer, Character victim) { }
     }
+
 
 
 }

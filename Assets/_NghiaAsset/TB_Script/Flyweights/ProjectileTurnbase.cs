@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using Turnbase;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Turnbase
 {
     public class ProjectileTurnBase : Flyweight_TB
     {
+        private Character owner;
         private Character target;
         private Action onHitCallback;
         private Skill skillData;
@@ -16,8 +18,9 @@ namespace Turnbase
 
         private const float SPEED = 30f;
 
-        public void Setup(Character target, Skill skill, int damage, ElementType element, Action hitCallback)
+        public void Setup(Character attacker, Character target, Skill skill, int damage, ElementType element, Action hitCallback)
         {
+            this.owner = attacker;
             this.target = target;
             this.skillData = skill;
             this.damageAmount = damage;
@@ -56,7 +59,7 @@ namespace Turnbase
         {
             ElementType element = projectileElement;
 
-            target.TakeDamage(damageAmount, element);
+            target.TakeDamage(owner, damageAmount, element);
 
             SpawnImpactEffect(target.transform.position, skillData);
 
