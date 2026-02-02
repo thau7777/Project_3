@@ -16,7 +16,7 @@ namespace Turnbase
 
         private IEnumerator HandleTakingDamage()
         {
-            stateMachine.character.animator.Play("Idle_Hurt");
+            stateMachine.character.animator.Play("Hurt");
 
             yield return new WaitForSeconds(0.5f);
 

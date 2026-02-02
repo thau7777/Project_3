@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -9,7 +10,7 @@ namespace Turnbase
         public static CameraAction instance { get; private set; }
 
         [Header("Cài đặt Camera")]
-        [SerializeField] private Camera cam; 
+        [SerializeField] private CinemachineCamera cam; 
         public float smoothSpeed = 5f;
 
         [Header("Chế độ Target + Offset")]
@@ -18,7 +19,7 @@ namespace Turnbase
         public Vector3 offsetRotation;
 
 
-        [Header("Cấu hình FOV")]
+        [Header("Cấu hình Lens")]
         public float normalFOV = 60f;
         public float zoomFOV = 80f;
         public float fovSmoothSpeed = 30f;
@@ -40,7 +41,7 @@ namespace Turnbase
             if (instance == null) instance = this;
             else Destroy(gameObject);
 
-            if (cam == null) cam = GetComponent<Camera>();
+            if (cam == null) cam = GetComponent<CinemachineCamera>();
         }
 
         private void LookAtAnchorTransform(Transform anchor, bool teleportImmediately = false)
@@ -170,7 +171,7 @@ namespace Turnbase
             {
                 transform.position = desiredPos;
                 transform.rotation = desiredRot;
-                cam.fieldOfView = normalFOV;
+                cam.Lens.FieldOfView = normalFOV;
                 shouldTeleport = false;
             }
             else
@@ -178,7 +179,7 @@ namespace Turnbase
                 transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * smoothSpeed);
                 transform.rotation = Quaternion.Slerp(transform.rotation, desiredRot, Time.deltaTime * smoothSpeed);
 
-                cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFOV, Time.deltaTime * fovSmoothSpeed);
+                cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, targetFOV, Time.deltaTime * fovSmoothSpeed);
             }
         }
     }

@@ -67,7 +67,7 @@ namespace Turnbase
                             {
                                 user.stateMachine.SwitchState(new InterruptedState(user.stateMachine));
                             }
-                            yield return new WaitForSeconds(0.8f);
+                            yield return new WaitForSeconds(0f);
                         }
                         else
                         {

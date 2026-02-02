@@ -166,7 +166,10 @@ namespace Turnbase
             healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
 
             Color elementColor = Color.white;
-            EventBusUI<DamageEvent>.Raise(new DamageEvent(transform.position, amount, elementColor, isCrit));
+
+            //EventBusUI<DamageEvent>.Raise(new DamageEvent(transform.position, amount, elementColor, isCrit));
+
+            CameraShaker.Instance.GenerateBasicShake();
         }
 
         public void ProcessOnDeathPassives()
