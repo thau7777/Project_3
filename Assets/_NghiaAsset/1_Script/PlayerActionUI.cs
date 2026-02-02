@@ -426,6 +426,8 @@ namespace Turnbase
             Debug.Log("sử dụng Item!");
             SetUPItemUI(currentCharacter.item);
 
+            CameraAction.instance.ReadyUseItem(currentCharacter);
+
             PlayerSummonPanel.SetActive(false);
             PlayerSkillPanel.SetActive(false);
             PlayerItemPanel.SetActive(true);

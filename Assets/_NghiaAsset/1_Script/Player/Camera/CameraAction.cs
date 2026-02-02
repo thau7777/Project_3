@@ -8,11 +8,20 @@ namespace Turnbase
     {
         public static CameraAction instance { get; private set; }
 
+        [Header("Cài đặt Camera")]
+        [SerializeField] private Camera cam; 
+        public float smoothSpeed = 5f;
+
         [Header("Chế độ Target + Offset")]
         public Transform targetPoint;
         public Vector3 offsetPosition;
         public Vector3 offsetRotation;
-        public float smoothSpeed = 5f;
+
+
+        [Header("Cấu hình FOV")]
+        public float normalFOV = 60f;
+        public float zoomFOV = 80f;
+        public float fovSmoothSpeed = 30f;
 
         [Header("Điểm Neo Cố Định")]
         [SerializeField] private Transform CameraTargetAll;
@@ -30,6 +39,8 @@ namespace Turnbase
         {
             if (instance == null) instance = this;
             else Destroy(gameObject);
+
+            if (cam == null) cam = GetComponent<Camera>();
         }
 
         private void LookAtAnchorTransform(Transform anchor, bool teleportImmediately = false)
@@ -112,6 +123,13 @@ namespace Turnbase
             SetTargetAndOffset(character, pos, rot);
         }
 
+        public void ReadyUseItem(Character character)
+        {
+            Vector3 pos = new Vector3(-0.1f, 0f, -0.77f);
+            Vector3 rot = new Vector3(0f, 20f, 0f);
+            SetTargetAndOffset(character, pos, rot);
+        }
+
         public void NormalCamera(Character character)
         {
             Vector3 pos = new Vector3(0f, 0f, 0f);
@@ -143,21 +161,24 @@ namespace Turnbase
                 desiredPos = targetPoint.position + offsetPosition;
                 desiredRot = targetPoint.rotation * Quaternion.Euler(offsetRotation);
             }
-            else
-            {
-                return;
-            }
+            else return;
+
+            float distance = Vector3.Distance(transform.position, desiredPos);
+            float targetFOV = (distance > 0.1f && !shouldTeleport) ? zoomFOV : normalFOV;
 
             if (shouldTeleport)
             {
                 transform.position = desiredPos;
                 transform.rotation = desiredRot;
+                cam.fieldOfView = normalFOV;
                 shouldTeleport = false;
             }
             else
             {
                 transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * smoothSpeed);
                 transform.rotation = Quaternion.Slerp(transform.rotation, desiredRot, Time.deltaTime * smoothSpeed);
+
+                cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFOV, Time.deltaTime * fovSmoothSpeed);
             }
         }
     }
