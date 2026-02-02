@@ -44,41 +44,46 @@ namespace Turnbase
 
                 if (target.isAttackBlocked)
                 {
-                    if (!isLastAttack)
+                    if (isLastAttack)
+                    {
+                        if (target.isParrySuccessful)
+                        {
+                            int counterDamage = target.stats.physicalAttack + target.stats.magicAttack;
+                            user.TakeDamage(target, counterDamage, ElementType.Normal, true);
+
+                            if (user == null || !user.isAlive)
+                            {
+                                Debug.Log($"<color=red>[FIX]</color> {user?.name} đã chết do phản đòn. Kết thúc lượt ngay.");
+                                battleManager.isProcessingTurn = false;
+                                if (battleManager.turnHandler != null)
+                                    battleManager.turnHandler.isProcessingTurn = false;
+
+                                battleManager.activeCharacter = null;
+                                battleManager.CheckWaveCondition();
+                                yield break;
+                            }
+
+                            if (user.stateMachine != null)
+                            {
+                                user.stateMachine.SwitchState(new InterruptedState(user.stateMachine));
+                            }
+                            yield return new WaitForSeconds(0.8f);
+                        }
+                        else
+                        {
+                            Debug.Log($"<color=green>[EVADE]</color> {target.name} đã né đòn, {user.name} không bị phản đòn.");
+                            user.animator.Play("Idle");
+                            yield return new WaitForSeconds(0.3f);
+                        }
+
+                        break; 
+                    }
+                    else 
                     {
                         user.animator.Play("Hit", 0, 0f);
                         yield return new WaitForSeconds(0.6f);
                         user.animator.Play("Idle");
                         yield return new WaitForSeconds(0.1f);
-                    }
-                    else
-                    {
-                        int counterDamage = target.stats.physicalAttack + target.stats.magicAttack;
-
-                        user.TakeDamage(target, counterDamage, ElementType.Normal, true);
-
-                        if (user == null || !user.isAlive)
-                        {
-                            Debug.Log($"<color=red>[FIX]</color> {user?.name} đã chết do phản đòn. Kết thúc lượt ngay.");
-
-                            battleManager.isProcessingTurn = false;
-                            if (battleManager.turnHandler != null)
-                                battleManager.turnHandler.isProcessingTurn = false;
-
-                            battleManager.activeCharacter = null;
-
-                            battleManager.CheckWaveCondition();
-
-                            yield break;
-                        }
-
-                        if (user.stateMachine != null)
-                        {
-                            user.stateMachine.SwitchState(new InterruptedState(user.stateMachine));
-                        }
-
-                        yield return new WaitForSeconds(0.8f);
-                        break;
                     }
                 }
                 else

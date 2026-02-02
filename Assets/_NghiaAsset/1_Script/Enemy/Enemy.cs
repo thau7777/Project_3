@@ -56,27 +56,33 @@ namespace Turnbase
             }
         }
 
-        public void Animation_TriggerEvent(float duration)
+        public void Animation_TriggerEvent()
         {
             if (telegraphManager != null)
             {
-                telegraphManager.Play(duration);
-                Debug.LogWarning("Telegraph effect played.");  
+                telegraphManager.Play();
             }
 
             if (battleManager != null && target != null && !target.isAttackBlocked)
             {
-                battleManager.TriggerEvadeOnly(duration, target, this);
-                battleManager.TriggerParryOnly(duration, target, this);
+                battleManager.TriggerEvadeOnly(target, this);
+                battleManager.TriggerParryOnly(target, this);
             }
         }
 
         public void Animation_ExecuteParryResult()
         {
+            if (battleManager != null)
+            {
+                if (battleManager.evadeUI != null) battleManager.evadeUI.gameObject.SetActive(false);
+                if (battleManager.parryUI != null) battleManager.parryUI.gameObject.SetActive(false);
+            }
+
+            if (telegraphManager != null) telegraphManager.Stop();
+
             if (target != null && target.isAttackBlocked && target.isParrySuccessful)
             {
                 Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn nhịp này.");
-
                 StartCoroutine(DelayedCameraShake(0.1f));
             }
         }
