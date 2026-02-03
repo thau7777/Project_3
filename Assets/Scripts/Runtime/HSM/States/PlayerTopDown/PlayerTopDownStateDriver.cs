@@ -31,6 +31,10 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
     [SerializeField, Required]
     [TabGroup("References")]
+    private CharacterControllerLayerIgnoreController _layerIgnoreController;
+
+    [SerializeField, Required]
+    [TabGroup("References")]
     private Animator _animator;
      
     [SerializeField, Required]
@@ -67,6 +71,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
     bool _inIsInAttackAnim
         => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
+
+    [field: SerializeField] public bool IsParrying { get; set; } = false;
     #endregion
 
     #region SummonerStuffs
@@ -83,6 +89,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             Instantiate(_minionManagerPrefab);
 
         _controller = GetComponent<CharacterController>();
+        _layerIgnoreController = GetComponent<CharacterControllerLayerIgnoreController>();
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
@@ -176,7 +183,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
     {
 
-        if (_isInSpecialMoveAnim || _context.IsInSpecialMove || 
+        if (_context.IsHurting ||
+            _isInSpecialMoveAnim || _context.IsInSpecialMove || 
             _context.CastingSkill != -1 && _context.CastingSkill != skillIndex) return;
 
         if (isPressed)
@@ -378,7 +386,6 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _context.IsAiming = false;
         _context.CastingSkill = -1;
         _context.IsDashing = false;
-        //_executor.ClearSkillData();
     }
     public void OnAttackDone()
     {
@@ -403,6 +410,25 @@ public class PlayerTopDownStateDriver : MonoBehaviour
             return;
         _locomotionSet.ResetAttackAnimCycle();
     }
+    public void OnSpecialMoveAnimExit()
+    {
+        _context.IsInSpecialMove = false;
+        _context.IsAiming = false;
+        _context.CastingSkill = -1;
+        _context.IsDashing = false;
+        _layerIgnoreController.ResetLayerIgnore();
+        IsParrying = false;
+        _executor.ClearSkillData();
+    }
+
+    public void OnParryTrigger()
+    {
+        IsParrying = true;
+    }
+    public void OnParryEnd()
+    {
+        IsParrying = false;
+    }
     #endregion
 
     #region Outside Calls
@@ -412,6 +438,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
         _context.KnockBackDirection = knockBackDirection;
         _context.KnockbackForce = knockBackForce;
+
     }
     #endregion
 }

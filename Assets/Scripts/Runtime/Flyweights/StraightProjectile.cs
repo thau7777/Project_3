@@ -101,8 +101,13 @@ public class StraightProjectile : Flyweight
         var impactVFX = projectileImpactFlyweight as OneShotVFX;
         OneShotVFXSettings impactVFXSettings = impactVFX.settings as OneShotVFXSettings;
 
-        if(impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
+        if(impactVFX.TryGetComponent<HitBoxHandler>(out var hitBox))
         {
+            hitBox.Parryable = false;
+        }
+        if (impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
+        {
+            damageDealer.Origin = this.transform;
             damageDealer.Damage = Damage;
         }
 

@@ -44,6 +44,10 @@ public class EnemyTopdownAttack : State
         {
             return ((EnemyTopdownRoot)Parent).Stunned;
         }
+        if (ctx.IsHurting)
+        {
+            return ((EnemyTopdownRoot)Parent).Hurt;
+        }
         if (!ctx.IsAttacking)
         {
             if (ctx.EnemyType == EnemyTopdownMovementType.Range)
@@ -67,21 +71,10 @@ public class EnemyTopdownAttack : State
             }
             else
             {
-                if (ctx.IsTargetInMaxAttackRange())
-                {
-                    if (ctx.CheckAndPickRandomAttack())
-                    {
-                        if (ctx.CurrentEnemyAttackData.needCharge)
-                            return ((EnemyTopdownRoot)Parent).Charge;
-                        return ((EnemyTopdownRoot)Parent).Attack;
-                    }
-                    if (ctx.DistanceToTarget < 1.5f)
-                        return ((EnemyTopdownRoot)Parent).Idle;
-                    return ((EnemyTopdownRoot)Parent).Move;
-                }
+                if (ctx.DistanceToTarget < 1.5f)
+                    return ((EnemyTopdownRoot)Parent).Idle;
+
                 return ((EnemyTopdownRoot)Parent).Move;
-
-
 
             }
         }

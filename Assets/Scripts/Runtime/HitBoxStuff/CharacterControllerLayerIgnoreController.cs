@@ -6,7 +6,7 @@ public class CharacterControllerLayerIgnoreController : MonoBehaviour
 
     [Tooltip("Layers that this CharacterController should ignore collisions with")]
     [SerializeField]
-    private LayerMask _layersToIgnore;
+    private LayerMask _ogLayersToIgnore;
 
     private void Awake()
     {
@@ -35,6 +35,6 @@ public class CharacterControllerLayerIgnoreController : MonoBehaviour
     }
     public void ResetLayerIgnore()
     {
-        ApplyLayerIgnore(_layersToIgnore);
+        ApplyLayerIgnore(_ogLayersToIgnore);
     }
 }
