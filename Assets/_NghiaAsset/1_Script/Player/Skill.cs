@@ -62,6 +62,8 @@ public class Skill : ScriptableObject
     [Header("Multi-Hit")]
     public int numberOfHits = 1;
     public float delayBetweenHits = 0.1f;
+    [ShowIfEnumValue("skillType", SkillType.MeleeAttack)]
+    public int attackCount = 1;
 
     [Header("Sound Effects")]
     public SkillSound castSound;
@@ -134,6 +136,8 @@ public enum StatType
     MaxHP,
     MagicalAttack,
     MagicalDefense,
+    IgnoreDefense,
+
 
 }
 

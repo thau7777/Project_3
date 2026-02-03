@@ -38,25 +38,25 @@ namespace MyRule
         public Skill sigilEffect;
 
         [TabGroup("Stats")]
-        [LabelText("phys", "grey")]
+        [LabelText("phys", LabelTextAttribute.LabelColor.gray)]
         public int phys;
         [TabGroup("Stats")]
-        [LabelText("mag", "cyan")]
+        [LabelText("mag", LabelTextAttribute.LabelColor.cyan)]
         public int mag;
         [TabGroup("Stats")]
-        [LabelText("health", "green")]
+        [LabelText("health", LabelTextAttribute.LabelColor.green)]
         public int health;
         [TabGroup("Stats")]
-        [LabelText("def", "yellow")]
+        [LabelText("def", LabelTextAttribute.LabelColor.yellow)]
         public int def;
         [TabGroup("Stats")]
-        [LabelText("resRate", "orange")]
+        [LabelText("resRate", LabelTextAttribute.LabelColor.orange)]
         public int resRate;
         [TabGroup("Stats")]
-        [LabelText("attackSpeed", "blue")]
+        [LabelText("attackSpeed", LabelTextAttribute.LabelColor.blue)]
         public float attackSpeed;
         [TabGroup("Stats")]
-        [LabelText("critChance", "red")]
+        [LabelText("critChance", LabelTextAttribute.LabelColor.red)]
         public float critChance;
         [TabGroup("Stats")]
         [Range(1.5f, 2.3f)]

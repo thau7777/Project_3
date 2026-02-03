@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
+[CanEditMultipleObjects]
 public abstract class LokiEditorBase : Editor
 {
     private struct GroupKey : IEquatable<GroupKey>
@@ -24,6 +25,7 @@ public abstract class LokiEditorBase : Editor
         public bool Equals(GroupKey other) => Foldout == other.Foldout && Tab == other.Tab;
         public override int GetHashCode() => Foldout.GetHashCode() ^ Tab.GetHashCode();
     }
+
 
     public override void OnInspectorGUI()
     {
@@ -187,15 +189,15 @@ public abstract class LokiEditorBase : Editor
 
     private string GetFoldoutStateKey(UnityEngine.Object target, string foldoutName)
     {
-        // Use a combination of script type and foldout name for consistency
-        return $"LokiEditor_Foldout_{target.GetType().Name}_{foldoutName}";
+        return $"LokiEditor_Foldout_{target.GetInstanceID()}_{foldoutName}";
     }
+
 
     private string GetTabStateKey(UnityEngine.Object target, string pathPrefix)
     {
-        // Use script type and path prefix for consistency
-        return $"LokiEditor_Tab_{target.GetType().Name}_{pathPrefix}";
+        return $"LokiEditor_Tab_{target.GetInstanceID()}_{pathPrefix}";
     }
+
 
     private bool ShouldShowField(FieldInfo field, object targetObj)
     {
@@ -284,28 +286,7 @@ public abstract class LokiEditorBase : Editor
             labelStyle.fontStyle = labelAttr.FontStyle;
         }
 
-        if (field.GetCustomAttribute<MinMaxSliderAttribute>() is MinMaxSliderAttribute mms
-            && prop.propertyType == SerializedPropertyType.Vector2)
-        {
-            Vector2 v = prop.vector2Value;
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(labelContent);
-            v.x = EditorGUILayout.FloatField(v.x, GUILayout.Width(50));
-            EditorGUILayout.MinMaxSlider(ref v.x, ref v.y, mms.Min, mms.Max);
-            v.y = EditorGUILayout.FloatField(v.y, GUILayout.Width(50));
-            EditorGUILayout.EndHorizontal();
-
-            if (mms.EnforceMinMaxDistance > 0f && (v.y - v.x) < mms.EnforceMinMaxDistance)
-                v.y = v.x + mms.EnforceMinMaxDistance;
-
-            v.x = Mathf.Clamp(v.x, mms.Min, mms.Max);
-            v.y = Mathf.Clamp(v.y, mms.Min, mms.Max);
-            prop.vector2Value = v;
-        }
-        else
-        {
-            EditorGUILayout.PropertyField(prop, labelContent, true);
-        }
+        EditorGUILayout.PropertyField(prop, labelContent, true);
 
         if (hasCustomColor)
             GUI.color = originalColor;

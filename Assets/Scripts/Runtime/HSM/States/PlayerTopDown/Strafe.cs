@@ -36,7 +36,7 @@ public class Strafe : State
         }
 
         ctx.RotateDir = lastLookDir;
-        if (ctx.NeedHoldStill)
+        if (ctx.NeedHoldStillWhileExecuteWhenAiming)
         {
             ctx.TargetMoveSpeed = 0;
             ctx.MoveDir = Vector3.zero;
@@ -71,6 +71,11 @@ public class Strafe : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsHurting)
+        {
+            ctx.IsAiming = false;
+            return ((Grounded)Parent).Hurt;
+        }
         if (!ctx.IsAiming)
         {
             if (ctx.MoveInput != Vector2.zero)

@@ -12,7 +12,7 @@ public class AttackEventBehaviour : StateMachineBehaviour
     {
         _hasTriggered = false;
         _stateDriver = animator.GetComponent<PlayerTopDownStateDriver>();
-        _stateDriver.OnAttackAnimStart();
+        _stateDriver.ApplyRotation();
         
     }
 
@@ -25,6 +25,8 @@ public class AttackEventBehaviour : StateMachineBehaviour
             _hasTriggered = true;
             if(stateInfo.IsTag("SpecialMove"))
                 _stateDriver.OnSkillDone();
+            else if(stateInfo.IsTag("Hurt"))
+                _stateDriver.OnHurtDone();
             else
                 _stateDriver.OnAttackDone(); // or whatever function you want
         }

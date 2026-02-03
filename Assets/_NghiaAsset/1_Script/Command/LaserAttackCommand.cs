@@ -31,18 +31,25 @@ namespace Turnbase
 
         private IEnumerator PerformLaserAttack()
         {
-            int finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            int baseDamagePerHit = totalDamage / hits;
+            int damageRemainder = totalDamage % hits;
+            float delayBetweenHits = skill.delayBetweenHits;
+
             damageApplied = false;
-            bool effectTriggered = false; 
+            bool effectTriggered = false;
 
             Action hitAction = () =>
             {
                 if (!damageApplied)
                 {
                     ApplyStatusEffectsAndStacks(user, target, skill);
-                    target.TakeDamage(finalDamage, skill.elementType);
+
+                    target.TakeDamage(baseDamagePerHit, skill.elementType);
                     EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.2f, 0.4f));
                     SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
+
                     damageApplied = true;
                 }
             };
@@ -89,6 +96,20 @@ namespace Turnbase
 
             if (!damageApplied) hitAction.Invoke();
 
+            for (int i = 1; i < hits; i++)
+            {
+                if (!target.isAlive || target.isAttackBlocked)
+                    break;
+
+                yield return new WaitForSeconds(delayBetweenHits);
+
+                int currentHitDamage = baseDamagePerHit + (i == hits - 1 ? damageRemainder : 0);
+                target.TakeDamage(currentHitDamage, skill.elementType);
+
+                EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.1f, 0.2f));
+                SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
+            }
+
             yield return new WaitForSeconds(skill.laserVFXDuration);
         }
 
@@ -102,9 +123,11 @@ namespace Turnbase
 
             while (elapsed < duration && laser != null)
             {
-                lr.SetPosition(0, start.position);
-                lr.SetPosition(1, end.position + Vector3.up * 1f);
-
+                if (start != null && end != null)
+                {
+                    lr.SetPosition(0, start.position);
+                    lr.SetPosition(1, end.position + Vector3.up * 1f);
+                }
                 elapsed += Time.deltaTime;
                 yield return null;
             }

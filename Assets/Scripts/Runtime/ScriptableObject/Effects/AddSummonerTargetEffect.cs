@@ -6,7 +6,8 @@ public class AddSummonerTargetEffect : Effect
     public override void OnApply(GameObject target)
     {
         base.OnApply(target);
-        GetVfxFlyweightOnTarget(target).transform.position = target.transform.position.Add(y: 1);
+        if(GetVfxFlyweightOnTarget(target) != null)
+            GetVfxFlyweightOnTarget(target).transform.position = target.transform.position.Add(y: 1);
         MinionsManager.Instance.AddTargetedEnemies(target);
     }
 

@@ -120,6 +120,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Shift"",
+                    ""type"": ""Button"",
+                    ""id"": ""f07a66c5-54a6-4088-ba9d-9c2b2bec5599"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SpaceBar"",
                     ""type"": ""Button"",
                     ""id"": ""e1b11398-1a81-4e00-9fd9-0de71ddab5c3"",
@@ -129,9 +138,36 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Button Q"",
+                    ""name"": ""Q"",
                     ""type"": ""Button"",
                     ""id"": ""def1ea3f-85d1-4869-9bf8-ca5540cced4c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""E"",
+                    ""type"": ""Button"",
+                    ""id"": ""4abc420d-1392-47bc-a976-7a4a7e889f2f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""R"",
+                    ""type"": ""Button"",
+                    ""id"": ""785c3a74-96c5-48d2-87d5-51c12d5da3d6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""T"",
+                    ""type"": ""Button"",
+                    ""id"": ""17577850-ef1d-4a96-88d9-e56c67c45f75"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -234,7 +270,51 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Button Q"",
+                    ""action"": ""Q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79e4e293-e8ed-448a-ad77-a6c66c7d6517"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""E"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2b65319-3878-4627-8a11-1caa0d49962c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""R"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc47e1da-e9c7-42bc-a39c-37ea010d37f0"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""T"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""280f985f-35f5-49f8-9b5f-9e4f94d64d1b"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -245,9 +325,90 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""fcc086d8-b5f6-4897-8fa5-88e4fd0c465a"",
             ""actions"": [
                 {
+                    ""name"": ""A"",
+                    ""type"": ""Button"",
+                    ""id"": ""54d35e2c-5775-42dc-9888-ac9e229508f8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""D"",
+                    ""type"": ""Button"",
+                    ""id"": ""504807e2-33c4-43fa-880a-fa2e3131dc26"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Test"",
                     ""type"": ""Button"",
-                    ""id"": ""36322a63-f7d4-4a16-b259-d018a4001816"",
+                    ""id"": ""37c619ca-f2b2-442f-978c-69731d8fce79"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Q"",
+                    ""type"": ""Button"",
+                    ""id"": ""86817ba9-a3e9-4802-a1eb-599f09b85b64"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e83fc7f-3460-4ea1-b979-38af44ff8fc6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""E"",
+                    ""type"": ""Button"",
+                    ""id"": ""85c4587d-2599-47ae-acba-3a6e98765586"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""R"",
+                    ""type"": ""Button"",
+                    ""id"": ""284ade61-0234-4918-821e-973e87963e55"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F"",
+                    ""type"": ""Button"",
+                    ""id"": ""02136b7d-9820-405e-98ce-b5a2f3c6eaa6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""S"",
+                    ""type"": ""Button"",
+                    ""id"": ""cbec01df-21d3-4c4b-b41d-97f2eb861fbc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""W"",
+                    ""type"": ""Button"",
+                    ""id"": ""58596a46-0650-49e1-aa4d-efeca561f71e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -257,12 +418,111 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""2a575830-dabf-4d97-86f3-16d513bf6ab9"",
+                    ""id"": ""f5d50aec-210f-475a-a5d7-ad98fb8f7452"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""A"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97fe4044-1131-492f-8fd7-eee5b6edfe29"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""D"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8141ed45-0cbe-4262-993e-39808fe398c5"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f60ecb80-b764-4a87-922e-ae0b8cf01b28"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d82d045c-70e3-447c-af07-c98e391c93eb"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Space"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f509b86-974d-4e97-a317-cfd042eee90c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""E"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9dacc360-3017-4a1b-bb9c-18c5c1b1aa9c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""R"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76817b38-bf36-4725-a0df-2243452719ee"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""F"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1b85c35-794d-42a4-96e3-7348580271b4"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""S"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1a723a8d-adc7-4e52-b3ac-c776c8494609"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""W"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1157,11 +1417,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_LeftClick = m_PlayerTopDown.FindAction("LeftClick", throwIfNotFound: true);
         m_PlayerTopDown_RightClick = m_PlayerTopDown.FindAction("RightClick", throwIfNotFound: true);
+        m_PlayerTopDown_Shift = m_PlayerTopDown.FindAction("Shift", throwIfNotFound: true);
         m_PlayerTopDown_SpaceBar = m_PlayerTopDown.FindAction("SpaceBar", throwIfNotFound: true);
-        m_PlayerTopDown_ButtonQ = m_PlayerTopDown.FindAction("Button Q", throwIfNotFound: true);
+        m_PlayerTopDown_Q = m_PlayerTopDown.FindAction("Q", throwIfNotFound: true);
+        m_PlayerTopDown_E = m_PlayerTopDown.FindAction("E", throwIfNotFound: true);
+        m_PlayerTopDown_R = m_PlayerTopDown.FindAction("R", throwIfNotFound: true);
+        m_PlayerTopDown_T = m_PlayerTopDown.FindAction("T", throwIfNotFound: true);
         // PlayerTurnBased
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
+        m_PlayerTurnBased_A = m_PlayerTurnBased.FindAction("A", throwIfNotFound: true);
+        m_PlayerTurnBased_D = m_PlayerTurnBased.FindAction("D", throwIfNotFound: true);
         m_PlayerTurnBased_Test = m_PlayerTurnBased.FindAction("Test", throwIfNotFound: true);
+        m_PlayerTurnBased_Q = m_PlayerTurnBased.FindAction("Q", throwIfNotFound: true);
+        m_PlayerTurnBased_Space = m_PlayerTurnBased.FindAction("Space", throwIfNotFound: true);
+        m_PlayerTurnBased_E = m_PlayerTurnBased.FindAction("E", throwIfNotFound: true);
+        m_PlayerTurnBased_R = m_PlayerTurnBased.FindAction("R", throwIfNotFound: true);
+        m_PlayerTurnBased_F = m_PlayerTurnBased.FindAction("F", throwIfNotFound: true);
+        m_PlayerTurnBased_S = m_PlayerTurnBased.FindAction("S", throwIfNotFound: true);
+        m_PlayerTurnBased_W = m_PlayerTurnBased.FindAction("W", throwIfNotFound: true);
         // PlayerFPS
         m_PlayerFPS = asset.FindActionMap("PlayerFPS", throwIfNotFound: true);
         // PlayerTowerDefense
@@ -1280,8 +1553,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_LeftClick;
     private readonly InputAction m_PlayerTopDown_RightClick;
+    private readonly InputAction m_PlayerTopDown_Shift;
     private readonly InputAction m_PlayerTopDown_SpaceBar;
-    private readonly InputAction m_PlayerTopDown_ButtonQ;
+    private readonly InputAction m_PlayerTopDown_Q;
+    private readonly InputAction m_PlayerTopDown_E;
+    private readonly InputAction m_PlayerTopDown_R;
+    private readonly InputAction m_PlayerTopDown_T;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTopDown".
     /// </summary>
@@ -1306,13 +1583,29 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Shift".
+        /// </summary>
+        public InputAction @Shift => m_Wrapper.m_PlayerTopDown_Shift;
+        /// <summary>
         /// Provides access to the underlying input action "PlayerTopDown/SpaceBar".
         /// </summary>
         public InputAction @SpaceBar => m_Wrapper.m_PlayerTopDown_SpaceBar;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/ButtonQ".
+        /// Provides access to the underlying input action "PlayerTopDown/Q".
         /// </summary>
-        public InputAction @ButtonQ => m_Wrapper.m_PlayerTopDown_ButtonQ;
+        public InputAction @Q => m_Wrapper.m_PlayerTopDown_Q;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/E".
+        /// </summary>
+        public InputAction @E => m_Wrapper.m_PlayerTopDown_E;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/R".
+        /// </summary>
+        public InputAction @R => m_Wrapper.m_PlayerTopDown_R;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/T".
+        /// </summary>
+        public InputAction @T => m_Wrapper.m_PlayerTopDown_T;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1348,12 +1641,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
+            @Shift.started += instance.OnShift;
+            @Shift.performed += instance.OnShift;
+            @Shift.canceled += instance.OnShift;
             @SpaceBar.started += instance.OnSpaceBar;
             @SpaceBar.performed += instance.OnSpaceBar;
             @SpaceBar.canceled += instance.OnSpaceBar;
-            @ButtonQ.started += instance.OnButtonQ;
-            @ButtonQ.performed += instance.OnButtonQ;
-            @ButtonQ.canceled += instance.OnButtonQ;
+            @Q.started += instance.OnQ;
+            @Q.performed += instance.OnQ;
+            @Q.canceled += instance.OnQ;
+            @E.started += instance.OnE;
+            @E.performed += instance.OnE;
+            @E.canceled += instance.OnE;
+            @R.started += instance.OnR;
+            @R.performed += instance.OnR;
+            @R.canceled += instance.OnR;
+            @T.started += instance.OnT;
+            @T.performed += instance.OnT;
+            @T.canceled += instance.OnT;
         }
 
         /// <summary>
@@ -1374,12 +1679,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
+            @Shift.started -= instance.OnShift;
+            @Shift.performed -= instance.OnShift;
+            @Shift.canceled -= instance.OnShift;
             @SpaceBar.started -= instance.OnSpaceBar;
             @SpaceBar.performed -= instance.OnSpaceBar;
             @SpaceBar.canceled -= instance.OnSpaceBar;
-            @ButtonQ.started -= instance.OnButtonQ;
-            @ButtonQ.performed -= instance.OnButtonQ;
-            @ButtonQ.canceled -= instance.OnButtonQ;
+            @Q.started -= instance.OnQ;
+            @Q.performed -= instance.OnQ;
+            @Q.canceled -= instance.OnQ;
+            @E.started -= instance.OnE;
+            @E.performed -= instance.OnE;
+            @E.canceled -= instance.OnE;
+            @R.started -= instance.OnR;
+            @R.performed -= instance.OnR;
+            @R.canceled -= instance.OnR;
+            @T.started -= instance.OnT;
+            @T.performed -= instance.OnT;
+            @T.canceled -= instance.OnT;
         }
 
         /// <summary>
@@ -1417,7 +1734,16 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // PlayerTurnBased
     private readonly InputActionMap m_PlayerTurnBased;
     private List<IPlayerTurnBasedActions> m_PlayerTurnBasedActionsCallbackInterfaces = new List<IPlayerTurnBasedActions>();
+    private readonly InputAction m_PlayerTurnBased_A;
+    private readonly InputAction m_PlayerTurnBased_D;
     private readonly InputAction m_PlayerTurnBased_Test;
+    private readonly InputAction m_PlayerTurnBased_Q;
+    private readonly InputAction m_PlayerTurnBased_Space;
+    private readonly InputAction m_PlayerTurnBased_E;
+    private readonly InputAction m_PlayerTurnBased_R;
+    private readonly InputAction m_PlayerTurnBased_F;
+    private readonly InputAction m_PlayerTurnBased_S;
+    private readonly InputAction m_PlayerTurnBased_W;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTurnBased".
     /// </summary>
@@ -1430,9 +1756,45 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public PlayerTurnBasedActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/A".
+        /// </summary>
+        public InputAction @A => m_Wrapper.m_PlayerTurnBased_A;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/D".
+        /// </summary>
+        public InputAction @D => m_Wrapper.m_PlayerTurnBased_D;
+        /// <summary>
         /// Provides access to the underlying input action "PlayerTurnBased/Test".
         /// </summary>
         public InputAction @Test => m_Wrapper.m_PlayerTurnBased_Test;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/Q".
+        /// </summary>
+        public InputAction @Q => m_Wrapper.m_PlayerTurnBased_Q;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/Space".
+        /// </summary>
+        public InputAction @Space => m_Wrapper.m_PlayerTurnBased_Space;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/E".
+        /// </summary>
+        public InputAction @E => m_Wrapper.m_PlayerTurnBased_E;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/R".
+        /// </summary>
+        public InputAction @R => m_Wrapper.m_PlayerTurnBased_R;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/F".
+        /// </summary>
+        public InputAction @F => m_Wrapper.m_PlayerTurnBased_F;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/S".
+        /// </summary>
+        public InputAction @S => m_Wrapper.m_PlayerTurnBased_S;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTurnBased/W".
+        /// </summary>
+        public InputAction @W => m_Wrapper.m_PlayerTurnBased_W;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1459,9 +1821,36 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerTurnBasedActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerTurnBasedActionsCallbackInterfaces.Add(instance);
+            @A.started += instance.OnA;
+            @A.performed += instance.OnA;
+            @A.canceled += instance.OnA;
+            @D.started += instance.OnD;
+            @D.performed += instance.OnD;
+            @D.canceled += instance.OnD;
             @Test.started += instance.OnTest;
             @Test.performed += instance.OnTest;
             @Test.canceled += instance.OnTest;
+            @Q.started += instance.OnQ;
+            @Q.performed += instance.OnQ;
+            @Q.canceled += instance.OnQ;
+            @Space.started += instance.OnSpace;
+            @Space.performed += instance.OnSpace;
+            @Space.canceled += instance.OnSpace;
+            @E.started += instance.OnE;
+            @E.performed += instance.OnE;
+            @E.canceled += instance.OnE;
+            @R.started += instance.OnR;
+            @R.performed += instance.OnR;
+            @R.canceled += instance.OnR;
+            @F.started += instance.OnF;
+            @F.performed += instance.OnF;
+            @F.canceled += instance.OnF;
+            @S.started += instance.OnS;
+            @S.performed += instance.OnS;
+            @S.canceled += instance.OnS;
+            @W.started += instance.OnW;
+            @W.performed += instance.OnW;
+            @W.canceled += instance.OnW;
         }
 
         /// <summary>
@@ -1473,9 +1862,36 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="PlayerTurnBasedActions" />
         private void UnregisterCallbacks(IPlayerTurnBasedActions instance)
         {
+            @A.started -= instance.OnA;
+            @A.performed -= instance.OnA;
+            @A.canceled -= instance.OnA;
+            @D.started -= instance.OnD;
+            @D.performed -= instance.OnD;
+            @D.canceled -= instance.OnD;
             @Test.started -= instance.OnTest;
             @Test.performed -= instance.OnTest;
             @Test.canceled -= instance.OnTest;
+            @Q.started -= instance.OnQ;
+            @Q.performed -= instance.OnQ;
+            @Q.canceled -= instance.OnQ;
+            @Space.started -= instance.OnSpace;
+            @Space.performed -= instance.OnSpace;
+            @Space.canceled -= instance.OnSpace;
+            @E.started -= instance.OnE;
+            @E.performed -= instance.OnE;
+            @E.canceled -= instance.OnE;
+            @R.started -= instance.OnR;
+            @R.performed -= instance.OnR;
+            @R.canceled -= instance.OnR;
+            @F.started -= instance.OnF;
+            @F.performed -= instance.OnF;
+            @F.canceled -= instance.OnF;
+            @S.started -= instance.OnS;
+            @S.performed -= instance.OnS;
+            @S.canceled -= instance.OnS;
+            @W.started -= instance.OnW;
+            @W.performed -= instance.OnW;
+            @W.canceled -= instance.OnW;
         }
 
         /// <summary>
@@ -2224,6 +2640,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "Shift" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShift(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "SpaceBar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -2231,12 +2654,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpaceBar(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Button Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButtonQ(InputAction.CallbackContext context);
+        void OnQ(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "E" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnE(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "R" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnR(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "T" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnT(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTurnBased" which allows adding and removing callbacks.
@@ -2246,12 +2690,75 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface IPlayerTurnBasedActions
     {
         /// <summary>
+        /// Method invoked when associated input action "A" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnA(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "D" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnD(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "Test" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTest(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnQ(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Space" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpace(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "E" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnE(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "R" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnR(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "F" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnF(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "S" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnS(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "W" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnW(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerFPS" which allows adding and removing callbacks.

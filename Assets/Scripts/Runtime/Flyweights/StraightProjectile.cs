@@ -34,7 +34,7 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(Vector3 direction, float speed, float range, float size,float damage)
+    public void InitializeProjectile(Vector3 direction, float speed, float range, float size,float damage,LayerMask dodgeLayers)
     {
 
         _direction = direction.normalized;
@@ -47,6 +47,8 @@ public class StraightProjectile : Flyweight
         transform.localScale = new Vector3(size, size, size);
 
         Damage = damage;
+
+        DodgeLayers = dodgeLayers;
     }
 
     private void FixedUpdate()
@@ -112,6 +114,7 @@ public class StraightProjectile : Flyweight
         if ((DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
             if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
+            print("StraightProjectile hit: " + other.gameObject.name);
             DespawnFlyweight();
         }
     }

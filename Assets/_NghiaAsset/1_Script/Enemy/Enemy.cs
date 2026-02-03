@@ -23,6 +23,9 @@ namespace Turnbase
         [Header("Break Status Settings")]
         public Skill.DebuffSettings BreakDebuffSettings;
 
+        [Header("Visual Effects")]
+        public TelegraphEffect telegraphManager;
+
         private EnemyAIController aiController;
 
         private void Awake() 
@@ -41,39 +44,40 @@ namespace Turnbase
                     currentSkillTypePool.Add(skillType, SkillResource.MAX_POOL);
                 }
             }
+            telegraphManager = GetComponentInChildren<TelegraphEffect>();
         }
 
-        public void Animation_CheckParryResult()
+        public void Animation_StartAnticipation()
         {
-            if (target != null && target.isAttackBlocked)
+            if (battleManager != null)
             {
-                if (target.isParrySuccessful)
-                {
-                    Debug.Log($"<color=orange>[PARRY HIT]</color> {gameObject.name} bị khựng!");
-
-                    this.isAttackBlocked = false;
-
-                    this.TakeDamage(target.stats.physicalAttack + target.stats.magicAttack , ElementType.Normal);
-
-                    this.isAttackBlocked = true;
-
-                    if (stateMachine != null)
-                        stateMachine.SwitchState(new InterruptedState(stateMachine));
-
-                    if (target.stateMachine != null)
-                        target.stateMachine.SwitchState(target.stateMachine.parryingState);
-
-                    StartCoroutine(DelayedCameraShake(0.3f));
-                }
-
+                battleManager.evadeUI.StartAnticipation();
+                battleManager.parryUI.StartAnticipation();
             }
         }
 
-        public void Animation_TriggerEvade(float duration)
+        public void Animation_TriggerEvent(float duration)
         {
-            if (battleManager != null && target != null)
+            if (telegraphManager != null)
+            {
+                telegraphManager.Play(duration);
+                Debug.LogWarning("Telegraph effect played.");  
+            }
+
+            if (battleManager != null && target != null && !target.isAttackBlocked)
             {
                 battleManager.TriggerEvadeOnly(duration, target, this);
+                battleManager.TriggerParryOnly(duration, target, this);
+            }
+        }
+
+        public void Animation_ExecuteParryResult()
+        {
+            if (target != null && target.isAttackBlocked && target.isParrySuccessful)
+            {
+                Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn nhịp này.");
+
+                StartCoroutine(DelayedCameraShake(0.1f));
             }
         }
 

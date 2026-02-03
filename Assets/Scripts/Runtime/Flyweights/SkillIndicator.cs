@@ -8,7 +8,7 @@ public abstract class SkillIndicator : Flyweight
     new SkillIndicatorSettings settings => (SkillIndicatorSettings)base.settings;
 
     [Header("Indicator Settings")]
-    [SerializeField] private float groundOffset = 0.01f;
+    [SerializeField] protected float groundOffset = 0.1f;
 
     [Header("Debug / Control")]
     public bool isMovementLocked = false; // <--- NEW: Stops all movement & rotation when true
@@ -23,6 +23,8 @@ public abstract class SkillIndicator : Flyweight
 
     private void OnEnable()
     {
+        if(_vfx == null)
+            _vfx = GetComponent<VisualEffect>();
         isMovementLocked = false;
 
         if (_vfx.HasFloat("ChargeAmount"))

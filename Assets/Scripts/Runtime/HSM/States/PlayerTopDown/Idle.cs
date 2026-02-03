@@ -22,6 +22,10 @@ public class Idle : State
     }
     protected override State GetTransition()
     {
+        if(ctx.IsHurting)
+        {
+            return ((Grounded)Parent).Hurt;
+        }
         if (ctx.IsAiming)
         {
             return ((Grounded)Parent).Strafe;

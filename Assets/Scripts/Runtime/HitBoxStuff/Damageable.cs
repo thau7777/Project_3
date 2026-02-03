@@ -16,7 +16,10 @@ public class Damageable : MonoBehaviour
     public bool hasShieldBreakingMechanic = false;
     public float MaxShieldHealth { get; private set; }
     public float ShieldHealth { get; private set; }
-    public float InvincibleDuration { get; set; } = 0.1f;
+
+
+    [SerializeField] private float _invincibleDuration = 0.1f;
+    public float InvincibleDuration => _invincibleDuration;
     private float _invincibleElapsedTime = 0;
 
     private Coroutine _stunCoroutine;
@@ -25,9 +28,9 @@ public class Damageable : MonoBehaviour
     public UnityEvent OnDeath;
     public UnityEvent<float> OnShieldBreak;
 
-    public StatusBarsUIController statusBarsUIController;
-    public GameObject HealthBarUI;
-    public GameObject ShieldBarUI;
+    public UnityEvent<float, float> OnHealthChanged;
+    public UnityEvent<float, float> OnShieldChanged;
+
 
     private void Awake()
     {
@@ -42,17 +45,15 @@ public class Damageable : MonoBehaviour
             MaxShieldHealth = MaxHealth / 2f;
             ShieldHealth = MaxShieldHealth;
         }
-        statusBarsUIController?.InitializeValue(CurrentHealth,MaxHealth,ShieldHealth, MaxShieldHealth);
-        if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
-        {
-            if (HealthBarUI != null)
-                HealthBarUI.SetActive(true);
-            if (hasShieldBreakingMechanic && ShieldBarUI != null)
-            {
-                ShieldBarUI.SetActive(true);
-            }
-        }
 
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
+    }
+    public void UpdateMaxHealth(float newMaxHealth)
+    {
+        MaxHealth = newMaxHealth;
+        CurrentHealth = Mathf.Min(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
     private void OnEnable()
     {
@@ -66,17 +67,6 @@ public class Damageable : MonoBehaviour
             _stunCoroutine = null;
         }
 
-        if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
-        {
-            if (HealthBarUI != null)
-            {
-                HealthBarUI.SetActive(false);
-            }
-            if (hasShieldBreakingMechanic && ShieldBarUI != null)
-            {
-                ShieldBarUI.SetActive(false);
-            }
-        }
     }
     private void Update()
     {
@@ -88,12 +78,8 @@ public class Damageable : MonoBehaviour
         if(other.TryGetComponent<OneShotVFX>(out var oneShotVfx))
         {
             OneShotVFXSettings vfxSettings = oneShotVfx.settings as OneShotVFXSettings;
-            if(vfxSettings.dodgeLayers.Contains(gameObject.layer)) return;
+            if(vfxSettings.defaultDodgeLayers.Contains(gameObject.layer)) return;
         }
-        //else if(other.TryGetComponent<ContinousVFX>(out var continousVFX))
-        //{
-
-        //}
         if (other.TryGetComponent<DamageDealer>(out var damageDealer))
         {
             Vector3 hitDirection = transform.position - other.transform.position;
@@ -104,22 +90,29 @@ public class Damageable : MonoBehaviour
             effectApplier.ApplyEffect(other, gameObject);
         }
     }
-    public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType)
+    public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType, OneShotVFXSettings hitVfx = null)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0) return;
         float finalDamage = damage;
+        if (hitVfx)
+        {
+            var obj = FlyweightFactory.Spawn(hitVfx) as OneShotVFX;
+            obj.FlyweightInitialize(transform.position.Add(y: 1));
+            obj.InitializeVFX(hitVfx.DefaultSize, hitVfx.DefaultLifeTime);
 
+        }
         if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
         {
             EnemyTopDownSettings enemySettings = enemy.settings as EnemyTopDownSettings;
             finalDamage = ElementalManager.Instance.CalculateDamage(damage, attackType, enemySettings.elementalType);
         }
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
-        statusBarsUIController?.UpdateHealth(CurrentHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
         if (hasShieldBreakingMechanic && ShieldHealth > 0)
         {
             ShieldHealth = Mathf.Max(ShieldHealth - finalDamage, 0);
-            statusBarsUIController?.UpdateShield(ShieldHealth); 
+            OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
             if (ShieldHealth == 0)
             {
                 OnShieldBreak?.Invoke(3);
@@ -151,13 +144,12 @@ public class Damageable : MonoBehaviour
     {
         yield return Helpers.GetWaitForSeconds(duration);
         ShieldHealth = MaxShieldHealth;
-        statusBarsUIController?.UpdateShield(ShieldHealth);
     }
 
     public void Heal(float amount)
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
-        statusBarsUIController?.UpdateHealth(CurrentHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
 
     public void ApplyIgnoreCollisionOnDeath(bool ignore)

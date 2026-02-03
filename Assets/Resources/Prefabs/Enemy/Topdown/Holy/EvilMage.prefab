@@ -308,11 +308,14 @@ MonoBehaviour:
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 1
     weight: 0
     minRange: 3
     maxRange: 10
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: f6a1c85f3dd9cca41af59a6b5c7b01bb, type: 2}
@@ -335,15 +338,18 @@ MonoBehaviour:
     indicatorLength: 2
   - spawnType: 1
     skillSpawnTransform: {fileID: 0}
-    positionOffset: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 0.1, z: 0}
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2816
     coolDown: 5
     weight: 0
     minRange: 5
     maxRange: 10
+    damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 51b6852c3df8e4f45b9f113e163be915, type: 2}
@@ -392,6 +398,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.1
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -449,9 +456,12 @@ MonoBehaviour:
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1707157717327864139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,6 +691,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1267676179457700709
 GameObject:
@@ -2005,6 +2016,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0

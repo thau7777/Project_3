@@ -171,7 +171,7 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         if (_context.CurrentEnemyAttackData.skillEffect == null) return;
         Transform spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform;
-        if (_skillIndicator && _skillIndicator.isMovementLocked)
+        if (_skillIndicator)
         {
             spawnTransform = _skillIndicator.transform;
             _skillIndicator = null;
@@ -187,10 +187,12 @@ public class EnemyTopdownStateDriver : Flyweight
         {
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
             {
+                hitBoxHandler.Origin = transform.root.gameObject;
                 hitBoxHandler.DodgeLayers = _context.CurrentEnemyAttackData.dodgeLayers;
             }
             if(vfx.TryGetComponent<DamageDealer>(out var damageDealer))
             {
+                damageDealer.KnockbackForce = _context.CurrentEnemyAttackData.knockBackForce;
                 damageDealer.Damage = _context.CurrentEnemyAttackData.damage;
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
@@ -201,13 +203,13 @@ public class EnemyTopdownStateDriver : Flyweight
             
         else if (vfx is StraightProjectile)
         {
-            (vfx as StraightProjectile).DodgeLayers = _context.CurrentEnemyAttackData.dodgeLayers;
             (vfx as StraightProjectile).InitializeProjectile(
                 transform.forward, 
                 _context.CurrentEnemyAttackData.projectileSpeed, 
                 _context.CurrentEnemyAttackData.skillDuration, 
                 _context.CurrentEnemyAttackData.skillSize,
-                _context.CurrentEnemyAttackData.damage);
+                _context.CurrentEnemyAttackData.damage,
+                _context.CurrentEnemyAttackData.dodgeLayers);
         }
 
         if (_chargeEffect)
@@ -235,15 +237,16 @@ public class EnemyTopdownStateDriver : Flyweight
 
         if (indicatorFlyweight is FollowedIndicator)
         {
-            _skillIndicator.FlyweightInitialize(_context.RootTransform.position, _context.RootTransform.rotation);
+            _skillIndicator.FlyweightInitialize(_context.RootTransform.position.Add(y:0.1f), _context.RootTransform.rotation);
             FollowedIndicator indicator = (FollowedIndicator)_skillIndicator;
             indicator.Initialize(_context.RootTransform, _context.CurrentEnemyAttackData.indicatorWidth, _context.CurrentEnemyAttackData.indicatorLength);
         }
         else
         {
-            _skillIndicator.FlyweightInitialize(_context.CurrentEnemyAttackData.skillSpawnTransform.position);
+            Transform target = _context.CurrentEnemyAttackData.spawnType == EnemyAttackData.SpawnType.AtTarget ? _context.PlayerTransform : null;
+            _skillIndicator.FlyweightInitialize(target.position.Add(y: 0.1f));
             CircleIndicator indicator = (CircleIndicator)_skillIndicator;
-            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth, _context.CurrentEnemyAttackData.skillSpawnTransform);
+            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth,Mathf.Infinity, target);
         }
     }
     public void LockIndicator(float duration)
@@ -272,6 +275,7 @@ public class EnemyTopdownStateDriver : Flyweight
     public IEnumerator SpawnAnimationCoroutine(float duration)
     {
         _context.IsSpawning = true;
+
         // 1. Disable Controller so we can move the transform manually
         _characterController.enabled = false;
 
@@ -279,11 +283,29 @@ public class EnemyTopdownStateDriver : Flyweight
         Vector3 startPos = transform.position; // Assumes enemy is already spawned underground
 
         // --- FIX START ---
-        // Calculate the actual surface height at this specific X, Z coordinate
-        // We add terrain.transform.position.y just in case the terrain object isn't at Y=0
-        float surfaceY = Terrain.activeTerrain.SampleHeight(startPos) + Terrain.activeTerrain.transform.position.y;
+        // Raycast upward from current position to find the ground surface
+        Vector3 targetPos = startPos;
 
-        Vector3 targetPos = new Vector3(startPos.x, surfaceY, startPos.z);
+        if (Physics.Raycast(startPos, Vector3.up, out RaycastHit hit, 100f, LayerMask.GetMask("Ground")))
+        {
+            // Found ground above, set target to surface level
+            targetPos = new Vector3(startPos.x, hit.point.y, startPos.z);
+        }
+        else
+        {
+            // Fallback: Raycast downward from high above to find ground
+            Vector3 rayStart = new Vector3(startPos.x, startPos.y + 100f, startPos.z);
+
+            if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit downHit, 200f, LayerMask.GetMask("Ground")))
+            {
+                targetPos = new Vector3(startPos.x, downHit.point.y, startPos.z);
+            }
+            else
+            {
+                Debug.LogWarning("Could not find ground surface for spawn animation!");
+                targetPos = new Vector3(startPos.x, startPos.y + 2f, startPos.z); // Emergency fallback
+            }
+        }
         // --- FIX END ---
 
         while (elapsedTime < duration)
