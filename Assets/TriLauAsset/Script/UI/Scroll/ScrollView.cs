@@ -29,11 +29,6 @@ namespace MyRule.UI
             presenter.CleanUp();
         }
 
-        private void Start()
-        {
-           //EventBus<SelectButtonEvent>.Raise(new SelectButtonEvent(buttons[0]));
-        }
-
         public void ShowArrowUp() => arrowUp.SetActive(true);
         public void HideArrowUp() => arrowUp.SetActive(false);
         public void ShowArrowDown() => arrowDown.SetActive(true);
