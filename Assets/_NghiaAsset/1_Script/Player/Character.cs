@@ -187,14 +187,12 @@ namespace Turnbase
 
         public void TriggerDamage()
         {
-            // Không dùng return ở đây nữa
             if (this.isAttackBlocked)
             {
                 Debug.Log($"[LOG] {gameObject.name} bị chặn, nhưng vẫn gửi callback để giải phóng Command.");
             }
 
             damageCallback?.Invoke();
-            // Sau khi gọi xong nên null để tránh gọi trùng lặp nếu animation loop
             damageCallback = null;
         }
 

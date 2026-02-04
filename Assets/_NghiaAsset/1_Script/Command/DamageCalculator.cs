@@ -62,6 +62,12 @@ namespace Turnbase
 
             if (skill.manaCost <= 0)
             {
+                if (user.buffManager != null && user.buffManager.basicAttackBuffTurnsRemaining > 0)
+                {
+                    rawDamage += user.buffManager.basicAttackBuffAmount;
+                    Debug.Log($"[BUFF] Cộng thêm {user.buffManager.basicAttackBuffAmount} sát thương vào đòn đánh thường.");
+                }
+
                 foreach (var passive in user.passiveSkills)
                 {
                     if (passive is Passive_BasicAttackBoost boost)

@@ -137,6 +137,7 @@ public enum StatType
     MagicalAttack,
     MagicalDefense,
     IgnoreDefense,
+    BasicAttackDamage,
 
 
 }

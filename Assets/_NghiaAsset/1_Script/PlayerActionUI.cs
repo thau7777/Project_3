@@ -384,6 +384,9 @@ namespace Turnbase
 
 
             Debug.Log("sử dụng Triệu hồi!");
+
+            animator.Play("Summon_Cast");
+
             SetupSummonUI(currentCharacter.skills);
 
             CameraAction.instance.ReadySkill(currentCharacter);

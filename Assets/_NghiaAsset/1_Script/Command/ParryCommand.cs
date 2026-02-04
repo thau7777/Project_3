@@ -23,6 +23,8 @@ namespace Turnbase
 
             yield return new WaitForSeconds(0.8f);
 
+            character.animator.Play("Idle");
+
             character.stateMachine.SwitchState(character.stateMachine.waitingState);
 
             Debug.Log($"{character.name} kết thúc Parry.");

@@ -25,6 +25,8 @@ namespace Turnbase
             initialPosition = user.initialPosition;
             int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
 
+            bool isPerfectParry = true;
+
             for (int i = 0; i < totalAttacks; i++)
             {
                 if (!target.isAlive) break;
@@ -44,62 +46,58 @@ namespace Turnbase
 
                 if (target.isAttackBlocked)
                 {
+                    if (!target.isParrySuccessful)
+                    {
+                        isPerfectParry = false;
+                    }
+
                     if (isLastAttack)
                     {
-                        if (target.isParrySuccessful)
+                        if (target.isParrySuccessful && isPerfectParry)
                         {
                             int counterDamage = target.stats.physicalAttack + target.stats.magicAttack;
                             user.TakeDamage(target, counterDamage, ElementType.Normal, true);
 
                             if (user == null || !user.isAlive)
                             {
-                                Debug.Log($"<color=red>[FIX]</color> {user?.name} đã chết do phản đòn. Kết thúc lượt ngay.");
                                 battleManager.isProcessingTurn = false;
-                                if (battleManager.turnHandler != null)
-                                    battleManager.turnHandler.isProcessingTurn = false;
-
+                                if (battleManager.turnHandler != null) battleManager.turnHandler.isProcessingTurn = false;
                                 battleManager.activeCharacter = null;
                                 battleManager.CheckWaveCondition();
                                 yield break;
                             }
 
                             if (user.stateMachine != null)
-                            {
                                 user.stateMachine.SwitchState(new InterruptedState(user.stateMachine));
-                            }
-                            yield return new WaitForSeconds(0f);
                         }
                         else
                         {
-                            Debug.Log($"<color=green>[EVADE]</color> {target.name} đã né đòn, {user.name} không bị phản đòn.");
+                            Debug.Log("<color=orange>[INFO]</color> Không phản đòn vì không Parry chuẩn toàn bộ combo.");
                             user.animator.Play("Idle");
                             yield return new WaitForSeconds(0.3f);
                         }
-
-                        break; 
+                        break;
                     }
-                    else 
+                    else
                     {
                         user.animator.Play("Hit", 0, 0f);
                         yield return new WaitForSeconds(0.6f);
                         user.animator.Play("Idle");
-                        yield return new WaitForSeconds(0.1f);
                     }
                 }
                 else
                 {
+                    isPerfectParry = false; 
+
                     if (!isLastAttack) yield return new WaitForSeconds(0.2f);
                     user.animator.Play("Idle");
-                    yield return new WaitForSeconds(0.1f);
                 }
             }
 
             yield return MoveBackToInitialPosition(initialPosition);
             yield return RotateBackToInitial();
-
             battleManager.EndTurn(user);
         }
-
         private IEnumerator PerformAttack()
         {
             damageApplied = false;
@@ -172,18 +170,25 @@ namespace Turnbase
         private IEnumerator MoveBackToInitialPosition(Vector3 initialPos)
         {
             user.animator.SetBool("IsRunning", true);
+
+            bool isPlayer = user.CompareTag("Player");
+
             while (Vector3.Distance(user.transform.position, initialPos) > 0.1f)
             {
                 user.transform.position = Vector3.MoveTowards(user.transform.position, initialPos, moveSpeed * Time.deltaTime);
-
-                Vector3 dir = (initialPos - user.transform.position).normalized;
-                if (dir != Vector3.zero)
+                if (!isPlayer)
                 {
-                    Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-                    user.transform.rotation = Quaternion.Slerp(user.transform.rotation, lookRot, Time.deltaTime * 15f);
+                    Vector3 dir = (initialPos - user.transform.position).normalized;
+                    if (dir != Vector3.zero)
+                    {
+                        Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                        user.transform.rotation = Quaternion.Slerp(user.transform.rotation, lookRot, Time.deltaTime * 15f);
+                    }
                 }
+
                 yield return null;
             }
+
             user.animator.SetBool("IsRunning", false);
             user.transform.position = initialPos;
         }
