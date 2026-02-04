@@ -669,16 +669,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
-  _stunVfxSettings: {fileID: 0}
-  _stunVfxSpawnTransform: {fileID: 0}
   _movementType: 2
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 3
+  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 2
+  - Parryable: 0
+    spawnType: 2
     skillSpawnTransform: {fileID: 1890129227004170035}
     positionOffset: {x: 0, y: 0, z: 0}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -697,7 +696,7 @@ MonoBehaviour:
     skillEffect: {fileID: 11400000, guid: b3e67274cda219a449153e7ab0775a68, type: 2}
     skillDuration: 3
     projectileSpeed: 10
-    skillSize: 2
+    skillSize: 1.5
     executionSound: {fileID: 0}
     movementSpeed: 0
     rotateSpeed: 2
@@ -712,13 +711,14 @@ MonoBehaviour:
     indicator: {fileID: 11400000, guid: 6f9f5cc18c9cf7546979801b106627a5, type: 2}
     indicatorWidth: 50
     indicatorLength: 300
-  - spawnType: 2
+  - Parryable: 0
+    spawnType: 2
     skillSpawnTransform: {fileID: 1890129227004170035}
     positionOffset: {x: 0, y: 0, z: 0}
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
-      m_Bits: 2816
+      m_Bits: 2880
     coolDown: 2
     weight: 0
     minRange: 2
@@ -746,7 +746,8 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 50
     indicatorLength: 300
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 1890129227004170035}
     positionOffset: {x: 0, y: 1, z: 0.2}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -809,6 +810,7 @@ MonoBehaviour:
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
   _invincibleDuration: 0.1
+  _stunVFXSettings: {fileID: 0}
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:

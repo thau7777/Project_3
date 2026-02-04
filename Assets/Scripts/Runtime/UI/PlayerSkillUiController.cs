@@ -90,7 +90,7 @@ public class PlayerSkillUiController : MonoBehaviour
 
                 // only trigger this once per cooldown
                 float currentFillAmount = _coolDownProgressImage[skillInstance.slotIndex].material.GetFloat("_FillAmount");
-                if (currentFillAmount >= 0.9f && !_finishEffectTriggered[skillInstance.slotIndex])
+                if (skillInstance.CurrentCooldownRemaining <= 0.4f && !_finishEffectTriggered[skillInstance.slotIndex])
                 {
                     _finishEffectTriggered[skillInstance.slotIndex] = true;
                     StartFinishCooldownEffect(skillInstance.slotIndex).Forget();

@@ -20,19 +20,6 @@ public struct SkillDataForClass
     public AimType aimType;
 }
 
-public enum SkillCondition
-{
-    None,
-    InMousePosition,
-    EnoughMana
-}
-[Serializable]
-public struct SkillSlotInfo
-{
-    public bool HasSkill => skillStrategy != null;
-    public int slotIndex;
-    public SkillStrategy skillStrategy;
-}
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "Scriptable Objects/StrategyPattern/Skill")]
 public class SkillStrategy : ScriptableObject, IStrategy
@@ -40,20 +27,20 @@ public class SkillStrategy : ScriptableObject, IStrategy
     #region Skill Condition
     [TabGroup("Skill Condition")]
     [SerializeField]
-    protected SkillCondition _specialCondition = SkillCondition.None;
+    protected bool _needInRange = false;
 
     [TabGroup("Skill Condition")]
-    [ShowIfEnumValue("_specialCondition", SkillCondition.InMousePosition)]
+    [ShowIf("_needInRange")]
     [SerializeField]
     protected float targetCheckRadius = 3f;
 
     [TabGroup("Skill Condition")]
-    [ShowIfEnumValue("_specialCondition", SkillCondition.InMousePosition)]
+    [ShowIf("_needInRange")]
     [SerializeField]
     protected LayerMask enemyLayer;
 
     [TabGroup("Skill Condition")]
-    [ShowIfEnumValue("_specialCondition", SkillCondition.InMousePosition)]
+    [ShowIf("_needInRange")]
     [SerializeField]
     protected LayerMask groundLayer;
     #endregion
@@ -92,8 +79,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
     public Quaternion rotationOffset;
 
     [TabGroup("Skill Settings")]
-    [SerializeField]
-    private LayerMask DodgeLayers;
+    public LayerMask DodgeLayers;
     protected bool _isProjectile;
 
     [TabGroup("Skill Settings")]
@@ -206,17 +192,11 @@ public class SkillStrategy : ScriptableObject, IStrategy
     }
     public bool CheckSpecialCondition(Transform user)
     {
-        switch (_specialCondition)
-        {
-            case SkillCondition.None:
-                return true;
-
-            case SkillCondition.InMousePosition:
-                return HasEnemiesAtMousePosition(user);
-
-            default:
-                return true;
-        }
+        if (user.TryGetComponent<SkillExecutor>(out var skillExecutor) && skillExecutor.CurrentMana < ManaCost && ManaCost != 0)
+            return false;
+        if (!_needInRange)
+            return true;
+        return HasEnemiesAtMousePosition(user);
     }
 
     private bool HasEnemiesAtMousePosition(Transform user)

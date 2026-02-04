@@ -74,14 +74,7 @@ namespace MyRule.UI
 
         private void OnSelectEvent(SelectButtonEvent selectButtonEvent)
         {
-            if (_currentButton != null)
-            {
-                _currentButton.Deselect();
-            }
-
             _currentButton = selectButtonEvent.Button;
-
-            _currentButton.Select();
         }
 
         private UniTask LoadGame()

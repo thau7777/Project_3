@@ -5,6 +5,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Skill;
 
+[Serializable]
+public struct SkillSlotInfo
+{
+    public bool HasSkill => skillStrategy != null;
+    public int slotIndex;
+    public SkillStrategy skillStrategy;
+}
 public class SkillExecutor : MonoBehaviour
 {
 
@@ -26,15 +33,23 @@ public class SkillExecutor : MonoBehaviour
     [SerializeField]
     private GameObject _skillRangeIndicator;
 
+    [SerializeField]
+    private CharacterControllerLayerIgnoreController _layerIgnoreController;
 
     [SerializeField]
     private float _currentMana;
+
+    public float CurrentMana => _currentMana;
+
     [SerializeField]
     private float _maxMana;
+
+    public float MaxMana => _maxMana;
     public UnityEvent<float, float> OnManaChanged;
 
     void Awake()
     {
+        _layerIgnoreController = GetComponent<CharacterControllerLayerIgnoreController>();
         InitializeMana(100);
     }
     private void Start()
@@ -53,11 +68,11 @@ public class SkillExecutor : MonoBehaviour
         _skillInstance = new SkillRuntimeInstance[skillCount];
 
         int currentSkillCount = 0;
-        foreach (var skillData in _skillSlotInfos)
+        foreach (var skillSlot in _skillSlotInfos)
         {
-            if (skillData.HasSkill)
+            if (skillSlot.HasSkill)
             {
-                _skillInstance[currentSkillCount] = new SkillRuntimeInstance(skillData);
+                _skillInstance[currentSkillCount] = new SkillRuntimeInstance(skillSlot);
                 currentSkillCount++;
             }
 
@@ -93,7 +108,12 @@ public class SkillExecutor : MonoBehaviour
     public void UseSkill(int index, CharacterClass characterClass,PlayerTopdownContext context, Action onCastInstantly = null)
     {
         if (!SetSkillData(index, characterClass)) return;
-
+        if (!_skillToCast.Definition.CheckSpecialCondition(context.RootTransform))
+        {
+            Debug.Log("Special condition not met for skill: " + _skillToCast.Definition.name);
+            //context.IsAiming = false;
+            return;
+        }
         context.IsNextAttackQueued = false;
         context.CastingSkill = index;
         bool isAimNeeded = _storedSkillDataForClass.Value.aimType != AimType.None;
@@ -162,6 +182,7 @@ public class SkillExecutor : MonoBehaviour
 
     public void CastSkill(PlayerTopdownContext context)// run the actual skill animation
     {
+        if (_skillToCast == null) return;
         if(_chargeCoroutine != null)
         {
             StopCoroutine(_chargeCoroutine);
@@ -173,15 +194,13 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-        if (!_skillToCast.Definition.CheckSpecialCondition(context.RootTransform))
-        {
-            Debug.Log("Special condition not met for skill: " + _skillToCast.Definition.name);
-            //context.IsAiming = false;
-            return;
-        }
-
+        
         string animName = _storedSkillDataForClass.Value.animName;
-        if (animName == "Dash") context.IsDashing = true;
+        if (animName == "Dash")
+        {
+            _layerIgnoreController.ApplyLayerIgnore(_skillToCast.Definition.DodgeLayers);
+            context.IsDashing = true;
+        }
         context.IsInSpecialMove = true;
         context.NeedHoldStillWhileExecuteWhenAiming = _skillToCast.Definition.NeedHoldStill;
         context.SkillAnimName = animName;

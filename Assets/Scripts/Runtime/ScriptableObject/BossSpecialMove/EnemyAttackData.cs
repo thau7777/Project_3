@@ -23,6 +23,8 @@ public class EnemyAttackData
         AtTarget,
         AtCustomSpawnTransform
     }
+    public bool Parryable = true;
+
     [Header("Spawn Settings")]
     public SpawnType spawnType = SpawnType.AtSelf;
     public Transform skillSpawnTransform;
