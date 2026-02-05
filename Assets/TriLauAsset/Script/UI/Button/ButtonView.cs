@@ -27,8 +27,6 @@ namespace MyRule.UI
 
         protected ButtonPresenter presenter;
 
-        public ButtonType Type => buttonViewType;
-
         private void OnEnable()
         {
             presenter = new ButtonPresenter(this);
@@ -40,8 +38,10 @@ namespace MyRule.UI
         }
 
         public virtual void OnSubmit(BaseEventData eventData)
-        { 
+        {
             AudioManager.Instance.PlaySFX(SFXType.UI_Click);
+
+            Navigator.OnSubmitPress(buttonViewType);
         }
 
         public virtual void OnSelect(BaseEventData eventData)

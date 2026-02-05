@@ -1,3 +1,4 @@
+using MyRule;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ public class UIActions : InputActions.IUIActions
     public Action<Vector2> onLook;
     public Action onPressAnyButton;
     public Action<Vector2> onAdjust;
+    public Action<int> onNavigateTab;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -29,7 +31,10 @@ public class UIActions : InputActions.IUIActions
     public void OnCancel(InputAction.CallbackContext context)
     {
         if (context.performed)
+        {
             onCancel?.Invoke();
+            Navigator.OnCancelPress();
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -54,5 +59,20 @@ public class UIActions : InputActions.IUIActions
             var value = context.ReadValue<Vector2>();
             onAdjust?.Invoke(value);
         }
+    }
+
+    public void OnNavigate(InputAction.CallbackContext context)
+    {
+        
+    }
+
+    public void OnPreviousTab(InputAction.CallbackContext context)
+    {
+        if (context.performed) onNavigateTab?.Invoke(-1);
+    }
+
+    public void OnNextTab(InputAction.CallbackContext context)
+    {
+        if (context.performed) onNavigateTab?.Invoke(1);
     }
 }

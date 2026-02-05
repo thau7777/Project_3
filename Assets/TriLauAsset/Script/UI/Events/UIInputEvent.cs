@@ -2,7 +2,14 @@ namespace MyRule.UI
 {
     public struct AnyButtonPressEvent : IEvent { }
 
-    public struct SubmitPressEvent : IEvent { }
+    public struct SubmitPressEvent : IEvent 
+    {
+        public readonly ButtonType ButtonType;
+        public SubmitPressEvent(ButtonType buttonType)
+        {
+            ButtonType = buttonType;
+        }
+    }
     
     public struct CancelPressEvent : IEvent { }
 

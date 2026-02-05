@@ -1,37 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class Loader
+namespace MyRule
 {
-    public enum Scene
+    public static class Loader
     {
-        MainMenu,
-        SpaceStationScene,
-        BoardScene,
-        LoadingScene,
+        public enum Scene
+        {
+            MainMenuScene,
+            SpaceStationScene,
+            BoardScene,
+            LoadingScene,
+            SettingsScene,
+        }
+
+        private static Scene targetScene;
+
+        public static void Load(Scene scene)
+        {
+            targetScene = scene;
+
+            SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Single);
+        }
+
+        public static void LoadAdditive(Scene scene)
+        {
+            targetScene = scene;
+
+            SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Additive);
+        }
+
+        public static void Unload(Scene scene)
+        {
+            SceneManager.UnloadSceneAsync(scene.ToString());
+        }
+
+        public static void SetActiveScene(Scene scene)
+        {
+            UnityEngine.SceneManagement.Scene target = SceneManager.GetSceneByName(scene.ToString());
+
+            SceneManager.SetActiveScene(target);
+        }
+
+        public static void LoaderCallback()
+        {
+            SceneManager.LoadSceneAsync(Loader.targetScene.ToString());
+        }
     }
-
-    private static Scene targetScene;
-
-    public static Scene TargetScene => targetScene;
-
-    public static bool isMultiSceneLoad = false;
-
-    public static void Load(Scene targetScene, bool isMultiSceneLoad = false)
-    {
-        Loader.targetScene = targetScene;
-        Loader.isMultiSceneLoad = isMultiSceneLoad;
-        if (!isMultiSceneLoad)
-            SceneManager.LoadSceneAsync(Scene.LoadingScene.ToString());
-        else
-            SceneManager.LoadSceneAsync(Scene.LoadingScene.ToString(), LoadSceneMode.Additive);
-    }
-
-    public static void LoaderCallback()
-    {
-        SceneManager.LoadSceneAsync(Loader.targetScene.ToString());
-    }
-
 }
