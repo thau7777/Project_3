@@ -1,8 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = " New OneShotVFX Settings", menuName = "Scriptable Objects/Flyweight/OneShotVFX Settings")]
+[CreateAssetMenu(fileName = " New ContinousVFX Settings", menuName = "Scriptable Objects/Flyweight/ContinousVFX Settings")]
 public class ContinousVFXSettings : FlyweightSettings
 {
+    [field: SerializeField]
+    public float DefaultSize { get; private set; } = 1;
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);
@@ -12,6 +14,10 @@ public class ContinousVFXSettings : FlyweightSettings
         var flyweight = go.GetOrAdd<ContinousVFX>();
         flyweight.settings = this;
         return flyweight;
+    }
+    public override void OnGet(Flyweight f)
+    {
+
     }
     public override void OnRelease(Flyweight f)
     {

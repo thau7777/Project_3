@@ -930,16 +930,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
-  _stunVfxSettings: {fileID: 0}
-  _stunVfxSpawnTransform: {fileID: 0}
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 2
+  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 0.5, z: 0}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -973,7 +972,8 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 2
     indicatorLength: 2
-  - spawnType: 0
+  - Parryable: 0
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 0.5, z: 0.5}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -1007,7 +1007,8 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 3
     indicatorLength: 2
-  - spawnType: 2
+  - Parryable: 0
+    spawnType: 2
     skillSpawnTransform: {fileID: 2339563251370857241}
     positionOffset: {x: 0, y: 0, z: 0}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -1070,6 +1071,7 @@ MonoBehaviour:
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
   _invincibleDuration: 0.1
+  _stunVFXSettings: {fileID: 0}
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:

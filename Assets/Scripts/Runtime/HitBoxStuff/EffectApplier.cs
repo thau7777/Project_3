@@ -29,7 +29,7 @@ public class EffectApplier : MonoBehaviour
     }
     public void ApplyEffect(GameObject sender,GameObject target)
     {
-        if (_effectsToApply == null)
+        if (_effectsToApply == null && GetComponent<HitBoxHandler>().Parryable)
         {
             Debug.LogWarning("No effect assigned to EffectApplier!");
             return;

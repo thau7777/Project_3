@@ -15,15 +15,19 @@ public class Effect : ScriptableObject
     [Range(2, 10)]
     public int stackRequired = 3;
 
-    [Header("Stat Modifiers (Percentage)")]
-    [Tooltip("Percentage modifier (e.g., 50 = +50%, -20 = -20%)")]
+    [TabGroup("Stat Modifiers (Percentage)")]
     public float healthModifierPercent = 0;
+    [TabGroup("Stat Modifiers (Percentage)")]
     public float speedModifierPercent = 0;
+    [TabGroup("Stat Modifiers (Percentage)")]
     public float damageModifierPercent = 0;
+    [TabGroup("Stat Modifiers (Percentage)")]
     public float defenseModifierPercent = 0;
 
-    [Header("Visual Feedback")]
-    public FlyweightSettings vfxSettings;
+    [TabGroup("Visual Feedback")]
+    public Vector3 positionOffset;
+    [TabGroup("Visual Feedback")]
+    public ContinousVFXSettings vfxSettings;
 
     public virtual void OnApply(GameObject target)
     {
@@ -31,7 +35,10 @@ public class Effect : ScriptableObject
         if (vfxSettings != null)
         {
             var vfx = FlyweightFactory.Spawn(vfxSettings);
-            vfx.transform.SetParent(target.transform);
+
+            vfx.FlyweightInitialize(target.transform.AddLocal(positionOffset.x,positionOffset.y,positionOffset.z), Quaternion.identity);
+            (vfx as ContinousVFX).InitializeVFX(vfxSettings.DefaultSize, target.transform);
+            vfx.gameObject.name = vfxSettings.prefab.name;
 
         }
         if (healthModifierPercent != 0)

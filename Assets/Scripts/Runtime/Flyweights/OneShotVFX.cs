@@ -87,8 +87,12 @@ public class OneShotVFX : Flyweight
     {
         gameObject.SetActive(true);
         transform.localScale = new Vector3(size, size, size);
-        if(parent)
+        if (parent)
+        {
             transform.SetParent(parent);
+            transform.localPosition = Vector3.zero;
+        }
+            
         if (settings.useAdvanceSettings)
         {
             //CheckAndSetProperty(settings.sizeName, size);

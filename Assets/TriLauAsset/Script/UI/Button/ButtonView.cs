@@ -1,5 +1,6 @@
-using TMPro;
+using MyRule.Audio;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace MyRule.UI
@@ -19,16 +20,12 @@ namespace MyRule.UI
         RestartButton
     }
 
-    public class ButtonView : MonoBehaviour, IButtonView
+    public class ButtonView : MonoBehaviour, IButtonView, ISelectHandler, IDeselectHandler, ISubmitHandler
     {
-        [SerializeField] private ButtonType buttonViewType = ButtonType.AnyButton;
-        [SerializeField] private Button button;
-        [SerializeField] private TextMeshProUGUI buttonText;
-        [SerializeField] private GameObject highlightButton;
-        [SerializeField] private Color selectColor = Color.white;
-        [SerializeField] private Color deselectColor = Color.gray;
+        [SerializeField] protected ButtonType buttonViewType = ButtonType.AnyButton;
+        [SerializeField] protected Button button;
 
-        private ButtonPresenter presenter;
+        protected ButtonPresenter presenter;
 
         public ButtonType Type => buttonViewType;
 
@@ -42,23 +39,18 @@ namespace MyRule.UI
             presenter.CleanUp();
         }
 
-        public void Select()
-        {
-            highlightButton.SetActive(true);
-
-            buttonText.color = selectColor;
+        public virtual void OnSubmit(BaseEventData eventData)
+        { 
+            AudioManager.Instance.PlaySFX(SFXType.UI_Click);
         }
 
-        public void Deselect()
+        public virtual void OnSelect(BaseEventData eventData)
         {
-            highlightButton.SetActive(false);
-
-            buttonText.color = deselectColor;
+            AudioManager.Instance.PlaySFX(SFXType.UI_Select);
         }
 
-        public void Submit()
+        public virtual void OnDeselect(BaseEventData eventData)
         {
-            button.onClick.Invoke();
         }
     }
 }

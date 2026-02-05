@@ -23,6 +23,10 @@ public class Damageable : MonoBehaviour
     private float _invincibleElapsedTime = 0;
 
     private Coroutine _stunCoroutine;
+    [SerializeField]
+    private ContinousVFXSettings _stunVFXSettings;
+    private Transform _stunVFXSpawnTransform;
+    private Flyweight _stunVfxFlyweight;
 
     public UnityEvent<GameObject,float, Vector3, float> OnTakeDamage;
     public UnityEvent OnDeath;
@@ -35,6 +39,8 @@ public class Damageable : MonoBehaviour
     private void Awake()
     {
         _ccLayerIgnoreController = gameObject.GetOrAdd<CharacterControllerLayerIgnoreController>();
+        if(transform.tag != "Player")
+        _stunVFXSpawnTransform = transform.Find("AboveHead") ?? transform;
     }
     public void Initialize(float maxHealth)
     {
@@ -44,6 +50,7 @@ public class Damageable : MonoBehaviour
         {
             MaxShieldHealth = MaxHealth / 2f;
             ShieldHealth = MaxShieldHealth;
+            OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
         }
 
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
@@ -117,6 +124,15 @@ public class Damageable : MonoBehaviour
             {
                 OnShieldBreak?.Invoke(3);
                 StartStunCoroutine(3);
+
+                if (_stunVFXSettings != null && _stunVFXSpawnTransform != null)
+                {
+                    _stunVfxFlyweight = FlyweightFactory.Spawn(_stunVFXSettings);
+                    _stunVfxFlyweight.FlyweightInitialize(_stunVFXSpawnTransform.position);
+                    (_stunVfxFlyweight as ContinousVFX).InitializeVFX(_stunVFXSettings.DefaultSize, _stunVFXSpawnTransform);
+                    _stunVfxFlyweight.transform.position = _stunVFXSpawnTransform.position;
+                    _stunVfxFlyweight.transform.rotation = Quaternion.identity;
+                }
             }
         }
         if (CurrentHealth == 0)
@@ -143,7 +159,13 @@ public class Damageable : MonoBehaviour
     private IEnumerator StunRoutine(float duration)
     {
         yield return Helpers.GetWaitForSeconds(duration);
+        if (_stunVfxFlyweight)
+        {
+            _stunVfxFlyweight.ReturnToPool();
+            _stunVfxFlyweight = null;
+        }
         ShieldHealth = MaxShieldHealth;
+        OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
     }
 
     public void Heal(float amount)

@@ -60,7 +60,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             Debug.LogWarning("EnemyManager: No enemy settings assigned!");
             return;
         }
-        int spawnCount = 3;
+        int spawnCount = 1;
         for(int i = 0; i < spawnCount; i++)
         {
             FlyweightFactory.Spawn(_enemiesList[i]);

@@ -17,6 +17,7 @@ public class HitBoxHandler : MonoBehaviour
     private Collider _collider;
     private Coroutine _hitboxTimingRoutine;
 
+    public bool Parryable { get; set; } = true;
     private void Awake()
     {
         Origin = transform.root.gameObject;
