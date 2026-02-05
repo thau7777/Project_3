@@ -28,7 +28,7 @@ public class CameraShaker : Singleton<CameraShaker>
         Vector3 randomDir = new Vector3(
             Random.Range(-1f, 1f),
             Random.Range(-1f, 1f),
-            0f
+            -3f
         ).normalized;
         if(impulseShapes == CinemachineImpulseDefinition.ImpulseShapes.Custom)
         {

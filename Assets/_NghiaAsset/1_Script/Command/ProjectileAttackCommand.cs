@@ -170,7 +170,7 @@ namespace Turnbase
                 if (projectileScript != null)
                 {
                     Action hitCallback = () => { projectileHit = true; };
-                    projectileScript.Setup(target, skill, damageForThisHit, element, hitCallback);
+                    projectileScript.Setup(user, target, skill, damageForThisHit, element, hitCallback);
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace Turnbase
         private void ApplySingleHitDamage(int damage)
         {
             ElementType element = skill.elementType;
-            target.TakeDamage(damage, element);
+            target.TakeDamage(user, damage, element);
         }
 
         private IEnumerator RotateBackToInitial()

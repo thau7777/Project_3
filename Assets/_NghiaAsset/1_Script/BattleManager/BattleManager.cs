@@ -342,20 +342,19 @@ namespace Turnbase
         }
 
 
-        public void TriggerEvadeOnly(float duration, Character player, Enemy enemy)
+        public void TriggerEvadeOnly(Character player, Enemy enemy)
         {
             if (player.isAttackBlocked) return;
 
-            evadeUI.StartGame(duration, (isSuccess) => {
+            evadeUI.StartGame(5.0f, (isSuccess) => {
 
                 if (isSuccess)
                 {
 
                     player.isAttackBlocked = true;
-                    enemy.isAttackBlocked = true;
+                    //enemy.isAttackBlocked = true;
 
                     if (enemy.stateMachine != null)
-                        //enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
 
                     if (player.stateMachine != null)
                         player.stateMachine.SwitchState(new AvoidState(player.stateMachine));
@@ -363,11 +362,11 @@ namespace Turnbase
             });
         }
 
-        public void TriggerParryOnly(float duration, Character player, Enemy enemy)
+        public void TriggerParryOnly(Character player, Enemy enemy)
         {
             if (player.isAttackBlocked) return;
 
-            parryUI.StartGame(duration, (isSuccess) => {
+            parryUI.StartGame(5.0f, (isSuccess) => {
                 if (isSuccess)
                 {
                     player.isParrySuccessful = true;
@@ -375,7 +374,6 @@ namespace Turnbase
                     enemy.isAttackBlocked = true;
 
                     if (enemy.stateMachine != null)
-                        //enemy.stateMachine.SwitchState(new InterruptedState(enemy.stateMachine));
 
                     if (player.stateMachine != null)
                         player.stateMachine.SwitchState(new ParryingState(player.stateMachine));

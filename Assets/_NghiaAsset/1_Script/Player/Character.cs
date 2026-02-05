@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -130,6 +131,13 @@ namespace Turnbase
                 skills.Clear();
                 skills.AddRange(targetProfile.initialSkills);
             }
+
+            if (targetProfile.initialPassiveSkills != null) 
+            {
+                passiveSkills.Clear();
+                passiveSkills.AddRange(targetProfile.initialPassiveSkills);
+                Debug.Log($"[LOG] Đã nạp {passiveSkills.Count} nội tại cho {gameObject.name}");
+            }
         }
 
         public void UpdateOwnUI()
@@ -143,7 +151,7 @@ namespace Turnbase
         }
 
 
-        public void TakeDamage(int amount, ElementType element, bool ignoreBlock = false)
+        public void TakeDamage(Character attacker, int amount, ElementType element, bool ignoreBlock = false, bool isCrit = false)
         {
             if (healthSystem == null)
             {
@@ -155,7 +163,13 @@ namespace Turnbase
                 healthSystem.Init(this);
             }
 
-            healthSystem.TakeDamage(amount, element, ignoreBlock);
+            healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
+
+            Color elementColor = Color.white;
+
+            //EventBusUI<DamageEvent>.Raise(new DamageEvent(transform.position, amount, elementColor, isCrit));
+
+            CameraShaker.Instance.GenerateBasicShake();
         }
 
         public void ProcessOnDeathPassives()
@@ -173,14 +187,12 @@ namespace Turnbase
 
         public void TriggerDamage()
         {
-            // Không dùng return ở đây nữa
             if (this.isAttackBlocked)
             {
                 Debug.Log($"[LOG] {gameObject.name} bị chặn, nhưng vẫn gửi callback để giải phóng Command.");
             }
 
             damageCallback?.Invoke();
-            // Sau khi gọi xong nên null để tránh gọi trùng lặp nếu animation loop
             damageCallback = null;
         }
 

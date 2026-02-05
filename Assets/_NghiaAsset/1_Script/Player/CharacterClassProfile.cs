@@ -13,7 +13,7 @@ namespace Turnbase
                                            CharacterClass.Summon,
                                            CharacterClass.Tank)]
         public List<Skill> initialSkills;
-
+        public List<SkillPassive> initialPassiveSkills;
     }
 
 }

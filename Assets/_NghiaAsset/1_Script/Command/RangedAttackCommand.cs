@@ -45,13 +45,13 @@ namespace Turnbase
         private void ApplySingleHitDamage(int damage)
         {
             ElementType element = skill.elementType;
-            target.TakeDamage(damage, element);
+            target.TakeDamage(user, damage, element);
         }
 
         private void ApplySingleHitDamageAndEffect(int damage)
         {
             ElementType element = skill.elementType;
-            target.TakeDamage(damage, element);
+            target.TakeDamage(user, damage, element);
             SpawnImpactEffect(target.transform.position, skill);
         }
 

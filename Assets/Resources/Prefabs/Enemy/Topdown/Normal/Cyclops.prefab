@@ -306,6 +306,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1212,16 +1213,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
-  _stunVfxSettings: {fileID: 0}
-  _stunVfxSpawnTransform: {fileID: 0}
   _movementType: 2
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 2
+  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 0
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 1, z: 1}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -1233,6 +1233,8 @@ MonoBehaviour:
     minRange: 5
     maxRange: 10
     damage: 10
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 9fe937f3e3f47a943bf10bb3365c218e, type: 2}
@@ -1253,7 +1255,8 @@ MonoBehaviour:
     indicator: {fileID: 11400000, guid: 6f9f5cc18c9cf7546979801b106627a5, type: 2}
     indicatorWidth: 10
     indicatorLength: 100
-  - spawnType: 0
+  - Parryable: 0
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 1, z: 1}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -1265,6 +1268,8 @@ MonoBehaviour:
     minRange: 5
     maxRange: 15
     damage: 20
+    knockBackForce: 10
+    stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillEffect: {fileID: 11400000, guid: 7cb3912c40e6d1041987267f93ede405, type: 2}
@@ -1313,6 +1318,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.1
+  _stunVFXSettings: {fileID: 0}
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -1370,9 +1377,12 @@ MonoBehaviour:
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &9043278966567859032
 MonoBehaviour:
   m_ObjectHideFlags: 0

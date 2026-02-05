@@ -5,7 +5,8 @@ namespace Turnbase
 {
     public class DamagePopup : MonoBehaviour
     {
-        public static DamagePopup Create(Vector3 position, int damageAmount, Transform parentTransform, Color color) 
+        public TextMeshProUGUI critText;
+        public static DamagePopup Create(Vector3 position, int damageAmount, Transform parentTransform, Color color, bool isCrit) 
         {
             GameObject damagePopupObject = Instantiate(
                 DamagePopupSpawn.i.pfdamagePopup,
@@ -22,7 +23,7 @@ namespace Turnbase
                 return null;
             }
 
-            damagePopup.Setup(damageAmount, color); 
+            damagePopup.Setup(damageAmount, color, isCrit); 
             Destroy(damagePopupObject, 1f);
 
             return damagePopup;
@@ -36,12 +37,17 @@ namespace Turnbase
             damageText = transform.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        public void Setup(int damageAmount, Color color)
+        public void Setup(int damageAmount, Color color, bool isCrit)
         {
             if (damageText != null)
             {
                 damageText.color = color;
                 damageText.text = damageAmount.ToString();
+            }
+
+            if (critText != null)
+            {
+                critText.gameObject.SetActive(isCrit);
             }
         }
     }

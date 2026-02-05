@@ -39,7 +39,7 @@ namespace Turnbase
             {
                 if (!damageApplied)
                 {
-                    target.TakeDamage(finalDamage, element);
+                    target.TakeDamage(user, finalDamage, element);
                     damageApplied = true;
                     SpawnEffectAtTarget();
                 }
@@ -87,13 +87,13 @@ namespace Turnbase
             switch (user.characterClass)
             {
                 case CharacterClass.Magical:
-                    effectPath = "Effects/Attack1";
+                    effectPath = "Effects/Effect1";
                     break;
                 case CharacterClass.Summon:
-                    effectPath = "Effects/Effect27";
+                    effectPath = "Effects/Effect2";
                     break;
                 case CharacterClass.Tank:
-                    effectPath = "Effects/Effect7";
+                    effectPath = "Effects/Effect3";
                     break;
                 default:
                     break;

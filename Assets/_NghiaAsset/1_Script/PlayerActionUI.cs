@@ -104,7 +104,6 @@ namespace Turnbase
                 inputLogic.EEvent -= OnSkillClicked;
                 inputLogic.REvent -= OnItemClicked;
                 inputLogic.SpaceEvent -= OnConfirmClicked;
-                inputLogic.EscapeEvent -= OnCancelClicked;
                 inputLogic.SummonEvent -= OnSummonClicked;
             }
 
@@ -122,7 +121,6 @@ namespace Turnbase
                     inputLogic.EEvent += OnSkillClicked;    // Phím E: Kỹ năng
                     inputLogic.REvent += OnItemClicked;     // Phím R: Vật phẩm
                     inputLogic.SpaceEvent += OnConfirmClicked; // Phím Space: Xác nhận
-                    inputLogic.EscapeEvent += OnCancelClicked;      // Phím Esc: Hủy/Quay lại
                     inputLogic.SummonEvent += OnSummonClicked;      // Phím F: Triệu hồi
 
                 }
@@ -139,7 +137,6 @@ namespace Turnbase
                 inputLogic.EEvent -= OnSkillClicked;
                 inputLogic.REvent -= OnItemClicked;
                 inputLogic.SpaceEvent -= OnConfirmClicked;
-                inputLogic.EscapeEvent -= OnCancelClicked;
                 inputLogic.SummonEvent -= OnSummonClicked;
             }
         }
@@ -308,25 +305,14 @@ namespace Turnbase
             }
 
             ApplyButtonAction_Cancel();
-
-
             CameraAction.instance.ReadySkill(currentCharacter);
 
             PlayerSummonPanel.SetActive(false);
-
-
+            PlayerItemPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
 
-            if (PlayerSkillPanel.activeSelf == true)
-            {
-                PlayerSkillPanel.SetActive(false);
-            }
-            else
-            {
-                SetupSkillUI(currentCharacter.skills);
-                PlayerSkillPanel.SetActive(true);
-            }
-            PlayerItemPanel.SetActive(false);
+            SetupSkillUI(currentCharacter.skills);
+            PlayerSkillPanel.SetActive(true);
 
         }
 
@@ -398,6 +384,9 @@ namespace Turnbase
 
 
             Debug.Log("sử dụng Triệu hồi!");
+
+            animator.Play("Summon_Cast");
+
             SetupSummonUI(currentCharacter.skills);
 
             CameraAction.instance.ReadySkill(currentCharacter);
@@ -439,6 +428,8 @@ namespace Turnbase
 
             Debug.Log("sử dụng Item!");
             SetUPItemUI(currentCharacter.item);
+
+            CameraAction.instance.ReadyUseItem(currentCharacter);
 
             PlayerSummonPanel.SetActive(false);
             PlayerSkillPanel.SetActive(false);
@@ -559,6 +550,7 @@ namespace Turnbase
                 GameObject currentSelected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
                 if (currentSelected != null)
                 {
+                    // Thử lấy component SkillEntry hoặc ItemEntry
                     var skillEntry = currentSelected.GetComponent<SkillEntryUI>();
                     if (skillEntry != null) { skillEntry.SelectThisSkill(); return; }
 

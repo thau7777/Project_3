@@ -56,7 +56,10 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB shieldVFXInstance;
         [HideInInspector] public Sprite shieldIcon;
 
-
+        [Header("Basic Attack Buff")]
+        [HideInInspector] public int basicAttackBuffAmount = 0;
+        [HideInInspector] public int basicAttackBuffTurnsRemaining = 0;
+        [HideInInspector] public Sprite basicAttackBuffIcon;
 
         [Header("Stack Manager")]
         public Dictionary<string, StackData> activeStacks = new Dictionary<string, StackData>();
@@ -327,6 +330,15 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Defense, hiệu lực {duration} lượt. Magical Defense hiện tại: {stats.magicDefense}");
         }
 
+        public void ApplyBasicAttackBuff(int amount, int duration, Sprite icon)
+        {
+            basicAttackBuffAmount = amount;
+            basicAttackBuffTurnsRemaining = duration;
+            basicAttackBuffIcon = icon;
+
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+        }
+
 
         public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount)
         {
@@ -351,6 +363,9 @@ namespace Turnbase
                     break;
                 case StatType.MagicalDefense:
                     ApplyMagicalDefenseBuff(amount, buffSettings.durationTurns, buffVFX, buffSettings.icon);
+                    break;
+                case StatType.BasicAttackDamage:
+                    ApplyBasicAttackBuff(amount, buffSettings.durationTurns, buffSettings.icon);
                     break;
                 default:
                     Debug.LogWarning($"Loại Buff {buffSettings.statToModify} không được hỗ trợ hoặc không có giá trị.");
@@ -409,7 +424,7 @@ namespace Turnbase
                     }
                     else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
                     {
-                        stackTarget.debuffManager.ApplyDebuff(skill.activatedDebuff);
+                        stackTarget.debuffManager.ApplyDebuff(character, skill.activatedDebuff);
                         Debug.Log($"[Stack Finisher Activated] {stackTarget.info.name} nhận Debuff {skill.activatedDebuff.statToModify}");
                     }
 
@@ -762,6 +777,16 @@ namespace Turnbase
                 {
                     RemoveExpiredMagicalAttackBuff();
                     uiUpdateNeeded = true;
+                }
+            }
+
+            if (basicAttackBuffTurnsRemaining > 0)
+            {
+                basicAttackBuffTurnsRemaining--;
+                if (basicAttackBuffTurnsRemaining <= 0)
+                {
+                    basicAttackBuffAmount = 0;
+                    basicAttackBuffIcon = null;
                 }
             }
 

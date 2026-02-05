@@ -34,6 +34,9 @@ public class AttackEventBehaviour : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        _stateDriver.OnAttackAnimExit();
+        if (stateInfo.IsTag("SpecialMove"))
+            _stateDriver.OnSpecialMoveAnimExit();
+        else
+            _stateDriver.OnAttackAnimExit();    
     }
 }

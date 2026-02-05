@@ -11,12 +11,6 @@ public class EnemyTopdownStateDriver : Flyweight
     [TabGroup("References")]
     private CharacterController _characterController;
 
-    [TabGroup("References")]
-    [SerializeField]
-    private OneShotVFXSettings _stunVfxSettings;
-    [TabGroup("References")]
-    [SerializeField]
-    private Transform _stunVfxSpawnTransform;
     #endregion
 
     #region Variables
@@ -116,7 +110,7 @@ public class EnemyTopdownStateDriver : Flyweight
     }
     public void OnTakeDamage(GameObject sender,float currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {
-        if(_context.IsDead || _context.IsAttacking) return;
+        if(_context.IsDead) return;
 
         _context.KnockbackDirection = knockBackDirection;
         _context.KnockbackForce = knockBackForce;
@@ -126,11 +120,15 @@ public class EnemyTopdownStateDriver : Flyweight
             _animator.Play(_context.HurtHash);
             return;
         }
-            
-        if (!_context.IsHurting)
-            _context.IsHurting = true;
-        else 
-            _context.IsMoreHurt = true;
+        
+        if(knockBackForce > 0)
+        {
+            if (!_context.IsHurting)
+                _context.IsHurting = true;
+            else
+                _context.IsMoreHurt = true;
+        }
+        
 
 
 
@@ -141,15 +139,6 @@ public class EnemyTopdownStateDriver : Flyweight
     }
     public void OnStunned(float duration)
     {
-        // spawn stun VFX here
-        if (_stunVfxSettings)
-        {
-            OneShotVFX stunVfx = FlyweightFactory.Spawn(_stunVfxSettings) as OneShotVFX;
-            OneShotVFXSettings oneShotVFXSettings = stunVfx.settings as OneShotVFXSettings;
-            stunVfx.FlyweightInitialize(_stunVfxSpawnTransform.position);
-            stunVfx.InitializeVFX(oneShotVFXSettings.DefaultSize, duration);
-        }
-
         _context.IsStunned = true;
         _context.StunDuration = duration;
     }
@@ -189,9 +178,11 @@ public class EnemyTopdownStateDriver : Flyweight
             {
                 hitBoxHandler.Origin = transform.root.gameObject;
                 hitBoxHandler.DodgeLayers = _context.CurrentEnemyAttackData.dodgeLayers;
+                hitBoxHandler.Parryable = _context.CurrentEnemyAttackData.Parryable;
             }
             if(vfx.TryGetComponent<DamageDealer>(out var damageDealer))
             {
+                damageDealer.Origin = transform;
                 damageDealer.KnockbackForce = _context.CurrentEnemyAttackData.knockBackForce;
                 damageDealer.Damage = _context.CurrentEnemyAttackData.damage;
             }
@@ -243,7 +234,19 @@ public class EnemyTopdownStateDriver : Flyweight
         }
         else
         {
-            Transform target = _context.CurrentEnemyAttackData.spawnType == EnemyAttackData.SpawnType.AtTarget ? _context.PlayerTransform : null;
+            Transform target = null;
+            switch(_context.CurrentEnemyAttackData.spawnType)
+            {
+                case EnemyAttackData.SpawnType.AtCustomSpawnTransform:
+                    target = _context.CurrentEnemyAttackData.skillSpawnTransform;
+                    break;
+                case EnemyAttackData.SpawnType.AtSelf:
+                    target = _context.RootTransform;
+                    break;
+                case EnemyAttackData.SpawnType.AtTarget:
+                    target = _context.PlayerTransform;
+                    break;
+            }
             _skillIndicator.FlyweightInitialize(target.position.Add(y: 0.1f));
             CircleIndicator indicator = (CircleIndicator)_skillIndicator;
             indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth,Mathf.Infinity, target);
@@ -274,37 +277,25 @@ public class EnemyTopdownStateDriver : Flyweight
     }
     public IEnumerator SpawnAnimationCoroutine(float duration)
     {
-        _context.IsSpawning = true;
-
         // 1. Disable Controller so we can move the transform manually
         _characterController.enabled = false;
 
         float elapsedTime = 0f;
         Vector3 startPos = transform.position; // Assumes enemy is already spawned underground
-
+        Vector3 rayStartPos = transform.position.Add(y: 10f);
         // --- FIX START ---
         // Raycast upward from current position to find the ground surface
         Vector3 targetPos = startPos;
 
-        if (Physics.Raycast(startPos, Vector3.up, out RaycastHit hit, 100f, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(rayStartPos, Vector3.down, out RaycastHit hit, 15, LayerMask.GetMask("Ground")))
         {
             // Found ground above, set target to surface level
             targetPos = new Vector3(startPos.x, hit.point.y, startPos.z);
         }
         else
         {
-            // Fallback: Raycast downward from high above to find ground
-            Vector3 rayStart = new Vector3(startPos.x, startPos.y + 100f, startPos.z);
-
-            if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit downHit, 200f, LayerMask.GetMask("Ground")))
-            {
-                targetPos = new Vector3(startPos.x, downHit.point.y, startPos.z);
-            }
-            else
-            {
-                Debug.LogWarning("Could not find ground surface for spawn animation!");
-                targetPos = new Vector3(startPos.x, startPos.y + 2f, startPos.z); // Emergency fallback
-            }
+            Debug.LogWarning("Could not find ground surface for spawn animation!");
+            targetPos = new Vector3(startPos.x, startPos.y + 2f, startPos.z); // Emergency fallback
         }
         // --- FIX END ---
 

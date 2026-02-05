@@ -25,7 +25,7 @@ public class EnemyTopdownHurt : State
             ctx.IsMoreHurt = false;
             OnEnter();
         }
-        if(_elapsedTime >= _knockBackDuration)
+        if (_elapsedTime >= _knockBackDuration)
         {
             ctx.CurrentSpeed = _targetSpeed;
             return;

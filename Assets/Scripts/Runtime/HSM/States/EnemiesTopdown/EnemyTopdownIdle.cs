@@ -45,7 +45,7 @@ public class EnemyTopdownIdle : State
                 return ((EnemyTopdownRoot)Parent).Attack;
             }
             if (ctx.DistanceToTarget < 1.5f)
-                return ((EnemyTopdownRoot)Parent).Idle;
+                return null;
             return ((EnemyTopdownRoot)Parent).Move;
         }
         else

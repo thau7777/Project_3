@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
 {
-    Transform _origin;
-
+    public Transform Origin { get; set; }
     // get the damage from the settings if we have it and put it here, if we dont have the settings setup then use the default
     [SerializeField]
     private float _damage = 40;
@@ -22,7 +21,6 @@ public class DamageDealer : MonoBehaviour
 
     private void Awake()
     {
-        _origin = transform.root;
         if(TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
         {
             hitBoxHandler.OnColliderHit.AddListener(DealDamage);
@@ -46,6 +44,18 @@ public class DamageDealer : MonoBehaviour
         {
             if (damageable.CurrentHealth == 0) return;
             Vector3 hitDirection = target.transform.position - sender.transform.position;
+
+            if(target.TryGetComponent<PlayerTopDownStateDriver>(out var player) && player.IsParrying && GetComponent<HitBoxHandler>().Parryable)
+            {
+                GetComponent<Flyweight>().ReturnToPool();
+
+                if (sender.TryGetComponent<Damageable>(out var enemy))
+                    enemy.TakeDamage(sender, 0, -hitDirection.normalized, 15, ElementalType, HitImpactEffect);
+
+                return;
+            }
+
+
             damageable.TakeDamage(sender,_damage, hitDirection.normalized, KnockbackForce, ElementalType, HitImpactEffect); // Example damage value
 
             

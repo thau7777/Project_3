@@ -5,20 +5,28 @@ namespace Turnbase
     public class TelegraphEffect : MonoBehaviour
     {
         [Header("Settings")]
-        public GameObject telegraphPrefab;  
-        public Transform telegraphSpawnPoint; 
+        public GameObject telegraphPrefab;
+        public Transform telegraphSpawnPoint;
 
         private GameObject currentEffect;
 
-        public void Play(float duration)
+        public void Play()
         {
             if (telegraphPrefab == null || telegraphSpawnPoint == null) return;
 
+            if (currentEffect != null) Destroy(currentEffect);
+
             currentEffect = Instantiate(telegraphPrefab, telegraphSpawnPoint.position, telegraphSpawnPoint.rotation);
-
             currentEffect.transform.SetParent(telegraphSpawnPoint);
+        }
 
-            Destroy(currentEffect, duration);
+        public void Stop()
+        {
+            if (currentEffect != null)
+            {
+                Destroy(currentEffect);
+                currentEffect = null;
+            }
         }
 
         private void Update()

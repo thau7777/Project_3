@@ -21,7 +21,7 @@ namespace Turnbase
 
         private IEnumerator HandleInterruption()
         {
-            stateMachine.character.animator.SetTrigger("Hit");
+            stateMachine.character.animator.Play("Hit");
             stateMachine.character.animator.SetTrigger("GetUp");
             stateMachine.character.animator.SetBool("IsIdle", false);
 

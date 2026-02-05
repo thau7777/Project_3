@@ -28,7 +28,7 @@ public class PlayerTopdownContext
     public string AimAnimName { get; set; }
     public bool IsUseSkillByUpperBody { get; set; }
     public bool NeedHoldStillWhileExecuteWhenAiming { get; set; }
-    public int CastingSkill { get; set; } = -1;
+    [field: SerializeField] public int CastingSkill { get; set; } = -1;
 
     // Movement config
     public float BaseMoveSpeed { get; private set; }

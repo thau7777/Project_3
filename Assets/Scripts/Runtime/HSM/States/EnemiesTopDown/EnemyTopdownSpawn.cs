@@ -9,6 +9,8 @@ public class EnemyTopdownSpawn : State
     }
     protected override void OnEnter()
     {
+        ctx.IsSpawning = true;
+
         ctx.CurrentSpeed = 0; 
         ctx.Animator.CrossFade(ctx.IdleHash, 0, 0);
     }

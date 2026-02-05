@@ -224,12 +224,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
-  _stunVfxSettings: {fileID: 0}
-  _stunVfxSpawnTransform: {fileID: 0}
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 2
+  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
@@ -330,6 +328,7 @@ MonoBehaviour:
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
   _invincibleDuration: 0.1
+  _stunVFXSettings: {fileID: 0}
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
