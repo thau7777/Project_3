@@ -4,7 +4,7 @@ namespace MyRule.UI
 {
     public class BaseUIPresenter
     {
-        IBaseUIView view;
+        protected IBaseUIView view;
 
         private EventBinding<SwitchPanelEvent> switchPanelEventBinding;
 
@@ -23,7 +23,7 @@ namespace MyRule.UI
             EventBus<SwitchPanelEvent>.Deregister(switchPanelEventBinding);
         }
 
-        private void OnSwitchPanel(SwitchPanelEvent e)
+        protected virtual void OnSwitchPanel(SwitchPanelEvent e)
         {
             if (e.Type == view.Type)
                 view.Show();

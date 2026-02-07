@@ -1,3 +1,4 @@
+using Unity.InferenceEngine;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -59,6 +60,8 @@ namespace MyRule
 
             animator.SetFloat("X", movement.x);
             animator.SetFloat("Y", movement.y);
+
+            Flip(movement.x);
         }
 
         private void ApplyGravity()
@@ -80,6 +83,16 @@ namespace MyRule
         {
             if (!canMove) moveDir = Vector2.zero;
             else moveDir = value;
+        }
+
+        public void Flip(float moveX)
+        {
+            if (moveX > 0)
+                transform.localScale = new Vector3(-1, 1, 1);
+            else if (moveX < 0)
+                transform.localScale = new Vector3(1, 1, 1);
+            else
+                return;
         }
 
         private void OnHolotableInteract()

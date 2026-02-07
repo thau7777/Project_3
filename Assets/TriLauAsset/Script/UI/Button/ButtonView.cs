@@ -11,13 +11,16 @@ namespace MyRule.UI
         ContinueButton,
         NewGameButton,
         LoadGameButton,
-        SettingsButton,
+        SystemButton,
         CreditsButton,
         QuitButton,
         PlayButton,
         PauseButton,
         StopButton,
-        RestartButton
+        RestartButton,
+        ProfileButton,
+        DiaryButton,
+        ShopButton,
     }
 
     public class ButtonView : MonoBehaviour, IButtonView, ISelectHandler, IDeselectHandler, ISubmitHandler

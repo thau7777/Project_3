@@ -1,4 +1,5 @@
 using MyRule.CommandPattern;
+using MyRule.UI;
 using UnityEngine;
 
 
@@ -18,6 +19,7 @@ namespace MyRule
             inputReader.spaceStationActions.onInteract += OnInteract;
             inputReader.spaceStationActions.onEsc += OnEsc;
             inputReader.spaceStationActions.onActve += OnActive;
+            inputReader.spaceStationActions.onTab += OpenTabView;
         }
 
         private void OnDisable()
@@ -26,6 +28,7 @@ namespace MyRule
             inputReader.spaceStationActions.onInteract -= OnInteract;
             inputReader.spaceStationActions.onEsc -= OnEsc;
             inputReader.spaceStationActions.onActve -= OnActive;
+            inputReader.spaceStationActions.onTab -= OpenTabView;
         }
 
         private void Start()
@@ -62,6 +65,11 @@ namespace MyRule
         private void OnActive()
         {
             EventBus<ScifitableActiveEvent>.Raise(new ScifitableActiveEvent());
+        }
+
+        private void OpenTabView()
+        {
+            EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.TabView));
         }
     }
 }

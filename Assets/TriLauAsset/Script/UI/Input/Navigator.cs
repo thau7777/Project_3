@@ -11,15 +11,24 @@ namespace MyRule
             switch (buttonType)
             {
                 case ButtonType.NewGameButton:
-                    ICommand newGameCommand = new SceneCommand(Loader.Scene.SpaceStationScene);
+                    ICommand newGameCommand = new SceneCommand(Loader.EScene.SpaceStationScene);
                     CommandInvoker.ExecuteCommand(newGameCommand);
                     break;
-                case ButtonType.SettingsButton:
-                    ICommand settingCommand = new SceneCommand(Loader.Scene.SettingsScene);
+                case ButtonType.SystemButton:
+                    ICommand settingCommand = new SceneCommand(Loader.EScene.SettingsScene);
                     CommandInvoker.ExecuteCommand(settingCommand);
                     break;
                 case ButtonType.QuitButton:
                     Application.Quit();
+                    break;
+                case ButtonType.ProfileButton:
+                    // Implement profile button action here
+                    break;
+                case ButtonType.DiaryButton:
+                    // Implement diary button action here
+                    break;
+                case ButtonType.ShopButton:
+                    // Implement shop button action here
                     break;
                 default:
                     return;

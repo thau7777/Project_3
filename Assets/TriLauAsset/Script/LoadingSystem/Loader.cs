@@ -4,7 +4,7 @@ namespace MyRule
 {
     public static class Loader
     {
-        public enum Scene
+        public enum EScene
         {
             MainMenuScene,
             SpaceStationScene,
@@ -13,28 +13,51 @@ namespace MyRule
             SettingsScene,
         }
 
-        private static Scene targetScene;
-
-        public static void Load(Scene scene)
+        public enum ELoadMode
         {
-            targetScene = scene;
-
-            SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Single);
+            Normal,
+            WithLoadingScreen,
         }
 
-        public static void LoadAdditive(Scene scene)
+        private static EScene targetScene;
+        private static LoadSceneMode targetLoadMode;
+
+        public static void Load(EScene scene, ELoadMode eLoadMode = ELoadMode.Normal)
         {
             targetScene = scene;
+            targetLoadMode = LoadSceneMode.Single;
 
-            SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Additive);
+            if (eLoadMode == ELoadMode.Normal)
+            {
+                SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Single);
+            }
+            else if (eLoadMode == ELoadMode.WithLoadingScreen)
+            {
+                SceneManager.LoadScene(EScene.LoadingScene.ToString(), LoadSceneMode.Single);
+            }
         }
 
-        public static void Unload(Scene scene)
+        public static void LoadAdditive(EScene scene, ELoadMode eLoadMode = ELoadMode.Normal)
+        {
+            targetScene = scene;
+            targetLoadMode = LoadSceneMode.Additive;
+
+            if (eLoadMode == ELoadMode.Normal)
+            {
+                SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Additive);
+            }
+            else if (eLoadMode == ELoadMode.WithLoadingScreen)
+            {
+                SceneManager.LoadScene(EScene.LoadingScene.ToString(), LoadSceneMode.Single);
+            }
+        }
+
+        public static void Unload(EScene scene)
         {
             SceneManager.UnloadSceneAsync(scene.ToString());
         }
 
-        public static void SetActiveScene(Scene scene)
+        public static void SetActiveScene(EScene scene)
         {
             UnityEngine.SceneManagement.Scene target = SceneManager.GetSceneByName(scene.ToString());
 
@@ -43,7 +66,7 @@ namespace MyRule
 
         public static void LoaderCallback()
         {
-            SceneManager.LoadSceneAsync(Loader.targetScene.ToString());
+            SceneManager.LoadSceneAsync(Loader.targetScene.ToString(), targetLoadMode);
         }
     }
 }

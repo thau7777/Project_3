@@ -9,6 +9,7 @@ public class SpaceStationActions : InputActions.ISpaceStationActions
     public Action<Vector2> onMove;
     public Action onActve;
     public Action<Vector2> onLook;
+    public Action onTab;
 
     public void OnActve(InputAction.CallbackContext context)
     {
@@ -46,5 +47,11 @@ public class SpaceStationActions : InputActions.ISpaceStationActions
             onMove?.Invoke(context.ReadValue<Vector2>());
         else if (context.canceled)
             onMove?.Invoke(Vector2.zero);
+    }
+
+    public void OnTab(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onTab?.Invoke();
     }
 }

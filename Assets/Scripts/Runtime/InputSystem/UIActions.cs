@@ -12,6 +12,7 @@ public class UIActions : InputActions.IUIActions
     public Action onPressAnyButton;
     public Action<Vector2> onAdjust;
     public Action<int> onNavigateTab;
+    public Action onOpenTabView;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -74,5 +75,11 @@ public class UIActions : InputActions.IUIActions
     public void OnNextTab(InputAction.CallbackContext context)
     {
         if (context.performed) onNavigateTab?.Invoke(1);
+    }
+
+    public void OnOpenTabView(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onOpenTabView?.Invoke();
     }
 }

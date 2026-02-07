@@ -2,9 +2,9 @@ namespace MyRule.CommandPattern
 {
     public class SceneCommand : ICommand
     {
-        private Loader.Scene currentScene;
+        private Loader.EScene currentScene;
 
-        public SceneCommand(Loader.Scene currentScene)
+        public SceneCommand(Loader.EScene currentScene)
         {
             this.currentScene = currentScene;
         }
@@ -13,10 +13,10 @@ namespace MyRule.CommandPattern
         {
             switch (currentScene)
             {
-                case Loader.Scene.SpaceStationScene:
+                case Loader.EScene.SpaceStationScene:
                     NewGame();
                     break;
-                case Loader.Scene.SettingsScene:
+                case Loader.EScene.SettingsScene:
                     OpenSetting();
                     break;
             }
@@ -26,10 +26,10 @@ namespace MyRule.CommandPattern
         {
             switch (currentScene)
             {
-                case Loader.Scene.SpaceStationScene:
+                case Loader.EScene.SpaceStationScene:
                     MainMenu();
                     break;
-                case Loader.Scene.SettingsScene:
+                case Loader.EScene.SettingsScene:
                     CloseSetting();
                     break;
             }
@@ -37,26 +37,26 @@ namespace MyRule.CommandPattern
 
         private void NewGame()
         {
-            Loader.Load(Loader.Scene.SpaceStationScene);
+            Loader.Load(Loader.EScene.SpaceStationScene, Loader.ELoadMode.WithLoadingScreen);
         }
 
         private void OpenSetting()
         {
-            Loader.LoadAdditive(Loader.Scene.SettingsScene);
+            Loader.LoadAdditive(Loader.EScene.SettingsScene);
         }
 
         private void CloseSetting()
         {
-            Loader.Unload(Loader.Scene.SettingsScene);
+            Loader.Unload(Loader.EScene.SettingsScene);
 
-            Loader.SetActiveScene(Loader.Scene.MainMenuScene);
+            Loader.SetActiveScene(Loader.EScene.MainMenuScene);
 
-            EventBus<MainMenuButtonSelectedEvent>.Raise(new MainMenuButtonSelectedEvent(UI.ButtonType.SettingsButton));
+            EventBus<MainMenuButtonSelectedEvent>.Raise(new MainMenuButtonSelectedEvent(UI.ButtonType.SystemButton));
         }
 
         private void MainMenu()
         {
-            Loader.Load(Loader.Scene.MainMenuScene);
+            Loader.Load(Loader.EScene.MainMenuScene);
         }
     }
 }

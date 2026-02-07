@@ -25,6 +25,12 @@ namespace MyRule
         private void Start()
         {
             AudioManager.Instance.PlayMusic(MusicType.MainMenu);
+            
+        }
+
+        private void OnDestroy()
+        {
+            
         }
 
         private void HandleSelectBtn(MainMenuButtonSelectedEvent evt)
@@ -34,7 +40,7 @@ namespace MyRule
                 case UI.ButtonType.NewGameButton:
                     newGameBtn.Select();
                     break;
-                case UI.ButtonType.SettingsButton:
+                case UI.ButtonType.SystemButton:
                     settingBtn.Select();
                     break;
                 default:
