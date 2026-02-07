@@ -141,6 +141,7 @@ namespace Turnbase
                 characterInstance.stats.currentShield = 0;
                 characterInstance.stats.currentHP = characterInstance.stats.maxHP;
                 characterInstance.stats.currentMP = characterInstance.stats.maxMP;
+                characterInstance.stats.maxShield = characterInstance.stats.maxHP;
             }
 
             PlayerActionUI actionUI = characterInstance.GetComponentInChildren<PlayerActionUI>(true);

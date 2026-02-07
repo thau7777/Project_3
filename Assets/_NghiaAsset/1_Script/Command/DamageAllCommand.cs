@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-
 
 namespace Turnbase
 {
@@ -12,31 +10,42 @@ namespace Turnbase
         private Character user;
         private Skill skill;
         private BattleManager battleManager;
+        private Character mainTarget;
+        private bool damageApplied = false;
 
         private const float TARGET_DELAY = 0.05f;
 
-        public DamageAllCommand(Character user, Skill skill, BattleManager battleManager)
+        public DamageAllCommand(Character user, Skill skill, BattleManager battleManager, Character mainTarget = null)
         {
             this.user = user;
             this.skill = skill;
             this.battleManager = battleManager;
+            this.mainTarget = mainTarget;
         }
 
         public IEnumerator Execute()
         {
+            damageApplied = false;
+
+            Action hitAction = () =>
+            {
+                if (damageApplied) return;
+
+                battleManager.StartCoroutine(ApplyDamageSequence());
+                damageApplied = true;
+            };
+
+            user.PrepareHitCallBack(hitAction);
+
             if (!string.IsNullOrEmpty(skill.animationTriggerName))
             {
-                user.animator.Play(skill.animationTriggerName);
+                user.animator.Play(skill.animationTriggerName, 0, 0f);
             }
 
-            yield return new WaitForSeconds(1.5f);
-
-            List<Character> allTargets = GetTargets();
-
-            yield return ApplyDamageToTargets(allTargets);
+            while (!damageApplied) yield return null;
 
             float totalAnimationDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(totalAnimationDuration);
+            yield return new WaitForSeconds(totalAnimationDuration * 0.5f);
 
             if (battleManager != null)
             {
@@ -44,113 +53,63 @@ namespace Turnbase
             }
         }
 
-        private List<Character> GetTargets()
+        private IEnumerator ApplyDamageSequence()
         {
-            List<Character> targets;
-
-            if (user.isPlayer)
-            {
-                targets = battleManager.allCombatants.FindAll(
-                    c => c != null &&
-                         !c.isPlayer &&
-                         c.isAlive &&
-                         !c.isVirtualTracker
-                );
-            }
-            else
-            {
-                targets = battleManager.allCombatants.FindAll(
-                    c => c != null &&
-                         c.isPlayer &&
-                         c.isAlive &&
-                         !c.isVirtualTracker
-                );
-            }
-
-            return targets;
-        }
-
-        private void ApplySingleHitDamage(Character target, int damage)
-        {
-            ElementType element = skill.elementType;
-            target.TakeDamage(user, damage, element);
-        }
-
-        private void ApplySingleHitDamageAndEffect(Character target, int damage)
-        {
-            ApplySingleHitDamage(target, damage);
-            SpawnImpactEffect(target.transform.position);
-        }
-
-        private IEnumerator ApplyDamageToTargets(List<Character> targets)
-        {
+            List<Character> targets = GetTargets();
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
             float delayBetweenHits = skill.delayBetweenHits;
 
             for (int i = 0; i < hits; i++)
             {
-
                 foreach (Character aoeTarget in targets)
                 {
                     if (aoeTarget == null || !aoeTarget.isAlive) continue;
 
                     int finalDamage = DamageCalculator.GetFinalDamage(user, aoeTarget, skill, battleManager);
 
-                    int baseDamagePerHit = finalDamage / hits;
-                    int damageRemainder = finalDamage % hits;
-
-                    int currentHitDamage = baseDamagePerHit;
-                    if (i == hits - 1)
+                    if (skill.skillType == SkillType.MeleeAttack && aoeTarget != mainTarget)
                     {
-                        currentHitDamage += damageRemainder;
+                        finalDamage = Mathf.RoundToInt(finalDamage * user.buffManager.splashDamagePercentage);
                     }
 
+                    int currentHitDamage = finalDamage / hits;
+                    if (i == hits - 1) currentHitDamage += (finalDamage % hits);
 
                     if (i == 0)
                     {
                         if (skill.debuffProperties.statToModify != DebuffType.None)
-                        {
                             aoeTarget.debuffManager.ApplyDebuff(user, skill.debuffProperties);
-                        }
 
                         if (skill.stackApplicationTarget == StackApplicationTarget.Target)
-                        {
                             user.buffManager.ProcessSkillStacks(skill, aoeTarget);
-                        }
 
-                        ApplySingleHitDamageAndEffect(aoeTarget, currentHitDamage);
+                        aoeTarget.TakeDamage(user, currentHitDamage, skill.elementType);
+                        SpawnImpactEffect(aoeTarget.transform.position);
                     }
                     else
                     {
-                        ApplySingleHitDamage(aoeTarget, currentHitDamage);
+                        aoeTarget.TakeDamage(user, currentHitDamage, skill.elementType);
                     }
-
 
                     yield return new WaitForSeconds(TARGET_DELAY);
                 }
 
-
-                if (i < hits - 1)
-                {
-                    yield return new WaitForSeconds(delayBetweenHits);
-                }
+                if (i < hits - 1) yield return new WaitForSeconds(delayBetweenHits);
             }
+        }
+
+        private List<Character> GetTargets()
+        {
+            return battleManager.allCombatants.FindAll(c =>
+                c != null && c.isAlive && !c.isVirtualTracker && (c.isPlayer != user.isPlayer));
         }
 
         private void SpawnImpactEffect(Vector3 position)
         {
-            FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
-
-            if (effectToSpawn != null)
+            if (skill.impactVFXPrefab != null)
             {
-                Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(effectToSpawn);
-
-                if (effectInstance != null)
-                {
-                    effectInstance.Initialize(position, Quaternion.identity);
-
-                }
-
+                Flyweight_TB effectInstance = FlyweightFactory_TB.Spawn(skill.impactVFXPrefab);
+                if (effectInstance != null) effectInstance.Initialize(position, Quaternion.identity);
             }
         }
     }

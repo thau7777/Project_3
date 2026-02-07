@@ -1617,8 +1617,8 @@ MonoBehaviour:
     Avatar: {fileID: -331713453, guid: 1ebd30b3c1fc3d749936bd57797c1fbc, type: 3}
     level: 0
   stats:
-    maxHP: 1
-    currentHP: 1
+    maxHP: 200
+    currentHP: 0
     maxMP: 100
     currentMP: 100
     maxShield: 119
@@ -1634,6 +1634,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 45bc4cd7e6358274b902e5746b53785f, type: 2}
   skills:
   - {fileID: 11400000, guid: fddab20035257134d880ffa27a6290ba, type: 2}
+  - {fileID: 11400000, guid: bc63979dc8c0dd949895ebd7940d515f, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -1753,6 +1754,12 @@ MonoBehaviour:
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
   shieldIcon: {fileID: 0}
+  basicAttackBuffAmount: 0
+  basicAttackBuffTurnsRemaining: 0
+  basicAttackBuffIcon: {fileID: 0}
+  splashAttackTurnsRemaining: 0
+  splashDamagePercentage: 0
+  splashAttackIcon: {fileID: 0}
 --- !u!114 &-7500645950520890881
 MonoBehaviour:
   m_ObjectHideFlags: 0

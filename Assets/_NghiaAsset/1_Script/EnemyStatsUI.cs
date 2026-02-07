@@ -114,7 +114,8 @@ namespace Turnbase
         {
             if (shieldBarFill != null && stats.maxHP > 0)
             {
-                shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxHP;
+                shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxShield;
+
             }
         }
 

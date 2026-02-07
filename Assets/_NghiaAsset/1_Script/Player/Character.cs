@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -166,8 +165,6 @@ namespace Turnbase
             healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
 
             Color elementColor = Color.white;
-
-            //EventBusUI<DamageEvent>.Raise(new DamageEvent(transform.position, amount, elementColor, isCrit));
 
             CameraShaker.Instance.GenerateBasicShake();
         }

@@ -1,5 +1,4 @@
-﻿using UnityEditor.EditorTools;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UI_MoleSpawner : MonoBehaviour
 {

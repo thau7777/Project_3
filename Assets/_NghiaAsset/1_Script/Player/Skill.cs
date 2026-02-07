@@ -138,8 +138,7 @@ public enum StatType
     MagicalDefense,
     IgnoreDefense,
     BasicAttackDamage,
-
-
+    SplashDamage
 }
 
 public enum SkillTargetType
@@ -165,6 +164,7 @@ public enum SkillType
     RangedProjectile,
     DamageGlobal,
     LaserAttack,
+
 }
 
 public enum ElementType

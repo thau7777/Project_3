@@ -28,6 +28,14 @@ namespace Turnbase
                 int shieldAbsorb = Mathf.Min(owner.stats.currentShield, remainingDamage);
                 owner.stats.currentShield -= shieldAbsorb;
                 remainingDamage -= shieldAbsorb;
+
+                if (owner.stats.currentShield <= 0)
+                {
+                    if (owner.buffManager != null)
+                    {
+                        owner.buffManager.BreakShield();
+                    }
+                }
             }
 
             if (remainingDamage > 0)
@@ -56,8 +64,6 @@ namespace Turnbase
 
 
             float intensity = Mathf.Clamp(damage * 0.01f, 0.1f, 0.5f);
-
-            //EventBusUI<CameraShakeEvent>.Raise(new CameraShakeEvent(0.15f, intensity));
 
             Color popupColor = VFXManager.Instance.elementColorMap.GetColor(element);
 
