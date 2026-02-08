@@ -1,38 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI; // Thêm nếu bạn cần đổi màu/hình ảnh
 
 public class MoleUI : MonoBehaviour, IPointerClickHandler
 {
-    private Image _image; // Ví dụ nếu bạn muốn reset màu sắc
+    public float lifeTime = 2f;
+    private UI_MoleSpawner _spawner;
+    private int _myIndex = -1;
 
-    void Awake()
+    public void SetMySlot(UI_MoleSpawner spawner, int index)
     {
-        _image = GetComponent<Image>();
+        _spawner = spawner;
+        _myIndex = index;
     }
 
-    // Hàm này tự động gọi mỗi khi bạn SetActive(true)
     void OnEnable()
     {
-        ResetMole();
-    }
+        CancelInvoke(nameof(HideMole));
+        Invoke(nameof(HideMole), lifeTime);
 
-    void ResetMole()
-    {
-        // Reset lại mọi thứ về trạng thái ban đầu
-        transform.localScale = Vector3.one;
-        if (_image != null) _image.color = Color.white;
-
-        // Nếu bạn có dùng Animation, hãy Play lại animation IDLE ở đây
-        // GetComponent<Animator>().Play("Idle", 0, 0);
+        // Nếu có Animator, hãy Trigger hiệu ứng "Up" ở đây
+        // GetComponent<Animator>().SetTrigger("Up");
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Đập trúng chuột UI!");
+        HideMole();
+    }
 
-        // Thay vì biến mất ngay, bạn có thể chạy animation chết
-        // Sau đó gọi hàm này để trả về Pool:
+    void HideMole()
+    {
+        if (_spawner != null && _myIndex != -1)
+        {
+            _spawner.ReleaseSlot(_myIndex);
+        }
         gameObject.SetActive(false);
     }
 }
