@@ -26,6 +26,8 @@ namespace MyRule.Audio
         // ====================== LIFECYCLE ======================
         protected override void Awake()
         {
+            base.Awake();
+
             Init();
         }
 

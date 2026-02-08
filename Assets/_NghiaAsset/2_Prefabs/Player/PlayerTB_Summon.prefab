@@ -27927,6 +27927,7 @@ GameObject:
   - component: {fileID: 9037123963665438029}
   - component: {fileID: -4506340721386170577}
   - component: {fileID: 8263095674379999660}
+  - component: {fileID: 3034257494130400557}
   m_Layer: 0
   m_Name: PlayerTB_Summon
   m_TagString: Player
@@ -28019,7 +28020,9 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: 63b6b50764926834b9412854ed734732, type: 2}
   skills: []
-  item: []
+  item:
+  - {fileID: 11400000, guid: 94739275a84aeeb48aed2113f6d7c639, type: 2}
+  - {fileID: 11400000, guid: 10ce6117019c09243820bba989b6d8a2, type: 2}
   passiveSkills: []
   isPlayer: 1
   isVirtualTracker: 0
@@ -28151,6 +28154,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
   character: {fileID: 3404509342006786628}
+--- !u!114 &3034257494130400557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
 --- !u!1 &8083655193775197940
 GameObject:
   m_ObjectHideFlags: 0
@@ -31712,6 +31727,10 @@ PrefabInstance:
     - target: {fileID: 1421066695436504497, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_Name
       value: ===Canvas-Player===
+      objectReference: {fileID: 0}
+    - target: {fileID: 6687303208234022255, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7443509545567645747, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_Pivot.x

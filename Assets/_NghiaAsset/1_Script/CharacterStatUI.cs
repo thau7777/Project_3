@@ -209,7 +209,7 @@ namespace Turnbase
                 keysToRemove.Remove(effect.Name);
                 if (activeEffectEntries.TryGetValue(effect.Name, out StatusEffectEntry entry))
                 {
-                    entry.Setup(effect.Name, $"{effect.Detail} ({effect.TurnsRemaining}t)");
+                    //entry.Setup(effect.Name, $"{effect.Detail} ({effect.TurnsRemaining}t)");
                     entry.UpdateVisuals(effect);
                 }
                 else if (statusEffectEntryPrefab != null && statusEffectsContainer != null)

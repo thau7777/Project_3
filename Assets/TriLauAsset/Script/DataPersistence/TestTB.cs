@@ -9,7 +9,7 @@ public class TestTB : MonoBehaviour
     {
         inputReader.SwitchActionMap(ActionMap.PlayerTurnBased);
 
-        inputReader.playerTurnBasedActions.OnTestEvent += HandleTestEvent;
+        //inputReader.playerTurnBasedActions.OnTestEvent += HandleTestEvent;
     }
 
     private void HandleTestEvent()

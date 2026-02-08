@@ -49,7 +49,7 @@ namespace Turnbase
             foreach (var character in targetCombatants)
             {
                 Debug.Log($"- Áp dụng sát thương DoT lên {character.name}: {damagePerTurn} ({element}).");
-                character.TakeDamage(damagePerTurn, element);
+                character.TakeDamage(null, damagePerTurn, element);
             }
 
             battleManager.uiManager?.UpdateAllCharacterUIs(battleManager.allCombatants);

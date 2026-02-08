@@ -2762,7 +2762,7 @@ MonoBehaviour:
   characterElement: 0
   info:
     name: Dog
-    Avatar: {fileID: 21300000, guid: 6b2b4c87482d4a5488de1b4a8cc12d08, type: 3}
+    Avatar: {fileID: -383654364, guid: a079d1744413bcc498345a6255e61273, type: 3}
     level: 0
   stats:
     maxHP: 266
@@ -2808,6 +2808,7 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 3702487629804660082}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
   isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
@@ -3122,6 +3123,10 @@ PrefabInstance:
     - target: {fileID: 1421066695436504497, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_Name
       value: ===Canvas-Player===
+      objectReference: {fileID: 0}
+    - target: {fileID: 1421066695436504497, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6687303208234022255, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_PresetInfoIsWorld

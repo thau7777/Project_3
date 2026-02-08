@@ -198,6 +198,35 @@ namespace Turnbase
                 });
             }
 
+            if (buffManager.basicAttackBuffTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Atk Boost",
+                    TurnsRemaining = buffManager.basicAttackBuffTurnsRemaining,
+                    Detail = $"+{buffManager.basicAttackBuffAmount} Normal Dmg",
+                    IsBuff = true,
+                    Icon = buffManager.basicAttackBuffIcon
+                });
+            }
+
+            if (character != null && character.passiveSkills != null)
+            {
+                foreach (var passive in character.passiveSkills)
+                {
+                    if (passive == null) continue;
+
+                    effects.Add(new StatusEffectData
+                    {
+                        Name = passive.skillName,
+                        TurnsRemaining = +999,
+                        Detail = passive.description,
+                        IsBuff = true,
+                        Icon = passive.icon 
+                    });
+                }
+            }
+
             return effects;
         }
         #endregion    

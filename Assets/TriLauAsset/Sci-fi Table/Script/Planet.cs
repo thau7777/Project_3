@@ -90,7 +90,7 @@ namespace MyRule
             switch (planetSO.planetType)
             {
                 case PlanetType.GreenLand:
-                    Loader.Load(Loader.Scene.BoardScene);
+                    Loader.Load(Loader.EScene.BoardScene);
                     break;
                 case PlanetType.Desert:
                     break;

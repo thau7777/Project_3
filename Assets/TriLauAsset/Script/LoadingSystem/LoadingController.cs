@@ -7,7 +7,7 @@ namespace MyRule
     {
         private async void Start()
         {
-            await UniTask.Delay(1000);
+            await UniTask.Delay(4000);
             Loader.LoaderCallback();
         }
     }

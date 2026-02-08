@@ -11,13 +11,16 @@ namespace MyRule.UI
         ContinueButton,
         NewGameButton,
         LoadGameButton,
-        SettingsButton,
+        SystemButton,
         CreditsButton,
         QuitButton,
         PlayButton,
         PauseButton,
         StopButton,
-        RestartButton
+        RestartButton,
+        ProfileButton,
+        DiaryButton,
+        ShopButton,
     }
 
     public class ButtonView : MonoBehaviour, IButtonView, ISelectHandler, IDeselectHandler, ISubmitHandler
@@ -26,8 +29,6 @@ namespace MyRule.UI
         [SerializeField] protected Button button;
 
         protected ButtonPresenter presenter;
-
-        public ButtonType Type => buttonViewType;
 
         private void OnEnable()
         {
@@ -40,8 +41,10 @@ namespace MyRule.UI
         }
 
         public virtual void OnSubmit(BaseEventData eventData)
-        { 
+        {
             AudioManager.Instance.PlaySFX(SFXType.UI_Click);
+
+            Navigator.OnSubmitPress(buttonViewType);
         }
 
         public virtual void OnSelect(BaseEventData eventData)

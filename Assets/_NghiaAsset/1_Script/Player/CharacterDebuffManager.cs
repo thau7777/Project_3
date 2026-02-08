@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Turnbase;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Turnbase
@@ -54,17 +55,30 @@ namespace Turnbase
 
         }
 
-        public void ApplyBurnDebuff(int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        public void ApplyBurnDebuff(Character attacker, int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
+            int finalDamage = baseDamage;
+
+            if (attacker != null)
+            {
+                foreach (var passive in attacker.passiveSkills)
+                {
+                    if (passive is Passive_DoTBoost dotBoost)
+                    {
+                        finalDamage = dotBoost.GetBoostedDamage(finalDamage, DoTType.Burn);
+                    }
+                }
+            }
+
             if (burnTurnsRemaining <= 0)
             {
-                burnDamagePerTurn = baseDamage;
+                burnDamagePerTurn = finalDamage;
             }
             else
             {
-                burnDamagePerTurn = Mathf.Max(burnDamagePerTurn, baseDamage);
+                burnDamagePerTurn = Mathf.Max(burnDamagePerTurn, finalDamage);
             }
 
             burnTurnsRemaining = duration;
@@ -74,23 +88,34 @@ namespace Turnbase
                 burnVFXInstance.ReturnToPool();
             }
             burnVFXInstance = vfxInstance;
-
             burnIcon = icon;
 
             character.UpdateOwnUI();
         }
-
-        public void ApplyPoisonDebuff(int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        public void ApplyPoisonDebuff(Character attacker, int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
+            int finalDamage = baseDamage;
+
+            if (attacker != null)
+            {
+                foreach (var passive in attacker.passiveSkills)
+                {
+                    if (passive is Passive_DoTBoost dotBoost)
+                    {
+                        finalDamage = dotBoost.GetBoostedDamage(finalDamage, DoTType.Poison);
+                    }
+                }
+            }
+
             if (poisonTurnsRemaining <= 0)
             {
-                poisonDamagePerTurn = baseDamage;
+                poisonDamagePerTurn = finalDamage;
             }
             else
             {
-                poisonDamagePerTurn = Mathf.Max(poisonDamagePerTurn, baseDamage);
+                poisonDamagePerTurn = Mathf.Max(poisonDamagePerTurn, finalDamage);
             }
 
             poisonTurnsRemaining = duration;
@@ -105,7 +130,6 @@ namespace Turnbase
 
             character.UpdateOwnUI();
         }
-
         public void ApplyStunDebuff(int duration, Flyweight_TB newVfxInstance, Sprite icon)
         {
             if (duration <= 0) return;
@@ -215,7 +239,7 @@ namespace Turnbase
         }
 
 
-        public void ApplyDebuff(Skill.DebuffSettings debuffSettings)
+        public void ApplyDebuff(Character attacker, Skill.DebuffSettings debuffSettings)
         {
             if (debuffSettings.statToModify == DebuffType.None || debuffSettings.durationTurns <= 0)
                 return;
@@ -247,6 +271,7 @@ namespace Turnbase
             {
                 case DebuffType.Burn:
                     ApplyBurnDebuff(
+                        attacker,
                         debuffSettings.baseDamagePerTurn,
                         debuffSettings.durationTurns,
                         debuffVFX,
@@ -256,6 +281,7 @@ namespace Turnbase
 
                 case DebuffType.Poison:
                     ApplyPoisonDebuff(
+                        attacker,
                         debuffSettings.baseDamagePerTurn,
                         debuffSettings.durationTurns,
                         debuffVFX,
@@ -330,8 +356,7 @@ namespace Turnbase
                         currentTickDamage += remainder;
                     }
 
-                    character.TakeDamage(currentTickDamage, BURN_ELEMENT);
-
+                    character.TakeDamage(null, currentTickDamage, BURN_ELEMENT);
                     damageApplied = true;
 
                     if (i < BURN_TICKS - 1)
@@ -365,8 +390,7 @@ namespace Turnbase
                         currentTickDamage += remainder;
                     }
 
-                    character.TakeDamage(currentTickDamage, POISON_ELEMENT);
-
+                    character.TakeDamage(null, currentTickDamage, POISON_ELEMENT);
                     damageApplied = true;
 
                     if (i < POISON_TICKS - 1)

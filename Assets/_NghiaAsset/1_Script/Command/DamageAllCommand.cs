@@ -73,7 +73,7 @@ namespace Turnbase
         private void ApplySingleHitDamage(Character target, int damage)
         {
             ElementType element = skill.elementType;
-            target.TakeDamage(damage, element);
+            target.TakeDamage(user, damage, element);
         }
 
         private void ApplySingleHitDamageAndEffect(Character target, int damage)
@@ -110,7 +110,7 @@ namespace Turnbase
                     {
                         if (skill.debuffProperties.statToModify != DebuffType.None)
                         {
-                            aoeTarget.debuffManager.ApplyDebuff(skill.debuffProperties);
+                            aoeTarget.debuffManager.ApplyDebuff(user, skill.debuffProperties);
                         }
 
                         if (skill.stackApplicationTarget == StackApplicationTarget.Target)

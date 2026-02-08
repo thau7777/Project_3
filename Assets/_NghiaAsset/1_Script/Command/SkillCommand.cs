@@ -27,7 +27,7 @@ namespace Turnbase
         {
             if (skill.debuffProperties.statToModify != DebuffType.None && target.debuffManager != null)
             {
-                target.debuffManager.ApplyDebuff(skill.debuffProperties);
+                target.debuffManager.ApplyDebuff(user, skill.debuffProperties);
             }
 
             if ((skill.skillType == SkillType.Buff || skill.skillType == SkillType.Shield) && target.buffManager != null)

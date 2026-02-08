@@ -11,13 +11,23 @@ namespace MyRule.UI
         PauseMenu,
         Inventory,
         CharacterStats,
+        TabView,
+        Profile,
         None
     }
 
     public abstract class BaseUIView : MonoBehaviour, IBaseUIView
     {
-        protected PanelType panelType;
+        [SerializeField] protected PanelType panelType;
         public PanelType Type => panelType;
+
+        protected bool isActive;
+
+        public bool IsActive
+        {
+            get => isActive;
+            set => isActive = value;
+        }
 
         private BaseUIPresenter presenter;
 

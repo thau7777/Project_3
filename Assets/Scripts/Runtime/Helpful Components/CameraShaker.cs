@@ -20,15 +20,15 @@ public class CameraShaker : Singleton<CameraShaker>
     [Button]
     public void GenerateBasicShake()
     {
-        ShakeRandomDirection(force: 0.7f, zDirection: -1);
+        ShakeRandomDirection(force: 0.7f);
     }
-    public void ShakeRandomDirection(CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump, float force = 1f, float duration = 0.2f, float zDirection = 0f)
+    public void ShakeRandomDirection(CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump, float force = 1f, float duration = 0.2f)
     {
         // Generate random direction in XY plane
         Vector3 randomDir = new Vector3(
             Random.Range(-1f, 1f),
             Random.Range(-1f, 1f),
-            zDirection
+            -3f
         ).normalized;
         if(impulseShapes == CinemachineImpulseDefinition.ImpulseShapes.Custom)
         {
@@ -38,7 +38,6 @@ public class CameraShaker : Singleton<CameraShaker>
         else
             impulseSource.ImpulseDefinition.ImpulseShape = impulseShapes;
         impulseSource.ImpulseDefinition.ImpulseDuration = duration;
-        
         impulseSource.GenerateImpulseWithVelocity(randomDir * force);
     }
     //public void ShakeRandomDirection(float force = 1f, CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump)

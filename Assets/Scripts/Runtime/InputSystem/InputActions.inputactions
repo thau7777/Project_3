@@ -257,15 +257,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Test",
-                    "type": "Button",
-                    "id": "37c619ca-f2b2-442f-978c-69731d8fce79",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Q",
                     "type": "Button",
                     "id": "86817ba9-a3e9-4802-a1eb-599f09b85b64",
@@ -309,24 +300,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "S",
-                    "type": "Button",
-                    "id": "cbec01df-21d3-4c4b-b41d-97f2eb861fbc",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "W",
-                    "type": "Button",
-                    "id": "58596a46-0650-49e1-aa4d-efeca561f71e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -349,17 +322,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "D",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8141ed45-0cbe-4262-993e-39808fe398c5",
-                    "path": "<Keyboard>/l",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Test",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -417,28 +379,6 @@
                     "action": "F",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b1b85c35-794d-42a4-96e3-7348580271b4",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "S",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1a723a8d-adc7-4e52-b3ac-c776c8494609",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "W",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -459,7 +399,7 @@
             "id": "38fa99af-7564-46a5-93d8-92dc172399c5",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "Navigate",
                     "type": "Value",
                     "id": "c02e8333-fe4c-4417-be50-6c2f3393713e",
                     "expectedControlType": "Vector2",
@@ -511,6 +451,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PreviousTab",
+                    "type": "Button",
+                    "id": "a5549d34-97f9-4513-a285-04931f8896e8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NextTab",
+                    "type": "Button",
+                    "id": "b429f3ae-497e-4981-8248-a72d5abb6d28",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenTabView",
+                    "type": "Button",
+                    "id": "78a894c2-6763-4bb3-a394-d053964deb0a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -521,7 +488,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -532,7 +499,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -543,29 +510,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "left",
                     "id": "fd678f0f-7796-4694-bd82-21a0478609c3",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "right",
                     "id": "f25f251b-1285-4740-83c5-72bf29b5aba0",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -576,7 +543,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -587,7 +554,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -598,7 +565,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -609,7 +576,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -620,20 +587,9 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "0f98b880-4c61-474d-9bcd-ea907c758cc1",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -931,6 +887,61 @@
                     "action": "Adjust",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "29dac747-0650-4ad2-8f39-a1f18ea53759",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PreviousTab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0df9f9f-ad85-4234-a0fe-09d8e7511e53",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PreviousTab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e292a4d-b4cb-4a1d-943b-41de4668f8f0",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextTab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9776adbf-6686-46a8-bbfc-b58eaf88b8bf",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextTab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7662d6b-9d92-4677-b73e-0c0ae4c539d8",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenTabView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1149,6 +1160,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "a1a8c41e-c6ec-47b9-8ab9-42714d019f29",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1270,6 +1290,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab871b72-675c-45a3-9a2d-b9e1836ee058",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

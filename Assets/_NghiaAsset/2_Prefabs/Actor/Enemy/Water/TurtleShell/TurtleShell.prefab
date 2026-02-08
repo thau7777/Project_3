@@ -860,6 +860,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -961,6 +962,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1278,7 +1280,7 @@ MonoBehaviour:
   characterElement: 4
   info:
     name: TurtleShell
-    Avatar: {fileID: 21300000, guid: 8b5c30d5c5e58ed4b866d70b884d9e9d, type: 3}
+    Avatar: {fileID: -1267357969, guid: 1ebd30b3c1fc3d749936bd57797c1fbc, type: 3}
     level: 0
   stats:
     maxHP: 1000
@@ -1320,8 +1322,12 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 5d37970fe13b56f4fa422d5b37a2d142, type: 2}
   damagePopupCanvasParent: {fileID: 9095930149043026862}
   enemyStatsUI: {fileID: 9145698497346757161}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 0}
+  SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 38056002123613468}
+  isAttackBlocked: 0
+  healthSystem: {fileID: 0}
+  isParrySuccessful: 0
   traildblaze: 100
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
@@ -1333,6 +1339,7 @@ MonoBehaviour:
     debuffValue: 0
     debuffEffect: {fileID: 0}
     icon: {fileID: 0}
+  telegraphManager: {fileID: 0}
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,6 +1465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918f2cc3e3724ab41b916f9717209a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.DamagePopup
+  critText: {fileID: 0}
 --- !u!114 &1419944415559526912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,7 +1493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  targetRenderer: {fileID: 6373987672534303604}
+  targetRenderers: []
 --- !u!114 &5626590007051990750
 MonoBehaviour:
   m_ObjectHideFlags: 0
