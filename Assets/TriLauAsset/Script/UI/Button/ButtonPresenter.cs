@@ -1,19 +1,20 @@
+using MyRule.Audio;
 using UnityEngine;
 
 namespace MyRule.UI
 {
     public class ButtonPresenter
     {
-        IButtonView view;
-
+        private IButtonView view;
+        
         public ButtonPresenter(IButtonView buttonView)
         { 
-            view = buttonView;
+            this.view = buttonView;
         }
 
         public void CleanUp()
         {
-            view = null;
+            this.view = null;
         }
     }
 }

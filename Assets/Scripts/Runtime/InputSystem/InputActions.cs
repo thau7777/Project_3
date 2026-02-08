@@ -485,7 +485,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""38fa99af-7564-46a5-93d8-92dc172399c5"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""Navigate"",
                     ""type"": ""Value"",
                     ""id"": ""c02e8333-fe4c-4417-be50-6c2f3393713e"",
                     ""expectedControlType"": ""Vector2"",
@@ -537,6 +537,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PreviousTab"",
+                    ""type"": ""Button"",
+                    ""id"": ""a5549d34-97f9-4513-a285-04931f8896e8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextTab"",
+                    ""type"": ""Button"",
+                    ""id"": ""b429f3ae-497e-4981-8248-a72d5abb6d28"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenTabView"",
+                    ""type"": ""Button"",
+                    ""id"": ""78a894c2-6763-4bb3-a394-d053964deb0a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -547,7 +574,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -558,7 +585,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -569,29 +596,29 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
                     ""id"": ""fd678f0f-7796-4694-bd82-21a0478609c3"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
                     ""id"": ""f25f251b-1285-4740-83c5-72bf29b5aba0"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -602,7 +629,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -613,7 +640,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -624,7 +651,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -635,7 +662,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -646,20 +673,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0f98b880-4c61-474d-9bcd-ea907c758cc1"",
-                    ""path"": ""<Mouse>/scroll"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -957,6 +973,61 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Adjust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29dac747-0650-4ad2-8f39-a1f18ea53759"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0df9f9f-ad85-4234-a0fe-09d8e7511e53"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e292a4d-b4cb-4a1d-943b-41de4668f8f0"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9776adbf-6686-46a8-bbfc-b58eaf88b8bf"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7662d6b-9d92-4677-b73e-0c0ae4c539d8"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenTabView"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1175,6 +1246,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""a1a8c41e-c6ec-47b9-8ab9-42714d019f29"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1298,6 +1378,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab871b72-675c-45a3-9a2d-b9e1836ee058"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1378,12 +1469,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTowerDefense = asset.FindActionMap("PlayerTowerDefense", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Move = m_UI.FindAction("Move", throwIfNotFound: true);
+        m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
         m_UI_Look = m_UI.FindAction("Look", throwIfNotFound: true);
         m_UI_PressAnyButton = m_UI.FindAction("PressAnyButton", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_Adjust = m_UI.FindAction("Adjust", throwIfNotFound: true);
+        m_UI_PreviousTab = m_UI.FindAction("PreviousTab", throwIfNotFound: true);
+        m_UI_NextTab = m_UI.FindAction("NextTab", throwIfNotFound: true);
+        m_UI_OpenTabView = m_UI.FindAction("OpenTabView", throwIfNotFound: true);
         // PopUpGame
         m_PopUpGame = asset.FindActionMap("PopUpGame", throwIfNotFound: true);
         m_PopUpGame_Naviagate = m_PopUpGame.FindAction("Naviagate", throwIfNotFound: true);
@@ -1396,6 +1490,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_SpaceStation_Interact = m_SpaceStation.FindAction("Interact", throwIfNotFound: true);
         m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
         m_SpaceStation_Actve = m_SpaceStation.FindAction("Actve", throwIfNotFound: true);
+        m_SpaceStation_Tab = m_SpaceStation.FindAction("Tab", throwIfNotFound: true);
         // DiceRoll
         m_DiceRoll = asset.FindActionMap("DiceRoll", throwIfNotFound: true);
         m_DiceRoll_TabMenu = m_DiceRoll.FindAction("TabMenu", throwIfNotFound: true);
@@ -2003,12 +2098,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_Move;
+    private readonly InputAction m_UI_Navigate;
     private readonly InputAction m_UI_Look;
     private readonly InputAction m_UI_PressAnyButton;
     private readonly InputAction m_UI_Submit;
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_Adjust;
+    private readonly InputAction m_UI_PreviousTab;
+    private readonly InputAction m_UI_NextTab;
+    private readonly InputAction m_UI_OpenTabView;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -2021,9 +2119,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "UI/Move".
+        /// Provides access to the underlying input action "UI/Navigate".
         /// </summary>
-        public InputAction @Move => m_Wrapper.m_UI_Move;
+        public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
         /// <summary>
         /// Provides access to the underlying input action "UI/Look".
         /// </summary>
@@ -2044,6 +2142,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/Adjust".
         /// </summary>
         public InputAction @Adjust => m_Wrapper.m_UI_Adjust;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/PreviousTab".
+        /// </summary>
+        public InputAction @PreviousTab => m_Wrapper.m_UI_PreviousTab;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/NextTab".
+        /// </summary>
+        public InputAction @NextTab => m_Wrapper.m_UI_NextTab;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/OpenTabView".
+        /// </summary>
+        public InputAction @OpenTabView => m_Wrapper.m_UI_OpenTabView;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2070,9 +2180,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
+            @Navigate.started += instance.OnNavigate;
+            @Navigate.performed += instance.OnNavigate;
+            @Navigate.canceled += instance.OnNavigate;
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
@@ -2088,6 +2198,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Adjust.started += instance.OnAdjust;
             @Adjust.performed += instance.OnAdjust;
             @Adjust.canceled += instance.OnAdjust;
+            @PreviousTab.started += instance.OnPreviousTab;
+            @PreviousTab.performed += instance.OnPreviousTab;
+            @PreviousTab.canceled += instance.OnPreviousTab;
+            @NextTab.started += instance.OnNextTab;
+            @NextTab.performed += instance.OnNextTab;
+            @NextTab.canceled += instance.OnNextTab;
+            @OpenTabView.started += instance.OnOpenTabView;
+            @OpenTabView.performed += instance.OnOpenTabView;
+            @OpenTabView.canceled += instance.OnOpenTabView;
         }
 
         /// <summary>
@@ -2099,9 +2218,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UIActions" />
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
+            @Navigate.started -= instance.OnNavigate;
+            @Navigate.performed -= instance.OnNavigate;
+            @Navigate.canceled -= instance.OnNavigate;
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
@@ -2117,6 +2236,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Adjust.started -= instance.OnAdjust;
             @Adjust.performed -= instance.OnAdjust;
             @Adjust.canceled -= instance.OnAdjust;
+            @PreviousTab.started -= instance.OnPreviousTab;
+            @PreviousTab.performed -= instance.OnPreviousTab;
+            @PreviousTab.canceled -= instance.OnPreviousTab;
+            @NextTab.started -= instance.OnNextTab;
+            @NextTab.performed -= instance.OnNextTab;
+            @NextTab.canceled -= instance.OnNextTab;
+            @OpenTabView.started -= instance.OnOpenTabView;
+            @OpenTabView.performed -= instance.OnOpenTabView;
+            @OpenTabView.canceled -= instance.OnOpenTabView;
         }
 
         /// <summary>
@@ -2277,6 +2405,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_SpaceStation_Interact;
     private readonly InputAction m_SpaceStation_Esc;
     private readonly InputAction m_SpaceStation_Actve;
+    private readonly InputAction m_SpaceStation_Tab;
     /// <summary>
     /// Provides access to input actions defined in input action map "SpaceStation".
     /// </summary>
@@ -2308,6 +2437,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "SpaceStation/Actve".
         /// </summary>
         public InputAction @Actve => m_Wrapper.m_SpaceStation_Actve;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/Tab".
+        /// </summary>
+        public InputAction @Tab => m_Wrapper.m_SpaceStation_Tab;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2349,6 +2482,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Actve.started += instance.OnActve;
             @Actve.performed += instance.OnActve;
             @Actve.canceled += instance.OnActve;
+            @Tab.started += instance.OnTab;
+            @Tab.performed += instance.OnTab;
+            @Tab.canceled += instance.OnTab;
         }
 
         /// <summary>
@@ -2375,6 +2511,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Actve.started -= instance.OnActve;
             @Actve.performed -= instance.OnActve;
             @Actve.canceled -= instance.OnActve;
+            @Tab.started -= instance.OnTab;
+            @Tab.performed -= instance.OnTab;
+            @Tab.canceled -= instance.OnTab;
         }
 
         /// <summary>
@@ -2667,12 +2806,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Navigate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMove(InputAction.CallbackContext context);
+        void OnNavigate(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -2708,6 +2847,27 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAdjust(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PreviousTab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPreviousTab(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "NextTab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNextTab(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenTabView" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenTabView(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PopUpGame" which allows adding and removing callbacks.
@@ -2780,6 +2940,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnActve(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Tab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTab(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "DiceRoll" which allows adding and removing callbacks.

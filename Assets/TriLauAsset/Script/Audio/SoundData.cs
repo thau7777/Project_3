@@ -11,6 +11,7 @@ namespace MyRule.Audio
         Hit,
         UI_Click,
         UI_Select,
+        UI_Adjust,
     }
 
     public enum MusicType

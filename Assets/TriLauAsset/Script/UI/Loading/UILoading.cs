@@ -6,18 +6,11 @@ namespace MyRule.UI
 {
     public class UILoading : MonoBehaviour
     {
-        [SerializeField] private RectTransform circle;
-        [SerializeField] private float speed = 1f;
         [SerializeField] private TextMeshProUGUI text;
 
         private void Start()
         {
             RunText();
-        }
-
-        private void FixedUpdate()
-        {
-            circle.Rotate(0, 0, -(speed * Time.fixedDeltaTime));
         }
 
         private async void RunText()
