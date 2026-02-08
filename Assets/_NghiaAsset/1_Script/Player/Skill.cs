@@ -138,7 +138,10 @@ public enum StatType
     MagicalDefense,
     IgnoreDefense,
     BasicAttackDamage,
-    SplashDamage
+    SplashDamage,
+    DivineShield,
+    Purify,
+
 }
 
 public enum SkillTargetType

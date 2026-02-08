@@ -504,6 +504,65 @@ namespace Turnbase
             Debug.Log($"Debuff giảm Speed của {character.name} đã hết hạn.");
         }
 
+        public void PurifyAllDebuffs()
+        {
+            bool hadDebuffs = false;
+
+            if (burnTurnsRemaining > 0 || poisonTurnsRemaining > 0 || stunTurnsRemaining > 0 ||
+                defReductionTurnsRemaining > 0 || speedReductionTurnsRemaining > 0 || breakTurnsRemaining > 0)
+            {
+                hadDebuffs = true;
+            }
+
+            if (!hadDebuffs) return;
+
+            if (burnVFXInstance != null) { burnVFXInstance.ReturnToPool(); burnVFXInstance = null; }
+            burnTurnsRemaining = 0;
+            burnDamagePerTurn = 0;
+            burnIcon = null;
+
+            if (poisonVFXInstance != null) { poisonVFXInstance.ReturnToPool(); poisonVFXInstance = null; }
+            poisonTurnsRemaining = 0;
+            poisonDamagePerTurn = 0;
+            poisonIcon = null;
+
+            if (stunVFXInstance != null) { FlyweightFactory_TB.ReturnToPool(stunVFXInstance); stunVFXInstance = null; }
+            stunTurnsRemaining = 0;
+            stunIcon = null;
+
+            if (breakVFXInstance != null) { FlyweightFactory_TB.ReturnToPool(breakVFXInstance); breakVFXInstance = null; }
+            breakTurnsRemaining = 0;
+            breakIcon = null;
+            if (character is Enemy enemy) { enemy.RestoreFromBreak(); }
+
+            if (defReductionVFXInstance != null) { FlyweightFactory_TB.ReturnToPool(defReductionVFXInstance); defReductionVFXInstance = null; }
+            defReductionTurnsRemaining = 0;
+            defReductionPercentage = 0f;
+            defReductionIcon = null;
+            if (character.buffManager != null) character.buffManager.RecalculateDefenseStat();
+
+            if (speedReductionVFXInstance != null) { speedReductionVFXInstance.ReturnToPool(); speedReductionVFXInstance = null; }
+            speedReductionTurnsRemaining = 0;
+            speedReductionPercentage = 0f;
+            speedReductionIcon = null;
+            if (character.buffManager != null) character.buffManager.RecalculateSpeedStat();
+
+            if (character.stateMachine != null && character.stateMachine.currentState == character.stateMachine.stunnedState)
+            {
+                character.stateMachine.SwitchState(character.stateMachine.waitingState);
+            }
+
+            character.UpdateOwnUI();
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
+            Debug.Log($"<color=green>[PURIFY]</color> {character.name} đã được thanh tẩy hoàn toàn debuff.");
+        }
+
         public void ProcessTurnStartDecay()
         {
             bool uiUpdateNeeded = false;

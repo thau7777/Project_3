@@ -152,6 +152,11 @@ namespace Turnbase
 
         public void TakeDamage(Character attacker, int amount, ElementType element, bool ignoreBlock = false, bool isCrit = false)
         {
+            if (buffManager != null && buffManager.CheckAndConsumeDivineShield())
+            {
+                return; 
+            }
+
             if (healthSystem == null)
             {
                 healthSystem = GetComponent<HealthSystem>();

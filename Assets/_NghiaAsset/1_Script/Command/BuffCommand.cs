@@ -109,7 +109,20 @@ namespace Turnbase
                     case StatType.MagicalDefense:
                         charTarget.ApplyMagicDefenseBuff(buffAmount, buffDuration, activeVFX, buffIcon);
                         break;
+                    case StatType.DivineShield:
+                        charTarget.buffManager.ApplyDivineShield(activeVFX, buffIcon);
+                        break;
+                    case StatType.Purify:
+                        if (charTarget.debuffManager != null)
+                        {
+                            charTarget.debuffManager.PurifyAllDebuffs();
 
+                            if (activeVFX != null)
+                            {
+                                Debug.Log($"[PURIFY] Đã thực hiện thanh tẩy cho {charTarget.name}");
+                            }
+                        }
+                        break;
                     default:
                         Debug.LogWarning($"Skill '{skill.skillName}' có StatType là {skill.buffProperties.statToModify}. StatType này chưa được hỗ trợ trong BuffCommand.");
                         break;
