@@ -22,7 +22,7 @@ namespace MyRule
                     Application.Quit();
                     break;
                 case ButtonType.ProfileButton:
-                    // Implement profile button action here
+                    EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Profile));
                     break;
                 case ButtonType.DiaryButton:
                     // Implement diary button action here

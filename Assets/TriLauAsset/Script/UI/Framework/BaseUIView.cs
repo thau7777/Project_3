@@ -12,6 +12,7 @@ namespace MyRule.UI
         Inventory,
         CharacterStats,
         TabView,
+        Profile,
         None
     }
 
