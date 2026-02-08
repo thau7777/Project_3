@@ -56,6 +56,20 @@ namespace Turnbase
                 yield return new WaitForSeconds(0.5f);
             }
 
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName(skill.animationTriggerName))
+            {
+                float normalizedTime = stateInfo.normalizedTime % 1f;
+                float timeLeft = stateInfo.length * (1f - normalizedTime);
+
+                if (timeLeft > 0)
+                {
+                    yield return new WaitForSeconds(timeLeft);
+                }
+            }
+
+            user.animator.Play("Idle");
+
             if (user.battleManager != null)
             {
                 user.battleManager.EndTurn(user);

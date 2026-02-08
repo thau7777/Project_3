@@ -47,6 +47,24 @@ namespace Turnbase
 
             user.PrepareHitCallBack(damageLogicCallback);
 
+            yield return null;
+
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            float charAnimDuration = stateInfo.length;
+
+            float timelineDuration = (skill.cameraTimeline != null) ? (float)skill.cameraTimeline.duration : 0f;
+
+            float maxDuration = Mathf.Max(charAnimDuration, timelineDuration);
+            float elapsed = 0f;
+
+            while (elapsed < maxDuration)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            user.animator.Play("Idle");
+
             float animationDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
 
             if (skill.cameraTimeline != null && battleManager.mainDirector != null)

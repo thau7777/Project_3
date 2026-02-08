@@ -132,15 +132,20 @@ namespace Turnbase
                 ApplySingleHitDamage(currentHitDamage);
             }
 
-
-            if (skill.impactVFXDuration > 0)
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName(skill.animationTriggerName))
             {
-                yield return new WaitForSeconds(skill.impactVFXDuration);
+                float normalizedTime = stateInfo.normalizedTime % 1f;
+                float timeLeft = stateInfo.length * (1f - normalizedTime);
+
+                if (timeLeft > 0)
+                {
+                    yield return new WaitForSeconds(timeLeft);
+                }
             }
 
+            user.animator.Play("Idle");
 
-            float animationTimeRemaining = user.animator.GetCurrentAnimatorStateInfo(0).length - (Time.time - startTime);
-            yield return new WaitForSeconds(Mathf.Max(0.1f, animationTimeRemaining));
         }
 
 
