@@ -3,36 +3,43 @@ using UnityEngine.EventSystems;
 
 public class MoleUI : MonoBehaviour, IPointerClickHandler
 {
-    public float lifeTime = 2f;
-    private UI_MoleSpawner _spawner;
-    private int _myIndex = -1;
+    public float minLifeTime = 2f;
+    public float maxLifeTime = 3f;
 
-    public void SetMySlot(UI_MoleSpawner spawner, int index)
+    private UI_MoleSpawner _spawner;
+    private int _slotIndex;
+
+    public void Init(UI_MoleSpawner spawner, int index)
     {
         _spawner = spawner;
-        _myIndex = index;
+        _slotIndex = index;
     }
 
     void OnEnable()
     {
-        CancelInvoke(nameof(HideMole));
-        Invoke(nameof(HideMole), lifeTime);
+        CancelInvoke();
+        float lifeTime = Random.Range(minLifeTime, maxLifeTime);
+        Invoke(nameof(Hide), lifeTime);
 
-        // Nếu có Animator, hãy Trigger hiệu ứng "Up" ở đây
+        // Nếu có Animator
         // GetComponent<Animator>().SetTrigger("Up");
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        HideMole();
+        _spawner.AddScore(1);
+        Hide();
     }
-
-    void HideMole()
+    void Hide()
     {
-        if (_spawner != null && _myIndex != -1)
-        {
-            _spawner.ReleaseSlot(_myIndex);
-        }
+        CancelInvoke();
+
+        // Animator Down nếu có
+        // GetComponent<Animator>().SetTrigger("Down");
+
+        if (_spawner != null)
+            _spawner.ReleaseSlot(_slotIndex);
+
         gameObject.SetActive(false);
     }
 }

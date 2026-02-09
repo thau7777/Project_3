@@ -1,92 +1,147 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class UI_MoleSpawner : MonoBehaviour
 {
     public string moleTag = "Mole";
-    public GameObject holePrefab; // Kéo Prefab cái hang vào đây
-    public RectTransform container;
-    public int spawnPointCount = 6;
+
+    [Header("Hole Prefab")]
+    public RectTransform holePrefab; // KÉO 1 HOLE MẪU VÀO ĐÂY
+
+    [Header("Spawn Config")]
+    public int minHole = 6;
+    public int maxHole = 10;
     public float radius = 250f;
     public float spawnDelay = 1.5f;
 
-    // Lưu danh sách các điểm Slot bên trong mỗi cái hang
-    private List<Transform> _holeSlots = new List<Transform>();
-    private List<bool> _isOccupied = new List<bool>();
+    [Header("Timer Config")]
+    public float gameDuration = 60f;
+    public float timer;
+
+    [SerializeField] private int score = 0;
+
+    private List<RectTransform> holes = new();
+    private List<Transform> _slots = new();
+    private List<bool> _isOccupied = new();
 
     void OnEnable()
     {
-        GenerateHoles();
-        InvokeRepeating(nameof(SpawnMole), 0.5f, spawnDelay);
+        RandomizeHolePositions();
+        StartGame();
+    }
+    void Awake()
+    {
+        GenerateHoles();     // chỉ chạy 1 lần
+        CacheSlots();
     }
 
     void OnDisable()
     {
-        CancelInvoke(nameof(SpawnMole));
-        // Xóa các hang cũ khi ẩn UI
-        foreach (Transform child in container)
+        CancelInvoke();
+        ReleaseAllSlots();
+    }
+    void StartGame()
+    {
+        timer = gameDuration;
+
+        ReleaseAllSlots();
+        CancelInvoke();
+
+        InvokeRepeating(nameof(SpawnMole), 0.5f, spawnDelay);
+        Invoke(nameof(EndGame), gameDuration);
+    }
+    void EndGame()
+    {
+        CancelInvoke();
+
+        // Ẩn toàn bộ mole đang có
+        foreach (Transform slot in _slots)
         {
-            Destroy(child.gameObject);
+            foreach (Transform child in slot)
+                child.gameObject.SetActive(false);
+        }
+
+        Debug.Log("Mini game kết thúc! Điểm: " + score);
+    }
+
+    public void AddScore(int value)
+    {
+        score += value;
+    }
+    void GenerateHoles()
+    {
+        holes.Clear();
+
+        int count = Random.Range(6, 9);
+
+        for (int i = 0; i < count; i++)
+        {
+            RectTransform hole = Instantiate(holePrefab, transform);
+            hole.gameObject.SetActive(true);
+            holes.Add(hole);
         }
     }
 
-    void GenerateHoles()
+    void CacheSlots()
     {
-        _holeSlots.Clear();
+        _slots.Clear();
         _isOccupied.Clear();
 
-        float startAngleOffset = Random.Range(0f, Mathf.PI * 2);
-
-        for (int i = 0; i < spawnPointCount; i++)
+        foreach (var hole in holes)
         {
-            // Tính góc và vị trí (thêm một chút random nhẹ để không quá đều)
-            float angle = (i * Mathf.PI * 2 / spawnPointCount) + startAngleOffset;
-            float x = Mathf.Cos(angle) * (radius + Random.Range(-20f, 20f));
-            float y = Mathf.Sin(angle) * (radius + Random.Range(-20f, 20f));
-
-            // Tạo hang
-            GameObject hole = Instantiate(holePrefab, container);
-            hole.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
-
-            // Tìm Object con tên là "Mole_Slot" để sau này nhét Mole vào đó
-            Transform slot = hole.transform.Find("Mole_Slot");
-            _holeSlots.Add(slot != null ? slot : hole.transform);
+            Transform slot = hole.Find("Mole_Slot");
+            _slots.Add(slot != null ? slot : hole);
             _isOccupied.Add(false);
+        }
+    }
+
+    void RandomizeHolePositions()
+    {
+        float startAngle = Random.Range(0f, Mathf.PI * 2f);
+
+        for (int i = 0; i < holes.Count; i++)
+        {
+            float angle = startAngle + (i * Mathf.PI * 2f / holes.Count);
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+
+            holes[i].anchoredPosition = new Vector2(x, y);
         }
     }
 
     void SpawnMole()
     {
-        // Lọc danh sách các chỉ số (index) đang trống
-        List<int> freeIndices = new List<int>();
+        List<int> free = new();
         for (int i = 0; i < _isOccupied.Count; i++)
-        {
-            if (!_isOccupied[i]) freeIndices.Add(i);
-        }
+            if (!_isOccupied[i]) free.Add(i);
 
-        if (freeIndices.Count == 0) return;
+        if (free.Count == 0) return;
 
-        int randomIndex = freeIndices[Random.Range(0, freeIndices.Count)];
-        Transform targetSlot = _holeSlots[randomIndex];
+        int index = free[Random.Range(0, free.Count)];
+        Transform slot = _slots[index];
 
-        // Spawn Mole vào thẳng làm con của Mole_Slot
-        GameObject mole = PoolManager.Instance.SpawnFromPool(moleTag, targetSlot);
+        GameObject mole = PoolManager.Instance.SpawnFromPool(moleTag, slot);
+        if (mole == null) return;
 
-        if (mole != null)
-        {
-            _isOccupied[randomIndex] = true;
-            RectTransform moleRect = mole.GetComponent<RectTransform>();
-            moleRect.anchoredPosition = Vector2.zero; // Luôn ở giữa Slot
-            moleRect.localScale = Vector3.one;
+        _isOccupied[index] = true;
 
-            // Truyền index để Mole biết khi nào chết thì giải phóng đúng slot đó
-            mole.GetComponent<MoleUI>().SetMySlot(this, randomIndex);
-        }
+        RectTransform rect = mole.GetComponent<RectTransform>();
+        rect.anchoredPosition = Vector2.zero;
+        rect.localScale = Vector3.one;
+
+        mole.GetComponent<MoleUI>().Init(this, index);
     }
 
     public void ReleaseSlot(int index)
     {
         if (index >= 0 && index < _isOccupied.Count)
             _isOccupied[index] = false;
+    }
+
+    void ReleaseAllSlots()
+    {
+        for (int i = 0; i < _isOccupied.Count; i++)
+            _isOccupied[i] = false;
     }
 }
