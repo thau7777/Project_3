@@ -24,13 +24,13 @@ namespace MyRule.Audio
     }
 
     [System.Serializable]
-    public class SoundData
+    public class SFXData
     {
         public SFXType sfxType;
         public List<AudioClip> clips;
 
         public bool random;
-        [Range(0f, 0.2f)] public float pitchRandom;
+        [MinMaxSlider(-1f, 1f)] public Vector2 pitchRandom;
     }
 
     [System.Serializable]
@@ -39,4 +39,6 @@ namespace MyRule.Audio
         public MusicType musicType;
         public AudioClip clip;
     }
+
+    
 }
