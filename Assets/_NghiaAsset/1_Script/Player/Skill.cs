@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MyRule.Audio;
 using Turnbase;
 using UnityEngine;
 
@@ -66,8 +67,8 @@ public class Skill : ScriptableObject
     public int attackCount = 1;
 
     [Header("Sound Effects")]
-    public SkillSound castSound;
-    public SkillSound impactSound;
+    public SFXType castSFXType;  
+    public SFXType impactSFXType;
 
 
     [System.Serializable]
@@ -109,13 +110,6 @@ public class Skill : ScriptableObject
     [Header("Timeline")]
     public UnityEngine.Playables.PlayableAsset cameraTimeline;
 
-    [System.Serializable]
-    public struct SkillSound
-    {
-        public AudioClip clip;
-        [Range(0, 1)] public float volume;
-        [Range(0.1f, 2f)] public float pitch;
-    }
 }
 
 

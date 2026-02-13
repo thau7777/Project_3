@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyRule.Audio;
 using UnityEngine;
 
 
@@ -149,12 +150,24 @@ namespace Turnbase
             }
         }
 
+        private float lastHurtSoundTime;
+        private const float HURT_SOUND_COOLDOWN = 2f;
 
         public void TakeDamage(Character attacker, int amount, ElementType element, bool ignoreBlock = false, bool isCrit = false)
         {
             if (buffManager != null && buffManager.CheckAndConsumeDivineShield())
             {
                 return; 
+            }
+
+            if (Time.time - lastHurtSoundTime > HURT_SOUND_COOLDOWN)
+            {
+                if (AudioManager.Instance != null)
+                {
+                    SFXType hurtSFX = isPlayer ? SFXType.Hurt : SFXType.EnemyHurt;
+                    AudioManager.Instance.PlaySFX(hurtSFX);
+                }
+                lastHurtSoundTime = Time.time;
             }
 
             if (healthSystem == null)

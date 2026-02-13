@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using MyRule.Audio;
 using UnityEngine;
 
 namespace Turnbase
@@ -54,14 +55,9 @@ namespace Turnbase
 
         protected Flyweight_TB SpawnImpactEffect(Vector3 position, Skill skill)
         {
-            if (TB_AudioSkillManager.Instance != null && skill.impactSound.clip != null)
+            if (AudioManager.Instance != null)
             {
-                Debug.Log($"Đang phát âm thanh: {skill.impactSound.clip.name}");
-                TB_AudioSkillManager.Instance.PlaySkillSound(skill.impactSound);
-            }
-            else
-            {
-                Debug.LogWarning($"Không phát được sound! Instance: {TB_AudioSkillManager.Instance != null}, Clip: {skill.impactSound.clip != null}");
+                AudioManager.Instance.PlaySFX(skill.impactSFXType);
             }
 
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab;
@@ -87,14 +83,9 @@ namespace Turnbase
 
         protected Flyweight_TB SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
-            if (TB_AudioSkillManager.Instance != null && skill.impactSound.clip != null)
+            if (AudioManager.Instance != null)
             {
-                Debug.Log($"Đang phát âm thanh: {skill.impactSound.clip.name}");
-                TB_AudioSkillManager.Instance.PlaySkillSound(skill.impactSound);
-            }
-            else
-            {
-                Debug.LogWarning($"Không phát được sound! Instance: {TB_AudioSkillManager.Instance != null}, Clip: {skill.impactSound.clip != null}");
+                AudioManager.Instance.PlaySFX(skill.impactSFXType);
             }
 
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab; 

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using MyRule.Audio;
 using UnityEngine;
 using UnityEngine.Playables;
-using System.Linq;
 
 
 namespace Turnbase
@@ -168,7 +169,10 @@ namespace Turnbase
         {
             FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
-            TB_AudioSkillManager.Instance.PlaySkillSound(skill.castSound);
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(skill.impactSFXType);
+            }
 
             if (effectToSpawn != null)
             {

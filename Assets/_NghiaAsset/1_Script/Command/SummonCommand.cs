@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MyRule.Audio;
 using UnityEngine;
 
 namespace Turnbase
@@ -13,9 +14,9 @@ namespace Turnbase
         {
             Debug.Log($"{user.name} sử dụng kỹ năng triệu hồi {skill.skillName}");
 
-            if (TB_AudioSkillManager.Instance != null && skill.castSound.clip != null)
+            if (AudioManager.Instance != null)
             {
-                TB_AudioSkillManager.Instance.PlaySkillSound(skill.castSound);
+                AudioManager.Instance.PlaySFX(skill.castSFXType);
             }
 
             if (!string.IsNullOrEmpty(skill.animationTriggerName))
@@ -44,9 +45,9 @@ namespace Turnbase
                     user.StartCoroutine(ReleaseVFXAfterDelay(effectInstance, 2.0f));
                 }
 
-                if (TB_AudioSkillManager.Instance != null && skill.impactSound.clip != null)
+                if (AudioManager.Instance != null)
                 {
-                    TB_AudioSkillManager.Instance.PlaySkillSound(skill.impactSound);
+                    AudioManager.Instance.PlaySFX(skill.impactSFXType);
                 }
 
                 yield return new WaitForSeconds(1.0f);
