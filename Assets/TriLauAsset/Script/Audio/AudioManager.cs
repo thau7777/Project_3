@@ -14,10 +14,9 @@ namespace MyRule.Audio
         [SerializeField] private AudioSource[] sfxSources;
 
         [Header("Audio Data")]
-        [SerializeField] private List<SoundData> sfxList;
-        [SerializeField] private List<MusicData> musicList;
+        [SerializeField] private AudioDataContainer _audioDataContainer;
 
-        private Dictionary<SFXType, SoundData> sfxDict;
+        private Dictionary<SFXType, SFXData> sfxDict;
         private Dictionary<SFXType, int> sfxIndexDict;
         private Dictionary<MusicType, AudioClip> musicDict;
 
@@ -33,11 +32,11 @@ namespace MyRule.Audio
 
         private void Init()
         {
-            sfxDict = new Dictionary<SFXType, SoundData>();
+            sfxDict = new Dictionary<SFXType, SFXData>();
             sfxIndexDict = new Dictionary<SFXType, int>();
             musicDict = new Dictionary<MusicType, AudioClip>();
 
-            foreach (var sfx in sfxList)
+            foreach (var sfx in _audioDataContainer.sfxList)
             {
                 if (sfx.clips == null || sfx.clips.Count == 0)
                     continue;
@@ -46,7 +45,7 @@ namespace MyRule.Audio
                 sfxIndexDict[sfx.sfxType] = 0;
             }
 
-            foreach (var music in musicList)
+            foreach (var music in _audioDataContainer.musicList)
             {
                 musicDict[music.musicType] = music.clip;
             }
@@ -57,17 +56,17 @@ namespace MyRule.Audio
         {
             if (!sfxDict.ContainsKey(type)) return;
 
-            SoundData data = sfxDict[type];
+            SFXData data = sfxDict[type];
             AudioClip clip = GetNextClip(type, data);
 
             AudioSource source = sfxSources[sfxSourceIndex];
             sfxSourceIndex = (sfxSourceIndex + 1) % sfxSources.Length;
 
-            source.pitch = 1f + Random.Range(-data.pitchRandom, data.pitchRandom);
+            source.pitch = Random.Range(data.pitchRandom.x, data.pitchRandom.y);
             source.PlayOneShot(clip);
         }
 
-        private AudioClip GetNextClip(SFXType type, SoundData data)
+        private AudioClip GetNextClip(SFXType type, SFXData data)
         {
             if (data.random && data.clips.Count > 1)
             {
