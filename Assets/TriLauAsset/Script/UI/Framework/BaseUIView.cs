@@ -18,6 +18,7 @@ namespace MyRule.UI
 
     public abstract class BaseUIView : MonoBehaviour, IBaseUIView
     {
+        [SerializeField] protected InputReader inputReader;
         [SerializeField] protected PanelType panelType;
         public PanelType Type => panelType;
 
