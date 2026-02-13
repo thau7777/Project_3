@@ -17,7 +17,7 @@ public class PopupGameManager : MonoBehaviour
 
     [Header("Mini Game Prefabs")]
     //[SerializeField] private UpdateArrownUI beatingPrefab;
-    [SerializeField] private FishingGameUI fishingPrefab;
+    //[SerializeField] private FishingGameUI fishingPrefab;
     // thêm các prefab khác nếu cần
 
     private PopupMiniGameUIBase currentGameUI;
@@ -35,7 +35,7 @@ public class PopupGameManager : MonoBehaviour
                 //currentGameUI = Instantiate(beatingPrefab, transform);
                 break;
             case PopupGameType.Fishing:
-                currentGameUI = Instantiate(fishingPrefab, transform);
+                //currentGameUI = Instantiate(fishingPrefab, transform);
                 break;
                 // thêm các loại khác ở đây
         }
