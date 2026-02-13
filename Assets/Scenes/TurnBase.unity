@@ -2976,7 +2976,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!154 &401672538
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -3174,7 +3174,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.24163355, y: 0.09297887, z: -0.023266664, w: 0.9656225}
+  m_LocalRotation: {x: 0.35624656, y: 0.089497134, z: -0.03430264, w: 0.92946327}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6985,6 +6985,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1029347336}
   - component: {fileID: 1029347335}
+  - component: {fileID: 1029347337}
   m_Layer: 0
   m_Name: Adaptive Probe Volume
   m_TagString: Untagged
@@ -7005,7 +7006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
   mode: 1
-  size: {x: 303.01, y: 24.636078, z: 303.01}
+  size: {x: 3, y: 3, z: 3}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -7045,12 +7046,34 @@ Transform:
   m_GameObject: {fileID: 1029347334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.2575073, y: 10.813039, z: -0.49847412}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1029347337
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029347334}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1052348332
 GameObject:
   m_ObjectHideFlags: 0
@@ -10244,7 +10267,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591609222}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11455,6 +11478,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1859979515}
   - component: {fileID: 1859979514}
+  - component: {fileID: 1859979516}
   m_Layer: 0
   m_Name: Celestial Time Manager
   m_TagString: Untagged
@@ -11476,11 +11500,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CelestialCyclesSystem.CelestialTimeManager
   Trigger: 1
   updateGI: 1
-  giUpdateInterval: 0.39
+  giUpdateInterval: 0.51
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 6.7
+  currentTimeOfDay: 7.4
   timeSpeed: 0
   sunriseTime: 4
   sunriseDuration: 0.88
@@ -11533,6 +11557,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1859979516
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859979513}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1871293694
 GameObject:
   m_ObjectHideFlags: 0
