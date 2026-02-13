@@ -6,6 +6,12 @@ namespace Turnbase
     {
         public static ICommand CreateCommand(Character user, Character target, Skill skill, BattleManager battleManager)
         {
+
+            if (skill.skillType == SkillType.MeleeAttack && user.buffManager.splashAttackTurnsRemaining > 0)
+            {
+                return new DamageAllCommand(user, skill, battleManager);
+            }
+
             switch (skill.skillType)
             {
                 case SkillType.MeleeAttack:

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -8,13 +9,12 @@ public class CameraShaker : Singleton<CameraShaker>
     private CinemachineImpulseSource impulseSource;
 
     [SerializeField]
-    private AnimationCurve customShakeCurve;
+    private List<AnimationCurve> customShakeCurveList = new();
 
     protected override void Awake()
     {
         base.Awake();
         impulseSource = GetComponent<CinemachineImpulseSource>();
-        customShakeCurve = impulseSource.ImpulseDefinition.CustomImpulseShape;
     }
 
     [Button]
@@ -22,33 +22,34 @@ public class CameraShaker : Singleton<CameraShaker>
     {
         ShakeRandomDirection(force: 0.7f);
     }
-    public void ShakeRandomDirection(CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump, float force = 1f, float duration = 0.2f)
+    public void ShakeRandomDirection(CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump, float force = 1f, float duration = 0.2f, int customShapeIndex = 0)
     {
         // Generate random direction in XY plane
         Vector3 randomDir = new Vector3(
             Random.Range(-1f, 1f),
             Random.Range(-1f, 1f),
-            -3f
+            -1f
         ).normalized;
         if(impulseShapes == CinemachineImpulseDefinition.ImpulseShapes.Custom)
         {
             impulseSource.ImpulseDefinition.ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Custom;
-            impulseSource.ImpulseDefinition.CustomImpulseShape = customShakeCurve;
+            impulseSource.ImpulseDefinition.CustomImpulseShape = customShakeCurveList[customShapeIndex];
         }
         else
             impulseSource.ImpulseDefinition.ImpulseShape = impulseShapes;
         impulseSource.ImpulseDefinition.ImpulseDuration = duration;
         impulseSource.GenerateImpulseWithVelocity(randomDir * force);
     }
-    //public void ShakeRandomDirection(float force = 1f, CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump)
-    //{
-    //    // Generate random direction in XY plane
-    //    Vector3 randomDir = new Vector3(
-    //        Random.Range(-1f, 1f),
-    //        Random.Range(-1f, 1f),
-    //        0f
-    //    ).normalized;
-    //    //impulseSource.ImpulseDefinition.ImpulseShape = impulseShapes;
-    //    impulseSource.GenerateImpulseWithVelocity(randomDir * force);
-    //}
+    public void ShakeByDirection(Vector3 direction, CinemachineImpulseDefinition.ImpulseShapes impulseShapes = CinemachineImpulseDefinition.ImpulseShapes.Bump, float duration = 0.2f, int customShapeIndex = 0)
+    {
+        if(impulseShapes == CinemachineImpulseDefinition.ImpulseShapes.Custom)
+        {
+            impulseSource.ImpulseDefinition.ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Custom;
+            impulseSource.ImpulseDefinition.CustomImpulseShape = customShakeCurveList[customShapeIndex];
+        }
+        else
+            impulseSource.ImpulseDefinition.ImpulseShape = impulseShapes;
+        impulseSource.ImpulseDefinition.ImpulseDuration = duration;
+        impulseSource.GenerateImpulseWithVelocity(direction);
+    }
 }

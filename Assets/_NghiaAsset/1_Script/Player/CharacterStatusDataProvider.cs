@@ -210,6 +210,30 @@ namespace Turnbase
                 });
             }
 
+            if (buffManager.splashAttackTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Splash Attack",
+                    TurnsRemaining = buffManager.splashAttackTurnsRemaining,
+                    Detail = "Splash Attack All",
+                    IsBuff = true,
+                    Icon = buffManager.splashAttackIcon 
+                });
+            }
+
+            if (buffManager.hasDivineShield)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Divine Shield",
+                    TurnsRemaining = 999,
+                    Detail = "Divine Shield",
+                    IsBuff = true,
+                    Icon = buffManager.divineShieldIcon
+                });
+            }
+
             if (character != null && character.passiveSkills != null)
             {
                 foreach (var passive in character.passiveSkills)

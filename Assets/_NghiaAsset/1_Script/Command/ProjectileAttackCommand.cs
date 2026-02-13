@@ -138,8 +138,20 @@ namespace Turnbase
                 yield return new WaitForSeconds(skill.impactVFXDuration);
             }
 
-            float attackDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(Mathf.Max(0.5f, attackDuration));
+            yield return null;
+
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName(skill.animationTriggerName))
+            {
+                float timeLeft = stateInfo.length * (1f - (stateInfo.normalizedTime % 1f));
+
+                if (timeLeft > 0)
+                {
+                    yield return new WaitForSeconds(timeLeft);
+                }
+            }
+
+            user.animator.Play("Idle");
         }
 
         private void SpawnProjectile(int damageForThisHit)

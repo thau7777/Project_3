@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using MyRule.Audio;
 using UnityEngine;
 using UnityEngine.Playables;
-using System.Linq;
 
 
 namespace Turnbase
@@ -46,6 +47,24 @@ namespace Turnbase
             };
 
             user.PrepareHitCallBack(damageLogicCallback);
+
+            yield return null;
+
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            float charAnimDuration = stateInfo.length;
+
+            float timelineDuration = (skill.cameraTimeline != null) ? (float)skill.cameraTimeline.duration : 0f;
+
+            float maxDuration = Mathf.Max(charAnimDuration, timelineDuration);
+            float elapsed = 0f;
+
+            while (elapsed < maxDuration)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            user.animator.Play("Idle");
 
             float animationDuration = user.animator.GetCurrentAnimatorStateInfo(0).length;
 
@@ -150,7 +169,10 @@ namespace Turnbase
         {
             FlyweightSettings_TB effectToSpawn = skill.impactVFXPrefab;
 
-            TB_AudioSkillManager.Instance.PlaySkillSound(skill.castSound);
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(skill.impactSFXType);
+            }
 
             if (effectToSpawn != null)
             {
