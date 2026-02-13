@@ -7,6 +7,7 @@ namespace MyRule.UI
     {
         [SerializeField] private InputReader inputReader;
         [SerializeField] private List<Tab> tabNames;
+        [SerializeField] private bool canSwithhTab = true;
 
         private int currentTabIndex = 0;
 
@@ -22,7 +23,7 @@ namespace MyRule.UI
 
         private void Start()
         {
-            inputReader.SwitchActionMap(ActionMap.UI);
+            if(canSwithhTab) inputReader.SwitchActionMap(ActionMap.UI);
             UpdateTabSelection();
         }
 
@@ -46,6 +47,12 @@ namespace MyRule.UI
             {
                 tabNames[i].SetSelected(i == currentTabIndex);
             }
+        }
+
+        public void ResetTab()
+        {
+            currentTabIndex = 0;
+            UpdateTabSelection();
         }
     }
 }
