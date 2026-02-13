@@ -10,28 +10,28 @@ public enum ArrowType
 }
 public class Arrow : MonoBehaviour
 {
-    public KeyType type;
-    public float speed = 300f;
+    public ArrowType type;
+    //public float speed = 300f;
     public HitLine hitLine;
 
     void Update()
     {
         //transform.Translate(Vector3.down * speed * Time.deltaTime);
 
-        if (Input.GetKeyDown(GetKey()))
-        {
-            CheckHit();
-        }
+        //if (Input.GetKeyDown(GetKey()))
+        //{
+        //    CheckHit();
+        //}
     }
 
     KeyCode GetKey()
     {
         switch (type)
         {
-            case KeyType.Left: return KeyCode.LeftArrow;
-            case KeyType.Down: return KeyCode.DownArrow;
-            case KeyType.Up: return KeyCode.UpArrow;
-            case KeyType.Right: return KeyCode.RightArrow;
+            case ArrowType.Left: return KeyCode.LeftArrow;
+            case ArrowType.Down: return KeyCode.DownArrow;
+            case ArrowType.Up: return KeyCode.UpArrow;
+            case ArrowType.Right: return KeyCode.RightArrow;
         }
         return KeyCode.None;
     }
