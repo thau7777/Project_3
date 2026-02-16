@@ -3,13 +3,15 @@ using UnityEngine.UI;
 
 public class FishingUI : MonoBehaviour
 {
+    public static FishingUI instance;
+
     [Header("UI")]
     public Image fishingBar;
     public GameObject arrowUI;
+    public GameObject fishBar;
 
     [Header("Settings")]
-    public float fishingDuration = 5f;
-
+    public float duration = 5f;
     private float timer;
     private bool isFishing = false;
 
@@ -17,44 +19,35 @@ public class FishingUI : MonoBehaviour
     public ArrowManager arrowManager;
     public ArrowInput arrowInput;
 
-    void Start()
+    private HookController currentHook;
+
+    private void Awake()
     {
-        fishingBar.fillAmount = 0f;
-        fishingBar.gameObject.SetActive(false);
+        instance = this;
+        fishBar.SetActive(false);
         arrowUI.SetActive(false);
     }
 
     void Update()
     {
-        if (!isFishing && Input.GetKeyDown(KeyCode.Space))
-        {
-            StartFishing();
-        }
+        if (!isFishing) return;
 
-        if (isFishing)
-        {
-            timer += Time.deltaTime*0.05f; // thanh tự chạy
+        timer+= Time.deltaTime * 0.05f;
+        timer = Mathf.Clamp(timer, 0f, duration);
+        fishingBar.fillAmount = timer / duration;
 
-            timer = Mathf.Clamp(timer, 0f, fishingDuration);
-            fishingBar.fillAmount = timer / fishingDuration;
-
-            if (timer >= fishingDuration)
-            {
-                EndFishing(true);
-            }
-            else if (timer <= 0f)
-            {
-                EndFishing(false);
-            }
-        }
+        if (timer >= duration) EndFishing(true);
+        if (timer <= 0f) EndFishing(false);
     }
 
-    void StartFishing()
+    public void StartFishing(HookController hook)
     {
-        isFishing = true;
-        timer = fishingDuration *0.1f;
+        currentHook = hook;
 
-        fishingBar.gameObject.SetActive(true);
+        isFishing = true;
+        timer = duration *0.1f;
+
+        fishBar.SetActive(true);
         arrowUI.SetActive(true);
 
         arrowManager.NextArrow();
@@ -68,18 +61,17 @@ public class FishingUI : MonoBehaviour
 
         arrowInput.EnableInput(false);
         arrowUI.SetActive(false);
+        fishBar.SetActive(false);
 
+        currentHook.PullUp(success);
         Debug.Log(success ? "CÂU THÀNH CÔNG!" : "CÁ CHẠY MẤT!");
+        
     }
 
-    // 👉 Được ArrowInput gọi khi player bấm
     public void ModifyTimer(bool correct)
     {
         float value = Time.deltaTime + 0.5f;
 
-        if (correct)
-            timer += value;
-        else
-            timer -= value;
+        timer += correct ? value : -value;
     }
 }
