@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class FishItem : MonoBehaviour
 {
-    public FishingItemData data;
+    [SerializeField] public FishingItemData data;
+    [SerializeField] private HookController hook;
 
+    private void Update()
+    {
+
+    }
     public void AttachToHook(Transform hook)
     {
         transform.SetParent(hook.transform);

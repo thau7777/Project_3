@@ -1,94 +1,133 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class HookController : MonoBehaviour
 {
+    [Header("References")]
     public Rigidbody2D rb;
+    public Image chargeBar;
 
-    [Header("Throw")]
-    public float maxForce = 12f;
-    public float chargeSpeed = 8f;
+    [Header("Charge")]
+    public float chargeSpeed = 1.5f;
 
-    [Header("Water")]
+    [Header("Throw Force")]
+    public float minForce = 3f;
+    public float maxForce = 15f;
+
+    [Header("Water Physics")]
     public float waterDrag = 3f;
-    public float waterGravityScale = 0.5f;
+    public float waterGravity = 0.6f;
 
-    private float charge;
-    private bool charging;
+    // ===== State =====
+    private bool isCharging;
+    private bool hasThrown;
     private bool inWater;
-    private bool isFishing;
-
     private FishItem hookedItem;
 
-    public void Update()
+    void Start()
     {
-        if (isFishing) return;
+        chargeBar.fillAmount = 0f;
+        chargeBar.gameObject.SetActive(false);
+    }
 
-        if (Input.GetKey(KeyCode.Space))
+    void Update()
+    {
+        HandleInput();
+        UpdateChargeBar();
+    }
+
+    // ================= INPUT =================
+    void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            charging = true;
-            charge += chargeSpeed * Time.deltaTime;
-            charge = Mathf.Clamp(charge, 0f, maxForce);
-        }
-        if (charging && Input.GetKeyUp(KeyCode.Space))
-        {
-            charging = false;
-            Throw();
+            // SPACE lần 1 → bắt đầu charge
+            if (!isCharging && !hasThrown)
+            {
+                isCharging = true;
+                chargeBar.gameObject.SetActive(true);
+            }
+            // SPACE lần 2 → ném hook
+            else if (isCharging)
+            {
+                isCharging = false;
+                chargeBar.gameObject.SetActive(false);
+
+                ThrowHook(chargeBar.fillAmount);
+            }
         }
     }
 
-    public void Throw()
+    // ================= CHARGE BAR =================
+    void UpdateChargeBar()
     {
-        Vector2 force = transform.up * charge;
-        rb.AddForce(force, ForceMode2D.Impulse);
-        charge = 0f;
-    }
-    /*void Throw()
-    {
-        rb.gravityScale = 0f;
-        rb.drag = 0f;
-        rb.velocity = new Vector2(charge, charge * 0.6f);
-        charge = 0f;
-    }*/
+        if (!isCharging) return;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+        chargeBar.fillAmount =
+            Mathf.PingPong(Time.time * chargeSpeed, 1f);
+    }
+
+    // ================= THROW =================
+    void ThrowHook(float charge01)
     {
-        //Cham mat nuoc
-        if(!inWater && collision.gameObject.name.Contains("Water"))
-        { 
-            Debug.Log("Da cham nuoc");
+        hasThrown = true;
+
+        rb.mass = 0.5f; // nhẹ hơn để bay xa hơn
+        rb.gravityScale = 10f; // rơi nhanh hơn
+        float force = Mathf.Lerp(minForce, maxForce, charge01);
+
+        rb.linearVelocity = Vector2.zero;
+
+        // lực bắn ngang
+        rb.AddForce(Vector2.right * force * 15f, ForceMode2D.Impulse);
+
+        // lực nâng lên (ít hơn)
+        rb.AddForce(Vector2.up * force * 5f, ForceMode2D.Impulse);
+    }
+
+    // ================= COLLISION =================
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Chạm mặt nước
+        if (!inWater && other.gameObject.name.Contains("Water"))
+        {
             inWater = true;
-            rb.drag = waterDrag;
-            rb.gravityScale = waterGravityScale;
+            rb.linearDamping = waterDrag;
+            rb.gravityScale = waterGravity;
         }
 
-        FishItem item = collision.GetComponent<FishItem>();
-        if(item != null && !isFishing)
+        // Chạm cá / rác
+        FishItem item = other.GetComponent<FishItem>();
+        if (item != null)
         {
             hookedItem = item;
-            StartFishing();
+
+            rb.linearVelocity = Vector2.zero;
+
+            FishingUI.instance.StartFishing(this);
         }
     }
 
-    public void StartFishing()
-    {
-        isFishing = true;
-        rb.velocity = Vector2.zero;
-        rb.isKinematic = true;
-
-        FishingUI.instance.StartFishing(this);
-    }
+    // ================= PULL UP =================
     public void PullUp(bool success)
     {
-        isFishing = false;
-        rb.isKinematic = false;
         rb.gravityScale = 0f;
-        rb.drag = 0f;
+        rb.linearDamping = 0f;
 
-        if(success && hookedItem !=null)
+        if (success && hookedItem != null)
         {
             hookedItem.AttachToHook(transform);
         }
 
-        rb.velocity = new Vector2(-5f, 7f);
+        rb.linearVelocity = new Vector2(-5f, 7f);
+
+        ResetHook();
+    }
+
+    void ResetHook()
+    {
+        hasThrown = false;
+        inWater = false;
+        hookedItem = null;
     }
 }
