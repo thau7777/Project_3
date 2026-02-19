@@ -5,7 +5,8 @@ public class HookController : MonoBehaviour
 {
     [Header("References")]
     public Rigidbody2D rb;
-    public Image chargeBar;
+    [SerializeField] private Image chargeBar;
+    public GameObject powerBar;
 
     [Header("Charge")]
     public float chargeSpeed = 1.5f;
@@ -16,18 +17,24 @@ public class HookController : MonoBehaviour
 
     [Header("Water Physics")]
     public float waterDrag = 3f;
-    public float waterGravity = 0.6f;
+    public float waterGravity = 6f;
+
+    [Header("Normal Physics")]
+    public float normalMass = 0.5f;
+    public float normalGravity = 10f;
 
     // ===== State =====
     private bool isCharging;
     private bool hasThrown;
     private bool inWater;
     private FishItem hookedItem;
+    private Vector2 initialPosition;
 
     void Start()
     {
         chargeBar.fillAmount = 0f;
-        chargeBar.gameObject.SetActive(false);
+        powerBar.SetActive(false);
+        initialPosition = transform.position;
     }
 
     void Update()
@@ -45,16 +52,20 @@ public class HookController : MonoBehaviour
             if (!isCharging && !hasThrown)
             {
                 isCharging = true;
-                chargeBar.gameObject.SetActive(true);
+                powerBar.SetActive(true);
             }
             // SPACE lần 2 → ném hook
             else if (isCharging)
             {
                 isCharging = false;
-                chargeBar.gameObject.SetActive(false);
+                powerBar.SetActive(false);
 
                 ThrowHook(chargeBar.fillAmount);
             }
+        }
+        if(Input.GetKey(KeyCode.R) && inWater)
+        {
+            ResetHook();
         }
     }
 
@@ -72,8 +83,8 @@ public class HookController : MonoBehaviour
     {
         hasThrown = true;
 
-        rb.mass = 0.5f; // nhẹ hơn để bay xa hơn
-        rb.gravityScale = 10f; // rơi nhanh hơn
+        rb.mass = normalMass; // nhẹ hơn để bay xa hơn
+        rb.gravityScale = normalGravity; // rơi nhanh hơn
         float force = Mathf.Lerp(minForce, maxForce, charge01);
 
         rb.linearVelocity = Vector2.zero;
@@ -101,10 +112,11 @@ public class HookController : MonoBehaviour
         if (item != null)
         {
             hookedItem = item;
-
+            
             rb.linearVelocity = Vector2.zero;
 
             FishingUI.instance.StartFishing(this);
+            rb.gravityScale = 0f;
         }
     }
 
@@ -126,8 +138,13 @@ public class HookController : MonoBehaviour
 
     void ResetHook()
     {
+        transform.position = initialPosition;
         hasThrown = false;
         inWater = false;
         hookedItem = null;
+        rb.mass = normalMass;
+        rb.gravityScale = normalGravity;
+        rb.linearDamping = 0f;
+        rb.linearVelocity = Vector2.zero;
     }
 }

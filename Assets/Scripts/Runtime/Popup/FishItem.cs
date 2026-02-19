@@ -5,10 +5,7 @@ public class FishItem : MonoBehaviour
     [SerializeField] public FishingItemData data;
     [SerializeField] private HookController hook;
 
-    private void Update()
-    {
-
-    }
+    
     public void AttachToHook(Transform hook)
     {
         transform.SetParent(hook.transform);
