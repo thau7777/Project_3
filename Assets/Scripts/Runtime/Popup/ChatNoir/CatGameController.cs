@@ -33,6 +33,7 @@ public class CatGameManager : MonoBehaviour
         ClearGrid();
         CreateGrid();
         SetupInitialScene();
+        isGameEnd = false;
     }
 
     void MoveCat()
