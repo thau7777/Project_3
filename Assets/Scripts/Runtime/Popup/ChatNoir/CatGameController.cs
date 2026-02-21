@@ -1,191 +1,222 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CatGameManager : MonoBehaviour
 {
     [Header("Grid Settings")]
-    public int rows = 11;
-    public int cols = 11;
-    public string poolTag = "HexTile";
-    public RectTransform gridParent;
+    [SerializeField] int rows = 11;
+    [SerializeField] int cols = 11;
+    [SerializeField] string poolTag = "HexTile";
+    [SerializeField] RectTransform gridParent;
 
     [Header("References")]
-    public RectTransform catUI; // Object hình con mèo
-    public GameObject parent; // Đối tượng cha để tổ chức trong hierarchy
+    [SerializeField] RectTransform catUI;
 
-    private HexNode[,] grid;
-    private HexNode catNode;
-    private List<HexNode> activeNodes = new List<HexNode>();
+    [Header("Hex Spacing")]
+    [SerializeField] float horizontalSpacing = 1.05f;
+    [SerializeField] float verticalSpacing = 1.05f;
+    [SerializeField] float oddRowOffset = 0.5f;
 
-    // ---------------------------------------------------------
-    // CÔNG THỨC VÀNG ĐỂ KHÔNG BỊ RỐI BIẾN
-    // ---------------------------------------------------------
+    HexNode[,] grid;
+    HexNode catNode;
+    readonly List<HexNode> activeNodes = new();
+    private bool isGameEnd = false;
 
+    #region Unity
+    void Start() => StartNewGame();
+    #endregion
 
-    private void Start()
-    {
-        StartNewGame();
-    }
-    private void OnDisable()
-    {
-        
-    }
+    #region Game Flow
     public void StartNewGame()
     {
-        
-        
-        // 1. Dọn dẹp lưới cũ (trả về pool)
-        foreach (var node in activeNodes) node.gameObject.SetActive(false);
+        ClearGrid();
+        CreateGrid();
+        SetupInitialScene();
+    }
+
+    void MoveCat()
+    {
+        HexNode next = FindSmartPath();
+
+        if (next == null)
+        {
+            Debug.Log("Bạn đã bắt được mèo!");
+            isGameEnd = true;
+            return;
+        }
+
+        catNode = next;
+        UpdateCatUI();
+
+        if (IsAtEdge(catNode))
+        {
+            Debug.Log("Mèo đã trốn thoát!");
+            isGameEnd = true;
+        }
+    }
+    #endregion
+
+    #region Grid
+    void ClearGrid()
+    {
+        foreach (var n in activeNodes)
+            n.gameObject.SetActive(false);
+
         activeNodes.Clear();
-
         grid = new HexNode[rows, cols];
+    }
 
-        // 2. Lấy thử 1 mẫu để đo kích thước (Width/Height)
+    void CreateGrid()
+    {
         GameObject sample = PoolManager.Instance.SpawnFromPool(poolTag, gridParent);
         RectTransform sampleRT = sample.GetComponent<RectTransform>();
-
-        float w = sampleRT.rect.width;   // Chiều rộng thật
-        float h = sampleRT.rect.height;  // Chiều cao thật
-
-        // Trả mẫu về ngay lập tức để vòng lặp bên dưới dùng
+        float w = sampleRT.rect.width;
+        float h = sampleRT.rect.height;
         sample.SetActive(false);
 
-        // 3. Vòng lặp tạo lưới
         for (int r = 0; r < rows; r++)
         {
             for (int c = 0; c < cols; c++)
             {
-                GameObject go = PoolManager.Instance.SpawnFromPool(poolTag, gridParent);
-                HexNode node = go.GetComponent<HexNode>();
-                RectTransform rt = go.GetComponent<RectTransform>();
+                var go = PoolManager.Instance.SpawnFromPool(poolTag, gridParent);
+                var node = go.GetComponent<HexNode>();
+                var rt = go.GetComponent<RectTransform>();
 
-                // A. Tính toán vị trí X (Lệch 0.5w ở hàng lẻ)
-                float xOffset = (r % 2 != 0) ? (w / 2f) : 0;
-                float xPos = (c * w) + xOffset;
-
-                // B. Tính toán vị trí Y (Khớp 0.75h để vào tổ ong)
-                float yPos = r * (h * 0.75f);
-
-                // C. Áp dụng vào UI (Y âm để đi xuống dưới)
-                rt.anchoredPosition = new Vector2(xPos, -yPos);
-                rt.localScale = Vector3.one; // Cố định scale = 1
+                float xOffset = (r % 2 != 0) ? w * oddRowOffset : 0f;
+                rt.anchoredPosition = new Vector2(
+                    c * w * horizontalSpacing + xOffset,
+                    -r * h * verticalSpacing
+                );
 
                 node.Init(r, c, OnNodeClicked);
                 grid[r, c] = node;
                 activeNodes.Add(node);
             }
         }
-
-        SetupInitialScene();
     }
 
-    private void SetupInitialScene()
+    void SetupInitialScene()
     {
-        // Đặt mèo vào giữa
         catNode = grid[rows / 2, cols / 2];
         UpdateCatUI();
 
-        // Random một vài tường (ví dụ 10 ô)
-        for (int i = 0; i < 10; i++)
+        int wallCount = Random.Range(4, 20);
+        for (int i = 0; i < wallCount; i++)
         {
             int r = Random.Range(0, rows);
             int c = Random.Range(0, cols);
-            if (grid[r, c] != catNode) grid[r, c].SetAsWall();
+            if (grid[r, c] != catNode)
+                grid[r, c].SetAsWall();
         }
     }
+    #endregion
 
-    private void OnNodeClicked(HexNode clickedNode)
+    #region Input
+    void OnNodeClicked(HexNode node)
     {
-        if (clickedNode.isBlocked || clickedNode == catNode) return;
+        if (node.isBlocked || node == catNode||isGameEnd) return;
 
-        clickedNode.SetAsWall();
-        // Sau khi người chơi đặt tường, cho mèo di chuyển (AI BFS đã viết ở trên)
+        node.SetAsWall();
         MoveCat();
     }
-    void MoveCat()
+    #endregion
+
+    #region Cat Pathfinding (Smart BFS)
+    HexNode FindSmartPath()
     {
-        HexNode nextStep = FindBFSPath();
-
-        if (nextStep == null)
-        {
-            Debug.Log("Chúc mừng! Bạn đã bắt được mèo!");
-            return;
-        }
-
-        catNode = nextStep;
-        UpdateCatUI();
-
-        // Kiểm tra mèo thua (ra tới biên)
-        if (catNode.row == 0 || catNode.row == rows - 1 || catNode.col == 0 || catNode.col == cols - 1)
-        {
-            Debug.Log("Mèo đã trốn thoát! Game Over!");
-        }
-    }
-
-    private void UpdateCatUI()
-    {
-        catUI.anchoredPosition = catNode.GetComponent<RectTransform>().anchoredPosition;
-    }
-    // Thuật toán tìm đường BFS
-    HexNode FindBFSPath()
-    {
-        Queue<HexNode> queue = new Queue<HexNode>();
-        Dictionary<HexNode, HexNode> parentMap = new Dictionary<HexNode, HexNode>();
+        Queue<HexNode> queue = new();
+        Dictionary<HexNode, HexNode> parent = new();
+        Dictionary<HexNode, int> dist = new();
+        List<HexNode> exits = new();
 
         queue.Enqueue(catNode);
-        parentMap[catNode] = null;
-
-        HexNode escapeNode = null;
+        parent[catNode] = null;
+        dist[catNode] = 0;
 
         while (queue.Count > 0)
         {
-            HexNode current = queue.Dequeue();
+            HexNode cur = queue.Dequeue();
 
-            if (IsAtEdge(current))
-            {
-                escapeNode = current;
-                break;
-            }
+            if (IsAtEdge(cur))
+                exits.Add(cur);
 
-            foreach (HexNode neighbor in GetNeighbors(current))
+            foreach (var n in GetNeighbors(cur))
             {
-                if (!neighbor.isBlocked && !parentMap.ContainsKey(neighbor))
-                {
-                    parentMap[neighbor] = current;
-                    queue.Enqueue(neighbor);
-                }
+                if (n.isBlocked || parent.ContainsKey(n)) continue;
+
+                parent[n] = cur;
+                dist[n] = dist[cur] + 1;
+                queue.Enqueue(n);
             }
         }
 
-        if (escapeNode != null)
-        {
-            // Truy vết ngược lại để tìm bước đi tiếp theo ngay sát con mèo
-            HexNode step = escapeNode;
-            while (parentMap[step] != catNode && parentMap[step] != null)
-            {
-                step = parentMap[step];
-            }
-            return step;
-        }
+        if (exits.Count == 0) return null;
 
-        return null;
+        HexNode bestExit = exits
+            .OrderBy(e => dist[e])
+            .ThenBy(HeuristicToEdge)
+            .First();
+
+        HexNode step = bestExit;
+        while (parent[step] != catNode)
+            step = parent[step];
+
+        return step;
     }
 
-    bool IsAtEdge(HexNode node) => node.row == 0 || node.row == rows - 1 || node.col == 0 || node.col == cols - 1;
-
-    List<HexNode> GetNeighbors(HexNode node)
+    int HeuristicToEdge(HexNode n)
     {
-        List<HexNode> neighbors = new List<HexNode>();
-        int[][] offsets = (node.row % 2 == 0) ?
-            new int[][] { new[] { 0, 1 }, new[] { 0, -1 }, new[] { 1, 0 }, new[] { -1, 0 }, new[] { 1, -1 }, new[] { -1, -1 } } :
-            new int[][] { new[] { 0, 1 }, new[] { 0, -1 }, new[] { 1, 0 }, new[] { -1, 0 }, new[] { 1, 1 }, new[] { -1, 1 } };
-
-        foreach (var off in offsets)
-        {
-            int r = node.row + off[0];
-            int c = node.col + off[1];
-            if (r >= 0 && r < rows && c >= 0 && c < cols) neighbors.Add(grid[r, c]);
-        }
-        return neighbors;
+        return Mathf.Min(
+            n.row,
+            rows - 1 - n.row,
+            n.col,
+            cols - 1 - n.col
+        );
     }
+    #endregion
+
+    #region Helpers
+    void UpdateCatUI()
+    {
+        catUI.anchoredPosition =
+            catNode.GetComponent<RectTransform>().anchoredPosition;
+    }
+
+    bool IsAtEdge(HexNode n)
+    {
+        return n.row == 0 || n.row == rows - 1 ||
+               n.col == 0 || n.col == cols - 1;
+    }
+
+    static readonly int[][] EVEN =
+    {
+        new[]{0,1}, new[]{0,-1},
+        new[]{1,0}, new[]{-1,0},
+        new[]{1,-1}, new[]{-1,-1}
+    };
+
+    static readonly int[][] ODD =
+    {
+        new[]{0,1}, new[]{0,-1},
+        new[]{1,0}, new[]{-1,0},
+        new[]{1,1}, new[]{-1,1}
+    };
+
+    List<HexNode> GetNeighbors(HexNode n)
+    {
+        var result = new List<HexNode>();
+        var offsets = (n.row % 2 == 0) ? EVEN : ODD;
+
+        foreach (var o in offsets)
+        {
+            int r = n.row + o[0];
+            int c = n.col + o[1];
+
+            if (r >= 0 && r < rows && c >= 0 && c < cols)
+                result.Add(grid[r, c]);
+        }
+        return result;
+    }
+    #endregion
 }
