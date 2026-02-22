@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
-public class CatGameManager : MonoBehaviour
+public class ChatNiorGameManager : MonoBehaviour
 {
     [Header("Grid Settings")]
     [SerializeField] int rows = 11;
@@ -12,6 +14,7 @@ public class CatGameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] RectTransform catUI;
+    [SerializeField] GameObject chatNoir;
 
     [Header("Hex Spacing")]
     [SerializeField] float horizontalSpacing = 1.05f;
@@ -21,29 +24,81 @@ public class CatGameManager : MonoBehaviour
     HexNode[,] grid;
     HexNode catNode;
     readonly List<HexNode> activeNodes = new();
-    private bool isGameEnd = false;
+    [Header("Game Setting")]
+    [SerializeField] private bool isGameEnd = false;
+    [SerializeField] private int moveCount;
+    [SerializeField] private int score;
+
+    
+    private string winText = "Bạn đã bắt được mèo!";
+    private string loseText = "Mèo đã trốn thoát!";
+    private string scoreTextFormat = "Điểm: {0}";
+    private string moveCountTextFormat = "Số bước: {0}";
+
+    [Header("UI References")]
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text moveCountText;
+    [SerializeField] private TMP_Text resultText;
 
     #region Unity
-    void Start() => StartNewGame();
+    void Start()
+    {
+
+        SetUpStartGame();
+    }
+    private void Update()
+    {
+        UpdateUI();
+    }
+    #endregion
+
+    #region UI Update
+    public void UpdateUI()
+    {
+        
+        scoreText.text = string.Format(scoreTextFormat, score);
+        moveCountText.text = string.Format(moveCountTextFormat, moveCount);
+        
+    }
+    
+    
+    public void SetUpStartGame()
+    {
+        StartNewGame();
+
+        score = 2000;
+        moveCount = 0;
+
+        UpdateUI();
+    }
     #endregion
 
     #region Game Flow
     public void StartNewGame()
     {
+
         ClearGrid();
         CreateGrid();
         SetupInitialScene();
         isGameEnd = false;
     }
 
+    public void EndGame()
+    {
+        StartCoroutine(DelayedAction(2f, () =>
+        {
+            chatNoir.SetActive(false);
+        }));
+    }    
     void MoveCat()
     {
         HexNode next = FindSmartPath();
 
         if (next == null)
         {
-            Debug.Log("Bạn đã bắt được mèo!");
+            resultText.text = winText;
             isGameEnd = true;
+            EndGame();
             return;
         }
 
@@ -52,8 +107,9 @@ public class CatGameManager : MonoBehaviour
 
         if (IsAtEdge(catNode))
         {
-            Debug.Log("Mèo đã trốn thoát!");
+            resultText.text = loseText;
             isGameEnd = true;
+            EndGame();
         }
     }
     #endregion
@@ -112,6 +168,7 @@ public class CatGameManager : MonoBehaviour
         }
     }
     #endregion
+    
 
     #region Input
     void OnNodeClicked(HexNode node)
@@ -119,7 +176,10 @@ public class CatGameManager : MonoBehaviour
         if (node.isBlocked || node == catNode||isGameEnd) return;
 
         node.SetAsWall();
+        moveCount++;
+        score = Mathf.Max(0, score - 100); // Mỗi bước trừ 100 điểm
         MoveCat();
+
     }
     #endregion
 
@@ -219,5 +279,11 @@ public class CatGameManager : MonoBehaviour
         }
         return result;
     }
+    private IEnumerator DelayedAction(float delay, System.Action action)
+    {
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
+    }
+
     #endregion
 }
