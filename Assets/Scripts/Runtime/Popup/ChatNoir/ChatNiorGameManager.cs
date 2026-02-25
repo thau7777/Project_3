@@ -60,8 +60,15 @@ public class ChatNiorGameManager : MonoBehaviour
         moveCountText.text = string.Format(moveCountTextFormat, moveCount);
         
     }
-    
-    
+    void UpdateCatUIAnimated(HexNode target)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MoveCatSmooth(target));
+    }
+
+   
+
+
     public void SetUpStartGame()
     {
         StartNewGame();
@@ -103,7 +110,7 @@ public class ChatNiorGameManager : MonoBehaviour
         }
 
         catNode = next;
-        UpdateCatUI();
+        UpdateCatUIAnimated(next);
 
         if (IsAtEdge(catNode))
         {
@@ -156,7 +163,8 @@ public class ChatNiorGameManager : MonoBehaviour
     void SetupInitialScene()
     {
         catNode = grid[rows / 2, cols / 2];
-        UpdateCatUI();
+        UpdateCatUIAnimated(catNode);
+
 
         int wallCount = Random.Range(4, 20);
         for (int i = 0; i < wallCount; i++)
@@ -238,11 +246,25 @@ public class ChatNiorGameManager : MonoBehaviour
     #endregion
 
     #region Helpers
-    void UpdateCatUI()
+
+    IEnumerator MoveCatSmooth(HexNode target)
     {
-        catUI.anchoredPosition =
-            catNode.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 start = catUI.anchoredPosition;
+        Vector2 end = target.GetComponent<RectTransform>().anchoredPosition;
+
+        float t = 0f;
+        float duration = 0.2f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            t = Mathf.Clamp01(t);
+
+            catUI.anchoredPosition = Vector2.Lerp(start, end, t);
+            yield return null;
+        }
     }
+
 
     bool IsAtEdge(HexNode n)
     {

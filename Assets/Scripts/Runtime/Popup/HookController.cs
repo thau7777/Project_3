@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Reflection;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HookController : MonoBehaviour
@@ -107,31 +108,41 @@ public class HookController : MonoBehaviour
             rb.gravityScale = waterGravity;
         }
 
-        // Chạm cá / rác
-        FishItem item = other.GetComponent<FishItem>();
-        if (item != null)
-        {
-            hookedItem = item;
-            
-            rb.linearVelocity = Vector2.zero;
+        if (!other.TryGetComponent(out FishItem item)) return;
+        if (item.state != FishState.Swimming) return;
 
-            FishingUI.instance.StartFishing(this);
-            rb.gravityScale = 0f;
-        }
+        hookedItem = item;
+        item.OnHooked();
+
+        rb.linearVelocity = Vector2.zero;
+        rb.gravityScale = 0f;
+
+        FishingUI.instance.StartFishing(this);
+        //// Chạm cá / rác
+        //FishItem item = other.GetComponent<FishItem>();
+        //if (item != null)
+        //{
+        //    hookedItem = item;
+
+        //    rb.linearVelocity = Vector2.zero;
+
+        //    FishingUI.instance.StartFishing(this);
+        //    rb.gravityScale = 0f;
+        //}
     }
 
     // ================= PULL UP =================
     public void PullUp(bool success)
     {
-        rb.gravityScale = 0f;
-        rb.linearDamping = 0f;
+        rb.linearVelocity = Vector2.zero;
 
-        if (success && hookedItem != null)
+        if (hookedItem != null)
         {
-            hookedItem.AttachToHook(transform);
+            if (success)
+                hookedItem.OnCaught();
+            else
+                hookedItem.OnEscape();
         }
-
-        rb.linearVelocity = new Vector2(-5f, 7f);
 
         ResetHook();
     }

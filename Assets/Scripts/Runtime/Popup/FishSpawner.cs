@@ -1,25 +1,44 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class FishSpawner : MonoBehaviour
+public class FishingSpawner : MonoBehaviour
 {
-    public FishingDatabase database;
-    public Vector2 minPos;
-    public Vector2 maxPos;
+    [Header("Spawn Rows")]
+    public Transform[] spawnRows;
 
-    public FishItem Spawn()
+    [Header("Pool Tags")]
+    public string fishPoolTag = "Fish";
+    public string trashPoolTag = "Trash";
+
+    [Header("Count")]
+    public Vector2Int fishCountRange = new(3, 4);
+    public Vector2Int trashCountRange = new(2, 3);
+
+    private void Start()
     {
-        FishingItemData data = database.GetRandomItem();
+        SpawnWave();
+        Debug.Log("Spawned a new wave of fish and trash!");
+    }
+    public void SpawnWave()
+    {
+        Spawn(fishPoolTag, fishCountRange);
+        Spawn(trashPoolTag, trashCountRange);
+    }
 
-        Vector3 pos = new Vector3(
-            Random.Range(minPos.x, maxPos.x),
-            Random.Range(minPos.y, maxPos.y),
-            0f
-        );
+    void Spawn(string tag, Vector2Int range)
+    {
+        int count = Random.Range(range.x, range.y + 1);
 
-        GameObject obj = Instantiate(data.prefab, pos, Quaternion.identity);
-        FishItem item = obj.GetComponent<FishItem>();
-        item.data = data;
+        for (int i = 0; i < count; i++)
+        {
+            Transform row = spawnRows[Random.Range(0, spawnRows.Length)];
+            GameObject go = PoolManager.Instance.SpawnFromPool(tag, row);
 
-        return item;
+            FishItem item = go.GetComponent<FishItem>();
+            item.Init();
+
+            Vector3 pos = go.transform.localPosition;
+            pos.x = Random.Range(-6f, 6f);
+            go.transform.localPosition = pos;
+        }
     }
 }
