@@ -17,8 +17,8 @@ public class HookController : MonoBehaviour
     public float maxForce = 15f;
 
     [Header("Water Physics")]
-    public float waterDrag = 3f;
-    public float waterGravity = 6f;
+    public float waterDrag = 2f;
+    public float waterGravity = 10f;
 
     [Header("Normal Physics")]
     public float normalMass = 0.5f;
@@ -44,7 +44,6 @@ public class HookController : MonoBehaviour
         UpdateChargeBar();
     }
 
-    // ================= INPUT =================
     void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -70,7 +69,6 @@ public class HookController : MonoBehaviour
         }
     }
 
-    // ================= CHARGE BAR =================
     void UpdateChargeBar()
     {
         if (!isCharging) return;
@@ -79,7 +77,6 @@ public class HookController : MonoBehaviour
             Mathf.PingPong(Time.time * chargeSpeed, 1f);
     }
 
-    // ================= THROW =================
     void ThrowHook(float charge01)
     {
         hasThrown = true;
@@ -90,14 +87,11 @@ public class HookController : MonoBehaviour
 
         rb.linearVelocity = Vector2.zero;
 
-        // lực bắn ngang
         rb.AddForce(Vector2.right * force * 15f, ForceMode2D.Impulse);
 
-        // lực nâng lên (ít hơn)
         rb.AddForce(Vector2.up * force * 5f, ForceMode2D.Impulse);
     }
 
-    // ================= COLLISION =================
     void OnTriggerEnter2D(Collider2D other)
     {
         // Chạm mặt nước
@@ -118,20 +112,7 @@ public class HookController : MonoBehaviour
         rb.gravityScale = 0f;
 
         FishingUI.instance.StartFishing(this);
-        //// Chạm cá / rác
-        //FishItem item = other.GetComponent<FishItem>();
-        //if (item != null)
-        //{
-        //    hookedItem = item;
-
-        //    rb.linearVelocity = Vector2.zero;
-
-        //    FishingUI.instance.StartFishing(this);
-        //    rb.gravityScale = 0f;
-        //}
     }
-
-    // ================= PULL UP =================
     public void PullUp(bool success)
     {
         rb.linearVelocity = Vector2.zero;

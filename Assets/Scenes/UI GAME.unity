@@ -736,6 +736,24 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1155696152613156290, guid: 70a651eb39c1b8442b37ff7b7355b5a1, type: 3}
   m_PrefabInstance: {fileID: 847938537387885375}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1827048478 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6463980205004573408, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+  m_PrefabInstance: {fileID: 4617394352751340587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1827048481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827048478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3444c09ff6ac49847841ad760757b020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingGameManager
+  score: 0
 --- !u!1 &1841223938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,6 +1356,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2621043639441637428, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: fishRow
+      value: 
+      objectReference: {fileID: 732919206}
+    - target: {fileID: 2621043639441637428, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: trashRow
+      value: 
+      objectReference: {fileID: 651543656}
+    - target: {fileID: 2621043639441637428, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -1353,6 +1379,18 @@ PrefabInstance:
       propertyPath: 'spawnRows.Array.data[1]'
       value: 
       objectReference: {fileID: 651543656}
+    - target: {fileID: 2675158393046451122, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -477
+      objectReference: {fileID: 0}
+    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: waterDrag
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: waterGravity
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8031021024475418851, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1454,7 +1492,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5199449364506246926, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
       insertIndex: -1
       addedObject: {fileID: 651543656}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6463980205004573408, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1827048481}
   m_SourcePrefab: {fileID: 100100000, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
 --- !u!224 &4617394352751340588 stripped
 RectTransform:

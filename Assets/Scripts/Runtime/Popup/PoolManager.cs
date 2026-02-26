@@ -44,18 +44,12 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    // ================= SPAWN =================
     public GameObject SpawnFromPool(string tag, Transform parent)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
             Debug.LogError("❌ Pool tag không tồn tại: " + tag);
             return null;
-        }
-
-        if (poolDictionary[tag].Count == 0)
-        {
-            ExpandPool(tag);
         }
 
         GameObject obj = poolDictionary[tag].Dequeue();
@@ -66,7 +60,6 @@ public class PoolManager : MonoBehaviour
         return obj;
     }
 
-    // ================= DESPAWN =================
     public void Despawn(string tag, GameObject obj)
     {
         if (!poolDictionary.ContainsKey(tag))
@@ -80,20 +73,5 @@ public class PoolManager : MonoBehaviour
         poolDictionary[tag].Enqueue(obj);
     }
 
-    // ================= EXPAND =================
-    void ExpandPool(string tag)
-    {
-        Pool pool = pools.Find(p => p.tag == tag);
-        if (pool == null)
-        {
-            Debug.LogError("❌ Không tìm thấy pool để expand: " + tag);
-            return;
-        }
-
-        GameObject obj = Instantiate(pool.prefab, transform);
-        obj.SetActive(false);
-        poolDictionary[tag].Enqueue(obj);
-
-        Debug.LogWarning("⚠ Pool '" + tag + "' bị thiếu – đã tạo thêm 1 object");
-    }
+   
 }

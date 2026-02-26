@@ -19,7 +19,7 @@ public class FishItem : MonoBehaviour
 
     public int scoreValue = 100;
 
-    public string poolTag; // ⚠️ QUAN TRỌNG
+    public string poolTag;
 
     Rigidbody2D rb;
 
@@ -49,7 +49,7 @@ public class FishItem : MonoBehaviour
         {
             FishingGameManager.Instance.AddScore(scoreValue);
         }
-
+        state = FishState.Hooked;
         PoolManager.Instance.Despawn(poolTag, gameObject);
     }
 
