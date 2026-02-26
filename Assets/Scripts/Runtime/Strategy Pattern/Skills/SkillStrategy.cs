@@ -27,12 +27,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
     #region Skill Condition
     [TabGroup("Skill Condition")]
     [SerializeField]
-    protected bool _needInRange = false;
-
-    [TabGroup("Skill Condition")]
-    [ShowIf("_needInRange")]
-    [SerializeField]
-    protected float targetCheckRadius = 3f;
+    public bool needEnemiesInSkillIndicator = false;
 
     [TabGroup("Skill Condition")]
     [ShowIf("_needInRange")]
@@ -51,7 +46,11 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     #region Skill Settings
     [TabGroup("Skill Settings")]
+    public bool isPassiveSkill = false;
+    [TabGroup("Skill Settings")]
     public Sprite skillIcon;
+    [TabGroup("Skill Settings")]
+    public String skillDescription = "bla bla bla";
 
     [TabGroup("Skill Settings")]
     [SerializeField]
@@ -76,7 +75,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     [TabGroup("Skill Settings")]
     [ShowIf("_isProjectile", true)]
-    public Quaternion rotationOffset;
+    public Quaternion rotationOffset = Quaternion.Euler(1,1,1);
 
     [TabGroup("Skill Settings")]
     public LayerMask DodgeLayers;
@@ -192,9 +191,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
     }
     public bool CheckSpecialCondition(Transform user)
     {
-        if (user.TryGetComponent<SkillExecutor>(out var skillExecutor) && skillExecutor.CurrentMana < ManaCost && ManaCost != 0)
-            return false;
-        if (!_needInRange)
+        if (!needEnemiesInSkillIndicator)
             return true;
         return HasEnemiesAtMousePosition(user);
     }
@@ -210,15 +207,8 @@ public class SkillStrategy : ScriptableObject, IStrategy
         Vector3 directionToMouse = mouseWorldPos - startPoint;
         directionToMouse.y = 0;
         float distanceToMouse = directionToMouse.magnitude;
-
-        // Clamp to max range if needed
-        if (distanceToMouse > Range)
-        {
-            mouseWorldPos = startPoint + directionToMouse.normalized * Range;
-        }
-
         // Check for enemies in sphere at mouse position
-        Collider[] enemiesInRange = Physics.OverlapSphere(mouseWorldPos, targetCheckRadius, enemyLayer);
+        Collider[] enemiesInRange = Physics.OverlapSphere(mouseWorldPos, indicatorWidth, enemyLayer);
 
         foreach (Collider col in enemiesInRange)
         {
@@ -257,8 +247,16 @@ public class SkillStrategy : ScriptableObject, IStrategy
         if (FlyweightSettings == null) return;
         Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
         Vector3 spawnPosition = context.spawnTransform.AddLocal(context.positionOffset.x, context.positionOffset.y, context.positionOffset.z);
-        flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation * context.rotationOffset);
+        flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation * (context.rotationOffset == Quaternion.Euler(0,0,0) ? Quaternion.Euler(1, 1, 1) : context.rotationOffset));
+        if (flyweightObj.TryGetComponent<HitBoxHandler>(out var hitboxHandler))
+        {
+            hitboxHandler.DodgeLayers = DodgeLayers;
 
+            if (flyweightObj.TryGetComponent<DamageDealer>(out var damageDealer))
+            {
+                damageDealer.Damage = Damage;
+            }
+        }
         if (flyweightObj is StraightProjectile straightProjectile)
         {
             StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
@@ -304,8 +302,8 @@ public class SkillStrategy : ScriptableObject, IStrategy
         return Vector3.zero;
     }
 
-    public void UpdateStat()
+    public void UpdateDamage(float newValue)
     {
-
+        _damage = newValue;
     }
 }

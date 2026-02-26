@@ -98,6 +98,15 @@ public class OneShotVFXSettings : FlyweightSettings
     public Vector2 hitboxOnOffTime = new Vector2(0, 0.1f);
 
     [ShowIf("_hasHitBox")]
+    public bool useTriggerStays = false;
+
+    [ShowIf("_hasHitBox")]
+    public bool reverseKnockBackDirection = false;
+
+    [ShowIf("useTriggerStays")]
+    public float triggerStayTickInterval = 0.2f;
+
+    [ShowIf("_hasHitBox")]
     public LayerMask defaultDodgeLayers;
     #endregion
     private void OnValidate()
@@ -121,12 +130,15 @@ public class OneShotVFXSettings : FlyweightSettings
                 var hitboxHandler = go.GetOrAdd<HitBoxHandler>();
                 hitboxHandler.DodgeLayers = defaultDodgeLayers;
                 hitboxHandler.HitboxOnOffTime = hitboxOnOffTime;
+                hitboxHandler.UseTriggerStays = useTriggerStays;
+                hitboxHandler.TriggerStayTickInterval = triggerStayTickInterval;
             }
             if (CanDealDamage)
             {
                 var damageDealer = go.GetOrAdd<DamageDealer>();
                 damageDealer.Damage = _defaultDamage;
                 damageDealer.KnockbackForce = _defaultKnockBackForce;
+                damageDealer.ReverseKnockbackDirection = reverseKnockBackDirection;
                 if (_hitImpactVFXSetting)
                     damageDealer.SetHitImpactVFX(_hitImpactVFXSetting);
             }
@@ -150,7 +162,7 @@ public class OneShotVFXSettings : FlyweightSettings
     public override void OnRelease(Flyweight f)
     {
         if (f.transform.parent != null) 
-            f.transform.SetParent(GameObject.Find("VFXStorage").transform ?? null);
+            f.transform.SetParent(null);
 
         base.OnRelease(f);
     }

@@ -21,8 +21,8 @@ public class ContinousVFXSettings : FlyweightSettings
     }
     public override void OnRelease(Flyweight f)
     {
-        Transform vfxStorage = GameObject.Find("VFXStorage").transform;
-        f.transform.SetParent(vfxStorage);
+        if (f.transform.parent != null)
+            f.transform.SetParent(null);
         base.OnRelease(f);
     }
 }

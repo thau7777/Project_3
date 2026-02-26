@@ -21297,8 +21297,12 @@ GameObject:
   - component: {fileID: 3364089100139059584}
   - component: {fileID: 4989350217652862228}
   - component: {fileID: 2645424129194304365}
+  - component: {fileID: 811720669900769246}
   - component: {fileID: 5181628910276376256}
   - component: {fileID: 666373032690480960}
+  - component: {fileID: 2040516743320327267}
+  - component: {fileID: 639097469130714332}
+  - component: {fileID: 1071162874243563009}
   m_Layer: 3
   m_Name: PlayerTopDown
   m_TagString: Player
@@ -21338,7 +21342,7 @@ Animator:
   m_GameObject: {fileID: 6542080249666751425}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 831f7229e82863e4d80ada075e09eba6, type: 3}
-  m_Controller: {fileID: 9100000, guid: 49b9f238aa8a81f4ea853b43c2db7e7b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4312d79ef4895f04e92ac23303e01540, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -21368,7 +21372,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.9
+  m_Height: 1.64
   m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -21401,7 +21405,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &4989350217652862228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21415,11 +21419,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyPlayerStateDriver
   _inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
-  _locomotionSet: {fileID: 11400000, guid: d139eb56773700f438e79f994cf2190c, type: 2}
+  _locomotionSet: {fileID: 11400000, guid: e24c46937ea281745958c97aad990fbd, type: 2}
   _controller: {fileID: 4186329194728952357}
+  _layerIgnoreController: {fileID: 666373032690480960}
   _animator: {fileID: 6861064157226733339}
   _renderer: {fileID: 9096238872274743249}
   _executor: {fileID: 2645424129194304365}
+  _characterStats: {fileID: 1071162874243563009}
   classWeaponDataList:
   - Class: 0
     weaponOfThisClass:
@@ -21441,7 +21447,6 @@ MonoBehaviour:
   - {fileID: 4029216477085738423}
   - {fileID: 2297538764890615871}
   - {fileID: 1273902654876412661}
-  _baseMoveSpeed: 5
   _strafeMoveSpeed: 2
   _smoothTime: 0.1
   _rotateSpeed: 50
@@ -21452,7 +21457,11 @@ MonoBehaviour:
     <IsDashing>k__BackingField: 0
     <IsAttacking>k__BackingField: 0
     <IsInSpecialMove>k__BackingField: 0
+    <IsHurting>k__BackingField: 0
+    <IsDead>k__BackingField: 0
     <IsNextAttackQueued>k__BackingField: 0
+    <CastingSkill>k__BackingField: -1
+  <IsParrying>k__BackingField: 0
   _minionManagerPrefab: {fileID: 6214416510671130543, guid: 47d1ade16e8999c49a65b75df8ca0155, type: 3}
 --- !u!114 &2645424129194304365
 MonoBehaviour:
@@ -21466,11 +21475,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172646479f5d9a14da25907ca20e2249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillExecutor
-  _skillDatas:
-  - {fileID: 11400000, guid: 7e4bfbfc4e3f53f47980885b668577ca, type: 2}
+  _skillStrategies:
   - {fileID: 11400000, guid: bec563ec091e33f4494156b8a4a51ec8, type: 2}
-  - {fileID: 11400000, guid: 665cfc9e684f0d54b87b0854f3254870, type: 2}
-  - {fileID: 11400000, guid: 3321b3aae4269af4c8af9fad71cba6c2, type: 2}
+  - {fileID: 11400000, guid: a79444906ce42bc45ab1dcb2bcc2b2e1, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 461a9be84d8e5a34187e3bc7c60eccee, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   _skillSpawnPoints:
   - {fileID: 3667854963658125952}
   - {fileID: 5953917757259853620}
@@ -21478,6 +21489,44 @@ MonoBehaviour:
   - {fileID: 4029216477085738423}
   - {fileID: 2297538764890615871}
   - {fileID: 1273902654876412661}
+  _layerIgnoreController: {fileID: 0}
+  _currentMana: 0
+  _maxMana: 0
+  OnManaChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerStatusUIController, Assembly-CSharp
+        m_MethodName: UpdateMana
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &811720669900769246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678ea1af24b09554f972f7d0f77a1311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemExecutor
+  _itemArray:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 582dbc820ded4d349b769c5ce2cdd6e8, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 7e0318d05e61bee41b8571543353c59f, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  _inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
 --- !u!114 &5181628910276376256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21494,18 +21543,71 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3840
   hasShieldBreakingMechanic: 0
+  _invincibleDuration: 0.5
+  _stunVFXSettings: {fileID: 0}
   OnTakeDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4989350217652862228}
+        m_TargetAssemblyTypeName: PlayerTopDownStateDriver, Assembly-CSharp
+        m_MethodName: OnTakeDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ScreenEffectUIController, Assembly-CSharp
+        m_MethodName: OnDamaged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4989350217652862228}
+        m_TargetAssemblyTypeName: PlayerTopDownStateDriver, Assembly-CSharp
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnShieldBreak:
     m_PersistentCalls:
       m_Calls: []
-  statusBarsUIController: {fileID: 0}
-  HealthBarUI: {fileID: 0}
-  ShieldBarUI: {fileID: 0}
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerStatusUIController, Assembly-CSharp
+        m_MethodName: UpdateHealth
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &666373032690480960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21518,9 +21620,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnoreController
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &2040516743320327267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 11400000, guid: bfb805ba599c4cd429af554a70acecdd, type: 2}
+    effectHoldDuration: 5
+    stacksToApply: 1
+  OnEffectAdded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: EffectUIController, Assembly-CSharp
+        m_MethodName: OnEffectAdded
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEffectRemoved:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: EffectUIController, Assembly-CSharp
+        m_MethodName: OnEffectRemoved
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &639097469130714332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 0
+  customRadius: 2
+  radiusMultiplier: 6
+  alwaysUseBounds: 1
+--- !u!114 &1071162874243563009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542080249666751425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 200
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &6545051189959688109
 GameObject:
   m_ObjectHideFlags: 0
@@ -23666,7 +23851,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8624945212360914214}
   m_Father: {fileID: 4776089832414516250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &9096238872274743249
@@ -25457,6 +25643,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000008009374, y: 0.8289515, z: 0.18054582}
     m_Extent: {x: 0.024249343, y: 0.04899022, z: 0.040204585}
   m_DirtyAABB: 0
+--- !u!1 &7511929701080381683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8624945212360914214}
+  m_Layer: 3
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8624945212360914214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7511929701080381683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3657868357209770096}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7542752692552990905
 GameObject:
   m_ObjectHideFlags: 0

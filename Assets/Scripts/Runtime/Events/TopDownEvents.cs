@@ -18,3 +18,11 @@ public struct TopDownInitializeSkillsEvent : IEvent
         skillRuntimeInstances = instances;
     }
 }
+public struct TopDownInitializeItemsEvent : IEvent
+{
+    public ItemRuntimeInstance[] items;
+    public TopDownInitializeItemsEvent(ItemRuntimeInstance[] items)
+    {
+        this.items = items;
+    }
+}
