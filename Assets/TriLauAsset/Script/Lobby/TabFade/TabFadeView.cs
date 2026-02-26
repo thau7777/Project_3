@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace MyRule.UI
@@ -24,14 +25,22 @@ namespace MyRule.UI
         public override void Hide()
         {
             tabContent.gameObject.SetActive(false);
+            
             VolumeController.Instance.AdjustVolumeWeight();
+            
+            inputReader.SwitchActionMap(ActionMap.SpaceStation);
         }
 
         public override void Show()
         {
             tabContent.gameObject.SetActive(true);
-            firstSelect?.Select();
+
+            if (firstSelect != null) firstSelect?.Select();
+            else EventSystem.current.SetSelectedGameObject(null);
+
             VolumeController.Instance.AdjustVolumeWeight();
+            
+            inputReader.SwitchActionMap(ActionMap.UI);
         }
     }
 }

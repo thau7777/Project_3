@@ -24,7 +24,10 @@ namespace Turnbase
             Debug.Log($"{user.name} đang sử dụng {item.itemName} lên {target.name}");
 
             user.animator.Play("Drinking");
+            yield return null;
 
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            float totalDuration = stateInfo.length;
 
             yield return new WaitForSeconds(0.8f);
 
@@ -53,6 +56,20 @@ namespace Turnbase
             {
                 user.battleUIManager.UpdateCharacterUI(target);
             }
+
+            stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Drinking"))
+            {
+                float normalizedTime = stateInfo.normalizedTime % 1f;
+                float timeLeft = stateInfo.length * (1f - normalizedTime);
+
+                if (timeLeft > 0)
+                {
+                    yield return new WaitForSeconds(timeLeft);
+                }
+            }
+
+            user.animator.Play("Idle");
 
             yield return new WaitForSeconds(0.5f);
 

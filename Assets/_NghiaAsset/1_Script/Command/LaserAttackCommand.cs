@@ -93,6 +93,8 @@ namespace Turnbase
 
             user.animator.Play(skill.animationTriggerName);
 
+            yield return null;
+
             float startTime = Time.time;
             float timeout = 2.5f;
             while (!damageApplied && Time.time < startTime + timeout)
@@ -115,9 +117,20 @@ namespace Turnbase
                 SpawnImpactEffect(target.transform.position + Vector3.up * 1f, skill);
             }
 
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
 
+            if (stateInfo.IsName(skill.animationTriggerName))
+            {
+                float normalizedTime = stateInfo.normalizedTime % 1f;
+                float timeLeft = stateInfo.length * (1f - normalizedTime);
 
-            yield return new WaitForSeconds(skill.laserVFXDuration);
+                if (timeLeft > 0)
+                {
+                    yield return new WaitForSeconds(timeLeft);
+                }
+            }
+
+            user.animator.Play("Idle");
         }
 
         private IEnumerator UpdateLaserPositions(GameObject laser, Transform start, Transform end)

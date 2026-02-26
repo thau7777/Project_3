@@ -21,8 +21,6 @@ public class MoleUI : MonoBehaviour, IPointerClickHandler
         float lifeTime = Random.Range(minLifeTime, maxLifeTime);
         Invoke(nameof(Hide), lifeTime);
 
-        // Nếu có Animator
-        // GetComponent<Animator>().SetTrigger("Up");
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -33,10 +31,6 @@ public class MoleUI : MonoBehaviour, IPointerClickHandler
     void Hide()
     {
         CancelInvoke();
-
-        // Animator Down nếu có
-        // GetComponent<Animator>().SetTrigger("Down");
-
         if (_spawner != null)
             _spawner.ReleaseSlot(_slotIndex);
 

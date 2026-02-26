@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MyRule.Audio;
 using UnityEngine;
 
 namespace Turnbase
@@ -191,19 +192,21 @@ namespace Turnbase
                 stateMachine.SwitchState(new SkillAttackingState(stateMachine, selectedSkill));
             }
 
-            TB_AudioSkillManager.Instance.PlaySkillSound(selectedSkill.castSound);
-
-        }
-
-
-        private IEnumerator ReleaseVFXAfterDelay(Flyweight_TB effect, float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            if (effect != null)
+            if (AudioManager.Instance != null)
             {
-                FlyweightFactory_TB.ReturnToPool(effect);
+                AudioManager.Instance.PlaySFX(selectedSkill.castSFXType);
             }
         }
+
+
+        //private IEnumerator ReleaseVFXAfterDelay(Flyweight_TB effect, float delay)
+        //{
+        //    yield return new WaitForSeconds(delay);
+        //    if (effect != null)
+        //    {
+        //        FlyweightFactory_TB.ReturnToPool(effect);
+        //    }
+        //}
 
         public void OnCancel()
         {

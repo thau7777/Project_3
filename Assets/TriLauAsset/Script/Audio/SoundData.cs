@@ -12,6 +12,12 @@ namespace MyRule.Audio
         UI_Click,
         UI_Select,
         UI_Adjust,
+        Skill_Impact,
+        Hurt,
+        EnemyHurt,
+
+
+
     }
 
     public enum MusicType

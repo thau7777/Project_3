@@ -1,35 +1,30 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class ArrowInput : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private ArrowManager arrowManager;
+    public ArrowManager arrowManager;
 
-    [Header("Timing")]
-    public float perfectTime = 0.2f;
-    public float goodTime = 0.4f;
-    private float appearTime;
-
+    private FishingUI fishingUI;
+    private bool canInput = false;
 
     private Dictionary<KeyCode, ArrowType> keyMap;
 
-
-    private void Start()
+    void Awake()
     {
-         arrowManager = FindAnyObjectByType<ArrowManager>();
-        keyMap = new Dictionary<KeyCode, ArrowType>()
+        keyMap = new Dictionary<KeyCode, ArrowType>
         {
-            { KeyCode.LeftArrow,  ArrowType.Left },
-            { KeyCode.UpArrow,    ArrowType.Up },
-            { KeyCode.DownArrow,  ArrowType.Down },
+            { KeyCode.LeftArrow, ArrowType.Left },
+            { KeyCode.UpArrow, ArrowType.Up },
+            { KeyCode.DownArrow, ArrowType.Down },
             { KeyCode.RightArrow, ArrowType.Right }
         };
-
-
     }
+
     void Update()
     {
+        if (!canInput) return;
+
         foreach (var key in keyMap)
         {
             if (Input.GetKeyDown(key.Key))
@@ -40,39 +35,25 @@ public class ArrowInput : MonoBehaviour
         }
     }
 
-    public void CheckInput(ArrowType input)
+    public void EnableInput(bool value)
     {
-        Debug.Log("Arrow Type now: " + arrowManager.currentArrow);
-        float deltaTime = Time.time - appearTime;
-
-        Debug.Log("Input Arrow Type: " + input);
-
-        if (input == arrowManager.currentArrow)
-        {
-            if (deltaTime <= perfectTime)
-            {
-                Debug.Log("PERFECT!");
-            }
-            else if (deltaTime <= goodTime)
-            {
-                Debug.Log("GOOD!");
-            }
-            else
-            {
-                Debug.Log("BAD!");
-            }
-            arrowManager.NextArrow();
-        }
-        else
-        {
-            Debug.Log("MISS!");
-        }
+        canInput = value;
     }
 
-    //void NextArrow()
-    //{
-    //    currentArrow = (ArrowType)Random.Range(0, 4);
-    //    Debug.Log("Next: " + currentArrow);
+    public void SetFishingUI(FishingUI ui)
+    {
+        fishingUI = ui;
+    }
 
-    //}
+    void CheckInput(ArrowType input)
+    {
+        bool correct = input == arrowManager.currentArrow;
+
+        fishingUI.ModifyTimer(correct);
+
+        if (correct)
+            arrowManager.NextArrow();
+
+        Debug.Log(correct ? "ĐÚNG!" : "SAI!");
+    }
 }

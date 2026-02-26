@@ -44,6 +44,8 @@ namespace MyRule.UI
         {
             AudioManager.Instance.PlaySFX(SFXType.UI_Click);
 
+            button.onClick?.Invoke();
+
             Navigator.OnSubmitPress(buttonViewType);
         }
 

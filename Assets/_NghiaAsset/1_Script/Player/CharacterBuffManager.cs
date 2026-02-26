@@ -61,6 +61,16 @@ namespace Turnbase
         [HideInInspector] public int basicAttackBuffTurnsRemaining = 0;
         [HideInInspector] public Sprite basicAttackBuffIcon;
 
+        [Header("Splash Attack Buff")]
+        [HideInInspector] public int splashAttackTurnsRemaining = 0;
+        [HideInInspector] public float splashDamagePercentage = 0f; 
+        [HideInInspector] public Sprite splashAttackIcon;
+
+        [Header("Divine Shield (One-Time Block)")]
+        [HideInInspector] public bool hasDivineShield = false;
+        [HideInInspector] public Flyweight_TB divineShieldVFXInstance;
+        [HideInInspector] public Sprite divineShieldIcon;
+
         [Header("Stack Manager")]
         public Dictionary<string, StackData> activeStacks = new Dictionary<string, StackData>();
 
@@ -339,6 +349,40 @@ namespace Turnbase
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
         }
 
+        public void ApplySplashAttackBuff(float percentage, int duration, Sprite icon)
+        {
+            if (duration <= 0) return;
+
+            splashDamagePercentage = percentage;
+            splashAttackTurnsRemaining = duration;
+            splashAttackIcon = icon;
+
+            Debug.Log($"<color=cyan>[BUFF]</color> {character.name} nhận Buff Đánh Lan ({percentage * 100}%) trong {duration} lượt!");
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+        }
+
+        public void ApplyDivineShield(Flyweight_TB vfxInstance, Sprite icon)
+        {
+            hasDivineShield = true;
+            divineShieldIcon = icon;
+
+            if (vfxInstance != null)
+            {
+                if (divineShieldVFXInstance != null) divineShieldVFXInstance.ReturnToPool();
+                divineShieldVFXInstance = vfxInstance;
+            }
+
+            Debug.Log($"<color=yellow>[DIVINE SHIELD]</color> {character.name} đã được bảo vệ!");
+
+            character.UpdateOwnUI();
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+        }
 
         public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount)
         {
@@ -366,6 +410,13 @@ namespace Turnbase
                     break;
                 case StatType.BasicAttackDamage:
                     ApplyBasicAttackBuff(amount, buffSettings.durationTurns, buffSettings.icon);
+                    break;
+                case StatType.SplashDamage:
+                    float percentage = amount / 100f;
+                    ApplySplashAttackBuff(percentage, buffSettings.durationTurns, buffSettings.icon);
+                    break;
+                case StatType.DivineShield:
+                    ApplyDivineShield(buffVFX, buffSettings.icon);
                     break;
                 default:
                     Debug.LogWarning($"Loại Buff {buffSettings.statToModify} không được hỗ trợ hoặc không có giá trị.");
@@ -663,6 +714,68 @@ namespace Turnbase
             character.UpdateOwnUI();
         }
 
+        public bool CheckAndConsumeDivineShield()
+        {
+            if (hasDivineShield)
+            {
+                hasDivineShield = false; 
+
+                if (divineShieldVFXInstance != null)
+                {
+                    divineShieldVFXInstance.ReturnToPool();
+                    divineShieldVFXInstance = null;
+                }
+                divineShieldIcon = null;
+
+                Debug.Log($"<color=cyan>[BLOCK]</color> Khiên của {character.name} đã vỡ, sát thương bị triệt tiêu!");
+
+                character.UpdateOwnUI();
+                EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+                return true;
+            }
+            return false;
+        }
+
+        public void RemoveExpiredSplashBuff()
+        {
+            if (splashAttackTurnsRemaining > 0) return;
+
+            splashDamagePercentage = 0f;
+            splashAttackTurnsRemaining = 0;
+            splashAttackIcon = null;
+
+            Debug.Log($"<color=gray>[EXPIRED]</color> Buff Đánh Lan của {character.name} đã hết hạn.");
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+        }
+
+        public void BreakShield()
+        {
+            stats.currentShield = 0;
+            baseShieldAmount = 0;
+            shieldTurnsRemaining = 0;
+            shieldIcon = null;
+
+            if (shieldVFXInstance != null)
+            {
+                shieldVFXInstance.transform.SetParent(null);
+                shieldVFXInstance.ReturnToPool();
+                shieldVFXInstance = null;
+            }
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
+            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+
+            Debug.Log($"<color=yellow>[SHIELD BROKEN]</color> Giáp của {character.name} đã bị đánh vỡ!");
+        }
+
         public bool IsBuffActive(StatType statType)
         {
             switch (statType)
@@ -787,6 +900,16 @@ namespace Turnbase
                 {
                     basicAttackBuffAmount = 0;
                     basicAttackBuffIcon = null;
+                }
+            }
+
+            if (splashAttackTurnsRemaining > 0)
+            {
+                splashAttackTurnsRemaining--;
+                if (splashAttackTurnsRemaining <= 0)
+                {
+                    RemoveExpiredSplashBuff();
+                    uiUpdateNeeded = true;
                 }
             }
 

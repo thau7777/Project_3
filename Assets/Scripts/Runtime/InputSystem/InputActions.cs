@@ -1458,7 +1458,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8a8ddbd4-ed4e-472c-b5f8-31469443fe7f"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
