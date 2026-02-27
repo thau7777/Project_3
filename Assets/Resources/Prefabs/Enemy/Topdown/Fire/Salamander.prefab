@@ -819,6 +819,7 @@ GameObject:
   - component: {fileID: 5295071416647522924}
   - component: {fileID: 4682507137567154258}
   - component: {fileID: 3255562600138106810}
+  - component: {fileID: 1045725561764666277}
   m_Layer: 9
   m_Name: Salamander
   m_TagString: Untagged
@@ -933,7 +934,6 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
@@ -1147,6 +1147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &5295071416647522924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,9 +1163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &4682507137567154258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1195,6 +1199,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42ce1b3e98e790a4c9bdb95a0c967c10, type: 2}
   _spawnPoints:
   - {fileID: 9119134914815563189}
+--- !u!114 &1045725561764666277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4061821293904544040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &4401361903309322054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,6 +1537,37 @@ Transform:
   - {fileID: 8871553904462266725}
   m_Father: {fileID: 1182423565748026774}
   m_LocalEulerAnglesHint: {x: -6.311676, y: -50.92026, z: 2.3391743}
+--- !u!1 &5713467763596602969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5592833941280045105}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5592833941280045105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713467763596602969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2767445895914028175}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5882254185793137212
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,7 +1660,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5592833941280045105}
   m_Father: {fileID: 2100637335975725411}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &783660200597253354
@@ -2088,6 +2145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5195864404143348848}
+  - component: {fileID: 6533653620895388875}
   m_Layer: 9
   m_Name: salamender_root
   m_TagString: Untagged
@@ -2114,6 +2172,22 @@ Transform:
   - {fileID: 723072411911464197}
   m_Father: {fileID: 2100637335975725411}
   m_LocalEulerAnglesHint: {x: 0.055780455, y: 90.73942, z: -19.719784}
+--- !u!114 &6533653620895388875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8088715983441042391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &8134365518675332828
 GameObject:
   m_ObjectHideFlags: 0

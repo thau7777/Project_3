@@ -13,6 +13,7 @@ public class DamageDealer : MonoBehaviour
     }
 
     public float KnockbackForce { get; set; }
+    public bool ReverseKnockbackDirection { get; set; } = false;
 
     [field: SerializeField]
     public OneShotVFXSettings HitImpactEffect { get; private set; }
@@ -56,7 +57,7 @@ public class DamageDealer : MonoBehaviour
             }
 
 
-            damageable.TakeDamage(sender,_damage, hitDirection.normalized, KnockbackForce, ElementalType, HitImpactEffect); // Example damage value
+            damageable.TakeDamage(sender,_damage, ReverseKnockbackDirection ? -hitDirection.normalized : hitDirection.normalized, KnockbackForce, ElementalType, HitImpactEffect); // Example damage value
 
             
         }

@@ -30,7 +30,7 @@ public struct AttackData
     public VFXSpawnLocation spawnLocation;
     public float dashForce;
     public bool isDashForward;
-    public float damage;
+    public float damageScale;
     public float size;
     public LayerMask dodgeLayers;
     [Header("Projectile Settings")]

@@ -124,7 +124,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5976699773041600095}
   m_Father: {fileID: 6895367505073886472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &549104652219127778
@@ -377,6 +378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2893500337468306392}
+  - component: {fileID: 7148533306648813256}
   m_Layer: 9
   m_Name: demonKing_root
   m_TagString: Untagged
@@ -403,6 +405,22 @@ Transform:
   - {fileID: 3472036809523292157}
   m_Father: {fileID: 6895367505073886472}
   m_LocalEulerAnglesHint: {x: -0.65083706, y: 84.13065, z: -42.465973}
+--- !u!114 &7148533306648813256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281496890469702461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 3
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &1336468488363580794
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +882,7 @@ GameObject:
   - component: {fileID: 8244865614087383140}
   - component: {fileID: 1293136473718293199}
   - component: {fileID: 8474752314338972844}
+  - component: {fileID: -2756847677062206983}
   m_Layer: 9
   m_Name: DemonKing
   m_TagString: Untagged
@@ -978,11 +997,11 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0.1756968, y: 1.53, z: 2.068339}
     rotationOffset: {x: 0, y: 0, z: 5.92}
@@ -1121,6 +1140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &8244865614087383140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133,7 +1156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
     m_Bits: 0
 --- !u!114 &1293136473718293199
@@ -1170,6 +1193,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42ce1b3e98e790a4c9bdb95a0c967c10, type: 2}
   _spawnPoints:
   - {fileID: 9003113914517109281}
+--- !u!114 &-2756847677062206983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833588098900493978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &3861933946051543085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,6 +1721,37 @@ Transform:
   - {fileID: 3572164653984198103}
   m_Father: {fileID: 1095542256168175166}
   m_LocalEulerAnglesHint: {x: 2.23584, y: 107.40867, z: 6.512405}
+--- !u!1 &5475237726624062299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5976699773041600095}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5976699773041600095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5475237726624062299}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8745570738210743680}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5549039450595775336
 GameObject:
   m_ObjectHideFlags: 0

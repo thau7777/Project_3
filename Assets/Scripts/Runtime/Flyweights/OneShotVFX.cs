@@ -83,15 +83,10 @@ public class OneShotVFX : Flyweight
             Debug.LogWarning($"Unsupported property type: {typeof(T)} for property: {propertyName}");
         }
     }
-    public void InitializeVFX(float size, float lifeTime, Transform parent = null)
+    public void InitializeVFX(float size, float lifeTime)
     {
         gameObject.SetActive(true);
         transform.localScale = new Vector3(size, size, size);
-        if (parent)
-        {
-            transform.SetParent(parent);
-            transform.localPosition = Vector3.zero;
-        }
             
         if (settings.useAdvanceSettings)
         {

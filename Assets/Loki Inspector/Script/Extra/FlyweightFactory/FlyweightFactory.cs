@@ -156,4 +156,11 @@ public enum FlyweightType
     Spell_Water_3,
     Spell_Water_4,
     MageParryVFX,
+    CharacterEffect_Fire,
+    CharacterEffect_Ice,
+    CharacterEffect_Lightning,
+    CharacterEffect_Poison, 
+    EffectsIcon,
+    Basic_Heal,
+    EnemyEffectsIcon,
 }

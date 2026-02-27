@@ -9,6 +9,7 @@ public class Grounded : State
     public readonly Attack Attack;
     public readonly SpecialMove SpecialMove;
     public readonly Hurt Hurt;
+    public readonly Die Die;
 
     public Grounded(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
@@ -19,6 +20,7 @@ public class Grounded : State
         Attack = new Attack(m, this, ctx);
         SpecialMove = new SpecialMove(m, this, ctx);
         Hurt = new Hurt(m, this, ctx);
+        Die = new Die(m, this, ctx);
     }
     protected override void OnUpdate(float deltaTime)
     {

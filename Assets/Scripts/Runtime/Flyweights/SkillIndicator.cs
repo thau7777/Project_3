@@ -7,10 +7,8 @@ public abstract class SkillIndicator : Flyweight
 {
     new SkillIndicatorSettings settings => (SkillIndicatorSettings)base.settings;
 
-    [Header("Indicator Settings")]
-    [SerializeField] protected float groundOffset = 0.1f;
 
-    [Header("Debug / Control")]
+    [Header("Debug / Control")] 
     public bool isMovementLocked = false; // <--- NEW: Stops all movement & rotation when true
 
     protected VisualEffect _vfx;
@@ -50,8 +48,8 @@ public abstract class SkillIndicator : Flyweight
     protected Vector3 GetGroundPosition(Vector3 worldPos)
     {
         if (Physics.Raycast(worldPos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, settings.groundMask))
-            return hit.point + Vector3.up * groundOffset;
-        return worldPos + Vector3.up * groundOffset;
+            return hit.point + Vector3.up * settings.groundOffset;
+        return worldPos + Vector3.up * settings.groundOffset;
     }
 
     protected bool TryGetMouseWorldPosition(out Vector3 worldPos)

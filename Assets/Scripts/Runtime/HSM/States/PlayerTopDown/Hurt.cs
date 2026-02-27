@@ -16,6 +16,10 @@ public class Hurt : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsDead)
+        {
+            return ((Grounded)Parent).Die;
+        }
         if (!ctx.IsHurting)
         {
             if(ctx.MoveInput != Vector2.zero)
