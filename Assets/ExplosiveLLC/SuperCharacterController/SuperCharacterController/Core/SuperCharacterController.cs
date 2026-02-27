@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Custom character controller, to be used by attaching the component to an object
+/// Custom characterTarget controller, to be used by attaching the component to an object
 /// and writing scripts attached to the same object that recieve the "SuperUpdate" message.
 /// </summary>
 public class SuperCharacterController:MonoBehaviour

@@ -21,7 +21,7 @@ namespace WarriorAnimsFREE
 
 		/// <summary>
 		/// If there is movement and/or rotation data in the animation for the Left Hand, use IK to 
-		/// set the position of the Left Hand of the character.
+		/// set the position of the Left Hand of the characterTarget.
 		/// </summary>
 		private void OnAnimatorIK(int layerIndex)
 		{

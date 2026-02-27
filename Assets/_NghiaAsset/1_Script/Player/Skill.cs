@@ -100,7 +100,6 @@ public class Skill : ScriptableObject
     {
         public DebuffType statToModify;
         public int durationTurns;
-        public int amount;
         public int baseDamagePerTurn;
         public float debuffValue;
         public FlyweightSettings_TB debuffEffect;

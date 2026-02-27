@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MyRule.Audio;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -45,6 +46,11 @@ namespace Turnbase
                 }
             }
             telegraphManager = GetComponentInChildren<TelegraphEffect>();
+        }
+
+        private void Start()
+        {
+            OnSoundMonster();
         }
 
         public void Animation_StartAnticipation()
@@ -182,14 +188,23 @@ namespace Turnbase
 
         public void ApplyBreakStatus(Skill.DebuffSettings breakDebuffSettings)
         {
-            if(isBroken) return;
-
+            if (isBroken) return;
             isBroken = true;
+            traildblaze = 0;
 
             if (debuffManager != null)
             {
-                debuffManager.ApplyDebuff(null, breakDebuffSettings);
+                int turns = breakDebuffSettings.durationTurns;
+                EffectSystem.Instance.TriggerBreak(this, turns);
             }
+
+            if (enemyUI != null) enemyUI.UpdateUI();
+        }
+
+        private void OnSoundMonster()
+        {
+            AudioManager.Instance.PlaySFX(SFXType.EnemySound);
+            Invoke(nameof(OnSoundMonster), UnityEngine.Random.Range(5f, 10f));
         }
     }
 }
