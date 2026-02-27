@@ -4,7 +4,7 @@ public abstract class Flyweight : MonoBehaviour
 {
     [HideInInspector]
     public FlyweightSettings settings; // Intrinsic state
-    public void FlyweightInitialize(Vector3 position, Quaternion? rotation = null)
+    public void FlyweightInitialize(Vector3 position, Quaternion? rotation = null, Transform parent = null)
     {
         transform.position = position;
         if(rotation.HasValue)
@@ -12,6 +12,8 @@ public abstract class Flyweight : MonoBehaviour
         else
             transform.rotation = Quaternion.identity;
 
+        if (parent != null)
+            transform.SetParent(parent);
     }
     public void ReturnToPool()
     {

@@ -599,7 +599,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7264216024008881130}
   m_Father: {fileID: 4743152278739550122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1049230334958217708
@@ -1308,6 +1309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3585628351518180789}
+  - component: {fileID: 4583418763826653128}
   m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
@@ -1334,6 +1336,22 @@ Transform:
   - {fileID: 2775304737796815960}
   m_Father: {fileID: 4743152278739550122}
   m_LocalEulerAnglesHint: {x: 3.6721418, y: 50.552383, z: -54.77563}
+--- !u!114 &4583418763826653128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5495861426166247264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2.5
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &5564989755029806810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,6 +1608,37 @@ Transform:
   - {fileID: 8446711117978405224}
   m_Father: {fileID: 7748978054372265692}
   m_LocalEulerAnglesHint: {x: 7.1366386, y: 11.864142, z: -93.38564}
+--- !u!1 &7166328316746143913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7264216024008881130}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7264216024008881130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7166328316746143913}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4653552349604529928}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7487787775898473798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,6 +2037,7 @@ GameObject:
   - component: {fileID: 6340510846783915782}
   - component: {fileID: 6815293075338088071}
   - component: {fileID: 3765838973900237578}
+  - component: {fileID: 1638422035231755524}
   m_Layer: 9
   m_Name: Golem
   m_TagString: Untagged
@@ -2103,7 +2153,6 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
@@ -2282,6 +2331,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &6340510846783915782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2294,9 +2347,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &6815293075338088071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2330,3 +2383,24 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42ce1b3e98e790a4c9bdb95a0c967c10, type: 2}
   _spawnPoints:
   - {fileID: 2125443345589275168}
+--- !u!114 &1638422035231755524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9014302104273215624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5

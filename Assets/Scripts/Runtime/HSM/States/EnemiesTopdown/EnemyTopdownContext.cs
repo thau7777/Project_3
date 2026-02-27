@@ -14,7 +14,7 @@ public class EnemyTopdownContext
     public CharacterController CharacterController { get; private set; }
     public Transform RootTransform { get; private set; }
     [field: SerializeField] public Transform CurrentTargetTransform { get; private set; }
-    public float BaseMoveSpeed { get; private set; }
+    public float BaseMoveSpeed { get; set; }
     public float BaseRotateSpeed { get; private set; }
     public float MovePauseDuration { get; private set; }
     [field: SerializeField]

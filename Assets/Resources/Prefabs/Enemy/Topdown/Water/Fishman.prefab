@@ -351,7 +351,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2496857883496796436}
   m_Father: {fileID: 6822030825372538911}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5203042472094773935
@@ -1002,6 +1003,7 @@ GameObject:
   - component: {fileID: 345081643693473640}
   - component: {fileID: 9205364045399276113}
   - component: {fileID: 675739404075907859}
+  - component: {fileID: 4469948451489977754}
   m_Layer: 9
   m_Name: Fishman
   m_TagString: Untagged
@@ -1116,11 +1118,11 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: -0.0322485, y: 0.5936546, z: 1.512577}
     rotationOffset: {x: 0, y: 351.6939, z: 0}
@@ -1154,7 +1156,8 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 2
     indicatorLength: 2
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0.09103584, y: 0.970911, z: 1.452236}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -1293,6 +1296,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &9205364045399276113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,9 +1312,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &675739404075907859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1326,6 +1333,27 @@ MonoBehaviour:
   targetRenderers:
   - {fileID: 5203042472094773935}
   - {fileID: 3360883465807202729}
+--- !u!114 &4469948451489977754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692083754281589657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &4708293543652385405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,6 +1859,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2949092049259941701}
   m_LocalEulerAnglesHint: {x: -0.25545692, y: -0.23714209, z: -58.842926}
+--- !u!1 &6636817040014953884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2496857883496796436}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2496857883496796436
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6636817040014953884}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4372892832027108217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6768247698500789769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,6 +2668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4100320393122898389}
+  - component: {fileID: 4749614092982260086}
   m_Layer: 9
   m_Name: fishman_root
   m_TagString: Untagged
@@ -2636,6 +2696,22 @@ Transform:
   - {fileID: 7227263885237013257}
   m_Father: {fileID: 6822030825372538911}
   m_LocalEulerAnglesHint: {x: -4.1370754, y: 70.506874, z: -70.55382}
+--- !u!114 &4749614092982260086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9007866376305553996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &9108340121531005923
 GameObject:
   m_ObjectHideFlags: 0

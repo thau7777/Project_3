@@ -14646,6 +14646,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 919014637187192476}
     m_Modifications:
+    - target: {fileID: -4689947339645784846, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3500543784656721832, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
       propertyPath: m_Name
       value: impact01
@@ -14659,12 +14663,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3500543784656721834, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
+      propertyPath: TriggerModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3500543784656721834, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
       propertyPath: CollisionModule.enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3500543784656721834, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
       propertyPath: CollisionModule.collisionMessages
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3500543784656721834, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
+      propertyPath: CollisionModule.maxCollisionShapes
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 3500543784656721834, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
@@ -14710,7 +14722,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -4689947339645784846, guid: 1e580e0a07a1a374996a8d87c5ec381c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

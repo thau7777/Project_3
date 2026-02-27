@@ -5,7 +5,7 @@ using System.Collections.Generic;
 // ============= CHAIN LIGHTNING SCRIPTABLE OBJECT =============
 [CreateAssetMenu(
     fileName = "ChainLightning",
-    menuName = "Scriptable Objects/StrategyPattern/Skills/Chain Lightning"
+    menuName = "Scriptable Objects/StrategyPattern/Special Skills/Chain Lightning"
 )]
 public class ChainLightning : SkillStrategy
 {
@@ -45,10 +45,10 @@ public class ChainLightning : SkillStrategy
         Vector3 dir = mouseWorldPos - originAnchor.position;
         dir.y = 0;
 
-        if (dir.magnitude > Range)
-        {
-            mouseWorldPos = originAnchor.position + dir.normalized * Range;
-        }
+        //if (dir.magnitude > Range)
+        //{
+        //    mouseWorldPos = originAnchor.position + dir.normalized * Range;
+        //}
 
         GameObject firstTarget = FindFirstTargetAtMousePosition(mouseWorldPos);
         if (firstTarget == null)
@@ -95,7 +95,7 @@ public class ChainLightning : SkillStrategy
     {
         Collider[] hits = Physics.OverlapSphere(
             mouseWorldPos,
-            targetCheckRadius,
+            indicatorWidth,
             enemyLayer
         );
 

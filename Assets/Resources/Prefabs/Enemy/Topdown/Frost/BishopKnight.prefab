@@ -334,6 +334,7 @@ GameObject:
   - component: {fileID: 8683199415295722230}
   - component: {fileID: 6115400839624687672}
   - component: {fileID: 7437164895922391497}
+  - component: {fileID: -6247341601138435895}
   m_Layer: 9
   m_Name: BishopKnight
   m_TagString: Untagged
@@ -448,11 +449,11 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0.3455801, y: 1.574914, z: 1.425312}
     rotationOffset: {x: 0, y: 0.6, z: 0}
@@ -486,7 +487,8 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 2
     indicatorLength: 2
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: -0.06279755, y: 1.481462, z: 2.883253}
     rotationOffset: {x: 0, y: -5, z: 0}
@@ -625,6 +627,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &8683199415295722230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,9 +643,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &6115400839624687672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,6 +681,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42ce1b3e98e790a4c9bdb95a0c967c10, type: 2}
   _spawnPoints:
   - {fileID: 5915097291534960413}
+--- !u!114 &-6247341601138435895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226245535086897416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &1465431998971600107
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,6 +773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4329405597647020578}
+  - component: {fileID: 2715492547315646402}
   m_Layer: 9
   m_Name: bishopKnight_root
   m_TagString: Untagged
@@ -770,6 +798,22 @@ Transform:
   - {fileID: 8076673040570355867}
   m_Father: {fileID: 2776474466926322773}
   m_LocalEulerAnglesHint: {x: 7.0599933, y: 54.525917, z: -67.7983}
+--- !u!114 &2715492547315646402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2387994083412872303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2.5
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &2480891594705679569
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +846,37 @@ Transform:
   - {fileID: 642237552526689690}
   m_Father: {fileID: 5149033651178630160}
   m_LocalEulerAnglesHint: {x: 1.6993269, y: 107.441444, z: 22.301424}
+--- !u!1 &2533697668389058903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4089951988508962578}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4089951988508962578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533697668389058903}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1836144623594696089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2615989607416476464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,7 +1354,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4089951988508962578}
   m_Father: {fileID: 2776474466926322773}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7545214997539178826

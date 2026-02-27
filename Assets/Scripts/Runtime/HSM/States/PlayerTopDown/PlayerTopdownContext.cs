@@ -22,6 +22,7 @@ public class PlayerTopdownContext
     [field: SerializeField] public bool IsAttacking { get; set; }
     [field: SerializeField] public bool IsInSpecialMove { get; set; }
     [field: SerializeField] public bool IsHurting { get; set; }
+    [field: SerializeField] public bool IsDead { get; set; }
     [field: SerializeField] public bool IsNextAttackQueued { get; set; }
     public string FirstAttackAnimName { get; set; }
     public string SkillAnimName { get; set; }
@@ -31,7 +32,7 @@ public class PlayerTopdownContext
     [field: SerializeField] public int CastingSkill { get; set; } = -1;
 
     // Movement config
-    public float BaseMoveSpeed { get; private set; }
+    public float BaseMoveSpeed { get; set; }
     public float StrafeMoveSpeed { get; private set; }
     public float MoveSpeedSmoothTime { get; set; }
 
@@ -54,6 +55,7 @@ public class PlayerTopdownContext
     public int StrafeStateHash => Animator.StringToHash("Strafe");
     public int MovementStateHash => Animator.StringToHash("Movement");
     public int HurtStateHash => Animator.StringToHash("Hurt");
+    public int DieStateHash => Animator.StringToHash("Die");
     public int MoveSpeedHash => Animator.StringToHash("MoveSpeed");
     public int InputXHash => Animator.StringToHash("MoveDirX");
     public int InputYHash => Animator.StringToHash("MoveDirY");

@@ -14,6 +14,7 @@ public class FishingUI : MonoBehaviour
     public float duration = 5f;
     private float timer;
     private bool isFishing = false;
+    public float fishTime = 1f;
 
     [Header("References")]
     public ArrowManager arrowManager;
@@ -32,12 +33,13 @@ public class FishingUI : MonoBehaviour
     {
         if (!isFishing) return;
 
-        timer+= Time.deltaTime * 0.05f;
-        timer = Mathf.Clamp(timer, 0f, duration);
+        timer += Time.deltaTime* fishTime;
         fishingBar.fillAmount = timer / duration;
 
-        if (timer >= duration) EndFishing(true);
-        if (timer <= 0f) EndFishing(false);
+        if (timer >= duration)
+            EndFishing(true);
+        else if (timer <= 0f)
+            EndFishing(false);
     }
 
     public void StartFishing(HookController hook)

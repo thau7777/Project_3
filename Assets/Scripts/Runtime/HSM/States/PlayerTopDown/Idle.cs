@@ -22,7 +22,11 @@ public class Idle : State
     }
     protected override State GetTransition()
     {
-        if(ctx.IsHurting)
+        if(ctx.IsDead)
+        {
+            return ((Grounded)Parent).Die;
+        }
+        if (ctx.IsHurting)
         {
             return ((Grounded)Parent).Hurt;
         }
