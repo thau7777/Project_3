@@ -14,6 +14,7 @@ public class FishingUI : MonoBehaviour
     public float duration = 5f;
     private float timer;
     private bool isFishing = false;
+    public float fishTime = 1f;
 
     [Header("References")]
     public ArrowManager arrowManager;
@@ -32,7 +33,7 @@ public class FishingUI : MonoBehaviour
     {
         if (!isFishing) return;
 
-        timer += Time.deltaTime;
+        timer += Time.deltaTime* fishTime;
         fishingBar.fillAmount = timer / duration;
 
         if (timer >= duration)

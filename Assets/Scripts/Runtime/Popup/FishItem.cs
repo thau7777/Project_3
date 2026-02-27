@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public enum FishingItemType
 {
     Fish,
-    Trash
+    Trash,
+    Treasure
 }
 
 public enum FishState
@@ -14,14 +16,15 @@ public enum FishState
 
 public class FishItem : MonoBehaviour
 {
+    [Header("Config")]
     public FishingItemType itemType;
-    public FishState state;
-
     public int scoreValue = 100;
 
-    public string poolTag;
+    [Header("State")]
+    public FishState state;
 
     Rigidbody2D rb;
+
 
     void Awake()
     {
@@ -32,6 +35,7 @@ public class FishItem : MonoBehaviour
     {
         state = FishState.Swimming;
         rb.simulated = true;
+        gameObject.SetActive(true);
     }
 
     public void OnHooked()
@@ -41,16 +45,38 @@ public class FishItem : MonoBehaviour
         state = FishState.Hooked;
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
+        if (itemType == FishingItemType.Fish)
+        {
+            FishingUI.instance.fishTime *= 0.2f;
+        }
+        if (itemType == FishingItemType.Treasure)
+        {
+            FishingUI.instance.fishTime *= 0.05f;
+        }
     }
 
     public void OnCaught()
     {
-        if (itemType == FishingItemType.Fish)
+        if(itemType == FishingItemType.Fish)
         {
             FishingGameManager.Instance.AddScore(scoreValue);
         }
-        state = FishState.Hooked;
-        PoolManager.Instance.Despawn(poolTag, gameObject);
+        if (itemType == FishingItemType.Treasure)
+        {
+            FishingGameManager.Instance.AddScore(scoreValue*5);
+        }
+        else
+        {
+            FishingGameManager.Instance.AddScore(scoreValue);
+        }
+        StartCoroutine(HideAndDestroy());
+    }
+
+    IEnumerator HideAndDestroy()
+    {
+        gameObject.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 
     public void OnEscape()
