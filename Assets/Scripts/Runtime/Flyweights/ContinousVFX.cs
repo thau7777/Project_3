@@ -4,15 +4,10 @@ public class ContinousVFX : Flyweight
 {
     new ContinousVFXSettings settings => (ContinousVFXSettings) base.settings;
 
-    public void InitializeVFX(float size, Transform parent = null)
+    public void InitializeVFX(float size)
     {
         gameObject.SetActive(true);
         transform.localScale = new Vector3(size, size, size);
-
-        if(parent != null)
-        {
-            transform.SetParent(parent);
-        }
     }
 
 

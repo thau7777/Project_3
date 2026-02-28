@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2177946330805189242}
   - component: {fileID: 6791668940195756529}
   - component: {fileID: 501449271367576122}
+  - component: {fileID: 4893157230193529085}
   m_Layer: 11
   m_Name: Spell_Fire_1
   m_TagString: Untagged
@@ -57,10 +58,10 @@ VisualEffect:
       - m_Value: 10
         m_Name: Diameter
         m_Overridden: 1
-      - m_Value: 3
+      - m_Value: 1.5
         m_Name: Anticipation
         m_Overridden: 1
-      - m_Value: 2.5
+      - m_Value: 1
         m_Name: Dissapation
         m_Overridden: 1
       - m_Value: 0
@@ -183,3 +184,24 @@ VFXRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
+--- !u!135 &4893157230193529085
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8009447524491282890}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: -0.008661509, y: 1.4014218, z: -0.018482447}

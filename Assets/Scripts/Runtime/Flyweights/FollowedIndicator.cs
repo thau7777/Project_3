@@ -16,10 +16,13 @@ public class FollowedIndicator : SkillIndicator
         {
             _vfx.SetFloat("Width", width);
             _vfx.SetFloat("Length", length);
-        }else
+        }else if(name == "Indicator_Cone_Blue" || name == "Indicator_Cone_Red")
+            _vfx.SetFloat("Size", width);
+        else
             transform.localScale = new Vector3(width, 1f, width);
-    }
 
+
+    }
     private void Update()
     {
         if (!_user)
@@ -32,7 +35,7 @@ public class FollowedIndicator : SkillIndicator
 
         // Follow user position
         if (isPlayerUser)
-            transform.position = _user.position;
+            transform.position = _user.position.Add(y:(settings as SkillIndicatorSettings).groundOffset);
 
         // Rotate toward target or mouse
         if (rotateTowardMouse)

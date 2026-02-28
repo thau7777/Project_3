@@ -505,7 +505,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7053027549188379305}
   m_Father: {fileID: 7418349337509241081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &436163793152204948
@@ -732,6 +733,37 @@ Transform:
   - {fileID: 4891613734946057820}
   m_Father: {fileID: 4125551563227830451}
   m_LocalEulerAnglesHint: {x: 27.55208, y: 36.6646, z: 49.03388}
+--- !u!1 &1741945555415460177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7053027549188379305}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7053027549188379305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741945555415460177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1899997120438921512}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2091162870060734661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,6 +1167,7 @@ GameObject:
   - component: {fileID: 2491143365961141694}
   - component: {fileID: 461194663688245178}
   - component: {fileID: 6187459341146267844}
+  - component: {fileID: 6739147215568475796}
   m_Layer: 9
   m_Name: RatAssassin
   m_TagString: Untagged
@@ -1249,7 +1282,6 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
@@ -1428,6 +1460,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &461194663688245178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1440,9 +1476,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &6187459341146267844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1459,6 +1495,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e40570b42b5f5394ebe5a8449c9eb93a, type: 2}
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
   targetRenderers: []
+--- !u!114 &6739147215568475796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3225110356010243310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &3245539517440294054
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,6 +2128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 46752430208593350}
+  - component: {fileID: 7357695801750368124}
   m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
@@ -2097,6 +2155,22 @@ Transform:
   - {fileID: 3778399269138487682}
   m_Father: {fileID: 7418349337509241081}
   m_LocalEulerAnglesHint: {x: -0.0000051226416, y: 89.94907, z: -33.74907}
+--- !u!114 &7357695801750368124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5661313998314032417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &5702765566105270010
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,10 @@ public class SpecialMove : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsDead)
+        {
+            return ((Grounded)Parent).Die;
+        }
         if (ctx.IsHurting)
         {
             ctx.IsInSpecialMove = false;

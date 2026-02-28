@@ -1,6 +1,7 @@
 using HSM;
 using System.Collections;
 using System.Collections.Generic;
+using Turnbase;
 using UnityEngine;
 
 public class EnemyTopdownStateDriver : Flyweight
@@ -10,7 +11,8 @@ public class EnemyTopdownStateDriver : Flyweight
     private Animator _animator;
     [TabGroup("References")]
     private CharacterController _characterController;
-
+    [TabGroup("References")]
+    private CharacterStats _characterStats;
     #endregion
 
     #region Variables
@@ -24,8 +26,6 @@ public class EnemyTopdownStateDriver : Flyweight
     [SerializeField, TabGroup("Movement Settings"), ShowIfEnumValue("_movementType", EnemyTopdownMovementType.Range)]
     private float _maxRangeDistance = 10f;
 
-    [SerializeField, TabGroup("Movement Settings")]
-    float _moveSpeed = 2f;
     [SerializeField, TabGroup("Movement Settings")]
     [ShowIfEnumValue("_movementType", EnemyTopdownMovementType.Slime)]
     float _movePauseDuration = 1f;
@@ -53,13 +53,13 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         _animator = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
-
+        _characterStats = GetComponent<CharacterStats>();
         _context = new EnemyTopdownContext.Builder()
             .SetAnimator(_animator)
             .SetCharacterController(_characterController)
             .SetPlayerTransform(GameObject.FindWithTag("Player").transform)
             .SetRootTransform(transform)
-            .SetMoveSpeed(_moveSpeed)
+            .SetMoveSpeed(_characterStats.Agility)
             .SetMovePauseDuration(_movePauseDuration)
             .SetRotateSpeed(_rotateSpeed)
             .SetEnemyType(_movementType)
@@ -159,19 +159,20 @@ public class EnemyTopdownStateDriver : Flyweight
     public void OnAttackTrigger(int setParentForVFX = 0)
     {
         if (_context.CurrentEnemyAttackData.skillEffect == null) return;
-        Transform spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform;
-        if (_skillIndicator)
+        Transform spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform ?? transform;
+        if (_skillIndicator && _context.CurrentEnemyAttackData.spawnType == EnemyAttackData.SpawnType.AtTarget)
         {
             spawnTransform = _skillIndicator.transform;
-            _skillIndicator = null;
         }
+        _skillIndicator = null;
         Flyweight vfx = FlyweightFactory.Spawn(_context.CurrentEnemyAttackData.skillEffect);
         
         var rotationOffset = Quaternion.Euler(_context.CurrentEnemyAttackData.rotationOffset);
         var positionOffset = _context.CurrentEnemyAttackData.positionOffset;
         vfx.FlyweightInitialize(
             spawnTransform.AddLocal(positionOffset.x, positionOffset.y, positionOffset.z),
-            spawnTransform.rotation * rotationOffset); // Apply the rotation offset here
+            spawnTransform.rotation * rotationOffset,
+            setParentForVFX == 1 ? spawnTransform : null); // Apply the rotation offset here
         if (vfx is OneShotVFX)
         {
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
@@ -187,8 +188,7 @@ public class EnemyTopdownStateDriver : Flyweight
                 damageDealer.Damage = _context.CurrentEnemyAttackData.damage;
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
-                _context.CurrentEnemyAttackData.skillDuration,
-                setParentForVFX == 1 ? _context.CurrentEnemyAttackData.skillSpawnTransform : null);
+                _context.CurrentEnemyAttackData.skillDuration);
             
         }
             
@@ -249,7 +249,7 @@ public class EnemyTopdownStateDriver : Flyweight
             }
             _skillIndicator.FlyweightInitialize(target.position.Add(y: 0.1f));
             CircleIndicator indicator = (CircleIndicator)_skillIndicator;
-            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth,Mathf.Infinity, target);
+            indicator.Initialize(_context.CurrentEnemyAttackData.indicatorWidth, target);
         }
     }
     public void LockIndicator(float duration)
@@ -271,6 +271,8 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         _context.CurrentSpeed = _context.IsAttacking || _context.IsCharging ? _context.CurrentEnemyAttackData.movementSpeed : _context.BaseMoveSpeed;
     }
+
+    #region Outside Calls
     public void StartSpawnAnim()
     {
         StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationTime));
@@ -328,4 +330,10 @@ public class EnemyTopdownStateDriver : Flyweight
         _context.IsMoving = false;
 
     }
+
+    public void SetMoveSpeed(float newSpeed)
+    {
+        _context.BaseMoveSpeed = newSpeed;
+    }
+    #endregion
 }

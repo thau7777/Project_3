@@ -8,12 +8,8 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
     public Action<Vector2> onMove;
     public Action onLeftClick;
     public Action<bool> onRightClick;
-    public Action<bool> onSpaceBar;
-    public Action<bool> onShift;
-    public Action<bool> onButtonQ;
-    public Action<bool> onButtonE;
-    public Action<bool> onButtonR;
-    public Action<bool> onButtonT;
+    public Action<bool,int> onSkillUse;
+    public Action<int> onItemUse;
 
 
     public void OnLeftClick(InputAction.CallbackContext context)
@@ -51,51 +47,88 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
         else if (context.canceled)
             onRightClick?.Invoke(false);
     }
-    public void OnShift(InputAction.CallbackContext context)
+
+    public void OnSkill_1(InputAction.CallbackContext context)
     {
-        if (context.performed)
-            onShift?.Invoke(true);
-        else if (context.canceled)
-            onShift?.Invoke(false);
-    }
-    public void OnSpaceBar(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            onSpaceBar?.Invoke(true);
-        else if (context.canceled)
-            onSpaceBar?.Invoke(false);
+        if(context.performed)
+            onSkillUse?.Invoke(true, 0);
+        else if(context.canceled)
+            onSkillUse?.Invoke(false, 0);
     }
 
-    public void OnQ(InputAction.CallbackContext context)
+    public void OnSkill_2(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onButtonQ?.Invoke(true);
+            onSkillUse?.Invoke(true, 1);
         else if (context.canceled)
-            onButtonQ?.Invoke(false);
+            onSkillUse?.Invoke(false, 1);
     }
 
-    public void OnE(InputAction.CallbackContext context)
+    public void OnSkill_3(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onButtonE?.Invoke(true);
+            onSkillUse?.Invoke(true, 2);
         else if (context.canceled)
-            onButtonE?.Invoke(false);
+            onSkillUse?.Invoke(false, 2);
     }
 
-    public void OnR(InputAction.CallbackContext context)
+    public void OnSkill_4(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onButtonR?.Invoke(true);
+            onSkillUse?.Invoke(true, 3);
         else if (context.canceled)
-            onButtonR?.Invoke(false);
+            onSkillUse?.Invoke(false, 3);
     }
 
-    public void OnT(InputAction.CallbackContext context)
+    public void OnSkill_5(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onButtonT?.Invoke(true);
+            onSkillUse?.Invoke(true, 4);
         else if (context.canceled)
-            onButtonT?.Invoke(false);
+            onSkillUse?.Invoke(false, 4);
     }
 
+    public void OnSkill_6(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onSkillUse?.Invoke(true, 5);
+        else if (context.canceled)
+            onSkillUse?.Invoke(false, 5);
+    }
+
+    public void OnItem_1(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onItemUse?.Invoke(0);
+    }
+
+    public void OnItem_2(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onItemUse?.Invoke(1);
+    }
+
+    public void OnItem_3(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onItemUse?.Invoke(2);
+    }
+
+    public void OnItem_4(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onItemUse?.Invoke(3);
+    }
+
+    public void OnItem_5(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onItemUse?.Invoke(4);
+    }
+
+    public void OnItem_6(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onItemUse?.Invoke(5);
+    }
 }

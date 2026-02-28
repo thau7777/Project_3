@@ -19,7 +19,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #region References
     [SerializeField, Required]
     [TabGroup("References")]
-    private InputReader _inputReader;
+    private InputReader _inputReader; 
 
     [SerializeField, Required]
     [TabGroup("References")]
@@ -45,6 +45,10 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     [TabGroup("References")]
     private SkillExecutor _executor;
 
+    [SerializeField, Required]
+    [TabGroup("References")]
+    private CharacterStats _characterStats;
+
     [SerializeField]
     private List<ClassWeaponData> classWeaponDataList;
 
@@ -54,7 +58,6 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #endregion
 
     #region Variables
-    [SerializeField, TabGroup("Movement Settings")] private float _baseMoveSpeed = 5f;   // default
     [SerializeField, TabGroup("Movement Settings")] private float _strafeMoveSpeed = 2f;   // default
     [SerializeField, TabGroup("Movement Settings")] private float _smoothTime = 0.2f;    // higher = slower accel/dec
     [SerializeField, TabGroup("Movement Settings")] private float _rotateSpeed = 20f;
@@ -92,12 +95,14 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         _layerIgnoreController = GetComponent<CharacterControllerLayerIgnoreController>();
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
+        _characterStats = GetComponent<CharacterStats>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
-        GetComponent<Damageable>().Initialize(500);
+
+        GetComponent<Damageable>().Initialize(_characterStats.InitialHealth);
 
 
         _context = new PlayerTopdownContext.Builder()
-        .SetBaseMoveSpeed(_baseMoveSpeed)
+        .SetBaseMoveSpeed(_characterStats.Agility)
         .SetStrafeMoveSpeed(_strafeMoveSpeed)
         .SetMoveSpeedSmoothTime(_smoothTime)
         .SetRotateSpeed(_rotateSpeed)
@@ -121,23 +126,13 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     {
         _inputReader.playerTopDownActions.onMove += OnMove;
         _inputReader.playerTopDownActions.onLeftClick += OnLeftClick;
-        _inputReader.playerTopDownActions.onSpaceBar += OnSpaceBar;
-        _inputReader.playerTopDownActions.onShift += OnShift;
-        _inputReader.playerTopDownActions.onButtonQ += OnButtonQ;
-        _inputReader.playerTopDownActions.onButtonE += OnButtonE;
-        _inputReader.playerTopDownActions.onButtonR += OnButtonR;
-        _inputReader.playerTopDownActions.onButtonT += OnButtonT;
+        _inputReader.playerTopDownActions.onSkillUse += OnSkillUse;
     }
     private void OnDisable()
     {
         _inputReader.playerTopDownActions.onMove -= OnMove;
         _inputReader.playerTopDownActions.onLeftClick -= OnLeftClick;
-        _inputReader.playerTopDownActions.onSpaceBar -= OnSpaceBar;
-        _inputReader.playerTopDownActions.onShift -= OnShift;
-        _inputReader.playerTopDownActions.onButtonQ -= OnButtonQ;
-        _inputReader.playerTopDownActions.onButtonE -= OnButtonE;
-        _inputReader.playerTopDownActions.onButtonR -= OnButtonR;
-        _inputReader.playerTopDownActions.onButtonT -= OnButtonT;
+        _inputReader.playerTopDownActions.onSkillUse -= OnSkillUse;
     }
 
 
@@ -156,30 +151,11 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     #endregion
 
     #region Input Handlers
-    private void OnShift(bool value)
+    private void OnSkillUse(bool value, int skillIndex)
     {
-        UseSKill(0, value, SaveDirToAttack);
+        UseSKill(skillIndex, value, SaveDirToAttack);
     }
-    private void OnSpaceBar(bool value)
-    {
-        UseSKill(1, value, SaveDirToAttack);
-    }
-    private void OnButtonQ(bool value)
-    {
-        UseSKill(2, value, SaveDirToAttack);
-    }
-    private void OnButtonE(bool value)
-    {
-        UseSKill(3, value, SaveDirToAttack);
-    }
-    private void OnButtonR(bool value)
-    {
-        UseSKill(4, value, SaveDirToAttack);
-    }
-    private void OnButtonT(bool value)
-    {
-        UseSKill(5, value, SaveDirToAttack);
-    }
+    
     private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
     {
 
@@ -312,7 +288,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 if(oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
                     hitBoxHandler.DodgeLayers = _locomotionSet.CurrentAttackData.dodgeLayers;
                 if(oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
-                    damageDealer.Damage = _locomotionSet.CurrentAttackData.damage;
+                    damageDealer.Damage = _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage;
                 oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
             }
             if (flyweightSettings.name == "SummonerBasicAttack")
@@ -335,8 +311,8 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                         spawnPoint.forward, 
                         _locomotionSet.CurrentAttackData.projectileSpeed, 
                         _locomotionSet.CurrentAttackData.projectileDuration,
-                        _locomotionSet.CurrentAttackData.size, 
-                        _locomotionSet.CurrentAttackData.damage,
+                        _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale, 
+                        _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
                         _locomotionSet.CurrentAttackData.dodgeLayers);
                 }
                 else if(vfx is OneShotVFX) 
@@ -347,7 +323,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                     if (oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
                         hitBoxHandler.DodgeLayers = _locomotionSet.CurrentAttackData.dodgeLayers;
                     if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
-                        damageDealer.Damage = _locomotionSet.CurrentAttackData.damage;
+                        damageDealer.Damage = _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage;
 
                     oneshotVFX.InitializeVFX(_locomotionSet.CurrentAttackData.size, oneshotSettings.DefaultLifeTime);
                 }
@@ -438,7 +414,18 @@ public class PlayerTopDownStateDriver : MonoBehaviour
 
         _context.KnockBackDirection = knockBackDirection;
         _context.KnockbackForce = knockBackForce;
+        CameraShaker.Instance.ShakeRandomDirection(force: 0.5f);
+    }
+    public void OnDeath()
+    {
 
+        _context.IsDead = true;
+        EventBus<TopDownPlayerDeadEvent>.Raise(new TopDownPlayerDeadEvent());
+    }
+
+    public void SetBaseSpeed(float newSpeed)
+    {
+        _context.BaseMoveSpeed = newSpeed;
     }
     #endregion
 }

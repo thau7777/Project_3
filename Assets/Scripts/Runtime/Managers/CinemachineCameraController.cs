@@ -3,15 +3,25 @@ using Unity.Cinemachine;
 
 public class CinemachineCameraController : MonoBehaviour
 {
-    [Header("References")]
+    [TabGroup("References")]
     [SerializeField] private CinemachineCamera cinemachineCamera;
+    [TabGroup("References")]
     [SerializeField] private InputReader _inputReader;
+    [TabGroup("References")]
+    [SerializeField] private Animator _animator;
 
     private CinemachineInputAxisController _cinemachineInputAxisController;
     private bool _canRotate = false;
 
+
+    private int DieHash = Animator.StringToHash("PlayerDie");
+
+    private EventBinding<TopDownPlayerDeadEvent> _playerDeadEventBinding;
+
+    
     private void Awake()
     {
+        _animator = GetComponent<Animator>();
         // Get the component reference
         if (cinemachineCamera == null)
         {
@@ -29,11 +39,14 @@ public class CinemachineCameraController : MonoBehaviour
     private void OnEnable()
     {
         _inputReader.playerTopDownActions.onRightClick += OnRightClick;
+        _playerDeadEventBinding = new(TriggerDeathAnimation);
+        EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
     }
 
     private void OnDisable()
     {
         _inputReader.playerTopDownActions.onRightClick -= OnRightClick;
+        EventBus<TopDownPlayerDeadEvent>.Deregister(_playerDeadEventBinding);
     }
 
     private void OnRightClick(bool value)
@@ -56,5 +69,10 @@ public class CinemachineCameraController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+    }
+
+    public void TriggerDeathAnimation()
+    {
+        _animator.Play(DieHash);
     }
 }

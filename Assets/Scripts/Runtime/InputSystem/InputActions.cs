@@ -120,7 +120,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Shift"",
+                    ""name"": ""Skill_1"",
                     ""type"": ""Button"",
                     ""id"": ""f07a66c5-54a6-4088-ba9d-9c2b2bec5599"",
                     ""expectedControlType"": """",
@@ -129,7 +129,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpaceBar"",
+                    ""name"": ""Skill_2"",
                     ""type"": ""Button"",
                     ""id"": ""e1b11398-1a81-4e00-9fd9-0de71ddab5c3"",
                     ""expectedControlType"": """",
@@ -138,7 +138,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Q"",
+                    ""name"": ""Skill_3"",
                     ""type"": ""Button"",
                     ""id"": ""def1ea3f-85d1-4869-9bf8-ca5540cced4c"",
                     ""expectedControlType"": """",
@@ -147,7 +147,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""E"",
+                    ""name"": ""Skill_4"",
                     ""type"": ""Button"",
                     ""id"": ""4abc420d-1392-47bc-a976-7a4a7e889f2f"",
                     ""expectedControlType"": """",
@@ -156,7 +156,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""R"",
+                    ""name"": ""Skill_5"",
                     ""type"": ""Button"",
                     ""id"": ""785c3a74-96c5-48d2-87d5-51c12d5da3d6"",
                     ""expectedControlType"": """",
@@ -165,9 +165,63 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""T"",
+                    ""name"": ""Skill_6"",
                     ""type"": ""Button"",
                     ""id"": ""17577850-ef1d-4a96-88d9-e56c67c45f75"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""3055fd13-43b0-43b2-8423-c5c871f41878"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d8b05c9-c4ef-4f44-a746-da87ac838291"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_3"",
+                    ""type"": ""Button"",
+                    ""id"": ""be6aeaf2-7a19-467b-a2ef-7d828f459961"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_4"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ac0240e-e010-4c08-9a64-d93fdf866713"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_5"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2719443-0aee-453c-8519-155c89e13b7e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_6"",
+                    ""type"": ""Button"",
+                    ""id"": ""f590f034-c4ba-446c-ac2d-b317c06a99c6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -259,7 +313,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpaceBar"",
+                    ""action"": ""Skill_2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -270,7 +324,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Q"",
+                    ""action"": ""Skill_3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -281,7 +335,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""E"",
+                    ""action"": ""Skill_4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -292,7 +346,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""R"",
+                    ""action"": ""Skill_5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -303,7 +357,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""T"",
+                    ""action"": ""Skill_6"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -314,7 +368,73 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shift"",
+                    ""action"": ""Skill_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f93e489-b002-4f07-ba8b-6d2faaaa11c1"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94000912-36a9-4d0b-b4e2-7297734e179a"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""917e5379-bfd5-4435-b6fd-f50c18f2e3dc"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3e10e90-dfa5-42c8-9fcc-8f205d82141e"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""680dae2d-a295-4100-9dbb-af23b5a63ec7"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64b20d2e-89c7-4437-a7b1-c2ba884b5fb0"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_6"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1468,12 +1588,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_LeftClick = m_PlayerTopDown.FindAction("LeftClick", throwIfNotFound: true);
         m_PlayerTopDown_RightClick = m_PlayerTopDown.FindAction("RightClick", throwIfNotFound: true);
-        m_PlayerTopDown_Shift = m_PlayerTopDown.FindAction("Shift", throwIfNotFound: true);
-        m_PlayerTopDown_SpaceBar = m_PlayerTopDown.FindAction("SpaceBar", throwIfNotFound: true);
-        m_PlayerTopDown_Q = m_PlayerTopDown.FindAction("Q", throwIfNotFound: true);
-        m_PlayerTopDown_E = m_PlayerTopDown.FindAction("E", throwIfNotFound: true);
-        m_PlayerTopDown_R = m_PlayerTopDown.FindAction("R", throwIfNotFound: true);
-        m_PlayerTopDown_T = m_PlayerTopDown.FindAction("T", throwIfNotFound: true);
+        m_PlayerTopDown_Skill_1 = m_PlayerTopDown.FindAction("Skill_1", throwIfNotFound: true);
+        m_PlayerTopDown_Skill_2 = m_PlayerTopDown.FindAction("Skill_2", throwIfNotFound: true);
+        m_PlayerTopDown_Skill_3 = m_PlayerTopDown.FindAction("Skill_3", throwIfNotFound: true);
+        m_PlayerTopDown_Skill_4 = m_PlayerTopDown.FindAction("Skill_4", throwIfNotFound: true);
+        m_PlayerTopDown_Skill_5 = m_PlayerTopDown.FindAction("Skill_5", throwIfNotFound: true);
+        m_PlayerTopDown_Skill_6 = m_PlayerTopDown.FindAction("Skill_6", throwIfNotFound: true);
+        m_PlayerTopDown_Item_1 = m_PlayerTopDown.FindAction("Item_1", throwIfNotFound: true);
+        m_PlayerTopDown_Item_2 = m_PlayerTopDown.FindAction("Item_2", throwIfNotFound: true);
+        m_PlayerTopDown_Item_3 = m_PlayerTopDown.FindAction("Item_3", throwIfNotFound: true);
+        m_PlayerTopDown_Item_4 = m_PlayerTopDown.FindAction("Item_4", throwIfNotFound: true);
+        m_PlayerTopDown_Item_5 = m_PlayerTopDown.FindAction("Item_5", throwIfNotFound: true);
+        m_PlayerTopDown_Item_6 = m_PlayerTopDown.FindAction("Item_6", throwIfNotFound: true);
         // PlayerTurnBased
         m_PlayerTurnBased = asset.FindActionMap("PlayerTurnBased", throwIfNotFound: true);
         m_PlayerTurnBased_A = m_PlayerTurnBased.FindAction("A", throwIfNotFound: true);
@@ -1606,12 +1732,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_LeftClick;
     private readonly InputAction m_PlayerTopDown_RightClick;
-    private readonly InputAction m_PlayerTopDown_Shift;
-    private readonly InputAction m_PlayerTopDown_SpaceBar;
-    private readonly InputAction m_PlayerTopDown_Q;
-    private readonly InputAction m_PlayerTopDown_E;
-    private readonly InputAction m_PlayerTopDown_R;
-    private readonly InputAction m_PlayerTopDown_T;
+    private readonly InputAction m_PlayerTopDown_Skill_1;
+    private readonly InputAction m_PlayerTopDown_Skill_2;
+    private readonly InputAction m_PlayerTopDown_Skill_3;
+    private readonly InputAction m_PlayerTopDown_Skill_4;
+    private readonly InputAction m_PlayerTopDown_Skill_5;
+    private readonly InputAction m_PlayerTopDown_Skill_6;
+    private readonly InputAction m_PlayerTopDown_Item_1;
+    private readonly InputAction m_PlayerTopDown_Item_2;
+    private readonly InputAction m_PlayerTopDown_Item_3;
+    private readonly InputAction m_PlayerTopDown_Item_4;
+    private readonly InputAction m_PlayerTopDown_Item_5;
+    private readonly InputAction m_PlayerTopDown_Item_6;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerTopDown".
     /// </summary>
@@ -1636,29 +1768,53 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/Shift".
+        /// Provides access to the underlying input action "PlayerTopDown/Skill_1".
         /// </summary>
-        public InputAction @Shift => m_Wrapper.m_PlayerTopDown_Shift;
+        public InputAction @Skill_1 => m_Wrapper.m_PlayerTopDown_Skill_1;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/SpaceBar".
+        /// Provides access to the underlying input action "PlayerTopDown/Skill_2".
         /// </summary>
-        public InputAction @SpaceBar => m_Wrapper.m_PlayerTopDown_SpaceBar;
+        public InputAction @Skill_2 => m_Wrapper.m_PlayerTopDown_Skill_2;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/Q".
+        /// Provides access to the underlying input action "PlayerTopDown/Skill_3".
         /// </summary>
-        public InputAction @Q => m_Wrapper.m_PlayerTopDown_Q;
+        public InputAction @Skill_3 => m_Wrapper.m_PlayerTopDown_Skill_3;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/E".
+        /// Provides access to the underlying input action "PlayerTopDown/Skill_4".
         /// </summary>
-        public InputAction @E => m_Wrapper.m_PlayerTopDown_E;
+        public InputAction @Skill_4 => m_Wrapper.m_PlayerTopDown_Skill_4;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/R".
+        /// Provides access to the underlying input action "PlayerTopDown/Skill_5".
         /// </summary>
-        public InputAction @R => m_Wrapper.m_PlayerTopDown_R;
+        public InputAction @Skill_5 => m_Wrapper.m_PlayerTopDown_Skill_5;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/T".
+        /// Provides access to the underlying input action "PlayerTopDown/Skill_6".
         /// </summary>
-        public InputAction @T => m_Wrapper.m_PlayerTopDown_T;
+        public InputAction @Skill_6 => m_Wrapper.m_PlayerTopDown_Skill_6;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Item_1".
+        /// </summary>
+        public InputAction @Item_1 => m_Wrapper.m_PlayerTopDown_Item_1;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Item_2".
+        /// </summary>
+        public InputAction @Item_2 => m_Wrapper.m_PlayerTopDown_Item_2;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Item_3".
+        /// </summary>
+        public InputAction @Item_3 => m_Wrapper.m_PlayerTopDown_Item_3;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Item_4".
+        /// </summary>
+        public InputAction @Item_4 => m_Wrapper.m_PlayerTopDown_Item_4;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Item_5".
+        /// </summary>
+        public InputAction @Item_5 => m_Wrapper.m_PlayerTopDown_Item_5;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerTopDown/Item_6".
+        /// </summary>
+        public InputAction @Item_6 => m_Wrapper.m_PlayerTopDown_Item_6;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1694,24 +1850,42 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
-            @Shift.started += instance.OnShift;
-            @Shift.performed += instance.OnShift;
-            @Shift.canceled += instance.OnShift;
-            @SpaceBar.started += instance.OnSpaceBar;
-            @SpaceBar.performed += instance.OnSpaceBar;
-            @SpaceBar.canceled += instance.OnSpaceBar;
-            @Q.started += instance.OnQ;
-            @Q.performed += instance.OnQ;
-            @Q.canceled += instance.OnQ;
-            @E.started += instance.OnE;
-            @E.performed += instance.OnE;
-            @E.canceled += instance.OnE;
-            @R.started += instance.OnR;
-            @R.performed += instance.OnR;
-            @R.canceled += instance.OnR;
-            @T.started += instance.OnT;
-            @T.performed += instance.OnT;
-            @T.canceled += instance.OnT;
+            @Skill_1.started += instance.OnSkill_1;
+            @Skill_1.performed += instance.OnSkill_1;
+            @Skill_1.canceled += instance.OnSkill_1;
+            @Skill_2.started += instance.OnSkill_2;
+            @Skill_2.performed += instance.OnSkill_2;
+            @Skill_2.canceled += instance.OnSkill_2;
+            @Skill_3.started += instance.OnSkill_3;
+            @Skill_3.performed += instance.OnSkill_3;
+            @Skill_3.canceled += instance.OnSkill_3;
+            @Skill_4.started += instance.OnSkill_4;
+            @Skill_4.performed += instance.OnSkill_4;
+            @Skill_4.canceled += instance.OnSkill_4;
+            @Skill_5.started += instance.OnSkill_5;
+            @Skill_5.performed += instance.OnSkill_5;
+            @Skill_5.canceled += instance.OnSkill_5;
+            @Skill_6.started += instance.OnSkill_6;
+            @Skill_6.performed += instance.OnSkill_6;
+            @Skill_6.canceled += instance.OnSkill_6;
+            @Item_1.started += instance.OnItem_1;
+            @Item_1.performed += instance.OnItem_1;
+            @Item_1.canceled += instance.OnItem_1;
+            @Item_2.started += instance.OnItem_2;
+            @Item_2.performed += instance.OnItem_2;
+            @Item_2.canceled += instance.OnItem_2;
+            @Item_3.started += instance.OnItem_3;
+            @Item_3.performed += instance.OnItem_3;
+            @Item_3.canceled += instance.OnItem_3;
+            @Item_4.started += instance.OnItem_4;
+            @Item_4.performed += instance.OnItem_4;
+            @Item_4.canceled += instance.OnItem_4;
+            @Item_5.started += instance.OnItem_5;
+            @Item_5.performed += instance.OnItem_5;
+            @Item_5.canceled += instance.OnItem_5;
+            @Item_6.started += instance.OnItem_6;
+            @Item_6.performed += instance.OnItem_6;
+            @Item_6.canceled += instance.OnItem_6;
         }
 
         /// <summary>
@@ -1732,24 +1906,42 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
-            @Shift.started -= instance.OnShift;
-            @Shift.performed -= instance.OnShift;
-            @Shift.canceled -= instance.OnShift;
-            @SpaceBar.started -= instance.OnSpaceBar;
-            @SpaceBar.performed -= instance.OnSpaceBar;
-            @SpaceBar.canceled -= instance.OnSpaceBar;
-            @Q.started -= instance.OnQ;
-            @Q.performed -= instance.OnQ;
-            @Q.canceled -= instance.OnQ;
-            @E.started -= instance.OnE;
-            @E.performed -= instance.OnE;
-            @E.canceled -= instance.OnE;
-            @R.started -= instance.OnR;
-            @R.performed -= instance.OnR;
-            @R.canceled -= instance.OnR;
-            @T.started -= instance.OnT;
-            @T.performed -= instance.OnT;
-            @T.canceled -= instance.OnT;
+            @Skill_1.started -= instance.OnSkill_1;
+            @Skill_1.performed -= instance.OnSkill_1;
+            @Skill_1.canceled -= instance.OnSkill_1;
+            @Skill_2.started -= instance.OnSkill_2;
+            @Skill_2.performed -= instance.OnSkill_2;
+            @Skill_2.canceled -= instance.OnSkill_2;
+            @Skill_3.started -= instance.OnSkill_3;
+            @Skill_3.performed -= instance.OnSkill_3;
+            @Skill_3.canceled -= instance.OnSkill_3;
+            @Skill_4.started -= instance.OnSkill_4;
+            @Skill_4.performed -= instance.OnSkill_4;
+            @Skill_4.canceled -= instance.OnSkill_4;
+            @Skill_5.started -= instance.OnSkill_5;
+            @Skill_5.performed -= instance.OnSkill_5;
+            @Skill_5.canceled -= instance.OnSkill_5;
+            @Skill_6.started -= instance.OnSkill_6;
+            @Skill_6.performed -= instance.OnSkill_6;
+            @Skill_6.canceled -= instance.OnSkill_6;
+            @Item_1.started -= instance.OnItem_1;
+            @Item_1.performed -= instance.OnItem_1;
+            @Item_1.canceled -= instance.OnItem_1;
+            @Item_2.started -= instance.OnItem_2;
+            @Item_2.performed -= instance.OnItem_2;
+            @Item_2.canceled -= instance.OnItem_2;
+            @Item_3.started -= instance.OnItem_3;
+            @Item_3.performed -= instance.OnItem_3;
+            @Item_3.canceled -= instance.OnItem_3;
+            @Item_4.started -= instance.OnItem_4;
+            @Item_4.performed -= instance.OnItem_4;
+            @Item_4.canceled -= instance.OnItem_4;
+            @Item_5.started -= instance.OnItem_5;
+            @Item_5.performed -= instance.OnItem_5;
+            @Item_5.canceled -= instance.OnItem_5;
+            @Item_6.started -= instance.OnItem_6;
+            @Item_6.performed -= instance.OnItem_6;
+            @Item_6.canceled -= instance.OnItem_6;
         }
 
         /// <summary>
@@ -2715,47 +2907,89 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Shift" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnShift(InputAction.CallbackContext context);
+        void OnSkill_1(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "SpaceBar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill_2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSpaceBar(InputAction.CallbackContext context);
+        void OnSkill_2(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Q" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill_3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnQ(InputAction.CallbackContext context);
+        void OnSkill_3(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "E" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill_4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnE(InputAction.CallbackContext context);
+        void OnSkill_4(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "R" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill_5" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnR(InputAction.CallbackContext context);
+        void OnSkill_5(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "T" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill_6" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnT(InputAction.CallbackContext context);
+        void OnSkill_6(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Item_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItem_1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Item_2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItem_2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Item_3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItem_3(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Item_4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItem_4(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Item_5" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItem_5(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Item_6" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItem_6(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerTurnBased" which allows adding and removing callbacks.

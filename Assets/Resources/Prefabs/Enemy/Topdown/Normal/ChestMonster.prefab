@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: 4997844022775154333}
   - component: {fileID: 6616675241332975982}
   - component: {fileID: 5999522953799435469}
+  - component: {fileID: -8564376750003719334}
   m_Layer: 9
   m_Name: ChestMonster
   m_TagString: Untagged
@@ -290,11 +291,11 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 0.5, z: 1}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -433,6 +434,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &6616675241332975982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,9 +450,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &5999522953799435469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,6 +470,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
   targetRenderers:
   - {fileID: 439255172584648724}
+--- !u!114 &-8564376750003719334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2782076942087497927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &2842708275548147893
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,7 +587,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 7.771561e-18, z: -7.771561e-18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 852886599630467105}
   m_Father: {fileID: 1925109715042388420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &439255172584648724
@@ -929,6 +956,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 969132437030301042}
   m_LocalEulerAnglesHint: {x: -0.08945175, y: -89.12122, z: 179.99861}
+--- !u!1 &6430466633070694519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 852886599630467105}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &852886599630467105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6430466633070694519}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1076293620184259748}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6501584096006326722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3774847447718513864}
+  - component: {fileID: 4993501582053260715}
   m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
@@ -1123,3 +1182,19 @@ Transform:
   - {fileID: 7960368147314971308}
   m_Father: {fileID: 1925109715042388420}
   m_LocalEulerAnglesHint: {x: -0, y: 90, z: -21.71649}
+--- !u!114 &4993501582053260715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9199965336816458711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2
+  radiusMultiplier: 2
+  alwaysUseBounds: 0

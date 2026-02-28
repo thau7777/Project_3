@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5493597877174503273}
   - component: {fileID: 6155294663910118514}
   - component: {fileID: 6868395677472415030}
+  - component: {fileID: 9155364912298247713}
   m_Layer: 0
   m_Name: Skill Icon Holder
   m_TagString: Untagged
@@ -78,6 +79,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9155364912298247713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449406433047858544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2513afb1a986be439a5f010fce2fcff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillSlotUI
+  _icon: {fileID: 5502179072115835541}
+  _cooldownProgressImage: {fileID: 5277646426600942813}
+  _cooldownFinishImage: {fileID: 2121679691158295419}
+  _cooldownText: {fileID: 40295427837454070}
 --- !u!1 &552885616732354129
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,8 +297,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 18eb5c3e16705dd4f8ccd5636e71161c, type: 3}
-  m_Type: 3
+  m_Sprite: {fileID: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1

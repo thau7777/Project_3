@@ -3,17 +3,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New SummonerTarget Effect", menuName = "Scriptable Objects/Effect/Summoner Target Effect")]
 public class AddSummonerTargetEffect : Effect
 {
-    public override void OnApply(GameObject target)
+    public override Flyweight OnApply(GameObject target, ActiveEffect activeEffect)
     {
-        base.OnApply(target);
+        var vfx = base.OnApply(target, activeEffect);
         if(GetVfxFlyweightOnTarget(target) != null)
             GetVfxFlyweightOnTarget(target).transform.position = target.transform.position.Add(y: 1);
         MinionsManager.Instance.AddTargetedEnemies(target);
+        return vfx;
     }
 
-    public override void OnRemove(GameObject target)
+    public override void OnRemove(ActiveEffect activeEffect, GameObject target = null)
     {
-        base.OnRemove(target);
-        MinionsManager.Instance.RemoveTargetedEnemy(target);
+        MinionsManager.Instance.RemoveTargetedEnemy(activeEffect.activeVFX.transform.root.gameObject);
+        base.OnRemove(activeEffect);
     }
 }

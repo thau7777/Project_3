@@ -82,24 +82,24 @@ public class Damageable : MonoBehaviour
     }
     private void OnParticleCollision(GameObject other)
     {
-        if(other.TryGetComponent<OneShotVFX>(out var oneShotVfx))
+        if (other.transform.root.TryGetComponent<OneShotVFX>(out var oneShotVfx))
         {
             OneShotVFXSettings vfxSettings = oneShotVfx.settings as OneShotVFXSettings;
             if(vfxSettings.defaultDodgeLayers.Contains(gameObject.layer)) return;
         }
-        if (other.TryGetComponent<DamageDealer>(out var damageDealer))
+        if (other.transform.root.TryGetComponent<DamageDealer>(out var damageDealer))
         {
             Vector3 hitDirection = transform.position - other.transform.position;
             damageDealer.DealDamage(other, gameObject);
         }
-        if(other.TryGetComponent<EffectApplier>(out var effectApplier))
+        if(other.transform.root.TryGetComponent<EffectApplier>(out var effectApplier))
         {
             effectApplier.ApplyEffect(other, gameObject);
         }
     }
-    public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType, OneShotVFXSettings hitVfx = null)
+    public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
-        if (CurrentHealth == 0 || _invincibleElapsedTime > 0) return;
+        if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
         float finalDamage = damage;
         if (hitVfx)
         {
@@ -128,8 +128,8 @@ public class Damageable : MonoBehaviour
                 if (_stunVFXSettings != null && _stunVFXSpawnTransform != null)
                 {
                     _stunVfxFlyweight = FlyweightFactory.Spawn(_stunVFXSettings);
-                    _stunVfxFlyweight.FlyweightInitialize(_stunVFXSpawnTransform.position);
-                    (_stunVfxFlyweight as ContinousVFX).InitializeVFX(_stunVFXSettings.DefaultSize, _stunVFXSpawnTransform);
+                    _stunVfxFlyweight.FlyweightInitialize(_stunVFXSpawnTransform.position, parent: _stunVFXSpawnTransform);
+                    (_stunVfxFlyweight as ContinousVFX).InitializeVFX(_stunVFXSettings.DefaultSize);
                     _stunVfxFlyweight.transform.position = _stunVFXSpawnTransform.position;
                     _stunVfxFlyweight.transform.rotation = Quaternion.identity;
                 }

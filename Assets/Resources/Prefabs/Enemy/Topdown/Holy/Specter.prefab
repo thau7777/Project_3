@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 7373449855126315328}
   - component: {fileID: 3543280378403995640}
   - component: {fileID: 6793325987705907415}
+  - component: {fileID: -2003550355033464040}
   m_Layer: 9
   m_Name: Specter
   m_TagString: Untagged
@@ -227,11 +228,11 @@ MonoBehaviour:
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
-  _moveSpeed: 5
   _movePauseDuration: 1
   _rotateSpeed: 10
   _attackList:
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0.288579, y: 1.977434, z: 1.160847}
     rotationOffset: {x: 0, y: 0, z: 272.834}
@@ -265,7 +266,8 @@ MonoBehaviour:
     indicator: {fileID: 0}
     indicatorWidth: 2
     indicatorLength: 2
-  - spawnType: 0
+  - Parryable: 1
+    spawnType: 0
     skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0.4799414, y: 1.543435, z: 1.79324}
     rotationOffset: {x: 0, y: 0, z: 0}
@@ -404,6 +406,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d58af3d9efa8644ea259b4447967396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsManager
+  testEffectData:
+    effect: {fileID: 0}
+    effectHoldDuration: 0
+    stacksToApply: 0
 --- !u!114 &3543280378403995640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,9 +422,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9faca1fc2ef1194ba7a16711f44e231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerLayerIgnore
-  _layersToIgnore:
+  _ogLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &6793325987705907415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +443,27 @@ MonoBehaviour:
   targetRenderers:
   - {fileID: 1424744885685166703}
   - {fileID: 7102803963242120971}
+--- !u!114 &-2003550355033464040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677248609414525924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <InitialHealth>k__BackingField: 100
+  <InitialMana>k__BackingField: 100
+  <AttackDamage>k__BackingField: 10
+  <MagicAttackDamage>k__BackingField: 8
+  <PhysicalDefense>k__BackingField: 5
+  <MagicDefense>k__BackingField: 5
+  <Agility>k__BackingField: 5
+  <CriticalRate>k__BackingField: 0.1
+  <CriticalDamage>k__BackingField: 1.5
 --- !u!1 &773805144633517396
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,6 +633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6322564731794160720}
+  - component: {fileID: 2182699287340158046}
   m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
@@ -635,6 +663,22 @@ Transform:
   - {fileID: 5856531413905277802}
   m_Father: {fileID: 4954639664155582762}
   m_LocalEulerAnglesHint: {x: -5.1820927, y: 117.13477, z: -62.15398}
+--- !u!114 &2182699287340158046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713975222391840796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 2
+  radiusMultiplier: 2
+  alwaysUseBounds: 0
 --- !u!1 &1801434201688901945
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,6 +1028,37 @@ Transform:
   - {fileID: 4533053082610069438}
   m_Father: {fileID: 6646462728579548317}
   m_LocalEulerAnglesHint: {x: 1.970413, y: 10.555506, z: -9.159845}
+--- !u!1 &3287055645070378536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3434991442006151425}
+  m_Layer: 9
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3434991442006151425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3287055645070378536}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6201599230502948846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3313510056786977369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,7 +2043,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3434991442006151425}
   m_Father: {fileID: 4954639664155582762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1424744885685166703
