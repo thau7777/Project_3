@@ -18,11 +18,11 @@ public class FishingSpawner : MonoBehaviour
 
     [Header("Treasure")]
     public GameObject treasurePrefab;
-    [Range(0f, 1f)] public float treasureChance = 0.15f;
+    [Range(0f, 1f)] public float treasureChance = 0.35f;
 
     private void Start()
     {
-        fishCount = Random.Range(3, 6);
+        fishCount = 5;
         SpawnWave();
     }
 
@@ -50,7 +50,7 @@ public class FishingSpawner : MonoBehaviour
             float x = startX + spacing * i;
             float y = Mathf.Sin(i * 0.8f) * waveHeight;
 
-            rt.anchoredPosition = new Vector2(x, y);
+            rt.anchoredPosition = new Vector2(x, Random.Range(-y,y));
         }
 
         // 🎁 spawn rương kho báu theo tỉ lệ
