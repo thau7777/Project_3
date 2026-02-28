@@ -25,7 +25,7 @@ namespace MyRule.UI
         private int baseStamina;
         private int basePhysDmg;
         private int baseMagDmg;
-        private int baseCritChance;
+        private float baseCritChance;
         private float baseCritMult;
 
         private EventBinding<PlayerStatsShowEvent> playerStatsShowEventBinding;

@@ -11,8 +11,8 @@ namespace MyRule
         public MazePoint pointA;
         public MazePoint pointB;
         public float sideLength = 1f;
-        [Range(-1f, 1f)] public float curveAmount = 0.3f;
-        public int segmentCount = 20;
+        [Range(-1f, 1f)] public float curveAmount = 0f;
+        public int segmentCount = 3;
     }
 
     [ExecuteInEditMode]

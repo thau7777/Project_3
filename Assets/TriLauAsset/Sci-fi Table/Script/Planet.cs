@@ -90,11 +90,14 @@ namespace MyRule
             switch (planetSO.planetType)
             {
                 case PlanetType.GreenLand:
-                    Loader.Load(Loader.EScene.BoardScene);
+                    PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
+                    //Loader.Load(Loader.EScene.MazeScene);
                     break;
                 case PlanetType.Desert:
+                    PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
                     break;
                 case PlanetType.IceLand:
+                    PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
                     break;
             }
 

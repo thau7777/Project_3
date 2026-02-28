@@ -1,3 +1,4 @@
+using MyRule.CommandPattern;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -53,6 +54,7 @@ namespace MyRule.UI
             diceRollBtn.clicked += OnRoll;
             sigilRollBtn.clicked += OnSigilRoll;
             skipBtn.clicked += OnSkip;
+            statsBtn.clicked += OnOpenStats;
         }
 
         private void OnRoll()
@@ -95,5 +97,10 @@ namespace MyRule.UI
         //    sigilStorage.RemoveFromClassList("sigilStorage_hind");
         //    buttonConstraint.RemoveFromClassList("buttonConstraint_hind");
         //}
+
+        private void OnOpenStats()
+        {
+            EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Stats));
+        }
     }
 }

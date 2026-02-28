@@ -1413,6 +1413,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""66ab5b59-1133-4040-8bf2-ca1bf3e47e2c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -1435,6 +1444,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2825b220-0d3c-40ea-a912-7a16f5ef189c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1495,6 +1515,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_DiceRoll = asset.FindActionMap("DiceRoll", throwIfNotFound: true);
         m_DiceRoll_TabMenu = m_DiceRoll.FindAction("TabMenu", throwIfNotFound: true);
         m_DiceRoll_Roll = m_DiceRoll.FindAction("Roll", throwIfNotFound: true);
+        m_DiceRoll_Look = m_DiceRoll.FindAction("Look", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -2553,6 +2574,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IDiceRollActions> m_DiceRollActionsCallbackInterfaces = new List<IDiceRollActions>();
     private readonly InputAction m_DiceRoll_TabMenu;
     private readonly InputAction m_DiceRoll_Roll;
+    private readonly InputAction m_DiceRoll_Look;
     /// <summary>
     /// Provides access to input actions defined in input action map "DiceRoll".
     /// </summary>
@@ -2572,6 +2594,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "DiceRoll/Roll".
         /// </summary>
         public InputAction @Roll => m_Wrapper.m_DiceRoll_Roll;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/Look".
+        /// </summary>
+        public InputAction @Look => m_Wrapper.m_DiceRoll_Look;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2604,6 +2630,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Roll.started += instance.OnRoll;
             @Roll.performed += instance.OnRoll;
             @Roll.canceled += instance.OnRoll;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         /// <summary>
@@ -2621,6 +2650,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Roll.started -= instance.OnRoll;
             @Roll.performed -= instance.OnRoll;
             @Roll.canceled -= instance.OnRoll;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         /// <summary>
@@ -2969,5 +3001,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRoll(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLook(InputAction.CallbackContext context);
     }
 }
