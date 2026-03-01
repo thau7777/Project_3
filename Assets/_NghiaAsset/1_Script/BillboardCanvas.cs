@@ -1,30 +1,35 @@
 ﻿using UnityEngine;
 
-
 namespace Turnbase
 {
     public class BillboardCanvas : MonoBehaviour
     {
-        private Transform cam;
-
-        void Start()
-        {
-            GameObject camObj = GameObject.FindGameObjectWithTag("MainCamera");
-            if (camObj != null)
-            {
-                cam = camObj.transform;
-            }
-        }
-
-        
+        [SerializeField] private string priorityCameraTag = "SkillCamera"; 
 
         void LateUpdate()
         {
-            if (cam != null)
+            Camera targetCam = null;
+
+            Camera[] allCams = Camera.allCameras;
+
+            foreach (Camera cam in allCams)
             {
-                transform.rotation = cam.rotation;
+                if (cam.enabled && cam.CompareTag(priorityCameraTag))
+                {
+                    targetCam = cam;
+                    break; 
+                }
+            }
+
+            if (targetCam == null)
+            {
+                targetCam = Camera.main;
+            }
+
+            if (targetCam != null)
+            {
+                transform.rotation = targetCam.transform.rotation;
             }
         }
     }
-
 }

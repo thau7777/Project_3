@@ -10,7 +10,6 @@ namespace Turnbase
 
         public override void OnEnter()
         {
-            Debug.Log(stateMachine.gameObject.name + " đang bị nhận sát thương.");
             stateMachine.character.StartCoroutine(HandleTakingDamage());
         }
 

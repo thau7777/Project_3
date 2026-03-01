@@ -39,6 +39,13 @@ namespace Turnbase
 
         public void Setup(int damageAmount, Color color, bool isCrit)
         {
+            Canvas canvas = GetComponentInParent<Canvas>();
+            if (canvas != null)
+            {
+                canvas.overrideSorting = true;
+                canvas.sortingOrder = 1000; 
+            }
+
             if (damageText != null)
             {
                 damageText.color = color;
