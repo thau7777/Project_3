@@ -55,6 +55,11 @@ namespace MyRule
                 ICommand command = new PlanetCommand(planetManager);
                 CommandInvoker.ExecuteCommand(command);
             }
+
+            if (PortalManager.Instance.CanInteract)
+            {
+                EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Portal));
+            }
         }
 
         private void OnEsc()

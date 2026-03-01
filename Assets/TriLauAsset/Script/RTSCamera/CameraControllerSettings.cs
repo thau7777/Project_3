@@ -2,19 +2,17 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Unity.FantasyKingdom
+namespace MyRule
 {
-
-    [CreateAssetMenu(fileName = "New Camera Settings" ,menuName ="Fantasy Kingdom/Camera Settings", order = 0)]
+    [CreateAssetMenu(fileName = "CameraControllerSettings", menuName = "Scriptable Objects/CameraControllerSettings")]
     public class CameraControllerSettings : ScriptableObject
     {
-        public Material FreeCamHeightFog, FreeCamCubeFog;
-
-
         public bool IsRestricted = false;
+
+        [ShowIf("IsRestricted")]
         public List<ZoomLevelData> ZoomLevelData;
 
-        
+
         [Min(0)]
         public float CameraScreenSideSpeed = 6.0f;
         [Min(0)]
@@ -44,12 +42,12 @@ namespace Unity.FantasyKingdom
         [Tooltip("The Maximum Tilt of the camera.")]
         public float CameraTiltMax = 75f;
 
-        
-       
+
+
         public float CameraRotateMin = 0;
 
 
-      
+
         public float CameraRotateMax = 180f;
 
         [SerializeField, Min(0)]
@@ -82,7 +80,5 @@ namespace Unity.FantasyKingdom
         public float TiltAmount;
         public float CameraNearPlane = 5.0f;
         public float CameraFarPlane = 1500f;
-        public Material HeightFog;
-        public Material CubeFog;
     }
 }

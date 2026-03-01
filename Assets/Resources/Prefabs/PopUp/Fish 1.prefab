@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3000330365726498106}
   - component: {fileID: -4064498803960261285}
   - component: {fileID: -6931585904594390733}
+  - component: {fileID: 3143544670103652166}
   m_Layer: 5
   m_Name: Fish 1
   m_TagString: Untagged
@@ -93,6 +94,13 @@ MonoBehaviour:
   itemType: 0
   scoreValue: 100
   state: 0
+  moveSpeed: 60
+  moveRange: 200
+  startX: 0
+  direction: 1
+  rt: {fileID: 3511031817840171611}
+  rb: {fileID: -6931585904594390733}
+  timeOffset: 0
 --- !u!61 &-4064498803960261285
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -166,3 +174,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &3143544670103652166
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5467849190853849419}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 4db32e00b953dfe4a99b75a037f9ca1b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

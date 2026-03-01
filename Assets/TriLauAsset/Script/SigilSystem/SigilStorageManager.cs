@@ -94,6 +94,8 @@ namespace MyRule
                     index++;
                 }
             }
+
+            CharacterStatsManager.Instance.UpdateSigilStats(evt.normalSigilSO);
         }
     }
 }

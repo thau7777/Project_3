@@ -10,6 +10,8 @@ public class DiceRollActions : InputActions.IDiceRollActions
 
     public event Action onRightClick;
 
+    public event Action<Vector2> onLook;
+
     public void OnRightClick(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -23,6 +25,18 @@ public class DiceRollActions : InputActions.IDiceRollActions
         if (context.performed)
         {
             onRoll?.Invoke();
+        }
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onLook?.Invoke(context.ReadValue<Vector2>());
+        }
+        else if (context.canceled)
+        {
+            onLook?.Invoke(Vector2.zero);
         }
     }
 

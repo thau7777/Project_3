@@ -22,11 +22,14 @@ namespace MyRule
         public int hp;
         public int fp;
         public int stamina;
+        public int def;
+        public int resRate;
+        public float attackSpeed;
 
         [Header("Attack Power")]
         public int physicalDmg;
         public int magicDmg;
-        public int critChance;
+        public float critChance;
         [Range(1.5f, 2.3f)]
         public float critMult;
     }

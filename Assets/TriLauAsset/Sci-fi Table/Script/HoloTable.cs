@@ -43,6 +43,8 @@ namespace MyRule
             hasActive = false;
             keyObj?.SetActive(true);
 
+            Cursor.lockState = CursorLockMode.Locked;
+
             EventBus<ScifitableExitEvent>.Raise(new ScifitableExitEvent());
         }
 
