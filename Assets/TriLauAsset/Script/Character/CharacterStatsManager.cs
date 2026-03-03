@@ -26,6 +26,8 @@ namespace MyRule
             characterStats.magicDmg = stats.magicDmg;
             characterStats.critChance = stats.critChance;
             characterStats.critMult = stats.critMult;
+
+
         }
 
         public CharacterStatsSO GetCharacterStats()
@@ -50,6 +52,8 @@ namespace MyRule
             characterStats.magicDmg += sigilSO.mag;
             characterStats.critChance += sigilSO.critChance;
             characterStats.critMult += sigilSO.critMult;
+
+
         }
     }
 }

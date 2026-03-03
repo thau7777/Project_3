@@ -136,12 +136,12 @@ namespace Turnbase
 
             if (debuffManager.poisonTurnsRemaining > 0)
             {
-                int estimatedDmg = debuffManager.GetEstimatedPoisonDamage();
+                float debuffValue = debuffManager.poisonReductionPercentage * 100f;
                 effects.Add(new StatusEffectData
                 {
                     Name = "Poison",
                     TurnsRemaining = debuffManager.poisonTurnsRemaining,
-                    Detail = $"{estimatedDmg} Damage/turn",
+                    Detail = $"{debuffValue}% DEF Reduction + Weakness Break Efficiency",
                     IsBuff = false,
                     Icon = debuffManager.poisonIcon
                 });
@@ -198,6 +198,20 @@ namespace Turnbase
                     IsBuff = false,
                     Icon = debuffManager.breakIcon
                 });
+            }
+
+            if(debuffManager.paralysisTurnsRemaining > 0)
+            {
+                int debuffReduction = Mathf.RoundToInt(debuffManager.paralysisDamageReduction);
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Paralysis",
+                    TurnsRemaining = debuffManager.paralysisTurnsRemaining,
+                    Detail = $"{debuffReduction}% DMG Reduction",
+                    IsBuff = false,
+                    Icon = debuffManager.paralysisIcon
+                });
+
             }
 
             if (buffManager.basicAttackBuffTurnsRemaining > 0)

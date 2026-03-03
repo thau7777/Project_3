@@ -189,6 +189,7 @@ public enum  DebuffType
     DefReduction,
     Break,
     SpeedReduction,
+    Paralysis,
 
 
 }

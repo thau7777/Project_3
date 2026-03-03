@@ -111,6 +111,8 @@ namespace Turnbase
             this.waterDefense = statsSO.waterDef;
             this.critChance = statsSO.critChance;
             this.critMult = (int) (statsSO.critMult * 100);
+            this.agility = (int) statsSO.attackSpeed;
+
         }
     }
 

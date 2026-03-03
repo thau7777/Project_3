@@ -663,40 +663,35 @@ namespace Turnbase
         public void RecalculateDefenseStat()
         {
             if (character.debuffManager == null) return;
-            float defReductionPercentage = character.debuffManager.defReductionPercentage;
 
+            // Lấy cả 2 loại giảm thủ
+            float defRed = character.debuffManager.defReductionPercentage;
+            float poisonRed = character.debuffManager.poisonReductionPercentage;
+
+            // Chọn cái nào mạnh nhất (hoặc cộng dồn tùy bạn, ở đây mình chọn Max để cân bằng)
+            float totalReductionPercent = Mathf.Max(defRed, poisonRed);
+
+            // --- Tính Physical Defense ---
             int finalPDef = originalBaseDefense;
+            if (defenseBuffTurnsRemaining > 0) finalPDef += defenseBuffAmount;
 
-            if (defenseBuffTurnsRemaining > 0)
+            if (totalReductionPercent > 0f)
             {
-                finalPDef += defenseBuffAmount;
+                finalPDef -= Mathf.FloorToInt(finalPDef * totalReductionPercent);
             }
-
-            if (defReductionPercentage > 0f)
-            {
-                float reduction = finalPDef * defReductionPercentage;
-                finalPDef -= Mathf.FloorToInt(reduction);
-            }
-
             stats.physicalDefense = Mathf.Max(0, finalPDef);
 
-
+            // --- Tính Magic Defense ---
             int finalMDef = magicalOriginalBaseDefense;
+            if (magicalDefenseBuffTurnsRemaining > 0) finalMDef += magicalDefenseBuffAmount;
 
-            if (magicalDefenseBuffTurnsRemaining > 0)
+            if (totalReductionPercent > 0f)
             {
-                finalMDef += magicalDefenseBuffAmount;
+                finalMDef -= Mathf.FloorToInt(finalMDef * totalReductionPercent);
             }
-
-            if (defReductionPercentage > 0f)
-            {
-                float reduction = finalMDef * defReductionPercentage;
-                finalMDef -= Mathf.FloorToInt(reduction);
-            }
-
             stats.magicDefense = Mathf.Max(0, finalMDef);
 
-            Debug.Log($"[{character.name}] Recalculate: PDef={stats.physicalDefense}, MDef={stats.magicDefense}. Debuff: -{defReductionPercentage * 100:F0}%");
+            Debug.Log($"[{character.name}] New Def: P={stats.physicalDefense}, M={stats.magicDefense} (Total Red: {totalReductionPercent * 100}%)");
             character.UpdateOwnUI();
         }
 
