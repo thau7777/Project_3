@@ -5,10 +5,6 @@ public class EffectApplier : MonoBehaviour
 {
     [SerializeField] private List<EffectData> _effectsToApply;
 
-    //private void OnEnable()
-    //{
-        
-    //}
     private void Awake()
     {
         if (TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
@@ -27,31 +23,39 @@ public class EffectApplier : MonoBehaviour
     {
         _effectsToApply = effectList;
     }
-    public void ApplyEffect(GameObject sender,GameObject target)
+    public void ApplyEffect(GameObject sender , GameObject hitOrigin, GameObject target)
     {
-        if (_effectsToApply == null && GetComponent<HitBoxHandler>().Parryable)
+        if (_effectsToApply == null ||
+            TryGetComponent<HitBoxHandler>(out var hitboxHandler) &&
+            hitboxHandler.ParryAble &&
+            target.TryGetComponent<PlayerTopDownStateDriver>(out var player) && 
+            player.IsParrying)
         {
-            Debug.LogWarning("No effect assigned to EffectApplier!");
             return;
         }
 
-        EffectsManager manager = target.GetComponent<EffectsManager>();
+        EffectsManager manager = target.GetOrAdd<EffectsManager>();
 
-        if (manager == null)
+        OneShotVFXSettings oneShotVFXSettings = GetComponent<OneShotVFX>().settings as OneShotVFXSettings;
+        if (oneShotVFXSettings.pickRandomEffectFromList)
         {
-            manager = target.AddComponent<EffectsManager>();
+            EffectData randomEffect = _effectsToApply[Random.Range(0, _effectsToApply.Count)];
+            manager.AddEffect(randomEffect);
         }
-
-        foreach (EffectData effect in _effectsToApply)
+        else
         {
-            manager.AddEffect(effect);
+            foreach (EffectData effect in _effectsToApply)
+            {
+                manager.AddEffect(effect);
+            }
         }
+            
     }
 
     // Overload to apply effect to this GameObject
-    public void ApplyEffect()
+    public void ApplyEffectSelf()
     {
-        ApplyEffect(gameObject,gameObject);
+        ApplyEffect(gameObject,gameObject,gameObject);
     }
 
 }

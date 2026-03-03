@@ -9,14 +9,21 @@ using System.Collections.Generic;
 )]
 public class ChainLightning : SkillStrategy
 {
-    [Header("Lightning Settings")]
+    [TabGroup("Lightning Settings")]
     [SerializeField] private int maxChainTargets = 3;
+    [TabGroup("Lightning Settings")]
     [SerializeField] private float chainDistance = 8f;
+    [TabGroup("Lightning Settings")]
     [SerializeField] private float chainDelay = 0.15f;
+    [TabGroup("Lightning Settings")]
+    [SerializeField] private List<EffectData> _effectToApply;
 
-    [Header("Visual Settings")]
+
+    [TabGroup("Visual Settings")]
     [SerializeField] private OneShotVFXSettings _impactVfxSettings;
+    [TabGroup("Visual Settings")]
     [SerializeField] private float arcIntensity = 0.5f;
+    [TabGroup("Visual Settings")]
     [SerializeField] private int segmentsPerBolt = 10;
 
     private SkillStrategyContext _skillContext;
@@ -208,7 +215,15 @@ public class ChainLightning : SkillStrategy
         if (target.transform.root.TryGetComponent<Damageable>(out var damageable))
         {
             Vector3 knockBackDirection = (target.transform.position - _skillContext.origin.position).normalized;
-            damageable.TakeDamage(_skillContext.origin.gameObject,Damage, knockBackDirection,1,ElementalType.Lightning);
+            damageable.TakeDamage(_skillContext.origin.gameObject, null, Damage, DealTrueDamage, knockBackDirection,1,ElementalType.Lightning);
+        }
+        if(target.transform.root.TryGetComponent<EffectsManager>(out var effectsManager))
+        {
+            if (_effectToApply == null) return;
+            foreach (EffectData effectData in _effectToApply)
+            {
+                effectsManager.AddEffect(effectData);
+            }
         }
     }
 }

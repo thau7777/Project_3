@@ -18,13 +18,18 @@ public class Effect : ScriptableObject
 {
     public Sprite icon;
     public EffectType effectType;
-    public ElementalType damageElementalType;
+    public float holdDuration = 5;
     public float durationOnApply = 10;
 
     public bool isStackable;
     [ShowIf("isStackable")]
     [Range(2, 10)]
     public int stackRequired = 3;
+
+    [TabGroup("Damage Settings")]
+    public ElementalType damageElementalType;
+    [TabGroup("Damage Settings")]
+    public bool dealTrueDamage;
 
     [TabGroup("Stat Modifiers")]
     public StatModifier healthModifier;
@@ -46,6 +51,7 @@ public class Effect : ScriptableObject
     public StatModifier criticalDamageModifier;
     [TabGroup("Stat Modifiers")]
     public StatModifier attackSizeModifier;
+
     [TabGroup("Visual Feedback")]
     public Vector3 positionOffset;
     [TabGroup("Visual Feedback")]
@@ -53,12 +59,13 @@ public class Effect : ScriptableObject
 
     public virtual Flyweight OnApply(GameObject target, ActiveEffect activeEffect)
     {
+        ApplyModifier(target, activeEffect, true);
         if (vfxSettings != null)
         {
             var vfx = FlyweightFactory.Spawn(vfxSettings);
             var effectController = vfx.GetComponent<CharacterEffectController>();
             bool needParent = effectController == null;
-            Transform vfxParent = target.GetComponentInChildren<SkinnedMeshRenderer>().transform.Find("CharacterEffectTarget");
+            Transform vfxParent = target.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
 
             vfx.FlyweightInitialize(
                 needParent ? vfxParent.transform.AddLocal(positionOffset.x, positionOffset.y, positionOffset.z) :
@@ -82,7 +89,6 @@ public class Effect : ScriptableObject
             return vfx;
         }
 
-        ApplyModifier(target, activeEffect, true);
 
         return null;
     }
@@ -101,7 +107,18 @@ public class Effect : ScriptableObject
     }
 
     public void ApplyModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
-    {
+    {        
+        if (activeEffect.effect.name == "Berserker's Rage Effect" && isApplyInstant)
+        {
+            if (healthModifier.value != 0)
+            target.GetComponent<Damageable>().OnHealthChanged?.Invoke(
+                target.GetComponent<Damageable>().CurrentHealth *= -healthModifier.value / 100, 
+                target.GetComponent<Damageable>().MaxHealth);
+
+            if (attackDamageModifier.value != 0) ApplyAttackDamageModifier(target, activeEffect, isApplyInstant);
+            if (magicAttackDamageModifier.value != 0) ApplyMagicAttackDamageModifier(target, activeEffect, isApplyInstant);
+            return;
+        }
         if (healthModifier.value != 0) ApplyHealthModifier(target, isApplyInstant);
         if (manaModifier.value != 0) ApplyManaModifier(target, isApplyInstant);
         if (attackDamageModifier.value != 0) ApplyAttackDamageModifier(target, activeEffect, isApplyInstant);
@@ -140,9 +157,16 @@ public class Effect : ScriptableObject
 
         float valueToApply = healthModifier.isPercentage ? damageAble.MaxHealth * (healthModifier.value / 100f) : healthModifier.value;
         if (valueToApply < 0)
-            damageAble.TakeDamage(null, -valueToApply, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
+        {
+            float finalDamage = -valueToApply + PlayerTopDownStateDriver.Instance.GetComponent<CharacterStats>().MagicAttackDamage * 0.1f;
+            finalDamage = ElementalManager.Instance.CalculateDamage(finalDamage, damageElementalType, target.GetComponent<CharacterStats>().ElementalType);
+            damageAble.TakeDamage(null, null, finalDamage, dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
+        }
         else
+        {
             damageAble.Heal(valueToApply);
+
+        }
     }
     private void ApplyManaModifier(GameObject target, bool isApplyInstant)
     {
@@ -299,6 +323,5 @@ public enum EffectType
 public struct EffectData
 {
     public Effect effect;
-    public float effectHoldDuration;
     public int stacksToApply;
 }

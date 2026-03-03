@@ -14,7 +14,7 @@ public struct ClassWeaponData
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-public class PlayerTopDownStateDriver : MonoBehaviour
+public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 {
     #region References
     [SerializeField, Required]
@@ -286,9 +286,23 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 var oneshotVFX = vfx as OneShotVFX;
                 var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
                 if(oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
-                    hitBoxHandler.DodgeLayers = _locomotionSet.CurrentAttackData.dodgeLayers;
+                {
+                    hitBoxHandler.Setup(
+                        gameObject,
+                        _locomotionSet.CurrentAttackData.dodgeLayers,
+                        oneshotSettings.hitboxOnOffTime,
+                        oneshotSettings.useTriggerStays,
+                        oneshotSettings.triggerStayTickInterval,
+                        false);
+                }
                 if(oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
-                    damageDealer.Damage = _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage;
+                {
+                    damageDealer.Setup(
+                        _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
+                        false,
+                        _locomotionSet.CurrentAttackData.knockbackForce,
+                        false);
+                }
                 oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
             }
             if (flyweightSettings.name == "SummonerBasicAttack")
@@ -308,11 +322,14 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                 {
                     var straightProjectile = vfx as StraightProjectile;
                     straightProjectile.InitializeProjectile(
+                        gameObject,
                         spawnPoint.forward, 
                         _locomotionSet.CurrentAttackData.projectileSpeed, 
                         _locomotionSet.CurrentAttackData.projectileDuration,
                         _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale, 
                         _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
+                        _locomotionSet.CurrentAttackData.knockbackForce,
+                        false,
                         _locomotionSet.CurrentAttackData.dodgeLayers);
                 }
                 else if(vfx is OneShotVFX) 
@@ -321,9 +338,25 @@ public class PlayerTopDownStateDriver : MonoBehaviour
                     var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
 
                     if (oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
-                        hitBoxHandler.DodgeLayers = _locomotionSet.CurrentAttackData.dodgeLayers;
+                    {
+                        hitBoxHandler.Setup(
+                            gameObject,
+                            _locomotionSet.CurrentAttackData.dodgeLayers,
+                            oneshotSettings.hitboxOnOffTime,
+                            oneshotSettings.useTriggerStays,
+                            oneshotSettings.triggerStayTickInterval,
+                            false);
+                    }
+
                     if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
-                        damageDealer.Damage = _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage;
+                    {
+                        damageDealer.Setup(
+                            _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
+                            false,
+                            _locomotionSet.CurrentAttackData.knockbackForce,
+                            false);
+                    }
+                        
 
                     oneshotVFX.InitializeVFX(_locomotionSet.CurrentAttackData.size, oneshotSettings.DefaultLifeTime);
                 }
@@ -411,14 +444,20 @@ public class PlayerTopDownStateDriver : MonoBehaviour
     public void OnTakeDamage(GameObject sender, float currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {
         _context.IsHurting = true;
-
+        _context.CastingSkill = -1;
         _context.KnockBackDirection = knockBackDirection;
         _context.KnockbackForce = knockBackForce;
         CameraShaker.Instance.ShakeRandomDirection(force: 0.5f);
+
+        _context.IsInSpecialMove = false;
+        _context.IsAiming = false;
+        _context.CastingSkill = -1;
+        _context.IsDashing = false;
+        _layerIgnoreController.ResetLayerIgnore();
+        IsParrying = false;
     }
     public void OnDeath()
     {
-
         _context.IsDead = true;
         EventBus<TopDownPlayerDeadEvent>.Raise(new TopDownPlayerDeadEvent());
     }

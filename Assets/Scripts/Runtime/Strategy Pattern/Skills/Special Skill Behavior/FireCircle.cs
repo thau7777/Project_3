@@ -31,12 +31,20 @@ public class FireCircle : SkillStrategy
             GameObject skillVfx = controller.transform.GetChild(0).gameObject;
 
             HitBoxHandler hitBoxHandler = skillVfx.GetOrAdd<HitBoxHandler>();
-            hitBoxHandler.DodgeLayers = DodgeLayers;
-            hitBoxHandler.HitboxOnOffTime = hitboxOnOffTime;
-
+            hitBoxHandler.Setup(
+                _skillContext.origin.gameObject,
+                DodgeLayers,
+                hitboxOnOffTime,
+                false,
+                0,
+                false);
+            
             var damageDealer = skillVfx.GetOrAdd<DamageDealer>();
-            damageDealer.Damage = Damage;
-            damageDealer.KnockbackForce = 3;
+            damageDealer.Setup(Damage,
+                false,
+                3,
+                false,
+                ElementalType.Fire);
 
             var effectApplier = skillVfx.GetOrAdd<EffectApplier>();
             effectApplier.SetEffects(new List<EffectData> { burnEffect });

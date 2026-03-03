@@ -10,47 +10,38 @@ public class OneShotVFXSettings : FlyweightSettings
     [field: SerializeField]
     public float DefaultSize { get; private set; } = 1;
     public bool useAdvanceSettings = false;
+    [TabGroup("Advance Settings")]
     [ShowIf("useAdvanceSettings")]
     public string playEventName = "Play";
+
+    [TabGroup("Advance Settings")]
     [ShowIf("useAdvanceSettings")]
     public string durationName = "Duration";
+
+    [TabGroup("Advance Settings")]
     [ShowIf("useAdvanceSettings")]
     public string sizeName = "Size";
     #endregion
 
     #region Damage Settings
+    [TabGroup("Damage Settings")]
     [SerializeField]
     private bool _canDealDamage = false;
 
-    public bool CanDealDamage
-    {
-        get => _canDealDamage;
-        set
-        {
-            _canDealDamage = value;
-        }
-    }
+    [ShowIf("_canDealDamage")]
+    [TabGroup("Damage Settings")]
+    public ElementalType elementalType = ElementalType.Normal;
 
     [SerializeField]
     [ShowIf("_canDealDamage")]
     [TabGroup("Damage Settings")]
-    private float _defaultDamage = 40;
-    public float Damage { get => _defaultDamage; set { _defaultDamage = value; } }
-
-    [SerializeField]
-    [ShowIf("_canDealDamage")]
-    [TabGroup("Damage Settings")]
-    private int _defaultKnockBackForce = 10;
-
-    [SerializeField]
-    [ShowIf("_canDealDamage")]
-    [TabGroup("Damage Settings")]
-    private OneShotVFXSettings _hitImpactVFXSetting;
+    public OneShotVFXSettings hitImpactVFXSetting;
 
     #endregion
 
     #region Effect Settings
     [SerializeField]
+    [TabGroup("Effect Settings")]
     private bool _canApplyEffect = false;
 
     public bool CanApplyEffect
@@ -63,21 +54,31 @@ public class OneShotVFXSettings : FlyweightSettings
     }
 
     [ShowIf("_canApplyEffect")]
+    [TabGroup("Effect Settings")]
+    public bool pickRandomEffectFromList = false;
+
+    [ShowIf("_canApplyEffect")]
+    [TabGroup("Effect Settings")]
     [SerializeField]
     private List<EffectData> _effectsToApplyList = new();
 
     #endregion
 
     #region Decal Settings
+    [TabGroup("Decal Settings")]
     public DecalProjectorSettings decalSettings;
 
     private bool _hasDecal;
+    [TabGroup("Decal Settings")]
     [ShowIf("_hasDecal")]
     public Material decalMaterial;
+    [TabGroup("Decal Settings")]
     [ShowIf("_hasDecal")]
     public float decalSize;
+    [TabGroup("Decal Settings")]
     [ShowIf("_hasDecal")]
     public float decalDelayTime;
+    [TabGroup("Decal Settings")]
     [ShowIf("_hasDecal")]
     public float decalDuration;
     #endregion
@@ -85,34 +86,35 @@ public class OneShotVFXSettings : FlyweightSettings
     #region HitBox Stuff
     private bool _hasHitBox;
     public bool HasHitBox => _hasHitBox;
-    private bool _useNormalColliders = false;
 
     [SerializeField]
     [ShowIf("_hasHitBox")]
+    [TabGroup("HitBox Settings")]
     private bool _useParticleCollision = false;
 
     public bool UseParticleCollision => _useParticleCollision;
 
-    [ShowIf("_useNormalColliders")]
+    [ShowIf("_useParticleCollision",true)]
+    [TabGroup("HitBox Settings")]
     [MinMaxSlider(0, 1)]
     public Vector2 hitboxOnOffTime = new Vector2(0, 0.1f);
 
+    [TabGroup("HitBox Settings")]
     [ShowIf("_hasHitBox")]
     public bool useTriggerStays = false;
 
     [ShowIf("_hasHitBox")]
+    [TabGroup("HitBox Settings")]
     public bool reverseKnockBackDirection = false;
 
+    [TabGroup("HitBox Settings")]
     [ShowIf("useTriggerStays")]
     public float triggerStayTickInterval = 0.2f;
 
-    [ShowIf("_hasHitBox")]
-    public LayerMask defaultDodgeLayers;
     #endregion
     private void OnValidate()
     {
         _hasHitBox = _canDealDamage || _canApplyEffect;
-        _useNormalColliders = _hasHitBox && !_useParticleCollision;
         _hasDecal = decalSettings;
     }
     public override Flyweight Create()
@@ -126,22 +128,9 @@ public class OneShotVFXSettings : FlyweightSettings
         if (HasHitBox)
         {
             if (!_useParticleCollision)
-            {
-                var hitboxHandler = go.GetOrAdd<HitBoxHandler>();
-                hitboxHandler.DodgeLayers = defaultDodgeLayers;
-                hitboxHandler.HitboxOnOffTime = hitboxOnOffTime;
-                hitboxHandler.UseTriggerStays = useTriggerStays;
-                hitboxHandler.TriggerStayTickInterval = triggerStayTickInterval;
-            }
-            if (CanDealDamage)
-            {
-                var damageDealer = go.GetOrAdd<DamageDealer>();
-                damageDealer.Damage = _defaultDamage;
-                damageDealer.KnockbackForce = _defaultKnockBackForce;
-                damageDealer.ReverseKnockbackDirection = reverseKnockBackDirection;
-                if (_hitImpactVFXSetting)
-                    damageDealer.SetHitImpactVFX(_hitImpactVFXSetting);
-            }
+                go.GetOrAdd<HitBoxHandler>();
+            if (_canDealDamage)
+                go.GetOrAdd<DamageDealer>();
             if (CanApplyEffect)
             {
                 var effectApplier = go.GetOrAdd<EffectApplier>();

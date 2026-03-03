@@ -31,6 +31,7 @@ public struct AttackData
     public float dashForce;
     public bool isDashForward;
     public float damageScale;
+    public float knockbackForce;
     public float size;
     public LayerMask dodgeLayers;
     [Header("Projectile Settings")]

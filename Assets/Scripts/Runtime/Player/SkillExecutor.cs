@@ -65,7 +65,7 @@ public class SkillExecutor : MonoBehaviour
         foreach (var skill in _skillStrategies)
         {
             if (skill && skill.isPassiveSkill){
-                var ctx = new SkillStrategyContext(transform, transform, Vector3.zero, Quaternion.identity);
+                var ctx = new SkillStrategyContext(transform, transform, Vector3.zero, Vector3.one);
                 if (skill is FireCircle)
                     (skill as FireCircle).Execute(ctx);
                 else
@@ -180,6 +180,7 @@ public class SkillExecutor : MonoBehaviour
     public void CastSkill(PlayerTopdownContext context)// run the actual skill animation
     {
         if (_skillToCast == null) return;
+
         if(_skillIndicator != null)
         {
             _skillIndicator.ReturnToPool();
@@ -196,13 +197,21 @@ public class SkillExecutor : MonoBehaviour
                 _lerpCoroutine = null;
             }
         }
-        
+        if (!_skillToCast.Definition.CheckSpecialCondition(transform))
+        {
+            TurnOffSkillIndicator();
+            ClearSkillData();
+            context.IsAiming = false;
+            context.CastingSkill = -1;
+            return;
+        }
         string animName = _storedSkillDataForClass.Value.animName;
         if (animName == "Dash")
         {
             _layerIgnoreController.ApplyLayerIgnore(_skillToCast.Definition.DodgeLayers);
             context.IsDashing = true;
         }
+        context.CanRotateWhileUsingSkill = _skillToCast.Definition.canRotateWhileUsingSkill;
         context.IsInSpecialMove = true;
         context.NeedHoldStillWhileExecuteWhenAiming = _skillToCast.Definition.NeedHoldStill;
         context.SkillAnimName = animName;
@@ -221,9 +230,20 @@ public class SkillExecutor : MonoBehaviour
 
         _skillToCast.Cast(ctx);
 
-        ClearSkillData();
+        //ClearSkillData();
     }
-
+    public void ApplyEffectToPlayer()
+    {
+        _skillToCast.Definition.ApplyEffectsToUser(gameObject); 
+    }
+    public void OnHitWhileAiming()
+    {
+        if (_skillToCast != null && _skillToCast.Definition.canBeInterrupted)
+            _skillToCast.Definition.OnInterupted(transform);
+        TurnOffSkillIndicator();
+        ClearSkillData();
+        
+    }
     public void ClearSkillData()
     {
         _skillIndicator = null;

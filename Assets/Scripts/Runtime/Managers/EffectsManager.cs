@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 // ActiveEffect.cs - add maxDuration field
@@ -91,15 +92,19 @@ public class EffectsManager : MonoBehaviour
             }
             else
             {
-                existing.remainingTime = effectData.effectHoldDuration;
-                existing.maxDuration = effectData.effectHoldDuration;      // NEW
+                existing.remainingTime = effectData.effect.holdDuration;
+                existing.maxDuration = effectData.effect.holdDuration;      // NEW
             }
 
             OnEffectAdded?.Invoke(existing);
         }
         else
         {
-            ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.effectHoldDuration, effectData.stacksToApply);
+            if(effectData.effect.name == "The Wish Under Star")
+            {
+                RemoveAllActiveEffects();
+            }
+            ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.effect.holdDuration, effectData.stacksToApply);
             activeEffectsList.Add(newEffect);
 
             if (!effectData.effect.isStackable || effectData.stacksToApply >= effectData.effect.stackRequired)
@@ -121,7 +126,7 @@ public class EffectsManager : MonoBehaviour
         if (ae != null) RemoveEffect(ae);
     }
 
-    private void RemoveEffect(ActiveEffect ae)
+    public void RemoveEffect(ActiveEffect ae)
     {
         ae.effect.OnRemove(ae, gameObject);
         activeEffectsList.Remove(ae);
@@ -145,18 +150,28 @@ public class EffectsManager : MonoBehaviour
         for (int i = activeEffectsList.Count - 1; i >= 0; i--)
             RemoveEffect(activeEffectsList[i]);
     }
-
-    public bool HasEffect(string effectName) =>
-        activeEffectsList.Exists(ae => ae.effect.name == effectName);
-
-    public List<Effect> GetActiveEffects()
+    public bool HasEffect(string effectName)
     {
-        List<Effect> effects = new List<Effect>();
-        foreach (var ae in activeEffectsList)
-            effects.Add(ae.effect);
-        return effects;
+        foreach(ActiveEffect ae in activeEffectsList)
+        {
+            if (ae.effect.name == effectName && ae.IsApplied)
+                return true;
+        }
+        return false;
     }
-
+    public bool HasAnyActiveEffect()
+    {
+        foreach (ActiveEffect ae in activeEffectsList)
+        {
+            if (ae.IsApplied)
+                return true;
+        }
+        return false;
+    }
+    public List<ActiveEffect> GetActiveEffectsList()
+    {
+        return activeEffectsList;
+    }
     public float GetRemainingTime(string effectName)
     {
         ActiveEffect ae = activeEffectsList.Find(e => e.effect.name == effectName);

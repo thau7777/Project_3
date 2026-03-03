@@ -34,8 +34,10 @@ public class Strafe : State
             _triggeredSkill = true;
             ctx.Animator.CrossFade(ctx.SkillAnimName, 0.1f, ctx.UpperBodyLayerIndex);
         }
-
-        ctx.RotateDir = lastLookDir;
+        if(ctx.CanRotateWhileUsingSkill)
+            RotateToMouse(deltaTime);
+        else
+            ctx.RotateDir = lastLookDir;
         if (ctx.NeedHoldStillWhileExecuteWhenAiming)
         {
             ctx.TargetMoveSpeed = 0;

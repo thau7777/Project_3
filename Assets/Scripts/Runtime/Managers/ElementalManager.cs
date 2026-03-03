@@ -55,6 +55,7 @@ public class ElementalManager : Singleton<ElementalManager>
         AddRelationship(ElementalType.Lightning, ElementalType.Fire);
         AddRelationship(ElementalType.Holy, ElementalType.Dark);
         AddRelationship(ElementalType.Dark, ElementalType.Holy);
+        AddRelationship(ElementalType.Normal, ElementalType.Normal);
     }
 
     private void AddRelationship(ElementalType strongElement, ElementalType weakElement)
@@ -77,7 +78,7 @@ public class ElementalManager : Singleton<ElementalManager>
         }
         if (attackerElement != ElementalType.Normal && defenderElement == ElementalType.Normal)
         {
-            return weakMultiplier;
+            return neutralMultiplier;
         }
         if (attackerElement == ElementalType.Normal && defenderElement == ElementalType.Normal)
         {

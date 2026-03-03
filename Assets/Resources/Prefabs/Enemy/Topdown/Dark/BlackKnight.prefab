@@ -877,7 +877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4160646652258579358}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1978,6 +1978,8 @@ MonoBehaviour:
     minRange: 0
     maxRange: 2
     damage: 10
+    dealTrueDamage: 0
+    reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
     executeAnimationName: Attack1
@@ -2013,6 +2015,8 @@ MonoBehaviour:
     minRange: 2
     maxRange: 3
     damage: 10
+    dealTrueDamage: 0
+    reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
     executeAnimationName: Attack3
@@ -2144,6 +2148,12 @@ MonoBehaviour:
     effect: {fileID: 0}
     effectHoldDuration: 0
     stacksToApply: 0
+  OnEffectAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEffectRemoved:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8930038730003927948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2207,6 +2217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  <ElementalType>k__BackingField: 7
   <InitialHealth>k__BackingField: 100
   <InitialMana>k__BackingField: 100
   <AttackDamage>k__BackingField: 10
@@ -2216,6 +2227,7 @@ MonoBehaviour:
   <Agility>k__BackingField: 5
   <CriticalRate>k__BackingField: 0.1
   <CriticalDamage>k__BackingField: 1.5
+  <AttackSizeScale>k__BackingField: 1
 --- !u!1 &8417933185421575406
 GameObject:
   m_ObjectHideFlags: 0
