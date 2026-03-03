@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyRule;
 using MyRule.Audio;
 using UnityEngine;
 
@@ -94,10 +95,12 @@ namespace Turnbase
             animator = GetComponent<Animator>();
 
 
+            CharacterStatsSO currentStats = CharacterStatsManager.Instance.GetCharacterStats();
+            stats = new CharacterStats(currentStats);
 
             if (stats == null)
             {
-                stats = GetComponent<CharacterStats>();
+
             }
             if (info == null)
             {

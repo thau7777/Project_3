@@ -171,8 +171,8 @@ namespace Turnbase
                 new StatData { Name = "P. Defense", Value = stats.physicalDefense.ToString() },
                 new StatData { Name = "M. Defense", Value = stats.magicDefense.ToString() },
 
-                new StatData { Name = "Crit Chance", Value = stats.crit.ToString(), Suffix = "%" },
-                new StatData { Name = "Crit Damage", Value = stats.critDamage.ToString(), Suffix = "%" },
+                new StatData { Name = "Crit Chance", Value = stats.critChance.ToString(), Suffix = "%" },
+                new StatData { Name = "Crit Damage", Value = stats.critMult.ToString(), Suffix = "%" },
                 new StatData { Name = "Agility", Value = stats.agility.ToString() },
             };
         }

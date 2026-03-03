@@ -90,7 +90,7 @@ namespace MyRule
             }
         }
 
-        private async void OnStartBtnClicked()
+        public async void OnStartBtnClicked()
         {
             if (canInteract)
             {
@@ -106,6 +106,8 @@ namespace MyRule
 
                 await UniTask.Delay(7000);
                 
+                Cursor.lockState = CursorLockMode.None;
+
                 Loader.Load(targetScene, Loader.ELoadMode.WithLoadingScreen);
             }
         }

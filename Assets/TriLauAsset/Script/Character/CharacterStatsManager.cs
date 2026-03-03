@@ -40,9 +40,9 @@ namespace MyRule
             characterStats.intelligence += sigilSO.intel;
             characterStats.faith += sigilSO.faith;
             characterStats.arcane += sigilSO.arcane;
-            
+
             characterStats.hp += sigilSO.health;
-            characterStats.def += sigilSO.def;
+            characterStats.phyDef += sigilSO.def;
             characterStats.resRate += sigilSO.resRate;
             characterStats.attackSpeed += sigilSO.attackSpeed;
 

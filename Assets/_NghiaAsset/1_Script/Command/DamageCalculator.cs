@@ -83,14 +83,14 @@ namespace Turnbase
             float elementMultiplier = GetElementMultiplier(skill, target, battleManager);
             float preCritDamageFloat = damageBase * elementMultiplier;
 
-            IsLastHitCrit = UnityEngine.Random.Range(0, 100) < user.stats.crit;
+            IsLastHitCrit = UnityEngine.Random.Range(0, 100) < user.stats.critChance;
             // Thêm vào ngay sau dòng tính isCrit
-            Debug.Log($"[CALC] Tỉ lệ Crit: {user.stats.crit} | Kết quả Roll: {IsLastHitCrit}");
+            Debug.Log($"[CALC] Tỉ lệ Crit: {user.stats.critChance} | Kết quả Roll: {IsLastHitCrit}");
 
             if (IsLastHitCrit)
             {
                 float oldDamage = preCritDamageFloat;
-                float critMultiplier = (float)user.stats.critDamage / 100f;
+                float critMultiplier = (float)user.stats.critMult / 100f;
                 preCritDamageFloat *= critMultiplier;
                 Debug.Log($"[CALC] Đã nhân Crit: {oldDamage} -> {preCritDamageFloat} (Multiplier: {critMultiplier})");
             }
@@ -113,6 +113,28 @@ namespace Turnbase
                 return battleManager.elementChart.GetMultiplier(skill.elementType, target.characterElement);
             }
             return 1.0f;
+        }
+
+        /// <summary>
+        /// Công thức giảm damage theo chỉ số chống chịu (Armor hoặc MR).
+        /// </summary>
+        private static float GetReduction(float stat)
+        {
+            if (stat >= 0)
+                return 100f / (100f + stat);
+            else
+                return 2f - (100f / (100f - stat)); // xử lý khi xuyên giáp khiến stat âm
+        }
+
+        /// <summary>
+        /// Công thức tăng damage theo chỉ số tấn công (AD hoặc AP).
+        /// </summary>
+        private static float GetBonusDamage(float stat)
+        {
+            if (stat >= 0)
+                return 1f + (stat / 100f);
+            else
+                return 1f - (stat / 100f);
         }
     }
 }
