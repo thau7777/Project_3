@@ -23,6 +23,11 @@ public class EnemyTopDownSettings : FlyweightSettings
         var flyweight = go.GetComponent<EnemyTopdownStateDriver>();
         flyweight.settings = this;
         go.GetComponent<Damageable>().hasShieldBreakingMechanic = true;
+
+        // temporary: add CharacterStats component and set it up with default values (can be overridden on spawn)
+        var characterStats = go.GetOrAdd<CharacterStats>();
+        characterStats.Setup(elementalType, _initialHealth, 0, 10, 10, 40, 40, 5, 5, 1.5f, 1);
+
         return flyweight;
     }
 

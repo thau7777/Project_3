@@ -1,8 +1,14 @@
+using MyRule;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
 public class CharacterStats : MonoBehaviour
 {
+    [SerializeField]
+    private CharacterStatsSO _statsSO;
+
+    [field: SerializeField]
+    public ElementalType ElementalType { get; set; } = ElementalType.Normal;
 
     [field: SerializeField]
     public float InitialHealth { get; private set; } = 100;
@@ -35,9 +41,25 @@ public class CharacterStats : MonoBehaviour
     public float AttackSizeScale { get; private set; } = 1f;
     private void Awake()
     {
-        
+        //if (_statsSO)
+        //    Setup();
     }
-
+    public void Setup(ElementalType elementalType, float initialHealth, float initialMana, float attackDamage,
+    float magicAttackDamage, float physicalDefense, float magicDefense, float agility,
+    float criticalRate, float criticalDamage, float attackSizeScale)
+    {
+        ElementalType = elementalType;
+        InitialHealth = initialHealth;
+        InitialMana = initialMana;
+        AttackDamage = attackDamage;
+        MagicAttackDamage = magicAttackDamage;
+        PhysicalDefense = physicalDefense;
+        MagicDefense = magicDefense;
+        Agility = agility;
+        CriticalRate = criticalRate;
+        CriticalDamage = criticalDamage;
+        AttackSizeScale = attackSizeScale;
+    }
     public void ModifyAttackDamage(float amount)
     {
         AttackDamage += amount;

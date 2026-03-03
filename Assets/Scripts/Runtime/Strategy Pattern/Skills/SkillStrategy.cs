@@ -30,12 +30,12 @@ public class SkillStrategy : ScriptableObject, IStrategy
     public bool needEnemiesInSkillIndicator = false;
 
     [TabGroup("Skill Condition")]
-    [ShowIf("_needInRange")]
+    [ShowIf("needEnemiesInSkillIndicator")]
     [SerializeField]
     protected LayerMask enemyLayer;
 
     [TabGroup("Skill Condition")]
-    [ShowIf("_needInRange")]
+    [ShowIf("needEnemiesInSkillIndicator")]
     [SerializeField]
     protected LayerMask groundLayer;
     #endregion
@@ -55,7 +55,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [TabGroup("Skill Settings")]
     [SerializeField]
     protected FlyweightSettings _mainSkillVfxSettings;
-    public FlyweightSettings FlyweightSettings => _mainSkillVfxSettings;
+    public FlyweightSettings MainSkillVfxSettings => _mainSkillVfxSettings;
 
     [TabGroup("Skill Settings")]
     [SerializeField]
@@ -75,7 +75,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     [TabGroup("Skill Settings")]
     [ShowIf("_isProjectile", true)]
-    public Quaternion rotationOffset = Quaternion.Euler(1,1,1);
+    public Vector3 rotationOffset = Vector3.zero;
 
     [TabGroup("Skill Settings")]
     public LayerMask DodgeLayers;
@@ -106,11 +106,28 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [SerializeField]
     protected float _damage = 10;
     public float Damage => _damage;
+    [TabGroup("Skill Settings")]
+    [SerializeField]
+    protected bool _dealTrueDamage;
+    public bool DealTrueDamage => _dealTrueDamage;
+
+    [TabGroup("Skill Settings")]
+    [SerializeField]
+    protected float _knockbackForce = 3;
+    public float KnockbackForce => _knockbackForce;
+
+    [TabGroup("Skill Settings")]
+    [SerializeField]
+    public bool canRotateWhileUsingSkill;
 
     [TabGroup("Skill Settings")]
     [SerializeField]
     protected bool _needHoldStill;
     public bool NeedHoldStill => _needHoldStill;
+
+    [TabGroup("Skill Settings")]
+    [SerializeField]
+    public bool canBeInterrupted;
 
     [TabGroup("Skill Settings")]
     [SerializeField]
@@ -163,20 +180,18 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     private void OnValidate()
     {
-        _isProjectile = FlyweightSettings is StraightProjectileSettings;
+        _isProjectile = MainSkillVfxSettings is StraightProjectileSettings;
     }
 
     public virtual void Execute(IStrategyContext context)
     {
         var skillContext = context as SkillStrategyContext;
-        if(_hasBuffOrDebuffToUser)
-            ApplyBuffOrDeBuffToUser(skillContext.origin.root.gameObject);
         if (!skillContext.chargedSkillFlyweight)
             SpawnSkillVFX(skillContext);
         else
             ExecuteChargedSkill(skillContext);
     }
-    private void ApplyBuffOrDeBuffToUser(GameObject target)
+    public void ApplyEffectsToUser(GameObject target)
     {
         if (_effectsToApply == null || _effectsToApply.Count == 0)
         {
@@ -208,7 +223,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
         directionToMouse.y = 0;
         float distanceToMouse = directionToMouse.magnitude;
         // Check for enemies in sphere at mouse position
-        Collider[] enemiesInRange = Physics.OverlapSphere(mouseWorldPos, indicatorWidth, enemyLayer);
+        Collider[] enemiesInRange = Physics.OverlapSphere(mouseWorldPos, indicatorWidth/2, enemyLayer);
 
         foreach (Collider col in enemiesInRange)
         {
@@ -220,7 +235,25 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
         return false; // No enemies found
     }
+    private Vector3 GetMouseWorldPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
+        if (Physics.Raycast(ray, out hit, 1000f, groundLayer))
+        {
+            return hit.point;
+        }
+
+        // Fallback: calculate intersection with Y=0 plane
+        if (ray.direction.y != 0)
+        {
+            float distance = -ray.origin.y / ray.direction.y;
+            return ray.origin + ray.direction * distance;
+        }
+
+        return Vector3.zero;
+    }
     public SkillDataForClass? GetSkillDataForClass(CharacterClass characterClass)
     {
         bool hasThatClass = false;
@@ -244,29 +277,44 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     private void SpawnSkillVFX(SkillStrategyContext context)
     {
-        if (FlyweightSettings == null) return;
-        Flyweight flyweightObj = FlyweightFactory.Spawn(FlyweightSettings);
+        if (MainSkillVfxSettings == null) return;
+        Flyweight flyweightObj = FlyweightFactory.Spawn(MainSkillVfxSettings);
         Vector3 spawnPosition = context.spawnTransform.AddLocal(context.positionOffset.x, context.positionOffset.y, context.positionOffset.z);
-        flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation * (context.rotationOffset == Quaternion.Euler(0,0,0) ? Quaternion.Euler(1, 1, 1) : context.rotationOffset));
-        if (flyweightObj.TryGetComponent<HitBoxHandler>(out var hitboxHandler))
-        {
-            hitboxHandler.DodgeLayers = DodgeLayers;
-
-            if (flyweightObj.TryGetComponent<DamageDealer>(out var damageDealer))
-            {
-                damageDealer.Damage = Damage;
-            }
-        }
+        flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation * (context.rotationOffset == Vector3.zero ? Quaternion.Euler(1, 1, 1): Quaternion.Euler(rotationOffset)));
+        
         if (flyweightObj is StraightProjectile straightProjectile)
         {
             StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
-            straightProjectile.InitializeProjectile(context.origin.forward, 10, Range, projectileSettings.defaultSize, Damage, DodgeLayers);
+            straightProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, projectileSettings.defaultSize, Damage, _knockbackForce, _dealTrueDamage, DodgeLayers);
         }
         else if (flyweightObj is OneShotVFX oneShotVFX)
         {
+            OneShotVFXSettings oneShotVFXSettings = oneShotVFX.settings as OneShotVFXSettings;
+
+            if (flyweightObj.TryGetComponent<HitBoxHandler>(out var hitboxHandler))
+            {
+                hitboxHandler.Setup(
+                    context.origin.gameObject,
+                    DodgeLayers,
+                    oneShotVFXSettings.hitboxOnOffTime,
+                    oneShotVFXSettings.useTriggerStays,
+                    oneShotVFXSettings.triggerStayTickInterval,
+                    false);
+                
+            }
+            if (flyweightObj.TryGetComponent<DamageDealer>(out var damageDealer))
+            {
+                damageDealer.Setup(_damage,
+                    _dealTrueDamage,
+                    _knockbackForce,
+                    oneShotVFXSettings.reverseKnockBackDirection,
+                    oneShotVFXSettings.elementalType);
+            }
             oneShotVFX.InitializeVFX(Size, (oneShotVFX.settings as OneShotVFXSettings).DefaultLifeTime);
             if (_setParentToUser)
                 oneShotVFX.transform.SetParent(context.origin.transform);
+
+
         }
     }
 
@@ -278,28 +326,14 @@ public class SkillStrategy : ScriptableObject, IStrategy
             chargedSkillProjectile.transform.rotation = Quaternion.identity;
 
             StraightProjectileSettings projectileSettings = chargedSkillProjectile.settings as StraightProjectileSettings;
-            chargedSkillProjectile.InitializeProjectile(context.origin.forward, 10, Range, Size, Damage, DodgeLayers);
+            chargedSkillProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, Size, Damage,_knockbackForce, _dealTrueDamage, DodgeLayers);
         }
     }
 
-    private Vector3 GetMouseWorldPosition()
+    public void OnInterupted(Transform user)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 1000f, groundLayer))
-        {
-            return hit.point;
-        }
-
-        // Fallback: calculate intersection with Y=0 plane
-        if (ray.direction.y != 0)
-        {
-            float distance = -ray.origin.y / ray.direction.y;
-            return ray.origin + ray.direction * distance;
-        }
-
-        return Vector3.zero;
+        Flyweight skillVfx = user.Find(_mainSkillVfxSettings.prefab.name)?.GetComponent<Flyweight>();
+        skillVfx.ReturnToPool();
     }
 
     public void UpdateDamage(float newValue)

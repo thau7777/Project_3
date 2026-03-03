@@ -28,6 +28,7 @@ public class PlayerTopdownContext
     public string SkillAnimName { get; set; }
     public string AimAnimName { get; set; }
     public bool IsUseSkillByUpperBody { get; set; }
+    public bool CanRotateWhileUsingSkill{ get; set; }
     public bool NeedHoldStillWhileExecuteWhenAiming { get; set; }
     [field: SerializeField] public int CastingSkill { get; set; } = -1;
 

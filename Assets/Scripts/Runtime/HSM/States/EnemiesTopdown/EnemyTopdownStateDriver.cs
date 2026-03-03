@@ -53,7 +53,10 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         _animator = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
+        _characterController.slopeLimit = 0.01f;
+        _characterController.stepOffset = 0.01f;
         _characterStats = GetComponent<CharacterStats>();
+
         _context = new EnemyTopdownContext.Builder()
             .SetAnimator(_animator)
             .SetCharacterController(_characterController)
@@ -123,6 +126,8 @@ public class EnemyTopdownStateDriver : Flyweight
         
         if(knockBackForce > 0)
         {
+            if (_skillIndicator)
+                _skillIndicator.ReturnToPool();
             if (!_context.IsHurting)
                 _context.IsHurting = true;
             else
@@ -175,17 +180,27 @@ public class EnemyTopdownStateDriver : Flyweight
             setParentForVFX == 1 ? spawnTransform : null); // Apply the rotation offset here
         if (vfx is OneShotVFX)
         {
+            OneShotVFX oneShotVFX = (OneShotVFX) vfx;
+            OneShotVFXSettings oneShotVFXSettings = (OneShotVFXSettings)_context.CurrentEnemyAttackData.skillEffect;
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
             {
-                hitBoxHandler.Origin = transform.root.gameObject;
-                hitBoxHandler.DodgeLayers = _context.CurrentEnemyAttackData.dodgeLayers;
-                hitBoxHandler.Parryable = _context.CurrentEnemyAttackData.Parryable;
+                hitBoxHandler.Setup(
+                    gameObject,
+                    _context.CurrentEnemyAttackData.dodgeLayers,
+                    oneShotVFXSettings.hitboxOnOffTime,
+                    oneShotVFXSettings.useTriggerStays,
+                    oneShotVFXSettings.triggerStayTickInterval,
+                    _context.CurrentEnemyAttackData.Parryable);
             }
             if(vfx.TryGetComponent<DamageDealer>(out var damageDealer))
             {
-                damageDealer.Origin = transform;
-                damageDealer.KnockbackForce = _context.CurrentEnemyAttackData.knockBackForce;
-                damageDealer.Damage = _context.CurrentEnemyAttackData.damage;
+                damageDealer.Setup(
+                    _context.CurrentEnemyAttackData.damage,
+                    _context.CurrentEnemyAttackData.dealTrueDamage,
+                    _context.CurrentEnemyAttackData.knockBackForce,
+                    _context.CurrentEnemyAttackData.reverseKnockbackDirection,
+                    (settings as EnemyTopDownSettings).elementalType,
+                    oneShotVFXSettings.hitImpactVFXSetting);
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
                 _context.CurrentEnemyAttackData.skillDuration);
@@ -195,12 +210,16 @@ public class EnemyTopdownStateDriver : Flyweight
         else if (vfx is StraightProjectile)
         {
             (vfx as StraightProjectile).InitializeProjectile(
-                transform.forward, 
-                _context.CurrentEnemyAttackData.projectileSpeed, 
-                _context.CurrentEnemyAttackData.skillDuration, 
+                gameObject,
+                transform.forward,
+                _context.CurrentEnemyAttackData.projectileSpeed,
+                _context.CurrentEnemyAttackData.skillDuration,
                 _context.CurrentEnemyAttackData.skillSize,
                 _context.CurrentEnemyAttackData.damage,
-                _context.CurrentEnemyAttackData.dodgeLayers);
+                _context.CurrentEnemyAttackData.knockBackForce,
+                _context.CurrentEnemyAttackData.dealTrueDamage,
+                _context.CurrentEnemyAttackData.dodgeLayers,
+                (settings as EnemyTopDownSettings).elementalType);
         }
 
         if (_chargeEffect)

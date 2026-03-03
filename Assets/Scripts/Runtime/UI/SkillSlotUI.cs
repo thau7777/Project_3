@@ -67,7 +67,7 @@ public class SkillSlotUI : MonoBehaviour
 
     private void ResetCooldownVisuals()
     {
-        if(!enabled) return; // avoid resetting visuals when slot is disabled (e.g. no skill assigned)
+        if(!gameObject.activeSelf) return; // avoid resetting visuals when slot is disabled (e.g. no skill assigned)
         _cooldownText.gameObject.SetActive(false);
         _cooldownProgressImage.gameObject.SetActive(false);
         _cooldownProgressImage.material.SetFloat("_FillAmount", 0f);
