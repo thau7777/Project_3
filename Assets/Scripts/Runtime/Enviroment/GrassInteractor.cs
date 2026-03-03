@@ -162,7 +162,7 @@ public class GrassInteractor : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, pos);
 
-        // Draw the actual collider/character controller outline
+        // Draw the actual collider/characterTarget controller outline
         DrawColliderOutline();
     }
 

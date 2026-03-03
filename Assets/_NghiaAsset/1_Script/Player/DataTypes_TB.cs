@@ -1,3 +1,4 @@
+using MyRule;
 using UnityEngine;
 
 namespace Turnbase
@@ -71,13 +72,46 @@ namespace Turnbase
         public int currentMP;
         public int maxShield;
         public int currentShield;
+        
         public int physicalAttack;
-        public int physicalDefense;
         public int magicAttack;
+        
+        public int physicalDefense;
         public int magicDefense;
-        public int crit;
-        public int critDamage;
+        public int fireDefense;
+        public int lightningDefense;
+        public int frostDefense;
+        public int darkDefense;
+        public int holyDefense;
+        public int waterDefense;
+
+        public int critChance;
+        public int critMult;
         public int agility;
+
+        public CharacterStats() { }
+
+        public CharacterStats(CharacterStatsSO statsSO)
+        {
+            this.maxHP = statsSO.hp;
+            this.currentHP = statsSO.hp;
+            this.maxMP = statsSO.fp;
+            this.currentMP = statsSO.fp;
+            this.maxShield = statsSO.shield;
+            this.currentShield = statsSO.shield;
+            this.physicalAttack = statsSO.physicalDmg;
+            this.magicAttack = statsSO.magicDmg;
+            this.physicalDefense = statsSO.phyDef;
+            this.magicDefense = statsSO.magicDef;
+            this.fireDefense = statsSO.fireDef;
+            this.lightningDefense = statsSO.lightningDef;
+            this.frostDefense = statsSO.frostDef;
+            this.darkDefense = statsSO.darkDef;
+            this.holyDefense = statsSO.holyDef;
+            this.waterDefense = statsSO.waterDef;
+            this.critChance = statsSO.critChance;
+            this.critMult = (int) (statsSO.critMult * 100);
+        }
     }
 
 }

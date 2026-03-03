@@ -15,6 +15,7 @@ namespace MyRule.Audio
         Skill_Impact,
         Hurt,
         EnemyHurt,
+        EnemySound,
 
 
 

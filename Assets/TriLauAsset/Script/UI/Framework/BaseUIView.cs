@@ -13,6 +13,10 @@ namespace MyRule.UI
         CharacterStats,
         TabView,
         Profile,
+        Diary,
+        LobbyShop,
+        Portal,
+        Stats,
         None
     }
 

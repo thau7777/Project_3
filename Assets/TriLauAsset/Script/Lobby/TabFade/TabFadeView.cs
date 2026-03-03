@@ -26,7 +26,7 @@ namespace MyRule.UI
         {
             tabContent.gameObject.SetActive(false);
             
-            VolumeController.Instance.AdjustVolumeWeight();
+            VolumeController.Instance.AdjustUIVolumeWeight();
             
             inputReader.SwitchActionMap(ActionMap.SpaceStation);
         }
@@ -38,7 +38,7 @@ namespace MyRule.UI
             if (firstSelect != null) firstSelect?.Select();
             else EventSystem.current.SetSelectedGameObject(null);
 
-            VolumeController.Instance.AdjustVolumeWeight();
+            VolumeController.Instance.AdjustUIVolumeWeight();
             
             inputReader.SwitchActionMap(ActionMap.UI);
         }

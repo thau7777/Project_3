@@ -57,7 +57,7 @@ namespace MyRule
         public float attackSpeed;
         [TabGroup("Stats")]
         [LabelText("critChance", LabelTextAttribute.LabelColor.red)]
-        public float critChance;
+        public int critChance;
         [TabGroup("Stats")]
         [Range(1.5f, 2.3f)]
         public float critMult = 1.5f;

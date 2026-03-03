@@ -2340,6 +2340,55 @@ Transform:
   - {fileID: 1143192981}
   m_Father: {fileID: 1591609226}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &349663449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 349663451}
+  - component: {fileID: 349663450}
+  m_Layer: 0
+  m_Name: EffectSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &349663450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349663449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c97a498cdd06e4cba9f3c3f976b935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.EffectSystem
+  defaultBreakDuration: 3
+  breakVFXSettings: {fileID: 11400000, guid: 8a43b52ec270f6245aa1bbb07bd5d0c8, type: 2}
+  breakIcon: {fileID: 21300000, guid: 1c404cc48ea4d8f4fb1110a82795055a, type: 3}
+  stunVFXSettings: {fileID: 11400000, guid: 8a43b52ec270f6245aa1bbb07bd5d0c8, type: 2}
+  stunIcon: {fileID: 21300000, guid: 008043a56eb41324497b43cb7149aca0, type: 3}
+--- !u!4 &349663451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349663449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -61.22215, y: -13.9681, z: -3.99973}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &360245407
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,8 +2692,8 @@ GameObject:
   - component: {fileID: 363923596}
   - component: {fileID: 363923600}
   m_Layer: 0
-  m_Name: Camera
-  m_TagString: MainCamera
+  m_Name: SkillCamera
+  m_TagString: SkillCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3679,7 +3728,7 @@ GameObject:
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4942,6 +4991,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684694255}
   m_CullTransparentMesh: 1
+--- !u!1 &695385940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 695385942}
+  - component: {fileID: 695385941}
+  m_Layer: 0
+  m_Name: CharacterStatsmager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &695385941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695385940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac940751648dfea4cabcb83525a59e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CharacterStatsManager
+  AutoUnparentOnAwake: 1
+  characterStats: {fileID: 11400000, guid: 6a45ab6be4327d049b68ac5a423bc785, type: 2}
+--- !u!4 &695385942
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695385940}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.38798, y: 36.68454, z: -1.14532}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &727718795
 GameObject:
   m_ObjectHideFlags: 0
@@ -7010,7 +7105,7 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 0
-  mightNeedRebaking: 0
+  mightNeedRebaking: 1
   cachedTransform:
     e00: 1
     e01: 0
@@ -13224,3 +13319,5 @@ SceneRoots:
   - {fileID: 250743606}
   - {fileID: 1859979515}
   - {fileID: 1237861653}
+  - {fileID: 349663451}
+  - {fileID: 695385942}

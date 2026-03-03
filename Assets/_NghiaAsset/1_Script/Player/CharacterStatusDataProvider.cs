@@ -123,11 +123,12 @@ namespace Turnbase
 
             if (debuffManager.burnTurnsRemaining > 0)
             {
+                int estimatedDmg = debuffManager.GetEstimatedBurnDamage();
                 effects.Add(new StatusEffectData
                 {
                     Name = "Burn",
                     TurnsRemaining = debuffManager.burnTurnsRemaining,
-                    Detail = $"{debuffManager.burnDamagePerTurn} Damage/turn",
+                    Detail = $"{estimatedDmg} Damage/turn",
                     IsBuff = false,
                     Icon = debuffManager.burnIcon
                 });
@@ -135,11 +136,12 @@ namespace Turnbase
 
             if (debuffManager.poisonTurnsRemaining > 0)
             {
+                int estimatedDmg = debuffManager.GetEstimatedPoisonDamage();
                 effects.Add(new StatusEffectData
                 {
                     Name = "Poison",
                     TurnsRemaining = debuffManager.poisonTurnsRemaining,
-                    Detail = $"{debuffManager.poisonDamagePerTurn} Damage/turn",
+                    Detail = $"{estimatedDmg} Damage/turn",
                     IsBuff = false,
                     Icon = debuffManager.poisonIcon
                 });

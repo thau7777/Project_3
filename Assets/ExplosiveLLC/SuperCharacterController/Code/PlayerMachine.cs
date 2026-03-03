@@ -23,7 +23,7 @@ public class PlayerMachine:SuperStateMachine
 	// Current velocity.
 	private Vector3 moveDirection;
 
-	// Current direction our character's art is facing.
+	// Current direction our characterTarget's art is facing.
 	public Vector3 lookDirection { get; private set; }
 
 	private PlayerInputController input;
@@ -35,7 +35,7 @@ public class PlayerMachine:SuperStateMachine
 		// Grab the controller object from our object.
 		controller = gameObject.GetComponent<SuperCharacterController>();
 
-		// Our character's current facing direction, planar to the ground.
+		// Our characterTarget's current facing direction, planar to the ground.
 		lookDirection = transform.forward;
 
 		// Set our currentState to idle on startup.

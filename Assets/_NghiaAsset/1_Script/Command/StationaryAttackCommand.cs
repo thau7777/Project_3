@@ -34,7 +34,13 @@ namespace Turnbase
         private IEnumerator PerformStationaryAttack()
         {
             CalculateFinalDamage();
-            ElementType element = skill.elementType;
+            ElementType element = skill != null ? skill.elementType : ElementType.Normal;
+
+            if (element == ElementType.None)
+            {
+                element = ElementType.Normal;
+            }
+
             Action hitAction = () =>
             {
                 if (!damageApplied)

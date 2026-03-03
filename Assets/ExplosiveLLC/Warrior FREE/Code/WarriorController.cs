@@ -76,7 +76,7 @@ namespace WarriorAnimsFREE
 			// Setup Animator, add AnimationEvents script.
 			animator = GetComponentInChildren<Animator>();
 			if (animator == null) {
-				Debug.LogError("ERROR: There is no Animator component for character.");
+				Debug.LogError("ERROR: There is no Animator component for characterTarget.");
 				Debug.Break();
 			} else {
 				animator.gameObject.AddComponent<WarriorCharacterAnimatorEvents>();
@@ -219,7 +219,7 @@ namespace WarriorAnimsFREE
 		#region Locks
 
 		/// <summary>
-		/// Lock character movement and/or action, on a delay for a set time.
+		/// Lock characterTarget movement and/or action, on a delay for a set time.
 		/// </summary>
 		/// <param name="lockMovement">If set to <c>true</c> lock movement.</param>
 		/// <param name="lockAction">If set to <c>true</c> lock action.</param>
@@ -247,7 +247,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// Keep character from moving and use or diable Rootmotion.
+		/// Keep characterTarget from moving and use or diable Rootmotion.
 		/// </summary>
 		public void LockMove(bool b)
 		{
@@ -263,7 +263,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// Keep character from doing actions.
+		/// Keep characterTarget from doing actions.
 		/// </summary>
 		public void LockAction(bool b)
 		{
@@ -271,7 +271,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// Keep character from jumping.
+		/// Keep characterTarget from jumping.
 		/// </summary>
 		public void LockJump(bool b)
 		{
@@ -279,7 +279,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// Let character move and act again.
+		/// Let characterTarget move and act again.
 		/// </summary>
 		private void UnLock(bool movement, bool actions)
 		{
@@ -292,7 +292,7 @@ namespace WarriorAnimsFREE
 		#region Misc
 
 		/// <summary>
-		/// Returns whether the character is near the ground.
+		/// Returns whether the characterTarget is near the ground.
 		/// </summary>
 		public bool AcquiringGround()
 		{
@@ -300,7 +300,7 @@ namespace WarriorAnimsFREE
 		}
 
 		/// <summary>
-		/// Returns whether the character is on the ground.
+		/// Returns whether the characterTarget is on the ground.
 		/// </summary>
 		public bool MaintainingGround()
 		{

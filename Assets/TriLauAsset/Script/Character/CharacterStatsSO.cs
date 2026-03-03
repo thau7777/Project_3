@@ -22,6 +22,17 @@ namespace MyRule
         public int hp;
         public int fp;
         public int stamina;
+        public int shield;
+        public int phyDef;
+        public int magicDef;
+        public int fireDef;
+        public int lightningDef;
+        public int holyDef;
+        public int darkDef;
+        public int frostDef;
+        public int waterDef;
+        public int resRate;
+        public float attackSpeed;
 
         [Header("Attack Power")]
         public int physicalDmg;

@@ -8,7 +8,7 @@ namespace MyRule
         {
             MainMenuScene,
             SpaceStationScene,
-            BoardScene,
+            MazeScene,
             LoadingScene,
             SettingsScene,
         }
