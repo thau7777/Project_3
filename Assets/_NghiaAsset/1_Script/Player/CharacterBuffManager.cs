@@ -429,65 +429,76 @@ namespace Turnbase
             var stackSetting = skill.stackSetting;
             var applicationTarget = skill.stackApplicationTarget;
 
-            if (applicationTarget == StackApplicationTarget.None || stackSetting.stackId == string.Empty)
+            if (applicationTarget == StackApplicationTarget.None || string.IsNullOrEmpty(stackSetting.stackId))
                 return;
 
             Character stackTarget = (applicationTarget == StackApplicationTarget.Self) ? character : targetCharacter;
-
             if (stackTarget == null || !stackTarget.isAlive || stackTarget.buffManager == null) return;
 
             CharacterBuffManager targetBuffManager = stackTarget.buffManager;
             string stackId = stackSetting.stackId;
 
+            if (stackSetting.isStackFinisher && applicationTarget == StackApplicationTarget.Target)
+            {
+                if (stackTarget.debuffManager != null)
+                {
+                    DebuffType activeType = skill.activatedDebuff.statToModify;
+
+                    if (IsDebuffStackActive(stackTarget.debuffManager, activeType))
+                    {
+                        Debug.Log($"[Stack Blocked] {stackTarget.name} vẫn đang chịu hiệu ứng {activeType}. Không thể tích thêm Stack '{stackId}'.");
+                        return;
+                    }
+                }
+            }
+            else if (stackSetting.isStackFinisher && applicationTarget == StackApplicationTarget.Self)
+            {
+                if (stackTarget.buffManager.IsBuffActive(skill.activatedBuff.statToModify))
+                {
+                    Debug.Log($"[Stack Blocked] {stackTarget.name} vẫn đang có Buff. Không thể tích thêm Stack '{stackId}'.");
+                    return;
+                }
+            }
+
+
+            if (!targetBuffManager.activeStacks.TryGetValue(stackId, out StackData stackData))
+            {
+                stackData = new StackData { stackId = stackId, currentStacks = 0, icon = stackSetting.iconStack };
+                targetBuffManager.activeStacks.Add(stackId, stackData);
+            }
+
             if (stackSetting.isStackBuilder)
             {
-                if (!targetBuffManager.activeStacks.TryGetValue(stackId, out StackData currentStackData))
-                {
-                    currentStackData = new StackData
-                    {
-                        stackId = stackId,
-                        currentStacks = 0,
-                        icon = stackSetting.iconStack 
-                    };
-                    targetBuffManager.activeStacks.Add(stackId, currentStackData);
-                }
-
-                currentStackData.currentStacks += stackSetting.stackAmountPerUse;
-                Debug.Log($"[Stack Builder] {stackTarget.info.name} tích lũy Stack '{stackId}': +{stackSetting.stackAmountPerUse}. Tổng: {currentStackData.currentStacks}");
+                stackData.currentStacks += stackSetting.stackAmountPerUse;
             }
 
-            if (!targetBuffManager.activeStacks.TryGetValue(stackId, out StackData currentStackDataForFinisher))
+            if (stackSetting.isStackFinisher && stackData.currentStacks >= stackSetting.stackThreshold)
             {
-                return;
-            }
-
-
-            if (stackSetting.isStackFinisher)
-            {
-                if (currentStackDataForFinisher.currentStacks >= stackSetting.stackThreshold)
+                if (applicationTarget == StackApplicationTarget.Self && skill.activatedBuff.statToModify != StatType.None)
                 {
-                    Debug.Log($"🎉 [Stack Finisher] {stackTarget.info.name} đạt ngưỡng Stack '{stackId}' ({stackSetting.stackThreshold})! Kích hoạt hiệu ứng.");
-
-                    if (applicationTarget == StackApplicationTarget.Self && skill.activatedBuff.statToModify != StatType.None)
-                    {
-                        int buffAmount = skill.activatedBuff.amount;
-                        targetBuffManager.ApplyBuff(skill.activatedBuff, null, buffAmount);
-                    }
-                    else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
-                    {
-                        stackTarget.debuffManager.ApplyDebuff(character, skill.activatedDebuff);
-                        Debug.Log($"[Stack Finisher Activated] {stackTarget.info.name} nhận Debuff {skill.activatedDebuff.statToModify}");
-                    }
-
-                    currentStackDataForFinisher.currentStacks = 0;
-                    Debug.Log($"Stack '{stackId}' của {stackTarget.info.name} đã được Reset về 0.");
+                    targetBuffManager.ApplyBuff(skill.activatedBuff, null, skill.activatedBuff.amount);
                 }
+                else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
+                {
+                    stackTarget.debuffManager.ApplyDebuff(character, skill.activatedDebuff);
+                }
+
+                stackData.currentStacks = 0;
             }
 
             if (stackTarget.battleUIManager != null)
-            {
                 stackTarget.battleUIManager.UpdateCharacterUI(stackTarget);
-            }
+        }
+
+        private bool IsDebuffStackActive(CharacterDebuffManager dm, DebuffType type)
+        {
+            return type switch
+            {
+                DebuffType.Burn => dm.burnTurnsRemaining > 0,
+                DebuffType.Poison => dm.poisonTurnsRemaining > 0,
+                DebuffType.Stun => dm.stunTurnsRemaining > 0,
+                _ => false
+            };
         }
 
         public void RemoveExpiredAttackBuff()

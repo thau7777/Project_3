@@ -84,13 +84,22 @@ namespace Turnbase
             float multiplier = 1.0f;
             if (owner.battleManager?.elementChart != null)
                 multiplier = owner.battleManager.elementChart.GetMultiplier(element, enemy.characterElement);
+
             if (element == ElementType.Normal || multiplier > 1.0f)
             {
-                enemy.traildblaze -= TRAILDBLAZE_REDUCTION;
+                float reduction = TRAILDBLAZE_REDUCTION;
+
+                if (enemy.debuffManager != null && enemy.debuffManager.IsPoisoned())
+                {
+                    reduction *= 1.5f;
+                }
+
+                enemy.traildblaze -= reduction;
                 enemy.traildblaze = Mathf.Max(0f, enemy.traildblaze);
 
                 if (enemy.enemyUI != null) enemy.enemyUI.UpdateUI();
                 if (enemy.traildblaze <= 0) enemy.ApplyBreakStatus(enemy.BreakDebuffSettings);
+
             }
         }
 

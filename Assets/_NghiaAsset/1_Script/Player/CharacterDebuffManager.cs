@@ -354,10 +354,25 @@ namespace Turnbase
             }
         }
 
+        public int GetEstimatedPoisonDamage()
+        {
+            float statsDMG = character.stats.magicAttack * 0.1f;
+            float hpDMG = characterTarget.stats.maxHP * 0.025f;
+            return Mathf.RoundToInt(statsDMG + hpDMG);
+        }
+
+        public int GetEstimatedBurnDamage()
+        {
+            float statsDMG = character.stats.magicAttack * 0.1f;
+            float hpDMG = characterTarget.stats.maxHP * 0.025f;
+            return Mathf.RoundToInt(statsDMG + hpDMG);
+        }
+
         public IEnumerator ApplyDoTDamage()
         {
-            const float INTER_DOT_DELAY = 0.5f; 
-            const float TICK_DELAY = 0.15f;  
+            const float INTER_DOT_DELAY = 0.5f;
+            const float TICK_DELAY = 0.15f;
+            const int TICKS_COUNT = 3;
 
             if (!characterTarget.isAlive) yield break;
 
@@ -366,73 +381,51 @@ namespace Turnbase
 
             bool damageApplied = false;
 
+            // --- BURN ---
             if (burnTurnsRemaining > 0)
             {
-                const int BURN_TICKS = 3;
+                int totalBurnDamage = GetEstimatedBurnDamage(); 
 
-                float statsDMG = character.stats.magicAttack * 0.1f;
+                int damagePerTick = totalBurnDamage / TICKS_COUNT;
+                int remainder = totalBurnDamage % TICKS_COUNT;
 
-                float hpDMG = Mathf.RoundToInt(characterTarget.stats.maxHP * 0.025f);
-
-                int totalBurnDamage = Mathf.RoundToInt(statsDMG + hpDMG);
-
-                int damagePerTick = totalBurnDamage / BURN_TICKS;
-                int remainder = totalBurnDamage % BURN_TICKS;
-
-                for (int i = 0; i < BURN_TICKS; i++)
+                for (int i = 0; i < TICKS_COUNT; i++)
                 {
-                    if (!character.isAlive) yield break;
+                    if (!characterTarget.isAlive) yield break;
 
-                    int currentTickDamage = damagePerTick;
-
-                    if (i == BURN_TICKS - 1)
-                    {
-                        currentTickDamage += remainder;
-                    }
+                    int currentTickDamage = (i == TICKS_COUNT - 1) ? (damagePerTick + remainder) : damagePerTick;
 
                     characterTarget.TakeDamage(null, currentTickDamage, BURN_ELEMENT, ignoreBlock: true);
-
                     damageApplied = true;
 
-                    if (i < BURN_TICKS - 1)
-                    {
-                        yield return new WaitForSeconds(TICK_DELAY);
-                    }
+                    if (i < TICKS_COUNT - 1) yield return new WaitForSeconds(TICK_DELAY);
                 }
             }
 
             if (damageApplied)
             {
                 yield return new WaitForSeconds(INTER_DOT_DELAY);
-                damageApplied = false; 
+                damageApplied = false;
             }
 
+            // --- POISON ---
             if (poisonTurnsRemaining > 0)
             {
-                const int POISON_TICKS = 3;
+                int totalPoisonDamage = GetEstimatedPoisonDamage();
 
-                float statsDMG = character.stats.magicAttack * 0.1f;
+                int damagePerTick = totalPoisonDamage / TICKS_COUNT;
+                int remainder = totalPoisonDamage % TICKS_COUNT;
 
-                float hpDMG = Mathf.RoundToInt(characterTarget.stats.maxHP * 0.025f);
-
-                int totalPoisonDamage = Mathf.RoundToInt(statsDMG + hpDMG);
-
-                int damagePerTick = totalPoisonDamage / POISON_TICKS;
-                int remainder = totalPoisonDamage % POISON_TICKS;
-
-                for (int i = 0; i < POISON_TICKS; i++)
+                for (int i = 0; i < TICKS_COUNT; i++)
                 {
-                    if (!characterTarget.isAlive) yield break; 
+                    if (!characterTarget.isAlive) yield break;
 
-                    int currentTickDamage = damagePerTick;
-
-                    if (i == POISON_TICKS - 1) currentTickDamage += remainder;
+                    int currentTickDamage = (i == TICKS_COUNT - 1) ? (damagePerTick + remainder) : damagePerTick;
 
                     characterTarget.TakeDamage(null, currentTickDamage, POISON_ELEMENT, ignoreBlock: true);
-
                     damageApplied = true;
 
-                    if (i < POISON_TICKS - 1) yield return new WaitForSeconds(TICK_DELAY);
+                    if (i < TICKS_COUNT - 1) yield return new WaitForSeconds(TICK_DELAY);
                 }
             }
         }
@@ -668,6 +661,18 @@ namespace Turnbase
             {
                 characterTarget.battleUIManager.UpdateCharacterUI(characterTarget);
             }
+        }
+
+
+
+        public bool IsPoisoned()
+        {
+            return poisonTurnsRemaining > 0;
+        }
+
+        public bool IsBurning()
+        {
+            return burnTurnsRemaining > 0;
         }
     }
 }
