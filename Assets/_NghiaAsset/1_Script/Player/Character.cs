@@ -190,15 +190,27 @@ namespace Turnbase
 
             if (attacker != null && attacker.isAlive && buffManager != null)
             {
+                Skill counterSkill = null;
+
+                // 1. Nếu đang có buff thủ (Frost Shield), tìm chiêu có Counter và gây SpeedReduction
                 if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
                 {
-                    Skill counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter);
+                    counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
+                                                && s.activatedDebuff.statToModify == DebuffType.SpeedReduction);
+                }
 
-                    if (counterSkill != null)
-                    {
-                        buffManager.ProcessSkillStacks(counterSkill, attacker);
-                        Debug.Log($"[COUNTER] Phản đòn bằng chiêu: {counterSkill.skillName}");
-                    }
+                // 2. Nếu không tìm thấy hoặc ưu tiên buff công (Hell Fire), tìm chiêu có Counter và gây Burn
+                if (counterSkill == null && buffManager.magicalAttackBuffTurnsRemaining > 0)
+                {
+                    counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
+                                                && s.activatedDebuff.statToModify == DebuffType.Burn);
+                }
+
+                // 3. Thực hiện phản đòn
+                if (counterSkill != null)
+                {
+                    buffManager.ProcessSkillStacks(counterSkill, attacker);
+                    Debug.Log($"[COUNTER] Phản đòn từ danh sách: {counterSkill.skillName}");
                 }
             }
 

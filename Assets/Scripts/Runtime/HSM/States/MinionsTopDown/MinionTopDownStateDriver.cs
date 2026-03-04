@@ -59,7 +59,7 @@ public class MinionTopDownStateDriver : MonoBehaviour
     public void OnEndOfAnimation()
     {
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsTag("Attack"))
+        if (stateInfo.IsTag("PhysicalAttack"))
         {
             _context.IsDoneAttacking = true;
         }

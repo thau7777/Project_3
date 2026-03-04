@@ -22,7 +22,7 @@ namespace WarriorAnimsFREE
 		/// </summary>
 		private void Inputs()
 		{
-			inputAttack = Input.GetButtonDown("Attack");
+			inputAttack = Input.GetButtonDown("PhysicalAttack");
 			inputJump = Input.GetButtonDown("Jump");
 			inputHorizontal = Input.GetAxisRaw("Horizontal");
 			inputVertical = Input.GetAxisRaw("Vertical");

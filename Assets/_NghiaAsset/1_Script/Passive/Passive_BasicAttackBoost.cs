@@ -2,7 +2,7 @@
 
 namespace Turnbase
 {
-    [CreateAssetMenu(fileName = "NewBasicAttackBoost", menuName = "Battle/Passive/Basic Attack Boost")]
+    [CreateAssetMenu(fileName = "NewBasicAttackBoost", menuName = "Battle/Passive/Basic PhysicalAttack Boost")]
     public class Passive_BasicAttackBoost : SkillPassive
     {
         [Header("Chỉ số cộng thêm")]

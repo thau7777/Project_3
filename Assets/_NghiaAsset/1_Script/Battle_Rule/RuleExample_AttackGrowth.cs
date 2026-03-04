@@ -6,7 +6,7 @@ using Turnbase;
 
 namespace Turnbase
 {
-    [CreateAssetMenu(fileName = "Rule_AttackGrowth", menuName = "Battle Rules/Attack Growth Per Turn", order = 2)]
+    [CreateAssetMenu(fileName = "Rule_AttackGrowth", menuName = "Battle Rules/PhysicalAttack Growth Per Turn", order = 2)]
     public class RuleExample_AttackGrowth : BattleRule
     {
         [Header("Cấu hình Luật")]

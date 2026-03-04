@@ -123,8 +123,8 @@ public enum StackApplicationTarget
 public enum StatType
 {
     None,
-    Attack,
-    Defense,
+    PhysicalAttack,
+    PhysicalDefense,
     Agility,
     MaxHP,
     MagicalAttack,

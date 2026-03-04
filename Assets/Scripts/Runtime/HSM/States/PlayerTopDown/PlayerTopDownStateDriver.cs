@@ -73,7 +73,7 @@ public class PlayerTopDownStateDriver : MonoBehaviour
         => _animator.GetCurrentAnimatorStateInfo(_context.IsUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
 
     bool _inIsInAttackAnim
-        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
+        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("PhysicalAttack");
 
     [field: SerializeField] public bool IsParrying { get; set; } = false;
     #endregion

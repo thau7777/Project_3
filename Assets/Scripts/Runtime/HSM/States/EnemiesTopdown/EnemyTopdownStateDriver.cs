@@ -32,7 +32,7 @@ public class EnemyTopdownStateDriver : Flyweight
     [SerializeField, TabGroup("Movement Settings")]
     float _rotateSpeed = 10f;
 
-    [TabGroup("Attack Settings")]
+    [TabGroup("PhysicalAttack Settings")]
     [SerializeField]
     private List<EnemyAttackData> _attackList = new();
 
@@ -87,7 +87,7 @@ public class EnemyTopdownStateDriver : Flyweight
             _context.CurrentSpeed = _context.BaseMoveSpeed;
             _context.RotateSpeed = _context.BaseRotateSpeed;
         }
-        else if (stateInfo.IsTag("Attack"))
+        else if (stateInfo.IsTag("PhysicalAttack"))
         {
             _context.IsAttacking = false;
             _context.CurrentSpeed = _context.BaseMoveSpeed;

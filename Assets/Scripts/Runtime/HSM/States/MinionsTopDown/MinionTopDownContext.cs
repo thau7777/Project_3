@@ -30,7 +30,7 @@ public class MinionTopDownContext
     [field: SerializeField]
     public Vector3 MoveDir { get; set; }
 
-    // Attack 
+    // PhysicalAttack 
     public Vector3 KnockbackDirection { get; set; }
     public float KnockbackForce { get; set; }
     public float AttackRange { get; private set; }

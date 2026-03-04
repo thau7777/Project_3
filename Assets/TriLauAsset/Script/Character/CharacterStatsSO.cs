@@ -34,7 +34,7 @@ namespace MyRule
         public int resRate;
         public float attackSpeed;
 
-        [Header("Attack Power")]
+        [Header("PhysicalAttack Power")]
         public int physicalDmg;
         public int magicDmg;
         public int critChance;
