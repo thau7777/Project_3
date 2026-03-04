@@ -267,6 +267,18 @@ namespace Turnbase
                 }
             }
 
+            if(buffManager.lifeForPowerTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Life For Power",
+                    TurnsRemaining = buffManager.lifeForPowerTurnsRemaining,
+                    Detail = $"+{buffManager.lifeForPowerBonusDamage}% Bonus Dmg",
+                    IsBuff = true,
+                    Icon = buffManager.lifeForPowerIcon
+                });
+            }
+
             return effects;
         }
         #endregion    

@@ -49,7 +49,6 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB magicalDefenseVFXInstance;
         [HideInInspector] public Sprite magicalDefenseBuffIcon;
 
-
         [Header("Shield")]
         [HideInInspector] public int baseShieldAmount = 0;
         [HideInInspector] public int shieldTurnsRemaining = 0;
@@ -70,6 +69,12 @@ namespace Turnbase
         [HideInInspector] public bool hasDivineShield = false;
         [HideInInspector] public Flyweight_TB divineShieldVFXInstance;
         [HideInInspector] public Sprite divineShieldIcon;
+
+        [Header("LifeForPower Buff")]
+        [HideInInspector] public int lifeForPowerTurnsRemaining = 0;
+        [HideInInspector] public int lifeForPowerBonusDamage = 0;
+        [HideInInspector] public Flyweight_TB lifeForPowerVFXInstance;
+        [HideInInspector] public Sprite lifeForPowerIcon;
 
         [Header("Stack Manager")]
         public Dictionary<string, StackData> activeStacks = new Dictionary<string, StackData>();
@@ -375,6 +380,29 @@ namespace Turnbase
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
         }
 
+        public void ApplyLifeForPower(float healthCostPercent, float damageBuffPercent, int duration, Flyweight_TB vfx, Sprite icon)
+        {
+            if (character == null || character.stats == null) return;
+
+            int healthCost = Mathf.FloorToInt(character.stats.currentHP * healthCostPercent);
+
+            character.stats.currentHP = Mathf.Max(1, character.stats.currentHP - healthCost);
+
+            lifeForPowerBonusDamage = Mathf.FloorToInt(character.stats.physicalAttack * damageBuffPercent);
+            lifeForPowerTurnsRemaining = duration;
+
+            lifeForPowerIcon = icon;
+            lifeForPowerVFXInstance = vfx;
+
+            character.UpdateOwnUI(); 
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
+            Debug.Log($"[Berserk] {character.name} hiến tế {healthCost} HP (Trừ trực tiếp). HP còn lại: {character.stats.currentHP}");
+        }
+
         public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount, Skill sourceSkill = null)
         {
             if (buffSettings.durationTurns <= 0) return;
@@ -408,6 +436,11 @@ namespace Turnbase
                     break;
                 case StatType.DivineShield:
                     ApplyDivineShield(buffVFX, buffSettings.icon);
+                    break;
+                case StatType.ApplyLifeForPower:
+                    float healthCostRate = 0.5f; 
+                    float damageBonusRate = amount / 100f;
+                    ApplyLifeForPower(healthCostRate, damageBonusRate, buffSettings.durationTurns, buffVFX, buffSettings.icon);
                     break;
                 default:
                     Debug.LogWarning($"Loại Buff {buffSettings.statToModify} không được hỗ trợ hoặc không có giá trị.");
@@ -645,6 +678,29 @@ namespace Turnbase
             RecalculateDefenseStat();
 
             Debug.Log($"Buff Magical Defense của {character.name} đã hết hạn và bị gỡ bỏ. Magical Defense hiện tại: {stats.magicDefense}");
+        }
+
+        public void RemoveExpireLifeForPower()
+        {
+            if (lifeForPowerTurnsRemaining > 0) return;
+
+            if (lifeForPowerVFXInstance != null)
+            {
+                lifeForPowerVFXInstance.transform.SetParent(null);
+                lifeForPowerVFXInstance.ReturnToPool();
+                lifeForPowerVFXInstance = null;
+            }
+
+            lifeForPowerTurnsRemaining = 0;
+            lifeForPowerBonusDamage = 0;
+            lifeForPowerIcon = null;
+
+            if (character.battleUIManager != null)
+            {
+                character.battleUIManager.UpdateCharacterUI(character);
+            }
+
+            Debug.Log($"Trạng thái Hiến Tế của {character.name} đã hết hạn. Sát thương bonus đã bị gỡ bỏ.");
         }
 
         public void RecalculateDefenseStat()
@@ -898,6 +954,17 @@ namespace Turnbase
                 if (splashAttackTurnsRemaining <= 0)
                 {
                     RemoveExpiredSplashBuff();
+                    uiUpdateNeeded = true;
+                }
+            }
+
+            if (lifeForPowerTurnsRemaining > 0)
+            {
+                lifeForPowerTurnsRemaining--;
+                if (lifeForPowerTurnsRemaining <= 0)
+                {
+                    lifeForPowerBonusDamage = 0;
+                    RemoveExpireLifeForPower();
                     uiUpdateNeeded = true;
                 }
             }

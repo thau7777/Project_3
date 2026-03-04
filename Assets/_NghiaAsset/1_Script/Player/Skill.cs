@@ -134,6 +134,8 @@ public enum StatType
     SplashDamage,
     DivineShield,
     Purify,
+    ApplyLifeForPower,
+
 
 }
 

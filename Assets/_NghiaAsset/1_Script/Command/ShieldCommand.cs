@@ -72,7 +72,7 @@ namespace Turnbase
                     skill
                 );
 
-                charTarget.AddShield(shieldAmount, durationTurns, shieldIcon, localShieldVFXInstance);
+                charTarget.buffManager.AddShield(shieldAmount, durationTurns, localShieldVFXInstance,shieldIcon);
 
                 Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield, hiệu lực {durationTurns} lượt.");
 

@@ -83,16 +83,20 @@ namespace Turnbase
             float elementMultiplier = GetElementMultiplier(skill, target, battleManager);
             float preCritDamageFloat = damageBase * elementMultiplier;
 
+            // --- XỬ LÝ BONUS SÁT THƯƠNG ĐẦU RA TẠI ĐÂY ---
+            if (user.buffManager != null && user.buffManager.lifeForPowerTurnsRemaining > 0)
+            {
+                preCritDamageFloat += user.buffManager.lifeForPowerBonusDamage;
+                Debug.Log($"[BUFF] Cộng thêm {user.buffManager.lifeForPowerBonusDamage} Bonus đầu ra từ Hiến Tế.");
+            }
+
+            // --- TÍNH CRIT TRÊN TỔNG SÁT THƯƠNG ĐÃ CÓ BONUS ---
             IsLastHitCrit = UnityEngine.Random.Range(0, 100) < user.stats.critChance;
-            // Thêm vào ngay sau dòng tính isCrit
-            Debug.Log($"[CALC] Tỉ lệ Crit: {user.stats.critChance} | Kết quả Roll: {IsLastHitCrit}");
 
             if (IsLastHitCrit)
             {
-                float oldDamage = preCritDamageFloat;
                 float critMultiplier = (float)user.stats.critMult / 100f;
                 preCritDamageFloat *= critMultiplier;
-                Debug.Log($"[CALC] Đã nhân Crit: {oldDamage} -> {preCritDamageFloat} (Multiplier: {critMultiplier})");
             }
 
             int finalDamage = Mathf.RoundToInt(preCritDamageFloat);
