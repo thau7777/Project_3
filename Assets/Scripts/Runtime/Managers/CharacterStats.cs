@@ -1,6 +1,5 @@
 using MyRule;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -11,25 +10,67 @@ public class CharacterStats : MonoBehaviour
     public ElementalType ElementalType { get; set; } = ElementalType.Normal;
 
     [field: SerializeField]
-    public float InitialHealth { get; private set; } = 100;
+    public int InitialHealth { get; private set; } = 100;
 
     [field: SerializeField]
-    public float InitialMana { get; private set; } = 100;
+    public int InitialMana { get; private set; } = 0;
 
     [field: SerializeField]
-    public float AttackDamage { get; private set; } = 10;
+    public int AttackDamage { get; private set; } = 10;
 
     [field: SerializeField]
-    public float MagicAttackDamage { get; private set; } = 8;
+    public int MagicAttackDamage { get; private set; } = 8;
 
     [field: SerializeField]
-    public float PhysicalDefense { get; private set; } = 5;
+    public int FireDamage { get; private set; } = 0;
 
     [field: SerializeField]
-    public float MagicDefense { get; private set; } = 5;
+    public int WaterDamage { get; private set; } = 0;
 
     [field: SerializeField]
-    public float Agility { get; private set; } = 5;
+    public int FrostDamage { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int LightningDamage { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int HolyDamage { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int DarkDamage { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int PoisonDamage { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int PhysicalDefense { get; private set; } = 5;
+
+    [field: SerializeField]
+    public int MagicDefense { get; private set; } = 5;
+
+    [field: SerializeField]
+    public int FireDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int WaterDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int FrostDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int LightningDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int HolyDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int DarkDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public int PoisonDefense { get; private set; } = 0;
+
+    [field: SerializeField]
+    public float Speed { get; private set; } = 5;
 
     [field: SerializeField]
     public float CriticalRate { get; private set; } = 0.1f;
@@ -39,72 +80,81 @@ public class CharacterStats : MonoBehaviour
 
     [field: SerializeField]
     public float AttackSizeScale { get; private set; } = 1f;
+
     private void Awake()
     {
         //if (_statsSO)
         //    Setup();
     }
-    public void Setup(ElementalType elementalType, float initialHealth, float initialMana, float attackDamage,
-    float magicAttackDamage, float physicalDefense, float magicDefense, float agility,
-    float criticalRate, float criticalDamage, float attackSizeScale)
+
+    public void Setup(ElementalType elementalType, int initialHealth, int initialMana, int attackDamage,
+        int magicAttackDamage, int fireDamage, int waterDamage, int frostDamage, int lightningDamage,
+        int holyDamage, int darkDamage, int poisonDamage, int physicalDefense, int magicDefense,
+        int fireDefense, int waterDefense, int frostDefense, int lightningDefense, int holyDefense,
+        int darkDefense, int poisonDefense, float speed, float criticalRate, float criticalDamage,
+        float attackSizeScale)
     {
         ElementalType = elementalType;
         InitialHealth = initialHealth;
         InitialMana = initialMana;
         AttackDamage = attackDamage;
         MagicAttackDamage = magicAttackDamage;
+        FireDamage = fireDamage;
+        WaterDamage = waterDamage;
+        FrostDamage = frostDamage;
+        LightningDamage = lightningDamage;
+        HolyDamage = holyDamage;
+        DarkDamage = darkDamage;
+        PoisonDamage = poisonDamage;
         PhysicalDefense = physicalDefense;
         MagicDefense = magicDefense;
-        Agility = agility;
+        FireDefense = fireDefense;
+        WaterDefense = waterDefense;
+        FrostDefense = frostDefense;
+        LightningDefense = lightningDefense;
+        HolyDefense = holyDefense;
+        DarkDefense = darkDefense;
+        PoisonDefense = poisonDefense;
+        Speed = speed;
         CriticalRate = criticalRate;
         CriticalDamage = criticalDamage;
         AttackSizeScale = attackSizeScale;
     }
-    public void ModifyAttackDamage(float amount)
-    {
-        AttackDamage += amount;
-    }
 
-    public void ModifyMagicAttackDamage(float amount)
-    {
-        MagicAttackDamage += amount;
-    }
+    public void ModifyAttackDamage(int amount) => AttackDamage += amount;
+    public void ModifyMagicAttackDamage(int amount) => MagicAttackDamage += amount;
+    public void ModifyFireDamage(int amount) => FireDamage += amount;
+    public void ModifyWaterDamage(int amount) => WaterDamage += amount;
+    public void ModifyFrostDamage(int amount) => FrostDamage += amount;
+    public void ModifyLightningDamage(int amount) => LightningDamage += amount;
+    public void ModifyHolyDamage(int amount) => HolyDamage += amount;
+    public void ModifyDarkDamage(int amount) => DarkDamage += amount;
+    public void ModifyPoisonDamage(int amount) => PoisonDamage += amount;
 
-    public void ModifyPhysicalDefense(float amount)
-    {
-        PhysicalDefense += amount;
-    }
+    public void ModifyPhysicalDefense(int amount) => PhysicalDefense += amount;
+    public void ModifyMagicDefense(int amount) => MagicDefense += amount;
+    public void ModifyFireDefense(int amount) => FireDefense += amount;
+    public void ModifyWaterDefense(int amount) => WaterDefense += amount;
+    public void ModifyFrostDefense(int amount) => FrostDefense += amount;
+    public void ModifyLightningDefense(int amount) => LightningDefense += amount;
+    public void ModifyHolyDefense(int amount) => HolyDefense += amount;
+    public void ModifyDarkDefense(int amount) => DarkDefense += amount;
+    public void ModifyPoisonDefense(int amount) => PoisonDefense += amount;
 
-    public void ModifyMagicDefense(float amount)
+    public void ModifySpeed(float amount)
     {
-        MagicDefense += amount;
-    }
-
-    public void ModifyAgility(float amount)
-    {
-        Agility += amount;
+        Speed += amount;
         if (TryGetComponent(out PlayerTopDownStateDriver playerTopDownStateDriver))
         {
-            playerTopDownStateDriver.SetBaseSpeed(Agility);
+            playerTopDownStateDriver.SetBaseSpeed(Speed);
         }
         else if (TryGetComponent(out EnemyTopdownStateDriver enemyTopdownStateDriver))
         {
-            enemyTopdownStateDriver.SetMoveSpeed(Agility);
+            enemyTopdownStateDriver.SetMoveSpeed(Speed);
         }
     }
 
-    public void ModifyCriticalRate(float amount)
-    {
-        CriticalRate += amount;
-    }
-
-    public void ModifyCriticalDamage(float amount)
-    {
-        CriticalDamage += amount;
-    }
-
-    public void ModifyAttackSizeScale(float amount)
-    {
-        AttackSizeScale += amount;
-    }
+    public void ModifyCriticalRate(float amount) => CriticalRate += amount;
+    public void ModifyCriticalDamage(float amount) => CriticalDamage += amount;
+    public void ModifyAttackSizeScale(float amount) => AttackSizeScale += amount;
 }

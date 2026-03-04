@@ -44,7 +44,7 @@ public class Effect : ScriptableObject
     [TabGroup("Stat Modifiers")]
     public StatModifier magicDefenseModifier;
     [TabGroup("Stat Modifiers")]
-    public StatModifier agilityModifier;
+    public StatModifier speedModifier;
     [TabGroup("Stat Modifiers")]
     public StatModifier criticalRateModifier;
     [TabGroup("Stat Modifiers")]
@@ -125,7 +125,7 @@ public class Effect : ScriptableObject
         if (magicAttackDamageModifier.value != 0) ApplyMagicAttackDamageModifier(target, activeEffect, isApplyInstant);
         if (physicalDefenseModifier.value != 0) ApplyPhysicalDefenseModifier(target, activeEffect, isApplyInstant);
         if (magicDefenseModifier.value != 0) ApplyMagicDefenseModifier(target, activeEffect, isApplyInstant);
-        if (agilityModifier.value != 0) ApplyAgilityModifier(target, activeEffect, isApplyInstant);
+        if (speedModifier.value != 0) ApplySpeedModifier(target, activeEffect, isApplyInstant);
         if (criticalRateModifier.value != 0) ApplyCriticalRateModifier(target, activeEffect, isApplyInstant);
         if (criticalDamageModifier.value != 0) ApplyCriticalDamageModifier(target, activeEffect, isApplyInstant);
         if (attackSizeModifier.value != 0) ApplyAttackSizeModifier(target, activeEffect, isApplyInstant);
@@ -140,7 +140,7 @@ public class Effect : ScriptableObject
             RemovePhysicalDefenseModifier(target, activeEffect);
         if (magicDefenseModifier.value != 0 && magicDefenseModifier.isTemporary)
             RemoveMagicDefenseModifier(target, activeEffect);
-        if (agilityModifier.value != 0 && agilityModifier.isTemporary)
+        if (speedModifier.value != 0 && speedModifier.isTemporary)
             RemoveAgilityModifier(target, activeEffect);
         if (criticalRateModifier.value != 0 && criticalRateModifier.isTemporary)
             RemoveCriticalRateModifier(target, activeEffect);
@@ -183,7 +183,7 @@ public class Effect : ScriptableObject
         if (!target.TryGetComponent(out CharacterStats characterStats) || attackDamageModifier.instantApply && !isApplyInstant)
             return;
         float valueToApply = attackDamageModifier.isPercentage ? characterStats.AttackDamage * (attackDamageModifier.value / 100f) : attackDamageModifier.value;
-        characterStats.ModifyAttackDamage(valueToApply);
+        characterStats.ModifyAttackDamage(Mathf.RoundToInt(valueToApply));
 
         activeEffect.storedAttackDamageChanges += valueToApply;
     }
@@ -192,7 +192,7 @@ public class Effect : ScriptableObject
         if (!target.TryGetComponent(out CharacterStats characterStats) || magicAttackDamageModifier.instantApply && !isApplyInstant)
             return;
         float valueToApply = magicAttackDamageModifier.isPercentage ? characterStats.MagicAttackDamage * (magicAttackDamageModifier.value / 100f) : magicAttackDamageModifier.value;
-        characterStats.ModifyMagicAttackDamage(valueToApply);
+        characterStats.ModifyMagicAttackDamage(Mathf.RoundToInt(valueToApply));
 
         activeEffect.storedMagicAttackDamageChanges += valueToApply;
     }
@@ -201,7 +201,7 @@ public class Effect : ScriptableObject
         if (!target.TryGetComponent(out CharacterStats characterStats) || physicalDefenseModifier.instantApply && !isApplyInstant)
             return;
         float valueToApply = physicalDefenseModifier.isPercentage ? characterStats.PhysicalDefense * (physicalDefenseModifier.value / 100f) : physicalDefenseModifier.value;
-        characterStats.ModifyPhysicalDefense(valueToApply);
+        characterStats.ModifyPhysicalDefense(Mathf.RoundToInt(valueToApply));
 
         activeEffect.storedPhysicalDefenseChanges += valueToApply;
     }
@@ -210,18 +210,18 @@ public class Effect : ScriptableObject
         if (!target.TryGetComponent(out CharacterStats characterStats) || magicDefenseModifier.instantApply && !isApplyInstant)
             return;
         float valueToApply = magicDefenseModifier.isPercentage ? characterStats.MagicDefense * (magicDefenseModifier.value / 100f) : magicDefenseModifier.value;
-        characterStats.ModifyMagicDefense(valueToApply);
+        characterStats.ModifyMagicDefense(Mathf.RoundToInt(valueToApply));
 
         activeEffect.storedMagicDefenseChanges += valueToApply;
     }
-    private void ApplyAgilityModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    private void ApplySpeedModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
-        if (!target.TryGetComponent(out CharacterStats characterStats) || agilityModifier.instantApply && !isApplyInstant)
+        if (!target.TryGetComponent(out CharacterStats characterStats) || speedModifier.instantApply && !isApplyInstant)
             return;
-        float valueToApply = agilityModifier.isPercentage ? characterStats.Agility * (agilityModifier.value / 100f) : agilityModifier.value;
-        characterStats.ModifyAgility(valueToApply);
+        float valueToApply = speedModifier.isPercentage ? characterStats.Speed * (speedModifier.value / 100f) : speedModifier.value;
+        characterStats.ModifySpeed(valueToApply);
 
-        activeEffect.storedAgilityChanges += valueToApply;
+        activeEffect.storedSpeedChanges += valueToApply;
     }
     private void ApplyCriticalRateModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
@@ -276,7 +276,7 @@ public class Effect : ScriptableObject
     private void RemoveAgilityModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyAgility(-activeEffect.storedAgilityChanges);
+        characterStats.ModifySpeed(-activeEffect.storedSpeedChanges);
     }
     private void RemoveCriticalRateModifier(GameObject target, ActiveEffect activeEffect)
     {
@@ -306,7 +306,7 @@ public class Effect : ScriptableObject
     public virtual bool HasSameModifiers(Effect other)
     {
         return Mathf.Approximately(healthModifier.value, other.healthModifier.value) &&
-               Mathf.Approximately(agilityModifier.value, other.agilityModifier.value) &&
+               Mathf.Approximately(speedModifier.value, other.speedModifier.value) &&
                Mathf.Approximately(attackDamageModifier.value, other.attackDamageModifier.value) &&
                Mathf.Approximately(physicalDefenseModifier.value, other.physicalDefenseModifier.value);
     }

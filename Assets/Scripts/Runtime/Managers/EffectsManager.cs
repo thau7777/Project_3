@@ -16,7 +16,7 @@ public class ActiveEffect
     public float storedMagicAttackDamageChanges;
     public float storedPhysicalDefenseChanges;
     public float storedMagicDefenseChanges;
-    public float storedAgilityChanges;
+    public float storedSpeedChanges;
     public float storedCriticalRateChanges;
     public float storedCriticalDamageChanges;
     public float storedAttackSizeScaleChanges;

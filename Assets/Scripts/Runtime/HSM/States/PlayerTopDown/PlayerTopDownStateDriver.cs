@@ -103,7 +103,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
 
         _context = new PlayerTopdownContext.Builder()
-        .SetBaseMoveSpeed(_characterStats.Agility)
+        .SetBaseMoveSpeed(_characterStats.Speed)
         .SetStrafeMoveSpeed(_strafeMoveSpeed)
         .SetMoveSpeedSmoothTime(_smoothTime)
         .SetRotateSpeed(_rotateSpeed)

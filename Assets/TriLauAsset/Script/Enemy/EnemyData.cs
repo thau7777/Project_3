@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace MyRule
 {
     public enum EnemyId
@@ -8,7 +7,7 @@ namespace MyRule
         BlackKnight,
         DemonKing,
         Doragon,
-        NagaWizzard,
+        NagaWizard,
         Salamander,
         BishopKnight,
         Golem,
@@ -22,42 +21,71 @@ namespace MyRule
         Cyclops,
         Orc,
         Cactus,
-        Nepenthes,
+        Nepenthe,
         RatAssassin,
         Craber,
         Myrmidon,
         StingRay,
-
     }
 
     [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy/EnemyData")]
     public class EnemyDataSO : ScriptableObject
     {
         public EnemyId enemyId;
+        public int level;
 
-        [Header("Stats")]
+        [TabGroup("Base Stats")]
+        public int hp;
+        [TabGroup("Base Stats")]
+        public int fp;
+        [TabGroup("Base Stats")]
+        public int stamina;
 
-        public int phys;
-        public int mag;
-        public int fire;
-        public int frost;
-        public int lightning;
-        public int holy;
-        public int dark;
-        public int water;
-        public int health;
+        [TabGroup("Defense Stats")]
         public int phyDef;
+        [TabGroup("Defense Stats")]
         public int magDef;
+        [TabGroup("Defense Stats")]
         public int fireDef;
-        public int frostDef;
+        [TabGroup("Defense Stats")]
         public int lightningDef;
+        [TabGroup("Defense Stats")]
         public int holyDef;
+        [TabGroup("Defense Stats")]
         public int darkDef;
+        [TabGroup("Defense Stats")]
+        public int frostDef;
+        [TabGroup("Defense Stats")]
         public int waterDef;
-        public int resRate;
+        [TabGroup("Defense Stats")]
+        public int poisonDef;
+
+        [TabGroup("Attack Stats")]
+        public float speed;
+        [TabGroup("Attack Stats")]
+        public int attackDmg;
+        [TabGroup("Attack Stats")]
+        public int magicDmg;
+        [TabGroup("Attack Stats")]
         public float attackSpeed;
+        [TabGroup("Attack Stats")]
         public float critChance;
+        [TabGroup("Attack Stats")]
         [Range(1.5f, 2.3f)]
         public float critMult = 1.5f;
+        [TabGroup("Attack Stats")]
+        public int fireDmg;
+        [TabGroup("Attack Stats")]
+        public int lightningDmg;
+        [TabGroup("Attack Stats")]
+        public int holyDmg;
+        [TabGroup("Attack Stats")]
+        public int darkDmg;
+        [TabGroup("Attack Stats")]
+        public int frostDmg;
+        [TabGroup("Attack Stats")]
+        public int waterDmg;
+        [TabGroup("Attack Stats")]
+        public int poisonDmg;
     }
 }
