@@ -55,10 +55,10 @@ namespace MyRule
                     
                     EnemyData enemyData = new EnemyData(currentLevel, enemyDataSO.enemyId,
                         enemyDataSO.phys, enemyDataSO.mag, enemyDataSO.fire, enemyDataSO.frost,
-                        enemyDataSO.lightning, enemyDataSO.holy, enemyDataSO.dark, enemyDataSO.water,
+                        enemyDataSO.lightning, enemyDataSO.holy, enemyDataSO.dark, enemyDataSO.water, enemyDataSO.poison,
                         enemyDataSO.health, enemyDataSO.phyDef, enemyDataSO.magDef, enemyDataSO.fireDef,
                         enemyDataSO.frostDef, enemyDataSO.lightning, enemyDataSO.holy, enemyDataSO.darkDef,
-                        enemyDataSO.water, enemyDataSO.resRate, enemyDataSO.attackSpeed, enemyDataSO.critChance,
+                        enemyDataSO.water, enemyDataSO.poisonDef, enemyDataSO.resRate, enemyDataSO.attackSpeed, enemyDataSO.critChance,
                         enemyDataSO.critMult);
                     
                     waveData.AddEnemy(j, enemyData);

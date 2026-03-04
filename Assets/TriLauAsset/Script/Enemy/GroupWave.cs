@@ -54,6 +54,7 @@ namespace MyRule
         private int holy;
         private int dark;
         private int water;
+        private int poison;
         private int health;
         private int phyDef;
         private int magDef;
@@ -63,6 +64,7 @@ namespace MyRule
         private int holyDef;
         private int darkDef;
         private int waterDef;
+        private int poisonDef;
         private int resRate;
         private float attackSpeed;
         private float critChance;
@@ -77,6 +79,7 @@ namespace MyRule
         public int Holy => holy;
         public int Dark => dark;
         public int Water => water;
+        public int Poison => poison;
         public int Health => health;
         public int PhyDef => phyDef;
         public int MagDef => magDef;
@@ -86,12 +89,13 @@ namespace MyRule
         public int HolyDef => holyDef;
         public int DarkDef => darkDef;
         public int WaterDef => waterDef;
+        public int PoisonDef => poisonDef;
         public int ResRate => resRate;
         public float AttackSpeed => attackSpeed;
         public float CritChance => critChance;
         public float CritMult => critMult;
 
-        public EnemyData(int level, EnemyId enemyId, int phys, int mag, int fire, int frost, int lightning, int holy, int dark, int water, int health, int phydef, int magdef, int firedef, int frostdef, int lightningdef, int holydef, int darkdef, int waterdef, int resRate, float attackSpeed, float critChance, float critMult)
+        public EnemyData(int level, EnemyId enemyId, int phys, int mag, int fire, int frost, int lightning, int holy, int dark, int water, int poison, int health, int phydef, int magdef, int firedef, int frostdef, int lightningdef, int holydef, int darkdef, int waterdef, int poisonDef, int resRate, float attackSpeed, float critChance, float critMult)
         {
             this.enemyId = enemyId;
             this.phys = phys;
@@ -102,6 +106,7 @@ namespace MyRule
             this.holy = holy;
             this.dark = dark;
             this.water = water;
+            this.poison = poison;
             this.health = health;
             this.phyDef = phydef;
             this.magDef = magdef;
@@ -111,6 +116,7 @@ namespace MyRule
             this.holyDef = holydef;
             this.darkDef = darkdef;
             this.waterDef = waterdef;
+            this.poisonDef = poisonDef;
             this.resRate = resRate;
             this.attackSpeed = attackSpeed;
             this.critChance = critChance;
@@ -144,6 +150,7 @@ namespace MyRule
             this.holy = (int)(holy * (1 + level * mult));
             this.dark = (int)(dark * (1 + level * mult));
             this.water = (int)(water * (1 + level * mult));
+            this.poison = (int)(poison * (1 + level * mult));
             this.health = (int)(health * (1 + level * mult));
             this.phyDef = (int)(phyDef * (1 + level * mult));
             this.magDef = (int)(magDef * (1 + level * mult));
@@ -153,6 +160,7 @@ namespace MyRule
             this.holyDef = (int)(holyDef * (1 + level * mult));
             this.darkDef = (int)(darkDef * (1 + level * mult));
             this.waterDef = (int)(waterDef * (1 + level * mult));
+            this.poisonDef = (int)(poisonDef * (1 + level * mult));
             this.resRate = (int)(resRate * (1 + level * mult));
             this.attackSpeed *= (1 + level * mult);
             this.critChance *= (1 + level * mult);
