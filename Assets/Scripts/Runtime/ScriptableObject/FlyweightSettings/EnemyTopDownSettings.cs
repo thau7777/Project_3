@@ -26,7 +26,7 @@ public class EnemyTopDownSettings : FlyweightSettings
 
         // temporary: add CharacterStats component and set it up with default values (can be overridden on spawn)
         var characterStats = go.GetOrAdd<CharacterStats>();
-        characterStats.Setup(elementalType, _initialHealth, 0, 10, 10, 40, 40, 5, 5, 1.5f, 1);
+        //characterStats.Setup(elementalType, _initialHealth, 0, 10, 10, 40, 40, 5, 5, 1.5f, 1);
 
         go.GetOrAdd<NavMeshSteering>().target = GameObject.FindWithTag("Player").transform;
         return flyweight;

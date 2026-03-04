@@ -12,10 +12,10 @@ public class ActiveEffect
     public Flyweight activeVFX;
     public bool IsApplied;
     public float tickTimer;
-    public float storedAttackDamageChanges;
-    public float storedMagicAttackDamageChanges;
-    public float storedPhysicalDefenseChanges;
-    public float storedMagicDefenseChanges;
+    public int storedAttackDamageChanges;
+    public int storedMagicAttackDamageChanges;
+    public int storedPhysicalDefenseChanges;
+    public int storedMagicDefenseChanges;
     public float storedSpeedChanges;
     public float storedCriticalRateChanges;
     public float storedCriticalDamageChanges;

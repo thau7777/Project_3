@@ -78,11 +78,8 @@ namespace MyRule
         [TabGroup("Stats")]
         public int waterDef;
         [TabGroup("Stats")]
-        [LabelText("resRate", LabelTextAttribute.LabelColor.orange)]
-        public int resRate;
-        [TabGroup("Stats")]
-        [LabelText("attackSpeed", LabelTextAttribute.LabelColor.blue)]
-        public float attackSpeed;
+        [LabelText("Speed", LabelTextAttribute.LabelColor.blue)]
+        public float speed;
         [TabGroup("Stats")]
         [LabelText("critChance", LabelTextAttribute.LabelColor.red)]
         public int critChance;

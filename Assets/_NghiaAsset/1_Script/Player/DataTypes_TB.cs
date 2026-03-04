@@ -97,9 +97,9 @@ namespace Turnbase
             this.currentHP = statsSO.hp;
             this.maxMP = statsSO.fp;
             this.currentMP = statsSO.fp;
-            this.maxShield = statsSO.shield;
-            this.currentShield = statsSO.shield;
-            this.physicalAttack = statsSO.physicalDmg;
+            //this.maxShield = statsSO.shield;
+            //this.currentShield = statsSO.shield;
+            this.physicalAttack = statsSO.attackDmg;
             this.magicAttack = statsSO.magicDmg;
             this.physicalDefense = statsSO.phyDef;
             this.magicDefense = statsSO.magicDef;

@@ -185,7 +185,7 @@ public class Effect : ScriptableObject
         float valueToApply = attackDamageModifier.isPercentage ? characterStats.AttackDamage * (attackDamageModifier.value / 100f) : attackDamageModifier.value;
         characterStats.ModifyAttackDamage(Mathf.RoundToInt(valueToApply));
 
-        activeEffect.storedAttackDamageChanges += valueToApply;
+        activeEffect.storedAttackDamageChanges += Mathf.RoundToInt(valueToApply);
     }
     private void ApplyMagicAttackDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
@@ -194,7 +194,7 @@ public class Effect : ScriptableObject
         float valueToApply = magicAttackDamageModifier.isPercentage ? characterStats.MagicAttackDamage * (magicAttackDamageModifier.value / 100f) : magicAttackDamageModifier.value;
         characterStats.ModifyMagicAttackDamage(Mathf.RoundToInt(valueToApply));
 
-        activeEffect.storedMagicAttackDamageChanges += valueToApply;
+        activeEffect.storedMagicAttackDamageChanges += Mathf.RoundToInt(valueToApply);
     }
     private void ApplyPhysicalDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
@@ -203,7 +203,7 @@ public class Effect : ScriptableObject
         float valueToApply = physicalDefenseModifier.isPercentage ? characterStats.PhysicalDefense * (physicalDefenseModifier.value / 100f) : physicalDefenseModifier.value;
         characterStats.ModifyPhysicalDefense(Mathf.RoundToInt(valueToApply));
 
-        activeEffect.storedPhysicalDefenseChanges += valueToApply;
+        activeEffect.storedPhysicalDefenseChanges += Mathf.RoundToInt(valueToApply);
     }
     private void ApplyMagicDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
@@ -212,7 +212,7 @@ public class Effect : ScriptableObject
         float valueToApply = magicDefenseModifier.isPercentage ? characterStats.MagicDefense * (magicDefenseModifier.value / 100f) : magicDefenseModifier.value;
         characterStats.ModifyMagicDefense(Mathf.RoundToInt(valueToApply));
 
-        activeEffect.storedMagicDefenseChanges += valueToApply;
+        activeEffect.storedMagicDefenseChanges += Mathf.RoundToInt(valueToApply);
     }
     private void ApplySpeedModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
