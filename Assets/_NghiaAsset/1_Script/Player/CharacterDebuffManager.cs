@@ -28,7 +28,7 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB stunVFXInstance;
         [HideInInspector] public Sprite stunIcon;
 
-        [Header("PhysicalDefense Reduction Debuff State")]
+        [Header("Defense Reduction Debuff State")]
         [HideInInspector] public int defReductionTurnsRemaining = 0;
         [HideInInspector] public float defReductionPercentage = 0f;
         [HideInInspector] public Flyweight_TB defReductionVFXInstance;

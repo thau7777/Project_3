@@ -10,7 +10,7 @@ namespace Turnbase
         private Character character;
 
 
-        [Header("PhysicalAttack Buff")]
+        [Header("Attack Buff")]
         [HideInInspector] public int attackBuffTurnsRemaining = 0;
         [HideInInspector] public int originalBaseAttack = 0;
         [HideInInspector] public Flyweight_TB attackVFXInstance;
@@ -22,7 +22,7 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB maxHPVFXInstance;
         [HideInInspector] public Sprite maxHPBuffIcon;
 
-        [Header("PhysicalDefense Buff")]
+        [Header("Defense Buff")]
         [HideInInspector] public int originalBaseDefense = 0;
         [HideInInspector] public int defenseBuffTurnsRemaining = 0;
         [HideInInspector] public int defenseBuffAmount = 0;
@@ -36,13 +36,13 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB agilityVFXInstance;
         [HideInInspector] public Sprite agilityBuffIcon;
 
-        [Header("Magical PhysicalAttack Buff")]
+        [Header("Magical Attack Buff")]
         [HideInInspector] public int magicalAttackBuffTurnsRemaining = 0;
         [HideInInspector] public int magicalOriginalBaseAttack = 0;
         [HideInInspector] public Flyweight_TB magicalAttackVFXInstance;
         [HideInInspector] public Sprite magicalAttackBuffIcon;
 
-        [Header("Magical PhysicalDefense Buff")]
+        [Header("Magical Defense Buff")]
         [HideInInspector] public int magicalOriginalBaseDefense = 0;
         [HideInInspector] public int magicalDefenseBuffTurnsRemaining = 0;
         [HideInInspector] public int magicalDefenseBuffAmount = 0;
@@ -55,12 +55,12 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB shieldVFXInstance;
         [HideInInspector] public Sprite shieldIcon;
 
-        [Header("Basic PhysicalAttack Buff")]
+        [Header("Basic Attack Buff")]
         [HideInInspector] public int basicAttackBuffAmount = 0;
         [HideInInspector] public int basicAttackBuffTurnsRemaining = 0;
         [HideInInspector] public Sprite basicAttackBuffIcon;
 
-        [Header("Splash PhysicalAttack Buff")]
+        [Header("Splash Attack Buff")]
         [HideInInspector] public int splashAttackTurnsRemaining = 0;
         [HideInInspector] public float splashDamagePercentage = 0f; 
         [HideInInspector] public Sprite splashAttackIcon;
