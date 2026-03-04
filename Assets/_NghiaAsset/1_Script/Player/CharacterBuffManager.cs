@@ -306,9 +306,10 @@ namespace Turnbase
             Debug.Log($"{character.name} đã nhận buff +{amount} Magical Attack, hiệu lực {duration} lượt. Magical Attack hiện tại: {stats.magicAttack}");
         }
 
-        public void ApplyMagicalDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        public void ApplyMagicalDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon, Skill sourceSkill = null)
         {
             if (amount <= 0 || duration <= 0) return;
+
 
             if (magicalDefenseBuffTurnsRemaining <= 0)
             {
@@ -316,18 +317,9 @@ namespace Turnbase
                 magicalDefenseBuffAmount = amount;
                 stats.magicDefense += amount;
             }
-            else
-            {
-                Debug.Log($"Buff Magical Defense của {character.name} đã được làm mới thời gian.");
-            }
 
-            if (magicalDefenseVFXInstance != null && magicalDefenseVFXInstance != vfxInstance)
-            {
-                Destroy(magicalDefenseVFXInstance);
-            }
             magicalDefenseVFXInstance = vfxInstance;
             magicalDefenseBuffIcon = icon;
-
             magicalDefenseBuffTurnsRemaining = duration;
 
             if (character.battleUIManager != null)
@@ -336,8 +328,7 @@ namespace Turnbase
             }
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
-
-            Debug.Log($"{character.name} đã nhận buff +{amount} Magical Defense, hiệu lực {duration} lượt. Magical Defense hiện tại: {stats.magicDefense}");
+            Debug.Log($"[BUFF] {character.name} đã bật giáp phép. Sẵn sàng phản đòn.");
         }
 
         public void ApplyBasicAttackBuff(int amount, int duration, Sprite icon)
@@ -384,7 +375,7 @@ namespace Turnbase
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
         }
 
-        public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount)
+        public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount, Skill sourceSkill = null)
         {
             if (buffSettings.durationTurns <= 0) return;
 
@@ -406,7 +397,7 @@ namespace Turnbase
                     ApplyMagicalAttackBuff(amount, buffSettings.durationTurns, buffVFX, buffSettings.icon);
                     break;
                 case StatType.MagicalDefense:
-                    ApplyMagicalDefenseBuff(amount, buffSettings.durationTurns, buffVFX, buffSettings.icon);
+                    ApplyMagicalDefenseBuff(amount, buffSettings.durationTurns, buffVFX, buffSettings.icon, sourceSkill);
                     break;
                 case StatType.BasicAttackDamage:
                     ApplyBasicAttackBuff(amount, buffSettings.durationTurns, buffSettings.icon);
@@ -432,34 +423,29 @@ namespace Turnbase
             if (applicationTarget == StackApplicationTarget.None || string.IsNullOrEmpty(stackSetting.stackId))
                 return;
 
+            if (applicationTarget == StackApplicationTarget.Counter && targetCharacter == character)
+            {
+                return;
+            }
+
             Character stackTarget = (applicationTarget == StackApplicationTarget.Self) ? character : targetCharacter;
+
             if (stackTarget == null || !stackTarget.isAlive || stackTarget.buffManager == null) return;
 
             CharacterBuffManager targetBuffManager = stackTarget.buffManager;
             string stackId = stackSetting.stackId;
 
-            if (stackSetting.isStackFinisher && applicationTarget == StackApplicationTarget.Target)
+            if (stackSetting.isStackFinisher && (applicationTarget == StackApplicationTarget.Target || applicationTarget == StackApplicationTarget.Counter))
             {
                 if (stackTarget.debuffManager != null)
                 {
                     DebuffType activeType = skill.activatedDebuff.statToModify;
-
                     if (IsDebuffStackActive(stackTarget.debuffManager, activeType))
                     {
-                        Debug.Log($"[Stack Blocked] {stackTarget.name} vẫn đang chịu hiệu ứng {activeType}. Không thể tích thêm Stack '{stackId}'.");
                         return;
                     }
                 }
             }
-            else if (stackSetting.isStackFinisher && applicationTarget == StackApplicationTarget.Self)
-            {
-                if (stackTarget.buffManager.IsBuffActive(skill.activatedBuff.statToModify))
-                {
-                    Debug.Log($"[Stack Blocked] {stackTarget.name} vẫn đang có Buff. Không thể tích thêm Stack '{stackId}'.");
-                    return;
-                }
-            }
-
 
             if (!targetBuffManager.activeStacks.TryGetValue(stackId, out StackData stackData))
             {
@@ -470,17 +456,19 @@ namespace Turnbase
             if (stackSetting.isStackBuilder)
             {
                 stackData.currentStacks += stackSetting.stackAmountPerUse;
+                Debug.Log($"[Stack] {stackTarget.name} bị tích {stackId}. Hiện tại: {stackData.currentStacks}/{stackSetting.stackThreshold}");
             }
 
             if (stackSetting.isStackFinisher && stackData.currentStacks >= stackSetting.stackThreshold)
             {
-                if (applicationTarget == StackApplicationTarget.Self && skill.activatedBuff.statToModify != StatType.None)
+                if (applicationTarget == StackApplicationTarget.Self)
                 {
-                    targetBuffManager.ApplyBuff(skill.activatedBuff, null, skill.activatedBuff.amount);
+                    targetBuffManager.ApplyBuff(skill.activatedBuff, null, skill.activatedBuff.amount, skill);
                 }
-                else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
+                else if ((applicationTarget == StackApplicationTarget.Target || applicationTarget == StackApplicationTarget.Counter)
+                         && stackTarget.debuffManager != null)
                 {
-                    stackTarget.debuffManager.ApplyDebuff(character, skill.activatedDebuff);
+                    stackTarget.debuffManager.ApplyDebuff(this.character, skill.activatedDebuff);
                 }
 
                 stackData.currentStacks = 0;
@@ -489,7 +477,6 @@ namespace Turnbase
             if (stackTarget.battleUIManager != null)
                 stackTarget.battleUIManager.UpdateCharacterUI(stackTarget);
         }
-
         private bool IsDebuffStackActive(CharacterDebuffManager dm, DebuffType type)
         {
             return type switch
@@ -664,14 +651,11 @@ namespace Turnbase
         {
             if (character.debuffManager == null) return;
 
-            // Lấy cả 2 loại giảm thủ
             float defRed = character.debuffManager.defReductionPercentage;
             float poisonRed = character.debuffManager.poisonReductionPercentage;
 
-            // Chọn cái nào mạnh nhất (hoặc cộng dồn tùy bạn, ở đây mình chọn Max để cân bằng)
             float totalReductionPercent = Mathf.Max(defRed, poisonRed);
 
-            // --- Tính Physical Defense ---
             int finalPDef = originalBaseDefense;
             if (defenseBuffTurnsRemaining > 0) finalPDef += defenseBuffAmount;
 
@@ -681,7 +665,6 @@ namespace Turnbase
             }
             stats.physicalDefense = Mathf.Max(0, finalPDef);
 
-            // --- Tính Magic Defense ---
             int finalMDef = magicalOriginalBaseDefense;
             if (magicalDefenseBuffTurnsRemaining > 0) finalMDef += magicalDefenseBuffAmount;
 

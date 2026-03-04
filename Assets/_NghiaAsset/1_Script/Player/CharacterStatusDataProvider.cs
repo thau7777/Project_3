@@ -113,7 +113,7 @@ namespace Turnbase
                 {
                     Name = "Increase M.Defense",
                     TurnsRemaining = buffManager.magicalDefenseBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
+                    Detail = $"+{buffAmount} M.DEF",
                     IsBuff = true,
                     Icon = buffManager.magicalDefenseBuffIcon
                 });

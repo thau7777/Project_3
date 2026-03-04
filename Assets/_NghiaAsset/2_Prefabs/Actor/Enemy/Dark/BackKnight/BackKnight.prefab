@@ -1437,11 +1437,17 @@ MonoBehaviour:
     maxShield: 119
     currentShield: 0
     physicalAttack: 100
-    physicalDefense: 100
     magicAttack: 10
+    physicalDefense: 100
     magicDefense: 100
-    crit: 0
-    critDamage: 0
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    critChance: 0
+    critMult: 0
     agility: 100
   allClassProfiles:
   - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
@@ -1574,6 +1580,7 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
+  iceArmorCounterSkill: {fileID: 0}
 --- !u!114 &-7500645950520890881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1591,7 +1598,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -1608,6 +1615,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &228614209179218366
 MonoBehaviour:
   m_ObjectHideFlags: 0

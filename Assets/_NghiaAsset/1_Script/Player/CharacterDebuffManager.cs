@@ -434,7 +434,6 @@ namespace Turnbase
             if (!characterTarget.isAlive) yield break;
 
             const ElementType BURN_ELEMENT = ElementType.Fire;
-            //const ElementType POISON_ELEMENT = ElementType.Poison;
 
             bool damageApplied = false;
 
@@ -756,6 +755,11 @@ namespace Turnbase
         public bool IsParalysis()
         {
             return paralysisTurnsRemaining > 0;
+        }
+
+        public bool IsSpeedReduction()
+        {
+            return speedReductionTurnsRemaining > 0;
         }
     }
 }

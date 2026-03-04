@@ -185,6 +185,20 @@ namespace Turnbase
 
             healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
 
+            if (attacker != null && attacker.isAlive && buffManager != null)
+            {
+                if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
+                {
+                    Skill counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter);
+
+                    if (counterSkill != null)
+                    {
+                        buffManager.ProcessSkillStacks(counterSkill, attacker);
+                        Debug.Log($"[COUNTER] Phản đòn bằng chiêu: {counterSkill.skillName}");
+                    }
+                }
+            }
+
             Color elementColor = Color.white;
 
             CameraShaker.Instance.GenerateBasicShake();
