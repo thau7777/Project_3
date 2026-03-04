@@ -103,8 +103,8 @@ public class ChainLightningController : OneShotVFX
 
     private void UpdateLightning()
     {
-        Vector3 start = startTarget.position;
-        Vector3 end = endTarget.position;
+        Vector3 start = startTarget.position.Add(y:1f);
+        Vector3 end = endTarget.position.Add(y: 1f);
 
         Vector3 direction = (end - start).normalized;
         Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;

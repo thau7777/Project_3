@@ -20,19 +20,22 @@ public class EnemyTopdownAttack : State
             ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.Full)
             ctx.RotateSpeed = ctx.CurrentEnemyAttackData.rotateSpeed;
         else
-            ctx.RotateSpeed = ctx.BaseRotateSpeed;
+            ctx.RotateSpeed = 0;
 
         ctx.IsAttacking = true;
         ctx.Animator.CrossFade(ctx.CurrentEnemyAttackData.executeAnimationName, 0,0);
     }protected override void OnUpdate(float deltaTime)
     {
-        if(ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.ExecutingOnly ||
-            ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.Full)
-            ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.CurrentTargetTransform.position);
+        Vector3 direction = ctx.CurrentTargetTransform.position - ctx.RootTransform.position;
+        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, direction);
 
-        if (ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.ExecutingOnly &&
-            ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.Full)
-            ctx.MoveDir = (ctx.CurrentTargetTransform.position - ctx.RootTransform.position).normalized;
+
+        ctx.MoveDir = (ctx.CurrentTargetTransform.position - ctx.RootTransform.position).normalized;
+    }
+    protected override void OnExit()
+    {
+        ctx.CurrentSpeed = ctx.BaseMoveSpeed;
+        ctx.RotateSpeed = ctx.BaseRotateSpeed;
     }
     protected override State GetTransition()
     {
@@ -55,18 +58,19 @@ public class EnemyTopdownAttack : State
 
                 // In optimal range - can attack
                 if (ctx.DistanceToTarget >= ctx.MinRangeDistance &&
-                    ctx.DistanceToTarget <= ctx.MaxRangeDistance &&
-                    ctx.CheckAndPickRandomAttack())
+                    ctx.DistanceToTarget <= ctx.MaxRangeDistance)
                 {
-                    if (ctx.CurrentEnemyAttackData.needCharge)
-                        return ((EnemyTopdownRoot)Parent).Charge;
-                    return ((EnemyTopdownRoot)Parent).Attack;
+                    if (ctx.CheckAndPickRandomAttack())
+                    {
+                        if (ctx.CurrentEnemyAttackData.needCharge)
+                            return ((EnemyTopdownRoot)Parent).Charge;
+                        return ((EnemyTopdownRoot)Parent).Attack;
+                    }else
+                        return ((EnemyTopdownRoot)Parent).Idle;
 
-                    // Stay in move state to maintain optimal distance
                 }
-                if(ctx.DistanceToTarget < 1.5f)
-                    return ((EnemyTopdownRoot)Parent).Idle;
-                return ((EnemyTopdownRoot)Parent).Move;
+                else// Stay in move state to maintain optimal distance
+                    return ((EnemyTopdownRoot)Parent).Move;
                 // Continue moving to get into optimal range
             }
             else

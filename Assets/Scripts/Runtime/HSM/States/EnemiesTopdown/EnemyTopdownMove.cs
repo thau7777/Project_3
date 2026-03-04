@@ -4,22 +4,22 @@ using HSM;
 public class EnemyTopdownMove : State
 {
     readonly EnemyTopdownContext ctx;
-    Vector3 _targetLastPosition;
+    Vector3 _targetLastDirection;
 
-    Vector3 _targetPosition
+    Vector3 _targetDirection
     {
         get
         {
             if (ctx.EnemyType == EnemyTopdownMovementType.Slime)
-                return _targetLastPosition;
+                return _targetLastDirection;
 
             if (ctx.EnemyType == EnemyTopdownMovementType.Range)
             {
                 // For Range enemies, calculate position based on keeping distance
                 return GetRangeEnemyTargetPosition();
             }
-
-            return ctx.CurrentTargetTransform.position;
+            return ctx.NavMeshSteering.GetDirection();
+            //return ctx.CurrentTargetTransform.position;
         }
     }
 
@@ -32,7 +32,7 @@ public class EnemyTopdownMove : State
     {
         ctx.IsMoving = true;
         if (ctx.EnemyType == EnemyTopdownMovementType.Slime)
-            _targetLastPosition = ctx.CurrentTargetTransform.position;
+            _targetLastDirection = ctx.CurrentTargetTransform.position;
 
         ctx.CurrentSpeed = ctx.BaseMoveSpeed;
         ctx.Animator.CrossFade(ctx.MoveHash, 0.1f);
@@ -45,12 +45,12 @@ public class EnemyTopdownMove : State
     protected override void OnUpdate(float deltaTime)
     {
         UpdateMoveDir();
-        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, _targetPosition);
+        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, _targetDirection);
     }
 
     private void UpdateMoveDir()
     {
-        ctx.MoveDir = (_targetPosition - ctx.RootTransform.position).normalized;
+        ctx.MoveDir = _targetDirection;
     }
 
     private Vector3 GetRangeEnemyTargetPosition()
@@ -64,10 +64,13 @@ public class EnemyTopdownMove : State
         {
             // Calculate position opposite to target
             Vector3 directionAwayFromTarget = (currentPos - targetPos).normalized;
-            return currentPos + directionAwayFromTarget * ctx.MinRangeDistance;
+            return directionAwayFromTarget;
         }
-        // Too far - move toward target
-        return targetPos;
+            // Too far - move toward target
+        else if(distanceToTarget > ctx.MaxRangeDistance)
+            return ctx.NavMeshSteering.GetDirection();
+
+        return (targetPos - currentPos).normalized;
         //else if (distanceToTarget >= ctx.MinRangeDistance)
         //{
         //    return targetPos;
@@ -116,14 +119,19 @@ public class EnemyTopdownMove : State
 
             // In optimal range - can attack
             if (ctx.DistanceToTarget >= ctx.MinRangeDistance && 
-                ctx.DistanceToTarget <= ctx.MaxRangeDistance && 
-                ctx.CheckAndPickRandomAttack())
+                ctx.DistanceToTarget <= ctx.MaxRangeDistance)
             {
-                if (ctx.CurrentEnemyAttackData.needCharge)
-                    return ((EnemyTopdownRoot)Parent).Charge;
-                return ((EnemyTopdownRoot)Parent).Attack;
 
-                // Stay in move state to maintain optimal distance
+                if (ctx.CheckAndPickRandomAttack())
+                {
+
+                    if (ctx.CurrentEnemyAttackData.needCharge)
+                        return ((EnemyTopdownRoot)Parent).Charge;
+                    return ((EnemyTopdownRoot)Parent).Attack;
+
+                }
+                else
+                    return ((EnemyTopdownRoot)Parent).Idle;
             }
             // Continue moving to get into optimal range
         }

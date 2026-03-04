@@ -28,6 +28,7 @@ public class EnemyTopDownSettings : FlyweightSettings
         var characterStats = go.GetOrAdd<CharacterStats>();
         characterStats.Setup(elementalType, _initialHealth, 0, 10, 10, 40, 40, 5, 5, 1.5f, 1);
 
+        go.GetOrAdd<NavMeshSteering>().target = GameObject.FindWithTag("Player").transform;
         return flyweight;
     }
 
@@ -45,48 +46,41 @@ public class EnemyTopDownSettings : FlyweightSettings
 
     private Vector3 PickRandomLocationAroundPlayer()
     {
-        _targetGroundObject = GameObject.FindWithTag("Ground");
-        Terrain terrain = _targetGroundObject.GetComponent<Terrain>();
-
-        if (terrain == null)
-        {
-            Debug.LogError("Ground object doesn't have a Terrain component!");
-            return _player.position;
-        }
+        int groundLayer = LayerMask.GetMask("Ground");
+        int allLayers = Physics.AllLayers;
 
         const int maxAttempts = 30;
-        TerrainData terrainData = terrain.terrainData;
-        Vector3 terrainPosition = terrain.transform.position;
 
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            // Calculate random X and Z around player
             Vector2 randomCircle = Random.insideUnitCircle * _spawnRadius;
             float potentialX = _player.position.x + randomCircle.x;
             float potentialZ = _player.position.z + randomCircle.y;
 
-            // Check if position is within terrain bounds
-            if (potentialX >= terrainPosition.x &&
-                potentialX <= terrainPosition.x + terrainData.size.x &&
-                potentialZ >= terrainPosition.z &&
-                potentialZ <= terrainPosition.z + terrainData.size.z)
+            Vector3 rayOrigin = new Vector3(potentialX, _raycastHeight, potentialZ);
+
+            // Cast against ALL layers to find whatever is hit first
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, _raycastHeight * 2f, allLayers))
             {
-                // Sample the actual terrain height at this position
-                float terrainHeight = terrain.SampleHeight(new Vector3(potentialX, 0, potentialZ));
-                float groundY = terrainPosition.y + terrainHeight;
-
-                // Set spawn point below the surface
-                Vector3 spawnPosition = new Vector3(potentialX, groundY - _spawnOffsetBelowGround, potentialZ);
-
-                return spawnPosition;
+                // Only valid if the FIRST thing hit is on the Ground layer
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                {
+                    Vector3 spawnPosition = new Vector3(potentialX, hit.point.y - _spawnOffsetBelowGround, potentialZ);
+                    return spawnPosition;
+                }
+                // If something else (building, object, etc.) was hit first, skip this point
             }
         }
 
-        // Fallback: spawn at player position at terrain height
-        Debug.LogWarning($"Could not find valid position within terrain bounds after {maxAttempts} attempts.");
-        float playerTerrainHeight = terrain.SampleHeight(_player.position);
-        float playerGroundY = terrainPosition.y + playerTerrainHeight;
-        return new Vector3(_player.position.x, playerGroundY - _spawnOffsetBelowGround, _player.position.z);
+        // Fallback: spawn directly at player position using a raycast straight down
+        Debug.LogWarning($"Could not find valid ground-only position after {maxAttempts} attempts. Falling back to player position.");
+        Vector3 fallbackOrigin = new Vector3(_player.position.x, _raycastHeight, _player.position.z);
+        if (Physics.Raycast(fallbackOrigin, Vector3.down, out RaycastHit fallbackHit, _raycastHeight * 2f, groundLayer))
+        {
+            return new Vector3(_player.position.x, fallbackHit.point.y - _spawnOffsetBelowGround, _player.position.z);
+        }
+
+        return _player.position;
     }
 
     public override void OnGet(Flyweight f)

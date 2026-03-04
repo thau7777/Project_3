@@ -86,8 +86,9 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     #endregion
 
     #region Initialization
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (_locomotionSet.characterClass == CharacterClass.Summoner)
             Instantiate(_minionManagerPrefab);
 
@@ -451,10 +452,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
         _context.IsInSpecialMove = false;
         _context.IsAiming = false;
-        _context.CastingSkill = -1;
         _context.IsDashing = false;
         _layerIgnoreController.ResetLayerIgnore();
-        IsParrying = false;
     }
     public void OnDeath()
     {

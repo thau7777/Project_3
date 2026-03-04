@@ -12,6 +12,7 @@ public class EnemyTopdownContext
 {
     public Animator Animator { get; private set; }
     public CharacterController CharacterController { get; private set; }
+    public NavMeshSteering NavMeshSteering { get; private set; }
     public Transform RootTransform { get; private set; }
     [field: SerializeField] public Transform CurrentTargetTransform { get; private set; }
     public float BaseMoveSpeed { get; set; }
@@ -159,6 +160,12 @@ public class EnemyTopdownContext
         public Builder SetCharacterController(CharacterController controller)
         {
             ctx.CharacterController = controller;
+            return this;
+        }
+
+        public Builder SetNavMeshSteering(NavMeshSteering steering)
+        {
+            ctx.NavMeshSteering = steering;
             return this;
         }
 

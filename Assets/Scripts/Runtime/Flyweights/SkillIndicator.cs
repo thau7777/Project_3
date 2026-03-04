@@ -75,7 +75,8 @@ public abstract class SkillIndicator : Flyweight
         }
         if (_lockInCoroutine != null)
             StopCoroutine(_lockInCoroutine);
-        _lockInCoroutine = StartCoroutine(StartLockIn(lockDuration));
+        if (gameObject.activeSelf)
+            _lockInCoroutine = StartCoroutine(StartLockIn(lockDuration));
     }
 
     private IEnumerator StartLockIn(float lockDuration)

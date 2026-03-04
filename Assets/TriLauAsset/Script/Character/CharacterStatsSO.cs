@@ -6,7 +6,7 @@ namespace MyRule
     public class CharacterStatsSO : ScriptableObject
     {
         public int level;
-
+    
         [Header("Stat Points")]
         public int runeNeed;
         public int virgor;

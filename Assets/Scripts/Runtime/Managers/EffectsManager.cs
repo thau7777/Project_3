@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-// ActiveEffect.cs - add maxDuration field
+
 public class ActiveEffect
 {
     public Effect effect;
     public float remainingTime;
-    public float maxDuration;       // NEW - needed for fill calculation
+    public float maxDuration;
     public int currentStacks;
     public Flyweight activeVFX;
     public bool IsApplied;
@@ -25,12 +25,13 @@ public class ActiveEffect
     {
         effect = eff;
         remainingTime = time;
-        maxDuration = time;         // NEW
+        maxDuration = time;
         currentStacks = stacks;
         IsApplied = false;
         tickTimer = 0f;
     }
 }
+
 public class EffectsManager : MonoBehaviour
 {
     private List<ActiveEffect> activeEffectsList = new List<ActiveEffect>();
@@ -38,10 +39,22 @@ public class EffectsManager : MonoBehaviour
     public EffectData testEffectData;
 
     public UnityEvent<ActiveEffect> OnEffectAdded;
-    public UnityEvent<ActiveEffect> OnEffectRemoved;   // NEW
+    public UnityEvent<ActiveEffect> OnEffectRemoved;
+
+    [SerializeField] private float _invincibleDuration = 0.1f;
+    public float InvincibleDuration => _invincibleDuration;
+    private float _invincibleElapsedTime = 0;
+
+    private void OnEnable()
+    {
+        _invincibleElapsedTime = 0;
+    }
 
     void Update()
     {
+        if (_invincibleElapsedTime > 0)
+            _invincibleElapsedTime -= Time.deltaTime;
+
         for (int i = activeEffectsList.Count - 1; i >= 0; i--)
         {
             ActiveEffect ae = activeEffectsList[i];
@@ -51,7 +64,7 @@ public class EffectsManager : MonoBehaviour
             if (ae.remainingTime > 0)
             {
                 ae.remainingTime -= Time.deltaTime;
-                if(ae.IsApplied)
+                if (ae.IsApplied)
                     ae.tickTimer -= Time.deltaTime;
 
                 if (ae.tickTimer <= 0 && ae.IsApplied)
@@ -76,6 +89,8 @@ public class EffectsManager : MonoBehaviour
 
     public void AddEffect(EffectData effectData)
     {
+        if (_invincibleElapsedTime > 0) return;
+
         ActiveEffect existing = activeEffectsList.Find(ae => ae.effect.name == effectData.effect.name);
         if (existing != null)
         {
@@ -86,24 +101,26 @@ public class EffectsManager : MonoBehaviour
             {
                 existing.activeVFX = existing.effect.OnApply(gameObject, existing);
                 existing.remainingTime = effectData.effect.durationOnApply;
-                existing.maxDuration = effectData.effect.durationOnApply;  // NEW
+                existing.maxDuration = effectData.effect.durationOnApply;
                 existing.currentStacks = 0;
                 existing.IsApplied = true;
             }
             else
             {
                 existing.remainingTime = effectData.effect.holdDuration;
-                existing.maxDuration = effectData.effect.holdDuration;      // NEW
+                existing.maxDuration = effectData.effect.holdDuration;
             }
 
+            _invincibleElapsedTime = InvincibleDuration;
             OnEffectAdded?.Invoke(existing);
         }
         else
         {
-            if(effectData.effect.name == "The Wish Under Star")
+            if (effectData.effect.name == "The Wish Under Star")
             {
                 RemoveAllActiveEffects();
             }
+
             ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.effect.holdDuration, effectData.stacksToApply);
             activeEffectsList.Add(newEffect);
 
@@ -111,11 +128,12 @@ public class EffectsManager : MonoBehaviour
             {
                 newEffect.activeVFX = effectData.effect.OnApply(gameObject, newEffect);
                 newEffect.remainingTime = effectData.effect.durationOnApply;
-                newEffect.maxDuration = effectData.effect.durationOnApply;  // NEW
+                newEffect.maxDuration = effectData.effect.durationOnApply;
                 newEffect.currentStacks = 0;
                 newEffect.IsApplied = true;
             }
 
+            _invincibleElapsedTime = InvincibleDuration;
             OnEffectAdded?.Invoke(newEffect);
         }
     }
@@ -130,7 +148,7 @@ public class EffectsManager : MonoBehaviour
     {
         ae.effect.OnRemove(ae, gameObject);
         activeEffectsList.Remove(ae);
-        OnEffectRemoved?.Invoke(ae);    // NEW - notify UI
+        OnEffectRemoved?.Invoke(ae);
     }
 
     public void RemoveEffectByName(string effectName)
@@ -150,15 +168,17 @@ public class EffectsManager : MonoBehaviour
         for (int i = activeEffectsList.Count - 1; i >= 0; i--)
             RemoveEffect(activeEffectsList[i]);
     }
+
     public bool HasEffect(string effectName)
     {
-        foreach(ActiveEffect ae in activeEffectsList)
+        foreach (ActiveEffect ae in activeEffectsList)
         {
             if (ae.effect.name == effectName && ae.IsApplied)
                 return true;
         }
         return false;
     }
+
     public bool HasAnyActiveEffect()
     {
         foreach (ActiveEffect ae in activeEffectsList)
@@ -168,10 +188,12 @@ public class EffectsManager : MonoBehaviour
         }
         return false;
     }
+
     public List<ActiveEffect> GetActiveEffectsList()
     {
         return activeEffectsList;
     }
+
     public float GetRemainingTime(string effectName)
     {
         ActiveEffect ae = activeEffectsList.Find(e => e.effect.name == effectName);

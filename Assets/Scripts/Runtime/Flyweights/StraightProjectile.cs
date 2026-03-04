@@ -16,7 +16,6 @@ public class StraightProjectile : Flyweight
     private float _knockBackForce;
     private bool _dealTrueDamage;
     private float _currentSize;
-    private ElementalType _elementalType;
 
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
@@ -39,7 +38,7 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(GameObject sender, Vector3 direction, float speed, float range, float size,float damage, float knockBackForce, bool dealTrueDamage, LayerMask dodgeLayers, ElementalType elementalType = ElementalType.Normal)
+    public void InitializeProjectile(GameObject sender, Vector3 direction, float speed, float range, float size,float damage, float knockBackForce, bool dealTrueDamage, LayerMask dodgeLayers)
     {
         _sender = sender;
         _direction = direction.normalized;
@@ -55,7 +54,6 @@ public class StraightProjectile : Flyweight
         _knockBackForce = knockBackForce;
         _dealTrueDamage = dealTrueDamage;
         _dodgeLayers = dodgeLayers;
-        _elementalType = elementalType;
     }
 
     private void FixedUpdate()
@@ -93,7 +91,7 @@ public class StraightProjectile : Flyweight
     public void DespawnFlyweight()
     {
         SpawnHitVFX();
-        FlyweightFactory.ReturnToPool(this);
+        ReturnToPool();
     }
 
     private void SpawnHitVFX()
@@ -116,7 +114,7 @@ public class StraightProjectile : Flyweight
         }
         if (impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
         {
-            damageDealer.Setup(_damage, _dealTrueDamage, _knockBackForce, false, _elementalType);
+            damageDealer.Setup(_damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
         }
 
         impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);

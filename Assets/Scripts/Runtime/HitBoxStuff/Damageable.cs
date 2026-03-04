@@ -83,20 +83,36 @@ public class Damageable : MonoBehaviour
     }
     private void OnParticleCollision(GameObject other)
     {
-        if (other.transform.root.TryGetComponent<DamageDealer>(out var damageDealer))
+        if (TryGetComponentInHierarchy<DamageDealer>(other.transform, out var damageDealer))
         {
-            Vector3 hitDirection = transform.position - other.transform.position;
             damageDealer.DealDamage(other, other, gameObject);
         }
-        if(other.transform.root.TryGetComponent<EffectApplier>(out var effectApplier))
+
+        if (TryGetComponentInHierarchy<EffectApplier>(other.transform, out var effectApplier))
         {
             effectApplier.ApplyEffect(other, other, gameObject);
         }
     }
+
+    private bool TryGetComponentInHierarchy<T>(Transform start, out T component) where T : Component
+    {
+        Transform current = start;
+
+        while (current != null)
+        {
+            if (current.TryGetComponent<T>(out component))
+                return true;
+
+            current = current.parent;
+        }
+
+        component = null;
+        return false;
+    }
     public void TakeDamage(GameObject sender, GameObject hitOrigin, float damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
-
+     
         var effectsManager = GetComponent<EffectsManager>();
         if (effectsManager.HasEffect("Unbreaking Thorn Effect"))
         {

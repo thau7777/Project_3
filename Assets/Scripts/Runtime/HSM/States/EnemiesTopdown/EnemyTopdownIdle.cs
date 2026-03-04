@@ -18,8 +18,9 @@ public class EnemyTopdownIdle : State
     protected override void OnUpdate(float deltaTime)
     {
         _moveTimer += deltaTime;
-        
-        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, ctx.CurrentTargetTransform.position);
+
+        Vector3 direction = ctx.CurrentTargetTransform.position - ctx.RootTransform.position;
+        ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, direction);
     }
     
     protected override State GetTransition()
@@ -36,11 +37,36 @@ public class EnemyTopdownIdle : State
         {
             return ((EnemyTopdownRoot)Parent).Hurt;
         }
-        if (ctx.IsTargetInMaxAttackRange())
+        if (ctx.EnemyType == EnemyTopdownMovementType.Range)
+        {
+
+            // In optimal range - can attack
+            if (ctx.DistanceToTarget >= ctx.MinRangeDistance &&
+                ctx.DistanceToTarget <= ctx.MaxRangeDistance)
+            {
+
+                if (ctx.CheckAndPickRandomAttack())
+                {
+
+                    if (ctx.CurrentEnemyAttackData.needCharge)
+                        return ((EnemyTopdownRoot)Parent).Charge;
+                    return ((EnemyTopdownRoot)Parent).Attack;
+
+                }
+                else
+                    return null;
+            }
+            else if(ctx.DistanceToTarget < ctx.MinRangeDistance)
+                return ((EnemyTopdownRoot)Parent).Move;
+            else if(ctx.DistanceToTarget > ctx.MaxRangeDistance)
+                return ((EnemyTopdownRoot)Parent).Move;
+            // Continue moving to get into optimal range
+        }
+        else if (ctx.IsTargetInMaxAttackRange()) // Melee or Slime and target is in attack range
         {
             if (ctx.CheckAndPickRandomAttack())
             {
-                if(ctx.CurrentEnemyAttackData.needCharge)
+                if (ctx.CurrentEnemyAttackData.needCharge)
                     return ((EnemyTopdownRoot)Parent).Charge;
                 return ((EnemyTopdownRoot)Parent).Attack;
             }
@@ -50,15 +76,15 @@ public class EnemyTopdownIdle : State
         }
         else
         {
-            if(ctx.EnemyType != EnemyTopdownMovementType.Slime)
+            if (ctx.EnemyType == EnemyTopdownMovementType.Slime)
             {
-                return ((EnemyTopdownRoot)Parent).Move;
+                if (_moveTimer >= ctx.MovePauseDuration)
+                    return ((EnemyTopdownRoot)Parent).Move;
             }
-            else if(_moveTimer >= ctx.MovePauseDuration)
-            {
+            else
                 return ((EnemyTopdownRoot)Parent).Move;
-            }
-                
+
+
         }
 
         return null;

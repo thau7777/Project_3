@@ -118,7 +118,7 @@ public class ChainLightning : SkillStrategy
 
             checkedRoots.Add(root);
 
-            Transform body = root.Find("Body");
+            Transform body = root.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
             if (body == null) continue;
 
             float dist = Vector3.Distance(mouseWorldPos, body.position);
@@ -152,7 +152,7 @@ public class ChainLightning : SkillStrategy
 
             checkedRoots.Add(root);
 
-            Transform body = root.Find("Body");
+            Transform body = root.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
             if (body == null) continue;
 
             if (exclude.Contains(body.gameObject)) continue;
@@ -170,7 +170,7 @@ public class ChainLightning : SkillStrategy
 
     private Transform GetLightningAnchor(GameObject obj)
     {
-        Transform body = obj.transform.root.Find("Body");
+        Transform body = obj.transform.root.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
         return body != null ? body : obj.transform;
     }
 
@@ -204,7 +204,7 @@ public class ChainLightning : SkillStrategy
     {
         var impactVfx = FlyweightFactory.Spawn(_impactVfxSettings);
         impactVfx.FlyweightInitialize(
-            GetLightningAnchor(target).position.Add(y:0.5f),
+            GetLightningAnchor(target).position.Add(y:1f),
             Quaternion.identity
         );
         if(impactVfx.TryGetComponent<OneShotVFX>(out var oneShotVFX))

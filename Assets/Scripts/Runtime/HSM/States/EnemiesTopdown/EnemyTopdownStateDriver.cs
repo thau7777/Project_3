@@ -11,6 +11,8 @@ public class EnemyTopdownStateDriver : Flyweight
     private Animator _animator;
     [TabGroup("References")]
     private CharacterController _characterController;
+    [TabGroup("References")] 
+    private NavMeshSteering _navMeshSteering;
     [TabGroup("References")]
     private CharacterStats _characterStats;
     #endregion
@@ -27,7 +29,7 @@ public class EnemyTopdownStateDriver : Flyweight
     private float _maxRangeDistance = 10f;
 
     [SerializeField, TabGroup("Movement Settings")]
-    [ShowIfEnumValue("_movementType", EnemyTopdownMovementType.Slime)]
+    [ShowIfEnumValue("_movementType", EnemyTopdownMovementType.Slime, EnemyTopdownMovementType.Range)]
     float _movePauseDuration = 1f;
     [SerializeField, TabGroup("Movement Settings")]
     float _rotateSpeed = 10f;
@@ -56,10 +58,12 @@ public class EnemyTopdownStateDriver : Flyweight
         _characterController.slopeLimit = 0.01f;
         _characterController.stepOffset = 0.01f;
         _characterStats = GetComponent<CharacterStats>();
+        _navMeshSteering = gameObject.GetOrAdd<NavMeshSteering>();
 
         _context = new EnemyTopdownContext.Builder()
             .SetAnimator(_animator)
             .SetCharacterController(_characterController)
+            .SetNavMeshSteering(_navMeshSteering)
             .SetPlayerTransform(GameObject.FindWithTag("Player").transform)
             .SetRootTransform(transform)
             .SetMoveSpeed(_characterStats.Agility)
@@ -199,7 +203,7 @@ public class EnemyTopdownStateDriver : Flyweight
                     _context.CurrentEnemyAttackData.dealTrueDamage,
                     _context.CurrentEnemyAttackData.knockBackForce,
                     _context.CurrentEnemyAttackData.reverseKnockbackDirection,
-                    (settings as EnemyTopDownSettings).elementalType,
+                    oneShotVFXSettings.elementalType,
                     oneShotVFXSettings.hitImpactVFXSetting);
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
@@ -218,8 +222,7 @@ public class EnemyTopdownStateDriver : Flyweight
                 _context.CurrentEnemyAttackData.damage,
                 _context.CurrentEnemyAttackData.knockBackForce,
                 _context.CurrentEnemyAttackData.dealTrueDamage,
-                _context.CurrentEnemyAttackData.dodgeLayers,
-                (settings as EnemyTopDownSettings).elementalType);
+                _context.CurrentEnemyAttackData.dodgeLayers);
         }
 
         if (_chargeEffect)

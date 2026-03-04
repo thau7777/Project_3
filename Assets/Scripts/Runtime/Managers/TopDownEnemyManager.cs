@@ -7,6 +7,9 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     [Header("Enemy Settings")]
     [SerializeField] private List<EnemyTopDownSettings> _enemiesList;
 
+    [SerializeField]
+    private int _testSpawnCount = 5;
+
     private EventBinding<TopDownStartGameEvent> _startGameEventBinding;
 
     private Transform _player;
@@ -60,8 +63,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             Debug.LogWarning("EnemyManager: No enemy settings assigned!");
             return;
         }
-        int spawnCount = 1;
-        for(int i = 0; i < spawnCount; i++)
+        for(int i = 0; i < _testSpawnCount; i++)
         {
             FlyweightFactory.Spawn(_enemiesList[i]);
         }
