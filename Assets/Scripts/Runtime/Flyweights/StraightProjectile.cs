@@ -12,7 +12,8 @@ public class StraightProjectile : Flyweight
     private float _range;
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
-    private float _damage;
+    private int _damage;
+    private bool _isCrit;
     private float _knockBackForce;
     private bool _dealTrueDamage;
     private float _currentSize;
@@ -38,7 +39,7 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(GameObject sender, Vector3 direction, float speed, float range, float size,float damage, float knockBackForce, bool dealTrueDamage, LayerMask dodgeLayers)
+    public void InitializeProjectile(GameObject sender, Vector3 direction, float speed, float range, float size, bool isCrit, int damage, float knockBackForce, bool dealTrueDamage, LayerMask dodgeLayers)
     {
         _sender = sender;
         _direction = direction.normalized;
@@ -50,6 +51,7 @@ public class StraightProjectile : Flyweight
 
         transform.localScale = new Vector3(size, size, size);
 
+        _isCrit = isCrit;
         _damage = damage;
         _knockBackForce = knockBackForce;
         _dealTrueDamage = dealTrueDamage;
@@ -114,7 +116,7 @@ public class StraightProjectile : Flyweight
         }
         if (impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
         {
-            damageDealer.Setup(_damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
+            damageDealer.Setup(_isCrit, _damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
         }
 
         impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);

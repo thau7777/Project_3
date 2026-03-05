@@ -6,7 +6,8 @@ public class DamageDealer : MonoBehaviour
     [SerializeField]
     private OneShotVFXSettings _hitImpactVfx;
     [SerializeField]
-    private float _damage = 40;
+    private int _damage = 40;
+    private bool _isCrit = false;
     private bool _dealTrueDamage = false;
     private float _knockBackForce;
     private bool _reverseKnockBackDirection = false;
@@ -26,8 +27,9 @@ public class DamageDealer : MonoBehaviour
             hitBoxHandler.OnColliderHit.RemoveListener(DealDamage);
         }
     }
-    public void Setup(float damage, bool dealTrueDamage, float knockBackForce, bool reverseKnockBackDirection, ElementalType elementalType = ElementalType.Normal, OneShotVFXSettings hitImpactVfx = null)
+    public void Setup(bool isCrit, int damage, bool dealTrueDamage, float knockBackForce, bool reverseKnockBackDirection, ElementalType elementalType = ElementalType.Normal, OneShotVFXSettings hitImpactVfx = null)
     {
+        _isCrit = isCrit;
         _damage = damage;
         _dealTrueDamage = dealTrueDamage;
         _knockBackForce = knockBackForce;
@@ -48,13 +50,14 @@ public class DamageDealer : MonoBehaviour
                 GetComponent<Flyweight>().ReturnToPool();
 
                 if (sender.TryGetComponent<Damageable>(out var enemy))
-                    enemy.TakeDamage(sender, hitOrigin, 0, _dealTrueDamage, -hitDirection.normalized, 5, _elementalType, _hitImpactVfx);
+                    enemy.TakeDamage(sender, hitOrigin, _isCrit, 0, _dealTrueDamage, -hitDirection.normalized, 5, _elementalType, _hitImpactVfx);
 
                 return;
             }
             targetDamageable.TakeDamage(
                 sender,
-                hitOrigin, 
+                hitOrigin,
+                _isCrit,
                 _damage, 
                 _dealTrueDamage, 
                 _reverseKnockBackDirection ? -hitDirection.normalized : hitDirection.normalized,

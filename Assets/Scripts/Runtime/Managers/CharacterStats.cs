@@ -76,15 +76,21 @@ public class CharacterStats : MonoBehaviour
     public float CriticalRate { get; private set; } = 0.1f;
 
     [field: SerializeField]
-    public float CriticalDamage { get; private set; } = 1.5f;
+    public float CriticalMultiplier { get; private set; } = 1.5f;
 
     [field: SerializeField]
     public float AttackSizeScale { get; private set; } = 1f;
 
     private void Awake()
     {
-        //if (_statsSO)
-        //    Setup();
+        if(_statsSO)
+            Setup(ElementalType.Normal, _statsSO.hp, _statsSO.fp, _statsSO.attackDmg,
+                _statsSO.magicDmg, _statsSO.fireDmg, _statsSO.waterDmg, _statsSO.frostDmg,
+                _statsSO.lightningDmg, _statsSO.holyDmg, _statsSO.darkDmg, _statsSO.poisonDmg,
+                _statsSO.phyDef, _statsSO.magicDef, _statsSO.fireDef, _statsSO.waterDef,
+                _statsSO.frostDef, _statsSO.lightningDef, _statsSO.holyDef, _statsSO.darkDef,
+                _statsSO.poisonDef, _statsSO.speed, _statsSO.critChance, _statsSO.critMult,
+                1);
     }
 
     public void Setup(ElementalType elementalType, int initialHealth, int initialMana, int attackDamage,
@@ -117,7 +123,7 @@ public class CharacterStats : MonoBehaviour
         PoisonDefense = poisonDefense;
         Speed = speed;
         CriticalRate = criticalRate;
-        CriticalDamage = criticalDamage;
+        CriticalMultiplier = criticalDamage;
         AttackSizeScale = attackSizeScale;
     }
 
@@ -155,6 +161,6 @@ public class CharacterStats : MonoBehaviour
     }
 
     public void ModifyCriticalRate(float amount) => CriticalRate += amount;
-    public void ModifyCriticalDamage(float amount) => CriticalDamage += amount;
+    public void ModifyCriticalDamage(float amount) => CriticalMultiplier += amount;
     public void ModifyAttackSizeScale(float amount) => AttackSizeScale += amount;
 }
