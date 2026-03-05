@@ -1,127 +1,208 @@
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 
 namespace MyRule
 {
-    public class RTSCameraController : MonoBehaviour
+    public class RTSCameraController : Singleton<RTSCameraController>
     {
-        #region Refs
-        [Header("Refs")]
-        [SerializeField]
-        [Tooltip("The Cinemachine Virtual Camera to be controlled by the controller.")]
-        public CinemachineCamera VirtualCamera;
+        [Header("References")]
+        [SerializeField] private CinemachineCamera virtualCamera;
+        [SerializeField] private CameraData cameraData;
+        [SerializeField] private Transform target;
+        [SerializeField] private InputProvider input;
 
-        [SerializeField]
-        [Tooltip("The target for the camera to follow.")]
-        public Transform CameraTarget;
+        [Header("Movement")]
+        [SerializeField] private float moveSpeed = 20f;
+        [SerializeField] private AnimationCurve moveSpeedZoomCurve = AnimationCurve.Linear(0f, 0.5f, 1f, 1f);
+        public AnimationCurve MoveSpeedZoomCurve => moveSpeedZoomCurve;
 
-        [Space]
-        [Header("Settings")]
-        public CameraControllerSettings[] Settings;
+        [SerializeField] private float acceleration = 10f;
+        [SerializeField] private float deceleration = 10f;
+        
+        [Space(10)]
+        [SerializeField] private float edgeScrollingMargin = 15f;
+        Vector3 velocity = Vector3.zero;
+        Vector2 edgeScrollInput;
 
-        [Tooltip("How far high the camera is")]
-        public float CameraDistance;
-        public CameraControllerSettings currentSettings;
+        [Header("Rotation")]
+        [SerializeField] private float orbitSensitivity = 0.5f;
+        [SerializeField] private float orbitSmoothing = 5f;
 
-        [Space]
-        [Header("Boundaries")]
-        [SerializeField]
-        public bool enableBoundaries = true;
+        [Header("Zoom")]
+        [SerializeField] private float zoomSpeed = 0.5f;
+        [SerializeField] private float zoomSmoothing = 5f;
+        private float currentZoomSpeed = 0f;
 
-        [SerializeField, Range(-10000, 0)] public float BoundaryMinX = -500f;
-
-        [SerializeField, Range(0, 10000)] public float BoundaryMaxX = 500f;
-
-        [SerializeField, Range(-10000, 0)] public float BoundaryMinZ = -500f;
-
-        [SerializeField, Range(0, 10000)] public float BoundaryMaxZ = 500f;
-        #endregion
-
-        #region Private Fields
-        private IInputProvider _inputProvider;
-        private bool _isRotating;
-        private CinemachinePositionComposer _framingTransposer;
-        private GameObject _virtualCameraGameObject;
-        #endregion
-
-        private void Start()
+        public float ZoomLevel
         {
-            currentSettings = Settings[0];
-            _inputProvider = GetComponent<IInputProvider>();
-            _framingTransposer = VirtualCamera.GetComponent<CinemachinePositionComposer>();
-            _virtualCameraGameObject = VirtualCamera.gameObject;
-        }
-
-        private void Update()
-        {
-            HandleBoundaries();
-        }
-
-        private void HandleMove()
-        {
-            Vector2 moveInput = _inputProvider.MovementInput();
-            if (moveInput.sqrMagnitude > 0f && (!_isRotating || _inputProvider.CanAlwaysRotate))
+            get
             {
-                Vector3 moveVector = new Vector3(moveInput.x, 0, moveInput.y);
-                MoveTargetRelativeToCamera(moveVector, currentSettings.CameraScreenSideSpeed);
+                InputAxis axis = orbitalFollow.RadialAxis;
+
+                return Mathf.InverseLerp(axis.Range.x, axis.Range.y, axis.Value);
             }
         }
 
-        private void MoveTargetRelativeToCamera(Vector3 direction, float speed)
+        [Header("Bounds")]
+        public float minX, maxX, minZ, maxZ;
+
+        private CinemachineOrbitalFollow orbitalFollow;
+
+        protected override void Awake()
         {
-            float minZoom = 1;
-            if (currentSettings.IsRestricted)
+            base.Awake();
+
+            orbitalFollow = virtualCamera.GetComponent<CinemachineOrbitalFollow>();
+        }
+
+        private void LateUpdate()
+        {
+            float deltaTime = Time.unscaledDeltaTime;
+
+            HandleEdgeScrolling();
+
+            HandleMove(deltaTime);
+            
+            HandleOrbit(deltaTime);
+
+            HandleZoom(deltaTime);
+        }
+
+        #region EdgeScrolling
+        private void HandleEdgeScrolling()
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+
+            edgeScrollInput = Vector2.zero;
+
+            if (mousePos.x <= edgeScrollingMargin)
             {
-                minZoom = currentSettings.ZoomLevelData[0].ZoomAmount;
+                edgeScrollInput.x = -1f;
+            }
+            else if (mousePos.x >= Screen.width - edgeScrollingMargin)
+            {
+                edgeScrollInput.x = 1f;
+            }
+
+            if (mousePos.y <= edgeScrollingMargin)
+            {
+                edgeScrollInput.y = -1f;
+            }   
+            else if (mousePos.y >= Screen.height - edgeScrollingMargin)
+            {
+                edgeScrollInput.y = 1f;
+            }
+        }
+        #endregion
+
+        #region Zoom
+        private void HandleZoom(float deltaTime)
+        {
+            InputAxis axis = orbitalFollow.RadialAxis;
+
+            float targetZoomSpeed = 0f;
+
+            if (Mathf.Abs(input.ScrollInput.y) >= 0.001f)
+            {
+                targetZoomSpeed = zoomSpeed * input.ScrollInput.y;
+            }
+
+            currentZoomSpeed = Mathf.Lerp(currentZoomSpeed, targetZoomSpeed, zoomSmoothing * deltaTime);
+
+            axis.Value -= currentZoomSpeed;
+            axis.Value = Mathf.Clamp(axis.Value, axis.Range.x, axis.Range.y);
+
+            orbitalFollow.RadialAxis = axis;
+        }
+        #endregion
+
+        #region Rotation
+        private void HandleOrbit(float deltaTime)
+        {
+            Vector3 orbitInput = input.LookInput * (input.MiddleClickInput ? 1f : 0f);
+
+            orbitInput *= orbitSensitivity;
+
+            InputAxis horizontalAxis = orbitalFollow.HorizontalAxis;
+            InputAxis verticalAxis = orbitalFollow.VerticalAxis;
+
+            //horizontalAxis.Value += orbitInput.x;
+            //verticalAxis.Value -= orbitInput.y;
+
+            horizontalAxis.Value = Mathf.Lerp(horizontalAxis.Value, horizontalAxis.Value + orbitInput.x, orbitSmoothing * deltaTime);
+            verticalAxis.Value = Mathf.Lerp(verticalAxis.Value, verticalAxis.Value + orbitInput.y, orbitSmoothing * deltaTime);
+
+            //horizontalAxis.Value = Mathf.Clamp(horizontalAxis.Value,horizontalAxis.Range.x, horizontalAxis.Range.y);
+            verticalAxis.Value = Mathf.Clamp(verticalAxis.Value, verticalAxis.Range.x, verticalAxis.Range.y);
+
+            orbitalFollow.HorizontalAxis = horizontalAxis;
+            orbitalFollow.VerticalAxis = verticalAxis;
+        }
+        #endregion
+
+        #region Move
+
+        private void HandleMove(float deltaTime)
+        {
+            Vector3 forward = Camera.main.transform.forward;
+            forward.y = 0;
+            forward.Normalize();
+
+            Vector3 right = Camera.main.transform.right;
+            right.y = 0;
+            right.Normalize();
+
+            Vector3 inputVector = new Vector3(input.MoveInput.x + edgeScrollInput.x, 0, input.MoveInput.y + edgeScrollInput.y);
+            inputVector.Normalize();
+
+            float zoomMult = moveSpeedZoomCurve.Evaluate(ZoomLevel);
+
+            Vector3 targetVelocity = inputVector * moveSpeed * zoomMult;
+
+            if (inputVector.magnitude > 0.001f)
+            {
+                velocity = Vector3.MoveTowards(velocity, targetVelocity, acceleration *  deltaTime);
             }
             else
             {
-                minZoom = currentSettings.CameraZoomMin;
+                velocity = Vector3.MoveTowards(velocity, Vector3.zero, deceleration * deltaTime);
             }
 
-            float relativeZoomCameraMoveSpeed = _framingTransposer.CameraDistance / minZoom;
-            Vector3 camForward = _virtualCameraGameObject.transform.forward;
-            Vector3 camRight = _virtualCameraGameObject.transform.right;
-            camForward.y = 0f;
-            camRight.y = 0f;
-            camForward.Normalize();
-            camRight.Normalize();
-            Vector3 relativeDir = (2 * direction.z * camForward) + (camRight * direction.x);
+            Vector3 motion = targetVelocity * deltaTime;
 
-            CameraTarget.Translate(relativeDir * (relativeZoomCameraMoveSpeed * speed * Time.deltaTime));
+            target.position += forward * motion.z + right * motion.x;
+
+            target.position = new Vector3(
+            Mathf.Clamp(target.position.x, minX, maxX),
+            target.position.y,
+            Mathf.Clamp(target.position.z, minZ, maxZ)
+            );
         }
+        #endregion
 
-        private void HandleBoundaries()
+        #region Gizmos
+        private void OnDrawGizmos()
         {
-            if (CameraTarget.position.x > BoundaryMaxX)
-                CameraTarget.position = new Vector3(BoundaryMaxX, CameraTarget.position.y, CameraTarget.position.z);
-            if (CameraTarget.position.x < BoundaryMinX)
-                CameraTarget.position = new Vector3(BoundaryMinX, CameraTarget.position.y, CameraTarget.position.z);
-            if (CameraTarget.position.z > BoundaryMaxZ)
-                CameraTarget.position = new Vector3(CameraTarget.position.x, CameraTarget.position.y, BoundaryMaxZ);
-            if (CameraTarget.position.z < BoundaryMinZ)
-                CameraTarget.position = new Vector3(CameraTarget.position.x, CameraTarget.position.y, BoundaryMinZ);
-        }
+            Gizmos.color = Color.green;
 
-#if UNITY_EDITOR
-        private void OnDrawGizmosSelected()
-        {
-            if (enableBoundaries)
-            {
-                Handles.color = Color.green;
-                Handles.DrawLine(new Vector3(BoundaryMinX, 0, BoundaryMinZ), new Vector3(BoundaryMaxX, 0, BoundaryMinZ));
-                Handles.DrawLine(new Vector3(BoundaryMaxX, 0, BoundaryMinZ), new Vector3(BoundaryMaxX, 0, BoundaryMaxZ));
-                Handles.DrawLine(new Vector3(BoundaryMinX, 0, BoundaryMinZ), new Vector3(BoundaryMinX, 0, BoundaryMaxZ));
-                Handles.DrawLine(new Vector3(BoundaryMinX, 0, BoundaryMaxZ), new Vector3(BoundaryMaxX, 0, BoundaryMaxZ));
-                Handles.Label(new Vector3(BoundaryMinX, 0, 0), $"Min X: {BoundaryMinX}");
-                Handles.Label(new Vector3(BoundaryMaxX, 0, 0), $"Max X: {BoundaryMaxX}");
-                Handles.Label(new Vector3(0, 0, BoundaryMinZ), $"Min Z: {BoundaryMinZ}");
-                Handles.Label(new Vector3(0, 0, BoundaryMaxZ), $"Max Z: {BoundaryMaxZ}");
-            }
-        }
+            Vector3 center = new Vector3(
+                (minX + maxX) / 2f,
+                0,
+                (minZ + maxZ) / 2f
+            );
 
-#endif
+            Vector3 size = new Vector3(
+                maxX - minX,
+                0.1f,
+                maxZ - minZ
+            );
+
+            Gizmos.DrawWireCube(center, size);
+        }
+        #endregion
     }
 }
