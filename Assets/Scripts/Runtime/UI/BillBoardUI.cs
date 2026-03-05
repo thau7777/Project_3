@@ -5,7 +5,7 @@ public class BillBoardUI : MonoBehaviour
     [FoldoutGroup("Camera Settings")]
     [SerializeField] private bool alwaysFaceCamera = true;
     [FoldoutGroup("Camera Settings")]
-    [SerializeField] private bool smoothRotation = true;
+    [SerializeField] private bool smoothRotation = false;
     [FoldoutGroup("Camera Settings")]
     [SerializeField] private float rotationSpeed = 10f;
     private void LateUpdate()

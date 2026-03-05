@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 [CreateAssetMenu(
     fileName = "Fire Circle",
@@ -40,7 +41,13 @@ public class FireCircle : SkillStrategy
                 false);
             
             var damageDealer = skillVfx.GetOrAdd<DamageDealer>();
-            damageDealer.Setup(Damage,
+
+            CharacterStats characterStats = _skillContext.origin.GetComponent<CharacterStats>();
+            bool isCrit = characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < characterStats.CriticalRate;
+            int finalDamage = isCrit ? Mathf.RoundToInt(Damage * characterStats.CriticalMultiplier) : Damage;
+            damageDealer.Setup(
+                isCrit,
+                finalDamage,
                 false,
                 3,
                 false,

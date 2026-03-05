@@ -37,7 +37,7 @@ public class EnemyAttackData
     public float weight;
     public float minRange;
     public float maxRange;
-    public float damage = 10;
+    public int damage = 10;
     public bool dealTrueDamage;
     public bool reverseKnockbackDirection;
     public float knockBackForce = 10f;

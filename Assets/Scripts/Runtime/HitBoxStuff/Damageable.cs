@@ -36,12 +36,14 @@ public class Damageable : MonoBehaviour
     public UnityEvent<float, float> OnHealthChanged;
     public UnityEvent<float, float> OnShieldChanged;
 
+    public FloatingCombatTextSettings floatingCombatTextSettings;
 
     private void Awake()
     {
         _ccLayerIgnoreController = gameObject.GetOrAdd<CharacterControllerLayerIgnoreController>();
         if(transform.tag != "Player")
         _stunVFXSpawnTransform = transform.Find("AboveHead") ?? transform;
+
     }
     public void Initialize(float maxHealth)
     {
@@ -109,10 +111,14 @@ public class Damageable : MonoBehaviour
         component = null;
         return false;
     }
-    public void TakeDamage(GameObject sender, GameObject hitOrigin, float damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
+    public void TakeDamage(GameObject sender, GameObject hitOrigin, bool isCrit, int damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
      
+        FloatingCombatText floatingCombatText = null;
+        if (floatingCombatTextSettings)
+            floatingCombatText = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
+
         var effectsManager = GetComponent<EffectsManager>();
         if (effectsManager.HasEffect("Unbreaking Thorn Effect"))
         {
@@ -122,6 +128,8 @@ public class Damageable : MonoBehaviour
                 stacksToApply = 1
             };
             sender.GetComponent<EffectsManager>()?.AddEffect(PoisonEffectData);
+            if (floatingCombatText) 
+                floatingCombatText.Init("Unbreaking Thorn", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1), false);
         }
         if(effectsManager.HasEffect("Frost Shield Effect"))
         {
@@ -131,11 +139,17 @@ public class Damageable : MonoBehaviour
                 stacksToApply = 1
             };
             sender.GetComponent<EffectsManager>()?.AddEffect(effectData);
+            if(floatingCombatText)
+                floatingCombatText.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1), false);
+             return;
         }
         if(effectsManager.HasEffect("Holy Shield Effect"))
         {
             effectsManager.RemoveEffectByName("Holy Shield Effect");
             CameraShaker.Instance.ShakeRandomDirection(force: 1, duration: 0.2f);
+
+            if(floatingCombatText)
+                floatingCombatText.Init("Holy Shield", FloatingCombatText.CombatTextType.Holy, transform.position.Add(y: 1), false);
             return;
 
         }
@@ -180,6 +194,22 @@ public class Damageable : MonoBehaviour
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
+        if (floatingCombatText)
+        {
+            FloatingCombatText.CombatTextType combatTextType = attackElementalType switch
+            {
+                ElementalType.Fire => FloatingCombatText.CombatTextType.Fire,
+                ElementalType.Water => FloatingCombatText.CombatTextType.Water,
+                ElementalType.Frost => FloatingCombatText.CombatTextType.Frost,
+                ElementalType.Lightning => FloatingCombatText.CombatTextType.Lightning,
+                ElementalType.Poison => FloatingCombatText.CombatTextType.Poison,
+                ElementalType.Holy => FloatingCombatText.CombatTextType.Holy,
+                ElementalType.Dark => FloatingCombatText.CombatTextType.Dark,
+                _ => FloatingCombatText.CombatTextType.Normal
+            };
+
+            floatingCombatText.Init(finalDamage.ToString(), combatTextType, transform.position.Add(y: 1), isCrit);
+        }
         if (CurrentHealth == 0)
         {
             ApplyIgnoreCollisionOnDeath(true);

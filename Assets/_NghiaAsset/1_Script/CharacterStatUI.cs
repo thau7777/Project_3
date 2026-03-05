@@ -164,7 +164,7 @@ namespace Turnbase
 
                 new StatData { Name = "HP", Value = $"{stats.currentHP}/{stats.maxHP}" },
                 new StatData { Name = "MP", Value = $"{stats.currentMP}/{stats.maxMP}" },
-                new StatData { Name = "Shield", Value = $"{stats.currentShield}/{stats.maxShield}" },
+                //new StatData { Name = "Shield", Value = $"{stats.currentShield}/{stats.maxShield}" },
 
                 new StatData { Name = "P. Attack", Value = stats.physicalAttack.ToString() },
                 new StatData { Name = "M. Attack", Value = stats.magicAttack.ToString() },
@@ -173,7 +173,7 @@ namespace Turnbase
 
                 new StatData { Name = "Crit Chance", Value = stats.critChance.ToString(), Suffix = "%" },
                 new StatData { Name = "Crit Damage", Value = stats.critMult.ToString(), Suffix = "%" },
-                new StatData { Name = "Agility", Value = stats.agility.ToString() },
+                new StatData { Name = "Agility", Value = stats.speed.ToString() },
             };
         }
 

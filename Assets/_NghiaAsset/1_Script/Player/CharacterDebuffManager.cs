@@ -19,7 +19,7 @@ namespace Turnbase
 
         [Header("Poison Debuff State")]
         [HideInInspector] public int poisonTurnsRemaining = 0;
-        [HideInInspector] public int poisonDamagePerTurn = 0;
+        [HideInInspector] public float poisonReductionPercentage = 0;
         [HideInInspector] public Flyweight_TB poisonVFXInstance;
         [HideInInspector] public Sprite poisonIcon;
 
@@ -45,6 +45,12 @@ namespace Turnbase
         [HideInInspector] public Flyweight_TB breakVFXInstance;
         [HideInInspector] public Sprite breakIcon;
 
+        [Header("Paralysis Debuff State")]
+        [HideInInspector] public int paralysisTurnsRemaining = 0;
+        [HideInInspector] public float paralysisDamageReduction = 0f;
+        [HideInInspector] public Flyweight_TB paralysisVFXInstance;
+        [HideInInspector] public Sprite paralysisIcon;
+
 
         private void Awake()
         {
@@ -60,10 +66,9 @@ namespace Turnbase
         {
             if (baseDamage <= 0 || duration <= 0) return;
 
-            this.character = attacker;
+            this.character = attacker; 
 
             int finalDamage = baseDamage;
-
             if (attacker != null)
             {
                 foreach (var passive in attacker.passiveSkills)
@@ -90,39 +95,49 @@ namespace Turnbase
             {
                 burnVFXInstance.ReturnToPool();
             }
+
             burnVFXInstance = vfxInstance;
             burnIcon = icon;
 
-            characterTarget.UpdateOwnUI();
-        }
-        public void ApplyPoisonDebuff(Character attacker, int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (baseDamage <= 0 || duration <= 0) return;
-
-            this.character = attacker;
-
-            int finalDamage = baseDamage;
-
-            if (attacker != null)
+            if (burnVFXInstance != null)
             {
-                foreach (var passive in attacker.passiveSkills)
+                var effectController = burnVFXInstance.GetComponentInChildren<CharacterEffectController>();
+                var skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+
+                if (effectController != null && skinnedMesh != null)
                 {
-                    if (passive is Passive_DoTBoost dotBoost)
-                    {
-                        finalDamage = dotBoost.GetBoostedDamage(finalDamage, DoTType.Poison);
-                    }
+                    // 1. Đưa Controller về gốc tọa độ và không làm con của nhân vật
+                    burnVFXInstance.transform.SetParent(null);
+                    burnVFXInstance.transform.position = Vector3.zero;
+                    burnVFXInstance.transform.rotation = Quaternion.identity;
+
+                    // 2. Setup để nó lấy dữ liệu mesh và bắt đầu vẽ effect lên đó
+                    effectController.SetupCharacterEffect(skinnedMesh.transform);
+
+                    Debug.Log($"<color=orange>[Burn]</color> Controller đặt tại (0,0,0), đang vẽ lên {gameObject.name}");
+                }
+                else
+                {
+                    // Logic dự phòng cho các VFX thông thường không dùng Controller
+                    Transform vfxParent = skinnedMesh?.transform.Find("CharacterEffectTarget") ?? characterTarget.buffEffectSpawnPoint;
+                    burnVFXInstance.transform.SetParent(vfxParent ?? this.transform);
+                    burnVFXInstance.transform.localPosition = Vector3.zero;
+                    burnVFXInstance.transform.localRotation = Quaternion.identity;
                 }
             }
-
-            if (poisonTurnsRemaining <= 0)
+            if (characterTarget != null)
             {
-                poisonDamagePerTurn = finalDamage;
+                characterTarget.UpdateOwnUI();
             }
-            else
-            {
-                poisonDamagePerTurn = Mathf.Max(poisonDamagePerTurn, finalDamage);
-            }
+        }
+        public void ApplyPoisonDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        {
+            if (percentage <= 0 || duration <= 0) return;
 
+            if (percentage > poisonReductionPercentage)
+            {
+                poisonReductionPercentage = percentage;
+            }
             poisonTurnsRemaining = duration;
 
             if (poisonVFXInstance != null && poisonVFXInstance != vfxInstance)
@@ -130,11 +145,16 @@ namespace Turnbase
                 poisonVFXInstance.ReturnToPool();
             }
             poisonVFXInstance = vfxInstance;
-
             poisonIcon = icon;
+
+            if (characterTarget.buffManager != null)
+            {
+                characterTarget.buffManager.RecalculateDefenseStat();
+            }
 
             characterTarget.UpdateOwnUI();
         }
+
         public void ApplyStunDebuff(int duration, FlyweightSettings_TB vfxSettings, Sprite icon)
         {
             if (duration <= 0) return;
@@ -254,6 +274,24 @@ namespace Turnbase
             Debug.Log($"[Debuff] {characterTarget.name} bị giảm {percentage * 100}% Speed trong {duration} lượt.");
         }
 
+        public void ApplyParalysisDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        {
+            if(percentage <= 0 || duration <= 0) return;
+
+            this.paralysisDamageReduction = percentage;
+            this.paralysisTurnsRemaining = duration;
+
+            if (paralysisVFXInstance != null && paralysisVFXInstance != vfxInstance)
+            {
+                paralysisVFXInstance.ReturnToPool();
+            }
+
+            paralysisVFXInstance = vfxInstance;
+            paralysisIcon = icon;
+
+            characterTarget.UpdateOwnUI();
+        }
+
 
         private void SetupVFXTransform(Flyweight_TB instance)
         {
@@ -308,8 +346,7 @@ namespace Turnbase
 
                 case DebuffType.Poison:
                     ApplyPoisonDebuff(
-                        attacker,
-                        debuffSettings.baseDamagePerTurn,
+                        debuffSettings.debuffValue,
                         debuffSettings.durationTurns,
                         debuffVFX,
                         debuffSettings.icon
@@ -351,6 +388,15 @@ namespace Turnbase
                     );
                     break;
 
+                case DebuffType.Paralysis:
+                    ApplyParalysisDebuff(
+                        debuffSettings.debuffValue,
+                        debuffSettings.durationTurns,
+                        debuffVFX,
+                        debuffSettings.icon
+                    );
+                    break;
+
             }
         }
 
@@ -377,7 +423,6 @@ namespace Turnbase
             if (!characterTarget.isAlive) yield break;
 
             const ElementType BURN_ELEMENT = ElementType.Fire;
-            const ElementType POISON_ELEMENT = ElementType.Poison;
 
             bool damageApplied = false;
 
@@ -408,26 +453,6 @@ namespace Turnbase
                 damageApplied = false;
             }
 
-            // --- POISON ---
-            if (poisonTurnsRemaining > 0)
-            {
-                int totalPoisonDamage = GetEstimatedPoisonDamage();
-
-                int damagePerTick = totalPoisonDamage / TICKS_COUNT;
-                int remainder = totalPoisonDamage % TICKS_COUNT;
-
-                for (int i = 0; i < TICKS_COUNT; i++)
-                {
-                    if (!characterTarget.isAlive) yield break;
-
-                    int currentTickDamage = (i == TICKS_COUNT - 1) ? (damagePerTick + remainder) : damagePerTick;
-
-                    characterTarget.TakeDamage(null, currentTickDamage, POISON_ELEMENT, ignoreBlock: true);
-                    damageApplied = true;
-
-                    if (i < TICKS_COUNT - 1) yield return new WaitForSeconds(TICK_DELAY);
-                }
-            }
         }
 
         private void RemoveExpiredBurnDebuff()
@@ -445,12 +470,19 @@ namespace Turnbase
 
         private void RemoveExpiredPoisonDebuff()
         {
+            poisonReductionPercentage = 0f;
+            poisonTurnsRemaining = 0;
+
             if (poisonVFXInstance != null)
             {
                 poisonVFXInstance.ReturnToPool();
                 poisonVFXInstance = null;
             }
-            poisonDamagePerTurn = 0;
+
+            if (characterTarget.buffManager != null)
+            {
+                characterTarget.buffManager.RecalculateDefenseStat();
+            }
         }
 
         private void RemoveExpiredStunDebuff()
@@ -534,6 +566,24 @@ namespace Turnbase
             Debug.Log($"Debuff giảm Speed của {characterTarget.name} đã hết hạn.");
         }
 
+        public void RemoveExpiredParalysisDebuf()
+        {
+            speedReductionTurnsRemaining = 0;
+
+            if (paralysisVFXInstance != null)
+            {
+                paralysisVFXInstance.transform.SetParent(null);
+                paralysisVFXInstance.ReturnToPool();
+                paralysisVFXInstance = null;
+            }
+
+            paralysisIcon = null;
+
+            Debug.Log($"Debuff giảm DMG của {characterTarget.name} đã hết hạn.");
+
+        }
+
+
         public void PurifyAllDebuffs()
         {
             bool hadDebuffs = false;
@@ -553,7 +603,7 @@ namespace Turnbase
 
             if (poisonVFXInstance != null) { poisonVFXInstance.ReturnToPool(); poisonVFXInstance = null; }
             poisonTurnsRemaining = 0;
-            poisonDamagePerTurn = 0;
+            poisonReductionPercentage = 0;
             poisonIcon = null;
 
             if (stunVFXInstance != null) { FlyweightFactory_TB.ReturnToPool(stunVFXInstance); stunVFXInstance = null; }
@@ -575,6 +625,12 @@ namespace Turnbase
             speedReductionTurnsRemaining = 0;
             speedReductionPercentage = 0f;
             speedReductionIcon = null;
+
+            if(paralysisVFXInstance != null) { paralysisVFXInstance.ReturnToPool(); paralysisVFXInstance = null; }
+            paralysisTurnsRemaining = 0;
+            paralysisDamageReduction = 0f;
+            paralysisIcon = null;
+
             if (characterTarget.buffManager != null) characterTarget.buffManager.RecalculateSpeedStat();
 
             if (characterTarget.stateMachine != null && characterTarget.stateMachine.currentState == characterTarget.stateMachine.stunnedState)
@@ -657,6 +713,16 @@ namespace Turnbase
                 }
             }
 
+            if(paralysisTurnsRemaining > 0)
+            {
+                paralysisTurnsRemaining--;
+                if(paralysisTurnsRemaining <= 0)
+                {
+                    RemoveExpiredParalysisDebuf();
+                    uiUpdateNeeded = true;
+                }
+            }
+
             if (uiUpdateNeeded && characterTarget.battleUIManager != null)
             {
                 characterTarget.battleUIManager.UpdateCharacterUI(characterTarget);
@@ -673,6 +739,16 @@ namespace Turnbase
         public bool IsBurning()
         {
             return burnTurnsRemaining > 0;
+        }   
+
+        public bool IsParalysis()
+        {
+            return paralysisTurnsRemaining > 0;
+        }
+
+        public bool IsSpeedReduction()
+        {
+            return speedReductionTurnsRemaining > 0;
         }
     }
 }

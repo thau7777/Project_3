@@ -5,7 +5,7 @@ namespace Turnbase
     [CreateAssetMenu(fileName = "NewKillStreak", menuName = "Battle/Passive/Kill Streak")]
     public class Passive_KillStreak : SkillPassive
     {
-        [Tooltip("Phần trăm Attack tăng thêm (0.15 = 15%)")]
+        [Tooltip("Phần trăm PhysicalAttack tăng thêm (0.15 = 15%)")]
         public float attackPercentBonus = 0.15f;
 
         public int durationTurns = 2;

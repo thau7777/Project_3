@@ -73,7 +73,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         => _animator.GetCurrentAnimatorStateInfo(_context.IsUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
 
     bool _inIsInAttackAnim
-        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
+        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("PhysicalAttack");
 
     [field: SerializeField] public bool IsParrying { get; set; } = false;
     #endregion
@@ -298,8 +298,11 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                 }
                 if(oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
                 {
+                    bool isCrit = _characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < _characterStats.CriticalRate;
+                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage * (isCrit ? _characterStats.CriticalMultiplier : 1));
                     damageDealer.Setup(
-                        _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
+                        isCrit,
+                        finalDamage,
                         false,
                         _locomotionSet.CurrentAttackData.knockbackForce,
                         false);
@@ -322,13 +325,18 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                 if (vfx is StraightProjectile)
                 {
                     var straightProjectile = vfx as StraightProjectile;
+
+                    bool isCrit = _characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < _characterStats.CriticalRate;
+                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage * (isCrit ? _characterStats.CriticalMultiplier : 1));
+
                     straightProjectile.InitializeProjectile(
                         gameObject,
                         spawnPoint.forward, 
                         _locomotionSet.CurrentAttackData.projectileSpeed, 
                         _locomotionSet.CurrentAttackData.projectileDuration,
                         _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale, 
-                        _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
+                        isCrit,
+                        finalDamage,
                         _locomotionSet.CurrentAttackData.knockbackForce,
                         false,
                         _locomotionSet.CurrentAttackData.dodgeLayers);
@@ -351,8 +359,11 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
                     if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
                     {
+                        bool isCrit = _characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < _characterStats.CriticalRate;
+                        int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage * (isCrit ? _characterStats.CriticalMultiplier : 1));
                         damageDealer.Setup(
-                            _locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage,
+                            isCrit,
+                            finalDamage,
                             false,
                             _locomotionSet.CurrentAttackData.knockbackForce,
                             false);

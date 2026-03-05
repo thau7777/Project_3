@@ -5,11 +5,13 @@ namespace Turnbase
     public static class DamageCalculator
     {
         public static bool IsLastHitCrit;
+
         public static int GetFinalDamage(Character user, Character target, Skill skill, BattleManager battleManager)
         {
             int offensiveStat;
             int defensiveStat;
 
+            // 1. Lấy chỉ số cơ bản (Physical vs Magical)
             switch (skill.elementType)
             {
                 case ElementType.Magical:
@@ -24,117 +26,110 @@ namespace Turnbase
                     offensiveStat = user.stats.magicAttack;
                     defensiveStat = target.stats.magicDefense;
 
-                    //xuyên phòng thủ phép 
                     foreach (var passive in user.passiveSkills)
                     {
                         if (passive is Passive_MagicPenetration magicPen)
-                        {
                             defensiveStat = magicPen.GetReducedDefense(defensiveStat);
-                        }
                     }
                     break;
 
-                case ElementType.Physical:
-                case ElementType.None:
+                default: // Physical / Normal / None
                     offensiveStat = user.stats.physicalAttack;
                     defensiveStat = target.stats.physicalDefense;
 
-                    //xuyên phong thủ vật lý
                     foreach (var passive in user.passiveSkills)
                     {
                         if (passive is Passive_ArmorPenetration armorPen)
-                        {
                             defensiveStat = armorPen.GetReducedDefense(defensiveStat);
-                        }
                     }
-                    break;
-
-                default:
-                    offensiveStat = user.stats.physicalAttack;
-                    defensiveStat = target.stats.physicalDefense;
                     break;
             }
 
-            //st cơ bản -> giảmt trừ phòng thủ -> khắc chế nguyên tố -> chí mạng -> final damage
-
-
+            // 2. Tính Sát thương thô (Raw Damage)
             int rawDamage = offensiveStat * skill.damage;
 
+            // Xử lý Buff đánh thường
             if (skill.manaCost <= 0)
             {
                 if (user.buffManager != null && user.buffManager.basicAttackBuffTurnsRemaining > 0)
-                {
                     rawDamage += user.buffManager.basicAttackBuffAmount;
-                    Debug.Log($"[BUFF] Cộng thêm {user.buffManager.basicAttackBuffAmount} sát thương vào đòn đánh thường.");
-                }
 
                 foreach (var passive in user.passiveSkills)
-                {
                     if (passive is Passive_BasicAttackBoost boost)
-                    {
                         rawDamage = boost.ApplyBoost(rawDamage);
-                    }
-                }
             }
 
+            // 3. Tính Giảm trừ theo Giáp/Kháng phép (Defense Multiplier)
             float defenseMultiplier = 100f / (defensiveStat + 100f);
             float damageBase = rawDamage * defenseMultiplier;
 
-            float elementMultiplier = GetElementMultiplier(skill, target, battleManager);
-            float preCritDamageFloat = damageBase * elementMultiplier;
+            // 4. ÁP DỤNG ELEMENTAL BONUS & DEFENSE (MỚI THÊM)
+            float elementBonusMod = GetElementDamageBonus(user, skill.elementType);
+            float elementDefenseMod = GetElementDefenseReduction(target, skill.elementType);
 
+            // Công thức: Damage * (1 + %Bonus/100) * (1 - %Defense/100)
+            damageBase = damageBase * (1f + elementBonusMod / 100f) * (1f - elementDefenseMod / 100f);
+
+            // 5. Khắc chế hệ (Element Chart - multiplier từ BattleManager)
+            float elementChartMultiplier = GetElementMultiplier(skill, target, battleManager);
+            float currentDamage = damageBase * elementChartMultiplier;
+
+            // 6. Bonus từ Buff đặc biệt (ví dụ: Hiến tế)
+            if (user.buffManager != null && user.buffManager.lifeForPowerTurnsRemaining > 0)
+            {
+                currentDamage += user.buffManager.lifeForPowerBonusDamage;
+            }
+
+            // 7. Tính Chí mạng (Critical)
             IsLastHitCrit = UnityEngine.Random.Range(0, 100) < user.stats.critChance;
-            // Thêm vào ngay sau dòng tính isCrit
-            Debug.Log($"[CALC] Tỉ lệ Crit: {user.stats.critChance} | Kết quả Roll: {IsLastHitCrit}");
-
             if (IsLastHitCrit)
             {
-                float oldDamage = preCritDamageFloat;
                 float critMultiplier = (float)user.stats.critMult / 100f;
-                preCritDamageFloat *= critMultiplier;
-                Debug.Log($"[CALC] Đã nhân Crit: {oldDamage} -> {preCritDamageFloat} (Multiplier: {critMultiplier})");
+                currentDamage *= critMultiplier;
             }
 
-            int finalDamage = Mathf.RoundToInt(preCritDamageFloat);
+            // Kết quả cuối cùng
+            int finalDamage = Mathf.RoundToInt(currentDamage);
+            return rawDamage > 0 ? Mathf.Max(1, finalDamage) : 0;
+        }
 
-            if (rawDamage > 0)
+        // Hàm bổ trợ lấy % Bonus sát thương theo hệ
+        private static int GetElementDamageBonus(Character user, ElementType type)
+        {
+            return type switch
             {
-                finalDamage = Mathf.Max(1, finalDamage);
-            }
+                ElementType.Fire => user.stats.fireDamageBonus,
+                ElementType.Lightning => user.stats.lightningDamageBonus,
+                ElementType.Frost => user.stats.frostDamageBonus,
+                ElementType.Dark => user.stats.darkDamageBonus,
+                ElementType.Holy => user.stats.holyDamageBonus,
+                ElementType.Water => user.stats.waterDamageBonus,
+                ElementType.Poison => user.stats.poisonDamageBonus,
+                _ => 0
+            };
+        }
 
-
-            return finalDamage;
+        // Hàm bổ trợ lấy % Giảm sát thương theo hệ
+        private static int GetElementDefenseReduction(Character target, ElementType type)
+        {
+            return type switch
+            {
+                ElementType.Fire => target.stats.fireDefense,
+                ElementType.Lightning => target.stats.lightningDefense,
+                ElementType.Frost => target.stats.frostDefense,
+                ElementType.Dark => target.stats.darkDefense,
+                ElementType.Holy => target.stats.holyDefense,
+                ElementType.Water => target.stats.waterDefense,
+                ElementType.Poison => target.stats.poisonDefense,
+                _ => 0
+            };
         }
 
         private static float GetElementMultiplier(Skill skill, Character target, BattleManager battleManager)
         {
             if (battleManager != null && battleManager.elementChart != null)
-            {
                 return battleManager.elementChart.GetMultiplier(skill.elementType, target.characterElement);
-            }
             return 1.0f;
-        }
-
-        /// <summary>
-        /// Công thức giảm damage theo chỉ số chống chịu (Armor hoặc MR).
-        /// </summary>
-        private static float GetReduction(float stat)
-        {
-            if (stat >= 0)
-                return 100f / (100f + stat);
-            else
-                return 2f - (100f / (100f - stat)); // xử lý khi xuyên giáp khiến stat âm
-        }
-
-        /// <summary>
-        /// Công thức tăng damage theo chỉ số tấn công (AD hoặc AP).
-        /// </summary>
-        private static float GetBonusDamage(float stat)
-        {
-            if (stat >= 0)
-                return 1f + (stat / 100f);
-            else
-                return 1f - (stat / 100f);
         }
     }
 }

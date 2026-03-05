@@ -121,12 +121,12 @@ public class ElementalManager : Singleton<ElementalManager>
     /// Calculates final damage after applying elemental multiplier and additional buff multipliers.
     /// Invokes OnDamageCalculated event with the results.
     /// </summary>
-    public float CalculateDamage(float baseDamage, ElementalType attackerElement, ElementalType defenderElement)
+    public float CalculateDamage(int baseDamage, ElementalType attackerElement, ElementalType defenderElement)
     {
         float elementalMultiplier = GetDamageMultiplier(attackerElement, defenderElement);
         float finalDamage = baseDamage * elementalMultiplier;
 
-        return finalDamage;
+        return Mathf.RoundToInt(finalDamage);
     }
 
 }

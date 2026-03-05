@@ -50,11 +50,11 @@ public class Skill : ScriptableObject
     [Header("Stack Properties")]
     public StackApplicationTarget stackApplicationTarget;
 
-    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self, StackApplicationTarget.Target)]
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self, StackApplicationTarget.Target, StackApplicationTarget.Counter)]
     public StackSetting stackSetting;
     [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Self)]
     public BuffSettings activatedBuff;
-    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Target)]
+    [ShowIfEnumValue("stackApplicationTarget", StackApplicationTarget.Target, StackApplicationTarget.Counter)]
     public DebuffSettings activatedDebuff;
 
     [Header("Color Lookup")]
@@ -117,14 +117,14 @@ public enum StackApplicationTarget
     None,
     Self,
     Target,
-
+    Counter,
 }
 
 public enum StatType
 {
     None,
-    Attack,
-    Defense,
+    PhysicalAttack,
+    PhysicalDefense,
     Agility,
     MaxHP,
     MagicalAttack,
@@ -134,6 +134,8 @@ public enum StatType
     SplashDamage,
     DivineShield,
     Purify,
+    ApplyLifeForPower,
+
 
 }
 
@@ -189,6 +191,7 @@ public enum  DebuffType
     DefReduction,
     Break,
     SpeedReduction,
+    Paralysis,
 
 
 }

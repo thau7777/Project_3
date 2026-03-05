@@ -28,18 +28,18 @@ namespace Turnbase
             if (buffManager == null || debuffManager == null) return effects;
 
 
-            if (buffManager.shieldTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Shield",
-                    TurnsRemaining = buffManager.shieldTurnsRemaining,
-                    Detail = $"{stats.currentShield} Shield",
-                    IsBuff = true,
-                    Icon = buffManager.shieldIcon
+            ////if (buffManager.shieldTurnsRemaining > 0)
+            ////{
+            ////    effects.Add(new StatusEffectData
+            ////    {
+            ////        Name = "Shield",
+            ////        TurnsRemaining = buffManager.shieldTurnsRemaining,
+            ////        Detail = $"{stats.currentShield} Shield",
+            ////        IsBuff = true,
+            ////        Icon = buffManager.shieldIcon
 
-                });
-            }
+            ////    });
+            ////}
 
             if (buffManager.attackBuffTurnsRemaining > 0)
             {
@@ -69,7 +69,7 @@ namespace Turnbase
 
             if (buffManager.agilityBuffTurnsRemaining > 0)
             {
-                int buffAmount = stats.agility - buffManager.originalBaseAgility;
+                int buffAmount = stats.speed - buffManager.originalBaseAgility;
                 effects.Add(new StatusEffectData
                 {
                     Name = "Increase Agility",
@@ -113,7 +113,7 @@ namespace Turnbase
                 {
                     Name = "Increase M.Defense",
                     TurnsRemaining = buffManager.magicalDefenseBuffTurnsRemaining,
-                    Detail = $"+{buffAmount}",
+                    Detail = $"+{buffAmount} M.DEF",
                     IsBuff = true,
                     Icon = buffManager.magicalDefenseBuffIcon
                 });
@@ -136,12 +136,12 @@ namespace Turnbase
 
             if (debuffManager.poisonTurnsRemaining > 0)
             {
-                int estimatedDmg = debuffManager.GetEstimatedPoisonDamage();
+                float debuffValue = debuffManager.poisonReductionPercentage * 100f;
                 effects.Add(new StatusEffectData
                 {
                     Name = "Poison",
                     TurnsRemaining = debuffManager.poisonTurnsRemaining,
-                    Detail = $"{estimatedDmg} Damage/turn",
+                    Detail = $"{debuffValue}% DEF Reduction + Weakness Break Efficiency",
                     IsBuff = false,
                     Icon = debuffManager.poisonIcon
                 });
@@ -200,6 +200,20 @@ namespace Turnbase
                 });
             }
 
+            if(debuffManager.paralysisTurnsRemaining > 0)
+            {
+                int debuffReduction = Mathf.RoundToInt(debuffManager.paralysisDamageReduction);
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Paralysis",
+                    TurnsRemaining = debuffManager.paralysisTurnsRemaining,
+                    Detail = $"{debuffReduction}% DMG Reduction",
+                    IsBuff = false,
+                    Icon = debuffManager.paralysisIcon
+                });
+
+            }
+
             if (buffManager.basicAttackBuffTurnsRemaining > 0)
             {
                 effects.Add(new StatusEffectData
@@ -251,6 +265,18 @@ namespace Turnbase
                         Icon = passive.icon 
                     });
                 }
+            }
+
+            if(buffManager.lifeForPowerTurnsRemaining > 0)
+            {
+                effects.Add(new StatusEffectData
+                {
+                    Name = "Life For Power",
+                    TurnsRemaining = buffManager.lifeForPowerTurnsRemaining,
+                    Detail = $"+{buffManager.lifeForPowerBonusDamage}% Bonus Dmg",
+                    IsBuff = true,
+                    Icon = buffManager.lifeForPowerIcon
+                });
             }
 
             return effects;

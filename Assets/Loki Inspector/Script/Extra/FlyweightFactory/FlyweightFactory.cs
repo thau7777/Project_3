@@ -164,4 +164,5 @@ public enum FlyweightType
     Basic_Heal,
     EnemyEffectsIcon,
     Explosion_Poison_3,
+    FloatingCombatText,
 }
