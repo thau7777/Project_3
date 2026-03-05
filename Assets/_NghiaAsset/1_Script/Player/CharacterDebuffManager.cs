@@ -736,19 +736,6 @@ namespace Turnbase
             return poisonTurnsRemaining > 0;
         }
 
-        public bool IsBurning()
-        {
-            return burnTurnsRemaining > 0;
-        }   
 
-        public bool IsParalysis()
-        {
-            return paralysisTurnsRemaining > 0;
-        }
-
-        public bool IsSpeedReduction()
-        {
-            return speedReductionTurnsRemaining > 0;
-        }
     }
 }
