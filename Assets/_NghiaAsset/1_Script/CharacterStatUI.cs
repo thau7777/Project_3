@@ -173,7 +173,7 @@ namespace Turnbase
 
                 new StatData { Name = "Crit Chance", Value = stats.critChance.ToString(), Suffix = "%" },
                 new StatData { Name = "Crit Damage", Value = stats.critMult.ToString(), Suffix = "%" },
-                new StatData { Name = "Agility", Value = stats.agility.ToString() },
+                new StatData { Name = "Agility", Value = stats.speed.ToString() },
             };
         }
 

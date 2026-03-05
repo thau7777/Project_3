@@ -69,7 +69,7 @@ namespace Turnbase
 
             if (buffManager.agilityBuffTurnsRemaining > 0)
             {
-                int buffAmount = stats.agility - buffManager.originalBaseAgility;
+                int buffAmount = stats.speed - buffManager.originalBaseAgility;
                 effects.Add(new StatusEffectData
                 {
                     Name = "Increase Agility",

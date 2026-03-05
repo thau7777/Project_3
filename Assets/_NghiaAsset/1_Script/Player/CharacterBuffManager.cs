@@ -99,9 +99,9 @@ namespace Turnbase
             {
                 magicalOriginalBaseDefense = stats.magicDefense;
             }
-            if (originalBaseAgility == 0 && stats.agility > 0)
+            if (originalBaseAgility == 0 && stats.speed > 0)
             {
-                originalBaseAgility = stats.agility;
+                originalBaseAgility = stats.speed;
             }
         }
 
@@ -252,7 +252,7 @@ namespace Turnbase
 
             if (originalBaseAgility <= 0)
             {
-                originalBaseAgility = stats.agility;
+                originalBaseAgility = stats.speed;
             }
 
             agilityBuffAmount = amount;
@@ -274,7 +274,7 @@ namespace Turnbase
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
-            Debug.Log($"{character.name} đã nhận buff +{amount} Agility. Agility thực tế sau tính toán: {stats.agility}");
+            Debug.Log($"{character.name} đã nhận buff +{amount} Agility. Agility thực tế sau tính toán: {stats.speed}");
         }
 
         public void ApplyMagicalAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon, Skill sourceSkill = null)
@@ -624,7 +624,7 @@ namespace Turnbase
 
             RecalculateSpeedStat();
 
-            Debug.Log($"Buff Agility của {character.name} đã hết hạn. Agility hiện tại: {stats.agility}");
+            Debug.Log($"Buff Agility của {character.name} đã hết hạn. Agility hiện tại: {stats.speed}");
         }
 
         public void RemoveExpiredMagicalAttackBuff()
@@ -742,9 +742,9 @@ namespace Turnbase
                 finalAgility -= Mathf.FloorToInt(reduction);
             }
 
-            stats.agility = Mathf.Max(0, finalAgility);
+            stats.speed = Mathf.Max(0, finalAgility);
 
-            Debug.Log($"[{character.name}] Recalculate: Agility={stats.agility}. Debuff: -{speedReductionPercentage * 100:F0}%");
+            Debug.Log($"[{character.name}] Recalculate: Agility={stats.speed}. Debuff: -{speedReductionPercentage * 100:F0}%");
             character.UpdateOwnUI();
         }
 

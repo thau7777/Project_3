@@ -24425,6 +24425,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000074505806, y: 0.76831603, z: 0.17405795}
     m_Extent: {x: 0.05409645, y: 0.023912191, z: 0.022788003}
   m_DirtyAABB: 0
+--- !u!1 &7212542878183935420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5996785610798003772}
+  m_Layer: 3
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5996785610798003772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7212542878183935420}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9063399826827426302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7242757412512162802
 GameObject:
   m_ObjectHideFlags: 0
@@ -25089,11 +25120,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7467601079727508740}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5996785610798003772}
   m_Father: {fileID: 75167956460423509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3011284552190677000
@@ -28084,9 +28116,17 @@ MonoBehaviour:
     darkDefense: 0
     holyDefense: 0
     waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
     critChance: 0
     critMult: 0
-    agility: 111
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: f2bb29f02316b1e4aa5b898e132dc7ac, type: 2}
   skills: []
@@ -28186,7 +28226,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
-  iceArmorSkill: {fileID: 11400000, guid: be02b0222ae3e144295d80cfa147e2da, type: 2}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &3643947891567202690
 MonoBehaviour:
   m_ObjectHideFlags: 0

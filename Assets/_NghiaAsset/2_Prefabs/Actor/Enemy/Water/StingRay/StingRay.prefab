@@ -1591,7 +1591,7 @@ Transform:
   m_GameObject: {fileID: 8083454903267841439}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.45494607, y: 0, z: -0.3050042}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1652,7 +1652,7 @@ MonoBehaviour:
     currentHP: 0
     maxMP: 100
     currentMP: 100
-    maxShield: 119
+    maxShield: 0
     currentShield: 0
     physicalAttack: 10
     magicAttack: 10
@@ -1664,9 +1664,17 @@ MonoBehaviour:
     darkDefense: 0
     holyDefense: 0
     waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
     critChance: 0
     critMult: 0
-    agility: 100
+    speed: 99
   allClassProfiles:
   - {fileID: 11400000, guid: 45bc4cd7e6358274b902e5746b53785f, type: 2}
   skills:
@@ -1798,7 +1806,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
-  iceArmorCounterSkill: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-7500645950520890881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2325,7 +2336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.0011149084
+      value: -0.00002412867
       objectReference: {fileID: 0}
     - target: {fileID: 3007005267049377827, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
       propertyPath: m_AnchoredPosition.y

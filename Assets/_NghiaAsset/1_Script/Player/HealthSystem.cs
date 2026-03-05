@@ -85,7 +85,7 @@ namespace Turnbase
             if (owner.battleManager?.elementChart != null)
                 multiplier = owner.battleManager.elementChart.GetMultiplier(element, enemy.characterElement);
 
-            if (element == ElementType.Normal || multiplier > 1.0f)
+            if(multiplier > 1.0f)
             {
                 float reduction = TRAILDBLAZE_REDUCTION;
 

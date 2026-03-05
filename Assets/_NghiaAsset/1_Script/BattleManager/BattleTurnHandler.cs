@@ -26,7 +26,7 @@ namespace Turnbase
                     {
                         if (combatant == null || !combatant.isAlive) continue;
 
-                        combatant.actionGauge += combatant.stats.agility * Time.deltaTime;
+                        combatant.actionGauge += combatant.stats.speed * Time.deltaTime;
 
                         if (combatant.actionGauge >= 100)
                         {

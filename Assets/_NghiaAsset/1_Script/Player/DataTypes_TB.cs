@@ -78,16 +78,29 @@ namespace Turnbase
         
         public int physicalDefense;
         public int magicDefense;
+
+
         public int fireDefense;
         public int lightningDefense;
         public int frostDefense;
         public int darkDefense;
         public int holyDefense;
         public int waterDefense;
+        public int poisonDefense;
+
+        public int fireDamageBonus;
+        public int lightningDamageBonus;
+        public int frostDamageBonus;
+        public int darkDamageBonus;
+        public int holyDamageBonus;
+        public int waterDamageBonus;
+        public int poisonDamageBonus;
+
+
 
         public int critChance;
         public int critMult;
-        public int agility;
+        public int speed;
 
         public CharacterStats() { }
 
@@ -103,12 +116,26 @@ namespace Turnbase
             this.magicAttack = statsSO.magicDmg;
             this.physicalDefense = statsSO.phyDef;
             this.magicDefense = statsSO.magicDef;
+
+
             this.fireDefense = statsSO.fireDef;
             this.lightningDefense = statsSO.lightningDef;
             this.frostDefense = statsSO.frostDef;
             this.darkDefense = statsSO.darkDef;
             this.holyDefense = statsSO.holyDef;
             this.waterDefense = statsSO.waterDef;
+            this.poisonDefense = statsSO.poisonDef;
+
+            this.fireDamageBonus = statsSO.fireDmg;
+            this.lightningDamageBonus = statsSO.lightningDmg;
+            this.frostDamageBonus = statsSO.frostDmg;
+            this.darkDamageBonus = statsSO.darkDmg;
+            this.holyDamageBonus = statsSO.holyDmg;
+            this.waterDamageBonus = statsSO.waterDmg;
+            this.poisonDamageBonus = statsSO.poisonDmg;
+
+            this.speed = (int) statsSO.speed;
+
             this.critChance = statsSO.critChance;
             this.critMult = (int) (statsSO.critMult * 100);
         }

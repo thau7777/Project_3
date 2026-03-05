@@ -64,12 +64,10 @@ namespace Turnbase
 
         public void ApplyBurnDebuff(Character attacker, int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
-            // 1. Kiểm tra điều kiện đầu vào cơ bản
             if (baseDamage <= 0 || duration <= 0) return;
 
-            this.character = attacker; // Attacker thường được lưu để tính toán damage buff/debuff từ người đánh
+            this.character = attacker; 
 
-            // 2. Tính toán Damage dựa trên các nội tại (Passive) của người đánh
             int finalDamage = baseDamage;
             if (attacker != null)
             {
@@ -82,7 +80,6 @@ namespace Turnbase
                 }
             }
 
-            // 3. Logic cộng dồn hoặc ghi đè damage (Giữ giá trị damage cao nhất)
             if (burnTurnsRemaining <= 0)
             {
                 burnDamagePerTurn = finalDamage;
@@ -94,7 +91,6 @@ namespace Turnbase
 
             burnTurnsRemaining = duration;
 
-            // 4. Xử lý VFX (Visual Effects)
             if (burnVFXInstance != null && burnVFXInstance != vfxInstance)
             {
                 burnVFXInstance.ReturnToPool();
@@ -103,39 +99,32 @@ namespace Turnbase
             burnVFXInstance = vfxInstance;
             burnIcon = icon;
 
-            // 5. Cập nhật vị trí và dán VFX vào Mesh (Phần quan trọng nhất)
             if (burnVFXInstance != null)
             {
                 var effectController = burnVFXInstance.GetComponentInChildren<CharacterEffectController>();
-
-                // Tìm Mesh ở các object con (như object Model hoặc Body) để tránh lỗi MissingComponent
                 var skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
 
                 if (effectController != null && skinnedMesh != null)
                 {
-                    // Trường hợp: VFX Graph / Shader (Cần dán vào Mesh)
-                    burnVFXInstance.transform.SetParent(this.transform);
-                    burnVFXInstance.transform.localPosition = Vector3.zero;
-                    burnVFXInstance.transform.localRotation = Quaternion.identity;
+                    // 1. Đưa Controller về gốc tọa độ và không làm con của nhân vật
+                    burnVFXInstance.transform.SetParent(null);
+                    burnVFXInstance.transform.position = Vector3.zero;
+                    burnVFXInstance.transform.rotation = Quaternion.identity;
 
-                    // Truyền chính Transform của SkinnedMeshRenderer vào để Controller.GetComponent thấy luôn
+                    // 2. Setup để nó lấy dữ liệu mesh và bắt đầu vẽ effect lên đó
                     effectController.SetupCharacterEffect(skinnedMesh.transform);
 
-                    Debug.Log($"<color=cyan>[Debuff]</color> Đã dán Burn VFX vào Mesh của {gameObject.name}");
+                    Debug.Log($"<color=orange>[Burn]</color> Controller đặt tại (0,0,0), đang vẽ lên {gameObject.name}");
                 }
                 else
                 {
-                    // Trường hợp: Particle thường (Gán vào xương hoặc điểm Buff)
+                    // Logic dự phòng cho các VFX thông thường không dùng Controller
                     Transform vfxParent = skinnedMesh?.transform.Find("CharacterEffectTarget") ?? characterTarget.buffEffectSpawnPoint;
-                    if (vfxParent == null) vfxParent = this.transform;
-
-                    burnVFXInstance.transform.SetParent(vfxParent);
+                    burnVFXInstance.transform.SetParent(vfxParent ?? this.transform);
                     burnVFXInstance.transform.localPosition = Vector3.zero;
                     burnVFXInstance.transform.localRotation = Quaternion.identity;
                 }
             }
-
-            // 6. Cập nhật UI (Thanh máu, Icon debuff)
             if (characterTarget != null)
             {
                 characterTarget.UpdateOwnUI();

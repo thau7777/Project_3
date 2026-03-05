@@ -22,7 +22,7 @@ namespace Turnbase
 
             stats = new CharacterStats
             {
-                agility = VIRTUAL_AGILITY,
+                speed = VIRTUAL_AGILITY,
                 maxHP = 1,
                 currentHP = 1
             };
