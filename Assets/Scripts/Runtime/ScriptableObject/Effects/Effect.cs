@@ -127,7 +127,7 @@ public class Effect : ScriptableObject
         if (magicDefenseModifier.value != 0) ApplyMagicDefenseModifier(target, activeEffect, isApplyInstant);
         if (speedModifier.value != 0) ApplySpeedModifier(target, activeEffect, isApplyInstant);
         if (criticalRateModifier.value != 0) ApplyCriticalRateModifier(target, activeEffect, isApplyInstant);
-        if (criticalDamageModifier.value != 0) ApplyCriticalDamageModifier(target, activeEffect, isApplyInstant);
+        if (criticalDamageModifier.value != 0) ApplyCriticalMultiplierModifier(target, activeEffect, isApplyInstant);
         if (attackSizeModifier.value != 0) ApplyAttackSizeModifier(target, activeEffect, isApplyInstant);
     }
     private void RemoveModifier(GameObject target, ActiveEffect activeEffect)
@@ -159,8 +159,8 @@ public class Effect : ScriptableObject
         if (valueToApply < 0)
         {
             float finalDamage = -valueToApply + PlayerTopDownStateDriver.Instance.GetComponent<CharacterStats>().MagicAttackDamage * 0.1f;
-            finalDamage = ElementalManager.Instance.CalculateDamage(finalDamage, damageElementalType, target.GetComponent<CharacterStats>().ElementalType);
-            damageAble.TakeDamage(null, null, finalDamage, dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
+            finalDamage = ElementalManager.Instance.CalculateDamage(Mathf.RoundToInt(finalDamage), damageElementalType, target.GetComponent<CharacterStats>().ElementalType);
+            damageAble.TakeDamage(null, null, false, Mathf.RoundToInt(finalDamage), dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
         }
         else
         {
@@ -232,11 +232,11 @@ public class Effect : ScriptableObject
 
         activeEffect.storedCriticalRateChanges += valueToApply;
     }
-    private void ApplyCriticalDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    private void ApplyCriticalMultiplierModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats) || criticalDamageModifier.instantApply && !isApplyInstant)
             return;
-        float valueToApply = criticalDamageModifier.isPercentage ? characterStats.CriticalDamage * (criticalDamageModifier.value / 100f) : criticalDamageModifier.value;
+        float valueToApply = criticalDamageModifier.isPercentage ? characterStats.CriticalMultiplier * (criticalDamageModifier.value / 100f) : criticalDamageModifier.value;
         characterStats.ModifyCriticalDamage(valueToApply);
 
         activeEffect.storedCriticalDamageChanges += valueToApply;

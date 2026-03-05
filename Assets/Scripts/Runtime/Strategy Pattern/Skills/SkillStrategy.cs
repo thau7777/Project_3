@@ -104,8 +104,8 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     [TabGroup("Skill Settings")]
     [SerializeField]
-    protected float _damage = 10;
-    public float Damage => _damage;
+    protected int _damage = 10;
+    public int Damage => _damage;
     [TabGroup("Skill Settings")]
     [SerializeField]
     protected bool _dealTrueDamage;
@@ -285,7 +285,12 @@ public class SkillStrategy : ScriptableObject, IStrategy
         if (flyweightObj is StraightProjectile straightProjectile)
         {
             StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
-            straightProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, projectileSettings.defaultSize, Damage, _knockbackForce, _dealTrueDamage, DodgeLayers);
+
+            CharacterStats userStats = context.origin.GetComponent<CharacterStats>();
+            bool isCrit = userStats.CriticalRate > 0 && UnityEngine.Random.Range(0,100) < userStats.CriticalRate;
+            int finalDamage = isCrit ? Mathf.RoundToInt(Damage * userStats.CriticalMultiplier) : Damage;
+
+            straightProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, projectileSettings.defaultSize, isCrit, finalDamage, _knockbackForce, _dealTrueDamage, DodgeLayers);
         }
         else if (flyweightObj is OneShotVFX oneShotVFX)
         {
@@ -304,7 +309,13 @@ public class SkillStrategy : ScriptableObject, IStrategy
             }
             if (flyweightObj.TryGetComponent<DamageDealer>(out var damageDealer))
             {
-                damageDealer.Setup(_damage,
+                CharacterStats userStats = context.origin.GetComponent<CharacterStats>();
+                bool isCrit = userStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < userStats.CriticalRate;
+                int finalDamage = isCrit ? Mathf.RoundToInt(Damage * userStats.CriticalMultiplier) : Damage;
+
+                damageDealer.Setup(
+                    isCrit,
+                    finalDamage,
                     _dealTrueDamage,
                     _knockbackForce,
                     oneShotVFXSettings.reverseKnockBackDirection,
@@ -320,14 +331,14 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     private void ExecuteChargedSkill(SkillStrategyContext context)
     {
-        if (context.chargedSkillFlyweight is StraightProjectile chargedSkillProjectile)
-        {
-            context.chargedSkillFlyweight.transform.SetParent(null);
-            chargedSkillProjectile.transform.rotation = Quaternion.identity;
+        //if (context.chargedSkillFlyweight is StraightProjectile chargedSkillProjectile)
+        //{
+        //    context.chargedSkillFlyweight.transform.SetParent(null);
+        //    chargedSkillProjectile.transform.rotation = Quaternion.identity;
 
-            StraightProjectileSettings projectileSettings = chargedSkillProjectile.settings as StraightProjectileSettings;
-            chargedSkillProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, Size, Damage,_knockbackForce, _dealTrueDamage, DodgeLayers);
-        }
+        //    StraightProjectileSettings projectileSettings = chargedSkillProjectile.settings as StraightProjectileSettings;
+        //    chargedSkillProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, Size, Damage,_knockbackForce, _dealTrueDamage, DodgeLayers);
+        //}
     }
 
     public void OnInterupted(Transform user)
@@ -336,7 +347,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
         skillVfx.ReturnToPool();
     }
 
-    public void UpdateDamage(float newValue)
+    public void UpdateDamage(int newValue)
     {
         _damage = newValue;
     }

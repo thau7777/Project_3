@@ -198,8 +198,11 @@ public class EnemyTopdownStateDriver : Flyweight
             }
             if(vfx.TryGetComponent<DamageDealer>(out var damageDealer))
             {
+                bool isCrit = _characterStats.CriticalRate > 0 && Random.Range(0, 100) < _characterStats.CriticalRate;
+                int finalDamage = isCrit ? Mathf.RoundToInt(_context.CurrentEnemyAttackData.damage * _characterStats.CriticalRate) : _context.CurrentEnemyAttackData.damage;
                 damageDealer.Setup(
-                    _context.CurrentEnemyAttackData.damage,
+                    isCrit,
+                    finalDamage,
                     _context.CurrentEnemyAttackData.dealTrueDamage,
                     _context.CurrentEnemyAttackData.knockBackForce,
                     _context.CurrentEnemyAttackData.reverseKnockbackDirection,
@@ -213,13 +216,16 @@ public class EnemyTopdownStateDriver : Flyweight
             
         else if (vfx is StraightProjectile)
         {
+            bool isCrit = _characterStats.CriticalRate > 0 && Random.Range(0,100) < _characterStats.CriticalRate;
+            int finalDamage = isCrit ? Mathf.RoundToInt(_context.CurrentEnemyAttackData.damage * _characterStats.CriticalRate) : _context.CurrentEnemyAttackData.damage;
             (vfx as StraightProjectile).InitializeProjectile(
                 gameObject,
                 transform.forward,
                 _context.CurrentEnemyAttackData.projectileSpeed,
                 _context.CurrentEnemyAttackData.skillDuration,
                 _context.CurrentEnemyAttackData.skillSize,
-                _context.CurrentEnemyAttackData.damage,
+                isCrit,
+                finalDamage,
                 _context.CurrentEnemyAttackData.knockBackForce,
                 _context.CurrentEnemyAttackData.dealTrueDamage,
                 _context.CurrentEnemyAttackData.dodgeLayers);
