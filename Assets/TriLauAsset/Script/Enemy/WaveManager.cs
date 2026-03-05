@@ -14,6 +14,7 @@ namespace MyRule
         private void OnEnable()
         {
             eventBinding = new EventBinding<WaveEvent>(OnWaveEvent);
+            InitWave();
             EventBus<WaveEvent>.Register(eventBinding);
         }
 
