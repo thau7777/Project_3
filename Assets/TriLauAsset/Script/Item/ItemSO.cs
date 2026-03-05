@@ -6,6 +6,22 @@ namespace MyRule
     {
         HealthPotion,
         ManaPotion,
+        PhysicDmgPotion,
+        MagicDmgPotion,
+        FireDmgPotion,
+        WaterDmgPotion,
+        FrostDmgPotion,
+        HolyDmgPotion,
+        DarkDmgPotion,
+        PoisonDmgPotion,
+        PhysicDefPotion,
+        MagicDefPotion,
+        FireDefPotion,
+        WaterDefPotion,
+        FrostDefPotion,
+        HolyDefPotion,
+        DarkDefPotion,
+        PosionDefPotion,
     }
 
     [CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Objects/ItemSO")]
