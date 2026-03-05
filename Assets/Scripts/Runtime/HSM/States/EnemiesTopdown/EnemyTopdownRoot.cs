@@ -27,20 +27,18 @@ public class EnemyTopdownRoot : State
         Dead = new EnemyTopdownDead(machine, this, ctx);
         Stunned = new EnemyTopdownStunned(machine, this, ctx);
     }
-    public void UpdateRotation(float deltaTime, Vector3 targetPosition)
+    public void UpdateRotation(float deltaTime, Vector3 direction)
     {
         if(ctx.ForceStopFacingTarget)
             return;
-        var toPlayer = (targetPosition - ctx.RootTransform.position);
-
         // Flatten the direction to only rotate on Y-axis
-        toPlayer.y = 0;
-        toPlayer = toPlayer.normalized;
+        direction.y = 0;
+        direction = direction.normalized;
 
-        if (toPlayer == Vector3.zero)
+        if (direction == Vector3.zero)
             return;
 
-        Quaternion targetRot = Quaternion.LookRotation(toPlayer);
+        Quaternion targetRot = Quaternion.LookRotation(direction);
         ctx.RootTransform.rotation = Quaternion.Slerp(ctx.RootTransform.rotation, targetRot, deltaTime * ctx.RotateSpeed);
     }
     protected override void OnUpdate(float deltaTime)

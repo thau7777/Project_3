@@ -22,7 +22,7 @@ namespace MyRule
             characterStats.fp = stats.fp;
             characterStats.stamina = stats.stamina;
 
-            characterStats.physicalDmg = stats.physicalDmg;
+            characterStats.attackDmg = stats.attackDmg;
             characterStats.magicDmg = stats.magicDmg;
             characterStats.critChance = stats.critChance;
             characterStats.critMult = stats.critMult;
@@ -44,11 +44,10 @@ namespace MyRule
             characterStats.arcane += sigilSO.arcane;
 
             characterStats.hp += sigilSO.health;
-            characterStats.phyDef += sigilSO.def;
-            characterStats.resRate += sigilSO.resRate;
-            characterStats.attackSpeed += sigilSO.attackSpeed;
+            characterStats.phyDef += sigilSO.phyDef;
+            characterStats.speed += sigilSO.speed;
 
-            characterStats.physicalDmg += sigilSO.phys;
+            characterStats.attackDmg += sigilSO.phys;
             characterStats.magicDmg += sigilSO.mag;
             characterStats.critChance += sigilSO.critChance;
             characterStats.critMult += sigilSO.critMult;

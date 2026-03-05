@@ -5,9 +5,9 @@ public class SkillStrategyContext : IStrategyContext
     public Transform origin;
     public Transform spawnTransform;
     public Vector3 positionOffset;
-    public Quaternion rotationOffset;
+    public Vector3 rotationOffset;
     public Flyweight chargedSkillFlyweight; 
-    public SkillStrategyContext(Transform origin, Transform spawnTransform, Vector3 positionOffset,Quaternion rotationOffset, Flyweight chargedSkillFlyweight = null)
+    public SkillStrategyContext(Transform origin, Transform spawnTransform, Vector3 positionOffset, Vector3 rotationOffset, Flyweight chargedSkillFlyweight = null)
     {
         this.origin = origin;
         this.spawnTransform = spawnTransform;

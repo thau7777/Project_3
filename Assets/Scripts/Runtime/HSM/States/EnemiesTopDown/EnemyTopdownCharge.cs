@@ -28,7 +28,10 @@ public class EnemyTopdownCharge : State
     {
         if(ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.ChargeOnly ||
             ctx.CurrentEnemyAttackData.faceTargetState == EnemyAttackData.FaceTargetState.Full)
-            ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime,ctx.CurrentTargetTransform.position);
+        {
+            Vector3 direction = ctx.CurrentTargetTransform.position - ctx.RootTransform.position;
+            ((EnemyTopdownRoot)Parent).UpdateRotation(deltaTime, direction);
+        }
 
         if (ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.ChargeOnly &&
             ctx.CurrentEnemyAttackData.lockMovementState != EnemyAttackData.LockMovementState.Full)

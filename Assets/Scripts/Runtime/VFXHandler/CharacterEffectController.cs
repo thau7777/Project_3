@@ -31,7 +31,7 @@ public class CharacterEffectController : MonoBehaviour
         SkinnedMeshRenderer skinnedMeshRenderer = parent.GetComponent<SkinnedMeshRenderer>();
         _vfxGraph.SetSkinnedMeshRenderer("SkinnedMeshRenderer", skinnedMeshRenderer);
 
-        var targetTransform = skinnedMeshRenderer.transform.Find("CharacterEffectTarget");
+        var targetTransform = skinnedMeshRenderer.transform.GetChild(0);
 
         if (targetTransform != null)
         {

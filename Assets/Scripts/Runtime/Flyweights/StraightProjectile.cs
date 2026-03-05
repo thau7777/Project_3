@@ -4,21 +4,25 @@ using UnityEngine;
 public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
-    public LayerMask DodgeLayers { get; set; }
+    private GameObject _sender;
+    private LayerMask _dodgeLayers;
     private Vector3? _direction = null;
     private Rigidbody _rb;
     private float _speed;
     private float _range;
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
-    public float Damage { get; set; }
-    public float _currentSize;
+    private float _damage;
+    private float _knockBackForce;
+    private bool _dealTrueDamage;
+    private float _currentSize;
 
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
 
     private void Awake()
     {
+        _sender = transform.root.gameObject;
         _rb = gameObject.GetOrAdd<Rigidbody>();
         _direction = null;
         _rb.useGravity = false;
@@ -34,9 +38,9 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(Vector3 direction, float speed, float range, float size,float damage,LayerMask dodgeLayers)
+    public void InitializeProjectile(GameObject sender, Vector3 direction, float speed, float range, float size,float damage, float knockBackForce, bool dealTrueDamage, LayerMask dodgeLayers)
     {
-
+        _sender = sender;
         _direction = direction.normalized;
         _speed = speed;
         _range = range;
@@ -46,9 +50,10 @@ public class StraightProjectile : Flyweight
 
         transform.localScale = new Vector3(size, size, size);
 
-        Damage = damage;
-
-        DodgeLayers = dodgeLayers;
+        _damage = damage;
+        _knockBackForce = knockBackForce;
+        _dealTrueDamage = dealTrueDamage;
+        _dodgeLayers = dodgeLayers;
     }
 
     private void FixedUpdate()
@@ -86,29 +91,30 @@ public class StraightProjectile : Flyweight
     public void DespawnFlyweight()
     {
         SpawnHitVFX();
-        FlyweightFactory.ReturnToPool(this);
+        ReturnToPool();
     }
 
     private void SpawnHitVFX()
     {
         var projectileImpactFlyweight = FlyweightFactory.Spawn(settings.ProjectileImpactVFX);
         projectileImpactFlyweight.FlyweightInitialize(transform.position, Quaternion.identity);
-        if(projectileImpactFlyweight.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
-        {
-            hitBoxHandler.DodgeLayers = DodgeLayers;
-        }
 
         var impactVFX = projectileImpactFlyweight as OneShotVFX;
         OneShotVFXSettings impactVFXSettings = impactVFX.settings as OneShotVFXSettings;
 
-        if(impactVFX.TryGetComponent<HitBoxHandler>(out var hitBox))
+        if (impactVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
         {
-            hitBox.Parryable = false;
+            hitBoxHandler.Setup(
+                _sender, 
+                _dodgeLayers,
+                impactVFXSettings.hitboxOnOffTime,
+                impactVFXSettings.useTriggerStays, 
+                impactVFXSettings.triggerStayTickInterval, 
+                false);
         }
         if (impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
         {
-            damageDealer.Origin = this.transform;
-            damageDealer.Damage = Damage;
+            damageDealer.Setup(_damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
         }
 
         impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);
@@ -116,10 +122,9 @@ public class StraightProjectile : Flyweight
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
+        if ((_dodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
             if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
-            print("StraightProjectile hit: " + other.gameObject.name);
             DespawnFlyweight();
         }
     }

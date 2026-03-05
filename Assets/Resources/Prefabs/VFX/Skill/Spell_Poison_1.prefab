@@ -28,6 +28,30 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3d215c2ddf96a0043922b17a989d2bd7, type: 2}
+    - target: {fileID: 1623765393493894423, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623765393493894423, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623765393493894423, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      propertyPath: CollisionModule.radiusScale
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623765393493894423, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      propertyPath: CollisionModule.collisionMessages
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623765393493894423, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      propertyPath: CollisionModule.maxCollisionShapes
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623765393493894423, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 1623765393535239275, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -168,6 +192,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1623765393535239316, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7352866847517574711}
     - targetCorrespondingSourceObject: {fileID: 1623765394058732851, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4334629147723323339}
@@ -206,3 +233,29 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &2009440082704719282 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1623765393535239316, guid: 32c8fd3925dd1544ca654e3106d1f2a8, type: 3}
+  m_PrefabInstance: {fileID: 966639076809005350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &7352866847517574711
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009440082704719282}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}

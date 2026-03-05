@@ -38,6 +38,8 @@ public class EnemyAttackData
     public float minRange;
     public float maxRange;
     public float damage = 10;
+    public bool dealTrueDamage;
+    public bool reverseKnockbackDirection;
     public float knockBackForce = 10f;
     public float stunTime = 0f;
 

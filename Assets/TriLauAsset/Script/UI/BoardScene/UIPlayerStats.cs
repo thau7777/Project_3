@@ -176,7 +176,7 @@ namespace MyRule.UI
             baseHp = characterStatsSO.hp;
             baseFp = characterStatsSO.fp;
             baseStamina = characterStatsSO.stamina;
-            basePhysDmg = characterStatsSO.physicalDmg;
+            basePhysDmg = characterStatsSO.attackDmg;
             baseMagDmg = characterStatsSO.magicDmg;
             baseCritChance = characterStatsSO.critChance;
             baseCritMult = characterStatsSO.critMult;
@@ -187,7 +187,7 @@ namespace MyRule.UI
             characterStatsSO.hp = (int) (baseHp * GetMultiplier.GetStatMultiplier(characterStatsSO.virgor));
             characterStatsSO.fp = (int) (baseFp * GetMultiplier.GetStatMultiplier(characterStatsSO.mind));
             characterStatsSO.stamina = (int) (baseStamina * GetMultiplier.GetStatMultiplier(characterStatsSO.endurance));
-            characterStatsSO.physicalDmg = (int) (basePhysDmg * GetMultiplier.GetStatMultiplier(characterStatsSO.strength));
+            characterStatsSO.attackDmg = (int) (basePhysDmg * GetMultiplier.GetStatMultiplier(characterStatsSO.strength));
             characterStatsSO.magicDmg = (int) (baseMagDmg * GetMultiplier.GetStatMultiplier(characterStatsSO.intelligence));
         }
     }

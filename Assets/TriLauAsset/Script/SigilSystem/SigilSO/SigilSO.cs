@@ -37,6 +37,9 @@ namespace MyRule
         [Header("Sigil Effect")]
         public Skill sigilEffect;
 
+        public int baseDmg;
+        public int manaCost;
+
         [TabGroup("Stats")]
         [LabelText("phys", LabelTextAttribute.LabelColor.gray)]
         public int phys;
@@ -44,17 +47,39 @@ namespace MyRule
         [LabelText("mag", LabelTextAttribute.LabelColor.cyan)]
         public int mag;
         [TabGroup("Stats")]
+        public int fire;
+        [TabGroup("Stats")]
+        public int frost;
+        [TabGroup("Stats")] 
+        public int lightning;
+        [TabGroup("Stats")] 
+        public int holy;
+        [TabGroup("Stats")] 
+        public int dark;
+        [TabGroup("Stats")] 
+        public int water;
+        [TabGroup("Stats")]
         [LabelText("health", LabelTextAttribute.LabelColor.green)]
         public int health;
         [TabGroup("Stats")]
-        [LabelText("def", LabelTextAttribute.LabelColor.yellow)]
-        public int def;
+        public int phyDef;
         [TabGroup("Stats")]
-        [LabelText("resRate", LabelTextAttribute.LabelColor.orange)]
-        public int resRate;
+        public int magicDef;
         [TabGroup("Stats")]
-        [LabelText("attackSpeed", LabelTextAttribute.LabelColor.blue)]
-        public float attackSpeed;
+        public int fireDef;
+        [TabGroup("Stats")]
+        public int lightningDef;
+        [TabGroup("Stats")]
+        public int holyDef;
+        [TabGroup("Stats")]
+        public int darkDef;
+        [TabGroup("Stats")]
+        public int frostDef;
+        [TabGroup("Stats")]
+        public int waterDef;
+        [TabGroup("Stats")]
+        [LabelText("Speed", LabelTextAttribute.LabelColor.blue)]
+        public float speed;
         [TabGroup("Stats")]
         [LabelText("critChance", LabelTextAttribute.LabelColor.red)]
         public int critChance;

@@ -5,17 +5,16 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class HitBoxHandler : MonoBehaviour
 {
-    [field: SerializeField]
-    public GameObject Origin { get; set; }
-    [field: SerializeField]
-    public LayerMask DodgeLayers { get; set; }
-    public Vector2 HitboxOnOffTime { get; set; }
-    public bool UseTriggerStays { get; set; }
-    public float TriggerStayTickInterval { get; set; } = 0.2f;
-    public UnityEvent<GameObject, GameObject> OnColliderHit = new();
-    public bool Parryable { get; set; } = true;
-
+    private GameObject _sender;
+    private LayerMask _dodgeLayers;
+    private Vector2 _hitboxOnOffTime;
+    private bool _useTriggerStays;
+    private float _triggerStayTickInterval;
+    private bool _parryAble;
+    public bool ParryAble => _parryAble;
     private const float PulseOnDuration = 0.1f;
+
+    public UnityEvent<GameObject, GameObject, GameObject> OnColliderHit = new();
 
     private Collider _collider;
     private Coroutine _hitboxTimingRoutine;
@@ -23,7 +22,6 @@ public class HitBoxHandler : MonoBehaviour
 
     private void Awake()
     {
-        Origin = transform.root.gameObject;
         _collider = GetComponent<Collider>();
         if (_collider != null)
             _collider.enabled = false;
@@ -41,6 +39,16 @@ public class HitBoxHandler : MonoBehaviour
         StopAllHitboxCoroutines();
         if (_collider != null)
             _collider.enabled = false;
+    }
+
+    public void Setup(GameObject sender, LayerMask dodgeLayer, Vector2 hitboxOnOffTime, bool useTriggerStays, float triggerStayTickInterval, bool parryAble)
+    {
+        _sender = sender;
+        _dodgeLayers = dodgeLayer;
+        _hitboxOnOffTime = hitboxOnOffTime;
+        _useTriggerStays = useTriggerStays;
+        _triggerStayTickInterval = triggerStayTickInterval;
+        _parryAble = parryAble;
     }
 
     private void StopAllHitboxCoroutines()
@@ -69,14 +77,14 @@ public class HitBoxHandler : MonoBehaviour
 
     private IEnumerator HitboxTimingRoutine(float lifeTime)
     {
-        float hitboxOnTime = HitboxOnOffTime.x * lifeTime;
-        float hitboxOffTime = HitboxOnOffTime.y * lifeTime;
+        float hitboxOnTime = _hitboxOnOffTime.x * lifeTime;
+        float hitboxOffTime = _hitboxOnOffTime.y * lifeTime;
         float activeDuration = hitboxOffTime - hitboxOnTime;
 
         if (hitboxOnTime > 0f)
             yield return new WaitForSeconds(hitboxOnTime);
 
-        if (UseTriggerStays)
+        if (_useTriggerStays)
         {
             // Pulse the collider on/off for the entire active duration
             _pulseRoutine = StartCoroutine(PulseRoutine(activeDuration));
@@ -118,7 +126,7 @@ public class HitBoxHandler : MonoBehaviour
                 _collider.enabled = false;
 
             // Wait for the remainder of the tick interval before next pulse
-            float offTime = TriggerStayTickInterval - PulseOnDuration;
+            float offTime = _triggerStayTickInterval - PulseOnDuration;
             if (offTime > 0f && elapsed < totalDuration)
             {
                 float waitTime = Mathf.Min(offTime, totalDuration - elapsed);
@@ -130,9 +138,9 @@ public class HitBoxHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject != Origin && (DodgeLayers.value & (1 << other.gameObject.layer)) == 0)
+        if (other.gameObject != _sender && (_dodgeLayers.value & (1 << other.gameObject.layer)) == 0 && other.gameObject == other.transform.root.gameObject)
         {
-            OnColliderHit?.Invoke(Origin, other.gameObject);
+            OnColliderHit?.Invoke(_sender, gameObject, other.gameObject);
         }
     }
 

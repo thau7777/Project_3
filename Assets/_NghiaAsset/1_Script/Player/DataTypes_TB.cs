@@ -70,8 +70,8 @@ namespace Turnbase
         public int currentHP;
         public int maxMP;
         public int currentMP;
-        //public int maxShield;
-        //public int currentShield;
+        public int maxShield;
+        public int currentShield;
         
         public int physicalAttack;
         public int magicAttack;
@@ -99,7 +99,7 @@ namespace Turnbase
             this.currentMP = statsSO.fp;
             //this.maxShield = statsSO.shield;
             //this.currentShield = statsSO.shield;
-            this.physicalAttack = statsSO.physicalDmg;
+            this.physicalAttack = statsSO.attackDmg;
             this.magicAttack = statsSO.magicDmg;
             this.physicalDefense = statsSO.phyDef;
             this.magicDefense = statsSO.magicDef;
@@ -111,8 +111,6 @@ namespace Turnbase
             this.waterDefense = statsSO.waterDef;
             this.critChance = statsSO.critChance;
             this.critMult = (int) (statsSO.critMult * 100);
-            this.agility = (int) statsSO.attackSpeed;
-
         }
     }
 

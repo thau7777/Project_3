@@ -76,8 +76,8 @@ public class MinionTopDownStateDriver : MonoBehaviour
     {
         var vfx = FlyweightFactory.Spawn(vfxSettings);
         vfx.FlyweightInitialize(transform.position, transform.rotation);
-        vfx.GetComponent<HitBoxHandler>().Origin = transform.gameObject;
-        vfx.GetComponent<DamageDealer>().Damage = _minionData.BaseAttackDamage;
+        //vfx.GetComponent<HitBoxHandler>().Sender = transform.gameObject;
+        //vfx.GetComponent<DamageDealer>().Damage = _minionData.BaseAttackDamage;
     } 
     public void OnTakeDamage(GameObject sender, int currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {

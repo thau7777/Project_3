@@ -9,14 +9,21 @@ using System.Collections.Generic;
 )]
 public class ChainLightning : SkillStrategy
 {
-    [Header("Lightning Settings")]
+    [TabGroup("Lightning Settings")]
     [SerializeField] private int maxChainTargets = 3;
+    [TabGroup("Lightning Settings")]
     [SerializeField] private float chainDistance = 8f;
+    [TabGroup("Lightning Settings")]
     [SerializeField] private float chainDelay = 0.15f;
+    [TabGroup("Lightning Settings")]
+    [SerializeField] private List<EffectData> _effectToApply;
 
-    [Header("Visual Settings")]
+
+    [TabGroup("Visual Settings")]
     [SerializeField] private OneShotVFXSettings _impactVfxSettings;
+    [TabGroup("Visual Settings")]
     [SerializeField] private float arcIntensity = 0.5f;
+    [TabGroup("Visual Settings")]
     [SerializeField] private int segmentsPerBolt = 10;
 
     private SkillStrategyContext _skillContext;
@@ -111,7 +118,7 @@ public class ChainLightning : SkillStrategy
 
             checkedRoots.Add(root);
 
-            Transform body = root.Find("Body");
+            Transform body = root.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
             if (body == null) continue;
 
             float dist = Vector3.Distance(mouseWorldPos, body.position);
@@ -145,7 +152,7 @@ public class ChainLightning : SkillStrategy
 
             checkedRoots.Add(root);
 
-            Transform body = root.Find("Body");
+            Transform body = root.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
             if (body == null) continue;
 
             if (exclude.Contains(body.gameObject)) continue;
@@ -163,7 +170,7 @@ public class ChainLightning : SkillStrategy
 
     private Transform GetLightningAnchor(GameObject obj)
     {
-        Transform body = obj.transform.root.Find("Body");
+        Transform body = obj.transform.root.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
         return body != null ? body : obj.transform;
     }
 
@@ -197,7 +204,7 @@ public class ChainLightning : SkillStrategy
     {
         var impactVfx = FlyweightFactory.Spawn(_impactVfxSettings);
         impactVfx.FlyweightInitialize(
-            GetLightningAnchor(target).position.Add(y:0.5f),
+            GetLightningAnchor(target).position.Add(y:1f),
             Quaternion.identity
         );
         if(impactVfx.TryGetComponent<OneShotVFX>(out var oneShotVFX))
@@ -208,7 +215,15 @@ public class ChainLightning : SkillStrategy
         if (target.transform.root.TryGetComponent<Damageable>(out var damageable))
         {
             Vector3 knockBackDirection = (target.transform.position - _skillContext.origin.position).normalized;
-            damageable.TakeDamage(_skillContext.origin.gameObject,Damage, knockBackDirection,1,ElementalType.Lightning);
+            damageable.TakeDamage(_skillContext.origin.gameObject, null, Damage, DealTrueDamage, knockBackDirection,1,ElementalType.Lightning);
+        }
+        if(target.transform.root.TryGetComponent<EffectsManager>(out var effectsManager))
+        {
+            if (_effectToApply == null) return;
+            foreach (EffectData effectData in _effectToApply)
+            {
+                effectsManager.AddEffect(effectData);
+            }
         }
     }
 }

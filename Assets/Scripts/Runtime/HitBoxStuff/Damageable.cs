@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,7 +12,7 @@ public class Damageable : MonoBehaviour
     private CharacterControllerLayerIgnoreController _ccLayerIgnoreController;
 
     public float MaxHealth { get; private set; }
-    public float CurrentHealth { get; private set; }
+    public float CurrentHealth { get; set; }
 
     public bool hasShieldBreakingMechanic = false;
     public float MaxShieldHealth { get; private set; }
@@ -48,7 +49,7 @@ public class Damageable : MonoBehaviour
         CurrentHealth = maxHealth;
         if(hasShieldBreakingMechanic)
         {
-            MaxShieldHealth = MaxHealth / 2f;
+            MaxShieldHealth = 100;
             ShieldHealth = MaxShieldHealth;
             OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
         }
@@ -82,25 +83,64 @@ public class Damageable : MonoBehaviour
     }
     private void OnParticleCollision(GameObject other)
     {
-        if (other.transform.root.TryGetComponent<OneShotVFX>(out var oneShotVfx))
+        if (TryGetComponentInHierarchy<DamageDealer>(other.transform, out var damageDealer))
         {
-            OneShotVFXSettings vfxSettings = oneShotVfx.settings as OneShotVFXSettings;
-            if(vfxSettings.defaultDodgeLayers.Contains(gameObject.layer)) return;
+            damageDealer.DealDamage(other, other, gameObject);
         }
-        if (other.transform.root.TryGetComponent<DamageDealer>(out var damageDealer))
+
+        if (TryGetComponentInHierarchy<EffectApplier>(other.transform, out var effectApplier))
         {
-            Vector3 hitDirection = transform.position - other.transform.position;
-            damageDealer.DealDamage(other, gameObject);
-        }
-        if(other.transform.root.TryGetComponent<EffectApplier>(out var effectApplier))
-        {
-            effectApplier.ApplyEffect(other, gameObject);
+            effectApplier.ApplyEffect(other, other, gameObject);
         }
     }
-    public void TakeDamage(GameObject sender,float damage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
+
+    private bool TryGetComponentInHierarchy<T>(Transform start, out T component) where T : Component
+    {
+        Transform current = start;
+
+        while (current != null)
+        {
+            if (current.TryGetComponent<T>(out component))
+                return true;
+
+            current = current.parent;
+        }
+
+        component = null;
+        return false;
+    }
+    public void TakeDamage(GameObject sender, GameObject hitOrigin, float damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
+     
+        var effectsManager = GetComponent<EffectsManager>();
+        if (effectsManager.HasEffect("Unbreaking Thorn Effect"))
+        {
+            EffectData PoisonEffectData = new EffectData
+            {
+                effect = EffectsDatabase.Instance.GetEffectByName("Poison Effect"),
+                stacksToApply = 1
+            };
+            sender.GetComponent<EffectsManager>()?.AddEffect(PoisonEffectData);
+        }
+        if(effectsManager.HasEffect("Frost Shield Effect"))
+        {
+            EffectData effectData = new EffectData
+            {
+                effect = EffectsDatabase.Instance.GetEffectByName("Freeze Effect"),
+                stacksToApply = 1
+            };
+            sender.GetComponent<EffectsManager>()?.AddEffect(effectData);
+        }
+        if(effectsManager.HasEffect("Holy Shield Effect"))
+        {
+            effectsManager.RemoveEffectByName("Holy Shield Effect");
+            CameraShaker.Instance.ShakeRandomDirection(force: 1, duration: 0.2f);
+            return;
+
+        }
         float finalDamage = damage;
+
         if (hitVfx)
         {
             var obj = FlyweightFactory.Spawn(hitVfx) as OneShotVFX;
@@ -110,17 +150,60 @@ public class Damageable : MonoBehaviour
         }
         if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
         {
-            EnemyTopDownSettings enemySettings = enemy.settings as EnemyTopDownSettings;
-            finalDamage = ElementalManager.Instance.CalculateDamage(damage, attackType, enemySettings.elementalType);
+            ElementalType enemyElementalType = enemy.GetComponent<CharacterStats>().ElementalType;
+            finalDamage = ElementalManager.Instance.CalculateDamage(damage, attackElementalType, enemyElementalType);
         }
+
+        if (hitOrigin != null && hitOrigin.name == "Spell_Dark_3" &&
+            effectsManager.HasAnyActiveEffect())
+        {
+            finalDamage *= 2;
+            List<ActiveEffect> activeEffects = effectsManager.GetActiveEffectsList();
+            ActiveEffect randomEffect = activeEffects[UnityEngine.Random.Range(0, activeEffects.Count)];
+            effectsManager.RemoveEffect(randomEffect);
+        }else if(hitOrigin != null && hitOrigin.name == "Spell_Dark_4")
+        {
+            List<ActiveEffect> activeEffects = effectsManager.GetActiveEffectsList();
+            if (activeEffects.Count != 0)
+            {
+                foreach (var activeEffect in activeEffects)
+                {
+                    effectsManager.AddEffect(new EffectData
+                    {
+                        effect = activeEffect.effect,
+                        stacksToApply = 1
+                    });
+                }
+            }
+        }
+
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
+        if (CurrentHealth == 0)
+        {
+            ApplyIgnoreCollisionOnDeath(true);
+            OnDeath?.Invoke();
+            return;
+        }
+
+        OnTakeDamage?.Invoke(sender, CurrentHealth, knockBackDirection, knockBackForce);
+        _invincibleElapsedTime = InvincibleDuration;
+
+        
+    }
+    public void TakeShieldDamage(float damage)
+    {
         if (hasShieldBreakingMechanic && ShieldHealth > 0)
         {
-            ShieldHealth = Mathf.Max(ShieldHealth - finalDamage, 0);
+            var effectsManager = GetComponent<EffectsManager>();
+            if (effectsManager.HasEffect("Poison Effect"))
+                damage *= 2;
+            
+
+            ShieldHealth = Mathf.Max(ShieldHealth - damage, 0);
             OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
-            if (ShieldHealth == 0)
+            if (ShieldHealth == 0 && CurrentHealth > 0)
             {
                 OnShieldBreak?.Invoke(3);
                 StartStunCoroutine(3);
@@ -135,17 +218,6 @@ public class Damageable : MonoBehaviour
                 }
             }
         }
-        if (CurrentHealth == 0)
-        {
-            ApplyIgnoreCollisionOnDeath(true);
-            OnDeath?.Invoke();
-            return;
-        }
-
-        OnTakeDamage?.Invoke(sender, CurrentHealth, knockBackDirection, knockBackForce);
-        _invincibleElapsedTime = InvincibleDuration;
-
-        
     }
     private void StartStunCoroutine(float duration)
     {
@@ -170,6 +242,7 @@ public class Damageable : MonoBehaviour
 
     public void Heal(float amount)
     {
+        Debug.Log($"Healing for {amount}");
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New TopDown Item", menuName = "Scriptable Objects/StrategyPattern/TopDown Item")]
@@ -9,20 +10,26 @@ public class TopDownItemStrategy : ScriptableObject , IStrategy
     public bool loseQuantityOnUse;
     public float coolDown;
 
-    public EffectData effectToApply;
+    public List<EffectData> effectsToApply = new();
     public void Execute(IStrategyContext context)
     {
         ItemStrategyContext itemContext = context as ItemStrategyContext;
-        ApplyBuffOrDeBuffToUser(itemContext.origin.gameObject);
+        ApplyEffectsToUser(itemContext.origin.gameObject);
     }
-    private void ApplyBuffOrDeBuffToUser(GameObject user)
+    private void ApplyEffectsToUser(GameObject user)
     {
-        if (effectToApply.effect == null)
+        if (effectsToApply.Count == 0 || effectsToApply == null)
         {
-            Debug.LogWarning("No effects assigned to BuffOrDeBuffOnSingleTarget skill!");
+            Debug.LogWarning("No effects assigned to this item");
             return;
         }
         EffectsManager manager = user.GetOrAdd<EffectsManager>();
-        manager.AddEffect(effectToApply);
+        if (manager != null)
+        {
+            foreach (EffectData effect in effectsToApply)
+            {
+                manager.AddEffect(effect);
+            }
+        }
     }
 }

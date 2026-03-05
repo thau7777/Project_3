@@ -16,11 +16,12 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
     {
         if (context.performed)
         {
+            onLeftClick?.Invoke();
             // Check if pointer is over UI element
-            if (!IsPointerOverUI())
-            {
-                onLeftClick?.Invoke();
-            }
+            //if (!IsPointerOverUI())
+            //{
+            //    onLeftClick?.Invoke();
+            //}
         }
     }
 

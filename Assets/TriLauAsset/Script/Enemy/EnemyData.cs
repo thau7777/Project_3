@@ -2,27 +2,62 @@ using UnityEngine;
 
 namespace MyRule
 {
-    [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy/EnemyData")]
-    public class EnemyData : ScriptableObject
+    public enum EnemyId
     {
-        [Header("Prefab")]
-        public GameObject enemyPreb;
+        Vampy,
+        BlackKnight,
+        DemonKing,
+        Doragon,
+        NagaWizard,
+        Salamander,
+        BishopKnight,
+        Golem,
+        Beholder,
+        Necropolis,
+        Spector,
+        BattleBee,
+        Gargoyle,
+        Werewolf,
+        Mimic,
+        Cyclops,
+        Orc,
+        Cactus,
+        Nepenthe,
+        RatAssassin,
+        Craber,
+        Myrmidon,
+        StingRay,
+
+    }
+
+    [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy/EnemyData")]
+    public class EnemyDataSO : ScriptableObject
+    {
+        public EnemyId enemyId;
 
         [Header("Stats")]
 
-        [LabelText("phys", LabelTextAttribute.LabelColor.gray)]
         public int phys;
-        [LabelText("mag", LabelTextAttribute.LabelColor.cyan)]
         public int mag;
-        [LabelText("health", LabelTextAttribute.LabelColor.green)]
+        public int fire;
+        public int water;
+        public int frost;
+        public int lightning;
+        public int holy;
+        public int dark;
+        public int poison;
         public int health;
-        [LabelText("def", LabelTextAttribute.LabelColor.yellow)]
-        public int def;
-        [LabelText("resRate", LabelTextAttribute.LabelColor.orange)]
+        public int phyDef;
+        public int magDef;
+        public int fireDef;
+        public int waterDef;
+        public int frostDef;
+        public int lightningDef;
+        public int holyDef;
+        public int darkDef;
+        public int poisonDef;
         public int resRate;
-        [LabelText("attackSpeed", LabelTextAttribute.LabelColor.blue)]
         public float attackSpeed;
-        [LabelText("critChance", LabelTextAttribute.LabelColor.red)]
         public float critChance;
         [Range(1.5f, 2.3f)]
         public float critMult = 1.5f;
