@@ -105,42 +105,42 @@ namespace Turnbase
             }
         }
 
-        public void AddShield(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (amount <= 0) return;
+        //public void AddShield(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
+        //{
+        //    if (amount <= 0) return;
 
-            if (shieldTurnsRemaining <= 0)
-            {
-                baseShieldAmount = amount;
-            }
-            else
-            {
-                baseShieldAmount += amount;
-            }
+        //    if (shieldTurnsRemaining <= 0)
+        //    {
+        //        baseShieldAmount = amount;
+        //    }
+        //    else
+        //    {
+        //        baseShieldAmount += amount;
+        //    }
 
-            if (vfxInstance != null)
-            {
-                if (shieldVFXInstance != null && shieldVFXInstance != vfxInstance)
-                {
-                    Destroy(shieldVFXInstance);
-                }
-                shieldVFXInstance = vfxInstance;
-            }
+        //    if (vfxInstance != null)
+        //    {
+        //        if (shieldVFXInstance != null && shieldVFXInstance != vfxInstance)
+        //        {
+        //            Destroy(shieldVFXInstance);
+        //        }
+        //        shieldVFXInstance = vfxInstance;
+        //    }
 
-            shieldTurnsRemaining = duration;
-            shieldIcon = icon;
+        //    shieldTurnsRemaining = duration;
+        //    shieldIcon = icon;
 
-            stats.currentShield = Mathf.Min(stats.currentShield + amount, stats.maxShield);
+        //    stats.currentShield = Mathf.Min(stats.currentShield + amount, stats.maxShield);
 
-            Debug.Log(character.gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
+        //    Debug.Log(character.gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
 
-            if (character.battleUIManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+        //    if (character.battleUIManager != null)
+        //    {
+        //        character.battleUIManager.UpdateCharacterUI(character);
+        //    }
 
-            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
-        }
+        //    EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+        //}
 
 
         public void ApplyAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
@@ -453,29 +453,13 @@ namespace Turnbase
             var applicationTarget = skill.stackApplicationTarget;
 
             if (applicationTarget == StackApplicationTarget.None) return;
-
-            if (applicationTarget == StackApplicationTarget.Counter)
-            {
-                if (targetCharacter == character || targetCharacter == null) return;
-
-                if (targetCharacter.debuffManager != null)
-                {
-                    if (stackSetting.isStackFinisher)
-                    {
-                        DebuffType activeType = skill.activatedDebuff.statToModify;
-                        if (IsDebuffStackActive(targetCharacter.debuffManager, activeType)) return;
-                    }
-
-                    targetCharacter.debuffManager.ApplyDebuff(this.character, skill.activatedDebuff);
-                    Debug.Log($"<color=orange>[COUNTER]</color> {character.name} phản đòn {skill.activatedDebuff.statToModify} lên {targetCharacter.name}");
-                }
-                return; 
-            }
-
             if (string.IsNullOrEmpty(stackSetting.stackId)) return;
 
             Character stackTarget = (applicationTarget == StackApplicationTarget.Self) ? character : targetCharacter;
+
             if (stackTarget == null || !stackTarget.isAlive || stackTarget.buffManager == null) return;
+
+            if (applicationTarget == StackApplicationTarget.Counter && stackTarget == character) return;
 
             CharacterBuffManager targetBuffManager = stackTarget.buffManager;
             string stackId = stackSetting.stackId;
@@ -489,7 +473,7 @@ namespace Turnbase
             if (stackSetting.isStackBuilder)
             {
                 stackData.currentStacks += stackSetting.stackAmountPerUse;
-                Debug.Log($"[Stack] {stackTarget.name} tích {stackId}: {stackData.currentStacks}/{stackSetting.stackThreshold}");
+                Debug.Log($"[STACKING] {stackTarget.name} bị tích {stackId}: {stackData.currentStacks}/{stackSetting.stackThreshold}");
             }
 
             if (stackSetting.isStackFinisher && stackData.currentStacks >= stackSetting.stackThreshold)
@@ -498,10 +482,17 @@ namespace Turnbase
                 {
                     targetBuffManager.ApplyBuff(skill.activatedBuff, null, skill.activatedBuff.amount, skill);
                 }
-                else if (applicationTarget == StackApplicationTarget.Target && stackTarget.debuffManager != null)
+                else if ((applicationTarget == StackApplicationTarget.Target || applicationTarget == StackApplicationTarget.Counter)
+                         && stackTarget.debuffManager != null)
                 {
-                    stackTarget.debuffManager.ApplyDebuff(this.character, skill.activatedDebuff);
+                    DebuffType activeType = skill.activatedDebuff.statToModify;
+                    if (!IsDebuffStackActive(stackTarget.debuffManager, activeType))
+                    {
+                        stackTarget.debuffManager.ApplyDebuff(this.character, skill.activatedDebuff);
+                        Debug.Log($"<color=orange>[COUNTER-FINISH]</color> Đủ {stackSetting.stackThreshold} tầng! {character.name} phản đòn {activeType} lên {stackTarget.name}");
+                    }
                 }
+
                 stackData.currentStacks = 0;
             }
 
@@ -539,29 +530,29 @@ namespace Turnbase
             Debug.Log($"Buff PhysicalAttack của {character.name} đã hết hạn và bị gỡ bỏ. PhysicalAttack hiện tại: {stats.physicalAttack}");
         }
 
-        public void RemoveExpiredShield()
-        {
-            if (shieldTurnsRemaining > 0) return;
+        //public void RemoveExpiredShield()
+        //{
+        //    if (shieldTurnsRemaining > 0) return;
 
-            if (shieldVFXInstance != null)
-            {
-                shieldVFXInstance.transform.SetParent(null);
-                shieldVFXInstance.ReturnToPool();
-                shieldVFXInstance = null;
-            }
+        //    if (shieldVFXInstance != null)
+        //    {
+        //        shieldVFXInstance.transform.SetParent(null);
+        //        shieldVFXInstance.ReturnToPool();
+        //        shieldVFXInstance = null;
+        //    }
 
-            stats.currentShield = 0;
-            baseShieldAmount = 0;
-            shieldTurnsRemaining = 0;
-            shieldIcon = null;
+        //    stats.currentShield = 0;
+        //    baseShieldAmount = 0;
+        //    shieldTurnsRemaining = 0;
+        //    shieldIcon = null;
 
-            Debug.Log($"Shield của {character.name} đã hết hạn và bị gỡ bỏ. Shield hiện tại: {stats.currentShield}");
+        //    Debug.Log($"Shield của {character.name} đã hết hạn và bị gỡ bỏ. Shield hiện tại: {stats.currentShield}");
 
-            if (character.battleManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
-        }
+        //    if (character.battleManager != null)
+        //    {
+        //        character.battleUIManager.UpdateCharacterUI(character);
+        //    }
+        //}
         public void RemoveExpiredMaxHPBuff()
         {
             if (maxHPBuffTurnsRemaining > 0 || originalBaseMaxHP == 0) return;
@@ -795,29 +786,29 @@ namespace Turnbase
             }
         }
 
-        public void BreakShield()
-        {
-            stats.currentShield = 0;
-            baseShieldAmount = 0;
-            shieldTurnsRemaining = 0;
-            shieldIcon = null;
+        //public void BreakShield()
+        //{
+        //    stats.currentShield = 0;
+        //    baseShieldAmount = 0;
+        //    shieldTurnsRemaining = 0;
+        //    shieldIcon = null;
 
-            if (shieldVFXInstance != null)
-            {
-                shieldVFXInstance.transform.SetParent(null);
-                shieldVFXInstance.ReturnToPool();
-                shieldVFXInstance = null;
-            }
+        //    if (shieldVFXInstance != null)
+        //    {
+        //        shieldVFXInstance.transform.SetParent(null);
+        //        shieldVFXInstance.ReturnToPool();
+        //        shieldVFXInstance = null;
+        //    }
 
-            if (character.battleUIManager != null)
-            {
-                character.battleUIManager.UpdateCharacterUI(character);
-            }
+        //    if (character.battleUIManager != null)
+        //    {
+        //        character.battleUIManager.UpdateCharacterUI(character);
+        //    }
 
-            EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
+        //    EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
-            Debug.Log($"<color=yellow>[SHIELD BROKEN]</color> Giáp của {character.name} đã bị đánh vỡ!");
-        }
+        //    Debug.Log($"<color=yellow>[SHIELD BROKEN]</color> Giáp của {character.name} đã bị đánh vỡ!");
+        //}
 
         public bool IsBuffActive(StatType statType)
         {
@@ -906,15 +897,15 @@ namespace Turnbase
                 }
             }
 
-            if (shieldTurnsRemaining > 0)
-            {
-                shieldTurnsRemaining--;
-                if (shieldTurnsRemaining <= 0)
-                {
-                    RemoveExpiredShield();
-                    uiUpdateNeeded = true;
-                }
-            }
+            //if (shieldTurnsRemaining > 0)
+            //{
+            //    shieldTurnsRemaining--;
+            //    if (shieldTurnsRemaining <= 0)
+            //    {
+            //        RemoveExpiredShield();
+            //        uiUpdateNeeded = true;
+            //    }
+            //}
 
             if (magicalDefenseBuffTurnsRemaining > 0)
             {

@@ -28,18 +28,18 @@ namespace Turnbase
             if (buffManager == null || debuffManager == null) return effects;
 
 
-            if (buffManager.shieldTurnsRemaining > 0)
-            {
-                effects.Add(new StatusEffectData
-                {
-                    Name = "Shield",
-                    TurnsRemaining = buffManager.shieldTurnsRemaining,
-                    Detail = $"{stats.currentShield} Shield",
-                    IsBuff = true,
-                    Icon = buffManager.shieldIcon
+            ////if (buffManager.shieldTurnsRemaining > 0)
+            ////{
+            ////    effects.Add(new StatusEffectData
+            ////    {
+            ////        Name = "Shield",
+            ////        TurnsRemaining = buffManager.shieldTurnsRemaining,
+            ////        Detail = $"{stats.currentShield} Shield",
+            ////        IsBuff = true,
+            ////        Icon = buffManager.shieldIcon
 
-                });
-            }
+            ////    });
+            ////}
 
             if (buffManager.attackBuffTurnsRemaining > 0)
             {

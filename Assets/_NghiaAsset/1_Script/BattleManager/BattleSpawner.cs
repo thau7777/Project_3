@@ -138,10 +138,10 @@ namespace Turnbase
 
             if (characterInstance.stats != null)
             {
-                characterInstance.stats.currentShield = 0;
+                //characterInstance.stats.currentShield = 0;
                 characterInstance.stats.currentHP = characterInstance.stats.maxHP;
                 characterInstance.stats.currentMP = characterInstance.stats.maxMP;
-                characterInstance.stats.maxShield = characterInstance.stats.maxHP;
+                //characterInstance.stats.maxShield = characterInstance.stats.maxHP;
             }
 
             PlayerActionUI actionUI = characterInstance.GetComponentInChildren<PlayerActionUI>(true);

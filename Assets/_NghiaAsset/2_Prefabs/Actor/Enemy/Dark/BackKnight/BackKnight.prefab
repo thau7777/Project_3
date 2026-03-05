@@ -983,7 +983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6088009587198136756
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1434,8 +1434,6 @@ MonoBehaviour:
     currentHP: 10000
     maxMP: 100
     currentMP: 100
-    maxShield: 119
-    currentShield: 0
     physicalAttack: 100
     magicAttack: 10
     physicalDefense: 100
@@ -1580,7 +1578,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
-  iceArmorCounterSkill: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-7500645950520890881
 MonoBehaviour:
   m_ObjectHideFlags: 0

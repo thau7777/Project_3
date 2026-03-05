@@ -68,7 +68,7 @@ namespace Turnbase
 
             UpdateHpBar(stats);
             UpdateMpBar(stats);
-            UpdateShieldBar(stats);
+            //UpdateShieldBar(stats);
             UpdateElementImage();
             UpdateTrailblazeBar();
             UpdateStatusEffects(dataProvider.GetActiveStatusEffects());
@@ -110,14 +110,14 @@ namespace Turnbase
             }
         }
 
-        private void UpdateShieldBar(CharacterStats stats)
-        {
-            if (shieldBarFill != null && stats.maxHP > 0)
-            {
-                shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxShield;
+        ////private void UpdateShieldBar(CharacterStats stats)
+        ////{
+        ////    if (shieldBarFill != null && stats.maxHP > 0)
+        ////    {
+        ////        shieldBarFill.fillAmount = (float)stats.currentShield / stats.maxShield;
 
-            }
-        }
+        ////    }
+        ////}
 
         public void UpdateTrailblazeBar()
         {
