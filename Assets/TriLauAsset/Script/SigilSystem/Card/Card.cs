@@ -1,36 +1,43 @@
 ﻿using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 namespace MyRule
 {
     public class Card : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
-        [SerializeField] private Vector3 hoverScale;
+        [SerializeField] private SigilSO sigilSO;
+
+        [SerializeField] private float hoverScale;
         [SerializeField] private SpriteRenderer sigilImg;
         [SerializeField] private TextMeshProUGUI sigilNameTxt;
         [SerializeField] private TextMeshProUGUI sigilDescTxt;
 
-        private SigilSO sigilSO;
+        [SerializeField] private float duration;
 
-        public SigilSO SigilSO => sigilSO;
+        private bool isShowing = false;
 
-        private bool showing = false;
-
-        public bool Showing
+        public bool IsShowing
         {
-            get { return showing; }
+            get { return isShowing; } 
             set 
-            { 
-                showing = value;
-                
-                animator.SetBool("Show", showing);
+            {
+                isShowing = value;
+                if (isShowing)
+                {
+                    ShowCard();
+                }
+                else
+                {
+                    HideCard();
+                }
             }
         }
 
+        public SigilSO SigilSO => sigilSO;
+
         private void Start()
         {
-            animator = GetComponent<Animator>();
         }
 
         public void SetSigil(SigilSO normalSigilSO)
@@ -47,16 +54,30 @@ namespace MyRule
 
         private void OnMouseEnter()
         {
-            transform.localScale += hoverScale;
+            if (!isShowing) return;
+
+            transform.localScale *= hoverScale;
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(this));
         }
 
         private void OnMouseExit()
         {
-            transform.localScale -= hoverScale;
+            if (!isShowing) return;
+
+            transform.localScale /= hoverScale;
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(null));
+        }
+
+        protected void ShowCard()
+        {
+            transform.DORotate(new Vector3(0, 0, 0), duration);
+        }
+
+        protected void HideCard()
+        {
+            transform.DORotate(new Vector3(0, 180, 0), duration);
         }
     }
 }

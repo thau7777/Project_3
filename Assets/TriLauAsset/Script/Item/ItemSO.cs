@@ -29,6 +29,7 @@ namespace MyRule
     {
         public ItemType itemType;
         public Sprite icon;
+        public int price;
         public int recoveryAmount;
     }
 }
