@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 namespace MyRule
 {
@@ -10,10 +11,12 @@ namespace MyRule
 
         [SerializeField] private float hoverScale;
         [SerializeField] private SpriteRenderer sigilImg;
-        [SerializeField] private TextMeshProUGUI sigilNameTxt;
-        [SerializeField] private TextMeshProUGUI sigilDescTxt;
+        [SerializeField] private TextMeshPro sigilNameTxt;
+        [SerializeField] private TextMeshPro sigilDescTxt;
+        [SerializeField] private TextMeshPro runeTxt;
+        [SerializeField] private GameObject priceObj;
 
-        [SerializeField] private float duration;
+        [SerializeField] private float showCardDuration = 0.4f;
 
         private bool isShowing = false;
 
@@ -72,12 +75,18 @@ namespace MyRule
 
         protected void ShowCard()
         {
-            transform.DORotate(new Vector3(0, 0, 0), duration);
+            transform.DORotate(new Vector3(0, 0, 0), showCardDuration);
         }
 
         protected void HideCard()
         {
-            transform.DORotate(new Vector3(0, 180, 0), duration);
+            transform.DORotate(new Vector3(0, 180, 0), showCardDuration);
+        }
+
+        public async void ShowPrice(bool value)
+        {
+            await UniTask.Delay((int)showCardDuration * 1000);
+            priceObj.SetActive(value);
         }
     }
 }

@@ -25,8 +25,6 @@ namespace MyRule
         private void Start()
         {
             cts = new CancellationTokenSource();
-            
-            Show();
         }
 
         public async void Show()
@@ -80,6 +78,7 @@ namespace MyRule
             for (int i = 0; i < passiveCards.Length; i++)
             {
                 passiveCards[i].IsShowing = showing;
+                passiveCards[i].ShowPrice(showing);
             }
 
             return UniTask.CompletedTask;
@@ -96,6 +95,7 @@ namespace MyRule
 
                 Card card = cardObj.GetComponent<Card>();
                 card.IsShowing = true;
+                card.ShowPrice(true);
             }
         }
 

@@ -8,7 +8,7 @@ namespace MyRule
         public int level;
     
         [TabGroup("Stat Points")]
-        public int runeNeed;
+        public int rune;
         [TabGroup("Stat Points")]
         public int virgor;
         [TabGroup("Stat Points")]
