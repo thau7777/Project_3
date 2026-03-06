@@ -73,48 +73,48 @@ namespace MyRule.UI
 
             virgorPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.virgor, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.virgor, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             mindPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.mind, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.mind, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             endurancePlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.endurance, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.endurance, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             strPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.strength, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.strength, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             dexPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.dexterity, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.dexterity, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             intelPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.intelligence, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.intelligence, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             faiPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.faith, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.faith, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
 
             arcPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.arcane, ref runeSO.runeCount, ref characterStatsSO.runeNeed);
+                Plus(ref characterStatsSO.arcane, ref runeSO.runeCount, ref characterStatsSO.rune);
             };
         }
 
         private void Update()
         {
-            if (runeSO.runeCount >= characterStatsSO.runeNeed)
+            if (runeSO.runeCount >= characterStatsSO.rune)
             {
                 ShowPlusButton();
             }
@@ -164,9 +164,9 @@ namespace MyRule.UI
         {
             stats += 1;
 
-            runeCount -= characterStatsSO.runeNeed;
+            runeCount -= characterStatsSO.rune;
 
-            runeNeed += characterStatsSO.runeNeed;
+            runeNeed += characterStatsSO.rune;
 
             UpdateStats();
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace MyRule.UI
@@ -28,7 +29,19 @@ namespace MyRule.UI
             
             VolumeController.Instance.AdjustUIVolumeWeight();
             
-            inputReader.SwitchActionMap(ActionMap.SpaceStation);
+            Scene scene = SceneManager.GetActiveScene();
+
+            string sceneName = scene.name;
+
+            switch (sceneName)
+            {
+                case "SpaceStationScene":
+                    inputReader.SwitchActionMap(ActionMap.SpaceStation);
+                    break;
+                case "MazeScene":
+                    inputReader.SwitchActionMap(ActionMap.DiceRoll);
+                    break;
+            }
         }
 
         public override void Show()
