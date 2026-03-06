@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using MyRule;
 
 namespace Turnbase
 {
@@ -23,40 +24,85 @@ namespace Turnbase
             bm = manager;
         }
 
-        public void SpawnWaveImmediately(int waveIndex, EnemyEncounter encounter, Transform[] enemySlots)
+        public void SpawnWaveImmediately(WaveData waveData, Transform[] enemySlots)
         {
-            if (encounter == null || waveIndex >= encounter.waves.Length) return;
+            if (waveData == null) return;
 
-            EnemyWave currentWave = encounter.waves[waveIndex];
-            Character[] enemiesToSpawn = currentWave.enemiesInWave;
+            EnemyData[] enemiesToSpawn = waveData.Enemies;
 
             int enemyCount = Mathf.Min(enemySlots.Length, enemiesToSpawn.Length);
             for (int i = 0; i < enemyCount; i++)
             {
                 if (enemiesToSpawn[i] == null) continue;
-                SpawnCombatant(enemiesToSpawn[i].gameObject, false, enemySlots[i].position);
+
+                EnemyDataSO so = WaveManager.Instance.GetEnemySOById(enemiesToSpawn[i].EnemyId);
+                if (so == null || so.enemyPrefab == null) continue;
+
+                Character character = SpawnCombatant(so.enemyPrefab.gameObject, false, enemySlots[i].position);
+
+                if (character != null) ApplyScaledStats(character, enemiesToSpawn[i]);
             }
 
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
         }
 
-        public IEnumerator SpawnWaveRoutine(int waveIndex, EnemyEncounter encounter, Transform[] enemySlots)
+        public IEnumerator SpawnWaveRoutine(WaveData waveData, Transform[] enemySlots)
         {
-            if (encounter == null || waveIndex >= encounter.waves.Length) yield break;
+            if (waveData == null) yield break;
 
             yield return new WaitForSeconds(2f);
 
-            EnemyWave currentWave = encounter.waves[waveIndex];
-            Character[] enemiesToSpawn = currentWave.enemiesInWave;
+            EnemyData[] enemiesToSpawn = waveData.Enemies;
 
             int enemyCount = Mathf.Min(enemySlots.Length, enemiesToSpawn.Length);
             for (int i = 0; i < enemyCount; i++)
             {
                 if (enemiesToSpawn[i] == null) continue;
-                SpawnCombatant(enemiesToSpawn[i].gameObject, false, enemySlots[i].position);
+
+                EnemyDataSO so = WaveManager.Instance.GetEnemySOById(enemiesToSpawn[i].EnemyId);
+                if (so == null || so.enemyPrefab == null) continue;
+
+                Character character = SpawnCombatant(so.enemyPrefab.gameObject, false, enemySlots[i].position);
+
+                if (character != null) ApplyScaledStats(character, enemiesToSpawn[i]);
             }
 
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
+        }
+
+        private void ApplyScaledStats(Character character, EnemyData data)
+        {
+            if (character.stats == null) return;
+
+            CharacterStats s = character.stats;
+
+            s.maxHP = data.Health;
+            s.currentHP = data.Health;
+
+            s.physicalAttack = data.Phys;
+            s.magicAttack = data.Mag;
+
+            s.physicalDefense = data.PhyDef;
+            s.magicDefense = data.MagDef;
+            s.fireDefense = data.FireDef;
+            s.frostDefense = data.FrostDef;
+            s.lightningDefense = data.LightningDef;
+            s.holyDefense = data.HolyDef;
+            s.darkDefense = data.DarkDef;
+            s.waterDefense = data.WaterDef;
+            s.poisonDefense = data.PoisonDef;
+
+            s.fireDamageBonus = data.Fire;
+            s.frostDamageBonus = data.Frost;
+            s.lightningDamageBonus = data.Lightning;
+            s.holyDamageBonus = data.Holy;
+            s.darkDamageBonus = data.Dark;
+            s.waterDamageBonus = data.Water;
+            s.poisonDamageBonus = data.Poison;
+
+            s.speed = (int)data.AttackSpeed;
+            s.critChance = (int)data.CritChance;
+            s.critMult = (int)(data.CritMult * 100); 
         }
 
         public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
@@ -101,14 +147,13 @@ namespace Turnbase
             }
 
             SetupCharacter(characterInstance);
-
             return characterInstance;
         }
 
         private IEnumerator MoveToPosition(Transform target, Vector3 startPos, Vector3 finalPos, float duration)
         {
             Animator anim = target.GetComponentInChildren<Animator>();
-            anim.Play("walk");
+            if (anim != null) anim.Play("walk");
 
             target.position = startPos;
             float elapsed = 0f;
@@ -122,8 +167,7 @@ namespace Turnbase
             }
 
             target.position = finalPos;
-
-            anim.Play("Idle");
+            if (anim != null) anim.Play("Idle");
         }
 
         private void SetupCharacter(Character characterInstance)
@@ -138,10 +182,8 @@ namespace Turnbase
 
             if (characterInstance.stats != null)
             {
-                //characterInstance.stats.currentShield = 0;
                 characterInstance.stats.currentHP = characterInstance.stats.maxHP;
                 characterInstance.stats.currentMP = characterInstance.stats.maxMP;
-                //characterInstance.stats.maxShield = characterInstance.stats.maxHP;
             }
 
             PlayerActionUI actionUI = characterInstance.GetComponentInChildren<PlayerActionUI>(true);

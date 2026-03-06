@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
@@ -31,6 +31,11 @@ namespace MyRule
         private void InitEnemy()
         {
 
+        }
+
+        public EnemyDataSO GetEnemySOById(EnemyId id)
+        {
+            return enemyDataSOs.Find(so => so.enemyId == id);
         }
 
         public GroupWave GetCurrentWave()
