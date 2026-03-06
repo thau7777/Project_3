@@ -441,6 +441,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5879470459206070153
 BoxCollider:
@@ -623,12 +624,26 @@ MonoBehaviour:
     maxShield: 119
     currentShield: 0
     physicalAttack: 10
-    physicalDefense: 10
     magicAttack: 10
+    physicalDefense: 10
     magicDefense: 100
-    crit: 0
-    critDamage: 0
-    agility: 100
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e17f4668808bb334396ba67fbdee4c63, type: 2}
   skills:
@@ -655,19 +670,23 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: c17001d67eebc5a4e8e790d1639c7706, type: 2}
   damagePopupCanvasParent: {fileID: 626011186020759060}
   enemyStatsUI: {fileID: 5074881874958455267}
-  projectileSpawnPoint: {fileID: 0}
+  SkillSpawnPoint: {fileID: 0}
+  SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 4563294230871419853}
+  isAttackBlocked: 0
+  healthSystem: {fileID: 0}
+  isParrySuccessful: 0
   traildblaze: 100
   isBroken: 0
   enemyUI: {fileID: 5074881874958455267}
   BreakDebuffSettings:
     statToModify: 0
     durationTurns: 0
-    amount: 0
     baseDamagePerTurn: 0
     debuffValue: 0
     debuffEffect: {fileID: 0}
     icon: {fileID: 0}
+  telegraphManager: {fileID: 0}
 --- !u!114 &5074881874958455267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,6 +766,19 @@ MonoBehaviour:
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
   shieldIcon: {fileID: 0}
+  basicAttackBuffAmount: 0
+  basicAttackBuffTurnsRemaining: 0
+  basicAttackBuffIcon: {fileID: 0}
+  splashAttackTurnsRemaining: 0
+  splashDamagePercentage: 0
+  splashAttackIcon: {fileID: 0}
+  hasDivineShield: 0
+  divineShieldVFXInstance: {fileID: 0}
+  divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-61178238854852435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,7 +796,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -781,6 +813,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,6 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918f2cc3e3724ab41b916f9717209a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.DamagePopup
+  critText: {fileID: 0}
 --- !u!114 &-8763004789626390260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,7 +857,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  targetRenderer: {fileID: 4513997159855715179}
+  targetRenderers:
+  - {fileID: 4513997159855715179}
 --- !u!114 &6276432380388334660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,6 +1012,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
