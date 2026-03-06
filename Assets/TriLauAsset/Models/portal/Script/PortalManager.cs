@@ -2,6 +2,7 @@
 using MyRule.CommandPattern;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace MyRule
@@ -44,6 +45,8 @@ namespace MyRule
         private void Start()
         {
             portalRenderer.material.SetFloat("_Indestry", 2f);
+
+            SceneManager.LoadScene("CharacterScene", LoadSceneMode.Additive);
         }
 
         public void SetTargetScene(Loader.EScene scene)
