@@ -106,19 +106,15 @@ namespace Turnbase
 
                 if (effectController != null && skinnedMesh != null)
                 {
-                    // 1. Đưa Controller về gốc tọa độ và không làm con của nhân vật
                     burnVFXInstance.transform.SetParent(null);
                     burnVFXInstance.transform.position = Vector3.zero;
                     burnVFXInstance.transform.rotation = Quaternion.identity;
 
-                    // 2. Setup để nó lấy dữ liệu mesh và bắt đầu vẽ effect lên đó
                     effectController.SetupCharacterEffect(skinnedMesh.transform);
 
-                    Debug.Log($"<color=orange>[Burn]</color> Controller đặt tại (0,0,0), đang vẽ lên {gameObject.name}");
                 }
                 else
                 {
-                    // Logic dự phòng cho các VFX thông thường không dùng Controller
                     Transform vfxParent = skinnedMesh?.transform.Find("CharacterEffectTarget") ?? characterTarget.buffEffectSpawnPoint;
                     burnVFXInstance.transform.SetParent(vfxParent ?? this.transform);
                     burnVFXInstance.transform.localPosition = Vector3.zero;
@@ -736,19 +732,6 @@ namespace Turnbase
             return poisonTurnsRemaining > 0;
         }
 
-        public bool IsBurning()
-        {
-            return burnTurnsRemaining > 0;
-        }   
 
-        public bool IsParalysis()
-        {
-            return paralysisTurnsRemaining > 0;
-        }
-
-        public bool IsSpeedReduction()
-        {
-            return speedReductionTurnsRemaining > 0;
-        }
     }
 }

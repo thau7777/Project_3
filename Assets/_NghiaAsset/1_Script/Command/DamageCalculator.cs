@@ -87,6 +87,11 @@ namespace Turnbase
                 float critMultiplier = (float)user.stats.critMult / 100f;
                 currentDamage *= critMultiplier;
             }
+            // 8. Bounus Dmg Break
+            if(user.debuffManager.breakTurnsRemaining > 0)
+            {
+                currentDamage *= 1.5f;
+            }
 
             // Kết quả cuối cùng
             int finalDamage = Mathf.RoundToInt(currentDamage);

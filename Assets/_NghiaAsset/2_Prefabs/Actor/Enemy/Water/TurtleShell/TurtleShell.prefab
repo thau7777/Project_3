@@ -1290,12 +1290,26 @@ MonoBehaviour:
     maxShield: 119
     currentShield: 0
     physicalAttack: 10
-    physicalDefense: 10
     magicAttack: 10
+    physicalDefense: 10
     magicDefense: 100
-    crit: 0
-    critDamage: 0
-    agility: 100
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e17f4668808bb334396ba67fbdee4c63, type: 2}
   skills:
@@ -1334,7 +1348,6 @@ MonoBehaviour:
   BreakDebuffSettings:
     statToModify: 0
     durationTurns: 0
-    amount: 0
     baseDamagePerTurn: 0
     debuffValue: 0
     debuffEffect: {fileID: 0}
@@ -1419,6 +1432,19 @@ MonoBehaviour:
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
   shieldIcon: {fileID: 0}
+  basicAttackBuffAmount: 0
+  basicAttackBuffTurnsRemaining: 0
+  basicAttackBuffIcon: {fileID: 0}
+  splashAttackTurnsRemaining: 0
+  splashDamagePercentage: 0
+  splashAttackIcon: {fileID: 0}
+  hasDivineShield: 0
+  divineShieldVFXInstance: {fileID: 0}
+  divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-61178238854852435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,7 +1462,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -1453,6 +1479,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,7 +1523,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  targetRenderers: []
+  targetRenderers:
+  - {fileID: 6373987672534303604}
 --- !u!114 &5626590007051990750
 MonoBehaviour:
   m_ObjectHideFlags: 0

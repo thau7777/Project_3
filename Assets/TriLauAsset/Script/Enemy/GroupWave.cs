@@ -9,6 +9,7 @@ namespace MyRule
         [Range(2, 4)]
         private int waveCount;
         private WaveData[] waveDatas;
+        public WaveData[] WaveDatas => waveDatas;
 
         public GroupWave(int waveCount)
         {
@@ -30,7 +31,7 @@ namespace MyRule
     {
         private int enemyCount;
         private EnemyData[] enemies;
-
+        public EnemyData[] Enemies => enemies;
         public WaveData(int maxEnemyCount)
         {
             enemies = new EnemyData[maxEnemyCount];

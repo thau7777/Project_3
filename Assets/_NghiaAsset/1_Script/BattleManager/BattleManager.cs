@@ -2,14 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
+using MyRule;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-using static UnityEngine.EventSystems.EventTrigger;
-
 namespace Turnbase
 {
     public class BattleManager : MonoBehaviour
@@ -26,7 +21,6 @@ namespace Turnbase
 
         [Header("Enemies")]
         public Transform[] enemySlots;
-        public EnemyEncounter encounterToLoad;
 
         public TurnOrderUI turnOrderUI;
 
@@ -41,6 +35,8 @@ namespace Turnbase
         public BattleBuffManager turnbuffManager;
 
         private int currentWaveIndex = 0;
+        private GroupWave currentGroupWave;
+
         private bool isActionGaugeRunning = false;
 
         [Header("Battle Rules")]
@@ -111,11 +107,16 @@ namespace Turnbase
             }
 
             currentWaveIndex = 0;
-            if (encounterToLoad != null && encounterToLoad.waves.Length > 0)
-            {
-                if (uiManager != null) uiManager.UpdateWaveDisplay(currentWaveIndex + 1, encounterToLoad.waves.Length);
+            currentGroupWave = WaveManager.Instance.GetCurrentWave();
 
-                spawner.SpawnWaveImmediately(currentWaveIndex, encounterToLoad, enemySlots);
+            if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
+            {
+                if (uiManager != null)
+                    uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
+
+                WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
+
+                spawner.SpawnWaveImmediately(firstWave, enemySlots);
             }
 
             if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);
@@ -128,10 +129,13 @@ namespace Turnbase
             if (livingEnemies.Count == 0)
             {
                 currentWaveIndex++;
-                if (encounterToLoad != null && currentWaveIndex < encounterToLoad.waves.Length)
+
+                if (currentGroupWave != null && currentWaveIndex < currentGroupWave.WaveDatas.Length)
                 {
                     allCombatants.RemoveAll(c => c != null && !c.isPlayer && !c.isAlive);
-                    if (uiManager != null) uiManager.UpdateWaveDisplay(currentWaveIndex + 1, encounterToLoad.waves.Length);
+
+                    if (uiManager != null)
+                        uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
 
                     isProcessingTurn = true;
                     if (turnHandler != null) turnHandler.isProcessingTurn = true;
@@ -146,10 +150,12 @@ namespace Turnbase
             else
             {
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
-                if (livingPlayers.Count == 0) TB_Menu.instance.ShowLoseMenu();
+                if (livingPlayers.Count == 0)
+                {
+                    TB_Menu.instance.ShowLoseMenu();
+                }
             }
         }
-
         private IEnumerator HandleNewWaveTransition()
         {
             foreach (var c in allCombatants)
@@ -159,7 +165,12 @@ namespace Turnbase
                 c.isParryable = false;
             }
 
-            yield return StartCoroutine(spawner.SpawnWaveRoutine(currentWaveIndex, encounterToLoad, enemySlots));
+            if (currentGroupWave != null && currentWaveIndex < currentGroupWave.WaveDatas.Length)
+            {
+                WaveData nextWaveData = currentGroupWave.WaveDatas[currentWaveIndex];
+
+                yield return StartCoroutine(spawner.SpawnWaveRoutine(nextWaveData, enemySlots));
+            }
 
             yield return new WaitForEndOfFrame();
 
