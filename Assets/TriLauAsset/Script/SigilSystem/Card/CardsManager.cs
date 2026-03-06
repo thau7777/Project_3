@@ -50,7 +50,7 @@ namespace MyRule
                 Card card = Instantiate(sigilSO.sigilPreb, transform).GetComponent<Card>();
                 cards.Add(card);
                 card.transform.localPosition = new Vector3(x, -1000, 0);
-                card.Showing = evt;
+                card.IsShowing = evt;
                 card.SetSigil(sigilSO);
                 await UniTask.Delay(delayTime);
                 x += 500;
@@ -61,7 +61,7 @@ namespace MyRule
         {
             foreach (var card in cards)
             {
-                card.Showing = false;
+                card.IsShowing = false;
                 await UniTask.Delay(delayTime);
                 Destroy(card.gameObject);
             }
