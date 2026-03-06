@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
@@ -59,11 +60,22 @@ namespace MyRule
             orbitalFollow = virtualCamera.GetComponent<CinemachineOrbitalFollow>();
         }
 
+        private void Start()
+        {
+            SetUpPosition();
+        }
+
+        private async void SetUpPosition()
+        {
+            await UniTask.Delay(100);
+            target.position = Vector3.zero;
+        }
+
         private void LateUpdate()
         {
             float deltaTime = Time.unscaledDeltaTime;
 
-            HandleEdgeScrolling();
+            //HandleEdgeScrolling();
 
             HandleMove(deltaTime);
             

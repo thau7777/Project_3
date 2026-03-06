@@ -5,7 +5,6 @@ namespace MyRule
     public enum NodeType
     {
         MinorEnemy,
-        EliteEnemy,
         RestSite,
         Treasure,
         Store,

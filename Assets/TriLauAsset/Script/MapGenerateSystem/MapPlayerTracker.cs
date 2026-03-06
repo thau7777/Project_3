@@ -29,7 +29,6 @@ namespace MyRule
 
             if (mapManager.CurrentMap.path.Count == 0)
             {
-                // player has not selected the node yet, he can select any of the nodes with y = 0
                 if (mapNode.Node.point.y == 0)
                     SendPlayerToNode(mapNode);
                 else
@@ -61,16 +60,11 @@ namespace MyRule
 
         private static void EnterNode(MapNode mapNode)
         {
-            // we have access to blueprint name here as well
             Debug.Log("Entering node: " + mapNode.Node.blueprintName + " of type: " + mapNode.Node.nodeType);
-            // load appropriate scene with context based on nodeType:
-            // or show appropriate GUI over the map: 
-            // if you choose to show GUI in some of these cases, do not forget to set "Locked" in MapPlayerTracker back to false
+            
             switch (mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
-                    break;
-                case NodeType.EliteEnemy:
                     break;
                 case NodeType.RestSite:
                     break;

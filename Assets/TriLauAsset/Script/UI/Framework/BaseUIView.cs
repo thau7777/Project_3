@@ -17,6 +17,7 @@ namespace MyRule.UI
         LobbyShop,
         Portal,
         Stats,
+        HUD,
         None
     }
 
