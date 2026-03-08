@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 public enum AimType
 {
     None,
@@ -50,7 +49,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
     [TabGroup("Skill Settings")]
     public Sprite skillIcon;
     [TabGroup("Skill Settings")]
-    public String skillDescription = "bla bla bla";
+    public string skillDescription = "bla bla bla";
 
     [TabGroup("Skill Settings")]
     [SerializeField]

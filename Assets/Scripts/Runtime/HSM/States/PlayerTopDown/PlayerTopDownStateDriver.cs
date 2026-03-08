@@ -31,7 +31,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
     [SerializeField, Required]
     [TabGroup("References")]
-    private CharacterControllerLayerIgnoreController _layerIgnoreController;
+    private CCLayerIgnoreController _layerIgnoreController;
 
     [SerializeField, Required]
     [TabGroup("References")]
@@ -93,7 +93,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
             Instantiate(_minionManagerPrefab);
 
         _controller = GetComponent<CharacterController>();
-        _layerIgnoreController = GetComponent<CharacterControllerLayerIgnoreController>();
+        _layerIgnoreController = GetComponent<CCLayerIgnoreController>();
         _animator = GetComponent<Animator>();
         _executor = GetComponent<SkillExecutor>();
         _characterStats = GetComponent<CharacterStats>();

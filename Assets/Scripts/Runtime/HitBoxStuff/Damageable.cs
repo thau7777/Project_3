@@ -9,14 +9,14 @@ public class Damageable : MonoBehaviour
 
     [SerializeField]
     private LayerMask _layerIgnoreOnDeath;
-    private CharacterControllerLayerIgnoreController _ccLayerIgnoreController;
+    private CCLayerIgnoreController _ccLayerIgnoreController;
 
     public float MaxHealth { get; private set; }
     public float CurrentHealth { get; set; }
 
     public bool hasShieldBreakingMechanic = false;
     public float MaxShieldHealth { get; private set; }
-    public float ShieldHealth { get; private set; }
+    public float CurrentShieldHealth { get; private set; }
 
 
     [SerializeField] private float _invincibleDuration = 0.1f;
@@ -24,10 +24,6 @@ public class Damageable : MonoBehaviour
     private float _invincibleElapsedTime = 0;
 
     private Coroutine _stunCoroutine;
-    [SerializeField]
-    private ContinousVFXSettings _stunVFXSettings;
-    private Transform _stunVFXSpawnTransform;
-    private Flyweight _stunVfxFlyweight;
 
     public UnityEvent<GameObject,float, Vector3, float> OnTakeDamage;
     public UnityEvent OnDeath;
@@ -40,9 +36,7 @@ public class Damageable : MonoBehaviour
 
     private void Awake()
     {
-        _ccLayerIgnoreController = gameObject.GetOrAdd<CharacterControllerLayerIgnoreController>();
-        if(transform.tag != "Player")
-        _stunVFXSpawnTransform = transform.Find("AboveHead") ?? transform;
+        _ccLayerIgnoreController = gameObject.GetOrAdd<CCLayerIgnoreController>();
 
     }
     public void Initialize(float maxHealth)
@@ -52,8 +46,8 @@ public class Damageable : MonoBehaviour
         if(hasShieldBreakingMechanic)
         {
             MaxShieldHealth = 100;
-            ShieldHealth = MaxShieldHealth;
-            OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
+            CurrentShieldHealth = MaxShieldHealth;
+            OnShieldChanged?.Invoke(CurrentShieldHealth, MaxShieldHealth);
         }
 
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
@@ -111,13 +105,15 @@ public class Damageable : MonoBehaviour
         component = null;
         return false;
     }
-    public void TakeDamage(GameObject sender, GameObject hitOrigin, bool isCrit, int damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
+    public void TakeDamage(GameObject sender, GameObject hitOrigin, bool isCrit
+        , int damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, 
+        ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
      
-        FloatingCombatText floatingCombatText = null;
+        FloatingCombatText floatingCombatTextEffect = null;
         if (floatingCombatTextSettings)
-            floatingCombatText = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
+            floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
 
         var effectsManager = GetComponent<EffectsManager>();
         if (effectsManager.HasEffect("Unbreaking Thorn Effect"))
@@ -128,8 +124,8 @@ public class Damageable : MonoBehaviour
                 stacksToApply = 1
             };
             sender.GetComponent<EffectsManager>()?.AddEffect(PoisonEffectData);
-            if (floatingCombatText) 
-                floatingCombatText.Init("Unbreaking Thorn", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1), false);
+            if (floatingCombatTextEffect) 
+                floatingCombatTextEffect.Init("Unbreaking Thorn", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
         }
         if(effectsManager.HasEffect("Frost Shield Effect"))
         {
@@ -139,8 +135,8 @@ public class Damageable : MonoBehaviour
                 stacksToApply = 1
             };
             sender.GetComponent<EffectsManager>()?.AddEffect(effectData);
-            if(floatingCombatText)
-                floatingCombatText.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1), false);
+            if(floatingCombatTextEffect)
+                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1), false);
              return;
         }
         if(effectsManager.HasEffect("Holy Shield Effect"))
@@ -148,8 +144,8 @@ public class Damageable : MonoBehaviour
             effectsManager.RemoveEffectByName("Holy Shield Effect");
             CameraShaker.Instance.ShakeRandomDirection(force: 1, duration: 0.2f);
 
-            if(floatingCombatText)
-                floatingCombatText.Init("Holy Shield", FloatingCombatText.CombatTextType.Holy, transform.position.Add(y: 1), false);
+            if(floatingCombatTextEffect)
+                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Holy, transform.position.Add(y: 1), false);
             return;
 
         }
@@ -194,7 +190,8 @@ public class Damageable : MonoBehaviour
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
-        if (floatingCombatText)
+        FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
+        if (floatingCombatTextNumber)
         {
             FloatingCombatText.CombatTextType combatTextType = attackElementalType switch
             {
@@ -208,7 +205,7 @@ public class Damageable : MonoBehaviour
                 _ => FloatingCombatText.CombatTextType.Normal
             };
 
-            floatingCombatText.Init(finalDamage.ToString(), combatTextType, transform.position.Add(y: 1), isCrit);
+            floatingCombatTextNumber.Init(finalDamage.ToString(), combatTextType, transform.position.Add(y: 1), isCrit);
         }
         if (CurrentHealth == 0)
         {
@@ -224,28 +221,29 @@ public class Damageable : MonoBehaviour
     }
     public void TakeShieldDamage(float damage)
     {
-        if (hasShieldBreakingMechanic && ShieldHealth > 0)
+        if (hasShieldBreakingMechanic && CurrentShieldHealth > 0)
         {
             var effectsManager = GetComponent<EffectsManager>();
             if (effectsManager.HasEffect("Poison Effect"))
                 damage *= 2;
             
 
-            ShieldHealth = Mathf.Max(ShieldHealth - damage, 0);
-            OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
-            if (ShieldHealth == 0 && CurrentHealth > 0)
+            CurrentShieldHealth = Mathf.Max(CurrentShieldHealth - damage, 0);
+            OnShieldChanged?.Invoke(CurrentShieldHealth, MaxShieldHealth);
+            if (CurrentShieldHealth == 0 && CurrentHealth > 0)
             {
-                OnShieldBreak?.Invoke(3);
-                StartStunCoroutine(3);
 
-                if (_stunVFXSettings != null && _stunVFXSpawnTransform != null)
+                // spawn stun vfx
+                var stunEffect = EffectsDatabase.Instance.GetEffectByName("Stun Effect");
+                EffectData stunEffectData = new EffectData
                 {
-                    _stunVfxFlyweight = FlyweightFactory.Spawn(_stunVFXSettings);
-                    _stunVfxFlyweight.FlyweightInitialize(_stunVFXSpawnTransform.position, parent: _stunVFXSpawnTransform);
-                    (_stunVfxFlyweight as ContinousVFX).InitializeVFX(_stunVFXSettings.DefaultSize);
-                    _stunVfxFlyweight.transform.position = _stunVFXSpawnTransform.position;
-                    _stunVfxFlyweight.transform.rotation = Quaternion.identity;
-                }
+                    effect = stunEffect,
+                    stacksToApply = 1
+                };
+                GetComponent<EffectsManager>().AddEffect(stunEffectData);
+
+                OnShieldBreak?.Invoke(stunEffect.durationOnApply);
+                StartStunCoroutine(stunEffect.durationOnApply);
             }
         }
     }
@@ -261,13 +259,8 @@ public class Damageable : MonoBehaviour
     private IEnumerator StunRoutine(float duration)
     {
         yield return Helpers.GetWaitForSeconds(duration);
-        if (_stunVfxFlyweight)
-        {
-            _stunVfxFlyweight.ReturnToPool();
-            _stunVfxFlyweight = null;
-        }
-        ShieldHealth = MaxShieldHealth;
-        OnShieldChanged?.Invoke(ShieldHealth, MaxShieldHealth);
+        CurrentShieldHealth = MaxShieldHealth;
+        OnShieldChanged?.Invoke(CurrentShieldHealth, MaxShieldHealth);
     }
 
     public void Heal(float amount)

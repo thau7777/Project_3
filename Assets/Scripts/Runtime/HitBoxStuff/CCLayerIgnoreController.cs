@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterControllerLayerIgnoreController : MonoBehaviour
+public class CCLayerIgnoreController : MonoBehaviour
 {
     CharacterController _characterController;
 

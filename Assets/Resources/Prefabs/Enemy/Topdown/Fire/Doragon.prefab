@@ -1403,7 +1403,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0
-    skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
+    skillVFX: {fileID: 0}
     skillDuration: 1
     projectileSpeed: 0
     skillSize: 1.5
@@ -1440,7 +1440,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0
-    skillEffect: {fileID: 11400000, guid: eabd184b0599bb948b4bda7af7e354bd, type: 2}
+    skillVFX: {fileID: 0}
     skillDuration: 3
     projectileSpeed: 0
     skillSize: 2
@@ -1487,7 +1487,6 @@ MonoBehaviour:
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
   _invincibleDuration: 0.1
-  _stunVFXSettings: {fileID: 0}
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -1544,13 +1543,50 @@ MonoBehaviour:
         m_CallState: 2
   OnShieldBreak:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9092346767039691905}
+        m_TargetAssemblyTypeName: EnemyTopdownStateDriver, Assembly-CSharp
+        m_MethodName: OnStunned
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHealthChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3127456470536705814}
+        m_TargetAssemblyTypeName: TopDownEnemyUIController, Assembly-CSharp
+        m_MethodName: SetHealth
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnShieldChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3127456470536705814}
+        m_TargetAssemblyTypeName: TopDownEnemyUIController, Assembly-CSharp
+        m_MethodName: SetShield
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}
 --- !u!114 &5581613592090264742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1639,11 +1675,25 @@ MonoBehaviour:
   <InitialMana>k__BackingField: 100
   <AttackDamage>k__BackingField: 10
   <MagicAttackDamage>k__BackingField: 8
+  <FireDamage>k__BackingField: 0
+  <WaterDamage>k__BackingField: 0
+  <FrostDamage>k__BackingField: 0
+  <LightningDamage>k__BackingField: 0
+  <HolyDamage>k__BackingField: 0
+  <DarkDamage>k__BackingField: 0
+  <PoisonDamage>k__BackingField: 0
   <PhysicalDefense>k__BackingField: 5
   <MagicDefense>k__BackingField: 5
-  <Agility>k__BackingField: 5
+  <FireDefense>k__BackingField: 0
+  <WaterDefense>k__BackingField: 0
+  <FrostDefense>k__BackingField: 0
+  <LightningDefense>k__BackingField: 0
+  <HolyDefense>k__BackingField: 0
+  <DarkDefense>k__BackingField: 0
+  <PoisonDefense>k__BackingField: 0
+  <Speed>k__BackingField: 5
   <CriticalRate>k__BackingField: 0.1
-  <CriticalDamage>k__BackingField: 1.5
+  <CriticalMultiplier>k__BackingField: 1.5
   <AttackSizeScale>k__BackingField: 1
 --- !u!1 &7809803923127542384
 GameObject:
@@ -2248,6 +2298,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+--- !u!114 &3127456470536705814 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1157634428438197667, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+  m_PrefabInstance: {fileID: 4284695066171433653}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2194e86de77d9be4584a66f54979f7f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusBarsUIController
 --- !u!224 &4305381885824379370 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}

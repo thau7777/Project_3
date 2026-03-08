@@ -167,14 +167,14 @@ public class EnemyTopdownStateDriver : Flyweight
     }
     public void OnAttackTrigger(int setParentForVFX = 0)
     {
-        if (_context.CurrentEnemyAttackData.skillEffect == null) return;
+        if (_context.CurrentEnemyAttackData.skillVFX == null) return;
         Transform spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform ?? transform;
         if (_skillIndicator && _context.CurrentEnemyAttackData.spawnType == EnemyAttackData.SpawnType.AtTarget)
         {
             spawnTransform = _skillIndicator.transform;
         }
         _skillIndicator = null;
-        Flyweight vfx = FlyweightFactory.Spawn(_context.CurrentEnemyAttackData.skillEffect);
+        Flyweight vfx = FlyweightFactory.Spawn(_context.CurrentEnemyAttackData.skillVFX);
         
         var rotationOffset = Quaternion.Euler(_context.CurrentEnemyAttackData.rotationOffset);
         var positionOffset = _context.CurrentEnemyAttackData.positionOffset;
@@ -185,7 +185,7 @@ public class EnemyTopdownStateDriver : Flyweight
         if (vfx is OneShotVFX)
         {
             OneShotVFX oneShotVFX = (OneShotVFX) vfx;
-            OneShotVFXSettings oneShotVFXSettings = (OneShotVFXSettings)_context.CurrentEnemyAttackData.skillEffect;
+            OneShotVFXSettings oneShotVFXSettings = (OneShotVFXSettings)_context.CurrentEnemyAttackData.skillVFX;
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
             {
                 hitBoxHandler.Setup(
@@ -303,7 +303,7 @@ public class EnemyTopdownStateDriver : Flyweight
     #region Outside Calls
     public void StartSpawnAnim()
     {
-        StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationTime));
+        StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationDuration));
     }
     public IEnumerator SpawnAnimationCoroutine(float duration)
     {
