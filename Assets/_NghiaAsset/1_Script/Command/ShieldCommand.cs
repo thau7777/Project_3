@@ -23,7 +23,7 @@ namespace Turnbase
 
             List<Character> targetsToShield = FindTargets();
 
-            yield return ApplyShieldEffects(targetsToShield);
+            //yield return ApplyShieldEffects(targetsToShield);
 
             yield return new WaitForSeconds(0.5f);
 
@@ -53,31 +53,31 @@ namespace Turnbase
             }
             return new List<Character>();
         }
-        private IEnumerator ApplyShieldEffects(List<Character> targetsToShield)
-        {
-            int shieldAmount = skill.damage;
-            int durationTurns = skill.buffProperties.durationTurns;
-            Sprite shieldIcon = skill.buffProperties.icon;
+        //private IEnumerator ApplyShieldEffects(List<Character> targetsToShield)
+        //{
+        //    int shieldAmount = skill.damage;
+        //    int durationTurns = skill.buffProperties.durationTurns;
+        //    Sprite shieldIcon = skill.buffProperties.icon;
 
-            if (!targetsToShield.Any())
-            {
-                yield break;
-            }
+        //    if (!targetsToShield.Any())
+        //    {
+        //        yield break;
+        //    }
 
-            foreach (var charTarget in targetsToShield)
-            {
-                Flyweight_TB localShieldVFXInstance = SpawnContinuousEffect(
-                    charTarget.transform.position,
-                    charTarget,
-                    skill
-                );
+        //    foreach (var charTarget in targetsToShield)
+        //    {
+        //        Flyweight_TB localShieldVFXInstance = SpawnContinuousEffect(
+        //            charTarget.transform.position,
+        //            charTarget,
+        //            skill
+        //        );
 
-                charTarget.AddShield(shieldAmount, durationTurns, shieldIcon, localShieldVFXInstance);
+        //        charTarget.buffManager.AddShield(shieldAmount, durationTurns, localShieldVFXInstance,shieldIcon);
 
-                Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield, hiệu lực {durationTurns} lượt.");
+        //        Debug.Log($"{charTarget.name} đã nhận {shieldAmount} Shield, hiệu lực {durationTurns} lượt.");
 
-                yield return null;
-            }
-        }
+        //        yield return null;
+        //    }
+        //}
     }
 }

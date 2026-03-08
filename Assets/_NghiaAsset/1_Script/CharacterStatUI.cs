@@ -164,19 +164,33 @@ namespace Turnbase
 
                 new StatData { Name = "HP", Value = $"{stats.currentHP}/{stats.maxHP}" },
                 new StatData { Name = "MP", Value = $"{stats.currentMP}/{stats.maxMP}" },
-                new StatData { Name = "Shield", Value = $"{stats.currentShield}/{stats.maxShield}" },
 
                 new StatData { Name = "P. Attack", Value = stats.physicalAttack.ToString() },
                 new StatData { Name = "M. Attack", Value = stats.magicAttack.ToString() },
                 new StatData { Name = "P. Defense", Value = stats.physicalDefense.ToString() },
                 new StatData { Name = "M. Defense", Value = stats.magicDefense.ToString() },
 
+                new StatData { Name = "Fire Bonus", Value = stats.fireDamageBonus.ToString() },
+                new StatData { Name = "Frost Bonus", Value = stats.frostDamageBonus.ToString() },
+                new StatData { Name = "Dark Bonus", Value = stats.darkDamageBonus.ToString() },
+                new StatData { Name = "Holy Bonus", Value = stats.holyDamageBonus.ToString() },
+                new StatData { Name = "Water Bonus", Value = stats.waterDamageBonus.ToString() },
+                new StatData { Name = "Poison Bonus", Value = stats.poisonDamageBonus.ToString() },
+
+                new StatData { Name = "Fire Def", Value = stats.fireDefense.ToString() },
+                new StatData { Name = "Light. Def", Value = stats.lightningDefense.ToString() },
+                new StatData { Name = "Frost Def", Value = stats.frostDefense.ToString() },
+                new StatData { Name = "Dark Def", Value = stats.darkDefense.ToString() },
+                new StatData { Name = "Holy Def", Value = stats.holyDefense.ToString() },
+                new StatData { Name = "Water Def", Value = stats.waterDefense.ToString() },
+                new StatData { Name = "Poison Def", Value = stats.poisonDefense.ToString() },
+
+
                 new StatData { Name = "Crit Chance", Value = stats.critChance.ToString(), Suffix = "%" },
                 new StatData { Name = "Crit Damage", Value = stats.critMult.ToString(), Suffix = "%" },
-                new StatData { Name = "Agility", Value = stats.agility.ToString() },
+                new StatData { Name = "Speed", Value = stats.speed.ToString() },
             };
         }
-
         private void UpdateOrCreateStatEntries(List<StatData> stats)
         {
             HashSet<string> keysToRemove = new HashSet<string>(activeStatEntries.Keys);

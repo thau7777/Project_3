@@ -1,3 +1,4 @@
+using MyRule.Event;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,8 +36,20 @@ namespace MyRule
 
         private void OnSigilChosen(SigilChosenEvent evt)
         {
-            
+            sigilStorageSO.activeSigils.Add(evt.normalSigilSO);
+            EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(evt.normalSigilSO));
             CharacterStatsManager.Instance.UpdateSigilStats(evt.normalSigilSO);
+        }
+
+        void Load()
+        {
+            foreach (var sigil in sigilStorageSO.activeSigils)
+            {
+                if (sigil != null)
+                {
+                    EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(sigil));
+                }
+            }
         }
     }
 }

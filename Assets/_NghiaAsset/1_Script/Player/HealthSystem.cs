@@ -23,20 +23,20 @@ namespace Turnbase
 
             int remainingDamage = damageAmount;
 
-            if (owner.stats.currentShield > 0)
-            {
-                int shieldAbsorb = Mathf.Min(owner.stats.currentShield, remainingDamage);
-                owner.stats.currentShield -= shieldAbsorb;
-                remainingDamage -= shieldAbsorb;
+            ////if (owner.stats.currentShield > 0)
+            ////{
+            ////    int shieldAbsorb = Mathf.Min(owner.stats.currentShield, remainingDamage);
+            ////    owner.stats.currentShield -= shieldAbsorb;
+            ////    remainingDamage -= shieldAbsorb;
 
-                if (owner.stats.currentShield <= 0)
-                {
-                    if (owner.buffManager != null)
-                    {
-                        owner.buffManager.BreakShield();
-                    }
-                }
-            }
+            ////    if (owner.stats.currentShield <= 0)
+            ////    {
+            ////        if (owner.buffManager != null)
+            ////        {
+            ////            owner.buffManager.BreakShield();
+            ////        }
+            ////    }
+            ////}
 
             if (remainingDamage > 0)
             {
@@ -85,7 +85,7 @@ namespace Turnbase
             if (owner.battleManager?.elementChart != null)
                 multiplier = owner.battleManager.elementChart.GetMultiplier(element, enemy.characterElement);
 
-            if (element == ElementType.Normal || multiplier > 1.0f)
+            if(multiplier > 1.0f)
             {
                 float reduction = TRAILDBLAZE_REDUCTION;
 

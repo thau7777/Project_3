@@ -11,6 +11,8 @@ namespace Turnbase
         public int quantity;
         public Sprite icon;
 
+        public FlyweightSettings_TB effect;
+
         public ItemType type;
 
 

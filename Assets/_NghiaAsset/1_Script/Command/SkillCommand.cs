@@ -36,7 +36,8 @@ namespace Turnbase
                 target.buffManager.ApplyBuff(
                     skill.buffProperties,
                     null,
-                    skill.buffProperties.amount 
+                    skill.buffProperties.amount,
+                    skill
                 );
             }
 

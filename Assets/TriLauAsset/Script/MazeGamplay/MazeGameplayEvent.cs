@@ -24,11 +24,11 @@ namespace MyRule
 
     public struct MazeGameplayEvent : IEvent
     {
-        public readonly ShapeType shapeType;
+        public readonly NodeType nodeType;
 
-        public MazeGameplayEvent(ShapeType shapeType)
+        public MazeGameplayEvent(NodeType shapeType)
         {
-            this.shapeType = shapeType;
+            this.nodeType = shapeType;
         }
     }
 }

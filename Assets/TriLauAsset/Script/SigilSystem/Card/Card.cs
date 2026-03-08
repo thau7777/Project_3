@@ -1,36 +1,47 @@
 ﻿using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
+using MyRule.CommandPattern;
 
 namespace MyRule
 {
     public class Card : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
-        [SerializeField] private Vector3 hoverScale;
+        [SerializeField] private SigilSO sigilSO;
+
+        [SerializeField] private float hoverScale;
         [SerializeField] private SpriteRenderer sigilImg;
-        [SerializeField] private TextMeshProUGUI sigilNameTxt;
-        [SerializeField] private TextMeshProUGUI sigilDescTxt;
+        [SerializeField] private TextMeshPro sigilNameTxt;
+        [SerializeField] private TextMeshPro sigilDescTxt;
+        [SerializeField] private TextMeshPro runeTxt;
+        [SerializeField] private GameObject priceObj;
 
-        private SigilSO sigilSO;
+        [SerializeField] private float showCardDuration = 0.4f;
 
-        public SigilSO SigilSO => sigilSO;
+        private bool isShowing = false;
 
-        private bool showing = false;
-
-        public bool Showing
+        public bool IsShowing
         {
-            get { return showing; }
+            get { return isShowing; } 
             set 
-            { 
-                showing = value;
-                
-                animator.SetBool("Show", showing);
+            {
+                isShowing = value;
+                if (isShowing)
+                {
+                    ShowCard();
+                }
+                else
+                {
+                    HideCard();
+                }
             }
         }
 
+        public SigilSO SigilSO => sigilSO;
+
         private void Start()
         {
-            animator = GetComponent<Animator>();
         }
 
         public void SetSigil(SigilSO normalSigilSO)
@@ -43,20 +54,47 @@ namespace MyRule
             {
                 sigilDescTxt.text += '\n' + normalSigilSO.sigilDesTB;
             }
+            runeTxt.text = normalSigilSO.price.ToString();
         }
 
         private void OnMouseEnter()
         {
-            transform.localScale += hoverScale;
+            if (!isShowing) return;
+
+            transform.localScale *= hoverScale;
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(this));
         }
 
         private void OnMouseExit()
         {
-            transform.localScale -= hoverScale;
+            if (!isShowing) return;
+
+            transform.localScale /= hoverScale;
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(null));
+        }
+
+        public void OnClick()
+        {
+            Debug.Log("Click " + sigilNameTxt.text);
+            EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
+        }
+
+        protected void ShowCard()
+        {
+            transform.DORotate(new Vector3(0, 0, 0), showCardDuration);
+        }
+
+        protected void HideCard()
+        {
+            transform.DORotate(new Vector3(0, 180, 0), showCardDuration);
+        }
+
+        public async void ShowPrice(bool value)
+        {
+            await UniTask.Delay((int)showCardDuration * 1000);
+            priceObj.SetActive(value);
         }
     }
 }

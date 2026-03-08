@@ -10,10 +10,12 @@ namespace MyRule
 
     public enum ActiveSigilType
     {
-        L_Mouse,
-        R_Mouse,
+        Q,
+        E,
         Space,
         F,
+        R,
+        Shift
     }
 
     [CreateAssetMenu(fileName = "SigilSO", menuName = "Sigil/SigilSO")]

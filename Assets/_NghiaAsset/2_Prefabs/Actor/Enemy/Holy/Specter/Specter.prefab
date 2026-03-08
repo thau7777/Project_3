@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2689221094554311711
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5767770953866643749}
+  m_Layer: 3
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5767770953866643749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2689221094554311711}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8027162713399588175}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3134202515265822288
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,11 +589,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8027162713399945389}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5767770953866643749}
   m_Father: {fileID: 75167956460423509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8027162713403057157
@@ -2635,12 +2667,26 @@ MonoBehaviour:
     maxShield: 119
     currentShield: 0
     physicalAttack: 10
-    physicalDefense: 10
     magicAttack: 10
+    physicalDefense: 10
     magicDefense: 100
-    crit: 0
-    critDamage: 0
-    agility: 100
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: 49641e4265b50974da81fc9a39abbccf, type: 2}
   skills:
@@ -2679,7 +2725,6 @@ MonoBehaviour:
   BreakDebuffSettings:
     statToModify: 5
     durationTurns: 3
-    amount: 0
     baseDamagePerTurn: 0
     debuffValue: 0
     debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
@@ -2773,6 +2818,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-7500645950520890881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2790,7 +2839,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -2807,6 +2856,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &228614209179218366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2834,7 +2887,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  targetRenderers: []
+  targetRenderers:
+  - {fileID: 8027162713403057157}
 --- !u!114 &5930411074134683441
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -633,7 +633,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.104668915, z: -0.6797794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2551347286398996592}
   m_Father: {fileID: 75167956460423509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5078486164880250522
@@ -1648,6 +1649,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
   m_Center: {x: -0.000000059604645, y: 0, z: 0.00000005960467}
+--- !u!1 &7519904858936082952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2551347286398996592}
+  m_Layer: 3
+  m_Name: CharacterEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2551347286398996592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7519904858936082952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5078486164885424058}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8083454903267841439
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,19 +1779,32 @@ MonoBehaviour:
     maxShield: 119
     currentShield: 0
     physicalAttack: 10
-    physicalDefense: 10
     magicAttack: 10
+    physicalDefense: 10
     magicDefense: 100
-    crit: 0
-    critDamage: 0
-    agility: 100
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e17f4668808bb334396ba67fbdee4c63, type: 2}
   skills:
   - {fileID: 11400000, guid: 8f63e62a85d2a774a8993d6b57ab8a26, type: 2}
   item: []
-  passiveSkills:
-  - {fileID: 11400000, guid: 0f15e4bd46597fe4081b5fefe4e2a3d0, type: 2}
+  passiveSkills: []
   isPlayer: 0
   isVirtualTracker: 0
   target: {fileID: 0}
@@ -1792,7 +1837,6 @@ MonoBehaviour:
   BreakDebuffSettings:
     statToModify: 5
     durationTurns: 2
-    amount: 100
     baseDamagePerTurn: 100
     debuffValue: 100
     debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
@@ -1834,8 +1878,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShaderEffectController
   vfxMaterialDataList:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
-  - {fileID: 11400000, guid: e40570b42b5f5394ebe5a8449c9eb93a, type: 2}
-  targetRenderers: []
+  targetRenderers:
+  - {fileID: 5078486164880250522}
 --- !u!114 &229363719538074653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1902,6 +1946,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-61178238854852435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1919,7 +1967,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -1936,6 +1984,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &1732808570604203036
 MonoBehaviour:
   m_ObjectHideFlags: 0

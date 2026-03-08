@@ -94,6 +94,9 @@ namespace Turnbase
             debuffManager = GetComponent<CharacterDebuffManager>();
             animator = GetComponent<Animator>();
 
+            healthSystem = GetComponent<HealthSystem>();
+            if (healthSystem == null) healthSystem = gameObject.AddComponent<HealthSystem>();
+            healthSystem.Init(this);
 
             CharacterStatsSO currentStats = CharacterStatsManager.Instance.GetCharacterStats();
             stats = new CharacterStats(currentStats);
@@ -185,6 +188,35 @@ namespace Turnbase
 
             healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
 
+            if (attacker != null && attacker.isAlive && buffManager != null)
+            {
+                Skill counterSkill = null;
+
+                if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
+                {
+                    counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
+                                                && s.activatedDebuff.statToModify == DebuffType.SpeedReduction);
+                }
+
+                if (counterSkill == null && buffManager.magicalAttackBuffTurnsRemaining > 0)
+                {
+                    counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
+                                                && s.activatedDebuff.statToModify == DebuffType.Burn);
+                }
+
+                if (counterSkill == null && buffManager.defenseBuffTurnsRemaining > 0)
+                {
+                    counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
+                                                && s.activatedDebuff.statToModify == DebuffType.Poison);
+                }
+
+                if (counterSkill != null)
+                {
+                    buffManager.ProcessSkillStacks(counterSkill, attacker);
+                    Debug.Log($"[COUNTER] Phản đòn từ danh sách: {counterSkill.skillName}");
+                }
+            }
+
             Color elementColor = Color.white;
 
             CameraShaker.Instance.GenerateBasicShake();
@@ -214,7 +246,7 @@ namespace Turnbase
             damageCallback = null;
         }
 
-        #region Heal and Buffs Methods
+        #region Heal Methods
         public void Heal(int amount)
         {
             if (!isAlive) return;
@@ -247,61 +279,6 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} mana! Mana hiện tại: {stats.currentMP}");
         }
 
-        public void AddShield(int amount, int duration, Sprite icon, Flyweight_TB vfxInstance = null)
-        {
-            if (buffManager != null)
-            {
-                buffManager.AddShield(amount, duration, vfxInstance, icon);
-            }
-        }
-
-        public void ApplyAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (buffManager != null)
-            {
-                buffManager.ApplyAttackBuff(amount, duration, vfxInstance, icon);
-            }
-        }
-
-        public void ApplyMaxHPBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (buffManager != null)
-            {
-                buffManager.ApplyMaxHPBuff(amount, duration, vfxInstance, icon);
-            }
-        }
-
-        public void ApplyDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (buffManager != null)
-            {
-                buffManager.ApplyDefenseBuff(amount, duration, vfxInstance, icon);
-            }
-        }
-
-        public void ApplyAgilityBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {   
-            if (buffManager != null)
-            {
-                buffManager.ApplyAgilityBuff(amount, duration, vfxInstance, icon);
-            }
-        }
-
-        public void ApplyMagicAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (buffManager != null)
-            {
-                buffManager.ApplyMagicalAttackBuff(amount, duration, vfxInstance, icon);
-            }
-        }
-
-        public void ApplyMagicDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        {
-            if (buffManager != null)
-            {
-                buffManager.ApplyMagicalDefenseBuff(amount, duration, vfxInstance,icon);
-            }
-        }
         #endregion
 
     }

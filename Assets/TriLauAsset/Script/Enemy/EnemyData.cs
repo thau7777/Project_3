@@ -1,3 +1,4 @@
+using Turnbase;
 using UnityEngine;
 
 namespace MyRule
@@ -36,6 +37,8 @@ namespace MyRule
         public EnemyId enemyId;
 
         [Header("Stats")]
+
+        public Character enemyPrefab;
 
         public int phys;
         public int mag;

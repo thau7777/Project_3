@@ -3,16 +3,11 @@ using UnityEngine.UI;
 
 namespace MyRule.UI
 {
-    public class MainMenuView : BaseUIView, IMainMenuPanel
+    public class MainMenuView : BaseUIView
     {
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject menuButtonsPanel;
 
-        public PanelType PType
-        {
-            get => panelType;
-            set => panelType = value;
-        }
 
         private MainMenuPresenter presenter;
 
@@ -20,7 +15,7 @@ namespace MyRule.UI
         {
             base.OnEnable();
 
-            presenter = new MainMenuPresenter(this, this);
+            presenter = new MainMenuPresenter(this);
 
             panelType = PanelType.MainMenu;
         }

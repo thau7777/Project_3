@@ -23,9 +23,9 @@ namespace Turnbase
             }
 
             Skill basicAttack = ScriptableObject.CreateInstance<Skill>();
-            basicAttack.skillName = "Basic Attack";
+            basicAttack.skillName = "Basic PhysicalAttack";
 
-            basicAttack.animationTriggerName = "Attack";
+            basicAttack.animationTriggerName = "PhysicalAttack";
 
             basicAttack.damage = 1;
 

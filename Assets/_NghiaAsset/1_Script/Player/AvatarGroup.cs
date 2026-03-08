@@ -79,7 +79,7 @@ namespace Turnbase
             }
 
             mpBar.fillAmount = (float)stats.currentMP / stats.maxMP;
-            shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
+            //shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
             hpText.text = $"{stats.currentHP} / {stats.maxHP}";
             mpText.text = $"{stats.currentMP} / {stats.maxMP}";
 

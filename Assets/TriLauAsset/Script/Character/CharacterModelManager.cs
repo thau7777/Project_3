@@ -7,6 +7,8 @@ namespace MyRule
     {
         Swordman,
         Archer,
+        Mage,
+        Summoner,
     }
 
     public class CharacterModelManager : MonoBehaviour

@@ -1,66 +1,78 @@
+using MyRule.CommandPattern;
+using MyRule.UI;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace MyRule
 {
-    public class InputProvider : MonoBehaviour, IInputProvider
+    public class InputProvider : MonoBehaviour
     {
-        [SerializeField] private InputReader _inputReader;
+        [SerializeField] private InputReader inputReader;
 
-        private Vector2 _movementInput;
-        private Vector2 _mousePosition;
-        private float _zoomInput;
-        private Vector2 _mouseInput;
+        Vector2 moveInput;
+        Vector2 lookInput;
+        Vector2 scrollInput;
+        bool middleClickInput;
 
-        public bool HasMouse => throw new System.NotImplementedException();
-
-        public Vector2 LookInput => throw new System.NotImplementedException();
-
-        public Vector2 MouseInput => throw new System.NotImplementedException();
-
-        public float ZoomInput => throw new System.NotImplementedException();
-
-        public Vector2 MousePosition => throw new System.NotImplementedException();
-
-        public Vector2 MovementInput() => _movementInput; 
-
-        public bool RotationButtonInput()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool CanAlwaysRotate { get; private set; }
+        public Vector2 MoveInput => moveInput;
+        public Vector2 LookInput => lookInput;
+        public Vector2 ScrollInput => scrollInput;
+        public bool MiddleClickInput => middleClickInput;
 
         private void OnEnable()
         {
-            _inputReader.diceRollActions.onLook += GetMovementInput;
+            inputReader.diceRollActions.onMove += OnMove;
+            inputReader.diceRollActions.onLook += OnLook;
+            inputReader.diceRollActions.onRightClick += OnMiddleClick;
+            inputReader.diceRollActions.onScroll += OnScrollWheel;
+            inputReader.diceRollActions.onTab += OnTab;
+            inputReader.diceRollActions.onEsc += OnEsc;
         }
 
         private void OnDisable()
         {
-            _inputReader.diceRollActions.onLook -= GetMovementInput;
+            inputReader.diceRollActions.onMove -= OnMove;
+            inputReader.diceRollActions.onLook -= OnLook;
+            inputReader.diceRollActions.onRightClick -= OnMiddleClick;
+            inputReader.diceRollActions.onScroll -= OnScrollWheel;
+            inputReader.diceRollActions.onTab -= OnTab;
+            inputReader.diceRollActions.onEsc -= OnEsc;
         }
 
-        private void GetMovementInput(Vector2 look)
+        private void Start()
         {
-            _movementInput = look;
+            inputReader.SwitchActionMap(ActionMap.DiceRoll);
         }
 
-        private void Update()
+        void OnMove(Vector2 value)
         {
-            var mouse = Mouse.current;
-            var keyboard = Keyboard.current;
-
-            if (mouse != null && keyboard != null)
-            {
-                UpdateInput(mouse, keyboard);
-            }
+            moveInput = value;
         }
 
-        void UpdateInput(Mouse mouse, Keyboard keyboard)
+        void OnLook(Vector2 value)
         {
-            _mousePosition = mouse.position.value;
-            _zoomInput = mouse.scroll.value.y;
+            lookInput = value;
+        }
+
+        void OnScrollWheel(Vector2 value)
+        {
+            scrollInput = value;
+        }
+
+        void OnMiddleClick(bool value)
+        {
+            middleClickInput = value;
+        }
+
+        void OnTab()
+        {
+            EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Stats));
+        }
+
+        void OnEsc()
+        {
+            CommandInvoker.UndoCommand();
         }
     }
 }

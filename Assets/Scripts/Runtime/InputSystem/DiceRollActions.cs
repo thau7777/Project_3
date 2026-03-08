@@ -8,15 +8,52 @@ public class DiceRollActions : InputActions.IDiceRollActions
 
     public event Action onRoll;
 
-    public event Action onRightClick;
+    public event Action<bool> onRightClick;
 
     public event Action<Vector2> onLook;
+    public event Action<Vector2> onMove;
+    public event Action<Vector2> onScroll;
+
+    public event Action onEsc;
+
+    public void OnEsc(InputAction.CallbackContext context)
+    {
+        if (context.performed) onEsc?.Invoke();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onLook?.Invoke(context.ReadValue<Vector2>());
+        }
+        else
+        {
+            onLook?.Invoke(Vector2.zero);
+        }
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onMove?.Invoke(context.ReadValue<Vector2>());
+        }
+        else
+        {
+            onMove?.Invoke(Vector2.zero);
+        }
+    }
 
     public void OnRightClick(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            onRightClick?.Invoke();
+            onRightClick?.Invoke(true);
+        }
+        else
+        {
+            onRightClick?.Invoke(false);
         }
     }
 
@@ -28,15 +65,15 @@ public class DiceRollActions : InputActions.IDiceRollActions
         }
     }
 
-    public void OnLook(InputAction.CallbackContext context)
+    public void OnScroll(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            onLook?.Invoke(context.ReadValue<Vector2>());
+            onScroll?.Invoke(context.ReadValue<Vector2>());
         }
-        else if (context.canceled)
+        else
         {
-            onLook?.Invoke(Vector2.zero);
+            onScroll?.Invoke(Vector2.zero);
         }
     }
 

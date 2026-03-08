@@ -1,3 +1,4 @@
+using MyRule.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,30 +21,20 @@ namespace MyRule
 
         private void OnMazeGameplayEvent(MazeGameplayEvent evt)
         {
-            switch (evt.shapeType)
+            switch (evt.nodeType)
             {
-                case ShapeType.MiniGame:
-                    Debug.Log("Enter Mini Event");
+                case NodeType.MinorEnemy:
                     break;
-                case ShapeType.Boss:
-                    Debug.Log("Enter Boss Event");
+                case NodeType.Store:
+                    EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Store));
                     break;
-                case ShapeType.Sigil:
-                    EventBus<ShowSigilCardEvent>.Raise(new ShowSigilCardEvent(true));
-                    Debug.Log("Enter Sigil Event");
+                case NodeType.Treasure:
                     break;
-                case ShapeType.Treasure:
-                    Debug.Log("Enter Treasure Event");
+                case NodeType.RestSite:
                     break;
-                case ShapeType.Creeeps:
-                    SceneManager.LoadScene("TurnBase");
-                    Debug.Log("Enter Creeps Event");
+                case NodeType.Mystery:
                     break;
-                case ShapeType.Recovery:
-                    Debug.Log("Recovery");
-                    break;
-                case ShapeType.Shop:
-                    Debug.Log("Enter Shop Event");
+                case NodeType.Boss:
                     break;
                 default:
                     Debug.Log("Unknown shape type");

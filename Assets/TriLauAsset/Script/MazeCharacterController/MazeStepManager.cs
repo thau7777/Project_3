@@ -94,7 +94,7 @@ namespace MyRule
                 new CamTargetEvent(characterTransform)
             );
 
-            EventBus<MazeMoveEvent>.Raise(new MazeMoveEvent(currentShape));
+            EventBus<MazeMoveEvent>.Raise(new MazeMoveEvent());
         }
 
         private async UniTaskVoid ResolveSteps()

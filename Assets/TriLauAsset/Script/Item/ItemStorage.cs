@@ -18,8 +18,6 @@ namespace MyRule
         public void AddItem(int index, Item item)
         {
             items[index] = item;
-
-            EventBus<AddItemEvent>.Raise(new AddItemEvent(index, item));
         }
 
         public void RemoveItemSlot(int index)
@@ -48,16 +46,19 @@ namespace MyRule
     {
         private ItemType type;
         private Sprite icon;
+        private int price;
         private int recoveryAmount;
 
         public ItemType Type => type;
         public Sprite Icon => icon;
+        public int Price => price;
         public int RecoveryAmount => recoveryAmount;
 
         public Item(ItemSO itemSO)
         {
             type = itemSO.itemType;
             icon = itemSO.icon;
+            price = itemSO.price;
             recoveryAmount = itemSO.recoveryAmount;
         }
     }

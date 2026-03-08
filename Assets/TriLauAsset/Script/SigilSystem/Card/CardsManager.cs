@@ -50,7 +50,7 @@ namespace MyRule
                 Card card = Instantiate(sigilSO.sigilPreb, transform).GetComponent<Card>();
                 cards.Add(card);
                 card.transform.localPosition = new Vector3(x, -1000, 0);
-                card.Showing = evt;
+                card.IsShowing = evt;
                 card.SetSigil(sigilSO);
                 await UniTask.Delay(delayTime);
                 x += 500;
@@ -61,7 +61,7 @@ namespace MyRule
         {
             foreach (var card in cards)
             {
-                card.Showing = false;
+                card.IsShowing = false;
                 await UniTask.Delay(delayTime);
                 Destroy(card.gameObject);
             }
@@ -81,20 +81,20 @@ namespace MyRule
         private SigilSO GetWeightedRandom()
         {
             int totalWeight = 0;
-            foreach (var s in groupSigil.normalSigil)
+            foreach (var s in groupSigil.sigilSOs)
                 totalWeight += s.rarity;
 
             int random = Random.Range(0, totalWeight);
             int current = 0;
 
-            foreach (var s in groupSigil.normalSigil)
+            foreach (var s in groupSigil.sigilSOs)
             {
                 current += s.rarity;
                 if (random < current)
                     return s;
             }
 
-            return groupSigil.normalSigil[0];
+            return groupSigil.sigilSOs[0];
         }
     }
 }
