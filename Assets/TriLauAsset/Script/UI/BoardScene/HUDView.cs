@@ -2,6 +2,7 @@ using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 namespace MyRule.UI
 {
@@ -26,6 +27,8 @@ namespace MyRule.UI
             hudPresenter = new HUDPresenter(this, sigilViews, itemViews);
 
             inputReader.diceRollActions.onEsc += Show;
+
+            SceneManager.LoadScene("CharacterScene", LoadSceneMode.Additive);
         }
 
         public override void Hide()

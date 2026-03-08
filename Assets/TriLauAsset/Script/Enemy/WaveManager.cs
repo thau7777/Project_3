@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
@@ -28,10 +29,12 @@ namespace MyRule
             groupWave = waveEvent.GroupWave;
         }
 
-        private void InitEnemy()
+        public UniTask CreateNewWave()
         {
+            InitWave();
 
-        }
+            return UniTask.CompletedTask;
+        }    
 
         public EnemyDataSO GetEnemySOById(EnemyId id)
         {
