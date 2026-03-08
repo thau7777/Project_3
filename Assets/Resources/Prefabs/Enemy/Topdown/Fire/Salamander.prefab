@@ -957,7 +957,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
-    skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
+    skillVFX: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
     skillDuration: 1
     projectileSpeed: 0
     skillSize: 1
@@ -994,7 +994,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
-    skillEffect: {fileID: 11400000, guid: f0702732e90c3574aa2d5450348854c3, type: 2}
+    skillVFX: {fileID: 11400000, guid: f0702732e90c3574aa2d5450348854c3, type: 2}
     skillDuration: 10
     projectileSpeed: 10
     skillSize: 1
@@ -1031,7 +1031,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack3
     crossfadeDuration: 0.1
-    skillEffect: {fileID: 11400000, guid: eabd184b0599bb948b4bda7af7e354bd, type: 2}
+    skillVFX: {fileID: 11400000, guid: eabd184b0599bb948b4bda7af7e354bd, type: 2}
     skillDuration: 3
     projectileSpeed: 10
     skillSize: 1
@@ -1195,10 +1195,34 @@ MonoBehaviour:
     stacksToApply: 0
   OnEffectAdded:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2047047494006446589}
+        m_TargetAssemblyTypeName: EffectUIController, Assembly-CSharp
+        m_MethodName: OnEffectAdded
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnEffectRemoved:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2047047494006446589}
+        m_TargetAssemblyTypeName: EffectUIController, Assembly-CSharp
+        m_MethodName: OnEffectRemoved
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _invincibleDuration: 0.1
 --- !u!114 &5295071416647522924
 MonoBehaviour:
@@ -2731,6 +2755,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+--- !u!114 &2047047494006446589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4778614449240987417, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+  m_PrefabInstance: {fileID: 6789632032874254052}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2377c4e1ac3334c82ab22075dc3479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectUIController
 --- !u!114 &5632068257344617287 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1157634428438197667, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
