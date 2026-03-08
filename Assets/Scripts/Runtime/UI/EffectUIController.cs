@@ -25,12 +25,7 @@ public class EffectUIController : MonoBehaviour
     }
     private void Start()
     {
-        if(!CompareTag("Player"))
-        {
-            EffectsManager manager = transform.root.GetComponent<EffectsManager>();
-            manager.OnEffectAdded.AddListener(OnEffectAdded);
-            manager.OnEffectRemoved.AddListener(OnEffectRemoved);
-        }
+        
     }
     // Wire to EffectsManager.OnEffectAdded
     public void OnEffectAdded(ActiveEffect activeEffect)
