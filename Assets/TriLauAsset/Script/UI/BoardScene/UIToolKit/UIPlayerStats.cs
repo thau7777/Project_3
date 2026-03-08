@@ -73,48 +73,48 @@ namespace MyRule.UI
 
             virgorPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.virgor, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.virgor, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             mindPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.mind, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.mind, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             endurancePlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.endurance, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.endurance, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             strPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.strength, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.strength, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             dexPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.dexterity, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.dexterity, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             intelPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.intelligence, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.intelligence, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             faiPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.faith, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.faith, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
 
             arcPlus.clicked += () =>
             {
-                Plus(ref characterStatsSO.arcane, ref runeSO.runeCount, ref characterStatsSO.rune);
+                Plus(ref characterStatsSO.arcane, ref runeSO.runeAmount, ref characterStatsSO.rune);
             };
         }
 
         private void Update()
         {
-            if (runeSO.runeCount >= characterStatsSO.rune)
+            if (runeSO.runeAmount >= characterStatsSO.rune)
             {
                 ShowPlusButton();
             }

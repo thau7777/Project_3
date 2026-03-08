@@ -35,6 +35,8 @@ namespace MyRule
             return characterStats;
         }
 
+        public EClass GetCharacterClass() => characterStats.characterClass;
+
         public void UpdateSigilStats(SigilSO sigilSO)
         {
             characterStats.strength += sigilSO.str;

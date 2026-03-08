@@ -10,7 +10,7 @@ namespace MyRule
     {
         [SerializeField] private SigilSO sigilSO;
 
-        [SerializeField] private float hoverScale;
+        [SerializeField] private Vector3 hoverScale = new Vector3(1.2f, 1.2f, 1.2f);
         [SerializeField] private SpriteRenderer sigilImg;
         [SerializeField] private TextMeshPro sigilNameTxt;
         [SerializeField] private TextMeshPro sigilDescTxt;
@@ -61,7 +61,7 @@ namespace MyRule
         {
             if (!isShowing) return;
 
-            transform.localScale *= hoverScale;
+            transform.localScale = hoverScale;
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(this));
         }
@@ -70,15 +70,29 @@ namespace MyRule
         {
             if (!isShowing) return;
 
-            transform.localScale /= hoverScale;
+            transform.localScale = new Vector3(1, 1, 1);
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(null));
         }
 
         public void OnClick()
         {
-            Debug.Log("Click " + sigilNameTxt.text);
-            EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
+            if (!isShowing) return;
+
+            int runeAmount = RuneManger.Instance.GetRuneAmount();
+
+            if (runeAmount > sigilSO.price)
+            {
+                Debug.Log("Click " + sigilNameTxt.text);
+                EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
+                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-sigilSO.price));
+                HideCard();
+                isShowing = false;
+            }
+            else
+            {
+                Debug.Log("Ko du tien");
+            }
         }
 
         protected void ShowCard()
@@ -89,6 +103,8 @@ namespace MyRule
         protected void HideCard()
         {
             transform.DORotate(new Vector3(0, 180, 0), showCardDuration);
+            transform.localScale = new Vector3(1, 1, 1);
+            priceObj.SetActive(false);
         }
 
         public async void ShowPrice(bool value)

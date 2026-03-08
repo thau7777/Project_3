@@ -64,10 +64,10 @@ namespace MyRule.UI
 
         private void OnSigilRoll()
         {
-            if (runeSO.runeCount >= 2)
+            if (runeSO.runeAmount >= 2)
             {
                 EventBus<RollSigilCardEvent>.Raise(new RollSigilCardEvent());
-                runeSO.runeCount -= 2;
+                runeSO.runeAmount -= 2;
             }
 
             return;

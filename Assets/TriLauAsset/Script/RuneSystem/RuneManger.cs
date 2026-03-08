@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public class RuneManger : MonoBehaviour
+    public class RuneManger : PersistentSingleton<RuneManger>
     {
         [SerializeField] private RuneSO runeSO;
         
@@ -21,7 +21,16 @@ namespace MyRule
 
         private void OnReceiveRune(ReceiveRuneEvent evt)
         {
-            runeSO.runeCount += evt.runeCount;
+            runeSO.runeAmount += evt.runeAmount;
+
+            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(runeSO.runeAmount));
+        }
+
+        public int GetRuneAmount() => runeSO.runeAmount;
+
+        public void SetStartRune(int amount)
+        {
+            runeSO.runeAmount = amount;
         }
     }
 }

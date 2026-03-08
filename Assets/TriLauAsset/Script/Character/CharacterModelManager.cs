@@ -9,6 +9,7 @@ namespace MyRule
         Archer,
         Mage,
         Summoner,
+        Base
     }
 
     public class CharacterModelManager : MonoBehaviour
@@ -28,11 +29,23 @@ namespace MyRule
             EventBus<CharacterModelEvent>.Deregister(_modelEventBinding);
         }
 
+        private void Start()
+        {
+            EClass eClass = CharacterStatsManager.Instance.GetCharacterClass();
+
+            SetCurrentClass(eClass);
+        }
+
         private void OnCharacterModelEvent(CharacterModelEvent e)
+        {
+            SetCurrentClass(e.characterClass);
+        }
+
+        private void SetCurrentClass(EClass cClass)
         {
             foreach (var characterModel in characterModels)
             {
-                if (characterModel.characterClass == e.characterClass)
+                if (characterModel.characterClass == cClass)
                 {
                     characterModel.model.SetActive(true);
                 }

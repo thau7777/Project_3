@@ -19,6 +19,7 @@ namespace MyRule.UI
         Stats,
         HUD,
         Store,
+        MazeRewards,
         None
     }
 

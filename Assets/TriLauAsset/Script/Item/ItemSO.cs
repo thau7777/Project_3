@@ -22,6 +22,8 @@ namespace MyRule
         HolyDefPotion,
         DarkDefPotion,
         PosionDefPotion,
+        LightingDmgPotion,
+        LightningDefPotion,
     }
 
     [CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Objects/ItemSO")]

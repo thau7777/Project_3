@@ -32,6 +32,10 @@ namespace MyRule
 
             CharacterStatsManager.Instance.SetBase(characterStatsSO);
             CharacterStatsView.Instance.UpdateStats(characterStatsSO);
+
+            SigilStorageManager.Instance.ResetSorage();
+
+            RuneManger.Instance.SetStartRune(characterStatsSO.rune);
         }
     }
 }

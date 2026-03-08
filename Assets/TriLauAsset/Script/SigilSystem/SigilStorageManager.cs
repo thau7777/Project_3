@@ -1,10 +1,11 @@
+using Cysharp.Threading.Tasks;
 using MyRule.Event;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
 {
-    public class SigilStorageManager : MonoBehaviour
+    public class SigilStorageManager : PersistentSingleton<SigilStorageManager>
     {
         public SigilStorageSO sigilStorageSO;
 
@@ -29,9 +30,10 @@ namespace MyRule
             EventBus<SigilChosenEvent>.Deregister(sigilChosenEventBinding);
         }
 
-        private void Awake()
+        private void Start()
         {
             passiveSigils = new List<SigilSO>();
+            Load();
         }
 
         private void OnSigilChosen(SigilChosenEvent evt)
@@ -41,8 +43,15 @@ namespace MyRule
             CharacterStatsManager.Instance.UpdateSigilStats(evt.normalSigilSO);
         }
 
-        void Load()
+        public void ResetSorage()
         {
+            sigilStorageSO.activeSigils.Clear();
+        }
+
+        async void Load()
+        {
+            await UniTask.Delay(100);
+
             foreach (var sigil in sigilStorageSO.activeSigils)
             {
                 if (sigil != null)
