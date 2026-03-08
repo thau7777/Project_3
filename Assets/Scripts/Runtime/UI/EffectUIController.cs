@@ -23,7 +23,10 @@ public class EffectUIController : MonoBehaviour
             kvp.Value.ReturnToPool();
         _activeIcons.Clear();
     }
-
+    private void Start()
+    {
+        
+    }
     // Wire to EffectsManager.OnEffectAdded
     public void OnEffectAdded(ActiveEffect activeEffect)
     {

@@ -12,7 +12,7 @@ public class EnemyTopDownSettings : FlyweightSettings
     [SerializeField] private float _spawnOffsetBelowGround = 2f;
 
     public ElementalType elementalType = ElementalType.Normal;
-    public float spawnAnimationTime = 0.5f;
+    public float spawnAnimationDuration = 0.5f;
     [SerializeField] private OneShotVFXSettings _spawnVFXSettings;
     private Transform _player;
 

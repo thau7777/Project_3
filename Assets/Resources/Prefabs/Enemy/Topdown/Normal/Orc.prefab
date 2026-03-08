@@ -629,7 +629,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
-    skillEffect: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
+    skillVFX: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
     skillDuration: 1
     projectileSpeed: 10
     skillSize: 1
@@ -666,7 +666,7 @@ MonoBehaviour:
     stunTime: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
-    skillEffect: {fileID: 11400000, guid: 2f78de244b59eef44b47334391342999, type: 2}
+    skillVFX: {fileID: 11400000, guid: 2f78de244b59eef44b47334391342999, type: 2}
     skillDuration: 1
     projectileSpeed: 10
     skillSize: 0.7
@@ -713,7 +713,6 @@ MonoBehaviour:
     m_Bits: 3848
   hasShieldBreakingMechanic: 0
   _invincibleDuration: 0.1
-  _stunVFXSettings: {fileID: 11400000, guid: dfcbb6d5b648aa64da43e54c98cccf91, type: 2}
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
@@ -813,6 +812,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}
 --- !u!114 &6355859410989386898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,11 +910,25 @@ MonoBehaviour:
   <InitialMana>k__BackingField: 100
   <AttackDamage>k__BackingField: 10
   <MagicAttackDamage>k__BackingField: 8
+  <FireDamage>k__BackingField: 0
+  <WaterDamage>k__BackingField: 0
+  <FrostDamage>k__BackingField: 0
+  <LightningDamage>k__BackingField: 0
+  <HolyDamage>k__BackingField: 0
+  <DarkDamage>k__BackingField: 0
+  <PoisonDamage>k__BackingField: 0
   <PhysicalDefense>k__BackingField: 5
   <MagicDefense>k__BackingField: 5
-  <Agility>k__BackingField: 5
+  <FireDefense>k__BackingField: 0
+  <WaterDefense>k__BackingField: 0
+  <FrostDefense>k__BackingField: 0
+  <LightningDefense>k__BackingField: 0
+  <HolyDefense>k__BackingField: 0
+  <DarkDefense>k__BackingField: 0
+  <PoisonDefense>k__BackingField: 0
+  <Speed>k__BackingField: 5
   <CriticalRate>k__BackingField: 0.1
-  <CriticalDamage>k__BackingField: 1.5
+  <CriticalMultiplier>k__BackingField: 1.5
   <AttackSizeScale>k__BackingField: 1
 --- !u!1 &2086421417607240324
 GameObject:
@@ -2902,6 +2916,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8730498759427676704, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e8ca19dd815b5ba48a74c8d5b76b91ca, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

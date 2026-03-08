@@ -47,7 +47,7 @@ public class EnemyAttackData
     [Header("Execute Settings")]
     public string executeAnimationName = "Attack1";
     public float crossfadeDuration = 0.1f;
-    public FlyweightSettings skillEffect;
+    public FlyweightSettings skillVFX;
     public float skillDuration = 1f;
     public float projectileSpeed = 10;
     public float skillSize = 1;
