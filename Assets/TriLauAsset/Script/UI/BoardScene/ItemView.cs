@@ -7,11 +7,13 @@ namespace MyRule.UI
     {
         [SerializeField] private Image icon;
 
-        public bool IsEmpty => icon != null;
+        public bool IsEmpty = true;
 
-        public void SetIcon(Item item)
+        public void SetIcon(ItemSO item)
         {
-            icon.sprite = item.Icon;
+            icon.gameObject.SetActive(true);
+            icon.sprite = item.icon;
+            IsEmpty = false;
         }
     }
 }

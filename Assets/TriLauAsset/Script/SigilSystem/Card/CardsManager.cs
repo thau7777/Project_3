@@ -81,20 +81,20 @@ namespace MyRule
         private SigilSO GetWeightedRandom()
         {
             int totalWeight = 0;
-            foreach (var s in groupSigil.normalSigil)
+            foreach (var s in groupSigil.sigilSOs)
                 totalWeight += s.rarity;
 
             int random = Random.Range(0, totalWeight);
             int current = 0;
 
-            foreach (var s in groupSigil.normalSigil)
+            foreach (var s in groupSigil.sigilSOs)
             {
                 current += s.rarity;
                 if (random < current)
                     return s;
             }
 
-            return groupSigil.normalSigil[0];
+            return groupSigil.sigilSOs[0];
         }
     }
 }

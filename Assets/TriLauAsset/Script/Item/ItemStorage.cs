@@ -18,8 +18,6 @@ namespace MyRule
         public void AddItem(int index, Item item)
         {
             items[index] = item;
-
-            EventBus<AddItemEvent>.Raise(new AddItemEvent(index, item));
         }
 
         public void RemoveItemSlot(int index)

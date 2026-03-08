@@ -4,14 +4,12 @@ namespace MyRule.UI
 {
     public class MainMenuPresenter
     {
-        private IMainMenuPanel view;
         private IBaseUIView baseView;
         
         private EventBinding<SwitchPanelEvent> switchPanelEventBinding;
 
-        public MainMenuPresenter(IMainMenuPanel view, IBaseUIView baseView)
+        public MainMenuPresenter(IBaseUIView baseView)
         {
-            this.view = view;
             this.baseView = baseView;
 
             switchPanelEventBinding = new EventBinding<SwitchPanelEvent>(OnSwitchPanel);
@@ -29,13 +27,13 @@ namespace MyRule.UI
             {
                 baseView.Hide();
 
-                UIStateMachine.Push(view.PType);
+                UIStateMachine.Push(baseView.Type);
             }
         }
 
         public void CleanUp()
         {
-            view = null;
+            baseView = null;
 
             EventBus<SwitchPanelEvent>.Deregister(switchPanelEventBinding);
         }

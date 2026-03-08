@@ -12,6 +12,8 @@ namespace MyRule.UI
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private float fadeDuration = 0.2f;
 
+        private bool isShowing = true;
+
         private HUDPresenter hudPresenter;
         private CancellationTokenSource cts;
 
@@ -22,26 +24,36 @@ namespace MyRule.UI
             cts = new CancellationTokenSource();
 
             hudPresenter = new HUDPresenter(this, sigilViews, itemViews);
+
+            inputReader.diceRollActions.onEsc += Show;
         }
 
         public override void Hide()
         {
+            if (!isShowing) return;
+
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,
                 from: canvasGroup.alpha,
                 to: 0f,
                 duration: fadeDuration,
                 cts.Token).Forget();
+
+            isShowing = false;
         }
 
         public override void Show()
         {
+            if (isShowing) return;
+
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,
                 from: canvasGroup.alpha,
                 to: 1f,
                 duration: fadeDuration,
                 cts.Token).Forget();
+
+            isShowing = true;
         }
     }
 }

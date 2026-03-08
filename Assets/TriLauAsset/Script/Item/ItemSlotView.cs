@@ -6,14 +6,14 @@ namespace MyRule
 {
     public class ItemSlotView : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
-        [SerializeField] private Item item;
+        [SerializeField] private ItemSO item;
         [SerializeField] private Image icon;
         [SerializeField] private GameObject hightLightObj;
 
-        public void SetItem(Item item)
+        public void SetItem(ItemSO item)
         {
             this.item = item;
-            icon.sprite = item.Icon;
+            icon.sprite = item.icon;
         }
 
         public void OnDeselect(BaseEventData eventData)

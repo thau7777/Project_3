@@ -13,6 +13,14 @@ public class DiceRollActions : InputActions.IDiceRollActions
     public event Action<Vector2> onLook;
     public event Action<Vector2> onMove;
     public event Action<Vector2> onScroll;
+
+    public event Action onEsc;
+
+    public void OnEsc(InputAction.CallbackContext context)
+    {
+        if (context.performed) onEsc?.Invoke();
+    }
+
     public void OnLook(InputAction.CallbackContext context)
     {
         if (context.performed)

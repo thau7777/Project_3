@@ -27,6 +27,7 @@ namespace MyRule
             inputReader.diceRollActions.onRightClick += OnMiddleClick;
             inputReader.diceRollActions.onScroll += OnScrollWheel;
             inputReader.diceRollActions.onTab += OnTab;
+            inputReader.diceRollActions.onEsc += OnEsc;
         }
 
         private void OnDisable()
@@ -36,6 +37,7 @@ namespace MyRule
             inputReader.diceRollActions.onRightClick -= OnMiddleClick;
             inputReader.diceRollActions.onScroll -= OnScrollWheel;
             inputReader.diceRollActions.onTab -= OnTab;
+            inputReader.diceRollActions.onEsc -= OnEsc;
         }
 
         private void Start()
@@ -66,6 +68,11 @@ namespace MyRule
         void OnTab()
         {
             EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Stats));
+        }
+
+        void OnEsc()
+        {
+            CommandInvoker.UndoCommand();
         }
     }
 }

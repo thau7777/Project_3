@@ -17,6 +17,7 @@ namespace MyRule
         public void SetSigil(SigilSO sigilSO)
         {
             this.sigilSO = sigilSO;
+            icon.gameObject.SetActive(true);
             icon.sprite = sigilSO.sigilIcon;
             keyTxt.text = sigilSO.activeSigilType.ToString();
         }

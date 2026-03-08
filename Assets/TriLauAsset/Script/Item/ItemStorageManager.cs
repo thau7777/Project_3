@@ -25,6 +25,14 @@ namespace MyRule
             {
                 Item item = new Item(itemSO);
                 itemStorage.AddItem(index, item);
+
+                Debug.Log("Add " + item.Type.ToString());
+
+                EventBus<AddItemEvent>.Raise(new AddItemEvent(index, itemSO));
+            }
+            else
+            {
+                Debug.Log("Cant add item");
             }
         }
 

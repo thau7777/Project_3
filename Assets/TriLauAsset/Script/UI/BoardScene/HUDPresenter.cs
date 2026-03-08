@@ -53,6 +53,7 @@ namespace MyRule.UI
                 if (items[i].IsEmpty)
                 {
                     items[i].SetIcon(evt.item);
+                    return;
                 }
             }
         }

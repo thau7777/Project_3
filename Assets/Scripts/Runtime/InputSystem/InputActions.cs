@@ -1569,6 +1569,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Esc"",
+                    ""type"": ""Button"",
+                    ""id"": ""49cbcd4f-e7e5-4bb4-b191-0490c494d65b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1703,6 +1712,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9c7f0ae-629c-4898-b032-075a4cfc1dac"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1771,6 +1791,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_DiceRoll_Move = m_DiceRoll.FindAction("Move", throwIfNotFound: true);
         m_DiceRoll_Scroll = m_DiceRoll.FindAction("Scroll", throwIfNotFound: true);
         m_DiceRoll_RightClick = m_DiceRoll.FindAction("RightClick", throwIfNotFound: true);
+        m_DiceRoll_Esc = m_DiceRoll.FindAction("Esc", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -2899,6 +2920,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_DiceRoll_Move;
     private readonly InputAction m_DiceRoll_Scroll;
     private readonly InputAction m_DiceRoll_RightClick;
+    private readonly InputAction m_DiceRoll_Esc;
     /// <summary>
     /// Provides access to input actions defined in input action map "DiceRoll".
     /// </summary>
@@ -2934,6 +2956,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "DiceRoll/RightClick".
         /// </summary>
         public InputAction @RightClick => m_Wrapper.m_DiceRoll_RightClick;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/Esc".
+        /// </summary>
+        public InputAction @Esc => m_Wrapper.m_DiceRoll_Esc;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2978,6 +3004,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
         }
 
         /// <summary>
@@ -3007,6 +3036,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
         }
 
         /// <summary>
@@ -3425,5 +3457,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Esc" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEsc(InputAction.CallbackContext context);
     }
 }

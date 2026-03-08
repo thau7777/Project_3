@@ -2,6 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
+using MyRule.CommandPattern;
 
 namespace MyRule
 {
@@ -53,6 +54,7 @@ namespace MyRule
             {
                 sigilDescTxt.text += '\n' + normalSigilSO.sigilDesTB;
             }
+            runeTxt.text = normalSigilSO.price.ToString();
         }
 
         private void OnMouseEnter()
@@ -71,6 +73,12 @@ namespace MyRule
             transform.localScale /= hoverScale;
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(null));
+        }
+
+        public void OnClick()
+        {
+            Debug.Log("Click " + sigilNameTxt.text);
+            EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
         }
 
         protected void ShowCard()

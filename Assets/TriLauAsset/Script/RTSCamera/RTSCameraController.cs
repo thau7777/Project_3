@@ -38,6 +38,8 @@ namespace MyRule
         [SerializeField] private float zoomSmoothing = 5f;
         private float currentZoomSpeed = 0f;
 
+        public bool CanInteract = true;
+
         public float ZoomLevel
         {
             get
@@ -60,19 +62,10 @@ namespace MyRule
             orbitalFollow = virtualCamera.GetComponent<CinemachineOrbitalFollow>();
         }
 
-        private void Start()
-        {
-            SetUpPosition();
-        }
-
-        private async void SetUpPosition()
-        {
-            await UniTask.Delay(100);
-            target.position = Vector3.zero;
-        }
-
         private void LateUpdate()
         {
+            if (!CanInteract) return;
+
             float deltaTime = Time.unscaledDeltaTime;
 
             //HandleEdgeScrolling();

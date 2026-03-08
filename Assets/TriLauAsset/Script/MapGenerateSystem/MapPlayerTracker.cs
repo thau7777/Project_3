@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DG.Tweening;
+using MyRule.UI;
 using UnityEngine;
 
 namespace MyRule
@@ -60,8 +61,10 @@ namespace MyRule
 
         private static void EnterNode(MapNode mapNode)
         {
-            Debug.Log("Entering node: " + mapNode.Node.blueprintName + " of type: " + mapNode.Node.nodeType);
-            
+            Debug.Log("Entering node: " + mapNode.Node.blueprintName + " of type: " + mapNode.Node.nodeType + mapNode.transform.position);
+
+            //EventBus<MazeMoveEvent>.Raise(new MazeMoveEvent(mapNode.transform, mapNode.Node.nodeType));
+
             switch (mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
@@ -71,6 +74,7 @@ namespace MyRule
                 case NodeType.Treasure:
                     break;
                 case NodeType.Store:
+                    EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Store));
                     break;
                 case NodeType.Boss:
                     break;
