@@ -18,7 +18,7 @@ public class ActiveEffect
     public int storedMagicDefenseChanges;
     public float storedSpeedChanges;
     public float storedCriticalRateChanges;
-    public float storedCriticalDamageChanges;
+    public float storedCriticalMultiplierChanges;
     public float storedAttackSizeScaleChanges;
 
     public ActiveEffect(Effect eff, float time, int stacks)
@@ -52,6 +52,16 @@ public class EffectsManager : MonoBehaviour
 
     void Update()
     {
+        ActiveEffectsHandler();
+    }
+
+    [Button]
+    public void ApplyTestEffect()
+    {
+        AddEffect(testEffectData);
+    }
+    private void ActiveEffectsHandler()
+    {
         if (_invincibleElapsedTime > 0)
             _invincibleElapsedTime -= Time.deltaTime;
 
@@ -80,13 +90,6 @@ public class EffectsManager : MonoBehaviour
             }
         }
     }
-
-    [Button]
-    public void ApplyTestEffect()
-    {
-        AddEffect(testEffectData);
-    }
-
     public void AddEffect(EffectData effectData)
     {
         if (_invincibleElapsedTime > 0) return;

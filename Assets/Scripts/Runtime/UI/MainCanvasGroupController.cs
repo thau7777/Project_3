@@ -4,7 +4,7 @@ using System.Threading;
 using System;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class CanvasGroupController : MonoBehaviour
+public class MainCanvasGroupController : MonoBehaviour
 {
     [SerializeField] private bool _isDeathUI = false;
 
