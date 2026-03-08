@@ -6,7 +6,6 @@ using UnityEngine.VFX;
 public class OneShotVFX : Flyweight
 {
     new OneShotVFXSettings settings => (OneShotVFXSettings)base.settings;
-    public float Damage { get; set; }
     private Coroutine _despawnCoroutine;
     private Coroutine _decalSpawnCoroutine;
 

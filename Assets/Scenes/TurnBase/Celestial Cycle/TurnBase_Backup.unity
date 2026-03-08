@@ -1448,7 +1448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolumePerSceneData
   serializedBakingSet: {fileID: 11400000, guid: 8c5044ad4e6e3024992196d94ab1175b, type: 2}
-  sceneGUID: 13ff14746a70fd140a473017c3110455
+  sceneGUID: 278bb9121f0549a43a7479a707b929bd
   obsoleteAsset: {fileID: 0}
   obsoleteCellSharedDataAsset: {fileID: 0}
   obsoleteCellSupportDataAsset: {fileID: 0}
@@ -1922,7 +1922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &325222964
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -2062,10 +2062,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a9366c084713249894ccf5c24521d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraAction
+  cam: {fileID: 0}
+  smoothSpeed: 5
   targetPoint: {fileID: 0}
   offsetPosition: {x: 0, y: 0, z: 0}
   offsetRotation: {x: 0, y: 0, z: 0}
-  smoothSpeed: 5
+  normalFOV: 60
+  zoomFOV: 80
+  fovSmoothSpeed: 30
   CameraTargetAll: {fileID: 91584532}
   TargetAllPlayer: {fileID: 2088283897}
   TargetAllEnemy: {fileID: 833510638}
@@ -2989,7 +2993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!154 &401672538
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -3707,7 +3711,6 @@ MonoBehaviour:
   - {fileID: 1847522023}
   - {fileID: 44314711}
   - {fileID: 1229945274}
-  encounterToLoad: {fileID: 11400000, guid: ee687f024b737164eabb9e815fc60b92, type: 2}
   turnOrderUI: {fileID: 748348505}
   uiManager: {fileID: 498165808}
   elementChart: {fileID: 11400000, guid: d2c46f24fcbc63c46aa46064bf67a78a, type: 2}

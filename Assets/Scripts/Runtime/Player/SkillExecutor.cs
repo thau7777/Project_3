@@ -12,7 +12,7 @@ public class SkillExecutor : MonoBehaviour
     private List<Transform> _skillSpawnPoints;
 
     [SerializeField, TabGroup("References")]
-    private CharacterControllerLayerIgnoreController _layerIgnoreController;
+    private CCLayerIgnoreController _layerIgnoreController;
 
 
     private SkillRuntimeInstance[] _skillInstance = new SkillRuntimeInstance[6];
@@ -37,7 +37,7 @@ public class SkillExecutor : MonoBehaviour
 
     void Awake()
     {
-        _layerIgnoreController = GetComponent<CharacterControllerLayerIgnoreController>();
+        _layerIgnoreController = GetComponent<CCLayerIgnoreController>();
         InitializeMana(100);
     }
     private void Start()

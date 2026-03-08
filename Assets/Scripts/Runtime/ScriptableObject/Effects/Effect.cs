@@ -48,7 +48,7 @@ public class Effect : ScriptableObject
     [TabGroup("Stat Modifiers")]
     public StatModifier criticalRateModifier;
     [TabGroup("Stat Modifiers")]
-    public StatModifier criticalDamageModifier;
+    public StatModifier criticalMultiplierModifier;
     [TabGroup("Stat Modifiers")]
     public StatModifier attackSizeModifier;
 
@@ -127,7 +127,7 @@ public class Effect : ScriptableObject
         if (magicDefenseModifier.value != 0) ApplyMagicDefenseModifier(target, activeEffect, isApplyInstant);
         if (speedModifier.value != 0) ApplySpeedModifier(target, activeEffect, isApplyInstant);
         if (criticalRateModifier.value != 0) ApplyCriticalRateModifier(target, activeEffect, isApplyInstant);
-        if (criticalDamageModifier.value != 0) ApplyCriticalMultiplierModifier(target, activeEffect, isApplyInstant);
+        if (criticalMultiplierModifier.value != 0) ApplyCriticalMultiplierModifier(target, activeEffect, isApplyInstant);
         if (attackSizeModifier.value != 0) ApplyAttackSizeModifier(target, activeEffect, isApplyInstant);
     }
     private void RemoveModifier(GameObject target, ActiveEffect activeEffect)
@@ -144,7 +144,7 @@ public class Effect : ScriptableObject
             RemoveAgilityModifier(target, activeEffect);
         if (criticalRateModifier.value != 0 && criticalRateModifier.isTemporary)
             RemoveCriticalRateModifier(target, activeEffect);
-        if (criticalDamageModifier.value != 0 && criticalDamageModifier.isTemporary)
+        if (criticalMultiplierModifier.value != 0 && criticalMultiplierModifier.isTemporary)
             RemoveCriticalDamageModifier(target, activeEffect);
         if (attackSizeModifier.value != 0 && attackSizeModifier.isTemporary)
             RemoveAttackSizeModifier(target, activeEffect);
@@ -234,12 +234,12 @@ public class Effect : ScriptableObject
     }
     private void ApplyCriticalMultiplierModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
-        if (!target.TryGetComponent(out CharacterStats characterStats) || criticalDamageModifier.instantApply && !isApplyInstant)
+        if (!target.TryGetComponent(out CharacterStats characterStats) || criticalMultiplierModifier.instantApply && !isApplyInstant)
             return;
-        float valueToApply = criticalDamageModifier.isPercentage ? characterStats.CriticalMultiplier * (criticalDamageModifier.value / 100f) : criticalDamageModifier.value;
+        float valueToApply = criticalMultiplierModifier.isPercentage ? characterStats.CriticalMultiplier * (criticalMultiplierModifier.value / 100f) : criticalMultiplierModifier.value;
         characterStats.ModifyCriticalDamage(valueToApply);
 
-        activeEffect.storedCriticalDamageChanges += valueToApply;
+        activeEffect.storedCriticalMultiplierChanges += valueToApply;
     }
     private void ApplyAttackSizeModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {
@@ -286,7 +286,7 @@ public class Effect : ScriptableObject
     private void RemoveCriticalDamageModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyCriticalDamage(-activeEffect.storedCriticalDamageChanges);
+        characterStats.ModifyCriticalDamage(-activeEffect.storedCriticalMultiplierChanges);
     }
 
     private void RemoveAttackSizeModifier(GameObject target, ActiveEffect activeEffect)

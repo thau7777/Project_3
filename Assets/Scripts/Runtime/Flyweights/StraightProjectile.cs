@@ -39,7 +39,10 @@ public class StraightProjectile : Flyweight
         _direction = null;
     }
 
-    public void InitializeProjectile(GameObject sender, Vector3 direction, float speed, float range, float size, bool isCrit, int damage, float knockBackForce, bool dealTrueDamage, LayerMask dodgeLayers)
+    public void InitializeProjectile(GameObject sender, 
+        Vector3 direction, float speed, float range, 
+        float size, bool isCrit, int damage, float knockBackForce, 
+        bool dealTrueDamage, LayerMask dodgeLayers)
     {
         _sender = sender;
         _direction = direction.normalized;

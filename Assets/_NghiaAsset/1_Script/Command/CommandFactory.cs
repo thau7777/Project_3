@@ -44,6 +44,9 @@ namespace Turnbase
                 case SkillType.LaserAttack: 
                     return new LaserAttackCommand(user, target, skill, battleManager);
 
+                case SkillType.Chain:
+                    return new ChainAttackCommand(user,target, skill, battleManager);
+
                 default:
                     Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
                     return null;

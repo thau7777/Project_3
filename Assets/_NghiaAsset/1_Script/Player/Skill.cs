@@ -35,9 +35,9 @@ public class Skill : ScriptableObject
     public bool useSkillSpawnPoint2;
 
     [Header("Lazer & VFX")]
-    [ShowIfEnumValue("skillType", SkillType.LaserAttack)]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack,SkillType.Chain)]
     public FlyweightSettings_TB lazerSettings;
-    [ShowIfEnumValue("skillType", SkillType.LaserAttack)]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain)]
     public float laserVFXDuration = 5;
 
     public float impactVFXDuration = 1.0f;
@@ -162,6 +162,8 @@ public enum SkillType
     RangedProjectile,
     DamageGlobal,
     LaserAttack,
+    Chain,
+
 
 }
 
