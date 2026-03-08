@@ -8,11 +8,11 @@ namespace MyRule
     {
         [SerializeField] private Image icon;
         [SerializeField] private TextMeshProUGUI keyTxt;
-        [SerializeField] private ActiveSigilType key;
+        [SerializeField] private KeyBindingType key;
         [SerializeField] private SigilSO sigilSO;
 
         public bool IsEmpty => icon != null;
-        public ActiveSigilType Key => key;
+        public KeyBindingType Key => key;
 
         public void SetSigil(SigilSO sigilSO)
         {

@@ -8,7 +8,7 @@ namespace MyRule
         Special
     }
 
-    public enum ActiveSigilType
+    public enum KeyBindingType
     {
         Q,
         E,
@@ -33,7 +33,7 @@ namespace MyRule
         public int rarity;
         public bool isActiveSigil;
         [ShowIf("isActiveSigil")]
-        public ActiveSigilType activeSigilType;
+        public KeyBindingType activeSigilType;
 
         [ShowIf("isActiveSigil")]
         [Header("Sigil Effect")]
