@@ -3,16 +3,15 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public class StoreRaycaster : MonoBehaviour
+    public class CardTracker : Singleton<CardTracker>
     {
-        [SerializeField] private Camera mainCamera;
-        [SerializeField] private LayerMask nodeLayer;
-
         private Card currentHover;
         private float mouseDownTime;
         private const float MaxClickDuration = 0.5f;
 
         public bool canInteract = false;
+
+        public bool isReward = false;
 
         private EventBinding<HoverSigilCardEvent> hoverEventBinding;
 
@@ -53,7 +52,16 @@ namespace MyRule
             {
                 if (Time.time - mouseDownTime < MaxClickDuration && currentHover != null)
                 {
-                    currentHover.OnClick();
+                    if (isReward)
+                    {
+                        currentHover.OnClick(isReward);
+                        isReward = false;
+                        canInteract = false;
+                    }
+                    else
+                    {
+                        currentHover.OnClick(false);
+                    }
                 }
             }
         }

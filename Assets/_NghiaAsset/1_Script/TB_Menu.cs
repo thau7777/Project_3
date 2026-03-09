@@ -1,3 +1,4 @@
+using MyRule;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace Turnbase
 
         public Button loseCloseBtn;
 
-
+        private bool isVicrory = false;
 
         public void Awake()
         {
@@ -40,16 +41,24 @@ namespace Turnbase
         public void ShowVictoryMenu()
         {
             victoryMenu.SetActive(true);
+
+            isVicrory = true;
         }
 
         public void ShowLoseMenu()
         {
             loseMenu.SetActive(true);
+            isVicrory = false;
         }
 
         public void LoadSceneMain(bool result)
         {
+            Debug.Log("Adjust the number of runes here.");
+            int runAmount = 100;
+            MazeGameplayRewardManager.Instance.CreateNewReward(runAmount);
+
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
+            
             SceneManager.LoadScene("MazeScene");
 
             //FlyweightFactory_TB.Instance.ClearAllPools();

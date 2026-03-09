@@ -46,7 +46,7 @@ namespace MyRule
             mazeMoveActionBinding = new EventBinding<MazeMoveEvent>(OnMove);
             EventBus<MazeMoveEvent>.Register(mazeMoveActionBinding);
 
-            cam.transform.position = transform.position;
+            cam.transform.position = new Vector3(transform.position.x, 20, transform.position.z);
         }
 
         private void OnDisable()

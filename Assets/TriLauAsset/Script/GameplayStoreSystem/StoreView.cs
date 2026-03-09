@@ -19,7 +19,7 @@ namespace MyRule
         [SerializeField] private Card[] passiveCards;
         [SerializeField] private StoreItemView[] items;
 
-        [SerializeField] private StoreRaycaster storeRaycaster;
+        [SerializeField] private GameObject cam;
 
         private CancellationTokenSource cts;
 
@@ -39,6 +39,10 @@ namespace MyRule
         {
             if (isShowing) return;
             
+            cam.gameObject.SetActive(true);
+
+            await UniTask.Delay(800);
+
             ShowingItem();
 
             Transition.TransitionValue(
@@ -64,7 +68,8 @@ namespace MyRule
 
             RTSCameraController.Instance.CanInteract = false;
 
-            storeRaycaster.canInteract = true;
+            CardTracker.Instance.canInteract = true;
+            CardTracker.Instance.isReward = false;
         }
 
         public override async void Hide() 
@@ -88,7 +93,9 @@ namespace MyRule
 
             isShowing = false;
 
-            storeRaycaster.canInteract = false;
+            CardTracker.Instance.canInteract = false;
+
+            cam.gameObject.SetActive(false);
 
             RTSCameraController.Instance.CanInteract = true;
         }

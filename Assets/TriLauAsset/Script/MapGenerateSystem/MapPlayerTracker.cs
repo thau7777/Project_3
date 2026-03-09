@@ -70,13 +70,13 @@ namespace MyRule
 
             switch (mapNode.Node.nodeType)
             {
-                case NodeType.MinorEnemy:
-                    {
-                        await WaveManager.Instance.CreateNewWave();
-                        await UniTask.Delay(1000);
-                        SceneManager.LoadScene("TurnBase");
-                        break;
-                    }
+                //case NodeType.MinorEnemy:
+                //    {
+                //        await WaveManager.Instance.CreateNewWave();
+                //        await UniTask.Delay(1000);
+                //        SceneManager.LoadScene("TurnBase");
+                //        break;
+                //    }
                 case NodeType.RestSite:
                     break;
                 case NodeType.Treasure:
