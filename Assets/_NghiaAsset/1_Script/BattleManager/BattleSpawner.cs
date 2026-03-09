@@ -29,6 +29,7 @@ namespace Turnbase
             if (waveData == null) return;
 
             EnemyData[] enemiesToSpawn = waveData.Enemies;
+            bool bossSpawnedInThisWave = false;
 
             int enemyCount = Mathf.Min(enemySlots.Length, enemiesToSpawn.Length);
             for (int i = 0; i < enemyCount; i++)
@@ -38,9 +39,19 @@ namespace Turnbase
                 EnemyDataSO so = WaveManager.Instance.GetEnemySOById(enemiesToSpawn[i].EnemyId);
                 if (so == null || so.enemyPrefab == null) continue;
 
+                // Kiểm tra điều kiện Boss
+                Enemy enemyComp = so.enemyPrefab.GetComponent<Enemy>();
+                bool isBossPrefab = (enemyComp != null && enemyComp.isBoss);
+
+                if (isBossPrefab && bossSpawnedInThisWave) continue;
+
                 Character character = SpawnCombatant(so.enemyPrefab.gameObject, false, enemySlots[i].position);
 
-                if (character != null) ApplyScaledStats(character, enemiesToSpawn[i]);
+                if (character != null)
+                {
+                    ApplyScaledStats(character, enemiesToSpawn[i]);
+                    if (isBossPrefab) bossSpawnedInThisWave = true;
+                }
             }
 
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
@@ -53,6 +64,7 @@ namespace Turnbase
             yield return new WaitForSeconds(2f);
 
             EnemyData[] enemiesToSpawn = waveData.Enemies;
+            bool bossSpawnedInThisWave = false;
 
             int enemyCount = Mathf.Min(enemySlots.Length, enemiesToSpawn.Length);
             for (int i = 0; i < enemyCount; i++)
@@ -62,9 +74,18 @@ namespace Turnbase
                 EnemyDataSO so = WaveManager.Instance.GetEnemySOById(enemiesToSpawn[i].EnemyId);
                 if (so == null || so.enemyPrefab == null) continue;
 
+                Enemy enemyComp = so.enemyPrefab.GetComponent<Enemy>();
+                bool isBossPrefab = (enemyComp != null && enemyComp.isBoss);
+
+                if (isBossPrefab && bossSpawnedInThisWave) continue;
+
                 Character character = SpawnCombatant(so.enemyPrefab.gameObject, false, enemySlots[i].position);
 
-                if (character != null) ApplyScaledStats(character, enemiesToSpawn[i]);
+                if (character != null)
+                {
+                    ApplyScaledStats(character, enemiesToSpawn[i]);
+                    if (isBossPrefab) bossSpawnedInThisWave = true;
+                }
             }
 
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
@@ -75,13 +96,10 @@ namespace Turnbase
             if (character.stats == null) return;
 
             CharacterStats s = character.stats;
-
             s.maxHP = data.Health;
             s.currentHP = data.Health;
-
             s.physicalAttack = data.Phys;
             s.magicAttack = data.Mag;
-
             s.physicalDefense = data.PhyDef;
             s.magicDefense = data.MagDef;
             s.fireDefense = data.FireDef;
@@ -91,7 +109,6 @@ namespace Turnbase
             s.darkDefense = data.DarkDef;
             s.waterDefense = data.WaterDef;
             s.poisonDefense = data.PoisonDef;
-
             s.fireDamageBonus = data.Fire;
             s.frostDamageBonus = data.Frost;
             s.lightningDamageBonus = data.Lightning;
@@ -99,18 +116,21 @@ namespace Turnbase
             s.darkDamageBonus = data.Dark;
             s.waterDamageBonus = data.Water;
             s.poisonDamageBonus = data.Poison;
-
             s.speed = (int)data.AttackSpeed;
             s.critChance = (int)data.CritChance;
-            s.critMult = (int)(data.CritMult * 100); 
+            s.critMult = (int)(data.CritMult * 100);
         }
 
         public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
         {
             if (prefab == null) return null;
 
+            // Kiểm tra script Enemy để xem có phải boss không
+            Enemy eComp = prefab.GetComponent<Enemy>();
+            bool isBoss = (eComp != null && eComp.isBoss);
+
             Transform[] slotArray = isPlayerFaction ? bm.playerSpawnPoints : bm.enemySlots;
-            Transform freeSlot = FindFreeSlot(slotArray, positionHint);
+            Transform freeSlot = FindFreeSlot(slotArray, positionHint, isBoss);
 
             Vector3 finalPosition = freeSlot != null ? freeSlot.position : positionHint;
             Quaternion spawnRotation = freeSlot != null ? freeSlot.rotation : Quaternion.identity;
@@ -206,8 +226,22 @@ namespace Turnbase
             bm.turnbuffManager.ProcessOnBattleStartPassives(characterInstance);
         }
 
-        public Transform FindFreeSlot(Transform[] slots, Vector3 positionHint)
+        public Transform FindFreeSlot(Transform[] slots, Vector3 positionHint, bool isBoss = false)
         {
+            // Nếu là Boss và có ít nhất 3 slots, ưu tiên Slot 3 (index 2)
+            if (isBoss && slots.Length >= 3)
+            {
+                Transform slot3 = slots[1];
+                bool isOccupied = false;
+                for (int i = 0; i < slot3.childCount; i++)
+                {
+                    Character c = slot3.GetChild(i).GetComponent<Character>();
+                    if (c != null && c.isAlive) { isOccupied = true; break; }
+                }
+                if (!isOccupied) return slot3;
+            }
+
+            // Tìm slot trống theo khoảng cách nếu không phải boss hoặc slot 3 đã bị chiếm
             return slots
                 .Where(slot => {
                     for (int i = 0; i < slot.childCount; i++)
@@ -223,7 +257,7 @@ namespace Turnbase
 
         public Character SummonPet(Character summoner, GameObject petPrefab)
         {
-            Transform freeSlot = FindFreeSlot(bm.playerSpawnPoints, summoner.transform.position);
+            Transform freeSlot = FindFreeSlot(bm.playerSpawnPoints, summoner.transform.position, false);
             if (freeSlot == null) return null;
 
             return SpawnCombatant(petPrefab, summoner.isPlayer, freeSlot.position);
