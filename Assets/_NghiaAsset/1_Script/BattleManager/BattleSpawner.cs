@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MyRule;
+using MyRule.Audio;
 
 namespace Turnbase
 {
@@ -27,6 +28,8 @@ namespace Turnbase
         public void SpawnWaveImmediately(WaveData waveData, Transform[] enemySlots)
         {
             if (waveData == null) return;
+
+            OnSoundMonster();
 
             EnemyData[] enemiesToSpawn = waveData.Enemies;
             bool bossSpawnedInThisWave = false;
@@ -55,6 +58,11 @@ namespace Turnbase
             }
 
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
+        }
+
+        private void OnSoundMonster()
+        {
+            AudioManager.Instance.PlaySFX(SFXType.EnemySound);
         }
 
         public IEnumerator SpawnWaveRoutine(WaveData waveData, Transform[] enemySlots)

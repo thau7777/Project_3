@@ -50,11 +50,6 @@ namespace Turnbase
             telegraphManager = GetComponentInChildren<TelegraphEffect>();
         }
 
-        private void Start()
-        {
-            OnSoundMonster();
-        }
-
         public void Animation_StartAnticipation()
         {
             if (battleManager != null)
@@ -203,10 +198,6 @@ namespace Turnbase
             if (enemyUI != null) enemyUI.UpdateUI();
         }
 
-        private void OnSoundMonster()
-        {
-            AudioManager.Instance.PlaySFX(SFXType.EnemySound);
-            Invoke(nameof(OnSoundMonster), UnityEngine.Random.Range(5f, 10f));
-        }
+
     }
 }
