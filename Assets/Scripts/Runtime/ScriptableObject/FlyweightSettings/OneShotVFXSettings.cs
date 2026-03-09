@@ -30,6 +30,10 @@ public class OneShotVFXSettings : FlyweightSettings
 
     [ShowIf("_canDealDamage")]
     [TabGroup("Damage Settings")]
+    public bool isMagicAttack = false;
+
+    [ShowIf("_canDealDamage")]
+    [TabGroup("Damage Settings")]
     public ElementalType elementalType = ElementalType.Normal;
 
     [SerializeField]

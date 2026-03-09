@@ -89,16 +89,14 @@ public class CharacterStats : MonoBehaviour
                 _statsSO.lightningDmg, _statsSO.holyDmg, _statsSO.darkDmg, _statsSO.poisonDmg,
                 _statsSO.phyDef, _statsSO.magicDef, _statsSO.fireDef, _statsSO.waterDef,
                 _statsSO.frostDef, _statsSO.lightningDef, _statsSO.holyDef, _statsSO.darkDef,
-                _statsSO.poisonDef, _statsSO.speed, _statsSO.critChance, _statsSO.critMult,
-                1);
+                _statsSO.poisonDef, _statsSO.speed, _statsSO.critChance, _statsSO.critMult);
     }
 
     public void Setup(ElementalType elementalType, int initialHealth, int initialMana, int attackDamage,
         int magicAttackDamage, int fireDamage, int waterDamage, int frostDamage, int lightningDamage,
         int holyDamage, int darkDamage, int poisonDamage, int physicalDefense, int magicDefense,
         int fireDefense, int waterDefense, int frostDefense, int lightningDefense, int holyDefense,
-        int darkDefense, int poisonDefense, float speed, float criticalRate, float criticalDamage,
-        float attackSizeScale)
+        int darkDefense, int poisonDefense, float speed, float criticalRate, float criticalMultiplier)
     {
         ElementalType = elementalType;
         InitialHealth = initialHealth;
@@ -123,8 +121,8 @@ public class CharacterStats : MonoBehaviour
         PoisonDefense = poisonDefense;
         Speed = speed;
         CriticalRate = criticalRate;
-        CriticalMultiplier = criticalDamage;
-        AttackSizeScale = attackSizeScale;
+        CriticalMultiplier = criticalMultiplier;
+        AttackSizeScale = 1;
     }
 
     public void ModifyAttackDamage(int amount) => AttackDamage += amount;

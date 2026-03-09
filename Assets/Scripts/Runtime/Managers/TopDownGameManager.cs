@@ -22,7 +22,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     private async void StartMatch()
     {
         await UniTask.Delay(2000);
-        EventBus<TopDownStartGameEvent>.Raise(new TopDownStartGameEvent());
+        EventBus<TopdownStartGameEvent>.Raise(new TopdownStartGameEvent());
     }
 
     private async void OnPlayerDeath()

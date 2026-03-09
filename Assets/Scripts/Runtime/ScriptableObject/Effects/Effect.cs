@@ -160,7 +160,7 @@ public class Effect : ScriptableObject
         {
             float finalDamage = -valueToApply + PlayerTopDownStateDriver.Instance.GetComponent<CharacterStats>().MagicAttackDamage * 0.1f;
             finalDamage = ElementalManager.Instance.CalculateDamage(Mathf.RoundToInt(finalDamage), damageElementalType, target.GetComponent<CharacterStats>().ElementalType);
-            damageAble.TakeDamage(null, null, false, Mathf.RoundToInt(finalDamage), dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
+            damageAble.TakeDamage(null, null, true, Mathf.RoundToInt(finalDamage), dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
         }
         else
         {

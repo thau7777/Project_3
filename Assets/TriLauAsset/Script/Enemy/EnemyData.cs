@@ -40,28 +40,28 @@ namespace MyRule
 
         public Character enemyPrefab;
 
-        public int phys;
-        public int mag;
-        public int fire;
-        public int water;
-        public int frost;
-        public int lightning;
-        public int holy;
-        public int dark;
-        public int poison;
-        public int health;
-        public int phyDef;
-        public int magDef;
-        public int fireDef;
-        public int waterDef;
-        public int frostDef;
-        public int lightningDef;
-        public int holyDef;
-        public int darkDef;
-        public int poisonDef;
+        public int health= 100;
+        public int phys = 10;
+        public int mag = 10;
+        public int fire = 0;
+        public int water = 0;
+        public int frost = 0;
+        public int lightning = 0;
+        public int holy = 0;
+        public int dark = 0;
+        public int poison = 0;
+        public int phyDef = 10;
+        public int magDef = 10;
+        public int fireDef = 0;
+        public int waterDef = 0;
+        public int frostDef = 0;
+        public int lightningDef = 0;
+        public int holyDef = 0;
+        public int darkDef = 0;
+        public int poisonDef = 0;
         public int resRate;
-        public float attackSpeed;
-        public float critChance;
+        public float attackSpeed = 5;
+        public float critChance = 10;
         [Range(1.5f, 2.3f)]
         public float critMult = 1.5f;
     }
