@@ -15,6 +15,8 @@ namespace Turnbase
 
         public float traildblaze = 100f;
 
+        public bool isBoss = false;
+
         public bool isBroken = false;
 
         public EnemyStatsUI enemyUI;
