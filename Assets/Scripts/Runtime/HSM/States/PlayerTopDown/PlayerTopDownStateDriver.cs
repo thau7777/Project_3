@@ -298,14 +298,16 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                 }
                 if(oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
                 {
-                    bool isCrit = _characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < _characterStats.CriticalRate;
-                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage * (isCrit ? _characterStats.CriticalMultiplier : 1));
+                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
                     damageDealer.Setup(
-                        isCrit,
+                        oneshotSettings.isMagicAttack,
                         finalDamage,
                         false,
                         _locomotionSet.CurrentAttackData.knockbackForce,
                         false);
+
+                    if (oneshotSettings.UseParticleCollision)
+                        damageDealer.SetupParicleDamageDealer(gameObject);
                 }
                 oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
             }
@@ -326,16 +328,14 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                 {
                     var straightProjectile = vfx as StraightProjectile;
 
-                    bool isCrit = _characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < _characterStats.CriticalRate;
-                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage * (isCrit ? _characterStats.CriticalMultiplier : 1));
+                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
 
                     straightProjectile.InitializeProjectile(
                         gameObject,
                         spawnPoint.forward, 
                         _locomotionSet.CurrentAttackData.projectileSpeed, 
                         _locomotionSet.CurrentAttackData.projectileDuration,
-                        _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale, 
-                        isCrit,
+                        _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale,
                         finalDamage,
                         _locomotionSet.CurrentAttackData.knockbackForce,
                         false,
@@ -359,14 +359,16 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
                     if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
                     {
-                        bool isCrit = _characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < _characterStats.CriticalRate;
-                        int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage * (isCrit ? _characterStats.CriticalMultiplier : 1));
+                        int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
                         damageDealer.Setup(
-                            isCrit,
+                            oneshotSettings.isMagicAttack,
                             finalDamage,
                             false,
                             _locomotionSet.CurrentAttackData.knockbackForce,
                             false);
+
+                        if (oneshotSettings.UseParticleCollision)
+                            damageDealer.SetupParicleDamageDealer(gameObject);
                     }
                         
 

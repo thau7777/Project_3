@@ -47,6 +47,7 @@ namespace MyRule
     public class EnemyData
     {
         private EnemyId enemyId;
+        private int health;
         private int phys;
         private int mag;
         private int fire;
@@ -56,7 +57,6 @@ namespace MyRule
         private int dark;
         private int water;
         private int poison;
-        private int health;
         private int phyDef;
         private int magDef;
         private int fireDef;
@@ -72,6 +72,7 @@ namespace MyRule
         private float critMult;
 
         public EnemyId EnemyId => enemyId;
+        public int Health => health;
         public int Phys => phys;
         public int Mag => mag;
         public int Fire => fire;
@@ -81,7 +82,6 @@ namespace MyRule
         public int Dark => dark;
         public int Water => water;
         public int Poison => poison;
-        public int Health => health;
         public int PhyDef => phyDef;
         public int MagDef => magDef;
         public int FireDef => fireDef;
@@ -99,6 +99,7 @@ namespace MyRule
         public EnemyData(int level, EnemyId enemyId, int phys, int mag, int fire, int frost, int lightning, int holy, int dark, int water, int poison, int health, int phydef, int magdef, int firedef, int frostdef, int lightningdef, int holydef, int darkdef, int waterdef, int poisonDef, int resRate, float attackSpeed, float critChance, float critMult)
         {
             this.enemyId = enemyId;
+            this.health = health;
             this.phys = phys;
             this.mag = mag;
             this.fire = fire;
@@ -108,7 +109,6 @@ namespace MyRule
             this.dark = dark;
             this.water = water;
             this.poison = poison;
-            this.health = health;
             this.phyDef = phydef;
             this.magDef = magdef;
             this.fireDef = firedef;
@@ -143,6 +143,7 @@ namespace MyRule
 
         private void ScaleStats(int level, float mult)
         {
+            this.health = (int)(health * (1 + level * mult));
             this.phys = (int)(phys * (1 + level * mult));
             this.mag = (int)(mag * (1 + level * mult));
             this.fire = (int)(fire * (1 + level * mult));
@@ -152,7 +153,6 @@ namespace MyRule
             this.dark = (int)(dark * (1 + level * mult));
             this.water = (int)(water * (1 + level * mult));
             this.poison = (int)(poison * (1 + level * mult));
-            this.health = (int)(health * (1 + level * mult));
             this.phyDef = (int)(phyDef * (1 + level * mult));
             this.magDef = (int)(magDef * (1 + level * mult));
             this.fireDef = (int)(fireDef * (1 + level * mult));

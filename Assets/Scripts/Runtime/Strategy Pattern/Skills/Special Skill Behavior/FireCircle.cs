@@ -42,12 +42,9 @@ public class FireCircle : SkillStrategy
             
             var damageDealer = skillVfx.GetOrAdd<DamageDealer>();
 
-            CharacterStats characterStats = _skillContext.origin.GetComponent<CharacterStats>();
-            bool isCrit = characterStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < characterStats.CriticalRate;
-            int finalDamage = isCrit ? Mathf.RoundToInt(Damage * characterStats.CriticalMultiplier) : Damage;
             damageDealer.Setup(
-                isCrit,
-                finalDamage,
+                true,
+                Damage,
                 false,
                 3,
                 false,

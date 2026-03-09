@@ -105,8 +105,8 @@ public class Damageable : MonoBehaviour
         component = null;
         return false;
     }
-    public void TakeDamage(GameObject sender, GameObject hitOrigin, bool isCrit
-        , int damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, 
+    public void TakeDamage(GameObject sender, GameObject hitOrigin, bool isMagicAttack, 
+        int damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, 
         ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
@@ -149,7 +149,12 @@ public class Damageable : MonoBehaviour
             return;
 
         }
-        float finalDamage = damage;
+        CharacterStats senderStats = sender.GetComponent<CharacterStats>();
+        CharacterStats receiverStats = GetComponent<CharacterStats>();
+        float finalDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, isMagicAttack, damage, attackElementalType);
+
+        bool isCrit = senderStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < senderStats.CriticalRate;
+        finalDamage = isCrit ? Mathf.RoundToInt(finalDamage * senderStats.CriticalMultiplier) : Mathf.RoundToInt(finalDamage);
 
         if (hitVfx)
         {
@@ -157,11 +162,6 @@ public class Damageable : MonoBehaviour
             obj.FlyweightInitialize(transform.position.Add(y: 1));
             obj.InitializeVFX(hitVfx.DefaultSize, hitVfx.DefaultLifeTime);
 
-        }
-        if (TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
-        {
-            ElementalType enemyElementalType = enemy.GetComponent<CharacterStats>().ElementalType;
-            finalDamage = ElementalManager.Instance.CalculateDamage(damage, attackElementalType, enemyElementalType);
         }
 
         if (hitOrigin != null && hitOrigin.name == "Spell_Dark_3" &&

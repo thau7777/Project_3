@@ -285,11 +285,9 @@ public class SkillStrategy : ScriptableObject, IStrategy
         {
             StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
 
-            CharacterStats userStats = context.origin.GetComponent<CharacterStats>();
-            bool isCrit = userStats.CriticalRate > 0 && UnityEngine.Random.Range(0,100) < userStats.CriticalRate;
-            int finalDamage = isCrit ? Mathf.RoundToInt(Damage * userStats.CriticalMultiplier) : Damage;
-
-            straightProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 10, Range, projectileSettings.defaultSize, isCrit, finalDamage, _knockbackForce, _dealTrueDamage, DodgeLayers);
+            straightProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 
+                10, Range, projectileSettings.defaultSize, Damage, 
+                _knockbackForce, _dealTrueDamage, DodgeLayers);
         }
         else if (flyweightObj is OneShotVFX oneShotVFX)
         {
@@ -309,18 +307,19 @@ public class SkillStrategy : ScriptableObject, IStrategy
             if (flyweightObj.TryGetComponent<DamageDealer>(out var damageDealer))
             {
                 CharacterStats userStats = context.origin.GetComponent<CharacterStats>();
-                bool isCrit = userStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < userStats.CriticalRate;
-                int finalDamage = isCrit ? Mathf.RoundToInt(Damage * userStats.CriticalMultiplier) : Damage;
-
+                
                 damageDealer.Setup(
-                    isCrit,
-                    finalDamage,
+                    oneShotVFXSettings.isMagicAttack,
+                    Damage,
                     _dealTrueDamage,
                     _knockbackForce,
                     oneShotVFXSettings.reverseKnockBackDirection,
                     oneShotVFXSettings.elementalType);
+
+                if (oneShotVFXSettings.UseParticleCollision)
+                    damageDealer.SetupParicleDamageDealer(context.origin.gameObject);
             }
-            oneShotVFX.InitializeVFX(Size, (oneShotVFX.settings as OneShotVFXSettings).DefaultLifeTime);
+            oneShotVFX.InitializeVFX(Size, oneShotVFXSettings.DefaultLifeTime);
             if (_setParentToUser)
                 oneShotVFX.transform.SetParent(context.origin.transform);
 

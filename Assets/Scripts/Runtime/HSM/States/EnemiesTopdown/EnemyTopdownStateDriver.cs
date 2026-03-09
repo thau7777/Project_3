@@ -198,16 +198,17 @@ public class EnemyTopdownStateDriver : Flyweight
             }
             if(vfx.TryGetComponent<DamageDealer>(out var damageDealer))
             {
-                bool isCrit = _characterStats.CriticalRate > 0 && Random.Range(0, 100) < _characterStats.CriticalRate;
-                int finalDamage = isCrit ? Mathf.RoundToInt(_context.CurrentEnemyAttackData.damage * _characterStats.CriticalRate) : _context.CurrentEnemyAttackData.damage;
                 damageDealer.Setup(
-                    isCrit,
-                    finalDamage,
+                    oneShotVFXSettings.isMagicAttack,
+                    _characterStats.AttackDamage,
                     _context.CurrentEnemyAttackData.dealTrueDamage,
                     _context.CurrentEnemyAttackData.knockBackForce,
                     _context.CurrentEnemyAttackData.reverseKnockbackDirection,
                     oneShotVFXSettings.elementalType,
                     oneShotVFXSettings.hitImpactVFXSetting);
+
+                if (oneShotVFXSettings.UseParticleCollision)
+                    damageDealer.SetupParicleDamageDealer(gameObject);
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
                 _context.CurrentEnemyAttackData.skillDuration);
@@ -216,16 +217,15 @@ public class EnemyTopdownStateDriver : Flyweight
             
         else if (vfx is StraightProjectile)
         {
-            bool isCrit = _characterStats.CriticalRate > 0 && Random.Range(0,100) < _characterStats.CriticalRate;
-            int finalDamage = isCrit ? Mathf.RoundToInt(_context.CurrentEnemyAttackData.damage * _characterStats.CriticalRate) : _context.CurrentEnemyAttackData.damage;
+            
             (vfx as StraightProjectile).InitializeProjectile(
+
                 gameObject,
                 transform.forward,
                 _context.CurrentEnemyAttackData.projectileSpeed,
                 _context.CurrentEnemyAttackData.skillDuration,
                 _context.CurrentEnemyAttackData.skillSize,
-                isCrit,
-                finalDamage,
+                _context.CurrentEnemyAttackData.damage,
                 _context.CurrentEnemyAttackData.knockBackForce,
                 _context.CurrentEnemyAttackData.dealTrueDamage,
                 _context.CurrentEnemyAttackData.dodgeLayers);
