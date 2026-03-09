@@ -18,6 +18,13 @@ namespace MyRule
             hasRewards = true;
         }
 
-        public MazeGameplayReward GetReward() => reward;
+        public MazeGameplayReward GetReward()
+        {
+            if (!hasRewards) return null;
+
+            hasRewards = false;
+
+            return reward;
+        }    
     }
 }

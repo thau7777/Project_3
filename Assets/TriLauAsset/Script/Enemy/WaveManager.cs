@@ -48,14 +48,28 @@ namespace MyRule
 
         private void InitWave()
         {
-            int waveCount = Random.Range(2, 4);
+            int waveCount = Random.Range(2, 5);
             
             groupWave = new GroupWave(waveCount);
 
             for (int i = 0; i < waveCount; i++)
             {
-                int enemyCount = Random.Range(2, 4);
-                
+                int enemyCount;
+
+                if (waveCount == 2)
+                {
+                    enemyCount = Random.Range(3, 6);
+                }
+                else if (waveCount == 3)
+                {
+                    enemyCount = Random.Range(2, 5);
+                }
+                else if (waveCount == 4)
+                {
+                    enemyCount = Random.Range(2, 4);
+                }
+                else enemyCount = 3;
+
                 WaveData waveData = new WaveData(enemyCount);
 
                 for (int j = 0; j < enemyCount; j++)

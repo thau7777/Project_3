@@ -22,6 +22,7 @@ namespace MyRule
             if (index >= 0 && index < waveCount)
             {
                 waveDatas[index] = waveData;
+                Debug.Log("Add wave" + index);
             }
         }
     }
@@ -40,6 +41,7 @@ namespace MyRule
         public void AddEnemy(int index, EnemyData enemyData)
         {
             enemies[index] = enemyData;
+            Debug.Log("Add" + enemyData.EnemyId.ToString());
         }
     }
 

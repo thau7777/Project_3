@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MyRule.UI;
 using UnityEngine;
@@ -72,6 +73,7 @@ namespace MyRule
                 case NodeType.MinorEnemy:
                     {
                         await WaveManager.Instance.CreateNewWave();
+                        await UniTask.Delay(1000);
                         SceneManager.LoadScene("TurnBase");
                         break;
                     }
@@ -87,7 +89,8 @@ namespace MyRule
                 case NodeType.Mystery:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    Debug.Log("Ko co j");
+                    break;
             }
         }
 

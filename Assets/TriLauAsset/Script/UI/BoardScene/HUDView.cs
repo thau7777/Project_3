@@ -1,13 +1,15 @@
-using System.Threading;
-using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using MyRule.Event;
+using System.Threading;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace MyRule.UI
 {
     public class HUDView : BaseUIView
     {
+        [SerializeField] private SigilStorageSO sigilStorage;
         [SerializeField] private SigilView[] sigilViews;
         [SerializeField] private ItemView[] itemViews;
         [SerializeField] private CanvasGroup canvasGroup;
@@ -29,6 +31,14 @@ namespace MyRule.UI
             inputReader.diceRollActions.onEsc += Show;
 
             SceneManager.LoadScene("CharacterScene", LoadSceneMode.Additive);
+
+            LoadSigils();
+        }
+
+        private void OnDestroy()
+        {
+            cts.Cancel();
+            hudPresenter.Clearup();
         }
 
         public override void Hide()
@@ -57,6 +67,17 @@ namespace MyRule.UI
                 cts.Token).Forget();
 
             isShowing = true;
+        }
+
+        private void LoadSigils()
+        {
+            foreach (var sigilSO in sigilStorage.activeSigils)
+            {
+                if (sigilSO != null)
+                {
+                    EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(sigilSO));
+                }
+            }
         }
     }
 }

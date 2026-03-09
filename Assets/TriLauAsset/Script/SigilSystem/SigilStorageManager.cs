@@ -9,14 +9,6 @@ namespace MyRule
     {
         public SigilStorageSO sigilStorageSO;
 
-        private SigilSO sigil_L;
-        private SigilSO sigil_R;
-        private SigilSO sigil_S;
-        private SigilSO sigil_F;
-        private int index = 0;
-        private List<SigilSO> passiveSigils;
-
-
         private EventBinding<SigilChosenEvent> sigilChosenEventBinding;
 
         private void OnEnable()
@@ -30,14 +22,12 @@ namespace MyRule
             EventBus<SigilChosenEvent>.Deregister(sigilChosenEventBinding);
         }
 
-        private void Start()
-        {
-            passiveSigils = new List<SigilSO>();
-            Load();
-        }
-
         private void OnSigilChosen(SigilChosenEvent evt)
         {
+            SigilSO sigilSO = sigilStorageSO.activeSigils.Find(s => s.activeSigilType == evt.normalSigilSO.activeSigilType);
+
+            if (sigilSO != null) sigilStorageSO.activeSigils.Remove(sigilSO);
+
             sigilStorageSO.activeSigils.Add(evt.normalSigilSO);
             EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(evt.normalSigilSO));
             CharacterStatsManager.Instance.UpdateSigilStats(evt.normalSigilSO);
@@ -46,19 +36,6 @@ namespace MyRule
         public void ResetSorage()
         {
             sigilStorageSO.activeSigils.Clear();
-        }
-
-        async void Load()
-        {
-            await UniTask.Delay(100);
-
-            foreach (var sigil in sigilStorageSO.activeSigils)
-            {
-                if (sigil != null)
-                {
-                    EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(sigil));
-                }
-            }
         }
     }
 }
