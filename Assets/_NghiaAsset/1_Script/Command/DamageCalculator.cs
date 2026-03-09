@@ -46,7 +46,7 @@ namespace Turnbase
             }
 
             // 2. Tính Sát thương thô (Raw Damage)
-            int rawDamage = offensiveStat * skill.damage;
+            int rawDamage = offensiveStat + skill.damage;
 
             // Xử lý Buff đánh thường
             if (skill.manaCost <= 0)

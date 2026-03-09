@@ -40,6 +40,12 @@ namespace MyRule
         [SerializeField] private TextMeshProUGUI darkDef;
         [SerializeField] private TextMeshProUGUI poisonDef;
 
+        private void Start()
+        {
+            CharacterStatsSO character = CharacterStatsManager.Instance.GetCharacterStats();
+            UpdateStats(character);
+        }
+
         public void UpdateStats(CharacterStatsSO characterStats)
         {
             if (vigor != null) vigor.text = characterStats.virgor.ToString();

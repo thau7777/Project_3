@@ -1,20 +1,13 @@
+using Cysharp.Threading.Tasks;
 using MyRule.Event;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
 {
-    public class SigilStorageManager : MonoBehaviour
+    public class SigilStorageManager : PersistentSingleton<SigilStorageManager>
     {
         public SigilStorageSO sigilStorageSO;
-
-        private SigilSO sigil_L;
-        private SigilSO sigil_R;
-        private SigilSO sigil_S;
-        private SigilSO sigil_F;
-        private int index = 0;
-        private List<SigilSO> passiveSigils;
-
 
         private EventBinding<SigilChosenEvent> sigilChosenEventBinding;
 
@@ -29,27 +22,20 @@ namespace MyRule
             EventBus<SigilChosenEvent>.Deregister(sigilChosenEventBinding);
         }
 
-        private void Awake()
-        {
-            passiveSigils = new List<SigilSO>();
-        }
-
         private void OnSigilChosen(SigilChosenEvent evt)
         {
+            SigilSO sigilSO = sigilStorageSO.activeSigils.Find(s => s.activeSigilType == evt.normalSigilSO.activeSigilType);
+
+            if (sigilSO != null) sigilStorageSO.activeSigils.Remove(sigilSO);
+
             sigilStorageSO.activeSigils.Add(evt.normalSigilSO);
             EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(evt.normalSigilSO));
             CharacterStatsManager.Instance.UpdateSigilStats(evt.normalSigilSO);
         }
 
-        void Load()
+        public void ResetSorage()
         {
-            foreach (var sigil in sigilStorageSO.activeSigils)
-            {
-                if (sigil != null)
-                {
-                    EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(sigil));
-                }
-            }
+            sigilStorageSO.activeSigils.Clear();
         }
     }
 }

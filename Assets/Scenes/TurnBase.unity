@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 335e0e85311a6534794726fbf5141558, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: fe194ba0cb83ab24cb3723c37481cda0, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 5b7250d72a444bd41b8005872ad096b0, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1947,7 +1947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &325222964
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -3218,7 +3218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35624656, y: 0.089497134, z: -0.03430264, w: 0.92946327}
+  m_LocalRotation: {x: 0.63661665, y: 0.0736805, z: -0.06129921, w: 0.7652012}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7095,7 +7095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
   mode: 1
-  size: {x: 3, y: 3, z: 3}
+  size: {x: 303.01, y: 71.53226, z: 303.01}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -7104,25 +7104,25 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 0
-  mightNeedRebaking: 1
+  mightNeedRebaking: 0
   cachedTransform:
     e00: 1
     e01: 0
     e02: 0
-    e03: -7.2575073
+    e03: 2.5476837
     e10: 0
     e11: 1
     e12: 0
-    e13: -10.813039
+    e13: -34.261127
     e20: 0
     e21: 0
     e22: 1
-    e23: 0.49847412
+    e23: -5.7907867
     e30: 0
     e31: 0
     e32: 0
     e33: 1
-  cachedHashCode: 134707244
+  cachedHashCode: -876960712
   fillEmptySpaces: 0
   version: 2
   globalVolume: 0
@@ -7135,7 +7135,7 @@ Transform:
   m_GameObject: {fileID: 1029347334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5476837, y: 34.261127, z: 5.7907867}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10413,7 +10413,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591609222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11605,7 +11605,7 @@ MonoBehaviour:
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 7.4
+  currentTimeOfDay: 9.3
   timeSpeed: 0
   sunriseTime: 4
   sunriseDuration: 0.88
@@ -11629,7 +11629,7 @@ MonoBehaviour:
   fogEnabled: 1
   fogMode: 1
   fogDistance: 5
-  overrideCloudControl: 1
+  overrideCloudControl: 0
   CloudColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   DarkSky: 0.543
   BlendCloud: 0.184
@@ -12635,6 +12635,52 @@ RectTransform:
   m_AnchoredPosition: {x: -101.350006, y: -105.24318}
   m_SizeDelta: {x: 1337.835, y: 419.16562}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1991673652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1991673654}
+  - component: {fileID: 1991673653}
+  m_Layer: 0
+  m_Name: SigilStorage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1991673653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991673652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6179786290f54514693a0caceb7b7355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.SigilStorageManager
+  AutoUnparentOnAwake: 1
+  sigilStorageSO: {fileID: 11400000, guid: 0b3f17738d6e1a749b479a7f6ffc0cf7, type: 2}
+--- !u!4 &1991673654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991673652}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.03712, y: 9.80035, z: 0.43174}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2018637748
 GameObject:
   m_ObjectHideFlags: 0
@@ -13370,3 +13416,4 @@ SceneRoots:
   - {fileID: 349663451}
   - {fileID: 695385942}
   - {fileID: 1878351156}
+  - {fileID: 1991673654}

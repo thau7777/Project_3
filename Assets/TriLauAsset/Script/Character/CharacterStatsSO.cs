@@ -5,7 +5,9 @@ namespace MyRule
     [CreateAssetMenu(fileName = "CharacterStatsSO", menuName = "Scriptable Objects/CharacterStatsSO")]
     public class CharacterStatsSO : ScriptableObject
     {
+        public EClass characterClass;
         public int level;
+        public int startRune;
     
         [TabGroup("Stat Points")]
         public int rune;

@@ -1,0 +1,31 @@
+using UnityEngine;
+
+namespace MyRule.UI
+{
+    public class RunePresenter
+    {
+        private IRuneView view;
+        private int currentRune;
+
+        private EventBinding<SendUIRuneEvent> sendUIRuneEventBinding;
+
+        public RunePresenter(IRuneView view)
+        {
+            this.view = view;
+
+            sendUIRuneEventBinding = new EventBinding<SendUIRuneEvent>(HandleRuneEvent);
+            EventBus<SendUIRuneEvent>.Register(sendUIRuneEventBinding);
+        }
+
+        public void Clearup()
+        {
+            this.view = null;
+            EventBus<SendUIRuneEvent>.Deregister(sendUIRuneEventBinding);
+        }
+
+        private async void HandleRuneEvent(SendUIRuneEvent e)
+        {
+            await view.AdjustRune(e.runAmount);
+        }
+    }
+}

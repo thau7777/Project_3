@@ -117,35 +117,71 @@ namespace Turnbase
 
         public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
         {
+            // 1. Tìm Profile tương ứng với Class
             CharacterClassProfile targetProfile =
                 allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
 
             if (targetProfile == null)
             {
                 Debug.LogWarning($"Không tìm thấy Class Profile cho lớp: {classTypeToLoad} trên {gameObject.name}!");
-
+                return;
             }
+
             characterClass = targetProfile.characterClass;
 
+            // 2. Thiết lập Animator
             if (animator != null && targetProfile.animatorController != null)
             {
                 animator.runtimeAnimatorController = targetProfile.animatorController;
             }
 
+            // 3. Lấy danh sách tên từ SigilStorageSO để làm bộ lọc
+            // Giả sử bạn đã kéo thả SigilStorageSO vào SigilStorageManager hoặc truy cập qua Instance
+            // Ở đây tôi ví dụ truy cập qua SigilStorageManager (bạn cần đảm bảo cách tham chiếu này đúng với project của bạn)
+            var storageManager = FindFirstObjectByType<SigilStorageManager>();
+            if (storageManager == null || storageManager.sigilStorageSO == null)
+            {
+                Debug.LogError("Không tìm thấy SigilStorageSO để lọc kỹ năng!");
+                return;
+            }
+
+            HashSet<string> ownedSigilNames = new HashSet<string>();
+
+            foreach (var s in storageManager.sigilStorageSO.activeSigils)
+                if (s != null) ownedSigilNames.Add(s.sigilName);
+
+            foreach (var s in storageManager.sigilStorageSO.passiveSigils)
+                if (s != null) ownedSigilNames.Add(s.sigilName);
+
+            // 4. Lọc và nạp Kỹ năng chủ động (initialSkills)
+            skills.Clear();
             if (targetProfile.initialSkills != null)
             {
-                skills.Clear();
-                skills.AddRange(targetProfile.initialSkills);
+                foreach (var skill in targetProfile.initialSkills)
+                {
+                    if (skill != null && ownedSigilNames.Contains(skill.skillName))
+                    {
+                        skills.Add(skill);
+                    }
+                }
+                Debug.Log($"[LOG] Đã nạp {skills.Count} kỹ năng chủ động dựa trên Sigil cho {gameObject.name}");
             }
 
-            if (targetProfile.initialPassiveSkills != null) 
+            // 5. Lọc và nạp Kỹ năng nội tại (initialPassiveSkills)
+            passiveSkills.Clear();
+            if (targetProfile.initialPassiveSkills != null)
             {
-                passiveSkills.Clear();
-                passiveSkills.AddRange(targetProfile.initialPassiveSkills);
-                Debug.Log($"[LOG] Đã nạp {passiveSkills.Count} nội tại cho {gameObject.name}");
+                foreach (var pSkill in targetProfile.initialPassiveSkills)
+                {
+                    // Lưu ý: SkillPassive cần có biến name hoặc skillName để so khớp
+                    if (pSkill != null && ownedSigilNames.Contains(pSkill.name))
+                    {
+                        passiveSkills.Add(pSkill);
+                    }
+                }
+                Debug.Log($"[LOG] Đã nạp {passiveSkills.Count} nội tại dựa trên Sigil cho {gameObject.name}");
             }
         }
-
         public void UpdateOwnUI()
         {
             EnemyStatsUI uiComponent = GetComponentInChildren<EnemyStatsUI>();

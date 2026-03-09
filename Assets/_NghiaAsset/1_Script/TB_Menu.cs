@@ -50,7 +50,7 @@ namespace Turnbase
         public void LoadSceneMain(bool result)
         {
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
-            SceneManager.LoadScene("BoardScene");
+            SceneManager.LoadScene("MazeScene");
 
             //FlyweightFactory_TB.Instance.ClearAllPools();
             //SceneManager.LoadScene("Map");

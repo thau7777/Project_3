@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MyRule.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyRule
 {
@@ -59,7 +62,7 @@ namespace MyRule
             DOTween.Sequence().AppendInterval(enterNodeDelay).OnComplete(() => EnterNode(mapNode));
         }
 
-        private static void EnterNode(MapNode mapNode)
+        private static async void EnterNode(MapNode mapNode)
         {
             Debug.Log("Entering node: " + mapNode.Node.blueprintName + " of type: " + mapNode.Node.nodeType + mapNode.transform.position);
 
@@ -68,7 +71,12 @@ namespace MyRule
             switch (mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
-                    break;
+                    {
+                        await WaveManager.Instance.CreateNewWave();
+                        await UniTask.Delay(1000);
+                        SceneManager.LoadScene("TurnBase");
+                        break;
+                    }
                 case NodeType.RestSite:
                     break;
                 case NodeType.Treasure:
@@ -81,7 +89,8 @@ namespace MyRule
                 case NodeType.Mystery:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    Debug.Log("Ko co j");
+                    break;
             }
         }
 
