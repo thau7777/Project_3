@@ -238,6 +238,17 @@ namespace Turnbase
 
             if (activeCharacter.isPlayer)
             {
+                Skill passiveSkill = activeCharacter.skills.FirstOrDefault(s => s.skillType == SkillType.XPassive);
+
+                if (passiveSkill != null)
+                {
+                    Debug.Log($"<color=cyan>[PASSIVE]</color> Kích hoạt tự động: {passiveSkill.skillName}");
+                    ICommand passiveCmd = new XPassiveCommand(activeCharacter, passiveSkill, this);
+
+                    // Đợi đánh xong Passive rồi mới chạy tiếp xuống phần hiện UI
+                    yield return StartCoroutine(passiveCmd.Execute());
+                }
+
                 if (activeCharacter.ownUI != null)
                 {
                     foreach (var p in allCombatants.Where(c => c.isPlayer && c.ownUI != null)) p.ownUI.Hide();

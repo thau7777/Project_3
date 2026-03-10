@@ -9,10 +9,12 @@ namespace Turnbase
     {
         public Button skillButton;
         public Image skillIcon;
-        public TextMeshProUGUI skillNameText; 
+        public TextMeshProUGUI skillNameText;
         public TextMeshProUGUI manaCostText;
         public TextMeshProUGUI typeText;
 
+        [Header("Passive Settings")]
+        public float passiveAlpha = 1; 
 
         public Skill skillData { get; private set; }
 
@@ -28,7 +30,9 @@ namespace Turnbase
 
             if (skillNameText != null)
             {
-                skillNameText.text = skill.skillName;
+                skillNameText.text = skill.skillType == SkillType.XPassive
+                    ? skill.skillName + " (P)"
+                    : skill.skillName;
             }
 
             if (manaCostText != null)
@@ -38,23 +42,39 @@ namespace Turnbase
 
             if (typeText != null)
             {
-                typeText.text = skill.elementType.ToString();
-
-                if(skill.elementType == ElementType.None)
-                {
-                    typeText.text = "";
-                }
+                typeText.text = skill.elementType == ElementType.None ? "" : skill.elementType.ToString();
             }
 
-
-
             skillButton.onClick.RemoveAllListeners();
-            skillButton.onClick.AddListener(() => clickAction.Invoke(skillData));
+
+            if (skill.skillType == SkillType.XPassive)
+            {
+                skillButton.interactable = false;
+
+                if (GetComponent<CanvasGroup>() != null)
+                {
+                    GetComponent<CanvasGroup>().alpha = passiveAlpha;
+                }
+                else
+                {
+                    if (skillIcon != null) skillIcon.color = new Color(1, 1, 1, passiveAlpha);
+                }
+            }
+            else
+            {
+                skillButton.interactable = true;
+                if (GetComponent<CanvasGroup>() != null) GetComponent<CanvasGroup>().alpha = 1f;
+
+                skillButton.onClick.AddListener(() => clickAction.Invoke(skillData));
+            }
         }
 
         public void SelectThisSkill()
         {
-            skillButton.onClick.Invoke();
+            if (skillButton.interactable)
+            {
+                skillButton.onClick.Invoke();
+            }
         }
     }
 }

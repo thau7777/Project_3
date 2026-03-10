@@ -133,22 +133,19 @@ namespace Turnbase
                 animator.runtimeAnimatorController = targetProfile.animatorController;
             }
 
-            // --- PHẦN CẬP NHẬT VẬT PHẨM (ITEMS) ---
-            item.Clear(); // Xóa túi đồ cũ trước khi nạp mới
+            item.Clear(); 
             if (targetProfile.initiaItem != null)
             {
                 foreach (var itemTemplate in targetProfile.initiaItem)
                 {
                     if (itemTemplate != null)
                     {
-                        // Sử dụng Instantiate để tạo bản sao, tránh ghi đè dữ liệu vào ScriptableObject gốc
                         Tb_Item clonedItem = Instantiate(itemTemplate);
                         item.Add(clonedItem);
                     }
                 }
                 Debug.Log($"[LOG] Đã nạp {item.Count} vật phẩm khởi đầu cho {gameObject.name}");
             }
-            // --------------------------------------
 
             var storageManager = FindFirstObjectByType<SigilStorageManager>();
             if (storageManager == null || storageManager.sigilStorageSO == null)
@@ -164,7 +161,6 @@ namespace Turnbase
             foreach (var s in storageManager.sigilStorageSO.passiveSigils)
                 if (s != null) ownedSigilNames.Add(s.sigilName);
 
-            // Nạp kỹ năng chủ động (Giữ nguyên logic của bạn)
             skills.Clear();
             if (targetProfile.initialSkills != null)
             {
@@ -177,7 +173,6 @@ namespace Turnbase
                 }
             }
 
-            // Nạp kỹ năng nội tại (Giữ nguyên logic của bạn)
             passiveSkills.Clear();
             if (targetProfile.initialPassiveSkills != null)
             {
