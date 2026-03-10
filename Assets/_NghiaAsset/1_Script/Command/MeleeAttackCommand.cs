@@ -55,9 +55,6 @@ namespace Turnbase
                     {
                         if (target.isParrySuccessful && isPerfectParry)
                         {
-                            int counterDamage = target.stats.physicalAttack + target.stats.magicAttack;
-                            user.TakeDamage(target, counterDamage, ElementType.Normal, true);
-
                             if (user == null || !user.isAlive)
                             {
                                 battleManager.isProcessingTurn = false;

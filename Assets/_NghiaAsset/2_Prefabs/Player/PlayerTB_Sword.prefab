@@ -47604,6 +47604,7 @@ GameObject:
   - component: {fileID: -2223283472756963618}
   - component: {fileID: 9026406392181652209}
   - component: {fileID: 2161353591771462038}
+  - component: {fileID: 8277514204949927725}
   m_Layer: 0
   m_Name: PlayerTB_Sword
   m_TagString: Player
@@ -47687,12 +47688,26 @@ MonoBehaviour:
     maxShield: 10000
     currentShield: 0
     physicalAttack: 100
-    physicalDefense: 100
     magicAttack: 100
+    physicalDefense: 100
     magicDefense: 10
-    crit: 100
-    critDamage: 150
-    agility: 111
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
   skills: []
@@ -47792,6 +47807,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-2223283472756963618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47809,7 +47828,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -47826,6 +47845,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &9026406392181652209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47851,6 +47874,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
+--- !u!114 &8277514204949927725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf93edb259241a4fba43310dd0a5333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterIItemBuffManager
+  activeBuffs: []
 --- !u!1 &8083655193775197940
 GameObject:
   m_ObjectHideFlags: 0

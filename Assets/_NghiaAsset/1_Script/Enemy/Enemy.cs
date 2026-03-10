@@ -50,11 +50,6 @@ namespace Turnbase
             telegraphManager = GetComponentInChildren<TelegraphEffect>();
         }
 
-        private void Start()
-        {
-            OnSoundMonster();
-        }
-
         public void Animation_StartAnticipation()
         {
             if (battleManager != null)
@@ -91,6 +86,12 @@ namespace Turnbase
             if (target != null && target.isAttackBlocked && target.isParrySuccessful)
             {
                 Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn nhịp này.");
+
+                if (stateMachine != null)
+                {
+                    stateMachine.SwitchState(new InterruptedState(stateMachine));
+                }
+
                 StartCoroutine(DelayedCameraShake(0.1f));
             }
         }
@@ -203,10 +204,6 @@ namespace Turnbase
             if (enemyUI != null) enemyUI.UpdateUI();
         }
 
-        private void OnSoundMonster()
-        {
-            AudioManager.Instance.PlaySFX(SFXType.EnemySound);
-            Invoke(nameof(OnSoundMonster), UnityEngine.Random.Range(5f, 10f));
-        }
+
     }
 }

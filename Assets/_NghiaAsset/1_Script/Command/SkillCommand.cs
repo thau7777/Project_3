@@ -33,25 +33,29 @@ namespace Turnbase
 
             if ((skill.skillType == SkillType.Buff || skill.skillType == SkillType.Shield) && target.buffManager != null)
             {
-                target.buffManager.ApplyBuff(
-                    skill.buffProperties,
-                    null,
-                    skill.buffProperties.amount,
-                    skill
-                );
+                target.buffManager.ApplyBuff(skill.buffProperties, null, skill.buffProperties.amount, skill);
             }
 
-            if (user.buffManager != null)
+            if (skill.stackApplicationTarget == StackApplicationTarget.Self)
             {
-                user.buffManager.ProcessSkillStacks(skill, target);
+                if (user.buffManager != null)
+                {
+                    user.buffManager.ProcessSkillStacks(skill, target);
+                }
             }
-
+            else if (skill.stackApplicationTarget == StackApplicationTarget.Target)
+            {
+                if (target.buffManager != null)
+                {
+                    target.buffManager.ProcessSkillStacks(skill, user);
+                }
+            }
 
             user.UpdateOwnUI();
-            if (user.battleUIManager != null)
-            {
-                user.battleUIManager.UpdateCharacterUI(user);
-            }
+            target.UpdateOwnUI();
+
+            if (user.battleUIManager != null) user.battleUIManager.UpdateCharacterUI(user);
+            if (target.battleUIManager != null) target.battleUIManager.UpdateCharacterUI(target);
         }
 
         protected Flyweight_TB SpawnImpactEffect(Vector3 position, Skill skill)

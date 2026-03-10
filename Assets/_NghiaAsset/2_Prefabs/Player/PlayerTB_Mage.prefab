@@ -28024,6 +28024,7 @@ GameObject:
   - component: {fileID: 3643947891567202690}
   - component: {fileID: 8832482024150264086}
   - component: {fileID: -4996430161403432769}
+  - component: {fileID: 6817866221514577180}
   m_Layer: 0
   m_Name: PlayerTB_Mage
   m_TagString: Player
@@ -28133,6 +28134,8 @@ MonoBehaviour:
   item:
   - {fileID: 11400000, guid: 94739275a84aeeb48aed2113f6d7c639, type: 2}
   - {fileID: 11400000, guid: 10ce6117019c09243820bba989b6d8a2, type: 2}
+  - {fileID: 11400000, guid: 70a5ac3068697b84599bb86fec8c75b7, type: 2}
+  - {fileID: 11400000, guid: f66374abf4dc5f3409237036aad2c200, type: 2}
   passiveSkills: []
   isPlayer: 1
   isVirtualTracker: 0
@@ -28293,6 +28296,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
+--- !u!114 &6817866221514577180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf93edb259241a4fba43310dd0a5333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterIItemBuffManager
+  activeBuffs: []
 --- !u!1 &8144461621592026007
 GameObject:
   m_ObjectHideFlags: 0

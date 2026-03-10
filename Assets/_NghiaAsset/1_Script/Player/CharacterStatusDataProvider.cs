@@ -279,8 +279,26 @@ namespace Turnbase
                 });
             }
 
+            CharacterIItemBuffManager itemBuffMgr = character.GetComponent<CharacterIItemBuffManager>();
+            if (itemBuffMgr != null)
+            {
+                foreach (var buff in itemBuffMgr.activeBuffs)
+                {
+                    effects.Add(new StatusEffectData
+                    {
+                        Name = buff.itemName,
+                        TurnsRemaining = buff.duration,
+                        Detail = $"+{buff.value} {buff.type}",
+                        IsBuff = buff.value >= 0, 
+                        Icon = buff.icon
+                    });
+                }
+            }
+
             return effects;
         }
+
+
         #endregion    
 
     }

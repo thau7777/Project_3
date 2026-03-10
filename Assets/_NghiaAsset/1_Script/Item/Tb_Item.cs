@@ -20,6 +20,30 @@ namespace Turnbase
         {
             Healing,
             Mana,
+
+            PhysicalAttack,
+            MagicalAttack,
+            FireDMG,
+            WaterDMG,
+            LightningDMG,
+            PoisonDMG,
+            FrostDMG,
+            HolyDMG,
+            DarkDMG,
+            NormalDMG,
+
+            PhysicalDef,
+            MagicalDef,
+            FireDef,
+            WaterDef,
+            LightningDef,
+            PoisonDef,
+            FrostDef,
+            HolyDef,
+            DarkDef,
+            NormalDef,
+
+
         }
     }
 

@@ -14,6 +14,7 @@ namespace Turnbase
                                            CharacterClass.Tank)]
         public List<Skill> initialSkills;
         public List<SkillPassive> initialPassiveSkills;
+        public List<Tb_Item> initiaItem;
     }
 
 }

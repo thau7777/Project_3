@@ -172,13 +172,14 @@ namespace Turnbase
 
                 new StatData { Name = "Fire Bonus", Value = stats.fireDamageBonus.ToString() },
                 new StatData { Name = "Frost Bonus", Value = stats.frostDamageBonus.ToString() },
+                new StatData { Name = "Light Bonus", Value = stats.lightningDamageBonus.ToString() },
                 new StatData { Name = "Dark Bonus", Value = stats.darkDamageBonus.ToString() },
                 new StatData { Name = "Holy Bonus", Value = stats.holyDamageBonus.ToString() },
                 new StatData { Name = "Water Bonus", Value = stats.waterDamageBonus.ToString() },
                 new StatData { Name = "Poison Bonus", Value = stats.poisonDamageBonus.ToString() },
 
                 new StatData { Name = "Fire Def", Value = stats.fireDefense.ToString() },
-                new StatData { Name = "Light. Def", Value = stats.lightningDefense.ToString() },
+                new StatData { Name = "Light Def", Value = stats.lightningDefense.ToString() },
                 new StatData { Name = "Frost Def", Value = stats.frostDefense.ToString() },
                 new StatData { Name = "Dark Def", Value = stats.darkDefense.ToString() },
                 new StatData { Name = "Holy Def", Value = stats.holyDefense.ToString() },
