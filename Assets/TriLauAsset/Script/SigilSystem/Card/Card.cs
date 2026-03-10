@@ -3,6 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using MyRule.CommandPattern;
+using Unity.VisualScripting;
 
 namespace MyRule
 {
@@ -75,19 +76,26 @@ namespace MyRule
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(null));
         }
 
-        public void OnClick()
+        public void OnClick(bool isReward)
         {
             if (!isShowing) return;
 
-            int runeAmount = RuneManger.Instance.GetRuneAmount();
-
-            if (runeAmount > sigilSO.price)
+            if (!isReward)
             {
-                Debug.Log("Click " + sigilNameTxt.text);
+                int runeAmount = RuneManger.Instance.GetRuneAmount();
+
+                if (runeAmount > sigilSO.price && !isReward)
+                {
+                    Debug.Log("Click " + sigilNameTxt.text);
+                    EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
+                    EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-sigilSO.price));
+                    HideCard();
+                    isShowing = false;
+                }
+            }
+            else if (isReward)
+            {
                 EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
-                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-sigilSO.price));
-                HideCard();
-                isShowing = false;
             }
             else
             {

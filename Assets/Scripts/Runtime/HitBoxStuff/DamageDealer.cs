@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
 {
-    // get the damage from the settings if we have it and put it here, if we dont have the settings setup then use the default
+    bool _isMagicAttack = false;
     [SerializeField]
     private OneShotVFXSettings _hitImpactVfx;
     [SerializeField]
     private int _damage = 40;
-    private bool _isCrit = false;
     private bool _dealTrueDamage = false;
     private float _knockBackForce;
     private bool _reverseKnockBackDirection = false;
     private ElementalType _elementalType;
+
+    private GameObject _senderForParticle;
 
     private void Awake()
     {
@@ -27,15 +28,19 @@ public class DamageDealer : MonoBehaviour
             hitBoxHandler.OnColliderHit.RemoveListener(DealDamage);
         }
     }
-    public void Setup(bool isCrit, int damage, bool dealTrueDamage, float knockBackForce, bool reverseKnockBackDirection, ElementalType elementalType = ElementalType.Normal, OneShotVFXSettings hitImpactVfx = null)
+    public void Setup(bool isMagicAttack, int damage, bool dealTrueDamage, float knockBackForce, bool reverseKnockBackDirection, ElementalType elementalType = ElementalType.Normal, OneShotVFXSettings hitImpactVfx = null)
     {
-        _isCrit = isCrit;
+        _isMagicAttack = isMagicAttack;
         _damage = damage;
         _dealTrueDamage = dealTrueDamage;
         _knockBackForce = knockBackForce;
         _reverseKnockBackDirection = reverseKnockBackDirection;
         _elementalType = elementalType;
         _hitImpactVfx = hitImpactVfx;
+    }
+    public void SetupParicleDamageDealer(GameObject sender)
+    {
+        _senderForParticle = sender;
     }
     public void DealDamage(GameObject sender, GameObject hitOrigin, GameObject target)
     {
@@ -50,29 +55,41 @@ public class DamageDealer : MonoBehaviour
                 GetComponent<Flyweight>().ReturnToPool();
 
                 if (sender.TryGetComponent<Damageable>(out var enemy))
-                    enemy.TakeDamage(sender, hitOrigin, _isCrit, 0, _dealTrueDamage, -hitDirection.normalized, 5, _elementalType, _hitImpactVfx);
+                    enemy.TakeDamage(sender, hitOrigin, _isMagicAttack, 0, _dealTrueDamage, -hitDirection.normalized, 5, _elementalType, _hitImpactVfx);
 
                 return;
             }
+
+            float finalDamage = _damage;
+            if (target.TryGetComponent<EnemyTopdownStateDriver>(out var enemyTopdownStateDriver) &&
+                enemyTopdownStateDriver.TryGetComponent<Damageable>(out var damageable) &&
+                damageable.hasShieldBreakingMechanic &&
+                damageable.CurrentShieldHealth > 0 &&
+                ElementalManager.Instance.IsStrongAgainst(_elementalType, damageable.GetComponent<CharacterStats>().ElementalType))
+            {
+                damageable.TakeShieldDamage(10);
+            }
+
+            if (enemyTopdownStateDriver.GetComponent<Damageable>().CurrentShieldHealth <= 0)
+                finalDamage *= 1.5f;
+
             targetDamageable.TakeDamage(
                 sender,
                 hitOrigin,
-                _isCrit,
-                _damage, 
+                _isMagicAttack,
+                Mathf.RoundToInt(finalDamage), 
                 _dealTrueDamage, 
                 _reverseKnockBackDirection ? -hitDirection.normalized : hitDirection.normalized,
                 _knockBackForce, 
                 _elementalType, 
                 _hitImpactVfx); // Example damage value
 
-            if(target.TryGetComponent<EnemyTopdownStateDriver>(out var enemyTopdownStateDriver) && 
-                enemyTopdownStateDriver.TryGetComponent<Damageable>(out var damageable))
-            {
-                if(ElementalManager.Instance.IsStrongAgainst(_elementalType, damageable.GetComponent<CharacterStats>().ElementalType))
-                {
-                    damageable.TakeShieldDamage(10);
-                }
-            }
+            
         }
+    }
+
+    public void DealDamage(GameObject target)
+    {
+        DealDamage(_senderForParticle, gameObject, target);
     }
 }

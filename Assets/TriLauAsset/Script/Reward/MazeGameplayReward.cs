@@ -11,6 +11,8 @@ namespace MyRule
     {
         private int runeAmound;
 
+        public int RuneAmount => runeAmound;
+
         public MazeGameplayReward(int runeAmount)
         {
             this.runeAmound = runeAmount;

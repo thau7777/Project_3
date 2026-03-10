@@ -4,13 +4,18 @@ using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using System.Threading.Tasks;
+using UnityEngine.UI;
+using TMPro;
 
 namespace MyRule
 {
     public class MazeGameplayRewardView : BaseUIView
     {
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private Transform winningTxtObj;
+        [SerializeField] private CanvasGroup rewardCanvasGroup;
+        [SerializeField] private TextMeshProUGUI runeRewardTxt;
+        [SerializeField] private Button continueBtn;
         [SerializeField] private Transform[] spawnPoint;
         [SerializeField] private float fadeDuration = 0.2f;
 
@@ -20,28 +25,50 @@ namespace MyRule
 
         private bool isShowing = false;
 
+        private MazeGameplayReward reward;
+
+        private EventBinding<SigilChosenEvent> evtBinhding;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            evtBinhding = new EventBinding<SigilChosenEvent>(Hide);
+            EventBus<SigilChosenEvent>.Register(evtBinhding);
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            EventBus<SigilChosenEvent>.Deregister(evtBinhding);
+        }
+
         protected override void Start()
         {
-            if (MazeGameplayRewardManager.Instance.HasRewards)
-            {
-                Show();
-            }
-
             cts = new CancellationTokenSource();
 
             inputReader.diceRollActions.onEsc += Hide;
+            continueBtn.onClick.AddListener(OnClick);
+
+            reward = MazeGameplayRewardManager.Instance.GetReward();
+
+            if (reward != null)
+            {
+                Show();
+            }
         }
 
         public override async void Hide()
         {
             if (!isShowing) return;
+            
+            CardTracker.Instance.canInteract = false;
 
             Transition.TransitionValue(
-                            setter: value => canvasGroup.alpha = value,
-                            from: canvasGroup.alpha,
-                            to: 0f,
-                            duration: fadeDuration,
-                            cts.Token).Forget();
+                setter: value => canvasGroup.alpha = value,
+                from: canvasGroup.alpha,
+                to: 0f,
+                duration: fadeDuration,
+                cts.Token).Forget();
 
             VolumeController.Instance.AdjustUIVolumeWeight();
 
@@ -58,6 +85,8 @@ namespace MyRule
         {
             if (isShowing) return;
 
+            if (reward != null) runeRewardTxt.text = reward.RuneAmount.ToString();
+
             VolumeController.Instance.AdjustUIVolumeWeight();
 
             Transition.TransitionValue(
@@ -67,15 +96,43 @@ namespace MyRule
                 duration: fadeDuration,
                 cts.Token).Forget();
 
-            SpawnRewardSigil();
+            continueBtn.Select();
 
             RTSCameraController.Instance.CanInteract = false;
+
+            CardTracker.Instance.canInteract = true;
+            CardTracker.Instance.isReward = true;
 
             isShowing = true;
         }
 
+        private void OnClick()
+        {
+            if (!isShowing) return;
+
+            if (reward != null)
+            {
+                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(reward.RuneAmount));
+            }
+            else
+            {
+                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(10));
+            }
+
+            SpawnRewardSigil();
+        }
+
         private async void SpawnRewardSigil()
         {
+            winningTxtObj.DOLocalMoveY(800, 0.2f).SetEase(Ease.Linear);
+
+            Transition.TransitionValue(
+                setter: value => rewardCanvasGroup.alpha = value,
+                from: canvasGroup.alpha,
+                to: 0f,
+                duration: fadeDuration,
+                cts.Token).Forget();
+
             for (int i = 0; i < spawnPoint.Length; i++)
             {
                 SigilSO sigilSO = SigilCollectionInGame.Instance.GetRandomSigil();
@@ -86,7 +143,7 @@ namespace MyRule
                 Card card = cardObj.GetComponent<Card>();
                 gameObjects.Add(card);
                 card.SetSigil(sigilSO);
-                card.transform.DOMoveY(-1999.4f, 0.2f).SetEase(Ease.OutElastic);
+                card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;
             }
@@ -98,7 +155,7 @@ namespace MyRule
             {
                 card.IsShowing = false;
                 await UniTask.Delay(400);
-                card.transform.DOMoveY(-2200.4f, 0.2f).SetEase(Ease.OutElastic);
+                card.transform.DOMoveY(-2200.4f, 0.2f).SetEase(Ease.Linear);
             }
         }
 

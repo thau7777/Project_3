@@ -220,7 +220,7 @@ public class ChainLightning : SkillStrategy
             bool isCrit = userStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < userStats.CriticalRate;
             int finalDamage = isCrit ? Mathf.RoundToInt(Damage * userStats.CriticalMultiplier) : Damage;
 
-            damageable.TakeDamage(_skillContext.origin.gameObject, null,isCrit, finalDamage, DealTrueDamage, knockBackDirection,1,ElementalType.Lightning);
+            damageable.TakeDamage(_skillContext.origin.gameObject, null, true, finalDamage, DealTrueDamage, knockBackDirection,1,ElementalType.Lightning);
         }
         if(target.transform.root.TryGetComponent<EffectsManager>(out var effectsManager))
         {

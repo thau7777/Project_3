@@ -13,7 +13,6 @@ public class StraightProjectile : Flyweight
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
     private int _damage;
-    private bool _isCrit;
     private float _knockBackForce;
     private bool _dealTrueDamage;
     private float _currentSize;
@@ -41,7 +40,7 @@ public class StraightProjectile : Flyweight
 
     public void InitializeProjectile(GameObject sender, 
         Vector3 direction, float speed, float range, 
-        float size, bool isCrit, int damage, float knockBackForce, 
+        float size, int damage, float knockBackForce, 
         bool dealTrueDamage, LayerMask dodgeLayers)
     {
         _sender = sender;
@@ -53,8 +52,6 @@ public class StraightProjectile : Flyweight
         _currentSize = size;
 
         transform.localScale = new Vector3(size, size, size);
-
-        _isCrit = isCrit;
         _damage = damage;
         _knockBackForce = knockBackForce;
         _dealTrueDamage = dealTrueDamage;
@@ -119,7 +116,9 @@ public class StraightProjectile : Flyweight
         }
         if (impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
         {
-            damageDealer.Setup(_isCrit, _damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
+            damageDealer.Setup(impactVFXSettings.isMagicAttack, _damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
+            if (impactVFXSettings.UseParticleCollision)
+                damageDealer.SetupParicleDamageDealer(_sender);
         }
 
         impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);

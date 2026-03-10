@@ -17,7 +17,7 @@ public class MainCanvasGroupController : MonoBehaviour
     private CanvasGroup canvasGroup;
     private CancellationTokenSource fadeCts;
 
-    private EventBinding<TopDownStartGameEvent> _startGameEventBinding;
+    private EventBinding<TopdownStartGameEvent> _startGameEventBinding;
     private EventBinding<TopDownPlayerDeadEvent> _playerDeadEventBinding;
 
     private void Awake()
@@ -31,8 +31,8 @@ public class MainCanvasGroupController : MonoBehaviour
 
         if (!_isDeathUI)
         {
-            _startGameEventBinding = new EventBinding<TopDownStartGameEvent>(FadeIn);
-            EventBus<TopDownStartGameEvent>.Register(_startGameEventBinding);
+            _startGameEventBinding = new EventBinding<TopdownStartGameEvent>(FadeIn);
+            EventBus<TopdownStartGameEvent>.Register(_startGameEventBinding);
             _playerDeadEventBinding = new EventBinding<TopDownPlayerDeadEvent>(FadeOut);
             EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
             return;
@@ -46,7 +46,7 @@ public class MainCanvasGroupController : MonoBehaviour
     private void OnDisable()
     {
         if (!_isDeathUI)
-            EventBus<TopDownStartGameEvent>.Deregister(_startGameEventBinding);
+            EventBus<TopdownStartGameEvent>.Deregister(_startGameEventBinding);
         EventBus<TopDownPlayerDeadEvent>.Deregister(_playerDeadEventBinding);
     }
 
