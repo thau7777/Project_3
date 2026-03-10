@@ -86,6 +86,12 @@ namespace Turnbase
             if (target != null && target.isAttackBlocked && target.isParrySuccessful)
             {
                 Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn nhịp này.");
+
+                if (stateMachine != null)
+                {
+                    stateMachine.SwitchState(new InterruptedState(stateMachine));
+                }
+
                 StartCoroutine(DelayedCameraShake(0.1f));
             }
         }
