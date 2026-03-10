@@ -216,6 +216,12 @@ namespace Turnbase
 
             if (!activeCharacter.isAlive) { EndTurn(activeCharacter); yield break; }
 
+            CharacterIItemBuffManager itemBuffs = activeCharacter.GetComponent<CharacterIItemBuffManager>();
+            if (itemBuffs != null)
+            {
+                itemBuffs.ProcessTurnDecay();
+            }
+
             turnbuffManager.ProcessPassiveSkills(activeCharacter);
             if (activeCharacter.buffManager != null) activeCharacter.buffManager.ProcessTurnStartDecay();
             if (activeCharacter.debuffManager != null)
