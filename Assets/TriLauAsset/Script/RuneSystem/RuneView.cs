@@ -15,7 +15,7 @@ namespace MyRule.UI
         {
             presenter = new RunePresenter(this);
 
-            int runeAmount = RuneManger.Instance.GetRuneAmount();
+            int runeAmount = RuneManger.Instance.RuneAmount;
             EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(runeAmount));
         }
 

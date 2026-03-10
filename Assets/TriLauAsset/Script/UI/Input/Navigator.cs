@@ -8,14 +8,16 @@ namespace MyRule
     {
         public static void OnSubmitPress(ButtonType buttonType)
         {
+            Loader.EScene currentScene = Loader.GetTargetScene();
+
             switch (buttonType)
             {
                 case ButtonType.NewGameButton:
-                    ICommand newGameCommand = new SceneCommand(Loader.EScene.SpaceStationScene);
+                    ICommand newGameCommand = new SceneCommand(currentScene, Loader.EScene.SpaceStationScene);
                     CommandInvoker.ExecuteCommand(newGameCommand);
                     break;
                 case ButtonType.SystemButton:
-                    ICommand settingCommand = new SceneCommand(Loader.EScene.SettingsScene);
+                    ICommand settingCommand = new SceneCommand(currentScene, Loader.EScene.SettingsScene);
                     CommandInvoker.ExecuteCommand(settingCommand);
                     break;
                 case ButtonType.QuitButton:

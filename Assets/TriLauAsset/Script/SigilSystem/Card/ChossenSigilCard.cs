@@ -6,7 +6,6 @@ namespace MyRule
     public class ChosenSigilCard : MonoBehaviour
     {
         public GroupSigil groupSigil;
-        public RuneSO runeSO;
 
         private Card hoverCard;
 

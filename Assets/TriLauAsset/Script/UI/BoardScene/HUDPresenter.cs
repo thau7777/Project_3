@@ -39,7 +39,7 @@ namespace MyRule.UI
         {
             for (int i = 0; i < sigils.Length; i++)
             {
-                if (sigils[i].Key == evt.sigilSO.activeSigilType)
+                if (sigils[i].Key == evt.sigilSO.keyBinding)
                 {
                     sigils[i].SetSigil(evt.sigilSO);
                 }

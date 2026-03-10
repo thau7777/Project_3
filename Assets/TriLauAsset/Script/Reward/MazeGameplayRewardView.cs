@@ -135,7 +135,7 @@ namespace MyRule
 
             for (int i = 0; i < spawnPoint.Length; i++)
             {
-                SigilSO sigilSO = SigilCollectionInGame.Instance.GetRandomSigil();
+                SigilSO sigilSO = MatchManager.Instance.GetRandomSigilInMatch();
 
                 if (sigilSO == null) break;
 

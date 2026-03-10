@@ -19,9 +19,9 @@ namespace MyRule.Event
 
     public struct AddItemEvent : IEvent
     {
-        public readonly Item item;
+        public readonly ItemData item;
 
-        public AddItemEvent(Item item)
+        public AddItemEvent(ItemData item)
         {
             this.item = item;
         }

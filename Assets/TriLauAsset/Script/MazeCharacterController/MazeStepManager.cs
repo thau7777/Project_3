@@ -7,7 +7,6 @@ namespace MyRule
     {
         public ShapeInfo currentShape;
         public Transform characterTransform;
-        [SerializeField] private DataSO dataSO;
 
         private int steps;
         private bool canMove = true;
@@ -59,7 +58,6 @@ namespace MyRule
         private void AddStep(MazeStepEvent evt)
         {
             steps += evt.steps;
-            dataSO.currentStep += steps;
 
             ResolveSteps().Forget();
         }
@@ -69,11 +67,6 @@ namespace MyRule
             currentShape = evt.shape;
 
             await UniTask.Delay(500);
-
-            if (!dataSO.isFrist)
-            {
-                StepFromData();
-            }
         }
 
         private void AddShapeToStorage(ShapeInfo shape)
@@ -142,29 +135,6 @@ namespace MyRule
             }
 
             isResolvingSteps = false;
-        }
-
-        private void StepFromData()
-        {
-            int dataStep = dataSO.currentStep;
-
-            Debug.Log(currentShape.pointsTarget.Count);
-
-            while (dataStep > 0)
-            {
-                var targets = currentShape.pointsTarget;
-                Debug.Log(currentShape.pointsTarget.Count);
-                if (targets.Count >= 1)
-                {
-                    currentShape = targets[0];
-                    currentShape.HightLight();
-                    dataStep--;
-                }
-                else
-                {
-                    break;
-                }
-            }
         }
     }
 }

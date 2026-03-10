@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public class SigilStorageManager : PersistentSingleton<SigilStorageManager>
+    public class SigilStorageManager : PersistentSingleton<SigilStorageManager>, IGameData
     {
         public SigilStorageSO sigilStorageSO;
 
@@ -13,18 +13,22 @@ namespace MyRule
 
         private void OnEnable()
         {
+            GameSystemManager.instance.Register(this);
+
             sigilChosenEventBinding = new EventBinding<SigilChosenEvent>(OnSigilChosen);
             EventBus<SigilChosenEvent>.Register(sigilChosenEventBinding);
         }
 
         private void OnDisable()
         {
+            GameSystemManager.instance?.Unregister(this);
+
             EventBus<SigilChosenEvent>.Deregister(sigilChosenEventBinding);
         }
 
         private void OnSigilChosen(SigilChosenEvent evt)
         {
-            SigilSO sigilSO = sigilStorageSO.activeSigils.Find(s => s.activeSigilType == evt.normalSigilSO.activeSigilType);
+            SigilSO sigilSO = sigilStorageSO.activeSigils.Find(s => s.keyBinding == evt.normalSigilSO.keyBinding);
 
             if (sigilSO != null) sigilStorageSO.activeSigils.Remove(sigilSO);
 
@@ -37,5 +41,30 @@ namespace MyRule
         {
             sigilStorageSO.activeSigils.Clear();
         }
+
+        #region Save Load
+        public UniTask LoadData(GameData data)
+        {
+            if (data.MatchData != null)
+            {
+                sigilStorageSO.activeSigils = new List<SigilSO>();
+
+                foreach (var sigil in data.MatchData.SigilsInMatch.ActiveSigils)
+                {
+
+                }
+            }
+
+            return UniTask.CompletedTask;
+        }
+
+        public void SaveData(GameData data)
+        {
+            if (data.MatchData != null)
+            {
+
+            }
+        }
+        #endregion
     }
 }

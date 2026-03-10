@@ -2,16 +2,18 @@ namespace MyRule.CommandPattern
 {
     public class SceneCommand : ICommand
     {
-        private Loader.EScene currentScene;
+        private Loader.EScene targetScene;
+        private Loader.EScene prevScene;
 
-        public SceneCommand(Loader.EScene currentScene)
+        public SceneCommand(Loader.EScene prevScene, Loader.EScene targetScene)
         {
-            this.currentScene = currentScene;
+            this.prevScene = prevScene;
+            this.targetScene = targetScene;
         }
 
         public void Execute()
         {
-            switch (currentScene)
+            switch (targetScene)
             {
                 case Loader.EScene.SpaceStationScene:
                     NewGame();
@@ -24,7 +26,7 @@ namespace MyRule.CommandPattern
 
         public void Undo()
         {
-            switch (currentScene)
+            switch (targetScene)
             {
                 case Loader.EScene.SpaceStationScene:
                     MainMenu();
@@ -35,28 +37,28 @@ namespace MyRule.CommandPattern
             }
         }
 
-        private void NewGame()
+        private async void NewGame()
         {
-            Loader.Load(Loader.EScene.SpaceStationScene, Loader.ELoadMode.WithLoadingScreen);
+            await Loader.LoadSceneWithLoading(Loader.EScene.SpaceStationScene);
         }
 
-        private void OpenSetting()
+        private async void OpenSetting()
         {
-            Loader.LoadAdditive(Loader.EScene.SettingsScene);
+            await Loader.LoadSceneAdditive(Loader.EScene.SettingsScene);
         }
 
-        private void CloseSetting()
+        private async void CloseSetting()
         {
-            Loader.Unload(Loader.EScene.SettingsScene);
+            await Loader.UnloadSceneAdditive(Loader.EScene.SettingsScene);
 
-            Loader.SetActiveScene(Loader.EScene.MainMenuScene);
+            Loader.SetTargetScene(Loader.EScene.MainMenuScene);
 
             EventBus<MainMenuButtonSelectedEvent>.Raise(new MainMenuButtonSelectedEvent(UI.ButtonType.SystemButton));
         }
 
-        private void MainMenu()
+        private async void MainMenu()
         {
-            Loader.Load(Loader.EScene.MainMenuScene);
+            await Loader.LoadSceneWithLoading(Loader.EScene.MainMenuScene);
         }
     }
 }

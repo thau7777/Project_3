@@ -1,3 +1,5 @@
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace MyRule
@@ -13,60 +15,59 @@ namespace MyRule
             SettingsScene,
         }
 
-        public enum ELoadMode
-        {
-            Normal,
-            WithLoadingScreen,
-        }
-
         private static EScene targetScene;
-        private static LoadSceneMode targetLoadMode;
 
-        public static void Load(EScene scene, ELoadMode eLoadMode = ELoadMode.Normal)
+        public static void SetTargetScene(EScene scene) => targetScene = scene;
+
+        public static async UniTask LoadSceneDirect(EScene scene)
         {
+            GameSystemManager.Instance.SaveData();
+
+            await SceneManager.LoadSceneAsync(scene.ToString());
+        }
+
+        public static async UniTask LoadSceneWithLoading(EScene scene)
+        {
+            GameSystemManager.Instance.SaveData();
+
             targetScene = scene;
-            targetLoadMode = LoadSceneMode.Single;
 
-            if (eLoadMode == ELoadMode.Normal)
-            {
-                SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Single);
-            }
-            else if (eLoadMode == ELoadMode.WithLoadingScreen)
-            {
-                SceneManager.LoadScene(EScene.LoadingScene.ToString(), LoadSceneMode.Single);
-            }
+            await SceneManager.LoadSceneAsync(EScene.LoadingScene.ToString());
         }
 
-        public static void LoadAdditive(EScene scene, ELoadMode eLoadMode = ELoadMode.Normal)
+        public static async UniTask LoadSceneAdditive(EScene scene)
         {
-            targetScene = scene;
-            targetLoadMode = LoadSceneMode.Additive;
+            GameSystemManager.Instance.SaveData();
+            string sceneName = scene.ToString();
 
-            if (eLoadMode == ELoadMode.Normal)
+            if (!SceneManager.GetSceneByName(sceneName).isLoaded)
             {
-                SceneManager.LoadScene(scene.ToString(), LoadSceneMode.Additive);
-            }
-            else if (eLoadMode == ELoadMode.WithLoadingScreen)
-            {
-                SceneManager.LoadScene(EScene.LoadingScene.ToString(), LoadSceneMode.Single);
+                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                while (!asyncLoad.isDone)
+                    await UniTask.Yield();
             }
         }
 
-        public static void Unload(EScene scene)
+        public static async UniTask UnloadSceneAdditive(EScene scene)
         {
-            SceneManager.UnloadSceneAsync(scene.ToString());
+            string sceneName = scene.ToString();
+            Scene target = SceneManager.GetSceneByName(sceneName);
+
+            if (target.isLoaded)
+            {
+                AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName);
+                while (!asyncUnload.isDone)
+                    await UniTask.Yield();
+            }
+            else
+            {
+                Debug.LogWarning($"Scene {sceneName} chưa được load, không thể unload.");
+            }
         }
 
-        public static void SetActiveScene(EScene scene)
+        public static EScene GetTargetScene()
         {
-            UnityEngine.SceneManagement.Scene target = SceneManager.GetSceneByName(scene.ToString());
-
-            SceneManager.SetActiveScene(target);
-        }
-
-        public static void LoaderCallback()
-        {
-            SceneManager.LoadSceneAsync(Loader.targetScene.ToString(), targetLoadMode);
+            return targetScene;
         }
     }
 }
