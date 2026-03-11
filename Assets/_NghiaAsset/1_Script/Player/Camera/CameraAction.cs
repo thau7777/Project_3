@@ -1,6 +1,10 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static OneLine.Examples.ComplexExample;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
+using System.Collections;
 
 
 namespace Turnbase
@@ -10,7 +14,7 @@ namespace Turnbase
         public static CameraAction instance { get; private set; }
 
         [Header("Cài đặt Camera")]
-        [SerializeField] private CinemachineCamera cam; 
+        public CinemachineCamera cam; 
         public float smoothSpeed = 5f;
 
         [Header("Chế độ Target + Offset")]
@@ -29,11 +33,16 @@ namespace Turnbase
         [SerializeField] private Transform TargetAllPlayer;
         [SerializeField] private Transform TargetAllEnemy;
 
+        [SerializeField] private Transform DeadCameraTarget;
+
 
 
         private Transform currentAnchor;
 
         private bool shouldTeleport = false;
+
+        public Volume globalVolume;
+        private Vignette vignette;
 
 
         private void Awake()
@@ -42,6 +51,14 @@ namespace Turnbase
             else Destroy(gameObject);
 
             if (cam == null) cam = GetComponent<CinemachineCamera>();
+        }
+
+        private void Start()
+        {
+            if (globalVolume.profile.TryGet<Vignette>(out var v))
+            {
+                vignette = v;
+            }
         }
 
         private void LookAtAnchorTransform(Transform anchor, bool teleportImmediately = false)
@@ -84,6 +101,39 @@ namespace Turnbase
         public void TargetAllEnemies(bool teleportImmediately = false)
         {
             LookAtAnchorTransform(TargetAllEnemy, teleportImmediately);
+        }
+
+        public void TargetDeadCamera(bool teleportImmediately = false)
+        {
+            LookAtAnchorTransform(DeadCameraTarget, teleportImmediately = true);
+
+            Camera.main.cullingMask = LayerMask.GetMask("Default", "Player");
+
+            StopAllCoroutines(); 
+            StartCoroutine(FadeVignetteRoutine(2.0f));
+        }
+
+        private IEnumerator FadeVignetteRoutine(float duration)
+        {
+            if (vignette == null) yield break;
+
+            float elapsed = 0;
+            float startIntensity = vignette.intensity.value;
+            float startSmoothness = vignette.smoothness.value;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float percent = elapsed / duration;
+
+                vignette.intensity.value = Mathf.Lerp(startIntensity, 1f, percent);
+                vignette.smoothness.value = Mathf.Lerp(startSmoothness, 1f, percent);
+
+                yield return null;
+            }
+
+            vignette.intensity.value = 1f;
+            vignette.smoothness.value = 1f;
         }
 
 
