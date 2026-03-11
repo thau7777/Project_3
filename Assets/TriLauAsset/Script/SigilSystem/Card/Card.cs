@@ -10,6 +10,7 @@ namespace MyRule
     public class Card : MonoBehaviour
     {
         [SerializeField] private SigilSO sigilSO;
+        private SigilData sigilData;
 
         [SerializeField] private Vector3 hoverScale = new Vector3(1.2f, 1.2f, 1.2f);
         [SerializeField] private SpriteRenderer sigilImg;
@@ -41,21 +42,18 @@ namespace MyRule
 
         public SigilSO SigilSO => sigilSO;
 
-        private void Start()
+        public void SetSigil(SigilData sigilData, SigilSO sigilSO)
         {
-        }
-
-        public void SetSigil(SigilSO normalSigilSO)
-        {
-            sigilSO = normalSigilSO;
-            if (sigilImg != null) sigilImg.sprite = normalSigilSO.sigilIcon;
-            sigilNameTxt.text = normalSigilSO.sigilName;
-            sigilDescTxt.text = normalSigilSO.sigilDesTD;
-            if (normalSigilSO.sigilDesTB != null)
+            this.sigilData = sigilData;
+            this.sigilSO = sigilSO;
+            if (sigilImg != null) sigilImg.sprite = sigilSO.sigilIcon;
+            sigilNameTxt.text = sigilSO.sigilName;
+            sigilDescTxt.text = sigilSO.sigilDesTD;
+            if (sigilSO.sigilDesTB != null)
             {
-                sigilDescTxt.text += '\n' + normalSigilSO.sigilDesTB;
+                sigilDescTxt.text += '\n' + sigilSO.sigilDesTB;
             }
-            runeTxt.text = normalSigilSO.price.ToString();
+            runeTxt.text = sigilSO.price.ToString();
         }
 
         private void OnMouseEnter()
@@ -84,22 +82,24 @@ namespace MyRule
             {
                 int runeAmount = RuneManger.Instance.RuneAmount;
 
-                if (runeAmount > sigilSO.price && !isReward)
+                if (runeAmount > sigilSO.price)
                 {
                     Debug.Log("Click " + sigilNameTxt.text);
                     EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
                     EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-sigilSO.price));
                     HideCard();
                     isShowing = false;
+                    MatchManager.Instance.RemoveSigilInMatch(sigilData);
+                }
+                else
+                {
+                    Debug.Log("Ko du tien");
                 }
             }
             else if (isReward)
             {
                 EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
-            }
-            else
-            {
-                Debug.Log("Ko du tien");
+                MatchManager.Instance.RemoveSigilInMatch(sigilData);
             }
         }
 

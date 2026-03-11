@@ -23,6 +23,7 @@ public class PlayerTopdownContext
     [field: SerializeField] public bool IsInSpecialMove { get; set; }
     [field: SerializeField] public bool IsHurting { get; set; }
     [field: SerializeField] public bool IsDead { get; set; }
+    [field: SerializeField] public bool IsVictory { get; set; }
     [field: SerializeField] public bool IsNextAttackQueued { get; set; }
     public string FirstAttackAnimName { get; set; }
     public string SkillAnimName { get; set; }

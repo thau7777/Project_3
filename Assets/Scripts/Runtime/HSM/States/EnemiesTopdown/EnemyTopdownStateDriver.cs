@@ -155,6 +155,7 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         _context.IsDead = true;
         GetComponent<EffectsManager>().RemoveAllActiveEffects();
+        TopDownEnemyManager.Instance.OnEnemyDied(gameObject);
     }
     public void OnHealed()
     {

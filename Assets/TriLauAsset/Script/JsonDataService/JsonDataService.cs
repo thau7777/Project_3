@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -19,8 +19,8 @@ namespace MyRule.DataService
 
             if (!File.Exists(path))
             {
-                Debug.LogError($"Cannot load file at {path}. File does not exist!");
-                throw new FileNotFoundException($"{path} does not exist!");
+                Debug.LogWarning($"File not found at {path}. Returning default value.");
+                return default;
             }
 
             try
@@ -39,7 +39,7 @@ namespace MyRule.DataService
             catch (Exception e)
             {
                 Debug.LogError($"Failed to load data due to: {e.Message} {e.StackTrace}");
-                throw e;
+                return default;
             }
         }
 

@@ -35,6 +35,18 @@ namespace MyRule
                     passiveSigils.Add(sigil.Id, sigil);
             }
         }
+
+        public void RemoveSigil(SigilData sigil)
+        {
+            if (sigil.SigilType == SigilType.Active)
+            {
+                acctiveSigils.Remove(sigil.Id);
+            }
+            else
+            {
+                passiveSigils.Remove(sigil.Id);
+            }
+        }
     }
 
     [Serializable]
@@ -49,18 +61,6 @@ namespace MyRule
         public void SetActiveSigils(Dictionary<string, SigilData> sigils) => acctiveSigils = sigils;
 
         public void SetPassiveSigils(Dictionary<string, SigilData> sigils) => passiveSigils = sigils;
-
-        public void RemoveSigil(SigilData sigil)
-        {
-            if (sigil.SigilType == SigilType.Active)
-            {
-                acctiveSigils.Remove(sigil.Id);
-            }
-            else
-            {
-                passiveSigils.Remove(sigil.Id);
-            }
-        }
 
         public SigilData GetRandomSigil()
         {

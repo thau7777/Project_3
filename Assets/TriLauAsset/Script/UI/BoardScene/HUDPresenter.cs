@@ -9,7 +9,7 @@ namespace MyRule.UI
         private SigilView[] sigils;
         private ItemView[] items;
 
-        private EventBinding<AddSigilEnvet> sigilEventBinding;
+        private EventBinding<AddSigilEvent> sigilEventBinding;
         private EventBinding<AddItemEvent> itemEventBinding;
         private EventBinding<HUDEvent> hudEventBinding;
 
@@ -20,8 +20,8 @@ namespace MyRule.UI
             this.sigils = sigilViews; 
             this.items = itemViews;
 
-            sigilEventBinding = new EventBinding<AddSigilEnvet>(HandleSigil);
-            EventBus<AddSigilEnvet>.Register(sigilEventBinding);
+            sigilEventBinding = new EventBinding<AddSigilEvent>(HandleSigil);
+            EventBus<AddSigilEvent>.Register(sigilEventBinding);
             itemEventBinding = new EventBinding<AddItemEvent>(HandleItem);
             EventBus<AddItemEvent>.Register(itemEventBinding);
             hudEventBinding = new EventBinding<HUDEvent>(HandleHUDEvent);
@@ -30,12 +30,12 @@ namespace MyRule.UI
 
         public void Clearup()
         {
-            EventBus<AddSigilEnvet>.Deregister(sigilEventBinding);
+            EventBus<AddSigilEvent>.Deregister(sigilEventBinding);
             EventBus<AddItemEvent>.Deregister(itemEventBinding);
             EventBus<HUDEvent>.Deregister(hudEventBinding);
         }
 
-        private void HandleSigil(AddSigilEnvet evt)
+        private void HandleSigil(AddSigilEvent evt)
         {
             for (int i = 0; i < sigils.Length; i++)
             {

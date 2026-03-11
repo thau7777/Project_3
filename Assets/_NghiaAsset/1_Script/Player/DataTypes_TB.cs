@@ -104,40 +104,40 @@ namespace Turnbase
 
         public CharacterStats() { }
 
-        public CharacterStats(CharacterStatsSO statsSO)
+        public CharacterStats(CharacterStatsData statsData)
         {
-            this.maxHP = statsSO.hp;
-            this.currentHP = statsSO.hp;
-            this.maxMP = statsSO.fp;
-            this.currentMP = statsSO.fp;
+            this.maxHP = statsData.BaseStatsData.MaxHealth;
+            this.currentHP = statsData.BaseStatsData.CurrentHealth;
+            this.maxMP = statsData.BaseStatsData.MaxMana;
+            this.currentMP = statsData.BaseStatsData.CurrentMana;
             //this.maxShield = statsSO.shield;
             //this.currentShield = statsSO.shield;
-            this.physicalAttack = statsSO.attackDmg;
-            this.magicAttack = statsSO.magicDmg;
-            this.physicalDefense = statsSO.phyDef;
-            this.magicDefense = statsSO.magicDef;
+            this.physicalAttack = statsData.Damage.PhysDmg;
+            this.magicAttack = statsData.Damage.MagDmg;
+            this.physicalDefense = statsData.Defense.PhysDef;
+            this.magicDefense = statsData.Defense.MagDef;
 
 
-            this.fireDefense = statsSO.fireDef;
-            this.lightningDefense = statsSO.lightningDef;
-            this.frostDefense = statsSO.frostDef;
-            this.darkDefense = statsSO.darkDef;
-            this.holyDefense = statsSO.holyDef;
-            this.waterDefense = statsSO.waterDef;
-            this.poisonDefense = statsSO.poisonDef;
+            this.fireDefense = statsData.Defense.FireDef;
+            this.lightningDefense = statsData.Defense.LightningDef;
+            this.frostDefense = statsData.Defense.FrostDef;
+            this.darkDefense = statsData.Defense.DarkDef;
+            this.holyDefense = statsData.Defense.HolyDef;
+            this.waterDefense = statsData.Defense.WaterDef;
+            this.poisonDefense = statsData.Defense.PoisonDef;
 
-            this.fireDamageBonus = statsSO.fireDmg;
-            this.lightningDamageBonus = statsSO.lightningDmg;
-            this.frostDamageBonus = statsSO.frostDmg;
-            this.darkDamageBonus = statsSO.darkDmg;
-            this.holyDamageBonus = statsSO.holyDmg;
-            this.waterDamageBonus = statsSO.waterDmg;
-            this.poisonDamageBonus = statsSO.poisonDmg;
+            this.fireDamageBonus = statsData.Damage.FireDmg;
+            this.lightningDamageBonus = statsData.Damage.LightningDmg;
+            this.frostDamageBonus = statsData.Damage.FrostDmg;
+            this.darkDamageBonus = statsData.Damage.DarkDmg;
+            this.holyDamageBonus = statsData.Damage.HolyDmg;
+            this.waterDamageBonus = statsData.Damage.WaterDmg;
+            this.poisonDamageBonus = statsData.Damage.PoisonDmg;
 
-            this.speed = (int) statsSO.speed;
+            this.speed = (int) statsData.BaseStatsData.Speed;
 
-            this.critChance = statsSO.critChance;
-            this.critMult = (int) (statsSO.critMult * 100);
+            this.critChance = statsData.BaseStatsData.CritChance;
+            this.critMult = (int) (statsData.BaseStatsData.CritMult * 100);
         }
     }
 

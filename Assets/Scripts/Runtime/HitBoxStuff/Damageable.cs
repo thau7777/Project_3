@@ -39,13 +39,13 @@ public class Damageable : MonoBehaviour
         _ccLayerIgnoreController = gameObject.GetOrAdd<CCLayerIgnoreController>();
 
     }
-    public void Initialize(float maxHealth)
+    public void Initialize(float maxHealth, float shieldHealth)
     {
         MaxHealth = maxHealth;
         CurrentHealth = maxHealth;
         if(hasShieldBreakingMechanic)
         {
-            MaxShieldHealth = 100;
+            MaxShieldHealth = shieldHealth;
             CurrentShieldHealth = MaxShieldHealth;
             OnShieldChanged?.Invoke(CurrentShieldHealth, MaxShieldHealth);
         }
@@ -81,7 +81,7 @@ public class Damageable : MonoBehaviour
     {
         if (TryGetComponentInHierarchy<DamageDealer>(other.transform, out var damageDealer))
         {
-            damageDealer.DealDamage(other, other, gameObject);
+            damageDealer.DealDamage(gameObject);
         }
 
         if (TryGetComponentInHierarchy<EffectApplier>(other.transform, out var effectApplier))

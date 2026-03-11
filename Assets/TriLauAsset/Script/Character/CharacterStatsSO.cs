@@ -12,7 +12,7 @@ namespace MyRule
         [TabGroup("Stat Points")]
         public int rune;
         [TabGroup("Stat Points")]
-        public int virgor;
+        public int vigor;
         [TabGroup("Stat Points")]
         public int mind;
         [TabGroup("Stat Points")]

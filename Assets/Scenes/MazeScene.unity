@@ -510,7 +510,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CharacterStatsManager
   AutoUnparentOnAwake: 1
-  characterStats: {fileID: 11400000, guid: 6a45ab6be4327d049b68ac5a423bc785, type: 2}
 --- !u!4 &22817577
 Transform:
   m_ObjectHideFlags: 0
@@ -1815,7 +1814,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.ItemStorageManager
   AutoUnparentOnAwake: 1
-  itemCount: 6
 --- !u!4 &81876552
 Transform:
   m_ObjectHideFlags: 0
@@ -6477,10 +6475,10 @@ RectTransform:
   - {fileID: 116968849}
   m_Father: {fileID: 1933412885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 800, y: -200}
+  m_SizeDelta: {x: 1600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &329141288
 PrefabInstance:
@@ -7403,51 +7401,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8225730943279765763, guid: 2e53b49cd7287a743be028b13f88aae5, type: 3}
   m_PrefabInstance: {fileID: 398352079}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &399011470
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 399011472}
-  - component: {fileID: 399011471}
-  m_Layer: 0
-  m_Name: Datapersistence
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &399011471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 399011470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44c0504244affea4a9eeaaa832a85c89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.DataPersistence
-  dataSO: {fileID: 11400000, guid: a87b1232b7b764d4ca6d19034ccf4462, type: 2}
---- !u!4 &399011472
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 399011470}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &399656027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8193,7 +8146,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.ChosenSigilCard
   groupSigil: {fileID: 11400000, guid: 0ed35d221426afc43ba1f83070fd6c13, type: 2}
-  runeSO: {fileID: 11400000, guid: 35a0593eff8c1234fada5ba654c0823a, type: 2}
 --- !u!1 &450958198
 GameObject:
   m_ObjectHideFlags: 0
@@ -13462,7 +13414,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.RuneManger
   AutoUnparentOnAwake: 1
-  runeSO: {fileID: 11400000, guid: 35a0593eff8c1234fada5ba654c0823a, type: 2}
 --- !u!4 &773291202
 Transform:
   m_ObjectHideFlags: 0
@@ -19930,51 +19881,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 209975694507402628, guid: f35571e3d3ee760458b6e7e77bbc4b70, type: 3}
   m_PrefabInstance: {fileID: 1201662420}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1207266511
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1207266513}
-  - component: {fileID: 1207266512}
-  m_Layer: 0
-  m_Name: SigilCollectionIngame
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1207266512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207266511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed783acd954d21a4d9af54153e849a52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.SigilCollectionInGame
-  baseSigil: {fileID: 11400000, guid: 0ed35d221426afc43ba1f83070fd6c13, type: 2}
---- !u!4 &1207266513
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207266511}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62.14038, y: 9.99819, z: 91.17986}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1207602223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21764,10 +21670,10 @@ RectTransform:
   - {fileID: 1936334061}
   m_Father: {fileID: 1933412885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 800, y: -350}
+  m_SizeDelta: {x: 1600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1320255142
 PrefabInstance:
@@ -22331,10 +22237,10 @@ RectTransform:
   - {fileID: 85665969}
   m_Father: {fileID: 1933412885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 800, y: -50}
+  m_SizeDelta: {x: 1600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1378498838
 PrefabInstance:
@@ -22795,7 +22701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1389982854
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23250,6 +23156,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6680373611311484900, guid: beab5e1a429de734bb3a84f21f4edca5, type: 3}
   m_PrefabInstance: {fileID: 1408427475}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1409942431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1409942433}
+  - component: {fileID: 1409942432}
+  m_Layer: 0
+  m_Name: StartingSigil
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1409942432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409942431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a7d56ed19c85c42b1a325ab158b486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.StartSigilManager
+  spawnPoints:
+  - {fileID: 1002117155}
+  - {fileID: 387760494}
+  - {fileID: 2082018233}
+--- !u!4 &1409942433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409942431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 178.95247, y: 9.99817, z: 39.36779}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1411130906
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29359,7 +29313,6 @@ MonoBehaviour:
   AutoUnparentOnAwake: 1
   baseSigil: {fileID: 11400000, guid: 0ed35d221426afc43ba1f83070fd6c13, type: 2}
   allSigil: {fileID: 11400000, guid: 0ed35d221426afc43ba1f83070fd6c13, type: 2}
-  keySave: SigilCollection
 --- !u!4 &1755852959
 Transform:
   m_ObjectHideFlags: 0
@@ -30307,7 +30260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeLineController
   playableDirector: {fileID: 1775190391}
-  dataSO: {fileID: 11400000, guid: a87b1232b7b764d4ca6d19034ccf4462, type: 2}
 --- !u!1001 &1777473790
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39599,16 +39551,15 @@ SceneRoots:
   - {fileID: 450958201}
   - {fileID: 1913106356}
   - {fileID: 1510012551}
-  - {fileID: 399011472}
   - {fileID: 773291202}
   - {fileID: 1423203569}
   - {fileID: 1347812328}
   - {fileID: 22817577}
   - {fileID: 81876552}
   - {fileID: 1755852959}
-  - {fileID: 1207266513}
   - {fileID: 263542510}
   - {fileID: 1414843851}
+  - {fileID: 1409942433}
   - {fileID: 389517821}
   - {fileID: 894994399}
   - {fileID: 1522283669}

@@ -16,15 +16,15 @@ public class VolumeController : MonoBehaviour
     private ColorAdjustments colorAdjustments;
     private CancellationTokenSource cancellationTokenSource;
 
-    private EventBinding<TopDownPlayerDeadEvent> _playerDeadEventBinding;
+    private EventBinding<TopDownEndGameEvent> _playerDeadEventBinding;
     private void OnEnable()
     {
-        _playerDeadEventBinding = new EventBinding<TopDownPlayerDeadEvent>(TriggerDeathEffect);
-        EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
+        _playerDeadEventBinding = new EventBinding<TopDownEndGameEvent>(TriggerDeathEffect);
+        EventBus<TopDownEndGameEvent>.Register(_playerDeadEventBinding);
     }
     private void OnDisable()
     {
-        EventBus<TopDownPlayerDeadEvent>.Deregister(_playerDeadEventBinding);
+        EventBus<TopDownEndGameEvent>.Deregister(_playerDeadEventBinding);
     }
     void Awake()
     {
@@ -52,8 +52,9 @@ public class VolumeController : MonoBehaviour
         colorAdjustments.saturation.value = defaultSaturation;
     }
 
-    public async void TriggerDeathEffect()
+    public async void TriggerDeathEffect(TopDownEndGameEvent topDownEndGameEvent)
     {
+        if (topDownEndGameEvent.endGameExecuteState != UIEndGameExecuteState.Lose) return;
         await FadeToBlack(cancellationTokenSource.Token);
     }
 

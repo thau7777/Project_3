@@ -97,9 +97,10 @@ namespace MyRule
         {
             if (canInteract)
             {
+                CharacterStatsData characterStatsData = CharacterStatsManager.Instance.GetCharacterStats();
                 int runeAmount = RuneManger.Instance.RuneAmount;
                 SigilsInMatchData sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
-                MatchManager.Instance.CreateNewMatch(runeAmount, sigilsInGame);
+                MatchManager.Instance.CreateNewMatch(characterStatsData, runeAmount, sigilsInGame);
 
                 CommandInvoker.UndoCommand();
 

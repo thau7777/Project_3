@@ -7,6 +7,8 @@ namespace MyRule
     {
         private MatchData _matchData;
 
+        public MatchData MatchData => _matchData;
+
         private void OnEnable()
         {
             GameSystemManager.Instance.Register(this);
@@ -17,53 +19,32 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
         }
 
-        public void CreateNewMatch(int runeAmount, SigilsInMatchData sigilsInMatch)
+        public void CreateNewMatch(CharacterStatsData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
-            GameSystemManager.instance.GameData.CreatNewMatch(runeAmount, sigilsInMatch);
+            _matchData = GameSystemManager.Instance.GameData.CreateNewMatch(characterStatsData, runeAmount, sigilsInMatch);
         }
 
         public void FinishMatch() => _matchData = null;
 
-        public SigilSO GetRandomSigilInMatch()
+        public SigilData GetRandomSigilInMatch()
         {
             SigilData sigilData = _matchData.SigilsInMatch.GetRandomSigil();
 
-            if (sigilData != null)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                return sigilSO;
-            }
-
-            return null;
+            return sigilData;
         }
 
-        public SigilSO GetRandomActiveSigilInMatch()
+        public SigilData GetRandomActiveSigilInMatch()
         {
             SigilData sigilData = _matchData.SigilsInMatch.GetRandomActiveSigil();
 
-            if (sigilData != null)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                return sigilSO;
-            }
-
-            return null;
+            return sigilData;
         }
 
-        public SigilSO GetRandomPassiveSigilInMatch()
+        public SigilData GetRandomPassiveSigilInMatch()
         {
             SigilData sigilData = _matchData.SigilsInMatch.GetRandomPassiveSigil();
 
-            if (sigilData != null)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                return sigilSO;
-            }
-
-            return null;
+            return sigilData;
         }
 
         public void RemoveSigilInMatch(SigilData sigilData) => _matchData.SigilsInMatch.RemoveSigil(sigilData);
@@ -84,14 +65,7 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            if (_matchData != null)
-            {
-                data.SetMatch(_matchData);
-            }
-            else
-            {
-                data?.SetMatch(null);
-            }
+            data.SetMatch(_matchData);
         }
     }
 }

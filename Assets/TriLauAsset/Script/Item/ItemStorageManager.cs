@@ -6,7 +6,17 @@ namespace MyRule
     public class ItemStorageManager : PersistentSingleton<ItemStorageManager>, IGameData
     {
         private ItemStorageData itemStorage;
-        
+
+        private void OnEnable()
+        {
+            GameSystemManager.Instance.Register(this);
+        }
+
+        private void OnDisable()
+        {
+            GameSystemManager.Instance.Unregister(this);
+        }
+
         public void AddItemToStorage(ItemSO itemSO)
         {
             var index = itemStorage.GetEmptySlot();
@@ -44,7 +54,7 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            throw new System.NotImplementedException();
+            data.MatchData.SetItemStorageInMatch(itemStorage);
         }
     }
 }

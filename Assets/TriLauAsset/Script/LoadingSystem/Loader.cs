@@ -15,7 +15,7 @@ namespace MyRule
             SettingsScene,
         }
 
-        private static EScene targetScene;
+        private static EScene targetScene = EScene.MainMenuScene;
 
         public static void SetTargetScene(EScene scene) => targetScene = scene;
 

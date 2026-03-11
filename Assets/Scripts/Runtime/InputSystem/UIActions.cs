@@ -5,14 +5,15 @@ using UnityEngine.InputSystem;
 
 public class UIActions : InputActions.IUIActions
 {
-    public Action<Vector2> onMove;
-    public Action onSubmit;
-    public Action onCancel;
-    public Action<Vector2> onLook;
-    public Action onPressAnyButton;
-    public Action<Vector2> onAdjust;
-    public Action<int> onNavigateTab;
-    public Action onOpenTabView;
+    public event Action<Vector2> onMove;
+    public event Action onSubmit;
+    public event Action onCancel;
+    public event Action<Vector2> onLook;
+    public event Action onPressAnyButton;
+    public event Action<Vector2> onAdjust;
+    public event Action<int> onNavigateTab;
+    public event Action onOpenTabView;
+    public event Action onAnyPressed;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -81,5 +82,10 @@ public class UIActions : InputActions.IUIActions
     {
         if (context.performed)
             onOpenTabView?.Invoke();
+    }
+
+    public void OnAnyButton(InputAction.CallbackContext context)
+    {
+        if (context.performed) onAnyPressed?.Invoke();
     }
 }

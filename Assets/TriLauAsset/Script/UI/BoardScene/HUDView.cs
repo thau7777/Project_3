@@ -75,7 +75,7 @@ namespace MyRule.UI
             {
                 if (sigilSO != null)
                 {
-                    EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(sigilSO));
+                    EventBus<AddSigilEvent>.Raise(new AddSigilEvent(sigilSO));
                 }
             }
         }

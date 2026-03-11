@@ -16,6 +16,8 @@ public class Hurt : State
     }
     protected override State GetTransition()
     {
+        if (ctx.IsVictory)
+            return ((Grounded)Parent).Victory;
         if (ctx.IsDead)
         {
             return ((Grounded)Parent).Die;

@@ -5,17 +5,12 @@ using System.Collections.Generic;
 namespace MyRule
 {
     [Serializable]
-    public class SigilStorageData
+    public class SigilStorageData : SigilCollectionData
     {
-        [JsonProperty] private List<SigilData> _sigils;
-
-        [JsonIgnore] public List<SigilData> Sigils => _sigils;
-
-        public SigilStorageData()
+        public SigilStorageData() 
         {
-            _sigils = new List<SigilData>();
+            acctiveSigils = new Dictionary<string, SigilData>();
+            passiveSigils = new Dictionary<string, SigilData>();
         }
-
-        public void AddSigil(SigilData sigil) => _sigils.Add(sigil);
     }
 }
