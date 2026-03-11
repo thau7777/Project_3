@@ -47,16 +47,18 @@ namespace Turnbase
             }
 
 
-            switch (item.type)
+            CharacterIItemBuffManager buffMgr = target.GetComponent<CharacterIItemBuffManager>();
+            if (buffMgr != null)
             {
-                case ItemType.Healing:
-                    target.Heal(item.value);
-                    break;
-
-                case ItemType.Mana:
-                    target.RestoreMana(item.value);
-                    break;
-
+                buffMgr.ApplyItemEffect(item, 3);
+            }
+            else
+            {
+                switch (item.type)
+                {
+                    case ItemType.Healing: target.Heal(item.value); break;
+                    case ItemType.Mana: target.RestoreMana(item.value); break;
+                }
             }
 
             item.quantity--;

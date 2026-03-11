@@ -135,14 +135,16 @@ namespace MyRule
 
             for (int i = 0; i < spawnPoint.Length; i++)
             {
-                SigilSO sigilSO = SigilCollectionInGame.Instance.GetRandomSigil();
+                SigilData sigilData = MatchManager.Instance.GetRandomSigilInMatch();
 
-                if (sigilSO == null) break;
+                if (sigilData == null) break;
+
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
                 Card card = cardObj.GetComponent<Card>();
                 gameObjects.Add(card);
-                card.SetSigil(sigilSO);
+                card.SetSigil(sigilData, sigilSO);
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;

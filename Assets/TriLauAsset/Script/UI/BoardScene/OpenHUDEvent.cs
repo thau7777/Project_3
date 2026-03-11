@@ -7,11 +7,11 @@ namespace MyRule.Event
       
     }
 
-    public struct AddSigilEnvet : IEvent
+    public struct AddSigilEvent : IEvent
     {
         public readonly SigilSO sigilSO;
 
-        public AddSigilEnvet(SigilSO sigilSO)
+        public AddSigilEvent(SigilSO sigilSO)
         {
             this.sigilSO = sigilSO;
         }
@@ -19,9 +19,9 @@ namespace MyRule.Event
 
     public struct AddItemEvent : IEvent
     {
-        public readonly Item item;
+        public readonly ItemData item;
 
-        public AddItemEvent(Item item)
+        public AddItemEvent(ItemData item)
         {
             this.item = item;
         }

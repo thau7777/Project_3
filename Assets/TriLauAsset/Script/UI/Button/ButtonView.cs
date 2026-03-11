@@ -46,11 +46,12 @@ namespace MyRule.UI
 
             button.onClick?.Invoke();
 
-            Navigator.OnSubmitPress(buttonViewType);
+            Navigator.OnSubmitPress(button, buttonViewType);
         }
 
         public virtual void OnSelect(BaseEventData eventData)
         {
+            button.Select();
             AudioManager.Instance.PlaySFX(SFXType.UI_Select);
         }
 

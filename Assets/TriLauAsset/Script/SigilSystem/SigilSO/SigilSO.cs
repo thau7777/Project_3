@@ -4,11 +4,11 @@ namespace MyRule
 {
     public enum SigilType
     {
-        Normal,
-        Special
+        Active,
+        Passive
     }
 
-    public enum KeyBindingType
+    public enum EKeyBinding
     {
         Q,
         E,
@@ -22,7 +22,20 @@ namespace MyRule
     public class SigilSO : ScriptableObject
     {
         [Header("SigilInfo")]
-        public SigilType type;
+        [ReadOnly] public string id;
+
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                id = System.Guid.NewGuid().ToString();
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
+        public SigilType sigilType;
         public Sprite sigilIcon;
         public string sigilName;
         [TextArea(3, 10)]
@@ -32,8 +45,8 @@ namespace MyRule
         public GameObject sigilPreb;
         public int rarity;
         public bool isActiveSigil;
-        [ShowIf("isActiveSigil")]
-        public KeyBindingType activeSigilType;
+        [ShowIfEnumValue("sigilType", SigilType.Active)]
+        public EKeyBinding keyBinding;
 
         [ShowIf("isActiveSigil")]
         [Header("Sigil Effect")]
@@ -102,17 +115,17 @@ namespace MyRule
         [TabGroup("Requirements")]
         public int price;
 
-        [ShowIfEnumValue("type", SigilType.Special)]
+        [ShowIfEnumValue("type", SigilType.Passive)]
         [TabGroup("Stats")]
         public int diceFaceIncrease;
-        [ShowIfEnumValue("type", SigilType.Special)]
+        [ShowIfEnumValue("type", SigilType.Passive)]
         [TabGroup("Stats")]
         public int rewardShapeDropRate;
-        [ShowIfEnumValue("type", SigilType.Special)]
+        [ShowIfEnumValue("type", SigilType.Passive)]
         [TabGroup("Stats")]
         public int goldIncrease;
 
-        [ShowIfEnumValue("type", SigilType.Special)]
+        [ShowIfEnumValue("type", SigilType.Passive)]
         [TabGroup("Requirements")]
         public int numbOfRolls;
     }

@@ -98,7 +98,7 @@ namespace Turnbase
             if (healthSystem == null) healthSystem = gameObject.AddComponent<HealthSystem>();
             healthSystem.Init(this);
 
-            CharacterStatsSO currentStats = CharacterStatsManager.Instance.GetCharacterStats();
+            CharacterStatsData currentStats = CharacterStatsManager.Instance.GetCharacterStats();
             stats = new CharacterStats(currentStats);
 
             if (stats == null)
@@ -117,7 +117,6 @@ namespace Turnbase
 
         public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
         {
-            // 1. Tìm Profile tương ứng với Class
             CharacterClassProfile targetProfile =
                 allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
 
@@ -129,15 +128,25 @@ namespace Turnbase
 
             characterClass = targetProfile.characterClass;
 
-            // 2. Thiết lập Animator
             if (animator != null && targetProfile.animatorController != null)
             {
                 animator.runtimeAnimatorController = targetProfile.animatorController;
             }
 
-            // 3. Lấy danh sách tên từ SigilStorageSO để làm bộ lọc
-            // Giả sử bạn đã kéo thả SigilStorageSO vào SigilStorageManager hoặc truy cập qua Instance
-            // Ở đây tôi ví dụ truy cập qua SigilStorageManager (bạn cần đảm bảo cách tham chiếu này đúng với project của bạn)
+            item.Clear(); 
+            if (targetProfile.initiaItem != null)
+            {
+                foreach (var itemTemplate in targetProfile.initiaItem)
+                {
+                    if (itemTemplate != null)
+                    {
+                        Tb_Item clonedItem = Instantiate(itemTemplate);
+                        item.Add(clonedItem);
+                    }
+                }
+                Debug.Log($"[LOG] Đã nạp {item.Count} vật phẩm khởi đầu cho {gameObject.name}");
+            }
+
             var storageManager = FindFirstObjectByType<SigilStorageManager>();
             if (storageManager == null || storageManager.sigilStorageSO == null)
             {
@@ -146,14 +155,12 @@ namespace Turnbase
             }
 
             HashSet<string> ownedSigilNames = new HashSet<string>();
-
             foreach (var s in storageManager.sigilStorageSO.activeSigils)
                 if (s != null) ownedSigilNames.Add(s.sigilName);
 
             foreach (var s in storageManager.sigilStorageSO.passiveSigils)
                 if (s != null) ownedSigilNames.Add(s.sigilName);
 
-            // 4. Lọc và nạp Kỹ năng chủ động (initialSkills)
             skills.Clear();
             if (targetProfile.initialSkills != null)
             {
@@ -164,22 +171,18 @@ namespace Turnbase
                         skills.Add(skill);
                     }
                 }
-                Debug.Log($"[LOG] Đã nạp {skills.Count} kỹ năng chủ động dựa trên Sigil cho {gameObject.name}");
             }
 
-            // 5. Lọc và nạp Kỹ năng nội tại (initialPassiveSkills)
             passiveSkills.Clear();
             if (targetProfile.initialPassiveSkills != null)
             {
                 foreach (var pSkill in targetProfile.initialPassiveSkills)
                 {
-                    // Lưu ý: SkillPassive cần có biến name hoặc skillName để so khớp
                     if (pSkill != null && ownedSigilNames.Contains(pSkill.name))
                     {
                         passiveSkills.Add(pSkill);
                     }
                 }
-                Debug.Log($"[LOG] Đã nạp {passiveSkills.Count} nội tại dựa trên Sigil cho {gameObject.name}");
             }
         }
         public void UpdateOwnUI()

@@ -163,6 +163,7 @@ public enum SkillType
     DamageGlobal,
     LaserAttack,
     Chain,
+    XPassive,
 
 
 }

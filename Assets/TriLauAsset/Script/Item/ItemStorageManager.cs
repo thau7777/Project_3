@@ -1,20 +1,20 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace MyRule
 {
-    public class ItemStorageManager : PersistentSingleton<ItemStorageManager>
+    public class ItemStorageManager : PersistentSingleton<ItemStorageManager>, IGameData
     {
-        [SerializeField] private ItemStorage itemStorage;
-        [SerializeField] private int itemCount = 6;
+        private ItemStorageData itemStorage;
 
-        private void Start()
+        private void OnEnable()
         {
-            itemStorage = new ItemStorage(itemCount);
+            GameSystemManager.Instance.Register(this);
         }
 
-        public void ResetItemStorage()
+        private void OnDisable()
         {
-            itemStorage = new ItemStorage(itemCount);
+            GameSystemManager.Instance.Unregister(this);
         }
 
         public void AddItemToStorage(ItemSO itemSO)
@@ -23,7 +23,7 @@ namespace MyRule
 
             if (index < 6)
             {
-                Item item = new Item(itemSO);
+                ItemData item = new ItemData(itemSO);
                 itemStorage.AddItem(index, item);
 
                 Debug.Log("Add " + item.Type.ToString());
@@ -36,6 +36,25 @@ namespace MyRule
             }
         }
 
-        public ItemStorage GetItemStorage() => itemStorage;
+        public ItemStorageData GetItemStorage() => itemStorage;
+
+        public UniTask LoadData(GameData data)
+        {
+            if (data.MatchData.ItemStorageInMatch != null)
+            {
+                itemStorage = data.MatchData.ItemStorageInMatch;
+            }
+            else
+            {
+                itemStorage = new ItemStorageData();
+            }
+
+            return UniTask.CompletedTask;
+        }
+
+        public void SaveData(GameData data)
+        {
+            data.MatchData.SetItemStorageInMatch(itemStorage);
+        }
     }
 }

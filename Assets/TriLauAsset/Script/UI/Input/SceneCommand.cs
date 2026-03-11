@@ -1,33 +1,40 @@
+using UnityEngine.UI;
+
 namespace MyRule.CommandPattern
 {
     public class SceneCommand : ICommand
     {
-        private Loader.EScene currentScene;
+        private Button btnSubmit;
+        private Loader.EScene targetScene;
+        private Loader.EScene prevScene;
 
-        public SceneCommand(Loader.EScene currentScene)
+        public SceneCommand(Button btnSubmit, Loader.EScene prevScene, Loader.EScene targetScene)
         {
-            this.currentScene = currentScene;
+            this.btnSubmit = btnSubmit;
+            this.prevScene = prevScene;
+            this.targetScene = targetScene;
         }
 
         public void Execute()
         {
-            switch (currentScene)
+            switch (targetScene)
             {
+                case Loader.EScene.MazeScene:
                 case Loader.EScene.SpaceStationScene:
-                    NewGame();
+                    LoadWithLoading();
                     break;
                 case Loader.EScene.SettingsScene:
-                    OpenSetting();
+                    LoadAdditive();
                     break;
             }
         }
 
         public void Undo()
         {
-            switch (currentScene)
+            switch (targetScene)
             {
                 case Loader.EScene.SpaceStationScene:
-                    MainMenu();
+                    UndoLoadWithLoading();
                     break;
                 case Loader.EScene.SettingsScene:
                     CloseSetting();
@@ -35,28 +42,28 @@ namespace MyRule.CommandPattern
             }
         }
 
-        private void NewGame()
+        private async void LoadWithLoading()
         {
-            Loader.Load(Loader.EScene.SpaceStationScene, Loader.ELoadMode.WithLoadingScreen);
+            await Loader.LoadSceneWithLoading(targetScene);
         }
 
-        private void OpenSetting()
+        private async void LoadAdditive()
         {
-            Loader.LoadAdditive(Loader.EScene.SettingsScene);
+            await Loader.LoadSceneAdditive(targetScene);
         }
 
-        private void CloseSetting()
+        private async void CloseSetting()
         {
-            Loader.Unload(Loader.EScene.SettingsScene);
+            await Loader.UnloadSceneAdditive(Loader.EScene.SettingsScene);
 
-            Loader.SetActiveScene(Loader.EScene.MainMenuScene);
+            Loader.SetTargetScene(prevScene);
 
-            EventBus<MainMenuButtonSelectedEvent>.Raise(new MainMenuButtonSelectedEvent(UI.ButtonType.SystemButton));
+            btnSubmit.Select();
         }
 
-        private void MainMenu()
+        private async void UndoLoadWithLoading()
         {
-            Loader.Load(Loader.EScene.MainMenuScene);
+            await Loader.LoadSceneWithLoading(prevScene);
         }
     }
 }

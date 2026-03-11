@@ -12,5 +12,16 @@ namespace MyRule
 
             return itemSOs[i];
         }
+
+        public ItemSO GetItemByName(string itemName)
+        {
+            for (int i = 0; i < itemSOs.Length; i++)
+            {
+                if (itemSOs[i].name == itemName)
+                    return itemSOs[i];
+            }
+
+            return null;
+        }    
     }
 }

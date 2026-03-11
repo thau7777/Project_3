@@ -97,6 +97,11 @@ namespace MyRule
         {
             if (canInteract)
             {
+                CharacterStatsData characterStatsData = CharacterStatsManager.Instance.GetCharacterStats();
+                int runeAmount = RuneManger.Instance.RuneAmount;
+                SigilsInMatchData sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
+                MatchManager.Instance.CreateNewMatch(characterStatsData, runeAmount, sigilsInGame);
+
                 CommandInvoker.UndoCommand();
 
                 await UniTask.Delay(200);
@@ -111,7 +116,7 @@ namespace MyRule
                 
                 Cursor.lockState = CursorLockMode.None;
 
-                Loader.Load(targetScene, Loader.ELoadMode.WithLoadingScreen);
+                await Loader.LoadSceneWithLoading(targetScene);
             }
         }
     }

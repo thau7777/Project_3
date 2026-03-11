@@ -1,3 +1,4 @@
+using MyRule.Audio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,19 +6,20 @@ namespace MyRule.UI
 {
     public class MainMenuView : BaseUIView
     {
-        [SerializeField] private GameObject mainMenuPanel;
-        [SerializeField] private GameObject menuButtonsPanel;
-
-
+        [SerializeField] private MainMenuButtonView anyBtn;
+        [SerializeField] private MainMenuButtonView continueBtn;
+        [SerializeField] private MainMenuButtonView newGameBtn;
+        [SerializeField] private MainMenuButtonView loadGameBtn;
+        [SerializeField] private MainMenuButtonView settingsBtn;
+        [SerializeField] private MainMenuButtonView quitBtn;
+ 
         private MainMenuPresenter presenter;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            presenter = new MainMenuPresenter(this);
-
-            panelType = PanelType.MainMenu;
+            presenter = new MainMenuPresenter();
         }
 
         protected override void OnDisable()
@@ -32,11 +34,35 @@ namespace MyRule.UI
         {
             base.Start();
 
-            panelType = PanelType.MainMenu;
+            inputReader.SwitchActionMap(ActionMap.UI);
+
+            AudioManager.Instance.PlayMusic(MusicType.MainMenu);
         }
 
-        public override void Show() => mainMenuPanel.SetActive(true);
+        public override void Show()
+        {
 
-        public override void Hide() => mainMenuPanel.SetActive(false);
+        }
+
+        public override void Hide()
+        {
+
+        }
+
+        public void OnAnyPressed()
+        {
+            if (GameSystemManager.Instance.HasSaveData)
+            {
+                continueBtn.gameObject.SetActive(true);
+                
+                continueBtn.CurrentButton.Select();
+            }
+            else
+            {
+                continueBtn.gameObject.SetActive(false);
+
+                newGameBtn.CurrentButton.Select();
+            }
+        }
     }
 }
