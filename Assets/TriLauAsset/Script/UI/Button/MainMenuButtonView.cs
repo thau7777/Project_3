@@ -2,6 +2,7 @@ using MyRule.Audio;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace MyRule.UI
 {
@@ -11,6 +12,8 @@ namespace MyRule.UI
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color selectColor = Color.white;
         [SerializeField] private Color deselectColor = Color.gray;
+
+        public Button CurrentButton => button;
 
         private void Start()
         {

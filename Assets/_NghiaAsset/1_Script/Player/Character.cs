@@ -98,7 +98,7 @@ namespace Turnbase
             if (healthSystem == null) healthSystem = gameObject.AddComponent<HealthSystem>();
             healthSystem.Init(this);
 
-            CharacterStatsSO currentStats = CharacterStatsManager.Instance.GetCharacterStats();
+            CharacterStatsData currentStats = CharacterStatsManager.Instance.GetCharacterStats();
             stats = new CharacterStats(currentStats);
 
             if (stats == null)

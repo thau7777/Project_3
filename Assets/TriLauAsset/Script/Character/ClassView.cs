@@ -31,9 +31,10 @@ namespace MyRule
             EventBus<CharacterModelEvent>.Raise(new CharacterModelEvent(classType));
 
             CharacterStatsManager.Instance.SetBase(characterStatsSO);
-            CharacterStatsView.Instance.UpdateStats(characterStatsSO);
+            CharacterStatsData data = CharacterStatsManager.Instance.GetCharacterStats();
+            EventBus<CharacterStatsUpdatedEvent>.Raise(new CharacterStatsUpdatedEvent(data));
 
-            SigilStorageManager.Instance.ResetSorage();
+            SigilStorageManager.Instance.ResetStorage();
 
             RuneManger.Instance.SetStartRune(characterStatsSO.rune);
         }

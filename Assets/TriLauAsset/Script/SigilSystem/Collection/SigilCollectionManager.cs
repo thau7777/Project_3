@@ -84,7 +84,7 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            if (data.SigilCollection != null && data.SigilCollection.Count == 0)
+            if (data.SigilCollection == null || (data.SigilCollection != null && data.SigilCollection.Count == 0))
             {
                 CreateNewSigilCollection();
             }

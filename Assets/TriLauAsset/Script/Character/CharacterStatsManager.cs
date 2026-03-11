@@ -1,60 +1,68 @@
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
 namespace MyRule
 {
-    public class CharacterStatsManager : PersistentSingleton<CharacterStatsManager>
+    public class CharacterStatsManager : PersistentSingleton<CharacterStatsManager>, IGameData
     {
-        [SerializeField] CharacterStatsSO characterStats;
+        private CharacterStatsData characterStats;
+
+        private void OnEnable()
+        {
+            GameSystemManager.Instance.Register(this);
+        }
+
+        private void OnDisable()
+        {
+            GameSystemManager.Instance.Unregister(this);
+        }
 
         public void SetBase(CharacterStatsSO stats)
         {
-            characterStats.virgor = stats.virgor;
-            characterStats.mind = stats.mind;
-            characterStats.endurance = stats.endurance;
-            characterStats.strength = stats.strength;
-            characterStats.dexterity = stats.dexterity;
-            characterStats.intelligence = stats.intelligence;
-            characterStats.faith = stats.faith;
-            characterStats.arcane = stats.arcane;
+            characterStats.SetCharacterClass(stats.characterClass);
 
-            characterStats.hp = stats.hp;
-            characterStats.fp = stats.fp;
-            characterStats.stamina = stats.stamina;
+            AttributesData attributesData = new AttributesData(stats.vigor, stats.mind, stats.endurance, stats.strength, stats.dexterity, stats.intelligence, stats.faith, stats.arcane);
+            characterStats.SetAttributesData(attributesData);
 
-            characterStats.attackDmg = stats.attackDmg;
-            characterStats.magicDmg = stats.magicDmg;
-            characterStats.critChance = stats.critChance;
-            characterStats.critMult = stats.critMult;
+            BaseStatsData baseData = new BaseStatsData(stats.hp, stats.fp, stats.stamina, stats.speed, stats.critChance, stats.critMult);
+            characterStats.SetBaseStatsData(baseData);
 
+            DamageData damageData = new DamageData(stats.attackDmg, stats.magicDmg, stats.fireDmg, stats.lightningDmg, stats.holyDmg, stats.darkDmg, stats.frostDmg, stats.waterDmg, stats.poisonDmg);
+            characterStats.SetDamge(damageData);
 
+            DefenseData defenseData = new DefenseData(stats.phyDef, stats.magicDef, stats.fireDef, stats.lightningDef, stats.holyDef, stats.darkDef, stats.frostDef, stats.waterDef, stats.poisonDef);
+            characterStats.SetDefense(defenseData);
         }
 
-        public CharacterStatsSO GetCharacterStats()
-        {
-            return characterStats;
-        }
+        public CharacterStatsData GetCharacterStats() => characterStats;
 
-        public EClass GetCharacterClass() => characterStats.characterClass;
+        public EClass GetCharacterClass() => characterStats.CharacterClass;
 
         public void UpdateSigilStats(SigilSO sigilSO)
         {
-            characterStats.strength += sigilSO.str;
-            characterStats.dexterity += sigilSO.dex;
-            characterStats.intelligence += sigilSO.intel;
-            characterStats.faith += sigilSO.faith;
-            characterStats.arcane += sigilSO.arcane;
+            
+        }
 
-            characterStats.hp += sigilSO.health;
-            characterStats.phyDef += sigilSO.phyDef;
-            characterStats.speed += sigilSO.speed;
+        public UniTask LoadData(GameData data)
+        {
+            characterStats = new CharacterStatsData();
+            
+            if (data.MatchData?.CharacterStatsData != null)
+            {
+                characterStats = data.MatchData.CharacterStatsData;
+            }
+            EventBus<CharacterStatsUpdatedEvent>.Raise(new CharacterStatsUpdatedEvent(characterStats));
+            
+            return UniTask.CompletedTask;
+        }
 
-            characterStats.attackDmg += sigilSO.phys;
-            characterStats.magicDmg += sigilSO.mag;
-            characterStats.critChance += sigilSO.critChance;
-            characterStats.critMult += sigilSO.critMult;
-
-
+        public void SaveData(GameData data)
+        {
+            if (data.MatchData != null)
+            {
+                data.MatchData.SetCharacterStats(characterStats);
+            }
         }
     }
 }

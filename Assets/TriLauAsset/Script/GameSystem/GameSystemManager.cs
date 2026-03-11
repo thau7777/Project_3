@@ -9,7 +9,7 @@ namespace MyRule
     public class GameSystemManager : PersistentSingleton<GameSystemManager>
     {
         private const string fileName = "/gamedata.json";
-        [SerializeField] private bool encryted = false;
+        [SerializeField] private bool encrypted = false;
 
         private GameData _gameData = new GameData();
 
@@ -22,6 +22,13 @@ namespace MyRule
         public bool HasSaveData = false;
 
         public bool IsLoadCompleted { get; private set; }
+        
+        protected override void Awake()
+        {
+            base.Awake();
+
+            LoadData().Forget();
+        }
 
         private void OnEnable()
         {
@@ -33,11 +40,6 @@ namespace MyRule
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        private void Start()
-        {
-            LoadData().Forget();
-        }
-
         #region Load, Save
         public async UniTask LoadData()
         {
@@ -45,7 +47,7 @@ namespace MyRule
 
             await UniTask.Yield(PlayerLoopTiming.Update);
 
-            GameData gameDataLoaded = _dataService.LoadData<GameData>(fileName, encryted);
+            GameData gameDataLoaded = _dataService.LoadData<GameData>(fileName, encrypted);
 
             if (gameDataLoaded != null)
             {
@@ -68,7 +70,7 @@ namespace MyRule
                 data.SaveData(_gameData);
             }
 
-            _dataService.SaveData(fileName, _gameData, encryted);
+            _dataService.SaveData(fileName, _gameData, encrypted);
         }
         #endregion
 
@@ -77,11 +79,11 @@ namespace MyRule
         {
             if (scene.name == Loader.EScene.LoadingScene.ToString()) return;
 
-            await UniTask.Yield(PlayerLoopTiming.Update);
+            await UniTask.WaitUntil(() => IsLoadCompleted);
 
             foreach (var data in datas)
             {
-                data.LoadData(_gameData);
+                await data.LoadData(_gameData);
             }
         }
         #endregion

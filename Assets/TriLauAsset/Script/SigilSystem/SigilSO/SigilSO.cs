@@ -22,7 +22,19 @@ namespace MyRule
     public class SigilSO : ScriptableObject
     {
         [Header("SigilInfo")]
-        [ReadOnly] public string id = System.Guid.NewGuid().ToString();
+        [ReadOnly] public string id;
+
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                id = System.Guid.NewGuid().ToString();
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
         public SigilType sigilType;
         public Sprite sigilIcon;
         public string sigilName;

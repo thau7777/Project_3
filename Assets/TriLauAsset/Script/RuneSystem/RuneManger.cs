@@ -43,6 +43,7 @@ namespace MyRule
             if (data.MatchData != null)
             {
                 runeAmount = data.MatchData.RuneInMatch;
+                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(runeAmount));
             }
             
             return UniTask.CompletedTask;

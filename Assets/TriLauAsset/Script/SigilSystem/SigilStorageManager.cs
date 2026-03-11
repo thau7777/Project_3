@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MyRule.Event;
+using MyRule.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace MyRule
 
         private void OnEnable()
         {
-            GameSystemManager.instance.Register(this);
+            GameSystemManager.Instance.Register(this);
 
             sigilChosenEventBinding = new EventBinding<SigilChosenEvent>(OnSigilChosen);
             EventBus<SigilChosenEvent>.Register(sigilChosenEventBinding);
@@ -21,48 +22,88 @@ namespace MyRule
 
         private void OnDisable()
         {
-            GameSystemManager.instance?.Unregister(this);
+            GameSystemManager.Instance.Unregister(this);
 
             EventBus<SigilChosenEvent>.Deregister(sigilChosenEventBinding);
         }
 
         private void OnSigilChosen(SigilChosenEvent evt)
         {
-            SigilSO sigilSO = sigilStorageSO.activeSigils.Find(s => s.keyBinding == evt.normalSigilSO.keyBinding);
+            var existActive = sigilStorageSO.activeSigils.Find(s => s.keyBinding == evt.sigilSO.keyBinding);
+            if (existActive != null) sigilStorageSO.activeSigils.Remove(existActive);
 
-            if (sigilSO != null) sigilStorageSO.activeSigils.Remove(sigilSO);
+            var existPassive = sigilStorageSO.passiveSigils.Find(s => s.keyBinding == evt.sigilSO.keyBinding);
+            if (existPassive != null) sigilStorageSO.passiveSigils.Remove(existPassive);
 
-            sigilStorageSO.activeSigils.Add(evt.normalSigilSO);
-            EventBus<AddSigilEnvet>.Raise(new AddSigilEnvet(evt.normalSigilSO));
-            CharacterStatsManager.Instance.UpdateSigilStats(evt.normalSigilSO);
+            if (evt.sigilSO.sigilType == SigilType.Active)
+                sigilStorageSO.activeSigils.Add(evt.sigilSO);
+            else if (evt.sigilSO.sigilType == SigilType.Passive)
+                sigilStorageSO.passiveSigils.Add(evt.sigilSO);
+
+            EventBus<AddSigilEvent>.Raise(new AddSigilEvent(evt.sigilSO));
+            CharacterStatsManager.Instance.UpdateSigilStats(evt.sigilSO);
         }
 
-        public void ResetSorage()
+        public void ResetStorage()
         {
             sigilStorageSO.activeSigils.Clear();
+            sigilStorageSO.passiveSigils.Clear();
         }
 
         #region Save Load
-        public UniTask LoadData(GameData data)
+        public async UniTask LoadData(GameData data)
         {
+            sigilStorageSO.activeSigils = new List<SigilSO>();
+            sigilStorageSO.passiveSigils = new List<SigilSO>();
+
+            await UniTask.NextFrame();
+
             if (data.MatchData != null)
             {
-                sigilStorageSO.activeSigils = new List<SigilSO>();
-
-                foreach (var sigil in data.MatchData.SigilsInMatch.ActiveSigils)
+                if (data.MatchData.SigilStorageInMatch != null)
                 {
+                    if (data.MatchData.SigilStorageInMatch.ActiveSigils != null && data.MatchData.SigilStorageInMatch.ActiveSigils.Count != 0)
+                    {
+                        foreach (var sigil in data.MatchData.SigilStorageInMatch.ActiveSigils)
+                        {
+                            SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigil.Key);
+                            sigilStorageSO.activeSigils.Add(sigilSO);
+                            //EventBus<AddSigilEvent>.Raise(new AddSigilEvent(sigilSO));
+                        }
+                    }
 
+                    if (data.MatchData.SigilStorageInMatch.PassiveSigils != null && data.MatchData.SigilStorageInMatch.PassiveSigils.Count != 0)
+                    {
+                        foreach (var sigil in data.MatchData.SigilStorageInMatch.PassiveSigils)
+                        {
+                            SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigil.Key);
+                            sigilStorageSO.passiveSigils.Add(sigilSO);
+                            //EventBus<AddSigilEvent>.Raise(new AddSigilEvent(sigilSO));
+                        }
+                    }
                 }
             }
-
-            return UniTask.CompletedTask;
         }
 
         public void SaveData(GameData data)
         {
             if (data.MatchData != null)
             {
+                SigilStorageData sigilStorageData = new SigilStorageData();
+                
+                foreach (var sigilSO in sigilStorageSO.activeSigils)
+                {
+                    SigilData sigilData = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.rarity);
+                    sigilStorageData.AddSigil(sigilData);
+                }
 
+                foreach (var sigilSO in sigilStorageSO.passiveSigils)
+                {
+                    SigilData sigilData = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.rarity);
+                    sigilStorageData.AddSigil(sigilData);
+                }
+
+                data.MatchData.SetSigilStorageInMatch(sigilStorageData);
             }
         }
         #endregion

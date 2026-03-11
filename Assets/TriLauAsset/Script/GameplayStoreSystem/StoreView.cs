@@ -62,7 +62,7 @@ namespace MyRule
 
             passiveCardsCons.SetActive(true);
 
-            await ShowingCard(true);
+            await ShowingPassiveSigilCard(true);
 
             isShowing = true;
 
@@ -76,7 +76,7 @@ namespace MyRule
         {
             if (!isShowing) return;
 
-            await ShowingCard(false);
+            await ShowingPassiveSigilCard(false);
 
             DesTroyCard();
 
@@ -100,15 +100,17 @@ namespace MyRule
             RTSCameraController.Instance.CanInteract = true;
         }
 
-        private UniTask ShowingCard(bool showing)
+        private UniTask ShowingPassiveSigilCard(bool showing)
         {
             for (int i = 0; i < passiveCards.Length; i++)
             {
-                SigilSO sigilSO = MatchManager.Instance.GetRandomSigilInMatch();
+                SigilData sigilData = MatchManager.Instance.GetRandomPassiveSigilInMatch();
 
-                if (sigilSO == null) break;
+                if (sigilData == null) break;
+                
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
-                passiveCards[i].SetSigil(sigilSO);
+                passiveCards[i].SetSigil(sigilData, sigilSO);
                 passiveCards[i].IsShowing = showing;
                 passiveCards[i].ShowPrice(showing);
             }
@@ -120,16 +122,18 @@ namespace MyRule
         {
             for (int i = 0; i < spawnPoint.Length; i++) 
             {
-                SigilSO sigilSO = MatchManager.Instance.GetRandomSigilInMatch();
+                SigilData sigilData = MatchManager.Instance.GetRandomActiveSigilInMatch();
                 
-                if (sigilSO == null) break;  
+                if (sigilData == null) break;
+
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
 
                 gameObjects.Add(cardObj);
 
                 Card card = cardObj.GetComponent<Card>();
-                card.SetSigil(sigilSO);
+                card.SetSigil(sigilData, sigilSO);
                 card.IsShowing = true;
                 card.ShowPrice(true);
             }
@@ -148,8 +152,10 @@ namespace MyRule
         {
             foreach (var card in gameObjects)
             {
-                Destroy(card);
+                Destroy(card.gameObject);
             }
+
+            gameObjects.Clear();
         }
     }
 }
