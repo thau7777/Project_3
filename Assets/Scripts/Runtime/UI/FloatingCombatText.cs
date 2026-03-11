@@ -231,7 +231,6 @@ public class FloatingCombatText : Flyweight
         }
 
         // ── 4. Return to pool ─────────────────────────────────────────────────
-        //ReturnToPool();
-        gameObject.SetActive(false);
+        ReturnToPool();
     }
 }

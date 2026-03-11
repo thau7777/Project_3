@@ -1,6 +1,7 @@
 ﻿using MyRule;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
@@ -11,21 +12,61 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         public EnemyId id;
         public EnemyTopDownSettings settings;
     }
+    [TabGroup("References")]
+    [SerializeField] private TextMeshProUGUI _currentWaveText;
+    [TabGroup("References")]
+    [SerializeField] private TextMeshProUGUI _remainingEnemiesText;
+    [TabGroup("References")]
+    [SerializeField] private TextMeshProUGUI waveTimeRemainingText;
 
-    [Header("Enemy Registry")]
+    [TabGroup("Enemy Registry")]
     [SerializeField] private List<TopdownEnemyWithIds> _topDownEnemyWithIdsList;
 
-    [Header("Spawn Settings")]
-    [SerializeField] private float _spawnRadius = 10f;
+    [TabGroup("Spawn Settings")]
+    [MinMaxSlider(5, 10)]
+    [SerializeField] private Vector2 _spawnRadiusMinMax = new Vector2(5, 10);
+    [TabGroup("Spawn Settings")]
+    [Range(20, 60)]
     [SerializeField] private float _waveDuration = 60f; // 1 minute per wave
 
     // Wave state
     private GroupWave _groupWave;
     private int _currentWaveIndex = 0;
+    public int CurrentWaveIndex
+    {
+        get { return _currentWaveIndex; }
+        set
+        {
+            _currentWaveIndex = value;
+            if (_currentWaveText != null)
+                _currentWaveText.text = (_currentWaveIndex + 1).ToString() + "/" + _groupWave.WaveDatas.Length;
+        }
+    }
     private int _remainingEnemiesInWave = 0;
+    public int RemainingEnemiesInWave
+    {
+        get { return _remainingEnemiesInWave; }
+        set
+        {
+            _remainingEnemiesInWave = value;
+            if (_remainingEnemiesText != null)
+                _remainingEnemiesText.text = _remainingEnemiesInWave.ToString();
+        }
+    }
     private bool _isSpawning = false;
     private bool _gameOver = false;
     private Coroutine _waveTimerCoroutine;
+    private float _waveTimeRemaining = 0f;
+    public float WaveTimeRemaining
+    {
+        get { return _waveTimeRemaining; }
+        set
+        {
+            _waveTimeRemaining = value;
+            if (waveTimeRemainingText != null)
+                waveTimeRemainingText.text = Mathf.RoundToInt(_waveTimeRemaining).ToString();
+        }
+    }
 
     // Tracked live enemies
     private List<GameObject> _activeEnemies = new List<GameObject>();
@@ -66,6 +107,8 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         }
     }
 
+    private bool IsLastWave() => CurrentWaveIndex >= _groupWave.WaveDatas.Length - 1;
+
     // Called when the game starts via event
     private void SpawnEnemies()
     {
@@ -75,9 +118,9 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             return;
         }
 
-        _currentWaveIndex = 0;
+        CurrentWaveIndex = 0;
         _gameOver = false;
-        StartCoroutine(StartWave(_currentWaveIndex));
+        StartCoroutine(StartWave(CurrentWaveIndex));
     }
 
     // ─── Wave Lifecycle ───────────────────────────────────────────────────────
@@ -88,7 +131,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
         if (waveIndex >= waves.Length)
         {
-            WinGame();
+            // Shouldn't reach here anymore — WinGame is handled in OnEnemyDied
             yield break;
         }
 
@@ -103,10 +146,10 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         Debug.Log($"[WaveManager] Starting Wave {waveIndex + 1} / {waves.Length}");
 
         // Count valid enemies in this wave
-        _remainingEnemiesInWave = 0;
+        RemainingEnemiesInWave = 0;
         foreach (var enemy in wave.Enemies)
         {
-            if (enemy != null) _remainingEnemiesInWave++;
+            if (enemy != null) RemainingEnemiesInWave++;
         }
 
         _isSpawning = true;
@@ -119,12 +162,12 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             if (enemyData == null) continue;
 
             SpawnEnemy(enemyData);
-            yield return new WaitForSeconds(0.3f); // slight stagger per spawn
+            yield return new WaitForSeconds(Random.Range(0, 0.3f)); // slight stagger per spawn
         }
 
         _isSpawning = false;
 
-        // Start the 1-minute wave timer
+        // Start the wave timer
         if (_waveTimerCoroutine != null)
             StopCoroutine(_waveTimerCoroutine);
 
@@ -133,13 +176,27 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     private IEnumerator WaveTimer()
     {
-        yield return new WaitForSeconds(_waveDuration);
+        WaveTimeRemaining = _waveDuration;
+
+        while (WaveTimeRemaining > 0f)
+        {
+            yield return null; // tick every frame for smooth UI updates
+            WaveTimeRemaining -= Time.deltaTime;
+        }
+
+        WaveTimeRemaining = 0f;
 
         if (_gameOver) yield break;
 
-        // Timer expired — kill remaining enemies and advance
-        Debug.Log($"[WaveManager] Wave {_currentWaveIndex + 1} time expired! Moving to next wave.");
-        ClearRemainingEnemies();
+        // On the final wave, timer expiry does NOT trigger a win — enemies must all be killed
+        if (IsLastWave())
+        {
+            Debug.Log($"[WaveManager] Final wave timer expired — enemies must be killed to win!");
+            yield break;
+        }
+
+        // Timer expired on a non-final wave — leave enemies alive and advance
+        Debug.Log($"[WaveManager] Wave {CurrentWaveIndex + 1} time expired! Moving to next wave.");
         yield return StartCoroutine(AdvanceToNextWave());
     }
 
@@ -147,10 +204,12 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     {
         if (_gameOver) yield break;
 
+        WaveTimeRemaining = 0f;
+
         yield return new WaitForSeconds(2f); // brief pause between waves
 
-        _currentWaveIndex++;
-        yield return StartCoroutine(StartWave(_currentWaveIndex));
+        CurrentWaveIndex++;
+        yield return StartCoroutine(StartWave(CurrentWaveIndex));
     }
 
     // ─── Enemy Spawning ───────────────────────────────────────────────────────
@@ -161,26 +220,19 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         if (settings == null)
         {
             Debug.LogWarning($"No settings found for EnemyId: {enemyData.EnemyId}");
-            _remainingEnemiesInWave--;
+            RemainingEnemiesInWave--;
             return;
         }
-
-        Vector3 spawnPos = GetRandomSpawnPosition();
+        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform, Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y));
 
         var enemy = FlyweightFactory.Spawn(settings);
-        if(enemy.TryGetComponent<CharacterStats>(out var enemyStats))
+        if (enemy.TryGetComponent<CharacterStats>(out var enemyStats))
         {
-            enemyStats.Setup(settings.elementalType, enemyData.Health, 0, enemyData.Phys, enemyData.Mag, enemyData.Fire, enemyData.Water, enemyData.Frost,
+            enemyStats.Setup(settings.elementalType, enemyData.Health, enemyData.Stamina, 0, enemyData.Phys, enemyData.Mag, enemyData.Fire, enemyData.Water, enemyData.Frost,
                 enemyData.Lightning, enemyData.Holy, enemyData.Dark, enemyData.Poison, enemyData.PhyDef, enemyData.MagDef, enemyData.FireDef, enemyData.WaterDef,
                 enemyData.FrostDef, enemyData.LightningDef, enemyData.HolyDef, enemyData.DarkDef, enemyData.PoisonDef, enemyData.AttackSpeed, enemyData.CritChance, enemyData.CritMult);
         }
         _activeEnemies.Add(enemy.gameObject);
-    }
-
-    private Vector3 GetRandomSpawnPosition()
-    {
-        Vector2 randomCircle = Random.insideUnitCircle.normalized * _spawnRadius;
-        return _player.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
     }
 
     private EnemyTopDownSettings GetSettingsForId(EnemyId id)
@@ -200,17 +252,27 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         if (_activeEnemies.Contains(enemyGO))
             _activeEnemies.Remove(enemyGO);
 
-        _remainingEnemiesInWave--;
-        _remainingEnemiesInWave = Mathf.Max(0, _remainingEnemiesInWave);
+        RemainingEnemiesInWave--;
+        RemainingEnemiesInWave = Mathf.Max(0, RemainingEnemiesInWave);
 
-        Debug.Log($"[WaveManager] Enemy died. Remaining in wave: {_remainingEnemiesInWave}");
+        Debug.Log($"[WaveManager] Enemy died. Remaining in wave: {RemainingEnemiesInWave}");
 
-        if (_remainingEnemiesInWave == 0)
+        if (RemainingEnemiesInWave == 0)
         {
-            Debug.Log($"[WaveManager] Wave {_currentWaveIndex + 1} cleared!");
             if (_waveTimerCoroutine != null)
                 StopCoroutine(_waveTimerCoroutine);
 
+            _waveTimerCoroutine = null;
+
+            // Win only triggers when the final wave is fully cleared
+            if (IsLastWave())
+            {
+                Debug.Log($"[WaveManager] Final wave cleared — YOU WIN!");
+                WinGame();
+                return;
+            }
+
+            Debug.Log($"[WaveManager] Wave {CurrentWaveIndex + 1} cleared early! Advancing to next wave.");
             StartCoroutine(AdvanceToNextWave());
         }
     }
@@ -221,10 +283,10 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     {
         foreach (var enemy in _activeEnemies)
         {
-            if (enemy != null) Destroy(enemy);
+            if (enemy != null) enemy.GetComponent<Flyweight>().ReturnToPool();
         }
         _activeEnemies.Clear();
-        _remainingEnemiesInWave = 0;
+        RemainingEnemiesInWave = 0;
     }
 
     // ─── Win / Lose ───────────────────────────────────────────────────────────
@@ -232,13 +294,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     private void WinGame()
     {
         _gameOver = true;
-        Debug.Log("[WaveManager] All waves complete — YOU WIN!");
-        //EventBus<TopdownWinGameEvent>.Raise(new TopdownWinGameEvent());
+        EventBus<TopDownEndGameEvent>.Raise(new TopDownEndGameEvent(UIEndGameExecuteState.Win));
     }
-
-    // ─── Public Helpers (UI / HUD) ────────────────────────────────────────────
-
-    public int GetRemainingEnemies() => _remainingEnemiesInWave;
-    public int GetCurrentWaveIndex() => _currentWaveIndex;
-    public int GetTotalWaves() => _groupWave?.WaveDatas?.Length ?? 0;
 }

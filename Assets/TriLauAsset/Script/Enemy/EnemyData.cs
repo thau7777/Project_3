@@ -41,6 +41,7 @@ namespace MyRule
         public Character enemyPrefab;
 
         public int health= 100;
+        public int stamina = 100;
         public int phys = 10;
         public int mag = 10;
         public int fire = 0;

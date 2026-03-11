@@ -3,22 +3,30 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 
+public enum UIEndGameExecuteState 
+{
+    Both,
+    Win,
+    Lose
+}
+
+
 [RequireComponent(typeof(CanvasGroup))]
 public class MainCanvasGroupController : MonoBehaviour
 {
-    [SerializeField] private bool _isDeathUI = false;
-
+    [SerializeField] private bool _showWhenEndGame = false;
+    [SerializeField, ShowIf("_showWhenEndGame")] private UIEndGameExecuteState _endGameExecuteState;
     [SerializeField, TabGroup("FadeInSettings")] private float _delayBeforeFadeIn = 0;
     [SerializeField, TabGroup("FadeInSettings")] private float fadeInDuration = 1f;
 
-    [SerializeField, TabGroup("FadeOutSettings"), ShowIf("_isDeathUI",true)] private float _delayBeforeFadeOut = 0;
-    [SerializeField, TabGroup("FadeOutSettings"), ShowIf("_isDeathUI", true)] private float fadeOutDuration = 1f;
+    [SerializeField, TabGroup("FadeOutSettings"), ShowIf("_isEndGameUI", true)] private float _delayBeforeFadeOut = 0;
+    [SerializeField, TabGroup("FadeOutSettings"), ShowIf("_isEndGameUI", true)] private float fadeOutDuration = 1f;
 
     private CanvasGroup canvasGroup;
     private CancellationTokenSource fadeCts;
 
     private EventBinding<TopdownStartGameEvent> _startGameEventBinding;
-    private EventBinding<TopDownPlayerDeadEvent> _playerDeadEventBinding;
+    private EventBinding<TopDownEndGameEvent> _endGameEventBinding;
 
     private void Awake()
     {
@@ -29,25 +37,25 @@ public class MainCanvasGroupController : MonoBehaviour
     {
         canvasGroup.alpha = 0;
 
-        if (!_isDeathUI)
+        if (!_showWhenEndGame)
         {
             _startGameEventBinding = new EventBinding<TopdownStartGameEvent>(FadeIn);
             EventBus<TopdownStartGameEvent>.Register(_startGameEventBinding);
-            _playerDeadEventBinding = new EventBinding<TopDownPlayerDeadEvent>(FadeOut);
-            EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
+            _endGameEventBinding = new EventBinding<TopDownEndGameEvent>(FadeOut);
+            EventBus<TopDownEndGameEvent>.Register(_endGameEventBinding);
             return;
         }
 
-        _playerDeadEventBinding = new(FadeIn);
-        EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
+        _endGameEventBinding = new(OnEndGame);
+        EventBus<TopDownEndGameEvent>.Register(_endGameEventBinding);
 
     }
 
     private void OnDisable()
     {
-        if (!_isDeathUI)
+        if (!_showWhenEndGame)
             EventBus<TopdownStartGameEvent>.Deregister(_startGameEventBinding);
-        EventBus<TopDownPlayerDeadEvent>.Deregister(_playerDeadEventBinding);
+        EventBus<TopDownEndGameEvent>.Deregister(_endGameEventBinding);
     }
 
     private void OnDestroy()
@@ -55,7 +63,11 @@ public class MainCanvasGroupController : MonoBehaviour
         fadeCts?.Cancel();
         fadeCts?.Dispose();
     }
-
+    private void OnEndGame(TopDownEndGameEvent topDownEndGameEvent)
+    {
+        if (topDownEndGameEvent.endGameExecuteState == _endGameExecuteState || _endGameExecuteState == UIEndGameExecuteState.Both)
+            FadeIn();
+    }
     private async void FadeIn()
     {
         await FadeIn(fadeInDuration);

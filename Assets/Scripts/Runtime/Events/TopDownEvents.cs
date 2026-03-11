@@ -9,7 +9,14 @@ public struct SummonerTargetEvent : IEvent
     }
 }
 public struct TopdownStartGameEvent : IEvent { }
-public struct TopDownPlayerDeadEvent : IEvent { }
+public struct TopDownEndGameEvent : IEvent 
+{ 
+    public UIEndGameExecuteState endGameExecuteState;
+    public TopDownEndGameEvent(UIEndGameExecuteState endGameExecuteState)
+    {
+        this.endGameExecuteState = endGameExecuteState;
+    }
+}
 public struct TopDownInitializeSkillsEvent : IEvent 
 {
     public SkillRuntimeInstance[] skillRuntimeInstances;
