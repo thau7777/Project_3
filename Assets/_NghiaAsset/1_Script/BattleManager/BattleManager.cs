@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using MyRule;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
+using static Unity.Burst.Intrinsics.X86.Avx;
 namespace Turnbase
 {
     public class BattleManager : MonoBehaviour
@@ -100,6 +103,7 @@ namespace Turnbase
             {
                 RoundTracker trackerInstance = Instantiate(roundTrackerPrefab, Vector3.zero, Quaternion.identity);
                 trackerInstance.battleManager = this;
+                trackerInstance.currentRound = startRounds;
                 trackerInstance.stats.currentHP = trackerInstance.stats.maxHP;
                 trackerInstance.isVirtualTracker = true;
                 allCombatants.Add(trackerInstance);
@@ -122,7 +126,7 @@ namespace Turnbase
             if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);
         }
 
-        public void CheckWaveCondition()
+        public async void CheckWaveCondition()
         {
             var livingEnemies = allCombatants.Where(c => !c.isPlayer && c.isAlive && !c.isVirtualTracker).ToList();
 
@@ -152,6 +156,12 @@ namespace Turnbase
                 var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
+                    isProcessingTurn = true;
+                    if (turnHandler != null) turnHandler.isProcessingTurn = true;
+
+                    CameraAction.instance.TargetDeadCamera();
+
+                    await UniTask.Delay(3000);
                     TB_Menu.instance.ShowLoseMenu();
                 }
             }
@@ -245,7 +255,6 @@ namespace Turnbase
                     Debug.Log($"<color=cyan>[PASSIVE]</color> Kích hoạt tự động: {passiveSkill.skillName}");
                     ICommand passiveCmd = new XPassiveCommand(activeCharacter, passiveSkill, this);
 
-                    // Đợi đánh xong Passive rồi mới chạy tiếp xuống phần hiện UI
                     yield return StartCoroutine(passiveCmd.Execute());
                 }
 
@@ -289,6 +298,7 @@ namespace Turnbase
 
                 foreach (var c in allCombatants)
                 {
+                    if (c == null) continue;
                     c.isAttackBlocked = false;
                     c.isParrySuccessful = false;
                 }
@@ -296,10 +306,12 @@ namespace Turnbase
                 if (character != null && character.stateMachine != null)
                 {
                     character.stateMachine.SwitchState(character.stateMachine.waitingState);
-                    character.actionGauge = 0;
+
+                    character.actionGauge -= 10000f;
+                    if (character.actionGauge < 0) character.actionGauge = 0;
                 }
 
-                if (!character.isPlayer)
+                if (character != null && !character.isPlayer)
                 {
                     EventBus<ShowPanelEvent>.Raise(new ShowPanelEvent("EnemyUI"));
                 }
@@ -307,6 +319,11 @@ namespace Turnbase
                 activeCharacter = null;
                 isProcessingTurn = false;
                 if (turnHandler != null) turnHandler.isProcessingTurn = false;
+
+                if (turnOrderUI != null)
+                {
+                    turnOrderUI.UpdateActionGaugeUI(allCombatants);
+                }
 
                 CheckWaveCondition();
             }

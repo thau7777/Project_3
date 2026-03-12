@@ -50,6 +50,7 @@ namespace MyRule
     {
         private EnemyId enemyId;
         private int health;
+        private int stamina;
         private int phys;
         private int mag;
         private int fire;
@@ -75,6 +76,7 @@ namespace MyRule
 
         public EnemyId EnemyId => enemyId;
         public int Health => health;
+        public int Stamina => stamina;
         public int Phys => phys;
         public int Mag => mag;
         public int Fire => fire;
@@ -98,10 +100,11 @@ namespace MyRule
         public float CritChance => critChance;
         public float CritMult => critMult;
 
-        public EnemyData(int level, EnemyId enemyId, int phys, int mag, int fire, int frost, int lightning, int holy, int dark, int water, int poison, int health, int phydef, int magdef, int firedef, int frostdef, int lightningdef, int holydef, int darkdef, int waterdef, int poisonDef, int resRate, float attackSpeed, float critChance, float critMult)
+        public EnemyData(int level, EnemyId enemyId, int phys, int mag, int fire, int frost, int lightning, int holy, int dark, int water, int poison, int health, int stamina, int phydef, int magdef, int firedef, int frostdef, int lightningdef, int holydef, int darkdef, int waterdef, int poisonDef, int resRate, float attackSpeed, float critChance, float critMult)
         {
             this.enemyId = enemyId;
             this.health = health;
+            this.stamina = stamina;
             this.phys = phys;
             this.mag = mag;
             this.fire = fire;
@@ -146,6 +149,7 @@ namespace MyRule
         private void ScaleStats(int level, float mult)
         {
             this.health = (int)(health * (1 + level * mult));
+            this.stamina = (int)(stamina * (1 + level * mult));
             this.phys = (int)(phys * (1 + level * mult));
             this.mag = (int)(mag * (1 + level * mult));
             this.fire = (int)(fire * (1 + level * mult));

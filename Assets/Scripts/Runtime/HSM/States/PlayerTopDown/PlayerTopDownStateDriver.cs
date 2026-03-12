@@ -76,6 +76,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("PhysicalAttack");
 
     [field: SerializeField] public bool IsParrying { get; set; } = false;
+
+    private EventBinding<TopDownEndGameEvent> _onEndGameEventBinding;
     #endregion
 
     #region SummonerStuffs
@@ -99,7 +101,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _characterStats = GetComponent<CharacterStats>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
 
-        GetComponent<Damageable>().Initialize(_characterStats.InitialHealth);
+        GetComponent<Damageable>().Initialize(_characterStats.InitialHealth, 0);
 
 
         _context = new PlayerTopdownContext.Builder()
@@ -128,12 +130,18 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _inputReader.playerTopDownActions.onMove += OnMove;
         _inputReader.playerTopDownActions.onLeftClick += OnLeftClick;
         _inputReader.playerTopDownActions.onSkillUse += OnSkillUse;
+
+        _onEndGameEventBinding = new(OnWinGame);
+        EventBus<TopDownEndGameEvent>.Register(_onEndGameEventBinding);
     }
     private void OnDisable()
     {
         _inputReader.playerTopDownActions.onMove -= OnMove;
         _inputReader.playerTopDownActions.onLeftClick -= OnLeftClick;
         _inputReader.playerTopDownActions.onSkillUse -= OnSkillUse;
+
+        EventBus<TopDownEndGameEvent>.Deregister(_onEndGameEventBinding);
+
     }
 
 
@@ -471,9 +479,15 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     public void OnDeath()
     {
         _context.IsDead = true;
-        EventBus<TopDownPlayerDeadEvent>.Raise(new TopDownPlayerDeadEvent());
+        EventBus<TopDownEndGameEvent>.Raise(new TopDownEndGameEvent(UIEndGameExecuteState.Lose));
     }
+    public void OnWinGame(TopDownEndGameEvent topDownEndGameEvent)
+    {
+        if (topDownEndGameEvent.endGameExecuteState != UIEndGameExecuteState.Win) return;
+        GetComponent<CharacterController>().enabled = false;
+        _context.IsVictory = true;
 
+    }
     public void SetBaseSpeed(float newSpeed)
     {
         _context.BaseMoveSpeed = newSpeed;

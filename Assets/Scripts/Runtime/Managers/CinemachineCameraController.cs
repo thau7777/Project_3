@@ -16,7 +16,7 @@ public class CinemachineCameraController : MonoBehaviour
 
     private int DieHash = Animator.StringToHash("PlayerDie");
 
-    private EventBinding<TopDownPlayerDeadEvent> _playerDeadEventBinding;
+    private EventBinding<TopDownEndGameEvent> _playerDeadEventBinding;
 
     
     private void Awake()
@@ -40,13 +40,13 @@ public class CinemachineCameraController : MonoBehaviour
     {
         _inputReader.playerTopDownActions.onRightClick += OnRightClick;
         _playerDeadEventBinding = new(TriggerDeathAnimation);
-        EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
+        EventBus<TopDownEndGameEvent>.Register(_playerDeadEventBinding);
     }
 
     private void OnDisable()
     {
         _inputReader.playerTopDownActions.onRightClick -= OnRightClick;
-        EventBus<TopDownPlayerDeadEvent>.Deregister(_playerDeadEventBinding);
+        EventBus<TopDownEndGameEvent>.Deregister(_playerDeadEventBinding);
     }
 
     private void OnRightClick(bool value)
@@ -71,8 +71,9 @@ public class CinemachineCameraController : MonoBehaviour
         }
     }
 
-    public void TriggerDeathAnimation()
+    public void TriggerDeathAnimation(TopDownEndGameEvent topDownEndGameEvent)
     {
-        _animator.Play(DieHash);
+        if(topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Lose)
+            _animator.Play(DieHash);
     }
 }

@@ -38,12 +38,6 @@ public class EnemyTopDownSettings : FlyweightSettings
         _spawnRadius = spawnRadius;
     }
 
-    public void SetInitialHealthOnSpawn(float health)
-    {
-        _initialHealth = Mathf.Max(1, health);
-    }
-
-
     private Vector3 PickRandomLocationAroundPlayer()
     {
         int groundLayer = LayerMask.GetMask("Ground");
@@ -85,9 +79,7 @@ public class EnemyTopDownSettings : FlyweightSettings
 
     public override void OnGet(Flyweight f)
     {
-        Damageable enemyDamageable = f.GetComponent<Damageable>();
-        enemyDamageable.Initialize(_initialHealth);
-
+        base.OnGet(f);
         // Cache the spawn position
         Vector3 spawnPosition = PickRandomLocationAroundPlayer();
         f.GetComponent<CharacterController>().enabled = false;

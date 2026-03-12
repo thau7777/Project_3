@@ -9,20 +9,20 @@ public class CameraCullingMaskController : MonoBehaviour
     [SerializeField] private float _delayBeforeCulling = 0.5f; // Delay in seconds
 
     private Camera _mainCamera;
-    private EventBinding<TopDownPlayerDeadEvent> _playerDeadEventBinding;
+    private EventBinding<TopDownEndGameEvent> _playerDeadEventBinding;
     private CancellationTokenSource _cancellationTokenSource;
 
     private void OnEnable()
     {
-        _playerDeadEventBinding = new EventBinding<TopDownPlayerDeadEvent>(OnPlayerDead);
-        EventBus<TopDownPlayerDeadEvent>.Register(_playerDeadEventBinding);
+        _playerDeadEventBinding = new EventBinding<TopDownEndGameEvent>(OnPlayerDead);
+        EventBus<TopDownEndGameEvent>.Register(_playerDeadEventBinding);
 
         _cancellationTokenSource = new CancellationTokenSource();
     }
 
     private void OnDisable()
     {
-        EventBus<TopDownPlayerDeadEvent>.Deregister(_playerDeadEventBinding);
+        EventBus<TopDownEndGameEvent>.Deregister(_playerDeadEventBinding);
 
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource?.Dispose();
@@ -43,9 +43,10 @@ public class CameraCullingMaskController : MonoBehaviour
         _mainCamera.cullingMask = _defaultCullingMask;
     }
 
-    private async void OnPlayerDead()
+    private async void OnPlayerDead(TopDownEndGameEvent topDownEndGameEvent)
     {
-        await SetCullingMaskToNothingAsync(_cancellationTokenSource.Token);
+        if(topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Lose)
+            await SetCullingMaskToNothingAsync(_cancellationTokenSource.Token);
     }
 
     /// <summary>
