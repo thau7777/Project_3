@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace Turnbase
 {
     public class TurnOrderIcon : MonoBehaviour
@@ -17,9 +16,7 @@ namespace Turnbase
         [HideInInspector] public Character characterOwner;
 
         private CharacterStatUI statDisplayPanel;
-
         private BattleManager battleManager;
-
         public CameraViewManager cameraViewManager;
 
         void Awake()
@@ -38,7 +35,7 @@ namespace Turnbase
                 roundTrackerText.gameObject.SetActive(false);
             }
 
-            if (avatarImage != null && character.info.Avatar != null)
+            if (avatarImage != null && character.info != null && character.info.Avatar != null)
             {
                 avatarImage.sprite = character.info.Avatar;
             }
@@ -52,22 +49,6 @@ namespace Turnbase
                     roundTrackerText.text = $"{roundTracker.currentRound}";
                     roundTrackerText.gameObject.SetActive(true);
                 }
-
-                if (actionGaugeText != null)
-                {
-                    actionGaugeText.gameObject.SetActive(true);
-                }
-            }
-
-            if (actionGaugeText != null)
-            {
-                float displayValue = Mathf.Min(character.actionGauge, 100f);
-                actionGaugeText.text = Mathf.RoundToInt(displayValue).ToString();
-            }
-
-            if (cameraViewManager != null)
-            {
-                cameraViewManager.SetCameraView(characterOwner);
             }
 
             avatarButton.onClick.RemoveAllListeners();
@@ -78,16 +59,37 @@ namespace Turnbase
 
         public void UpdateDisplay()
         {
-            if (characterOwner != null && actionGaugeText != null)
+            if (characterOwner == null || actionGaugeText == null) return;
+
+            float currentSpeed = characterOwner.stats.speed;
+            if (characterOwner.isVirtualTracker)
             {
-                float displayValue = Mathf.Min(characterOwner.actionGauge, 100f);
-                actionGaugeText.text = Mathf.RoundToInt(displayValue).ToString();
+                if (currentSpeed != 100f) currentSpeed = 100f;
             }
 
-            if (characterOwner is RoundTracker roundTracker && roundTrackerText != null && characterOwner.isVirtualTracker)
+            if (characterOwner.actionGauge >= 9999.9f)
             {
-                roundTrackerText.text = $"{roundTracker.currentRound}";
+                actionGaugeText.text = "0";
+                actionGaugeText.color = Color.yellow;
+            }
+            else
+            {
+                float avValue = (10000f - characterOwner.actionGauge) / Mathf.Max(1f, currentSpeed);
+                int displayAV = Mathf.CeilToInt(avValue);
+
+                actionGaugeText.text = displayAV.ToString();
+                actionGaugeText.color = Color.white;
+            }
+
+            if (characterOwner is RoundTracker roundTracker && roundTrackerText != null)
+            {
+                roundTrackerText.text = roundTracker.currentRound.ToString();
                 roundTrackerText.gameObject.SetActive(true);
+
+                if (characterOwner.isVirtualTracker)
+                {
+                    actionGaugeText.color = new Color(1f, 0.6f, 0f); 
+                }
             }
         }
 
