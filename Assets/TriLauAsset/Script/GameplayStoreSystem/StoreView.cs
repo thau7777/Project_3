@@ -57,6 +57,9 @@ namespace MyRule
 
             await UniTask.Delay((int)fadeDuration * 1000);
 
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+
             SpawnActiveSigil();
             
 
@@ -81,6 +84,9 @@ namespace MyRule
             DesTroyCard();
 
             passiveCardsCons?.SetActive(false);
+
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
 
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,

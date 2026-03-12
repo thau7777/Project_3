@@ -80,7 +80,7 @@ namespace MyRule
 
             if (!isReward)
             {
-                int runeAmount = RuneManger.Instance.RuneAmount;
+                int runeAmount = RuneManger.Instance.CurrentRuneAmount;
 
                 if (runeAmount > sigilSO.price)
                 {

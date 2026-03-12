@@ -3,14 +3,14 @@ using UnityEngine;
 namespace MyRule
 {
     [CreateAssetMenu(fileName = "CharacterStatsSO", menuName = "Scriptable Objects/CharacterStatsSO")]
-    public class CharacterStatsSO : ScriptableObject
+    public class CharacterSO : ScriptableObject
     {
         public EClass characterClass;
-        public int level;
+        [TextArea(3, 10)]
+        public string backStory;
+
         public int startRune;
     
-        [TabGroup("Stat Points")]
-        public int rune;
         [TabGroup("Stat Points")]
         public int vigor;
         [TabGroup("Stat Points")]

@@ -13,13 +13,13 @@ namespace MyRule
         }
     }
 
-    public struct CharacterStatsUpdatedEvent : IEvent
+    public struct CharacterUpdatedEvent : IEvent
     {
-        public readonly CharacterStatsData characterStats;
+        public readonly CharacterData character;
 
-        public CharacterStatsUpdatedEvent(CharacterStatsData characterStatsData)
+        public CharacterUpdatedEvent(CharacterData characterData)
         {
-            this.characterStats = characterStatsData;
+            this.character = characterData;
         }
     }
 }

@@ -5,9 +5,9 @@ namespace MyRule
 {
     public class RuneManger : PersistentSingleton<RuneManger>, IGameData
     {
-        private int runeAmount = 100;
+        private int currentRuneAmount = 100;
 
-        public int RuneAmount => runeAmount;
+        public int CurrentRuneAmount => currentRuneAmount;
         
         private EventBinding<ReceiveRuneEvent> receiveRuneEventBinding;
 
@@ -28,22 +28,22 @@ namespace MyRule
 
         private void OnReceiveRune(ReceiveRuneEvent evt)
         {
-            runeAmount += evt.runeAmount;
+            currentRuneAmount += evt.runeAmount;
 
-            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(runeAmount));
+            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
         }
 
         public void SetStartRune(int amount)
         {
-            runeAmount = amount;
+            currentRuneAmount = amount;
         }
 
         public UniTask LoadData(GameData data)
         {
             if (data.MatchData != null)
             {
-                runeAmount = data.MatchData.RuneInMatch;
-                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(runeAmount));
+                currentRuneAmount = data.MatchData.RuneInMatch;
+                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
             }
             
             return UniTask.CompletedTask;
@@ -53,7 +53,7 @@ namespace MyRule
         {
             if (data.MatchData != null)
             {
-                data.MatchData.SetRuneInMatch(runeAmount);
+                data.MatchData.SetRuneInMatch(currentRuneAmount);
             }
         }
     }

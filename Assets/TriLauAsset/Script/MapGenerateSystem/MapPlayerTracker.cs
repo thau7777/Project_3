@@ -72,9 +72,9 @@ namespace MyRule
             {
                 case NodeType.MinorEnemy:
                     {
-                        await WaveManager.Instance.CreateNewWave();
-                        await UniTask.Delay(1000);
-                        SceneManager.LoadScene("TurnBase");
+                        //await WaveManager.Instance.CreateNewWave();
+                        //await UniTask.Delay(1000);
+                        //SceneManager.LoadScene("TurnBase");
                         break;
                     }
                 case NodeType.RestSite:

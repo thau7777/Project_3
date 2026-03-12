@@ -17,16 +17,18 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
         }
 
+        public bool HasEmptyItemStorageSlot() => itemStorage.GetEmptySlot() != 100;
+
         public void AddItemToStorage(ItemSO itemSO)
         {
             var index = itemStorage.GetEmptySlot();
 
             if (index < 6)
             {
-                ItemData item = new ItemData(itemSO);
+                ItemData item = new ItemData(index, itemSO.itemType, itemSO.recoveryAmount);
                 itemStorage.AddItem(index, item);
 
-                Debug.Log("Add " + item.Type.ToString());
+                Debug.Log("Add " + item.ItemType.ToString());
 
                 EventBus<AddItemEvent>.Raise(new AddItemEvent(index, itemSO));
             }
@@ -40,13 +42,27 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            if (data.MatchData.ItemStorageInMatch != null)
+            itemStorage = new ItemStorageData();
+
+            if (data.MatchData != null)
             {
-                itemStorage = data.MatchData.ItemStorageInMatch;
-            }
-            else
-            {
-                itemStorage = new ItemStorageData();
+                if (data.MatchData.ItemStorageInMatch != null)
+                {
+                    itemStorage = data.MatchData.ItemStorageInMatch;
+
+                    foreach (var item in itemStorage.Items)
+                    {
+                        if (item != null)
+                        {
+                            ItemSO itemSO = ItemManager.Instance.GetItemByType(item.ItemType);
+                            EventBus<AddItemEvent>.Raise(new AddItemEvent(item.SlotIndex, itemSO));
+                        }
+                    }
+                }
+                else
+                {
+                    itemStorage = new ItemStorageData();
+                }
             }
 
             return UniTask.CompletedTask;
@@ -54,6 +70,8 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
+            if (data.MatchData == null) return;
+
             data.MatchData.SetItemStorageInMatch(itemStorage);
         }
     }

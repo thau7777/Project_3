@@ -48,14 +48,8 @@ namespace MyRule.UI
 
         private void HandleItem(AddItemEvent evt)
         {
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i].IsEmpty)
-                {
-                    items[i].SetIcon(evt.item);
-                    return;
-                }
-            }
+            if (evt.index < 0 || evt.index >= items.Length) return;
+            items[evt.index].SetIcon(evt.item);
         }
 
         private void HandleHUDEvent()

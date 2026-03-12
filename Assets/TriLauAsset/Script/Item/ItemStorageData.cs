@@ -30,29 +30,26 @@ namespace MyRule
                 if (items[i] == null) return i;
             }
 
-            return Lenght;
+            return 100;
         }
     }
 
     [Serializable]
     public class ItemData
     {
-        [JsonProperty] private ItemType type;
-        [JsonProperty] private Sprite icon;
-        [JsonProperty] private int price;
+        [JsonProperty] private int slotIndex;
+        [JsonProperty] private ItemType itemType;
         [JsonProperty] private int recoveryAmount;
 
-        [JsonIgnore] public ItemType Type => type;
-        [JsonIgnore] public Sprite Icon => icon;
-        [JsonIgnore] public int Price => price;
+        [JsonIgnore] public int SlotIndex => slotIndex;
+        [JsonIgnore] public ItemType ItemType => itemType;
         [JsonIgnore] public int RecoveryAmount => recoveryAmount;
 
-        public ItemData(ItemSO itemSO)
+        public ItemData(int slotIndex, ItemType itemType, int recoveryAmount)
         {
-            type = itemSO.itemType;
-            icon = itemSO.icon;
-            price = itemSO.price;
-            recoveryAmount = itemSO.recoveryAmount;
+            this.slotIndex = slotIndex;
+            this.itemType = itemType;
+            this.recoveryAmount = recoveryAmount;
         }
     }
 }

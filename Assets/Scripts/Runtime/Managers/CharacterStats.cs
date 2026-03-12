@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     [SerializeField]
-    private CharacterStatsSO _statsSO;
+    private CharacterSO _statsSO;
 
     [field: SerializeField]
     public ElementalType ElementalType { get; set; } = ElementalType.Normal;

@@ -4,15 +4,43 @@ using System;
 namespace MyRule
 {
     [Serializable]
+    public class CharacterData
+    {
+        [JsonProperty] public string _name;
+        [JsonProperty] public string _backStory;
+        [JsonProperty] private EClass _characterClass;
+        [JsonProperty] private CharacterStatsData _characterStatsData;
+
+        [JsonIgnore] public string Name => _name;
+        [JsonIgnore] public string BackStory => _backStory;
+        [JsonIgnore] public EClass CharacterClass => _characterClass;
+        [JsonIgnore] public CharacterStatsData CharacterStatsData => _characterStatsData;
+
+        public CharacterData() 
+        {
+            _name = "Mage";
+            _backStory = "...";
+            _characterClass = EClass.Mage;
+            _characterStatsData = new CharacterStatsData();
+        }
+
+        public CharacterData(string name, string backStory, EClass characterClass, CharacterStatsData characterStatsData)
+        {
+            _name = name;
+            _backStory = backStory;
+            _characterClass = characterClass;
+            _characterStatsData = characterStatsData;
+        }
+    }
+
+    [Serializable]
     public class CharacterStatsData
     {
-        [JsonProperty] private EClass _characterClass;
         [JsonProperty] private AttributesData _attributesData;
         [JsonProperty] private BaseStatsData _BaseData;
         [JsonProperty] private DamageData _damage;
         [JsonProperty] private DefenseData _defense;
 
-        [JsonIgnore] public EClass CharacterClass => _characterClass;
         [JsonIgnore] public AttributesData AttributesData => _attributesData;
         [JsonIgnore] public BaseStatsData BaseStatsData => _BaseData;
         [JsonIgnore] public DamageData Damage => _damage;
@@ -20,22 +48,19 @@ namespace MyRule
 
         public CharacterStatsData()
         {
-            _characterClass = new EClass();
             _attributesData = new AttributesData();
             _BaseData = new BaseStatsData();
             _damage = new DamageData();
             _defense = new DefenseData();
         }
 
-        public void SetCharacterClass(EClass characterClass) => _characterClass = characterClass;
-
-        public void SetAttributesData(AttributesData attributesData) => _attributesData = attributesData;
-
-        public void SetBaseStatsData(BaseStatsData resourcesData) => _BaseData = resourcesData;
-
-        public void SetDamge(DamageData damage) => _damage = damage;
-
-        public void SetDefense(DefenseData defense) => _defense = defense;
+        public CharacterStatsData(AttributesData attributesData, BaseStatsData baseData, DamageData damage, DefenseData defense)
+        {
+            _attributesData = attributesData;
+            _BaseData = baseData;
+            _damage = damage;
+            _defense = defense;
+        }
     }
 
     [Serializable]

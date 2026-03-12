@@ -10,6 +10,7 @@ namespace MyRule
         [SerializeField] private Image icon;
         [SerializeField] private TextMeshProUGUI priceTxt;
         [SerializeField] private Button btn;
+        [SerializeField] private GameObject soldObj;
 
         private void Start()
         {
@@ -21,11 +22,26 @@ namespace MyRule
             itemSo = item;
             icon.sprite = item.icon;
             priceTxt.text = item.price.ToString();
+            soldObj.SetActive(false);
         }
 
         private void OnClick()
         {
-            ItemStorageManager.Instance.AddItemToStorage(itemSo);
+            var rune = RuneManger.Instance.CurrentRuneAmount;
+
+            var hasSlot = ItemStorageManager.Instance.HasEmptyItemStorageSlot();
+
+            if (hasSlot && rune > itemSo.price)
+            {
+                ItemStorageManager.Instance.AddItemToStorage(itemSo);
+                soldObj.SetActive(true);
+                
+                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-itemSo.price));
+            }
+            else
+            {
+                Debug.Log("Cant add item");
+            }
         }
     }
 }
