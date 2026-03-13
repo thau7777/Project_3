@@ -21,6 +21,8 @@ namespace Turnbase
 
             character.animator.Play("Parry");
 
+            SpawnEffectParry();
+
             yield return new WaitForSeconds(0.8f);
 
             character.animator.Play("Idle");
@@ -32,6 +34,29 @@ namespace Turnbase
             Time.timeScale = 1f;
 
 
+        }
+
+        public void SpawnEffectParry()
+        {
+            OneShotVFXSettings_TB settings = Resources.Load<OneShotVFXSettings_TB>("Projectiles/Parry");
+
+            if (settings != null)
+            {
+                Flyweight_TB effect = FlyweightFactory_TB.Spawn(settings);
+
+                if (effect != null)
+                {
+                    effect.transform.SetParent(character.transform);
+                    effect.transform.localPosition = Vector3.zero;
+                    effect.transform.localRotation = Quaternion.identity;
+
+                    effect.Initialize(character.transform.position, character.transform.rotation);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Không tìm thấy OneShotVFXSettings_TB tại Resources/Projectiles/Parry");
+            }
         }
     }
 

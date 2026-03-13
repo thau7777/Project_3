@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using MyRule;
 using MyRule.Audio;
+using Cysharp.Threading.Tasks;
 
 namespace Turnbase
 {
@@ -161,7 +162,8 @@ namespace Turnbase
             if (isPlayerFaction)
             {
                 Vector3 startPos = finalPosition + playerOffsetFromSlot;
-                StartCoroutine(MoveToPosition(characterInstance.transform, startPos, finalPosition, playerMoveDuration));
+                 UniTask.Delay(3000);
+                StartCoroutine(MoveWithDelay(characterInstance.transform, startPos, finalPosition, playerMoveDuration, 5f));
             }
             else
             {
@@ -176,6 +178,33 @@ namespace Turnbase
 
             SetupCharacter(characterInstance);
             return characterInstance;
+        }
+
+        private IEnumerator MoveWithDelay(Transform target, Vector3 startPos, Vector3 finalPos, float duration, float delay)
+        {
+            if (target == null) yield break;
+
+            target.position = startPos;
+
+            GameObject effectPrefab = Resources.Load<GameObject>("Projectiles/WarpDrive");
+            GameObject effectInstance = null;
+
+            if (effectPrefab != null)
+            {
+                effectInstance = Instantiate(effectPrefab, target.position, Quaternion.identity);
+            }
+
+            yield return new WaitForSeconds(delay);
+
+            if (effectInstance != null)
+            {
+                Destroy(effectInstance,2f);
+            }
+
+            if (target != null)
+            {
+                yield return StartCoroutine(MoveToPosition(target, startPos, finalPos, duration));
+            }
         }
 
         private IEnumerator MoveToPosition(Transform target, Vector3 startPos, Vector3 finalPos, float duration)
@@ -236,7 +265,6 @@ namespace Turnbase
 
         public Transform FindFreeSlot(Transform[] slots, Vector3 positionHint, bool isBoss = false)
         {
-            // Nếu là Boss và có ít nhất 3 slots, ưu tiên Slot 3 (index 2)
             if (isBoss && slots.Length >= 3)
             {
                 Transform slot3 = slots[1];
@@ -249,7 +277,6 @@ namespace Turnbase
                 if (!isOccupied) return slot3;
             }
 
-            // Tìm slot trống theo khoảng cách nếu không phải boss hoặc slot 3 đã bị chiếm
             return slots
                 .Where(slot => {
                     for (int i = 0; i < slot.childCount; i++)

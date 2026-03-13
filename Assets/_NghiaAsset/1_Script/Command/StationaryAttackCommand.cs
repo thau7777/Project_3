@@ -2,16 +2,15 @@
 using System.Collections;
 using UnityEngine;
 
-
 namespace Turnbase
 {
     public class StationaryAttackCommand : SkillCommand
     {
         private int finalDamage;
-        private bool damageApplied = false;
-
+        private bool projectileHit = false;
         private float rotationDuration = 0.25f;
         private BattleManager battleManager;
+        private Quaternion targetLookRotation;
 
         public StationaryAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
             : base(user, target, skill)
@@ -21,114 +20,132 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
+            targetLookRotation = GetTargetLookRotation();
 
-            yield return PerformStationaryAttack();
+            yield return RotateTowardsTarget();
+
+            yield return PerformStationaryProjectileAttack();
 
             yield return RotateBackToInitial();
 
             battleManager.EndTurn(user);
         }
 
-        
-
-        private IEnumerator PerformStationaryAttack()
+        private Quaternion GetTargetLookRotation()
         {
-            CalculateFinalDamage();
-            ElementType element = skill != null ? skill.elementType : ElementType.Normal;
+            Vector3 targetPos = target.buffEffectSpawnPoint != null ? target.buffEffectSpawnPoint.position : target.transform.position + Vector3.up;
+            Vector3 direction = (targetPos - user.transform.position).normalized;
 
-            if (element == ElementType.None)
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            lookRotation.eulerAngles = new Vector3(0, lookRotation.eulerAngles.y, 0);
+            return lookRotation;
+        }
+
+        private IEnumerator RotateTowardsTarget()
+        {
+            float elapsed = 0f;
+            Quaternion startRotation = user.transform.rotation;
+            while (elapsed < rotationDuration)
             {
-                element = ElementType.Normal;
+                user.transform.rotation = Quaternion.Slerp(startRotation, targetLookRotation, elapsed / rotationDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
             }
+            user.transform.rotation = targetLookRotation;
+        }
 
-            Action hitAction = () =>
+        private IEnumerator PerformStationaryProjectileAttack()
+        {
+            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            projectileHit = false;
+
+            Action fireAction = () =>
             {
-                if (!damageApplied)
-                {
-                    target.TakeDamage(user, finalDamage, element);
-                    damageApplied = true;
-                    SpawnEffectAtTarget();
-                }
+                SpawnProjectileByClass(finalDamage);
             };
 
-            user.PrepareHitCallBack(hitAction);
-
+            user.PrepareHitCallBack(fireAction);
             user.animator.Play("Attack");
 
-            while (!damageApplied)
+            float startTime = Time.time;
+            float timeout = 4.0f;
+            while (!projectileHit && Time.time < startTime + timeout)
             {
                 yield return null;
             }
 
-            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
-
-            float timeLeft = stateInfo.length * (1f - (stateInfo.normalizedTime % 1f));
-
-            if (timeLeft > 0)
+            if (!projectileHit)
             {
-                yield return new WaitForSeconds(timeLeft);
+                target.TakeDamage(user, finalDamage, skill != null ? skill.elementType : ElementType.Normal);
+                projectileHit = true;
             }
 
-            user.animator.Play("Idle");
+            var stateInfo = user.animator.GetCurrentAnimatorStateInfo(0);
+            float timeLeft = stateInfo.length * (1f - (stateInfo.normalizedTime % 1f));
+            if (timeLeft > 0) yield return new WaitForSeconds(timeLeft);
 
+            user.animator.Play("Idle");
         }
 
-        private void CalculateFinalDamage()
+        private void SpawnProjectileByClass(int damage)
         {
-            finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            string projectilePath = string.Empty;
 
+            switch (user.characterClass)
+            {
+                case CharacterClass.Magical:
+                case CharacterClass.Summon:
+                case CharacterClass.Tank:
+                    projectilePath = "Projectiles/MagicalBullet";
+                    break;
+                default:
+                    projectilePath = "Projectiles/DefaultBullet";
+                    break;
+            }
+
+            GameObject projectilePrefab = Resources.Load<GameObject>(projectilePath);
+
+            if (projectilePrefab != null)
+            {
+                GameObject pObj = GameObject.Instantiate(projectilePrefab);
+
+                Vector3 spawnPos = user.SkillSpawnPoint != null ? user.SkillSpawnPoint.position : user.transform.position + Vector3.up;
+
+                Vector3 targetPos = target.buffEffectSpawnPoint != null
+                    ? target.buffEffectSpawnPoint.position
+                    : target.transform.position + Vector3.up;
+
+                Vector3 shootDirection = (targetPos - spawnPos).normalized;
+                Quaternion shootRotation = Quaternion.LookRotation(shootDirection);
+
+                pObj.transform.position = spawnPos;
+                pObj.transform.rotation = shootRotation;
+
+                ProjectileTurnBase pScript = pObj.GetComponent<ProjectileTurnBase>();
+                if (pScript != null)
+                {
+                    Action hitCallback = () => { projectileHit = true; };
+                    pScript.Setup(user, target, skill, damage, skill != null ? skill.elementType : ElementType.Normal, hitCallback);
+                }
+            }
+            else
+            {
+                Debug.LogError($"Khong tim thay Projectile tai: {projectilePath}");
+                projectileHit = true;
+            }
         }
 
         private IEnumerator RotateBackToInitial()
         {
             float elapsed = 0f;
             Quaternion startRotation = user.transform.rotation;
-            Quaternion endRotation = user.initialRotation;
-
             while (elapsed < rotationDuration)
             {
-                user.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
+                user.transform.rotation = Quaternion.Slerp(startRotation, user.initialRotation, elapsed / rotationDuration);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-            user.transform.rotation = endRotation;
-        }
-
-        private void SpawnEffectAtTarget()
-        {
-            GameObject effectToSpawn = null;
-            string effectPath = string.Empty;
-
-            switch (user.characterClass)
-            {
-                case CharacterClass.Magical:
-                    effectPath = "Effects/Effect1";
-                    break;
-                case CharacterClass.Summon:
-                    effectPath = "Effects/Effect2";
-                    break;
-                case CharacterClass.Tank:
-                    effectPath = "Effects/Effect3";
-                    break;
-                default:
-                    break;
-            }
-
-            if (!string.IsNullOrEmpty(effectPath))
-            {
-                effectToSpawn = Resources.Load<GameObject>(effectPath);
-            }
-
-            if (effectToSpawn != null)
-            {
-                GameObject effectInstance = GameObject.Instantiate(effectToSpawn, target.transform.position, Quaternion.identity);
-
-                GameObject.Destroy(effectInstance, 3f);
-            }
-            else
-            {
-                Debug.LogError($"Không tìm thấy hiệu ứng tại đường dẫn: {effectPath} cho lớp: {user.characterClass}");
-            }
+            user.transform.rotation = user.initialRotation;
         }
     }
 }

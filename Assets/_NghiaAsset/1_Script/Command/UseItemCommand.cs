@@ -38,7 +38,7 @@ namespace Turnbase
 
                 if (vfxInstance != null)
                 {
-                    vfxInstance.transform.position = target.transform.position;
+                    vfxInstance.transform.position = target.buffEffectSpawnPoint.position;
                     vfxInstance.transform.rotation = Quaternion.identity;
                     Debug.Log($"[ITEM] Đã spawn hiệu ứng: {item.effect.type} lên {target.name}");
                 }
