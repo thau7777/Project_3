@@ -1,14 +1,12 @@
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MyRule.Event;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace MyRule.UI
 {
-    public class HUDView : BaseUIView
+    public class HUDView : MonoBehaviour, IHUDView
     {
         [SerializeField] private SigilView[] sigilViews;
         [SerializeField] private ItemView[] itemViews;
@@ -18,51 +16,36 @@ namespace MyRule.UI
         private bool isShowing = true;
 
         private HUDPresenter hudPresenter;
-        private CancellationTokenSource cts;
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
-
-            cts = new CancellationTokenSource();
-
             hudPresenter = new HUDPresenter(this, sigilViews, itemViews);
-
-            inputReader.diceRollActions.onEsc += Show;
 
             SceneManager.LoadScene("CharacterScene", LoadSceneMode.Additive);
         }
 
         private void OnDestroy()
         {
-            cts.Cancel();
             hudPresenter.Clearup();
         }
 
-        public override void Hide()
+        public void HideHUD()
         {
             if (!isShowing) return;
 
-            Transition.TransitionValue(
-                setter: value => canvasGroup.alpha = value,
-                from: canvasGroup.alpha,
-                to: 0f,
-                duration: fadeDuration,
-                cts.Token).Forget();
+            transform.DOLocalMoveY(-1200f, fadeDuration).SetEase(Ease.Linear);
+
+            canvasGroup.DOFade(0, fadeDuration);
 
             isShowing = false;
         }
 
-        public override void Show()
+        public void ShowHUD()
         {
             if (isShowing) return;
 
-            Transition.TransitionValue(
-                setter: value => canvasGroup.alpha = value,
-                from: canvasGroup.alpha,
-                to: 1f,
-                duration: fadeDuration,
-                cts.Token).Forget();
+            transform.DOLocalMoveY(-840f, fadeDuration).SetEase(Ease.Linear);
+            canvasGroup?.DOFade(1, fadeDuration);
 
             isShowing = true;
         }
