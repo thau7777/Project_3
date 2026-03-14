@@ -1,4 +1,5 @@
 using UnityEngine;
+using MyRule;
 
 namespace Turnbase
 {
@@ -16,35 +17,7 @@ namespace Turnbase
         public ItemType type;
 
 
-        public enum ItemType
-        {
-            Healing,
-            Mana,
 
-            PhysicalAttack,
-            MagicalAttack,
-            FireDMG,
-            WaterDMG,
-            LightningDMG,
-            PoisonDMG,
-            FrostDMG,
-            HolyDMG,
-            DarkDMG,
-            NormalDMG,
-
-            PhysicalDef,
-            MagicalDef,
-            FireDef,
-            WaterDef,
-            LightningDef,
-            PoisonDef,
-            FrostDef,
-            HolyDef,
-            DarkDef,
-            NormalDef,
-
-
-        }
     }
 
 }

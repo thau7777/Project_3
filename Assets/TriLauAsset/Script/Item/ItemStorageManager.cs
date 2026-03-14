@@ -7,6 +7,9 @@ namespace MyRule
     {
         private ItemStorageData itemStorage;
 
+        public ItemStorageData ItemStorage => itemStorage;
+
+
         private void OnEnable()
         {
             GameSystemManager.Instance.Register(this);
