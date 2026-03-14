@@ -49,6 +49,7 @@ namespace Turnbase
 
         [Header("Round Tracking")]
         public RoundTracker roundTrackerPrefab;
+        public int roundSpeed = 10;
 
         [Header("Round Limit")]
         public int startRounds = 5;

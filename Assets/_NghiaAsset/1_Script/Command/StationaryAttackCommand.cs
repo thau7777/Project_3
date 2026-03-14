@@ -76,7 +76,7 @@ namespace Turnbase
 
             if (!projectileHit)
             {
-                target.TakeDamage(user, finalDamage, skill != null ? skill.elementType : ElementType.Normal);
+                target.TakeDamage(user, finalDamage, skill != null ? skill.elementType : ElementType.Magical);
                 projectileHit = true;
             }
 
