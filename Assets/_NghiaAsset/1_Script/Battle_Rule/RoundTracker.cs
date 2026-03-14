@@ -43,7 +43,6 @@ namespace Turnbase
         public void ExecuteRoundPhase()
         {
             Debug.Log($"--- BẮT ĐẦU GIAI ĐOẠN: {info.name} ---");
-            currentRound--;
             if(battleManager != null)
             {
                 if(battleManager.availableRules == null)
