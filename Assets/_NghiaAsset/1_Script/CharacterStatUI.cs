@@ -126,12 +126,12 @@ namespace Turnbase
 
                 if (activeSkillEntries.TryGetValue(skillKey, out SkillEntryUI entry))
                 {
-                    entry.Setup(skill, (s) => OnSkillClicked(s));
+                    entry.Setup(skill, (s) => OnSkillClicked(s), currentCharacter.stats.currentMP);
                 }
                 else if (skillEntryPrefab != null)
                 {
                     SkillEntryUI newEntry = Instantiate(skillEntryPrefab, skillContainer);
-                    newEntry.Setup(skill, (s) => OnSkillClicked(s));
+                    newEntry.Setup(skill, (s) => OnSkillClicked(s), currentCharacter.stats.currentMP);
                     activeSkillEntries.Add(skillKey, newEntry);
                 }
             }

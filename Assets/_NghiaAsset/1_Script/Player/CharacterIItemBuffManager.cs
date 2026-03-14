@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static Turnbase.Tb_Item;
+using MyRule;
 
 namespace Turnbase
 {
@@ -26,18 +26,24 @@ namespace Turnbase
         {
             if (item == null || character == null) return;
 
-            if (item.type == ItemType.Healing || item.type == ItemType.Mana)
+            // 1. Xử lý vật phẩm hồi phục tức thì (Instant Recovery)
+            if (item.type == ItemType.HealthPotion || item.type == ItemType.ManaPotion)
             {
-                if (item.type == ItemType.Healing) character.Heal(item.value);
-                else character.RestoreMana(item.value);
+                if (item.type == ItemType.HealthPotion)
+                    character.Heal(item.value);
+                else
+                    character.RestoreMana(item.value);
+
                 return;
             }
 
+            // 2. Xử lý các vật phẩm tăng chỉ số có thời hạn (Buff)
             AddTimedBuff(item, duration);
         }
 
         private void AddTimedBuff(Tb_Item item, int duration)
         {
+            // Cộng chỉ số ngay khi kích hoạt
             ModifyStat(item.type, item.value);
 
             activeBuffs.Add(new ActiveItemBuff
@@ -46,7 +52,7 @@ namespace Turnbase
                 type = item.type,
                 value = item.value,
                 duration = duration,
-                icon = item.icon 
+                icon = item.icon
             });
 
             character.UpdateOwnUI();
@@ -60,11 +66,10 @@ namespace Turnbase
             {
                 activeBuffs[i].duration--;
 
-
                 if (activeBuffs[i].duration <= 0)
                 {
+                    // Trừ lại chỉ số khi hết thời gian hiệu lực
                     ModifyStat(activeBuffs[i].type, -activeBuffs[i].value);
-
                     activeBuffs.RemoveAt(i);
                 }
             }
@@ -73,29 +78,37 @@ namespace Turnbase
 
         private void ModifyStat(ItemType type, int amount)
         {
-            if (character.stats == null) return;
+            if (character == null || character.stats == null) return;
+
             var s = character.stats;
 
             switch (type)
             {
-                case ItemType.PhysicalAttack: s.physicalAttack += amount; break;
-                case ItemType.MagicalAttack: s.magicAttack += amount; break;
-                case ItemType.PhysicalDef: s.physicalDefense += amount; break;
-                case ItemType.MagicalDef: s.magicDefense += amount; break;
-                case ItemType.FireDef: s.fireDefense += amount; break;
-                case ItemType.WaterDef: s.waterDefense += amount; break;
-                case ItemType.LightningDef: s.lightningDefense += amount; break;
-                case ItemType.PoisonDef: s.poisonDefense += amount; break;
-                case ItemType.FrostDef: s.frostDefense += amount; break;
-                case ItemType.HolyDef: s.holyDefense += amount; break;
-                case ItemType.DarkDef: s.darkDefense += amount; break;
-                case ItemType.FireDMG: s.fireDamageBonus += amount; break;
-                case ItemType.WaterDMG: s.waterDamageBonus += amount; break;
-                case ItemType.LightningDMG: s.lightningDamageBonus += amount; break;
-                case ItemType.PoisonDMG: s.poisonDamageBonus += amount; break;
-                case ItemType.FrostDMG: s.frostDamageBonus += amount; break;
-                case ItemType.HolyDMG: s.holyDamageBonus += amount; break;
-                case ItemType.DarkDMG: s.darkDamageBonus += amount; break;
+                // Attack Buffs
+                case ItemType.PhysicDmgPotion: s.physicalAttack += amount; break;
+                case ItemType.MagicDmgPotion: s.magicAttack += amount; break;
+                case ItemType.FireDmgPotion: s.fireDamageBonus += amount; break;
+                case ItemType.WaterDmgPotion: s.waterDamageBonus += amount; break;
+                case ItemType.FrostDmgPotion: s.frostDamageBonus += amount; break;
+                case ItemType.HolyDmgPotion: s.holyDamageBonus += amount; break;
+                case ItemType.DarkDmgPotion: s.darkDamageBonus += amount; break;
+                case ItemType.PoisonDmgPotion: s.poisonDamageBonus += amount; break;
+                case ItemType.LightingDmgPotion: s.lightningDamageBonus += amount; break;
+
+                // Defense Buffs
+                case ItemType.PhysicDefPotion: s.physicalDefense += amount; break;
+                case ItemType.MagicDefPotion: s.magicDefense += amount; break;
+                case ItemType.FireDefPotion: s.fireDefense += amount; break;
+                case ItemType.WaterDefPotion: s.waterDefense += amount; break;
+                case ItemType.FrostDefPotion: s.frostDefense += amount; break;
+                case ItemType.HolyDefPotion: s.holyDefense += amount; break;
+                case ItemType.DarkDefPotion: s.darkDefense += amount; break;
+                case ItemType.PosionDefPotion: s.poisonDefense += amount; break; // Giữ nguyên lỗi typo 'Posion' từ Enum của bạn
+                case ItemType.LightningDefPotion: s.lightningDefense += amount; break;
+
+                default:
+                    Debug.LogWarning($"[BuffManager] Chưa định nghĩa logic cho loại: {type}");
+                    break;
             }
         }
     }

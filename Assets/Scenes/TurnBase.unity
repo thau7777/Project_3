@@ -1947,7 +1947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!154 &325222964
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -3218,7 +3218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.65624595, y: 0.27853134, z: -0.2853439, w: 0.6405782}
+  m_LocalRotation: {x: 0.40079206, y: 0.35865167, z: -0.17426936, w: 0.8248424}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5040,6 +5040,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CharacterStatsManager
   AutoUnparentOnAwake: 1
+  characterStats:
+    _characterClass: 0
+    _attributesData:
+      _vigor: 0
+      _mind: 0
+      _endurance: 0
+      _strength: 0
+      _dexterity: 0
+      _intelligence: 0
+      _faith: 0
+      _arcane: 0
+    _BaseData:
+      _currentHealth: 0
+      _maxHealth: 0
+      _currentMana: 0
+      _maxMana: 0
+      _currentStamina: 0
+      _maxStamina: 0
+      _speed: 0
+      _critChance: 0
+      _critMult: 0
+    _damage:
+      _physDmg: 0
+      _magDmg: 0
+      _fireDmg: 0
+      _lightningDmg: 0
+      _holyDmg: 0
+      _darkDmg: 0
+      _frostDmg: 0
+      _waterDmg: 0
+      _poisonDmg: 0
+    _defense:
+      _physDef: 0
+      _magDef: 0
+      _fireDef: 0
+      _lightningDef: 0
+      _holyDef: 0
+      _darkDef: 0
+      _frostDef: 0
+      _waterDef: 0
+      _poisonDef: 0
 --- !u!4 &695385942
 Transform:
   m_ObjectHideFlags: 0
@@ -7034,7 +7075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
   mode: 1
-  size: {x: 303.01, y: 71.53226, z: 303.01}
+  size: {x: 3, y: 3, z: 3}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -7043,7 +7084,7 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 0
-  mightNeedRebaking: 1
+  mightNeedRebaking: 0
   cachedTransform:
     e00: 1
     e01: 0
@@ -7074,7 +7115,7 @@ Transform:
   m_GameObject: {fileID: 1029347334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5476837, y: 34.261127, z: 5.7907867}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10384,7 +10425,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591609222}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11576,7 +11617,7 @@ MonoBehaviour:
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 9.9
+  currentTimeOfDay: 7.9
   timeSpeed: 0
   sunriseTime: 4
   sunriseDuration: 0.88
@@ -12633,7 +12674,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.SigilStorageManager
   AutoUnparentOnAwake: 1
-  sigilStorageSO: {fileID: 11400000, guid: 0b3f17738d6e1a749b479a7f6ffc0cf7, type: 2}
 --- !u!4 &1991673654
 Transform:
   m_ObjectHideFlags: 0

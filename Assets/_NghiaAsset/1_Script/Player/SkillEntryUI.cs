@@ -18,7 +18,7 @@ namespace Turnbase
 
         public Skill skillData { get; private set; }
 
-        public void Setup(Skill skill, Action<Skill> clickAction)
+        public void Setup(Skill skill, Action<Skill> clickAction, int currentMana)
         {
             skillData = skill;
 
@@ -38,6 +38,12 @@ namespace Turnbase
             if (manaCostText != null)
             {
                 manaCostText.text = skill.manaCost.ToString();
+
+                if (currentMana < skill.manaCost)
+                {
+                    manaCostText.color = Color.red; 
+                }
+
             }
 
             if (typeText != null)
@@ -47,7 +53,11 @@ namespace Turnbase
 
             skillButton.onClick.RemoveAllListeners();
 
-            if (skill.skillType == SkillType.XPassive)
+            bool isPassive = skill.skillType == SkillType.XPassive;
+            bool hasEnoughMana = currentMana >= skill.manaCost;
+
+
+            if (isPassive || !hasEnoughMana)
             {
                 skillButton.interactable = false;
 
@@ -55,15 +65,16 @@ namespace Turnbase
                 {
                     GetComponent<CanvasGroup>().alpha = passiveAlpha;
                 }
-                else
+                else if (skillIcon != null)
                 {
-                    if (skillIcon != null) skillIcon.color = new Color(1, 1, 1, passiveAlpha);
+                    skillIcon.color = new Color(1, 1, 1, passiveAlpha);
                 }
             }
             else
             {
                 skillButton.interactable = true;
                 if (GetComponent<CanvasGroup>() != null) GetComponent<CanvasGroup>().alpha = 1f;
+                if (skillIcon != null) skillIcon.color = Color.white;
 
                 skillButton.onClick.AddListener(() => clickAction.Invoke(skillData));
             }

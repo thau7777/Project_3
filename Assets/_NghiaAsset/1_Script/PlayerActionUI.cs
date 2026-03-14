@@ -280,12 +280,6 @@ namespace Turnbase
 
             bool hasEnoughManaForAnySkill = currentCharacter.skills.Any(s => s.manaCost <= currentCharacter.stats.currentMP);
 
-            if (!hasEnoughManaForAnySkill)
-            {
-                Debug.LogWarning("Không đủ Mana để sử dụng bất kỳ kỹ năng nào!");
-                return;
-            }
-
             isWaitingForConfirmation = false;
 
             attackButton.interactable = true;
@@ -345,7 +339,7 @@ namespace Turnbase
             {
                 SkillEntryUI newEntry = Instantiate(summonEntryPrefab, PlayerSummonPanel.transform);
 
-                newEntry.Setup(skillToUse, OnSkillButtonClicked);
+                newEntry.Setup(skillToUse, OnSkillButtonClicked, currentCharacter.stats.currentMP);
 
                 instantiatedSummonEntries.Add(newEntry);
             }
@@ -523,7 +517,7 @@ namespace Turnbase
 
                 bool canAfford = currentCharacter.stats.currentMP >= skillToUse.manaCost;
 
-                newEntry.Setup(skillToUse, OnSkillButtonClicked);
+                newEntry.Setup(skillToUse, OnSkillButtonClicked, currentCharacter.stats.currentMP);
 
                 Button btn = newEntry.GetComponent<Button>();
                 if (btn != null)

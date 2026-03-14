@@ -117,73 +117,79 @@ namespace Turnbase
 
         public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
         {
+            // 1. Tìm Profile tương ứng với Class
             CharacterClassProfile targetProfile =
                 allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
 
             if (targetProfile == null)
             {
-                Debug.LogWarning($"Không tìm thấy Class Profile cho lớp: {classTypeToLoad} trên {gameObject.name}!");
+                Debug.LogWarning($"[Init] Không tìm thấy Class Profile cho: {classTypeToLoad} trên {gameObject.name}!");
                 return;
             }
 
             characterClass = targetProfile.characterClass;
 
+            // 2. Cấu hình Animator từ Profile
             if (animator != null && targetProfile.animatorController != null)
             {
                 animator.runtimeAnimatorController = targetProfile.animatorController;
             }
 
-            item.Clear(); 
-            if (targetProfile.initiaItem != null)
+            item.Clear();
+            var storageManager = ItemStorageManager.Instance;
+
+            if (storageManager != null && storageManager.ItemStorage != null)
             {
-                foreach (var itemTemplate in targetProfile.initiaItem)
+                // Tạo HashSet các loại ItemType đang có trong kho đồ để so khớp cực nhanh
+                var itemsInStorage = storageManager.ItemStorage.Items
+                    .Where(i => i != null)
+                    .Select(i => i.ItemType)
+                    .ToHashSet();
+
+                if (targetProfile.initiaItem != null)
                 {
-                    if (itemTemplate != null)
+                    foreach (var itemTemplate in targetProfile.initiaItem)
                     {
-                        Tb_Item clonedItem = Instantiate(itemTemplate);
-                        item.Add(clonedItem);
+                        // So sánh trực tiếp vì đã dùng chung MyRule.ItemType
+                        if (itemTemplate != null && itemsInStorage.Contains(itemTemplate.type))
+                        {
+                            Tb_Item clonedItem = Instantiate(itemTemplate);
+                            item.Add(clonedItem);
+                        }
                     }
-                }
-                Debug.Log($"[LOG] Đã nạp {item.Count} vật phẩm khởi đầu cho {gameObject.name}");
-            }
-
-            var storageManager = FindFirstObjectByType<SigilStorageManager>();
-            if (storageManager == null || storageManager.SigilStorageData == null)
-            {
-                Debug.LogError("Không tìm thấy SigilStorageSO để lọc kỹ năng!");
-                return;
-            }
-
-            HashSet<string> ownedSigilNames = new HashSet<string>();
-            foreach (var s in storageManager.SigilStorageData.ActiveSigils)
-                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
-
-            foreach (var s in storageManager.SigilStorageData.PassiveSigils)
-                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
-
-            skills.Clear();
-            if (targetProfile.initialSkills != null)
-            {
-                foreach (var skill in targetProfile.initialSkills)
-                {
-                    if (skill != null && ownedSigilNames.Contains(skill.skillName))
-                    {
-                        skills.Add(skill);
-                    }
+                    Debug.Log($"[Init] {gameObject.name} đã nạp {item.Count} items phù hợp với kho đồ.");
                 }
             }
 
-            passiveSkills.Clear();
-            if (targetProfile.initialPassiveSkills != null)
+            // 4. Xử lý Kỹ năng (Skills & Passives) từ SigilStorageManager
+            var sigilManager = FindFirstObjectByType<SigilStorageManager>();
+            if (sigilManager != null && sigilManager.SigilStorageData != null)
             {
-                foreach (var pSkill in targetProfile.initialPassiveSkills)
+                // Gom danh sách tên Sigil sở hữu
+                HashSet<string> ownedSigils = new HashSet<string>();
+                foreach (var s in sigilManager.SigilStorageData.ActiveSigils.Values)
+                    if (s != null) ownedSigils.Add(s.Name);
+                foreach (var s in sigilManager.SigilStorageData.PassiveSigils.Values)
+                    if (s != null) ownedSigils.Add(s.Name);
+
+                // Nạp Active Skills
+                skills.Clear();
+                if (targetProfile.initialSkills != null)
                 {
-                    if (pSkill != null && ownedSigilNames.Contains(pSkill.name))
-                    {
-                        passiveSkills.Add(pSkill);
-                    }
+                    foreach (var s in targetProfile.initialSkills)
+                        if (s != null && ownedSigils.Contains(s.skillName)) skills.Add(s);
+                }
+
+                // Nạp Passive Skills
+                passiveSkills.Clear();
+                if (targetProfile.initialPassiveSkills != null)
+                {
+                    foreach (var ps in targetProfile.initialPassiveSkills)
+                        if (ps != null && ownedSigils.Contains(ps.name)) passiveSkills.Add(ps);
                 }
             }
+
+            Debug.Log($"[Init] Hoàn tất khởi tạo cho {gameObject.name}.");
         }
         public void UpdateOwnUI()
         {
