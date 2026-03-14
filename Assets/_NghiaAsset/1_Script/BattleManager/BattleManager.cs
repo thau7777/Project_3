@@ -7,7 +7,8 @@ using MyRule;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
-using static Unity.Burst.Intrinsics.X86.Avx;
+using System.Threading.Tasks;
+
 namespace Turnbase
 {
     public class BattleManager : MonoBehaviour
@@ -68,7 +69,7 @@ namespace Turnbase
 
         public bool isAnimBased = false;
 
-        void Start()
+        async void Start()
         {
             if (spawner != null) spawner.Initialize(this);
             if (turnHandler != null) turnHandler.Initialize(this);
@@ -80,8 +81,21 @@ namespace Turnbase
 
             ChooseRandomRule();
 
+            isProcessingTurn = true;
+            if (turnHandler != null) turnHandler.isProcessingTurn = true;
+
+            if (BattleCutsceneManager.Instance != null)
+            {
+                await BattleCutsceneManager.Instance.PlayCutscene(BattleCutsceneType.Start);
+            }
+
+            isProcessingTurn = false;
             if (turnHandler != null)
+            {
+                turnHandler.isProcessingTurn = false;
                 StartCoroutine(turnHandler.UpdateActionGaugeRoutine());
+            }
+
         }
 
         void Update()

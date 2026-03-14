@@ -1266,7 +1266,7 @@ PlayableDirector:
   m_GameObject: {fileID: 215960478}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 71cfd70f6e1409b4aadd779e49840e77, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -1947,7 +1947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &325222964
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -2721,7 +2721,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -3218,7 +3218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40079206, y: 0.35865167, z: -0.17426936, w: 0.8248424}
+  m_LocalRotation: {x: 0.43560925, y: 0.35100004, z: -0.18944365, w: 0.80694157}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5039,48 +5039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac940751648dfea4cabcb83525a59e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CharacterStatsManager
-  AutoUnparentOnAwake: 1
-  characterStats:
-    _characterClass: 0
-    _attributesData:
-      _vigor: 0
-      _mind: 0
-      _endurance: 0
-      _strength: 0
-      _dexterity: 0
-      _intelligence: 0
-      _faith: 0
-      _arcane: 0
-    _BaseData:
-      _currentHealth: 0
-      _maxHealth: 0
-      _currentMana: 0
-      _maxMana: 0
-      _currentStamina: 0
-      _maxStamina: 0
-      _speed: 0
-      _critChance: 0
-      _critMult: 0
-    _damage:
-      _physDmg: 0
-      _magDmg: 0
-      _fireDmg: 0
-      _lightningDmg: 0
-      _holyDmg: 0
-      _darkDmg: 0
-      _frostDmg: 0
-      _waterDmg: 0
-      _poisonDmg: 0
-    _defense:
-      _physDef: 0
-      _magDef: 0
-      _fireDef: 0
-      _lightningDef: 0
-      _holyDef: 0
-      _darkDef: 0
-      _frostDef: 0
-      _waterDef: 0
-      _poisonDef: 0
 --- !u!4 &695385942
 Transform:
   m_ObjectHideFlags: 0
@@ -6039,6 +5997,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 804165049}
   m_CullTransparentMesh: 1
+--- !u!1 &821987050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 821987052}
+  - component: {fileID: 821987051}
+  m_Layer: 0
+  m_Name: BattleCutsceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &821987051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821987050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409808cff46a2064a86de330cfdc1c28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.BattleCutsceneManager
+  director: {fileID: 215960479}
+  cutsceneList:
+  - type: 0
+    timeline: {fileID: 11400000, guid: 71cfd70f6e1409b4aadd779e49840e77, type: 2}
+--- !u!4 &821987052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821987050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.01539, y: 0.00001, z: -0.94162}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &824593714
 GameObject:
   m_ObjectHideFlags: 0
@@ -7075,7 +7081,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
   mode: 1
-  size: {x: 3, y: 3, z: 3}
+  size: {x: 303.01, y: 71.53226, z: 303.01}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -7084,7 +7090,7 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 0
-  mightNeedRebaking: 0
+  mightNeedRebaking: 1
   cachedTransform:
     e00: 1
     e01: 0
@@ -7115,7 +7121,7 @@ Transform:
   m_GameObject: {fileID: 1029347334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5476837, y: 34.261127, z: 5.7907867}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10425,7 +10431,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591609222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11617,8 +11623,8 @@ MonoBehaviour:
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 7.9
-  timeSpeed: 0
+  currentTimeOfDay: 8.1520605
+  timeSpeed: 2
   sunriseTime: 4
   sunriseDuration: 0.88
   sunsetTime: 15.66
@@ -13471,3 +13477,4 @@ SceneRoots:
   - {fileID: 1991673654}
   - {fileID: 2087649731}
   - {fileID: 888924104}
+  - {fileID: 821987052}
