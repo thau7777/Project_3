@@ -361,14 +361,16 @@ namespace Turnbase
 
             foreach (Tb_Item itemToUse in items)
             {
-                if (itemToUse.quantity > 0)
-                {
-                    ItemEntryUI newEntry = Instantiate(itemEntryPrefab, PlayerItemPanel.transform);
+                ItemEntryUI newEntry = Instantiate(itemEntryPrefab, PlayerItemPanel.transform);
 
-                    newEntry.SetUp(itemToUse, OnItemButtonClicked);
+                newEntry.SetUp(itemToUse, OnItemButtonClicked);
 
-                    instantiatedItemEntries.Add(newEntry);
-                }
+                instantiatedItemEntries.Add(newEntry);
+
+                //if (itemToUse.quantity > 0)
+                //{
+                    
+                //}
             }
         }        
         
