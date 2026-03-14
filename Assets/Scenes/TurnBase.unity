@@ -5039,48 +5039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac940751648dfea4cabcb83525a59e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CharacterStatsManager
-  AutoUnparentOnAwake: 1
-  characterStats:
-    _characterClass: 0
-    _attributesData:
-      _vigor: 0
-      _mind: 0
-      _endurance: 0
-      _strength: 0
-      _dexterity: 0
-      _intelligence: 0
-      _faith: 0
-      _arcane: 0
-    _BaseData:
-      _currentHealth: 0
-      _maxHealth: 0
-      _currentMana: 0
-      _maxMana: 0
-      _currentStamina: 0
-      _maxStamina: 0
-      _speed: 0
-      _critChance: 0
-      _critMult: 0
-    _damage:
-      _physDmg: 0
-      _magDmg: 0
-      _fireDmg: 0
-      _lightningDmg: 0
-      _holyDmg: 0
-      _darkDmg: 0
-      _frostDmg: 0
-      _waterDmg: 0
-      _poisonDmg: 0
-    _defense:
-      _physDef: 0
-      _magDef: 0
-      _fireDef: 0
-      _lightningDef: 0
-      _holyDef: 0
-      _darkDef: 0
-      _frostDef: 0
-      _waterDef: 0
-      _poisonDef: 0
 --- !u!4 &695385942
 Transform:
   m_ObjectHideFlags: 0
@@ -7084,7 +7042,7 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 0
-  mightNeedRebaking: 0
+  mightNeedRebaking: 1
   cachedTransform:
     e00: 1
     e01: 0

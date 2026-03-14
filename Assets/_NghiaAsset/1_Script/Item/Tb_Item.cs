@@ -9,7 +9,7 @@ namespace Turnbase
         public string itemName;
         public string description;
         public int value;
-        public int quantity;
+        public int quantity = 1;
         public Sprite icon;
 
         public FlyweightSettings_TB effect;
