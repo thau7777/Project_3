@@ -27,7 +27,7 @@ namespace Turnbase
                     if (currentCombatants.Count > 0)
                     {
                         var readyChar = currentCombatants
-                            .Where(c => c.actionGauge >= 9999.9f)
+                            .Where(c => c.actionGauge >= 999.9f)
                             .OrderByDescending(c => c.actionGauge)
                             .FirstOrDefault();
 
@@ -39,7 +39,7 @@ namespace Turnbase
                         else
                         {
                             float minTimeToReachLimit = currentCombatants
-                                .Select(c => (10000f - c.actionGauge) / Mathf.Max(1f, c.stats.speed))
+                                .Select(c => (1000f - c.actionGauge) / Mathf.Max(1f, c.stats.speed))
                                 .Min();
 
                             float timeStep = Mathf.Max(0, minTimeToReachLimit);

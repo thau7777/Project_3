@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using MyRule;
 using MyRule.Audio;
 using UnityEngine;
@@ -115,7 +117,7 @@ namespace Turnbase
 
         }
 
-        public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
+        public async void InitializeCharacterFrom(CharacterClass classTypeToLoad)
         {
             CharacterClassProfile targetProfile =
               allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
@@ -162,7 +164,8 @@ namespace Turnbase
                 }
                 Debug.Log($"[Init] Nhân vật nhận {item.Count} vật phẩm từ kho đồ cá nhân.");
             }
-        
+
+            await UniTask.WaitUntil(() => SigilStorageManager.Instance.SigilStorageData != null);
 
             var storageManager = FindFirstObjectByType<SigilStorageManager>();
             if (storageManager == null || storageManager.SigilStorageData == null)

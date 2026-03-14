@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyRule
 {
@@ -58,6 +59,7 @@ namespace MyRule
         private void HandleCharacterStats(CharacterUpdatedEvent evt)
         {
             UpdateStats(evt.character);
+            SceneManager.LoadScene("CharacterScene", LoadSceneMode.Additive);
         }
 
         public void UpdateStats(CharacterData character)
