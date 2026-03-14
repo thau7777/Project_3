@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6384004552034128909}
   - component: {fileID: 8149911321533923481}
   - component: {fileID: 3816094205801943803}
+  - component: {fileID: 5294101332880471154}
   m_Layer: 0
   m_Name: TopdownWarpDrive
   m_TagString: Untagged
@@ -54,7 +55,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 1
+      - m_Value: 0
         m_Name: WarpAmount
         m_Overridden: 1
       - m_Value: 2
@@ -65,6 +66,9 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: 3
         m_Name: Duration
+        m_Overridden: 1
+      - m_Value: 2.1
+        m_Name: DelayTime
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -148,10 +152,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274249dcb6c534a40ba126770f670dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopdownWarpDriveController
+  TPVolume: {fileID: 0}
   _visualEffect: {fileID: 0}
-  _fadeInDuration: 1
-  _holdDuration: 2
-  _fadeOutDuration: 1
+  _waitDuration: 3
+  _fadeInDuration: 0.5
+  _holdDuration: 3
+  _fadeOutDuration: 0.5
+--- !u!114 &5294101332880471154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444273029439083907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42d50a4a3c9a754f8fd944110edb19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInteractor
+  useCustomRadius: 1
+  customRadius: 7
+  radiusMultiplier: 5
+  alwaysUseBounds: 0
 --- !u!1001 &8138353752400054519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215,7 +237,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7a4391c0b68699042ac8694cfc229817, type: 2}
+      objectReference: {fileID: 2100000, guid: 756aef4c257f1a740b2861958b1b2537, type: 2}
     - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_Name
       value: WarpCylinder
@@ -297,7 +319,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a263049b5f907d24f81a4e0379b9cab7, type: 2}
+      objectReference: {fileID: 2100000, guid: a37ea8d415245ef4e9593b8a34efa68f, type: 2}
     - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_Name
       value: WarpCylinder (1)

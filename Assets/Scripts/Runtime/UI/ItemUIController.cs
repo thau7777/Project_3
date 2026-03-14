@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ItemUIController : MonoBehaviour
 {
-    private EventBinding<TopDownInitializeItemsEvent> _itemInitializeEventBinding;
+    private EventBinding<TopdownInitializeItemsEvent> _itemInitializeEventBinding;
 
     [SerializeField] private ItemSlotUI[] _slots = new ItemSlotUI[6];
 
@@ -12,15 +12,15 @@ public class ItemUIController : MonoBehaviour
     private void OnEnable()
     {
         _itemInitializeEventBinding = new(OnItemInitialize);
-        EventBus<TopDownInitializeItemsEvent>.Register(_itemInitializeEventBinding);
+        EventBus<TopdownInitializeItemsEvent>.Register(_itemInitializeEventBinding);
     }
 
     private void OnDisable()
     {
-        EventBus<TopDownInitializeItemsEvent>.Deregister(_itemInitializeEventBinding);
+        EventBus<TopdownInitializeItemsEvent>.Deregister(_itemInitializeEventBinding);
     }
 
-    private void OnItemInitialize(TopDownInitializeItemsEvent evt)
+    private void OnItemInitialize(TopdownInitializeItemsEvent evt)
     {
         _itemRuntimeInstances = evt.items;
         for (int i = 0; i < _slots.Length; i++)

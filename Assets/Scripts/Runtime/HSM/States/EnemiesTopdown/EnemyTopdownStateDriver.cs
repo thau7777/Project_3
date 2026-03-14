@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Turnbase;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class EnemyTopdownStateDriver : Flyweight
 {
@@ -210,6 +211,10 @@ public class EnemyTopdownStateDriver : Flyweight
 
                 if (oneShotVFXSettings.UseParticleCollision)
                     damageDealer.SetupParicleDamageDealer(gameObject);
+            }
+            if (vfx.TryGetComponent<EffectApplier>(out var effectApplier))
+            {
+                effectApplier.SetUpForParticle(gameObject);
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
                 _context.CurrentEnemyAttackData.skillDuration);

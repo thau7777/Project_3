@@ -39,6 +39,7 @@ public class ImageFillController : MonoBehaviour
 
     private EventBinding<TopdownStartGameEvent> _startGameEventBinding;
     private EventBinding<TopDownEndGameEvent> _endGameEventBinding;
+    private EventBinding<TopdownOnEndGameContinueEvent> _onEndGameContinueEventBinding;
 
     private Material _material;
     private void Awake()
@@ -66,13 +67,20 @@ public class ImageFillController : MonoBehaviour
 
         _endGameEventBinding = new(OnEndGame);
         EventBus<TopDownEndGameEvent>.Register(_endGameEventBinding);
+        _onEndGameContinueEventBinding = new(FillOut);
+        EventBus<TopdownOnEndGameContinueEvent>.Register(_onEndGameContinueEventBinding);
+        
     }
 
     private void OnDisable()
     {
         if (!_showWhenEndGame)
             EventBus<TopdownStartGameEvent>.Deregister(_startGameEventBinding);
+
         EventBus<TopDownEndGameEvent>.Deregister(_endGameEventBinding);
+
+        if(_showWhenEndGame)
+            EventBus<TopdownOnEndGameContinueEvent>.Deregister(_onEndGameContinueEventBinding);
     }
 
     private void OnDestroy()

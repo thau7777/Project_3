@@ -3,6 +3,7 @@ using HSM;
 public class Grounded : State
 {
     readonly PlayerTopdownContext ctx;
+    public readonly Spawn Spawn;
     public readonly Idle Idle;
     public readonly Move Move;
     public readonly Strafe Strafe;
@@ -10,11 +11,12 @@ public class Grounded : State
     public readonly SpecialMove SpecialMove;
     public readonly Hurt Hurt;
     public readonly Die Die;
-    public readonly Victory Victory;
+    public readonly Despawn Despawn;
 
     public Grounded(StateMachine m, State parent, PlayerTopdownContext ctx) : base(m, parent)
     {
         this.ctx = ctx;
+        Spawn = new Spawn(m, this, ctx);
         Idle = new Idle(m, this, ctx);
         Move = new Move(m, this, ctx);
         Strafe = new Strafe(m, this, ctx);
@@ -22,7 +24,7 @@ public class Grounded : State
         SpecialMove = new SpecialMove(m, this, ctx);
         Hurt = new Hurt(m, this, ctx);
         Die = new Die(m, this, ctx);
-        Victory = new Victory(m, this, ctx);
+        Despawn = new Despawn(m, this, ctx);
     }
     protected override void OnUpdate(float deltaTime)
     {
@@ -42,7 +44,7 @@ public class Grounded : State
         
         ctx.DesiredMoveDir = moveDir;
     }
-    protected override State GetInitialState() => Idle;
+    protected override State GetInitialState() => Spawn;
 
     protected override State GetTransition()
     {

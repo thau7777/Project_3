@@ -5,6 +5,7 @@ public class EffectApplier : MonoBehaviour
 {
     [SerializeField] private List<EffectData> _effectsToApply;
 
+    private GameObject _sender;
     private void Awake()
     {
         if (TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
@@ -18,6 +19,10 @@ public class EffectApplier : MonoBehaviour
         {
             hitBoxHandler.OnColliderHit.RemoveListener(ApplyEffect);
         }
+    }
+    public void SetUpForParticle(GameObject sender)
+    {
+        _sender = sender;
     }
     public void SetEffects(List<EffectData> effectList)
     {
@@ -40,22 +45,21 @@ public class EffectApplier : MonoBehaviour
         if (oneShotVFXSettings.pickRandomEffectFromList)
         {
             EffectData randomEffect = _effectsToApply[Random.Range(0, _effectsToApply.Count)];
-            manager.AddEffect(randomEffect);
+            manager.AddEffect(sender,randomEffect);
         }
         else
         {
             foreach (EffectData effect in _effectsToApply)
             {
-                manager.AddEffect(effect);
+                manager.AddEffect(sender,effect);
             }
         }
             
     }
 
-    // Overload to apply effect to this GameObject
-    public void ApplyEffectSelf()
+    public void ApplyEffect(GameObject target)
     {
-        ApplyEffect(gameObject,gameObject,gameObject);
+        ApplyEffect(_sender,gameObject, target);
     }
 
 }

@@ -57,9 +57,9 @@ public class Effect : ScriptableObject
     [TabGroup("Visual Feedback")]
     public FlyweightSettings vfxSettings;
 
-    public virtual Flyweight OnApply(GameObject target, ActiveEffect activeEffect)
+    public virtual Flyweight OnApply(GameObject sender, GameObject target, ActiveEffect activeEffect)
     {
-        ApplyModifier(target, activeEffect, true);
+        ApplyModifier(sender, target, activeEffect, true);
         if (vfxSettings != null)
         {
             var vfx = FlyweightFactory.Spawn(vfxSettings);
@@ -106,7 +106,7 @@ public class Effect : ScriptableObject
             RemoveModifier(target, activeEffect);
     }
 
-    public void ApplyModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    public void ApplyModifier(GameObject sender, GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
     {        
         if (activeEffect.effect.name == "Berserker's Rage Effect" && isApplyInstant)
         {
@@ -119,7 +119,7 @@ public class Effect : ScriptableObject
             if (magicAttackDamageModifier.value != 0) ApplyMagicAttackDamageModifier(target, activeEffect, isApplyInstant);
             return;
         }
-        if (healthModifier.value != 0) ApplyHealthModifier(target, isApplyInstant);
+        if (healthModifier.value != 0) ApplyHealthModifier(sender, target, isApplyInstant);
         if (manaModifier.value != 0) ApplyManaModifier(target, isApplyInstant);
         if (attackDamageModifier.value != 0) ApplyAttackDamageModifier(target, activeEffect, isApplyInstant);
         if (magicAttackDamageModifier.value != 0) ApplyMagicAttackDamageModifier(target, activeEffect, isApplyInstant);
@@ -150,7 +150,7 @@ public class Effect : ScriptableObject
             RemoveAttackSizeModifier(target, activeEffect);
     }
     #region Apply Modifier Methods
-    private void ApplyHealthModifier(GameObject target, bool isApplyInstant)
+    private void ApplyHealthModifier(GameObject sender, GameObject target, bool isApplyInstant)
     {
         if (!target.TryGetComponent(out Damageable damageAble) || healthModifier.instantApply && !isApplyInstant)
             return;
@@ -160,7 +160,7 @@ public class Effect : ScriptableObject
         {
             float finalDamage = -valueToApply + PlayerTopDownStateDriver.Instance.GetComponent<CharacterStats>().MagicAttackDamage * 0.1f;
             finalDamage = ElementalManager.Instance.CalculateDamage(Mathf.RoundToInt(finalDamage), damageElementalType, target.GetComponent<CharacterStats>().ElementalType);
-            damageAble.TakeDamage(null, null, true, Mathf.RoundToInt(finalDamage), dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
+            damageAble.TakeDamage(sender, null, true, Mathf.RoundToInt(finalDamage), dealTrueDamage, Vector3.zero, 0, damageElementalType, respectInvincibilityTime: false);
         }
         else
         {

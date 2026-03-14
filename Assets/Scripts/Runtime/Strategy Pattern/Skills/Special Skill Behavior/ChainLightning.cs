@@ -227,7 +227,7 @@ public class ChainLightning : SkillStrategy
             if (_effectToApply == null) return;
             foreach (EffectData effectData in _effectToApply)
             {
-                effectsManager.AddEffect(effectData);
+                effectsManager.AddEffect(_skillContext.origin.gameObject, effectData);
             }
         }
     }
