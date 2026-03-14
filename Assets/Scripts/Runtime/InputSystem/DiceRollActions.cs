@@ -16,6 +16,8 @@ public class DiceRollActions : InputActions.IDiceRollActions
 
     public event Action onEsc;
 
+    public event Action onSubmit;
+
     public void OnEsc(InputAction.CallbackContext context)
     {
         if (context.performed) onEsc?.Invoke();
@@ -75,6 +77,11 @@ public class DiceRollActions : InputActions.IDiceRollActions
         {
             onScroll?.Invoke(Vector2.zero);
         }
+    }
+
+    public void OnSubmit(InputAction.CallbackContext context)
+    {
+        if (context.performed) onSubmit?.Invoke();
     }
 
     public void OnTabMenu(InputAction.CallbackContext context)

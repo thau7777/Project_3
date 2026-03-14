@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MyRule
 {
@@ -22,7 +22,17 @@ namespace MyRule
     public class SigilSO : ScriptableObject
     {
         [Header("SigilInfo")]
-        [ReadOnly] public string id;
+        [SerializeField, ReadOnly] public string id;
+
+#if UNITY_EDITOR
+        [ContextMenu("Generate New ID")]
+        public void GenerateNewID()
+        {
+            id = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.AssetDatabase.SaveAssets();
+        }
+#endif
 
         private void OnValidate()
         {
@@ -31,6 +41,7 @@ namespace MyRule
                 id = System.Guid.NewGuid().ToString();
 #if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(this);
+                UnityEditor.AssetDatabase.SaveAssets();
 #endif
             }
         }
@@ -43,7 +54,7 @@ namespace MyRule
         [TextArea(3, 10)]
         public string sigilDesTB;
         public GameObject sigilPreb;
-        public int rarity;
+        public ERarity rarity;
         public bool isActiveSigil;
         [ShowIfEnumValue("sigilType", SigilType.Active)]
         public EKeyBinding keyBinding;

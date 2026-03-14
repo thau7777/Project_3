@@ -19,7 +19,9 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
         }
 
-        public void CreateNewMatch(CharacterStatsData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
+        public bool IsNewMatch() => _matchData.IsNewMatch;
+
+        public void CreateNewMatch(CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
             _matchData = GameSystemManager.Instance.GameData.CreateNewMatch(characterStatsData, runeAmount, sigilsInMatch);
         }

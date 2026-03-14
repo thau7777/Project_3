@@ -11,7 +11,7 @@ namespace MyRule
     public class ClassView : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         [SerializeField] private EClass classType;
-        [SerializeField] private CharacterStatsSO characterStatsSO;
+        [SerializeField] private CharacterSO characterStatsSO;
         [SerializeField] private GameObject highlightObj;
 
         private void OnEnable()
@@ -30,13 +30,11 @@ namespace MyRule
 
             EventBus<CharacterModelEvent>.Raise(new CharacterModelEvent(classType));
 
-            CharacterStatsManager.Instance.SetBase(characterStatsSO);
-            CharacterStatsData data = CharacterStatsManager.Instance.GetCharacterStats();
-            EventBus<CharacterStatsUpdatedEvent>.Raise(new CharacterStatsUpdatedEvent(data));
+            CharacterManager.Instance.SetBase(characterStatsSO);
+            CharacterData data = CharacterManager.Instance.GetCharacterStats();
+            EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(data));
 
-            SigilStorageManager.Instance.ResetStorage();
-
-            RuneManger.Instance.SetStartRune(characterStatsSO.rune);
+            RuneManger.Instance.SetStartRune(characterStatsSO.startRune);
         }
     }
 }

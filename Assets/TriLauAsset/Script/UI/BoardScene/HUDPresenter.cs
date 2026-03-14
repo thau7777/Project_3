@@ -5,18 +5,18 @@ namespace MyRule.UI
 {
     public class HUDPresenter
     {
-        IBaseUIView baseUIView;
+        IHUDView hudView;
+
         private SigilView[] sigils;
         private ItemView[] items;
 
         private EventBinding<AddSigilEvent> sigilEventBinding;
         private EventBinding<AddItemEvent> itemEventBinding;
-        private EventBinding<HUDEvent> hudEventBinding;
+        private EventBinding<OpenHUDEvent> hudEventBinding;
 
-        public HUDPresenter(IBaseUIView baseUIView, SigilView[] sigilViews, ItemView[] itemViews)
+        public HUDPresenter(IHUDView view, SigilView[] sigilViews, ItemView[] itemViews)
         {
-            this.baseUIView = baseUIView;
-
+            this.hudView = view;
             this.sigils = sigilViews; 
             this.items = itemViews;
 
@@ -24,15 +24,15 @@ namespace MyRule.UI
             EventBus<AddSigilEvent>.Register(sigilEventBinding);
             itemEventBinding = new EventBinding<AddItemEvent>(HandleItem);
             EventBus<AddItemEvent>.Register(itemEventBinding);
-            hudEventBinding = new EventBinding<HUDEvent>(HandleHUDEvent);
-            EventBus<HUDEvent>.Register(hudEventBinding);
+            hudEventBinding = new EventBinding<OpenHUDEvent>(HandleHUDEvent);
+            EventBus<OpenHUDEvent>.Register(hudEventBinding);
         }
 
         public void Clearup()
         {
             EventBus<AddSigilEvent>.Deregister(sigilEventBinding);
             EventBus<AddItemEvent>.Deregister(itemEventBinding);
-            EventBus<HUDEvent>.Deregister(hudEventBinding);
+            EventBus<OpenHUDEvent>.Deregister(hudEventBinding);
         }
 
         private void HandleSigil(AddSigilEvent evt)
@@ -48,19 +48,14 @@ namespace MyRule.UI
 
         private void HandleItem(AddItemEvent evt)
         {
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i].IsEmpty)
-                {
-                    items[i].SetIcon(evt.item);
-                    return;
-                }
-            }
+            if (evt.index < 0 || evt.index >= items.Length) return;
+            items[evt.index].SetIcon(evt.item);
         }
 
-        private void HandleHUDEvent()
+        private void HandleHUDEvent(OpenHUDEvent evt)
         {
-
+            if (evt.show == true) hudView.ShowHUD();
+            else if (evt.show == false) hudView.HideHUD();
         }
     }
 }

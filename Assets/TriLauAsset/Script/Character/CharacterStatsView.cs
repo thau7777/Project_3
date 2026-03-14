@@ -5,6 +5,8 @@ namespace MyRule
 {
     public class CharacterStatsView : Singleton<CharacterStatsView>
     {
+        [SerializeField] private TextMeshProUGUI backStory;
+
         [SerializeField] private TextMeshProUGUI vigor;
         [SerializeField] private TextMeshProUGUI mind;
         [SerializeField] private TextMeshProUGUI endurance;
@@ -40,56 +42,62 @@ namespace MyRule
         [SerializeField] private TextMeshProUGUI darkDef;
         [SerializeField] private TextMeshProUGUI poisonDef;
 
-        private EventBinding<CharacterStatsUpdatedEvent> eventBinding;
+        private EventBinding<CharacterUpdatedEvent> eventBinding;
 
         private void OnEnable()
         {
-            eventBinding = new EventBinding<CharacterStatsUpdatedEvent>(UpdateStats);
-            EventBus<CharacterStatsUpdatedEvent>.Register(eventBinding);
+            eventBinding = new EventBinding<CharacterUpdatedEvent>(HandleCharacterStats);
+            EventBus<CharacterUpdatedEvent>.Register(eventBinding);
         }
 
         private void OnDisable()
         {
-            EventBus<CharacterStatsUpdatedEvent>.Deregister(eventBinding);
+            EventBus<CharacterUpdatedEvent>.Deregister(eventBinding);
         }
 
-        public void UpdateStats(CharacterStatsUpdatedEvent evt)
+        private void HandleCharacterStats(CharacterUpdatedEvent evt)
         {
-            if (vigor != null) vigor.text = evt.characterStats.AttributesData.Vigor.ToString();
-            if (mind != null) mind.text = evt.characterStats.AttributesData.Mind.ToString();
-            if (endurance != null) endurance.text = evt.characterStats.AttributesData.Endurance.ToString();
-            if (str != null) str.text = evt.characterStats.AttributesData.Strength.ToString();
-            if (dex != null) dex.text = evt.characterStats.AttributesData.Dexterity.ToString();
-            if (intell != null) intell.text = evt.characterStats.AttributesData.Intelligence.ToString();
-            if (fai != null) fai.text = evt.characterStats.AttributesData.Faith.ToString();
-            if (arc != null) arc.text = evt.characterStats.AttributesData.Arcane.ToString();
+            UpdateStats(evt.character);
+        }
 
-            if (hp != null) hp.text = evt.characterStats.BaseStatsData.CurrentHealth.ToString();
-            if (fp != null) fp.text = evt.characterStats.BaseStatsData.CurrentMana.ToString();
-            if (stamina != null) stamina.text = evt.characterStats.BaseStatsData.CurrentStamina.ToString();
-            if (critChance != null) critChance.text = evt.characterStats.BaseStatsData.CritChance.ToString() + "%";
-            if (critMult != null) critMult.text = evt.characterStats.BaseStatsData.CritMult.ToString();
+        public void UpdateStats(CharacterData character)
+        {
+            if (backStory != null) backStory.text = character.BackStory;
 
-            if (physDmg != null) physDmg.text = evt.characterStats.Damage.PhysDmg.ToString();
-            if (magDmg != null) magDmg.text = evt.characterStats.Damage.MagDmg.ToString();
-            if (fireDmg != null) fireDmg.text = evt.characterStats.Damage.FireDmg.ToString();
-            if (lightningDmg != null) lightningDmg.text = evt.characterStats.Damage.LightningDmg.ToString();
-            if (waterDmg != null) waterDmg.text = evt.characterStats.Damage.WaterDmg.ToString();
-            if (frostDmg != null) frostDmg.text = evt.characterStats.Damage.FrostDmg.ToString();
-            if (holyDmg != null) holyDmg.text = evt.characterStats.Damage.HolyDmg.ToString();
-            if (darkDmg != null) darkDmg.text = evt.characterStats.Damage.DarkDmg.ToString();
-            if (poisonDmg != null) poisonDmg.text = evt.characterStats.Damage.PoisonDmg.ToString();
+            if (vigor != null) vigor.text = character.CharacterStatsData.AttributesData.Vigor.ToString();
+            if (mind != null) mind.text = character.CharacterStatsData.AttributesData.Mind.ToString();
+            if (endurance != null) endurance.text = character.CharacterStatsData.AttributesData.Endurance.ToString();
+            if (str != null) str.text = character.CharacterStatsData.AttributesData.Strength.ToString();
+            if (dex != null) dex.text = character.CharacterStatsData.AttributesData.Dexterity.ToString();
+            if (intell != null) intell.text = character.CharacterStatsData.AttributesData.Intelligence.ToString();
+            if (fai != null) fai.text = character.CharacterStatsData.AttributesData.Faith.ToString();
+            if (arc != null) arc.text = character.CharacterStatsData.AttributesData.Arcane.ToString();
 
-            if (physDef != null) physDef.text = evt.characterStats.Defense.PhysDef.ToString();
-            if (magDef != null) magDef.text = evt.characterStats.Defense.MagDef.ToString();
-            if (fireDef != null) fireDef.text = evt.characterStats.Defense.FireDef.ToString();
-            if (lightningDef != null) lightningDef.text = evt.characterStats.Defense.LightningDef.ToString();
-            if (waterDef != null) waterDef.text = evt.characterStats.Defense.WaterDef.ToString();
-            if (frostDef != null) frostDef.text = evt.characterStats.Defense.FrostDef.ToString();
-            if (holyDef != null) holyDef.text = evt.characterStats.Defense.HolyDef.ToString();
-            if (darkDef != null) darkDef.text = evt.characterStats.Defense.DarkDef.ToString();
-            if (poisonDef != null) poisonDef.text = evt.characterStats.Defense.PoisonDef.ToString();
+            if (hp != null) hp.text = character.CharacterStatsData.BaseStatsData.CurrentHealth.ToString();
+            if (fp != null) fp.text = character.CharacterStatsData.BaseStatsData.CurrentMana.ToString();
+            if (stamina != null) stamina.text = character.CharacterStatsData.BaseStatsData.CurrentStamina.ToString();
+            if (critChance != null) critChance.text = character.CharacterStatsData.BaseStatsData.CritChance.ToString() + "%";
+            if (critMult != null) critMult.text = character.CharacterStatsData.BaseStatsData.CritMult.ToString();
 
+            if (physDmg != null) physDmg.text = character.CharacterStatsData.Damage.PhysDmg.ToString();
+            if (magDmg != null) magDmg.text = character.CharacterStatsData.Damage.MagDmg.ToString();
+            if (fireDmg != null) fireDmg.text = character.CharacterStatsData.Damage.FireDmg.ToString();
+            if (lightningDmg != null) lightningDmg.text = character.CharacterStatsData.Damage.LightningDmg.ToString();
+            if (waterDmg != null) waterDmg.text = character.CharacterStatsData.Damage.WaterDmg.ToString();
+            if (frostDmg != null) frostDmg.text = character.CharacterStatsData.Damage.FrostDmg.ToString();
+            if (holyDmg != null) holyDmg.text = character.CharacterStatsData.Damage.HolyDmg.ToString();
+            if (darkDmg != null) darkDmg.text = character.CharacterStatsData.Damage.DarkDmg.ToString();
+            if (poisonDmg != null) poisonDmg.text = character.CharacterStatsData.Damage.PoisonDmg.ToString();
+
+            if (physDef != null) physDef.text = character.CharacterStatsData.Defense.PhysDef.ToString();
+            if (magDef != null) magDef.text = character.CharacterStatsData.Defense.MagDef.ToString();
+            if (fireDef != null) fireDef.text = character.CharacterStatsData.Defense.FireDef.ToString();
+            if (lightningDef != null) lightningDef.text = character.CharacterStatsData.Defense.LightningDef.ToString();
+            if (waterDef != null) waterDef.text = character.CharacterStatsData.Defense.WaterDef.ToString();
+            if (frostDef != null) frostDef.text = character.CharacterStatsData.Defense.FrostDef.ToString();
+            if (holyDef != null) holyDef.text = character.CharacterStatsData.Defense.HolyDef.ToString();
+            if (darkDef != null) darkDef.text = character.CharacterStatsData.Defense.DarkDef.ToString();
+            if (poisonDef != null) poisonDef.text = character.CharacterStatsData.Defense.PoisonDef.ToString();
         }
     }
 }

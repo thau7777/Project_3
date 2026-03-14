@@ -98,7 +98,7 @@ namespace Turnbase
             if (healthSystem == null) healthSystem = gameObject.AddComponent<HealthSystem>();
             healthSystem.Init(this);
 
-            CharacterStatsData currentStats = CharacterStatsManager.Instance.GetCharacterStats();
+            CharacterData currentStats = CharacterManager.Instance.GetCharacterStats();
             stats = new CharacterStats(currentStats);
 
             if (stats == null)
@@ -148,18 +148,18 @@ namespace Turnbase
             }
 
             var storageManager = FindFirstObjectByType<SigilStorageManager>();
-            if (storageManager == null || storageManager.sigilStorageSO == null)
+            if (storageManager == null || storageManager.SigilStorageData == null)
             {
                 Debug.LogError("Không tìm thấy SigilStorageSO để lọc kỹ năng!");
                 return;
             }
 
             HashSet<string> ownedSigilNames = new HashSet<string>();
-            foreach (var s in storageManager.sigilStorageSO.activeSigils)
-                if (s != null) ownedSigilNames.Add(s.sigilName);
+            foreach (var s in storageManager.SigilStorageData.ActiveSigils)
+                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
 
-            foreach (var s in storageManager.sigilStorageSO.passiveSigils)
-                if (s != null) ownedSigilNames.Add(s.sigilName);
+            foreach (var s in storageManager.SigilStorageData.PassiveSigils)
+                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
 
             skills.Clear();
             if (targetProfile.initialSkills != null)

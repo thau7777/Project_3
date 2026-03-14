@@ -13,11 +13,11 @@ namespace MyRule
             return itemSOs[i];
         }
 
-        public ItemSO GetItemByName(string itemName)
+        public ItemSO GetItemByType(ItemType itemType)
         {
             for (int i = 0; i < itemSOs.Length; i++)
             {
-                if (itemSOs[i].name == itemName)
+                if (itemSOs[i].itemType == itemType)
                     return itemSOs[i];
             }
 

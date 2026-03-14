@@ -14,35 +14,41 @@ namespace MyRule
     [Serializable]
     public class MatchData
     {
+        [JsonProperty] private bool _isNewMatch;
         [JsonProperty] private EMatchResult _result;
         [JsonProperty] private int _runeInMatch;
         [JsonProperty] private bool _hasReceivedStartingSigil;
-        [JsonProperty] private CharacterStatsData _characterStatsData;
+        [JsonProperty] private CharacterData _characterData;
         [JsonProperty] private SigilsInMatchData _sigilsInMatch;
         [JsonProperty] private SigilStorageData _sigilStorageInMatch;
         [JsonProperty] private ItemStorageData _itemStorageInMatch;
 
+        [JsonIgnore] public bool IsNewMatch => _isNewMatch;
         [JsonIgnore] public EMatchResult Result => _result;
-        [JsonIgnore] public CharacterStatsData CharacterStatsData => _characterStatsData;
+        [JsonIgnore] public CharacterData CharacterData => _characterData;
         [JsonIgnore] public int RuneInMatch => _runeInMatch;
         [JsonIgnore] public bool HasReceivedStartingSigil => _hasReceivedStartingSigil;
         [JsonIgnore] public SigilsInMatchData SigilsInMatch => _sigilsInMatch;
         [JsonIgnore] public SigilStorageData SigilStorageInMatch => _sigilStorageInMatch;
         [JsonIgnore] public ItemStorageData ItemStorageInMatch => _itemStorageInMatch;
 
-        public MatchData(CharacterStatsData characterStats, int runeAmount, SigilsInMatchData sigilsInMatch)
+        public MatchData(CharacterData character, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
+            _isNewMatch = true;
             _result = EMatchResult.None;
-            _characterStatsData = characterStats;
+            _characterData = character;
             _runeInMatch = runeAmount;
             _hasReceivedStartingSigil = false;
             _sigilsInMatch = sigilsInMatch;
             _sigilStorageInMatch = new SigilStorageData();
             _itemStorageInMatch = new ItemStorageData();
         }
+
+        public void SetIsNewMatch(bool isNewMatch) => _isNewMatch = isNewMatch;
+
         public void SetMatchResult(EMatchResult result) => this._result = result;
 
-        public void SetCharacterStats(CharacterStatsData characterStats) => this._characterStatsData = characterStats;
+        public void SetCharacter(CharacterData character) => this._characterData = character;
 
         public void SetRuneInMatch(int runeAmount) => this._runeInMatch = runeAmount;
 

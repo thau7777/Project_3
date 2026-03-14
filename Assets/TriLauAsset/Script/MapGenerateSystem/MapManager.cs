@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
+using Cysharp.Threading.Tasks;
 
 namespace MyRule
 {
@@ -11,28 +12,35 @@ namespace MyRule
 
         public Map CurrentMap { get; private set; }
 
-        private void Start()
+        private async void Start()
         {
-            if (PlayerPrefs.HasKey("Map"))
+            await UniTask.WaitUntil(() => MatchManager.Instance != null);
+
+            if (MatchManager.Instance.IsNewMatch())
             {
-                string mapJson = PlayerPrefs.GetString("Map");
-                Map map = JsonConvert.DeserializeObject<Map>(mapJson);
-                // using this instead of .Contains()
-                if (map.path.Any(p => p.Equals(map.GetBossNode().point)))
-                {
-                    // payer has already reached the boss, generate a new map
-                    GenerateNewMap();
-                }
-                else
-                {
-                    CurrentMap = map;
-                    // player has not reached the boss yet, load the current map
-                    view.ShowMap(map);
-                }
+                GenerateNewMap();
             }
             else
             {
-                GenerateNewMap();
+                if (PlayerPrefs.HasKey("Map"))
+                {
+                    string mapJson = PlayerPrefs.GetString("Map");
+                    Map map = JsonConvert.DeserializeObject<Map>(mapJson);
+                    // using this instead of .Contains()
+                    if (map.path.Any(p => p.Equals(map.GetBossNode().point)))
+                    {
+                        GenerateNewMap();
+                    }
+                    else
+                    {
+                        CurrentMap = map;
+                        view.ShowMap(map);
+                    }
+                }
+                else
+                {
+                    GenerateNewMap();
+                }
             }
         }
 

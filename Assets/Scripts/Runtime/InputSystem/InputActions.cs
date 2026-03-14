@@ -1578,6 +1578,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""24831b3b-7f17-4716-be25-21d07be3ddf3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1723,6 +1732,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Esc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f69fd16b-58e2-4fdb-98ec-bdceae5e490d"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1792,6 +1812,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_DiceRoll_Scroll = m_DiceRoll.FindAction("Scroll", throwIfNotFound: true);
         m_DiceRoll_RightClick = m_DiceRoll.FindAction("RightClick", throwIfNotFound: true);
         m_DiceRoll_Esc = m_DiceRoll.FindAction("Esc", throwIfNotFound: true);
+        m_DiceRoll_Submit = m_DiceRoll.FindAction("Submit", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -2921,6 +2942,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_DiceRoll_Scroll;
     private readonly InputAction m_DiceRoll_RightClick;
     private readonly InputAction m_DiceRoll_Esc;
+    private readonly InputAction m_DiceRoll_Submit;
     /// <summary>
     /// Provides access to input actions defined in input action map "DiceRoll".
     /// </summary>
@@ -2960,6 +2982,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "DiceRoll/Esc".
         /// </summary>
         public InputAction @Esc => m_Wrapper.m_DiceRoll_Esc;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/Submit".
+        /// </summary>
+        public InputAction @Submit => m_Wrapper.m_DiceRoll_Submit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -3007,6 +3033,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Esc.started += instance.OnEsc;
             @Esc.performed += instance.OnEsc;
             @Esc.canceled += instance.OnEsc;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
         }
 
         /// <summary>
@@ -3039,6 +3068,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Esc.started -= instance.OnEsc;
             @Esc.performed -= instance.OnEsc;
             @Esc.canceled -= instance.OnEsc;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
         }
 
         /// <summary>
@@ -3464,5 +3496,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEsc(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSubmit(InputAction.CallbackContext context);
     }
 }

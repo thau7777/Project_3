@@ -12,7 +12,6 @@ namespace MyRule
         [SerializeField] private GameObject keyTxt;
         [SerializeField] private PlayableDirector portalTimeline;
         [SerializeField] private PlayableDirector startGameTimeline;
-        [SerializeField] private Button startBtn;
         private Loader.EScene targetScene;
         
         [SerializeField] private MeshRenderer portalRenderer;
@@ -30,16 +29,6 @@ namespace MyRule
                 canInteract = value;
                 Debug.Log("Portal can interact: " + canInteract);
             }
-        }
-
-        private void OnEnable()
-        {
-            startBtn.onClick.AddListener(OnStartBtnClicked);
-        }
-
-        private void OnDisable()
-        {
-            startBtn.onClick.RemoveListener(OnStartBtnClicked);
         }
 
         private void Start()
@@ -97,8 +86,8 @@ namespace MyRule
         {
             if (canInteract)
             {
-                CharacterStatsData characterStatsData = CharacterStatsManager.Instance.GetCharacterStats();
-                int runeAmount = RuneManger.Instance.RuneAmount;
+                CharacterData characterStatsData = CharacterManager.Instance.GetCharacterStats();
+                int runeAmount = RuneManger.Instance.CurrentRuneAmount;
                 SigilsInMatchData sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
                 MatchManager.Instance.CreateNewMatch(characterStatsData, runeAmount, sigilsInGame);
 
