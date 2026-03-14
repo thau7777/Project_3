@@ -278,6 +278,8 @@ namespace Turnbase
         {
             if (!playerActionsPanel.activeInHierarchy) return;
 
+            bool hasEnoughManaForAnySkill = currentCharacter.skills.Any(s => s.manaCost <= currentCharacter.stats.currentMP);
+
             isWaitingForConfirmation = false;
 
             attackButton.interactable = true;
@@ -337,7 +339,7 @@ namespace Turnbase
             {
                 SkillEntryUI newEntry = Instantiate(summonEntryPrefab, PlayerSummonPanel.transform);
 
-                newEntry.Setup(skillToUse, OnSkillButtonClicked);
+                newEntry.Setup(skillToUse, OnSkillButtonClicked, currentCharacter.stats.currentMP);
 
                 instantiatedSummonEntries.Add(newEntry);
             }
@@ -359,14 +361,16 @@ namespace Turnbase
 
             foreach (Tb_Item itemToUse in items)
             {
-                if (itemToUse.quantity > 0)
-                {
-                    ItemEntryUI newEntry = Instantiate(itemEntryPrefab, PlayerItemPanel.transform);
+                ItemEntryUI newEntry = Instantiate(itemEntryPrefab, PlayerItemPanel.transform);
 
-                    newEntry.SetUp(itemToUse, OnItemButtonClicked);
+                newEntry.SetUp(itemToUse, OnItemButtonClicked);
 
-                    instantiatedItemEntries.Add(newEntry);
-                }
+                instantiatedItemEntries.Add(newEntry);
+
+                //if (itemToUse.quantity > 0)
+                //{
+                    
+                //}
             }
         }        
         
@@ -512,7 +516,16 @@ namespace Turnbase
             foreach (Skill skillToUse in damageSkills)
             {
                 SkillEntryUI newEntry = Instantiate(skillEntryPrefab, PlayerSkillPanel.transform);
-                newEntry.Setup(skillToUse, OnSkillButtonClicked);
+
+                bool canAfford = currentCharacter.stats.currentMP >= skillToUse.manaCost;
+
+                newEntry.Setup(skillToUse, OnSkillButtonClicked, currentCharacter.stats.currentMP);
+
+                Button btn = newEntry.GetComponent<Button>();
+                if (btn != null)
+                {
+                    btn.interactable = canAfford;
+                }
 
                 instantiatedSkillEntries.Add(newEntry);
             }

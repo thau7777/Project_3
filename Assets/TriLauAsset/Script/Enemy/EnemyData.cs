@@ -23,18 +23,18 @@ namespace MyRule
         Cyclops,
         Orc,
         Cactus,
-        Nepenthe,
+        Nepenthes,
         RatAssassin,
         Craber,
         Myrmidon,
         StingRay,
-
     }
 
     [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy/EnemyData")]
     public class EnemyDataSO : ScriptableObject
     {
         public EnemyId enemyId;
+        public Sprite enemyImage;
 
         [Header("Stats")]
 

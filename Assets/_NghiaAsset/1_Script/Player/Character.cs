@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using MyRule;
 using MyRule.Audio;
 using UnityEngine;
@@ -98,7 +100,7 @@ namespace Turnbase
             if (healthSystem == null) healthSystem = gameObject.AddComponent<HealthSystem>();
             healthSystem.Init(this);
 
-            CharacterStatsData currentStats = CharacterStatsManager.Instance.GetCharacterStats();
+            CharacterData currentStats = CharacterManager.Instance.GetCharacterStats();
             stats = new CharacterStats(currentStats);
 
             if (stats == null)
@@ -115,10 +117,10 @@ namespace Turnbase
 
         }
 
-        public void InitializeCharacterFrom(CharacterClass classTypeToLoad)
+        public async void InitializeCharacterFrom(CharacterClass classTypeToLoad)
         {
             CharacterClassProfile targetProfile =
-                allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
+              allClassProfiles.FirstOrDefault(p => p.characterClass == classTypeToLoad);
 
             if (targetProfile == null)
             {
@@ -133,33 +135,51 @@ namespace Turnbase
                 animator.runtimeAnimatorController = targetProfile.animatorController;
             }
 
-            item.Clear(); 
-            if (targetProfile.initiaItem != null)
+            var itemStorageMgr = ItemStorageManager.Instance;
+            item.Clear();
+
+            if (itemStorageMgr != null && itemStorageMgr.ItemStorage != null)
             {
-                foreach (var itemTemplate in targetProfile.initiaItem)
+                // Duyệt qua từng ô vật phẩm trong kho đồ thực tế
+                foreach (var storageItem in itemStorageMgr.ItemStorage.Items)
                 {
-                    if (itemTemplate != null)
+                    if (storageItem == null) continue;
+
+                    // Tìm mẫu vật phẩm (Template) tương ứng trong Profile của Character
+                    // dựa trên ItemType của ô đồ đó
+                    var template = targetProfile.initiaItem
+                        .FirstOrDefault(t => t != null && t.type == storageItem.ItemType);
+
+                    if (template != null)
                     {
-                        Tb_Item clonedItem = Instantiate(itemTemplate);
+                        // Vì mỗi ô chỉ chứa 1 món, ta Instantiate một bản sao riêng
+                        Tb_Item clonedItem = Instantiate(template);
+                        clonedItem.quantity = 1; // Luôn là 1 theo quy định của bạn
+
+                        // Đồng bộ thêm recoveryAmount từ dữ liệu lưu trữ nếu cần
+                        // clonedItem.value = storageItem.RecoveryAmount; 
+
                         item.Add(clonedItem);
                     }
                 }
-                Debug.Log($"[LOG] Đã nạp {item.Count} vật phẩm khởi đầu cho {gameObject.name}");
+                Debug.Log($"[Init] Nhân vật nhận {item.Count} vật phẩm từ kho đồ cá nhân.");
             }
 
+            await UniTask.WaitUntil(() => SigilStorageManager.Instance.SigilStorageData != null);
+
             var storageManager = FindFirstObjectByType<SigilStorageManager>();
-            if (storageManager == null || storageManager.sigilStorageSO == null)
+            if (storageManager == null || storageManager.SigilStorageData == null)
             {
                 Debug.LogError("Không tìm thấy SigilStorageSO để lọc kỹ năng!");
                 return;
             }
 
             HashSet<string> ownedSigilNames = new HashSet<string>();
-            foreach (var s in storageManager.sigilStorageSO.activeSigils)
-                if (s != null) ownedSigilNames.Add(s.sigilName);
+            foreach (var s in storageManager.SigilStorageData.ActiveSigils)
+                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
 
-            foreach (var s in storageManager.sigilStorageSO.passiveSigils)
-                if (s != null) ownedSigilNames.Add(s.sigilName);
+            foreach (var s in storageManager.SigilStorageData.PassiveSigils)
+                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
 
             skills.Clear();
             if (targetProfile.initialSkills != null)
@@ -202,7 +222,7 @@ namespace Turnbase
         {
             if (buffManager != null && buffManager.CheckAndConsumeDivineShield())
             {
-                return; 
+                return;
             }
 
             if (Time.time - lastHurtSoundTime > HURT_SOUND_COOLDOWN)
@@ -234,19 +254,19 @@ namespace Turnbase
                 if (buffManager.magicalDefenseBuffTurnsRemaining > 0)
                 {
                     counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
-                                                && s.activatedDebuff.statToModify == DebuffType.SpeedReduction);
+                                  && s.activatedDebuff.statToModify == DebuffType.SpeedReduction);
                 }
 
                 if (counterSkill == null && buffManager.magicalAttackBuffTurnsRemaining > 0)
                 {
                     counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
-                                                && s.activatedDebuff.statToModify == DebuffType.Burn);
+                                  && s.activatedDebuff.statToModify == DebuffType.Burn);
                 }
 
                 if (counterSkill == null && buffManager.defenseBuffTurnsRemaining > 0)
                 {
                     counterSkill = skills.Find(s => s.stackApplicationTarget == StackApplicationTarget.Counter
-                                                && s.activatedDebuff.statToModify == DebuffType.Poison);
+                                  && s.activatedDebuff.statToModify == DebuffType.Poison);
                 }
 
                 if (counterSkill != null)
@@ -285,8 +305,8 @@ namespace Turnbase
             damageCallback = null;
         }
 
-        #region Heal Methods
-        public void Heal(int amount)
+        #region Heal Methods
+        public void Heal(int amount)
         {
             if (!isAlive) return;
 
@@ -318,10 +338,8 @@ namespace Turnbase
             Debug.Log($"{gameObject.name} hồi {amount} mana! Mana hiện tại: {stats.currentMP}");
         }
 
-        #endregion
+        #endregion
 
-    }
+    }
 
 }
-
-

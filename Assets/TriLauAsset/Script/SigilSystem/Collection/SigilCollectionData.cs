@@ -5,6 +5,16 @@ using System.Linq;
 
 namespace MyRule
 {
+    public enum ERarity
+    {
+        Common,
+        Uncommon,
+        Rare,
+        Epic,
+        Legendary,
+        Mythic,
+    }
+
     [Serializable]
     public class SigilCollectionData
     {
@@ -47,6 +57,10 @@ namespace MyRule
                 passiveSigils.Remove(sigil.Id);
             }
         }
+
+        public void SetActiveSigils(Dictionary<string, SigilData> sigils) => acctiveSigils = sigils;
+
+        public void SetPassiveSigils(Dictionary<string, SigilData> sigils) => passiveSigils = sigils;
     }
 
     [Serializable]
@@ -57,10 +71,6 @@ namespace MyRule
             acctiveSigils = new Dictionary<string, SigilData>();
             passiveSigils = new Dictionary<string, SigilData>();
         }
-
-        public void SetActiveSigils(Dictionary<string, SigilData> sigils) => acctiveSigils = sigils;
-
-        public void SetPassiveSigils(Dictionary<string, SigilData> sigils) => passiveSigils = sigils;
 
         public SigilData GetRandomSigil()
         {
@@ -96,19 +106,19 @@ namespace MyRule
 
         private SigilData GetWeight(Dictionary<string, SigilData> sigils)
         {
-            int totalWeight = 0;
+            float totalWeight = 0;
 
-            foreach (var w in sigils.Values)
-                totalWeight += w.Rarity;
+            foreach (var sigil in sigils)
+                totalWeight += sigil.Value.Weight;
 
-            int random = UnityEngine.Random.Range(0, totalWeight);
-            int current = 0;
+            float random = UnityEngine.Random.Range(0, totalWeight);
+            float current = 0;
 
-            foreach (var w in sigils.Values)
+            foreach (var w in sigils)
             {
-                current += w.Rarity;
+                current += w.Value.Weight;
                 if (random < current)
-                    return w;
+                    return w.Value;
             }
 
             return null;
@@ -121,19 +131,43 @@ namespace MyRule
         [JsonProperty] private string id;
         [JsonProperty] private string name;
         [JsonProperty] private SigilType sigilType;
-        [JsonProperty] private int rarity;
+        [JsonProperty] private ERarity rarity;
+        [JsonProperty] private float weight;
 
         [JsonIgnore] public string Id => id;
         [JsonIgnore] public string Name => name;
         [JsonIgnore] public SigilType SigilType => sigilType;
-        [JsonIgnore] public int Rarity => rarity;
+        [JsonIgnore] public ERarity Rarity => rarity;
+        [JsonIgnore] public float Weight => weight;
 
-        public SigilData(string id, SigilType sigilType, string name, int rarity)
+        public SigilData(string id, SigilType sigilType, string name, ERarity rarity)
         {
             this.id = id;
             this.name = name;
             this.sigilType = sigilType;
             this.rarity = rarity;
+
+            switch (rarity)
+            {
+                case ERarity.Common:
+                    this.weight = 50;
+                    break;
+                case ERarity.Uncommon:
+                    this.weight = 30;
+                    break;
+                case ERarity.Rare:
+                    this.weight = 12;
+                    break;
+                case ERarity.Epic:
+                    this.weight = 6;
+                    break;
+                case ERarity.Legendary:
+                    this.weight = 1.8f;
+                    break;
+                case ERarity.Mythic:
+                    this.weight = 0.2f;
+                    break;
+            }
         }
     }
 }

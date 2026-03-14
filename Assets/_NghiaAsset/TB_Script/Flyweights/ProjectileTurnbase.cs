@@ -31,12 +31,24 @@ namespace Turnbase
 
         private IEnumerator MoveToTarget()
         {
-            Vector3 endPos = target.transform.position;
+            Vector3 GetTargetPos()
+            {
+                if (target == null) return transform.position;
+                return target.buffEffectSpawnPoint != null
+                    ? target.buffEffectSpawnPoint.position
+                    : target.transform.position + Vector3.up * 1f;
+            }
+
+            Vector3 endPos = GetTargetPos();
 
             while (target != null && Vector3.Distance(transform.position, endPos) > 0.1f)
             {
-                endPos = target.transform.position;
+                endPos = GetTargetPos(); 
+
                 transform.position = Vector3.MoveTowards(transform.position, endPos, SPEED * Time.deltaTime);
+
+                transform.LookAt(endPos);
+
                 yield return null;
             }
 
@@ -44,12 +56,9 @@ namespace Turnbase
             {
                 ApplyImpact();
             }
-            float releaseDelay = skillData.impactVFXDuration > 0 ? skillData.impactVFXDuration : 0f;
 
-            if (releaseDelay > 0)
-            {
-                yield return new WaitForSeconds(releaseDelay);
-            }
+            float releaseDelay = skillData.impactVFXDuration > 0 ? skillData.impactVFXDuration : 0f;
+            if (releaseDelay > 0) yield return new WaitForSeconds(releaseDelay);
 
             FlyweightFactory_TB.ReturnToPool(this);
         }

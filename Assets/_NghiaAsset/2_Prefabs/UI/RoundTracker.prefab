@@ -60,14 +60,29 @@ MonoBehaviour:
     maxShield: 0
     currentShield: 0
     physicalAttack: 0
-    physicalDefense: 0
     magicAttack: 0
+    physicalDefense: 0
     magicDefense: 0
-    crit: 0
-    critDamage: 0
-    agility: 0
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles: []
   skills: []
+  item: []
   passiveSkills: []
   isPlayer: 0
   isVirtualTracker: 0
@@ -89,8 +104,14 @@ MonoBehaviour:
   RenderTexture: {fileID: 0}
   damagePopupCanvasParent: {fileID: 0}
   enemyStatsUI: {fileID: 0}
+  SkillSpawnPoint: {fileID: 0}
+  SkillSpawnPoint2: {fileID: 0}
+  buffEffectSpawnPoint: {fileID: 0}
+  isAttackBlocked: 0
+  healthSystem: {fileID: 0}
+  isParrySuccessful: 0
   currentRound: 30
-  VIRTUAL_AGILITY: 100
+  VIRTUAL_AGILITY: 1
 --- !u!114 &400613998819692631
 MonoBehaviour:
   m_ObjectHideFlags: 0

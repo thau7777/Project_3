@@ -1,15 +1,25 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
 {
+    [Serializable]
+    public class EnemyInMap
+    {
+        [SerializeField] public PlanetType planetType;
+        [SerializeField] public MapEnemies enemies;
+    }
+
     public class WaveManager : PersistentSingleton<WaveManager>
     {
-        [SerializeField] private List<EnemyDataSO> enemyDataSOs;
+        [SerializeField] private List<EnemyInMap> enemiesInMap;
         private int currentLevel = 1;
         private GroupWave groupWave;
         
+        [SerializeField] private MapEnemies mapEnemies;
+
         private EventBinding<WaveEvent> eventBinding;
 
         private void OnEnable()
@@ -31,6 +41,11 @@ namespace MyRule
             groupWave = waveEvent.GroupWave;
         }
 
+        private void Start()
+        {
+           
+        }
+
         public UniTask CreateNewWave()
         {
             InitWave();
@@ -40,7 +55,7 @@ namespace MyRule
 
         public EnemyDataSO GetEnemySOById(EnemyId id)
         {
-            return enemyDataSOs.Find(so => so.enemyId == id);
+            return mapEnemies.enemies.Find(so => so.enemyId == id);
         }
 
         public GroupWave GetCurrentWave()
@@ -50,7 +65,7 @@ namespace MyRule
 
         private void InitWave()
         {
-            int waveCount = Random.Range(2, 5);
+            int waveCount = UnityEngine.Random.Range(2, 5);
             
             groupWave = new GroupWave(waveCount);
 
@@ -60,15 +75,15 @@ namespace MyRule
 
                 if (waveCount == 2)
                 {
-                    enemyCount = Random.Range(3, 6);
+                    enemyCount = UnityEngine.Random.Range(3, 6);
                 }
                 else if (waveCount == 3)
                 {
-                    enemyCount = Random.Range(2, 5);
+                    enemyCount = UnityEngine.Random.Range(2, 5);
                 }
                 else if (waveCount == 4)
                 {
-                    enemyCount = Random.Range(2, 4);
+                    enemyCount = UnityEngine.Random.Range(2, 4);
                 }
                 else enemyCount = 3;
 
@@ -95,8 +110,8 @@ namespace MyRule
 
         private EnemyDataSO GetRandomEnemyDataSO()
         {
-            int index = Random.Range(0, enemyDataSOs.Count);
-            return enemyDataSOs[index];
+            int index = UnityEngine.Random.Range(0, mapEnemies.enemies.Count);
+            return mapEnemies.enemies[index];
         }
     }
 }

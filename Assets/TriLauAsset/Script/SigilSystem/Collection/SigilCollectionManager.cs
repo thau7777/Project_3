@@ -26,9 +26,11 @@ namespace MyRule
 
         public SigilsInMatchData GetSigilCollection()
         {
+            if (sigilCollection == null) return null;
+
             SigilsInMatchData sigilsInMatchData = new SigilsInMatchData();
 
-            if (sigilCollection.ActiveSigils.Count > 0)
+            if (sigilCollection.ActiveSigils != null && sigilCollection.ActiveSigils.Count > 0)
             {
                 var activeSigilList = sigilCollection.ActiveSigils.ToList();
 
@@ -43,7 +45,7 @@ namespace MyRule
                 sigilsInMatchData.SetActiveSigils(result);
             }
 
-            if (sigilCollection.PassiveSigils.Count > 0)
+            if (sigilCollection.PassiveSigils != null && sigilCollection.PassiveSigils.Count > 0)
             {
                 var passiveSigilList = sigilCollection.PassiveSigils.ToList();
 

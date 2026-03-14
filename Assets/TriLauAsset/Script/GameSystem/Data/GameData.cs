@@ -25,7 +25,7 @@ namespace MyRule
 
         public void SetSigilCollection(SigilCollectionData sigilCollection) => this._sigilCollection = sigilCollection;
 
-        public MatchData CreateNewMatch(CharacterStatsData characterStatsData, int runeAmount, SigilsInMatchData sigilInMatch) => _matchData = new MatchData(characterStatsData, runeAmount, sigilInMatch);
+        public MatchData CreateNewMatch(CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilInMatch) => _matchData = new MatchData(characterStatsData, runeAmount, sigilInMatch);
 
         public void SetMatch(MatchData matchData) => this._matchData = matchData;
     }

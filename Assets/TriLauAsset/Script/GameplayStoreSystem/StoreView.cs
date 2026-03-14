@@ -19,8 +19,6 @@ namespace MyRule
         [SerializeField] private Card[] passiveCards;
         [SerializeField] private StoreItemView[] items;
 
-        [SerializeField] private GameObject cam;
-
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
@@ -39,7 +37,8 @@ namespace MyRule
         {
             if (isShowing) return;
             
-            cam.gameObject.SetActive(true);
+            DialogueManager.Instance.CanContinueDialogue = false;
+            RTSCameraController.Instance.CanInteract = false;
 
             await UniTask.Delay(800);
 
@@ -57,16 +56,16 @@ namespace MyRule
 
             await UniTask.Delay((int)fadeDuration * 1000);
 
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+
             SpawnActiveSigil();
             
-
             passiveCardsCons.SetActive(true);
 
             await ShowingPassiveSigilCard(true);
 
             isShowing = true;
-
-            RTSCameraController.Instance.CanInteract = false;
 
             CardTracker.Instance.canInteract = true;
             CardTracker.Instance.isReward = false;
@@ -82,6 +81,9 @@ namespace MyRule
 
             passiveCardsCons?.SetActive(false);
 
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,
                 from: canvasGroup.alpha,
@@ -95,9 +97,11 @@ namespace MyRule
 
             CardTracker.Instance.canInteract = false;
 
-            cam.gameObject.SetActive(false);
-
             RTSCameraController.Instance.CanInteract = true;
+
+            DialogueManager.Instance.CanContinueDialogue = true;
+
+            DialogueManager.Instance.ContinueStoryOrExitStory();
         }
 
         private UniTask ShowingPassiveSigilCard(bool showing)

@@ -2,9 +2,14 @@ using UnityEngine;
 
 namespace MyRule.Event
 {
-    public struct HUDEvent : IEvent
+    public struct OpenHUDEvent : IEvent
     {
-      
+        public readonly bool show;
+
+        public OpenHUDEvent(bool show)
+        {
+            this.show = show;
+        }
     }
 
     public struct AddSigilEvent : IEvent

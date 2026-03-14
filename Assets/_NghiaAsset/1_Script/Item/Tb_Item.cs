@@ -1,4 +1,5 @@
 using UnityEngine;
+using MyRule;
 
 namespace Turnbase
 {
@@ -8,7 +9,7 @@ namespace Turnbase
         public string itemName;
         public string description;
         public int value;
-        public int quantity;
+        public int quantity = 1;
         public Sprite icon;
 
         public FlyweightSettings_TB effect;
@@ -16,35 +17,7 @@ namespace Turnbase
         public ItemType type;
 
 
-        public enum ItemType
-        {
-            Healing,
-            Mana,
 
-            PhysicalAttack,
-            MagicalAttack,
-            FireDMG,
-            WaterDMG,
-            LightningDMG,
-            PoisonDMG,
-            FrostDMG,
-            HolyDMG,
-            DarkDMG,
-            NormalDMG,
-
-            PhysicalDef,
-            MagicalDef,
-            FireDef,
-            WaterDef,
-            LightningDef,
-            PoisonDef,
-            FrostDef,
-            HolyDef,
-            DarkDef,
-            NormalDef,
-
-
-        }
     }
 
 }

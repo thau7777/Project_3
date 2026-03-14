@@ -82,11 +82,12 @@ namespace MyRule
                 case NodeType.Treasure:
                     break;
                 case NodeType.Store:
-                    EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Store));
+                    NPCManager.Instance.TriggetStore();
                     break;
                 case NodeType.Boss:
                     break;
                 case NodeType.Mystery:
+                    NPCManager.Instance.RandomNPC();
                     break;
                 default:
                     Debug.Log("Ko co j");

@@ -20,6 +20,7 @@ namespace MyRule.UI
         HUD,
         Store,
         MazeRewards,
+        Dialogue,
         None
     }
 

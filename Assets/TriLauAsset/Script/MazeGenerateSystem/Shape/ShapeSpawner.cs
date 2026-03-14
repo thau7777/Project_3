@@ -56,7 +56,7 @@ namespace MyRule
                     //MazeChainSpawnerManager.Instance.SpawnChain(this.transform, ShapePointContext.shapeNote.position, pos);
                     ShapePointContext.shapeNote.AddTarget(shapeInfo);
                     ShapePointContext.shapeNote = shapeInfo;
-                    shapeInfo.shapeSO = WeightedRandom.Instance.GetWeightedRandom();
+                    //shapeInfo.shapeSO = WeightedRandom.Instance.GetWeightedRandom();
                     prevPos = pos;
                 }
             }

@@ -12,6 +12,9 @@ namespace MyRule
         [SerializeField] private SigilSO sigilSO;
         private SigilData sigilData;
 
+        [SerializeField] private MeshRenderer borderMesh;
+        [SerializeField] private Material[] borderMaterial;
+
         [SerializeField] private Vector3 hoverScale = new Vector3(1.2f, 1.2f, 1.2f);
         [SerializeField] private SpriteRenderer sigilImg;
         [SerializeField] private TextMeshPro sigilNameTxt;
@@ -54,6 +57,28 @@ namespace MyRule
                 sigilDescTxt.text += '\n' + sigilSO.sigilDesTB;
             }
             runeTxt.text = sigilSO.price.ToString();
+
+            switch (sigilSO.rarity)
+            {
+                case ERarity.Common:
+                    borderMesh.material = borderMaterial[0];
+                    break;
+                case ERarity.Uncommon:
+                    borderMesh.material = borderMaterial[1];
+                    break;
+                case ERarity.Rare:
+                    borderMesh.material = borderMaterial[2];
+                    break;
+                case ERarity.Epic:
+                    borderMesh.material = borderMaterial[3];
+                    break;
+                case ERarity.Legendary:
+                    borderMesh.material = borderMaterial[4];
+                    break;
+                case ERarity.Mythic:
+                    borderMesh.material = borderMaterial[5];
+                    break;
+            }
         }
 
         private void OnMouseEnter()
@@ -80,7 +105,7 @@ namespace MyRule
 
             if (!isReward)
             {
-                int runeAmount = RuneManger.Instance.RuneAmount;
+                int runeAmount = RuneManger.Instance.CurrentRuneAmount;
 
                 if (runeAmount > sigilSO.price)
                 {
