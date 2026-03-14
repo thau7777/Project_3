@@ -72,9 +72,9 @@ namespace MyRule
             {
                 case NodeType.MinorEnemy:
                     {
-                        //await WaveManager.Instance.CreateNewWave();
-                        //await UniTask.Delay(1000);
-                        //SceneManager.LoadScene("TurnBase");
+                        await WaveManager.Instance.CreateNewWave();
+                        await UniTask.Delay(1000);
+                        SceneManager.LoadScene("TurnBase");
                         break;
                     }
                 case NodeType.RestSite:
@@ -83,7 +83,6 @@ namespace MyRule
                     break;
                 case NodeType.Store:
                     NPCManager.Instance.TriggetStore();
-                    //EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Store));
                     break;
                 case NodeType.Boss:
                     break;

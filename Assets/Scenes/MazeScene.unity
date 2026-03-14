@@ -31639,11 +31639,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.WaveManager
   AutoUnparentOnAwake: 1
-  enemyDataSOs:
-  - {fileID: 11400000, guid: e745d4df2a202ea409ed8591ec8564ec, type: 2}
-  - {fileID: 11400000, guid: 5cc7b282011a3d844ac584f1a1d153d8, type: 2}
-  - {fileID: 11400000, guid: 6a902235627217444a16bcaf6542b276, type: 2}
-  - {fileID: 11400000, guid: b7e54b1b2541793499ec0d356f5539d9, type: 2}
+  enemiesInMap:
+  - planetType: 0
+    enemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}
+  - planetType: 1
+    enemies: {fileID: 11400000, guid: cd7f11ed964312a4e84638044ea77d17, type: 2}
+  - planetType: 2
+    enemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
+  mapEnemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}
 --- !u!4 &1347812328
 Transform:
   m_ObjectHideFlags: 0

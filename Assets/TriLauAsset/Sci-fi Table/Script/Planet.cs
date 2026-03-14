@@ -76,7 +76,7 @@ namespace MyRule
             isDetailShown = true;
             canActive = true;
 
-            PlanetView.Instance.Show(planetSO);
+            //PlanetView.Instance.Show(planetSO);
         }
 
         public void HideDetailPlanet()
@@ -85,7 +85,7 @@ namespace MyRule
             isDetailShown = false;
             canActive = false;
 
-            PlanetView.Instance.Hide();
+            //PlanetView.Instance.Hide();
         }
 
         private void ActivePlanet(ScifitableActiveEvent obj)
