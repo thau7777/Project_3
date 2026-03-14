@@ -1,3 +1,4 @@
+using MyRule.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -74,6 +75,8 @@ namespace MyRule
             highlightRing.SetActive(false);
             isDetailShown = true;
             canActive = true;
+
+            PlanetView.Instance.Show(planetSO);
         }
 
         public void HideDetailPlanet()
@@ -81,6 +84,8 @@ namespace MyRule
             highlightRing.SetActive(true);
             isDetailShown = false;
             canActive = false;
+
+            PlanetView.Instance.Hide();
         }
 
         private void ActivePlanet(ScifitableActiveEvent obj)

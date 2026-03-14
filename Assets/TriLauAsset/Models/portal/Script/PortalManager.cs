@@ -9,6 +9,8 @@ namespace MyRule
 {
     public class PortalManager : Singleton<PortalManager>
     {
+        [SerializeField] private WarpController warpController;
+
         [SerializeField] private GameObject keyTxt;
         [SerializeField] private PlayableDirector portalTimeline;
         [SerializeField] private PlayableDirector startGameTimeline;
@@ -101,7 +103,9 @@ namespace MyRule
 
                 HighlightPortalAsync(5000f, cutscene2Duration).Forget();
 
-                await UniTask.Delay(7000);
+                warpController.StartRunWarpDrive();
+
+                await UniTask.Delay(4600);
                 
                 Cursor.lockState = CursorLockMode.None;
 

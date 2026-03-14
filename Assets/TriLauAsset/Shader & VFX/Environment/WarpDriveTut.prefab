@@ -27,15 +27,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7141001731939957789}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000000018626451, y: 1, z: 0.000000007450581, w: -0.000000044703484}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: 0.00075125694, y: 0.00060105324, z: 11.766855}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 30, y: 30, z: 1000}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1244112300558739569}
   - {fileID: 1061597909096555053}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!2083052967 &594120971890717422
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -53,7 +53,10 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 1
+        m_Name: WarpAmount
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -137,15 +140,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.WarpController
   effect: {fileID: 594120971890717422}
-  cineCam: {fileID: 0}
   cylinder1: {fileID: 74543963949798174}
   cylinder2: {fileID: 2229459321545070914}
-  minLens: 10
-  maxLens: 160
-  holdDuration: 5
-  lensStartBeforeHoldEnd: 2
-  warpReduceDuration: 6
-  lensReduceDuration: 9
+  effectDuration: 5
+  delayToActiveWarp: 4
+  warpDuration: 10
 --- !u!1001 &662368692574750150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -156,27 +155,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 600
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.000051072344
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0001548216
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.8
+      value: 8.798002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -243,15 +242,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 14
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 14
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 600
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.x

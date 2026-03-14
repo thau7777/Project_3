@@ -13,5 +13,10 @@ namespace MyRule
     public class PlanetSO : ScriptableObject
     {
         public PlanetType planetType;
+        public string planetName;
+        public Sprite image;
+        [TextArea(3, 4)]
+        public string planetDescription;
+        public EnemyDataSO[] enemyDatas;
     }
 }

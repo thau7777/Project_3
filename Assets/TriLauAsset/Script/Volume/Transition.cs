@@ -13,17 +13,24 @@ namespace MyRule
             float duration,
             CancellationToken token = default)
         {
+            if (duration <= 0f)
+            {
+                setter(to);
+                return;
+            }
+
             float t = 0f;
 
             setter(from);
 
             while (t < duration)
             {
-                if (token.IsCancellationRequested)
-                    return;
+                token.ThrowIfCancellationRequested();
 
                 t += Time.deltaTime;
+
                 setter(Mathf.Lerp(from, to, t / duration));
+
                 await UniTask.Yield(PlayerLoopTiming.Update, token);
             }
 
