@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using UnityEngine;
 
 namespace MyRule
@@ -61,6 +62,8 @@ namespace MyRule
             {
                 _matchData = null;
             }
+
+            EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
 
             return UniTask.CompletedTask;
         }

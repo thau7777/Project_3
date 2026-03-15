@@ -75,7 +75,6 @@ namespace MyRule
                         BlackFade.Instance.FadeIn();
                         CombatManager.Instance.CreateNewCombat();
                         await WaveManager.Instance.CreateNewWave();
-                        await UniTask.Delay(1000);
                         SceneManager.LoadScene("TopDown");
                         break;
                     }

@@ -1,5 +1,6 @@
-using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MyRule
 {
@@ -8,25 +9,34 @@ namespace MyRule
         [SerializeField] private GameObject matchResultContents;
         [SerializeField] private GameObject winTitle;
         [SerializeField] private GameObject loseTitle;
+        [SerializeField] private Button submitBtn;
 
-        private async void Start()
+        private EventBinding<UpdateMatchResultEvent> matchResulteventBinding;
+
+        private void OnEnable()
         {
-            Hide();
-
-            await UniTask.WaitUntil(() => MatchManager.Instance.MatchData != null);
-
-            CheckMatchResult();  
+            matchResulteventBinding = new EventBinding<UpdateMatchResultEvent>(CheckMatchResult);
+            EventBus<UpdateMatchResultEvent>.Register(matchResulteventBinding);
         }
 
-        private void CheckMatchResult()
+        private void OnDisable()
         {
-            MatchData matchData = MatchManager.Instance.MatchData;
+            EventBus<UpdateMatchResultEvent>.Deregister(matchResulteventBinding);
+        }
 
-            if (matchData.Result == EMatchResult.Win)
+        private void Start()
+        {
+            Hide();
+            submitBtn.onClick.AddListener(OnSubmit);
+        }
+
+        private void CheckMatchResult(UpdateMatchResultEvent evt)
+        {
+            if (evt.eMatchResult == EMatchResult.Win)
             {
                 Show(winTitle);
             }
-            else if (matchData.Result == EMatchResult.Lose)
+            else if (evt.eMatchResult == EMatchResult.Lose)
             {
                 Show(loseTitle);
             }
@@ -36,6 +46,8 @@ namespace MyRule
         {
             matchResultContents.SetActive(true);
             title.SetActive(true);
+
+            submitBtn.Select();
         }
 
         private void Hide()
@@ -43,6 +55,15 @@ namespace MyRule
             matchResultContents?.SetActive(false);
             winTitle?.SetActive(false);
             loseTitle?.SetActive(false);
+        }
+
+        private async void OnSubmit()
+        {
+            MatchData matchData = MatchManager.Instance.MatchData;
+            HistoryManager.Instance.AddMatchToHistory(matchData);
+            MatchManager.Instance.FinishMatch();
+
+            await Loader.LoadSceneWithLoading(Loader.EScene.SpaceStationScene);
         }
     }
 }
