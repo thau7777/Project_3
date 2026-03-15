@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using TMPro;
-
+using Cysharp.Threading.Tasks;
+using System.Threading;
 /// <summary>
 /// Spawned as a world-space flyweight to display floating combat numbers
 /// (damage, heals, crits, etc.) that pop, drift, and fade away.
@@ -113,6 +114,7 @@ public class FloatingCombatText : Flyweight
     #region Private Fields
     private TextMeshPro _tmp;
     private Coroutine _activeAnim;
+    private CancellationTokenSource _poolReturnCts;
 
     private static readonly int FaceColorProp = Shader.PropertyToID("_FaceColor");
     private static readonly int OutlineColorProp = Shader.PropertyToID("_OutlineColor");
@@ -126,18 +128,33 @@ public class FloatingCombatText : Flyweight
         _tmp = GetComponent<TextMeshPro>();
         //Init()
     }
+
     // ── Public API ────────────────────────────────────────────────────────────
+
+    private void OnDisable()
+    {
+        CancelPoolReturnCountdown();
+
+        if (_activeAnim != null)
+        {
+            StopCoroutine(_activeAnim);
+            _activeAnim = null;
+        }
+    }
 
     public void Init(string text, CombatTextType type, Vector3 originSpawnPos, bool isCrit = false)
     {
         if (_activeAnim != null)
             StopCoroutine(_activeAnim);
 
+        // Cancel any previous countdown before starting a new one
+        CancelPoolReturnCountdown();
+
         transform.position = originSpawnPos;
         transform.localScale = Vector3.zero;
 
         TextStyle style = GetStyle(type);
-        _tmp.text = text; // ← assign directly
+        _tmp.text = text;
         ApplyColors(style.faceColor, style.outlineColor, style.underlayColor, 1f);
 
         float targetScale = isCrit ? critScale : normalScale;
@@ -145,6 +162,40 @@ public class FloatingCombatText : Flyweight
         float speed = Random.Range(minSpeed, maxSpeed);
 
         _activeAnim = StartCoroutine(AnimateRoutine(style, targetScale, driftDir, speed));
+
+        // Total lifetime = pop + hold + fade
+        float totalDuration = popDuration + holdDuration + fadeDuration;
+        _poolReturnCts = new CancellationTokenSource();
+        PoolReturnCountdown(totalDuration, _poolReturnCts.Token).Forget();
+    }
+
+    private async UniTaskVoid PoolReturnCountdown(float duration, CancellationToken ct)
+    {
+        bool cancelled = await UniTask.Delay(
+            System.TimeSpan.FromSeconds(duration),
+            cancellationToken: ct
+        ).SuppressCancellationThrow();
+
+        if (cancelled) return;
+
+        // Stop the coroutine if still running (safety net)
+        if (_activeAnim != null)
+        {
+            StopCoroutine(_activeAnim);
+            _activeAnim = null;
+        }
+
+        ReturnToPool();
+    }
+
+    private void CancelPoolReturnCountdown()
+    {
+        if (_poolReturnCts != null)
+        {
+            _poolReturnCts.Cancel();
+            _poolReturnCts.Dispose();
+            _poolReturnCts = null;
+        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -193,12 +244,11 @@ public class FloatingCombatText : Flyweight
         float punchPeak = targetScale * punchScale;
         float elapsed = 0f;
 
-        // ── 1. Pop in ────────────────────────────────────────────────────────
+        // ── 1. Pop in ──────────────────────────────────────────────────────
         while (elapsed < popDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / popDuration;
-
             float overshoot = Mathf.Sin(t * Mathf.PI) * (punchPeak - targetScale);
             transform.localScale = Vector3.one * (Mathf.Lerp(0f, targetScale, t) + overshoot);
             transform.position += driftDir * (speed * Time.deltaTime);
@@ -207,7 +257,7 @@ public class FloatingCombatText : Flyweight
 
         transform.localScale = Vector3.one * targetScale;
 
-        // ── 2. Hold ──────────────────────────────────────────────────────────
+        // ── 2. Hold ────────────────────────────────────────────────────────
         elapsed = 0f;
         while (elapsed < holdDuration)
         {
@@ -216,21 +266,19 @@ public class FloatingCombatText : Flyweight
             yield return null;
         }
 
-        // ── 3. Fade out ───────────────────────────────────────────────────────
+        // ── 3. Fade out ────────────────────────────────────────────────────
         elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / fadeDuration;
-            float alpha = Mathf.Lerp(1f, 0f, t * t); // ease-in
-
+            float alpha = Mathf.Lerp(1f, 0f, t * t);
             ApplyColors(style.faceColor, style.outlineColor, style.underlayColor, alpha);
-
             transform.position += driftDir * (speed * (1f - t) * Time.deltaTime);
             yield return null;
         }
 
-        // ── 4. Return to pool ─────────────────────────────────────────────────
-        ReturnToPool();
+        _activeAnim = null;
+        // ── No ReturnToPool here — UniTask countdown handles it ────────────
     }
 }

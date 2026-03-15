@@ -362,11 +362,11 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
             {
                 Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
                 vfx.FlyweightInitialize(spawnPoint.position, transform.rotation); // set position
+                int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
                 if (vfx is StraightProjectile)
                 {
                     var straightProjectile = vfx as StraightProjectile;
 
-                    int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
 
                     straightProjectile.InitializeProjectile(
                         gameObject,
@@ -397,7 +397,6 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
                     if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
                     {
-                        int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
                         damageDealer.Setup(
                             oneshotSettings.isMagicAttack,
                             finalDamage,

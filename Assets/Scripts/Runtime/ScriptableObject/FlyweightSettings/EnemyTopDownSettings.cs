@@ -28,7 +28,7 @@ public class EnemyTopDownSettings : FlyweightSettings
         var characterStats = go.GetOrAdd<CharacterStats>();
         //characterStats.Setup(elementalType, _initialHealth, 0, 10, 10, 40, 40, 5, 5, 1.5f, 1);
 
-        go.GetOrAdd<NavMeshSteering>().target = GameObject.FindWithTag("Player").transform;
+        go.GetOrAdd<NavMeshSteering>().target = PlayerTopDownStateDriver.Instance.transform;
         return flyweight;
     }
 
