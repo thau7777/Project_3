@@ -82,7 +82,10 @@ public class SkillExecutor : MonoBehaviour
             Dictionary<string, SigilData> activeSigilsDic = SigilStorageManager.Instance.SigilStorageData.ActiveSigils;
             if (activeSigilsDic != null)
             {
-                _skillStrategies = new SkillStrategy[6];
+                for(int i = 2; i < 6; i++)
+                {
+                    _skillStrategies[i] = null;
+                }
                 foreach (var kvp in activeSigilsDic)
                 {
                     SkillStrategy skill = TopdownSkillDataBase.Instance.GetSkillStrategyByName(kvp.Value.Name);
@@ -99,12 +102,12 @@ public class SkillExecutor : MonoBehaviour
                     {
                         case EKeyBinding.Shift:
                             {
-                                _skillStrategies[0] = skill;
+                                //_skillStrategies[0] = skill;
                                 break;
                             }
                         case EKeyBinding.Space:
                             {
-                                _skillStrategies[1] = skill;
+                                //_skillStrategies[1] = skill;
                                 break;
                             }
                         case EKeyBinding.Q:
