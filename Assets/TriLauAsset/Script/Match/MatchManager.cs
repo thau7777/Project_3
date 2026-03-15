@@ -19,7 +19,7 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
         }
 
-        public bool IsNewMatch() => _matchData.IsNewMatch;
+        public bool IsNewMatch() => _matchData.IsNewMatch == true;
 
         public void CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
