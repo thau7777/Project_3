@@ -39,7 +39,6 @@ public class SkillExecutor : MonoBehaviour
     void Awake()
     {
         _layerIgnoreController = GetComponent<CCLayerIgnoreController>();
-        InitializeMana(100);
     }
     private void OnEnable()
     {
@@ -54,7 +53,7 @@ public class SkillExecutor : MonoBehaviour
     {
         InitializeSkillInstance();
     }
-    private void InitializeMana(float maxMana)
+    public void InitializeMana(float maxMana)
     {
         _maxMana = maxMana;
         _currentMana = maxMana;

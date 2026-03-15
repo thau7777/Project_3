@@ -1,6 +1,8 @@
 using HSM;
+using MyRule;
 using System;
 using System.Collections.Generic;
+using Turnbase;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -102,8 +104,19 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _characterStats = GetComponent<CharacterStats>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
 
-        GetComponent<Damageable>().Initialize(_characterStats.InitialHealth, 0);
 
+        CharacterData playerStats = CharacterManager.Instance.GetCharacterStats();
+        BaseStatsData baseStatsData = playerStats.CharacterStatsData.BaseStatsData;
+        DamageData damageData = playerStats.CharacterStatsData.Damage;
+        DefenseData defenseData = playerStats.CharacterStatsData.Defense;
+        _characterStats.Setup(ElementalType.Normal, baseStatsData.MaxHealth, 0, baseStatsData.MaxMana, damageData.PhysDmg,
+            damageData.MagDmg, damageData.FireDmg, damageData.WaterDmg, damageData.FrostDmg, damageData.LightningDmg, damageData.HolyDmg,
+            damageData.DarkDmg, damageData.PoisonDmg, defenseData.PhysDef, defenseData.MagDef, defenseData.FireDef, defenseData.WaterDef,
+            defenseData.FrostDef, defenseData.LightningDef, defenseData.HolyDef, defenseData.DarkDef, defenseData.PoisonDef, baseStatsData.Speed,
+            baseStatsData.CritChance, baseStatsData.CritMult);
+
+        GetComponent<Damageable>().Initialize(baseStatsData.CurrentHealth, baseStatsData.MaxHealth, 0);
+        _executor.InitializeMana(baseStatsData.MaxMana);
 
         _context = new PlayerTopdownContext.Builder()
         .SetBaseMoveSpeed(_characterStats.Speed)

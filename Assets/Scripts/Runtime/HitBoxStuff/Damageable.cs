@@ -39,7 +39,7 @@ public class Damageable : MonoBehaviour
         _ccLayerIgnoreController = gameObject.GetOrAdd<CCLayerIgnoreController>();
 
     }
-    public void Initialize(float maxHealth, float shieldHealth)
+    public void Initialize(float currentHealth, float maxHealth, float shieldHealth)
     {
         MaxHealth = maxHealth;
         CurrentHealth = maxHealth;

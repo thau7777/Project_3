@@ -26,7 +26,7 @@ public class MinionTopDownStateDriver : MonoBehaviour
 
         _animator = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
-        GetComponent<Damageable>().Initialize(_minionData.MaxHealth, 0);
+        GetComponent<Damageable>().Initialize(_minionData.MaxHealth, _minionData.MaxHealth, 0);
 
         _context = new MinionTopDownContext.Builder()
         .SetKind(minionData.Kind)
