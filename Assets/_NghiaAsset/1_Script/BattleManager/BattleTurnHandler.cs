@@ -18,7 +18,7 @@ namespace Turnbase
 
             while (true)
             {
-                if (bm.activeCharacter == null && !isProcessingTurn)
+                if (bm != null && !bm.isProcessingTurn && bm.activeCharacter == null && !isProcessingTurn)
                 {
                     List<Character> currentCombatants = bm.allCombatants
                         .Where(c => c != null && c.isAlive && c.stateMachine.currentState is WaitingState)
