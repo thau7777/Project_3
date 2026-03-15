@@ -80,7 +80,7 @@ namespace MyRule
 
             foreach (var sigilSO in baseSigil.sigilSOs)
             {
-                SigilData sigil = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.rarity, sigilSO.keyBinding);
+                SigilData sigil = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.mag, sigilSO.manaCost, sigilSO.rarity, sigilSO.keyBinding);
                 sigilCollection.AddSigil(sigil);
             }
 

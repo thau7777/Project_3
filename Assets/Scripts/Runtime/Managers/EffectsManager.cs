@@ -22,6 +22,22 @@ public class ActiveEffect
     public float storedCriticalMultiplierChanges;
     public float storedAttackSizeScaleChanges;
 
+    public float storedFireDamageChanges;
+    public float storedWaterDamageChanges;
+    public float storedFrostDamageChanges;
+    public float storedLightningDamageChanges;
+    public float storedHolyDamageChanges;
+    public float storedDarkDamageChanges;
+    public float storedPoisonDamageChanges;
+
+    public int storedFireDefenseChanges;
+    public int storedWaterDefenseChanges;
+    public int storedFrostDefenseChanges;
+    public int storedLightningDefenseChanges;
+    public int storedHolyDefenseChanges;
+    public int storedDarkDefenseChanges;
+    public int storedPoisonDefenseChanges;
+
     public ActiveEffect(GameObject sender, Effect eff, float time, int stacks)
     {
         this.sender = sender;

@@ -71,7 +71,7 @@ public class ItemSlotUI : MonoBehaviour
 
     private void RefreshQuantityText()
     {
-        bool showQuantity = _item.Definition.loseQuantityOnUse && _item.currentQuantity > 0;
+        bool showQuantity = _item.Definition.loseQuantityOnUse && _item.currentQuantity > 1;
         _quantityText.gameObject.SetActive(showQuantity);
         if (showQuantity)
             _quantityText.text = _item.currentQuantity.ToString();
