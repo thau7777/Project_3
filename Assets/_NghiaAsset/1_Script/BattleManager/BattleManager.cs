@@ -72,6 +72,9 @@ namespace Turnbase
 
         async void Start()
         {
+            isProcessingTurn = true;
+            if (turnHandler != null) turnHandler.isProcessingTurn = true;
+
             if (spawner != null) spawner.Initialize(this);
             if (turnHandler != null) turnHandler.Initialize(this);
 
@@ -81,9 +84,6 @@ namespace Turnbase
                 uiManager.InitializeCombatantButtons(allCombatants, statDisplayPanel, this);
 
             ChooseRandomRule();
-
-            isProcessingTurn = true;
-            if (turnHandler != null) turnHandler.isProcessingTurn = true;
 
             if (BattleCutsceneManager.Instance != null)
             {
@@ -96,7 +96,6 @@ namespace Turnbase
                 turnHandler.isProcessingTurn = false;
                 StartCoroutine(turnHandler.UpdateActionGaugeRoutine());
             }
-
         }
 
         void Update()

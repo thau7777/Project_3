@@ -164,6 +164,8 @@ public enum SkillType
     LaserAttack,
     Chain,
     XPassive,
+    DebuffPunisher,
+    DebuffExtender,
 
 
 }
@@ -195,7 +197,7 @@ public enum  DebuffType
     Break,
     SpeedReduction,
     Paralysis,
-
+    Random,
 
 }
 

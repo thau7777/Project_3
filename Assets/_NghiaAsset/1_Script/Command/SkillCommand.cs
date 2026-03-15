@@ -28,7 +28,25 @@ namespace Turnbase
         {
             if (skill.debuffProperties.statToModify != DebuffType.None && target.debuffManager != null)
             {
-                target.debuffManager.ApplyDebuff(user, skill.debuffProperties);
+                Skill.DebuffSettings finalDebuff = skill.debuffProperties;
+
+                if (finalDebuff.statToModify == DebuffType.Random)
+                {
+                    DebuffType[] pool = {
+                    DebuffType.Burn,
+                    DebuffType.Poison,
+                    DebuffType.Stun,
+                    DebuffType.DefReduction,
+                    DebuffType.SpeedReduction,
+                    DebuffType.Paralysis
+            };
+
+                    finalDebuff.statToModify = pool[Random.Range(0, pool.Length)];
+
+                    Debug.Log($"[RANDOM DEBUFF] Kỹ năng tung ra hiệu ứng ngẫu nhiên: {finalDebuff.statToModify}");
+                }
+
+                target.debuffManager.ApplyDebuff(user, finalDebuff);
             }
 
             if ((skill.skillType == SkillType.Buff || skill.skillType == SkillType.Shield) && target.buffManager != null)
@@ -47,7 +65,7 @@ namespace Turnbase
             {
                 if (target.buffManager != null)
                 {
-                    target.buffManager.ProcessSkillStacks(skill, user);
+                    target.buffManager.ProcessSkillStacks(skill, target);
                 }
             }
 
