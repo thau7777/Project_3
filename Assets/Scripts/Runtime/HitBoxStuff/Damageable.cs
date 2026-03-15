@@ -42,10 +42,10 @@ public class Damageable : MonoBehaviour
     public void Initialize(float currentHealth, float maxHealth, float shieldHealth)
     {
         MaxHealth = maxHealth;
-        CurrentHealth = maxHealth;
+        CurrentHealth = currentHealth;
 
         if (!CompareTag("Player"))
-            GetComponentInChildren<TopDownEnemyUIController>().InitializeValue(CurrentHealth, MaxHealth, shieldHealth, shieldHealth);
+            GetComponentInChildren<TopDownEnemyUIController>().InitializeValue(MaxHealth, shieldHealth);
 
         if(hasShieldBreakingMechanic)
         {
@@ -114,10 +114,6 @@ public class Damageable : MonoBehaviour
     {
         if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
      
-        FloatingCombatText floatingCombatTextEffect = null;
-        if (floatingCombatTextSettings)
-            floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
-
         var effectsManager = GetComponent<EffectsManager>();
         if (effectsManager.HasEffect("Unbreaking Thorn Effect"))
         {
@@ -127,8 +123,12 @@ public class Damageable : MonoBehaviour
                 stacksToApply = 1
             };
             sender.GetComponent<EffectsManager>()?.AddEffect(gameObject, PoisonEffectData);
-            if (floatingCombatTextEffect) 
+
+            if (floatingCombatTextSettings)
+            {
+                var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
                 floatingCombatTextEffect.Init("Unbreaking Thorn", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+            }
         }
         if(effectsManager.HasEffect("Frost Shield Effect"))
         {
@@ -138,17 +138,22 @@ public class Damageable : MonoBehaviour
                 stacksToApply = 1
             };
             sender.GetComponent<EffectsManager>()?.AddEffect(gameObject, effectData);
-            if(floatingCombatTextEffect)
-                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1), false);
-             return;
+            if (floatingCombatTextSettings)
+            {
+                var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
+                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+            }
         }
         if(effectsManager.HasEffect("Holy Shield Effect"))
         {
             effectsManager.RemoveEffectByName("Holy Shield Effect");
             CameraShaker.Instance.ShakeRandomDirection(force: 1, duration: 0.2f);
 
-            if(floatingCombatTextEffect)
-                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Holy, transform.position.Add(y: 1), false);
+            if (floatingCombatTextSettings)
+            {
+                var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
+                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+            }
             return;
 
         }
@@ -198,23 +203,27 @@ public class Damageable : MonoBehaviour
         else
             TopDownGameManager.Instance.AddDamageReceived((int)finalDamage);
 
-        FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
-        if (floatingCombatTextNumber)
+        if (floatingCombatTextSettings)
         {
-            FloatingCombatText.CombatTextType combatTextType = attackElementalType switch
+            FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
+            if (floatingCombatTextNumber)
             {
-                ElementalType.Fire => FloatingCombatText.CombatTextType.Fire,
-                ElementalType.Water => FloatingCombatText.CombatTextType.Water,
-                ElementalType.Frost => FloatingCombatText.CombatTextType.Frost,
-                ElementalType.Lightning => FloatingCombatText.CombatTextType.Lightning,
-                ElementalType.Poison => FloatingCombatText.CombatTextType.Poison,
-                ElementalType.Holy => FloatingCombatText.CombatTextType.Holy,
-                ElementalType.Dark => FloatingCombatText.CombatTextType.Dark,
-                _ => FloatingCombatText.CombatTextType.Normal
-            };
+                FloatingCombatText.CombatTextType combatTextType = attackElementalType switch
+                {
+                    ElementalType.Fire => FloatingCombatText.CombatTextType.Fire,
+                    ElementalType.Water => FloatingCombatText.CombatTextType.Water,
+                    ElementalType.Frost => FloatingCombatText.CombatTextType.Frost,
+                    ElementalType.Lightning => FloatingCombatText.CombatTextType.Lightning,
+                    ElementalType.Poison => FloatingCombatText.CombatTextType.Poison,
+                    ElementalType.Holy => FloatingCombatText.CombatTextType.Holy,
+                    ElementalType.Dark => FloatingCombatText.CombatTextType.Dark,
+                    _ => FloatingCombatText.CombatTextType.Normal
+                };
 
-            floatingCombatTextNumber.Init(finalDamage.ToString(), combatTextType, transform.position.Add(y: 1), isCrit);
+                floatingCombatTextNumber.Init(finalDamage.ToString(), combatTextType, transform.position.Add(y: 1), isCrit);
+            }
         }
+        
         if (CurrentHealth == 0)
         {
             ApplyIgnoreCollisionOnDeath(true);

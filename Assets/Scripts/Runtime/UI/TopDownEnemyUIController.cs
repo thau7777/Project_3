@@ -58,18 +58,18 @@ public class TopDownEnemyUIController : MonoBehaviour
     private Coroutine shieldBackFillCoroutine;
 
 
-    public void InitializeValue(float healthCurrent, float healthMax, float shieldCurrent, float shieldMax)
+    public void InitializeValue(float maxHealth, float maxShield)
     {
-        currentHealth = healthCurrent;
-        maxHealth = healthMax;
-        currentShield = shieldCurrent;
-        maxShield = shieldMax;
+        currentHealth = maxHealth;
+        this.maxHealth = maxHealth;
+        currentShield = maxShield;
+        this.maxShield = maxShield;
 
-        healthBarSlider.value = healthMax > 0 ? healthCurrent / healthMax : 0;
-        healthBarBackFill.fillAmount = healthMax > 0 ? healthCurrent / healthMax : 0;
+        healthBarSlider.value = 1;
+        healthBarBackFill.fillAmount = 1;
 
-        shieldBarSlider.value = shieldMax > 0 ? shieldCurrent / shieldMax : 0;
-        shieldBarBackFill.fillAmount = shieldMax > 0 ? shieldCurrent / shieldMax : 0;
+        shieldBarSlider.value = 1;
+        shieldBarBackFill.fillAmount = 1;
 
         if (healthBarSliderHandle != null)
             healthBarSliderHandle.transform.localScale = Vector3.zero;

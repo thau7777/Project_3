@@ -86,7 +86,6 @@ public class CharacterStats : MonoBehaviour
         int fireDefense, int waterDefense, int frostDefense, int lightningDefense, int holyDefense,
         int darkDefense, int poisonDefense, float speed, float criticalRate, float criticalMultiplier)
     {
-        Debug.LogWarning("init pplayer");
         ElementalType = elementalType;
         InitialHealth = initialHealth;
         InitialMana = initialMana;
@@ -114,7 +113,7 @@ public class CharacterStats : MonoBehaviour
         AttackSizeScale = 1;
 
         if(!CompareTag("Player"))
-            GetComponent<Damageable>().Initialize((float)initialHealth, (float)initialHealth,(float)stamina);
+            GetComponent<Damageable>().Initialize((float)initialHealth, (float)initialHealth, (float)stamina);
 
     }
 
