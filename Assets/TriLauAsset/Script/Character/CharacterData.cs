@@ -159,6 +159,8 @@ namespace MyRule
         }
         
         public float GetHealthRate() => _currentHealth / _maxHealth;
+        public void SetCurrentHealth(int amount)
+            { _currentHealth = amount; }
     }
 
     [Serializable]

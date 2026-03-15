@@ -192,6 +192,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
 
         await UniTask.Delay(1500, true);
         _player.SetActive(false);
+        CharacterManager.Instance.SetCurrentHealth(Mathf.RoundToInt(PlayerTopDownStateDriver.Instance.GetComponent<Damageable>().CurrentHealth));
 
         await UniTask.Delay(2000, true);
         SceneManager.LoadScene("MazeScene");
