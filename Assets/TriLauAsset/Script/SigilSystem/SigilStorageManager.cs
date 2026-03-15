@@ -32,7 +32,7 @@ namespace MyRule
 
         private void OnSigilChosen(SigilChosenEvent evt)
         {
-            SigilData sigilData = new SigilData(evt.sigilSO.id, evt.sigilSO.sigilType, evt.sigilSO.name, evt.sigilSO.rarity, evt.sigilSO.keyBinding);
+            SigilData sigilData = new SigilData(evt.sigilSO.id, evt.sigilSO.sigilType, evt.sigilSO.name, evt.sigilSO.mag, evt.sigilSO.manaCost, evt.sigilSO.rarity, evt.sigilSO.keyBinding);
 
             string id = evt.sigilSO.id;
             EKeyBinding keyType = sigilData.EKeyBinding;

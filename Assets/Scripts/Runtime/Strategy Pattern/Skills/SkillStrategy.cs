@@ -181,7 +181,14 @@ public class SkillStrategy : ScriptableObject, IStrategy
     {
         _isProjectile = MainSkillVfxSettings is StraightProjectileSettings;
     }
-
+    public void SetBaseDamage(int damage)
+    {
+        _damage = damage;
+    }
+    public void SetManaCost(int manaCost)
+    {
+        _manaCost = manaCost;
+    }
     public virtual void Execute(IStrategyContext context)
     {
         var skillContext = context as SkillStrategyContext;

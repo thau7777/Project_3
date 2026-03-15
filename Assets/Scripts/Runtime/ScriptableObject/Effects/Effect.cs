@@ -52,6 +52,35 @@ public class Effect : ScriptableObject
     [TabGroup("Stat Modifiers")]
     public StatModifier attackSizeModifier;
 
+    [TabGroup("Stat Modifiers")]
+    public StatModifier fireDamageModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier waterDamageModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier frostDamageModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier lightningDamageModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier holyDamageModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier darkDamageModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier poisonDamageModifier;
+
+    [TabGroup("Stat Modifiers")]
+    public StatModifier fireDefenseModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier waterDefenseModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier frostDefenseModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier lightningDefenseModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier holyDefenseModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier darkDefenseModifier;
+    [TabGroup("Stat Modifiers")]
+    public StatModifier poisonDefenseModifier;
     [TabGroup("Visual Feedback")]
     public Vector3 positionOffset;
     [TabGroup("Visual Feedback")]
@@ -129,6 +158,22 @@ public class Effect : ScriptableObject
         if (criticalRateModifier.value != 0) ApplyCriticalRateModifier(target, activeEffect, isApplyInstant);
         if (criticalMultiplierModifier.value != 0) ApplyCriticalMultiplierModifier(target, activeEffect, isApplyInstant);
         if (attackSizeModifier.value != 0) ApplyAttackSizeModifier(target, activeEffect, isApplyInstant);
+
+        if (fireDamageModifier.value != 0) ApplyFireDamageModifier(target, activeEffect, isApplyInstant);
+        if (waterDamageModifier.value != 0) ApplyWaterDamageModifier(target, activeEffect, isApplyInstant);
+        if (frostDamageModifier.value != 0) ApplyFrostDamageModifier(target, activeEffect, isApplyInstant);
+        if (lightningDamageModifier.value != 0) ApplyLightningDamageModifier(target, activeEffect, isApplyInstant);
+        if (holyDamageModifier.value != 0) ApplyHolyDamageModifier(target, activeEffect, isApplyInstant);
+        if (darkDamageModifier.value != 0) ApplyDarkDamageModifier(target, activeEffect, isApplyInstant);
+        if (poisonDamageModifier.value != 0) ApplyPoisonDamageModifier(target, activeEffect, isApplyInstant);
+
+        if (fireDefenseModifier.value != 0) ApplyFireDefenseModifier(target, activeEffect, isApplyInstant);
+        if (waterDefenseModifier.value != 0) ApplyWaterDefenseModifier(target, activeEffect, isApplyInstant);
+        if (frostDefenseModifier.value != 0) ApplyFrostDefenseModifier(target, activeEffect, isApplyInstant);
+        if (lightningDefenseModifier.value != 0) ApplyLightningDefenseModifier(target, activeEffect, isApplyInstant);
+        if (holyDefenseModifier.value != 0) ApplyHolyDefenseModifier(target, activeEffect, isApplyInstant);
+        if (darkDefenseModifier.value != 0) ApplyDarkDefenseModifier(target, activeEffect, isApplyInstant);
+        if (poisonDefenseModifier.value != 0) ApplyPoisonDefenseModifier(target, activeEffect, isApplyInstant);
     }
     private void RemoveModifier(GameObject target, ActiveEffect activeEffect)
     {
@@ -148,6 +193,22 @@ public class Effect : ScriptableObject
             RemoveCriticalDamageModifier(target, activeEffect);
         if (attackSizeModifier.value != 0 && attackSizeModifier.isTemporary)
             RemoveAttackSizeModifier(target, activeEffect);
+
+        if (fireDamageModifier.value != 0 && fireDamageModifier.isTemporary) RemoveFireDamageModifier(target, activeEffect);
+        if (waterDamageModifier.value != 0 && waterDamageModifier.isTemporary) RemoveWaterDamageModifier(target, activeEffect);
+        if (frostDamageModifier.value != 0 && frostDamageModifier.isTemporary) RemoveFrostDamageModifier(target, activeEffect);
+        if (lightningDamageModifier.value != 0 && lightningDamageModifier.isTemporary) RemoveLightningDamageModifier(target, activeEffect);
+        if (holyDamageModifier.value != 0 && holyDamageModifier.isTemporary) RemoveHolyDamageModifier(target, activeEffect);
+        if (darkDamageModifier.value != 0 && darkDamageModifier.isTemporary) RemoveDarkDamageModifier(target, activeEffect);
+        if (poisonDamageModifier.value != 0 && poisonDamageModifier.isTemporary) RemovePoisonDamageModifier(target, activeEffect);
+
+        if (fireDefenseModifier.value != 0 && fireDefenseModifier.isTemporary) RemoveFireDefenseModifier(target, activeEffect);
+        if (waterDefenseModifier.value != 0 && waterDefenseModifier.isTemporary) RemoveWaterDefenseModifier(target, activeEffect);
+        if (frostDefenseModifier.value != 0 && frostDefenseModifier.isTemporary) RemoveFrostDefenseModifier(target, activeEffect);
+        if (lightningDefenseModifier.value != 0 && lightningDefenseModifier.isTemporary) RemoveLightningDefenseModifier(target, activeEffect);
+        if (holyDefenseModifier.value != 0 && holyDefenseModifier.isTemporary) RemoveHolyDefenseModifier(target, activeEffect);
+        if (darkDefenseModifier.value != 0 && darkDefenseModifier.isTemporary) RemoveDarkDefenseModifier(target, activeEffect);
+        if (poisonDefenseModifier.value != 0 && poisonDefenseModifier.isTemporary) RemovePoisonDefenseModifier(target, activeEffect);
     }
     #region Apply Modifier Methods
     private void ApplyHealthModifier(GameObject sender, GameObject target, bool isApplyInstant)
@@ -251,48 +312,227 @@ public class Effect : ScriptableObject
     }
     #endregion
 
-
     #region Remove Modifier Methods
     private void RemoveAttackDamageModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyAttackDamage(-activeEffect.storedAttackDamageChanges);
+        characterStats.ModifyAttackDamage(Mathf.RoundToInt(-activeEffect.storedAttackDamageChanges));
     }
     private void RemoveMagicAttackDamageModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyMagicAttackDamage(-activeEffect.storedMagicAttackDamageChanges);
+        characterStats.ModifyMagicAttackDamage(Mathf.RoundToInt(-activeEffect.storedMagicAttackDamageChanges));
     }
     private void RemovePhysicalDefenseModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyPhysicalDefense(-activeEffect.storedPhysicalDefenseChanges);
+        characterStats.ModifyPhysicalDefense(Mathf.RoundToInt(-activeEffect.storedPhysicalDefenseChanges));
     }
     private void RemoveMagicDefenseModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyMagicDefense(-activeEffect.storedMagicDefenseChanges);
+        characterStats.ModifyMagicDefense(Mathf.RoundToInt(-activeEffect.storedMagicDefenseChanges));
     }
     private void RemoveAgilityModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifySpeed(-activeEffect.storedSpeedChanges);
+        characterStats.ModifySpeed(Mathf.RoundToInt(-activeEffect.storedSpeedChanges));
     }
     private void RemoveCriticalRateModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyCriticalRate(-activeEffect.storedCriticalRateChanges);
+        characterStats.ModifyCriticalRate(Mathf.RoundToInt(-activeEffect.storedCriticalRateChanges));
     }
     private void RemoveCriticalDamageModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyCriticalDamage(-activeEffect.storedCriticalMultiplierChanges);
+        characterStats.ModifyCriticalDamage(Mathf.RoundToInt(-activeEffect.storedCriticalMultiplierChanges));
     }
 
     private void RemoveAttackSizeModifier(GameObject target, ActiveEffect activeEffect)
     {
         if (!target.TryGetComponent(out CharacterStats characterStats)) return;
-        characterStats.ModifyAttackSizeScale(-activeEffect.storedAttackSizeScaleChanges);
+        characterStats.ModifyAttackSizeScale(Mathf.RoundToInt(-activeEffect.storedAttackSizeScaleChanges));
+    }
+    #endregion
+
+    #region Elemental Damage Apply Methods
+    private void ApplyFireDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || fireDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = fireDamageModifier.isPercentage ? characterStats.FireDamage * (fireDamageModifier.value / 100f) : fireDamageModifier.value;
+        characterStats.ModifyFireDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedFireDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyWaterDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || waterDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = waterDamageModifier.isPercentage ? characterStats.WaterDamage * (waterDamageModifier.value / 100f) : waterDamageModifier.value;
+        characterStats.ModifyWaterDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedWaterDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyFrostDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || frostDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = frostDamageModifier.isPercentage ? characterStats.FrostDamage * (frostDamageModifier.value / 100f) : frostDamageModifier.value;
+        characterStats.ModifyFrostDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedFrostDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyLightningDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || lightningDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = lightningDamageModifier.isPercentage ? characterStats.LightningDamage * (lightningDamageModifier.value / 100f) : lightningDamageModifier.value;
+        characterStats.ModifyLightningDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedLightningDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyHolyDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || holyDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = holyDamageModifier.isPercentage ? characterStats.HolyDamage * (holyDamageModifier.value / 100f) : holyDamageModifier.value;
+        characterStats.ModifyHolyDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedHolyDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyDarkDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || darkDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = darkDamageModifier.isPercentage ? characterStats.DarkDamage * (darkDamageModifier.value / 100f) : darkDamageModifier.value;
+        characterStats.ModifyDarkDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedDarkDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyPoisonDamageModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || poisonDamageModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = poisonDamageModifier.isPercentage ? characterStats.PoisonDamage * (poisonDamageModifier.value / 100f) : poisonDamageModifier.value;
+        characterStats.ModifyPoisonDamage(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedPoisonDamageChanges += Mathf.RoundToInt(valueToApply);
+    }
+    #endregion
+
+    #region Elemental Defense Apply Methods
+    private void ApplyFireDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || fireDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = fireDefenseModifier.isPercentage ? characterStats.FireDefense * (fireDefenseModifier.value / 100f) : fireDefenseModifier.value;
+        characterStats.ModifyFireDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedFireDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyWaterDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || waterDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = waterDefenseModifier.isPercentage ? characterStats.WaterDefense * (waterDefenseModifier.value / 100f) : waterDefenseModifier.value;
+        characterStats.ModifyWaterDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedWaterDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyFrostDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || frostDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = frostDefenseModifier.isPercentage ? characterStats.FrostDefense * (frostDefenseModifier.value / 100f) : frostDefenseModifier.value;
+        characterStats.ModifyFrostDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedFrostDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyLightningDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || lightningDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = lightningDefenseModifier.isPercentage ? characterStats.LightningDefense * (lightningDefenseModifier.value / 100f) : lightningDefenseModifier.value;
+        characterStats.ModifyLightningDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedLightningDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyHolyDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || holyDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = holyDefenseModifier.isPercentage ? characterStats.HolyDefense * (holyDefenseModifier.value / 100f) : holyDefenseModifier.value;
+        characterStats.ModifyHolyDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedHolyDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyDarkDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || darkDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = darkDefenseModifier.isPercentage ? characterStats.DarkDefense * (darkDefenseModifier.value / 100f) : darkDefenseModifier.value;
+        characterStats.ModifyDarkDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedDarkDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    private void ApplyPoisonDefenseModifier(GameObject target, ActiveEffect activeEffect, bool isApplyInstant)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats) || poisonDefenseModifier.instantApply && !isApplyInstant) return;
+        float valueToApply = poisonDefenseModifier.isPercentage ? characterStats.PoisonDefense * (poisonDefenseModifier.value / 100f) : poisonDefenseModifier.value;
+        characterStats.ModifyPoisonDefense(Mathf.RoundToInt(valueToApply));
+        activeEffect.storedPoisonDefenseChanges += Mathf.RoundToInt(valueToApply);
+    }
+    #endregion
+
+    #region Elemental Damage Remove Methods
+    private void RemoveFireDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyFireDamage(Mathf.RoundToInt(-activeEffect.storedFireDamageChanges));
+    }
+    private void RemoveWaterDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyWaterDamage(Mathf.RoundToInt(-activeEffect.storedWaterDamageChanges));
+    }
+    private void RemoveFrostDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyFrostDamage(Mathf.RoundToInt(-activeEffect.storedFrostDamageChanges));
+    }
+    private void RemoveLightningDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyLightningDamage(Mathf.RoundToInt(-activeEffect.storedLightningDamageChanges));
+    }
+    private void RemoveHolyDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyHolyDamage(Mathf.RoundToInt(-activeEffect.storedHolyDamageChanges));
+    }
+    private void RemoveDarkDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyDarkDamage(Mathf.RoundToInt(-activeEffect.storedDarkDamageChanges));
+    }
+    private void RemovePoisonDamageModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyPoisonDamage(Mathf.RoundToInt(-activeEffect.storedPoisonDamageChanges));
+    }
+    #endregion
+
+    #region Elemental Defense Remove Methods
+    private void RemoveFireDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyFireDefense(Mathf.RoundToInt(-activeEffect.storedFireDefenseChanges));
+    }
+    private void RemoveWaterDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyWaterDefense(Mathf.RoundToInt(-activeEffect.storedWaterDefenseChanges));
+    }
+    private void RemoveFrostDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyFrostDefense(Mathf.RoundToInt(-activeEffect.storedFrostDefenseChanges));
+    }
+    private void RemoveLightningDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyLightningDefense(Mathf.RoundToInt(-activeEffect.storedLightningDefenseChanges));
+    }
+    private void RemoveHolyDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyHolyDefense(Mathf.RoundToInt(-activeEffect.storedHolyDefenseChanges));
+    }
+    private void RemoveDarkDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyDarkDefense(Mathf.RoundToInt(-activeEffect.storedDarkDefenseChanges));
+    }
+    private void RemovePoisonDefenseModifier(GameObject target, ActiveEffect activeEffect)
+    {
+        if (!target.TryGetComponent(out CharacterStats characterStats)) return;
+        characterStats.ModifyPoisonDefense(Mathf.RoundToInt(-activeEffect.storedPoisonDefenseChanges));
     }
     #endregion
     public Flyweight GetVfxFlyweightOnTarget(GameObject target)
@@ -309,6 +549,37 @@ public class Effect : ScriptableObject
                Mathf.Approximately(speedModifier.value, other.speedModifier.value) &&
                Mathf.Approximately(attackDamageModifier.value, other.attackDamageModifier.value) &&
                Mathf.Approximately(physicalDefenseModifier.value, other.physicalDefenseModifier.value);
+    }
+
+    [Button]
+    public void ResetStatModifier()
+    {
+        healthModifier.value = 0;
+        manaModifier.value = 0;
+        attackDamageModifier.value = 0;
+        magicAttackDamageModifier.value = 0;
+        physicalDefenseModifier.value = 0;
+        magicDefenseModifier.value = 0;
+        speedModifier.value = 0;
+        criticalRateModifier.value = 0;
+        criticalMultiplierModifier.value = 0;
+        attackSizeModifier.value = 0;
+
+        fireDamageModifier.value = 0;
+        waterDamageModifier.value = 0;
+        frostDamageModifier.value = 0;
+        lightningDamageModifier.value = 0;
+        holyDamageModifier.value = 0;
+        darkDamageModifier.value = 0;
+        poisonDamageModifier.value = 0;
+
+        fireDefenseModifier.value = 0;
+        waterDefenseModifier.value = 0;
+        frostDefenseModifier.value = 0;
+        lightningDefenseModifier.value = 0;
+        holyDefenseModifier.value = 0;
+        darkDefenseModifier.value = 0;
+        poisonDefenseModifier.value = 0;
     }
 }
 

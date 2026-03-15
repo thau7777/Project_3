@@ -1,9 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
+using MyRule;
 using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 public class TopDownGameManager : Singleton<TopDownGameManager>
 {
     [SerializeField, TabGroup("References")]
@@ -174,10 +176,17 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     public async void OnEndGameContinueButton()
     {
         if (!_continueBtnClickable) return;
+
+
         _continueBtnClickable = false;
         EventBus<TopdownOnEndGameContinueEvent>.Raise(new TopdownOnEndGameContinueEvent());
-        if(_isWinning)
+        if (_isWinning)
+        {
             _player.GetComponent<PlayerTopDownStateDriver>().Despawn();
+            CombatManager.Instance.SetCombatResultWin();
+        }else
+            CombatManager.Instance.SetCombatResultLose();
+
         await UniTask.Delay(1000, true);
         EnableTPEffect();
 
@@ -185,7 +194,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         _player.SetActive(false);
 
         await UniTask.Delay(2000, true);
-        // switch scene here
+        SceneManager.LoadScene("MazeScene");
     }
     public void TrigerLowHealthEffect(float currentHealth, float maxHealth)
     {
