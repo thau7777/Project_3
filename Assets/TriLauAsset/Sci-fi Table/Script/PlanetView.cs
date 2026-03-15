@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,10 +25,10 @@ namespace MyRule.UI
             planetImage.sprite = planetSO.image;
             planetDescription.text = planetSO.planetDescription;
 
-            for (int i = 0; i < planetSO.enemyDatas.Length; i++)
+            for (int i = 0; i < planetSO.mapEnemies.enemies.Count; i++)
             {
                 var ennemyView = Instantiate(planetEnemyView, planetEnemiesParent).GetComponent<PlanetEnemyView>();
-                ennemyView.SetEnemyData(planetSO.enemyDatas[i]);
+                ennemyView.SetEnemyData(planetSO.mapEnemies.enemies[i]);
                 planetEneymiesViewObj.Add(ennemyView.gameObject);
             }
         }

@@ -29,14 +29,14 @@ public class ItemExecutor : MonoBehaviour
         {
             _itemRuntimeInstances[i] = new ItemRuntimeInstance(_itemArray[i], i,3);
         }
-        EventBus<TopDownInitializeItemsEvent>.Raise(new TopDownInitializeItemsEvent(_itemRuntimeInstances));
+        EventBus<TopdownInitializeItemsEvent>.Raise(new TopdownInitializeItemsEvent(_itemRuntimeInstances));
     }
     public void AddItem(int index, TopDownItemStrategy item, int quantity = 1)
     {
         if (index < 0 || index > 5) return;
         _itemArray[index] = item;
         _itemRuntimeInstances[index] = new ItemRuntimeInstance(item, index, quantity);
-        EventBus<TopDownInitializeItemsEvent>.Raise(new TopDownInitializeItemsEvent(_itemRuntimeInstances));
+        EventBus<TopdownInitializeItemsEvent>.Raise(new TopdownInitializeItemsEvent(_itemRuntimeInstances));
     }
     // ItemExecutor.cs - update UseItem and add ClearItem
     public void UseItem(int index)
@@ -59,7 +59,7 @@ public class ItemExecutor : MonoBehaviour
     {
         _itemArray[index] = null;
         _itemRuntimeInstances[index] = new ItemRuntimeInstance(null, index);
-        EventBus<TopDownInitializeItemsEvent>.Raise(new TopDownInitializeItemsEvent(_itemRuntimeInstances));
+        EventBus<TopdownInitializeItemsEvent>.Raise(new TopdownInitializeItemsEvent(_itemRuntimeInstances));
     }
 
     public void SwapItems(int fromIndex, int toIndex)

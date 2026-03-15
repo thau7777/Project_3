@@ -200,7 +200,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
         EffectsManager manager = target.GetOrAdd<EffectsManager>();
         foreach (EffectData effect in _effectsToApply)
         {
-            manager.AddEffect(effect);
+            manager.AddEffect(target, effect);
         }
     }
     public bool CheckSpecialCondition(Transform user)
@@ -318,6 +318,10 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
                 if (oneShotVFXSettings.UseParticleCollision)
                     damageDealer.SetupParicleDamageDealer(context.origin.gameObject);
+            }
+            if (flyweightObj.TryGetComponent<EffectApplier>(out var effectApplier))
+            {
+                effectApplier.SetUpForParticle(context.origin.gameObject);
             }
             oneShotVFX.InitializeVFX(Size, oneShotVFXSettings.DefaultLifeTime);
             if (_setParentToUser)

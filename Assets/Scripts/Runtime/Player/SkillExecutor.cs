@@ -35,15 +35,24 @@ public class SkillExecutor : MonoBehaviour
     [TabGroup("Stats")]
     public UnityEvent<float, float> OnManaChanged;
 
+    private EventBinding<TopdownStartGameEvent> _onStartGameEventBinding;
     void Awake()
     {
         _layerIgnoreController = GetComponent<CCLayerIgnoreController>();
         InitializeMana(100);
     }
+    private void OnEnable()
+    {
+        _onStartGameEventBinding = new(ExecuteAllPassiveSkills);
+        EventBus<TopdownStartGameEvent>.Register(_onStartGameEventBinding);
+    }
+    private void OnDisable()
+    {
+        EventBus<TopdownStartGameEvent>.Deregister(_onStartGameEventBinding);
+    }
     private void Start()
     {
         InitializeSkillInstance();
-        ExecuteAllPassiveSkills();
     }
     private void InitializeMana(float maxMana)
     {
@@ -58,7 +67,7 @@ public class SkillExecutor : MonoBehaviour
             _skillInstance[i] = new SkillRuntimeInstance(_skillStrategies[i], i);
         }
         
-        EventBus<TopDownInitializeSkillsEvent>.Raise(new TopDownInitializeSkillsEvent(_skillInstance));
+        EventBus<TopdownInitializeSkillsEvent>.Raise(new TopdownInitializeSkillsEvent(_skillInstance));
     }
     public void ExecuteAllPassiveSkills()
     {
@@ -94,7 +103,17 @@ public class SkillExecutor : MonoBehaviour
     {
         if(index < 0 || index > 5 || _skillStrategies[index] == null || _skillStrategies[index].isPassiveSkill) return false;
         var skillData = _skillInstance[index].Definition.GetSkillDataForClass(characterClass);
-        if (skillData == null || _skillInstance[index].IsOnCooldown) return false;
+        if (skillData == null) return false;
+        if (_skillInstance[index].IsOnCooldown)
+        {
+            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.OnCooldown, index));
+            return false;
+        }
+        if(CurrentMana < _skillInstance[index].Definition.ManaCost && _skillInstance[index].Definition.ManaCost != 0)
+        {
+            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.NotEnoughMana, index));
+            return false;
+        }
         // store the data for the cast
         _skillToCast = _skillInstance[index];
         _storedSkillDataForClass = skillData;
@@ -103,11 +122,7 @@ public class SkillExecutor : MonoBehaviour
     public void UseSkill(int index, CharacterClass characterClass,PlayerTopdownContext context, Action onCastInstantly = null)
     {
         if (!SetSkillData(index, characterClass)) return;
-        if(CurrentMana < _skillToCast.Definition.ManaCost && _skillToCast.Definition.ManaCost != 0)
-        {
-            Debug.Log("Not enough mana to cast skill: " + _skillToCast.Definition.name);
-            return;
-        }
+        
         context.IsNextAttackQueued = false;
         context.CastingSkill = index;
         bool isAimNeeded = _storedSkillDataForClass.Value.aimType != AimType.None;
@@ -170,6 +185,8 @@ public class SkillExecutor : MonoBehaviour
                     break;
                 }
             }
+            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.Use, _skillToCast.SlotIndex));
+
             return;
         }
 
@@ -203,6 +220,7 @@ public class SkillExecutor : MonoBehaviour
             ClearSkillData();
             context.IsAiming = false;
             context.CastingSkill = -1;
+            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.OnCooldown, _skillToCast.SlotIndex));
             return;
         }
         string animName = _storedSkillDataForClass.Value.animName;
@@ -217,6 +235,8 @@ public class SkillExecutor : MonoBehaviour
         context.SkillAnimName = animName;
 
         ConsumeMana(_skillToCast.Definition.ManaCost);
+        EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.Reset, _skillToCast.SlotIndex));
+
     }
     public void OnSkillTrigger()
     {

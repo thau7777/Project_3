@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 
 public class SkillSlotUI : MonoBehaviour
 {
+    [SerializeField] private Image _onUseEffectImage;
     [SerializeField] private Image _icon;
     [SerializeField] private Image _cooldownProgressImage;
     [SerializeField] private Image _cooldownFinishImage;
@@ -15,12 +16,14 @@ public class SkillSlotUI : MonoBehaviour
     private SkillRuntimeInstance _skill;
     private Material _progressMaterial;
     private Material _finishMaterial;
+    private Material _onUseEffectMaterial;
     public void Bind(SkillRuntimeInstance skill)
     {
         // get unique material instances per slot
         _progressMaterial = _cooldownProgressImage.material = new Material(_cooldownProgressImage.material);
         _finishMaterial = _cooldownFinishImage.material = new Material(_cooldownFinishImage.material);
-
+        _onUseEffectMaterial = _onUseEffectImage.material = new Material(_onUseEffectImage.material);
+        _onUseEffectMaterial.SetFloat("_Amount", 0);
         _skill = skill;
         _finishEffectTriggered = false;
 
@@ -100,9 +103,55 @@ public class SkillSlotUI : MonoBehaviour
         _cooldownFinishImage.material.SetFloat("_FillAmount", 1f);
         ResetCooldownVisuals();
     }
+    public async UniTaskVoid OnCantUse(Color color)
+    {
+        _onUseEffectMaterial.SetColor("_Color", color);
+
+        float duration = 0.1f;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _onUseEffectMaterial.SetFloat("_Amount", Mathf.Clamp01(elapsed / duration));
+            await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
+        }
+        _onUseEffectMaterial.SetFloat("_Amount", 1f);
+
+        OnReset().Forget();
+    }
+
+    public async UniTaskVoid OnUse(Color color)
+    {
+        _onUseEffectMaterial.SetColor("_Color", color);
+
+        float duration = 0.1f;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _onUseEffectMaterial.SetFloat("_Amount", Mathf.Clamp01(elapsed / duration));
+            await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
+        }
+        _onUseEffectMaterial.SetFloat("_Amount", 1f);
+    }
+
+    public async UniTaskVoid OnReset()
+    {
+        float duration = 0.1f;
+        float elapsed = 0f;
+        float startAmount = _onUseEffectMaterial.GetFloat("_Amount");
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _onUseEffectMaterial.SetFloat("_Amount", Mathf.Lerp(startAmount, 0f, elapsed / duration));
+            await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
+        }
+        _onUseEffectMaterial.SetFloat("_Amount", 0f);
+    }
     private void OnDestroy()
     {
         Destroy(_progressMaterial);
         Destroy(_finishMaterial);
+        Destroy(_onUseEffectMaterial);
     }
 }

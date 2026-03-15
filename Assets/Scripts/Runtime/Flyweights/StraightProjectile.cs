@@ -120,8 +120,12 @@ public class StraightProjectile : Flyweight
             if (impactVFXSettings.UseParticleCollision)
                 damageDealer.SetupParicleDamageDealer(_sender);
         }
+        if(impactVFX.TryGetComponent<EffectApplier>(out var effectApplier))
+        {
+            effectApplier.SetUpForParticle(_sender);
+        }
 
-        impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);
+            impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -27,6 +27,7 @@ public class MainCanvasGroupController : MonoBehaviour
 
     private EventBinding<TopdownStartGameEvent> _startGameEventBinding;
     private EventBinding<TopDownEndGameEvent> _endGameEventBinding;
+    private EventBinding<TopdownOnEndGameContinueEvent> _onEndGameContinueEventBinding;
 
     private void Awake()
     {
@@ -48,14 +49,19 @@ public class MainCanvasGroupController : MonoBehaviour
 
         _endGameEventBinding = new(OnEndGame);
         EventBus<TopDownEndGameEvent>.Register(_endGameEventBinding);
-
+        _onEndGameContinueEventBinding = new(FadeOut);
+        EventBus<TopdownOnEndGameContinueEvent>.Register(_onEndGameContinueEventBinding);
     }
 
     private void OnDisable()
     {
         if (!_showWhenEndGame)
             EventBus<TopdownStartGameEvent>.Deregister(_startGameEventBinding);
-        EventBus<TopDownEndGameEvent>.Deregister(_endGameEventBinding);
+
+        EventBus<TopDownEndGameEvent>.Deregister(_endGameEventBinding); 
+        
+        if (_showWhenEndGame)
+            EventBus<TopdownOnEndGameContinueEvent>.Deregister(_onEndGameContinueEventBinding);
     }
 
     private void OnDestroy()

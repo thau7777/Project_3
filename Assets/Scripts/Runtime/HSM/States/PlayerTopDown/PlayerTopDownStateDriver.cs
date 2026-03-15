@@ -1,6 +1,7 @@
 using HSM;
 using System;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -124,6 +125,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
         InitializeClassWeapon(_locomotionSet.characterClass);
 
+        _context.IsSpawning = true;
+
     }
     private void OnEnable()
     {
@@ -131,7 +134,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _inputReader.playerTopDownActions.onLeftClick += OnLeftClick;
         _inputReader.playerTopDownActions.onSkillUse += OnSkillUse;
 
-        _onEndGameEventBinding = new(OnWinGame);
+        _onEndGameEventBinding = new(OnEndGame);
         EventBus<TopDownEndGameEvent>.Register(_onEndGameEventBinding);
     }
     private void OnDisable()
@@ -162,11 +165,13 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     #region Input Handlers
     private void OnSkillUse(bool value, int skillIndex)
     {
+        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
         UseSKill(skillIndex, value, SaveDirToAttack);
     }
     
     private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
     {
+        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
 
         if (_context.IsHurting ||
             _isInSpecialMoveAnim || _context.IsInSpecialMove || 
@@ -185,10 +190,12 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     }
     private void OnMove(Vector2 vector)
     {
+        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
         _context.MoveInput = vector;
     }
     public void OnLeftClick()
     {
+        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
         SaveDirToAttack();
         if (_context.IsNextAttackQueued || _context.IsInSpecialMove ||
             !_context.IsAttacking && _inIsInAttackAnim) return;
@@ -241,6 +248,12 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     private void Update()
     {
         machine.Tick(Time.deltaTime);
+        if (_context.IsVictory)
+        {
+            _context.MoveInput = Vector2.zero;
+            _context.CurrentMoveSpeed = 0;
+
+        }
     }
 
     #endregion
@@ -317,6 +330,10 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                     if (oneshotSettings.UseParticleCollision)
                         damageDealer.SetupParicleDamageDealer(gameObject);
                 }
+                if (oneshotVFX.TryGetComponent<EffectApplier>(out var effectApplier))
+                {
+                    effectApplier.SetUpForParticle(gameObject);
+                }
                 oneshotVFX.InitializeVFX(oneshotSettings.DefaultSize, oneshotSettings.DefaultLifeTime);
             }
             if (flyweightSettings.name == "SummonerBasicAttack")
@@ -378,7 +395,10 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                         if (oneshotSettings.UseParticleCollision)
                             damageDealer.SetupParicleDamageDealer(gameObject);
                     }
-                        
+                    if (oneshotVFX.TryGetComponent<EffectApplier>(out var effectApplier))
+                    {
+                        effectApplier.SetUpForParticle(gameObject);
+                    }
 
                     oneshotVFX.InitializeVFX(_locomotionSet.CurrentAttackData.size, oneshotSettings.DefaultLifeTime);
                 }
@@ -474,6 +494,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _context.IsInSpecialMove = false;
         _context.IsAiming = false;
         _context.IsDashing = false;
+        _context.IsDespawning = false;
+        _context.IsVictory = false;
         _layerIgnoreController.ResetLayerIgnore();
     }
     public void OnDeath()
@@ -481,12 +503,17 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _context.IsDead = true;
         EventBus<TopDownEndGameEvent>.Raise(new TopDownEndGameEvent(UIEndGameExecuteState.Lose));
     }
-    public void OnWinGame(TopDownEndGameEvent topDownEndGameEvent)
+    public void OnEndGame(TopDownEndGameEvent topDownEndGameEvent)
     {
-        if (topDownEndGameEvent.endGameExecuteState != UIEndGameExecuteState.Win) return;
-        GetComponent<CharacterController>().enabled = false;
-        _context.IsVictory = true;
-
+        if(topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Win)
+        {
+            _context.IsVictory = true;
+            _layerIgnoreController.IgnoreAllExceptGround();
+        }
+    }
+    public void Despawn()
+    {
+        _context.IsDespawning = true;
     }
     public void SetBaseSpeed(float newSpeed)
     {

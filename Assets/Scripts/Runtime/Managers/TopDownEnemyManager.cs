@@ -88,15 +88,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         EventBus<TopdownStartGameEvent>.Deregister(_startGameEventBinding);
     }
 
-    private void Start()
-    {
-        _player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (_player == null)
-        {
-            Debug.LogError("EnemyManager: Player not found! Make sure your Player has the 'Player' tag.");
-        }
-    }
-
     private void LoadCurrentWave()
     {
         _groupWave = WaveManager.Instance.GetCurrentWave();
@@ -112,6 +103,11 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     // Called when the game starts via event
     private void SpawnEnemies()
     {
+        _player = PlayerTopDownStateDriver.Instance.transform;
+        if (_player == null)
+        {
+            Debug.LogError("EnemyManager: Player not found! Make sure your Player has the 'Player' tag.");
+        }
         if (_groupWave == null)
         {
             Debug.LogError("TopDownEnemyManager: GroupWave is null, cannot spawn enemies.");
