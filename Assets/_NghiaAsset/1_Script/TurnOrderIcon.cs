@@ -46,7 +46,7 @@ namespace Turnbase
 
                 if (roundTrackerText != null && character is RoundTracker roundTracker)
                 {
-                    roundTrackerText.text = $"{roundTracker.currentRound}";
+                    roundTrackerText.text = "Round";
                     roundTrackerText.gameObject.SetActive(true);
                 }
             }
@@ -62,19 +62,15 @@ namespace Turnbase
             if (characterOwner == null || actionGaugeText == null) return;
 
             float currentSpeed = characterOwner.stats.speed;
-            if (characterOwner.isVirtualTracker)
-            {
-                if (currentSpeed != 100f) currentSpeed = 100f;
-            }
 
-            if (characterOwner.actionGauge >= 9999.9f)
+            if (characterOwner.actionGauge >= 99.9f)
             {
                 actionGaugeText.text = "0";
                 actionGaugeText.color = Color.yellow;
             }
             else
             {
-                float avValue = (10000f - characterOwner.actionGauge) / Mathf.Max(1f, currentSpeed);
+                float avValue = (100f - characterOwner.actionGauge) / Mathf.Max(1f, currentSpeed);
                 int displayAV = Mathf.CeilToInt(avValue);
 
                 actionGaugeText.text = displayAV.ToString();
@@ -83,7 +79,7 @@ namespace Turnbase
 
             if (characterOwner is RoundTracker roundTracker && roundTrackerText != null)
             {
-                roundTrackerText.text = roundTracker.currentRound.ToString();
+                roundTrackerText.text = "Round";
                 roundTrackerText.gameObject.SetActive(true);
 
                 if (characterOwner.isVirtualTracker)

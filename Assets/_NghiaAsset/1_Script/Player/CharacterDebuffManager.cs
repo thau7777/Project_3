@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Turnbase;
 using UnityEngine;
 
@@ -260,6 +261,28 @@ namespace Turnbase
             speedReductionVFXInstance = vfxInstance;
             speedReductionIcon = icon;
 
+            if (speedReductionVFXInstance != null)
+            {
+                var effectController = speedReductionVFXInstance.GetComponentInChildren<CharacterEffectController>();
+                var skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+
+                if (effectController != null && skinnedMesh != null)
+                {
+                    speedReductionVFXInstance.transform.SetParent(null);
+                    speedReductionVFXInstance.transform.position = Vector3.zero;
+                    speedReductionVFXInstance.transform.rotation = Quaternion.identity;
+
+                    effectController.SetupCharacterEffect(skinnedMesh.transform);
+                }
+                else
+                {
+                    Transform vfxParent = skinnedMesh?.transform.Find("CharacterEffectTarget") ?? characterTarget.buffEffectSpawnPoint;
+                    speedReductionVFXInstance.transform.SetParent(vfxParent ?? this.transform);
+                    speedReductionVFXInstance.transform.localPosition = Vector3.zero;
+                    speedReductionVFXInstance.transform.localRotation = Quaternion.identity;
+                }
+            }
+
             if (characterTarget.buffManager != null)
             {
                 characterTarget.buffManager.RecalculateSpeedStat();
@@ -269,7 +292,6 @@ namespace Turnbase
 
             Debug.Log($"[Debuff] {characterTarget.name} bị giảm {percentage * 100}% Speed trong {duration} lượt.");
         }
-
         public void ApplyParalysisDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
             if(percentage <= 0 || duration <= 0) return;
@@ -723,9 +745,8 @@ namespace Turnbase
             {
                 characterTarget.battleUIManager.UpdateCharacterUI(characterTarget);
             }
-        }
-
-
+        }  
+        
 
         public bool IsPoisoned()
         {

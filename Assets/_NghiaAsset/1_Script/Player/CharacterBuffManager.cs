@@ -105,42 +105,6 @@ namespace Turnbase
             }
         }
 
-        //public void AddShield(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
-        //{
-        //    if (amount <= 0) return;
-
-        //    if (shieldTurnsRemaining <= 0)
-        //    {
-        //        baseShieldAmount = amount;
-        //    }
-        //    else
-        //    {
-        //        baseShieldAmount += amount;
-        //    }
-
-        //    if (vfxInstance != null)
-        //    {
-        //        if (shieldVFXInstance != null && shieldVFXInstance != vfxInstance)
-        //        {
-        //            Destroy(shieldVFXInstance);
-        //        }
-        //        shieldVFXInstance = vfxInstance;
-        //    }
-
-        //    shieldTurnsRemaining = duration;
-        //    shieldIcon = icon;
-
-        //    stats.currentShield = Mathf.Min(stats.currentShield + amount, stats.maxShield);
-
-        //    Debug.Log(character.gameObject.name + " đã nhận thêm " + amount + " Shield. Shield hiện tại: " + stats.currentShield);
-
-        //    if (character.battleUIManager != null)
-        //    {
-        //        character.battleUIManager.UpdateCharacterUI(character);
-        //    }
-
-        //    EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
-        //}
 
 
         public void ApplyAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
@@ -173,7 +137,6 @@ namespace Turnbase
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
-            Debug.Log($"{character.name} đã nhận buff +{amount} PhysicalAttack, hiệu lực {duration} lượt. PhysicalAttack hiện tại: {stats.physicalAttack}");
         }
 
         public void ApplyMaxHPBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
@@ -208,7 +171,6 @@ namespace Turnbase
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
 
-            Debug.Log($"{character.name} đã nhận buff +{amount} MaxHP, hiệu lực {duration} lượt. MaxHP hiện tại: {stats.maxHP}");
         }
 
         public void ApplyDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
@@ -228,7 +190,7 @@ namespace Turnbase
 
             if (defenseVFXInstance != null && defenseVFXInstance != vfxInstance)
             {
-                Destroy(defenseVFXInstance);
+                defenseVFXInstance.ReturnToPool();
             }
             defenseVFXInstance = vfxInstance;
             defenseBuffIcon = icon;
@@ -243,7 +205,6 @@ namespace Turnbase
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
 
-            Debug.Log($"{character.name} đã nhận buff +{amount} PhysicalDefense, hiệu lực {duration} lượt. PhysicalDefense hiện tại: {stats.physicalDefense}");
         }
 
         public void ApplyAgilityBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon)
@@ -274,7 +235,6 @@ namespace Turnbase
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
-            Debug.Log($"{character.name} đã nhận buff +{amount} Agility. Agility thực tế sau tính toán: {stats.speed}");
         }
 
         public void ApplyMagicalAttackBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon, Skill sourceSkill = null)
@@ -288,7 +248,6 @@ namespace Turnbase
             }
             else
             {
-                Debug.Log($"Buff Magical Attack của {character.name} đã được làm mới thời gian.");
             }
 
             if (magicalAttackVFXInstance != null && magicalAttackVFXInstance != vfxInstance)
@@ -307,7 +266,6 @@ namespace Turnbase
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
 
-            Debug.Log($"{character.name} nhận buff +{amount} Magical Attack. Hiện tại: {stats.magicAttack}");
         }
 
         public void ApplyMagicalDefenseBuff(int amount, int duration, Flyweight_TB vfxInstance, Sprite icon, Skill sourceSkill = null)
@@ -332,7 +290,6 @@ namespace Turnbase
             }
 
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
-            Debug.Log($"[BUFF] {character.name} đã bật giáp phép. Sẵn sàng phản đòn.");
         }
 
         public void ApplyBasicAttackBuff(int amount, int duration, Sprite icon)
@@ -352,7 +309,6 @@ namespace Turnbase
             splashAttackTurnsRemaining = duration;
             splashAttackIcon = icon;
 
-            Debug.Log($"<color=cyan>[BUFF]</color> {character.name} nhận Buff Đánh Lan ({percentage * 100}%) trong {duration} lượt!");
 
             if (character.battleUIManager != null)
             {
@@ -373,7 +329,6 @@ namespace Turnbase
                 divineShieldVFXInstance = vfxInstance;
             }
 
-            Debug.Log($"<color=yellow>[DIVINE SHIELD]</color> {character.name} đã được bảo vệ!");
 
             character.UpdateOwnUI();
             EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
@@ -399,7 +354,6 @@ namespace Turnbase
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
-            Debug.Log($"[Berserk] {character.name} hiến tế {healthCost} HP (Trừ trực tiếp). HP còn lại: {character.stats.currentHP}");
         }
 
         public void ApplyBuff(Skill.BuffSettings buffSettings, Flyweight_TB buffVFX, int amount, Skill sourceSkill = null)
@@ -473,7 +427,6 @@ namespace Turnbase
             if (stackSetting.isStackBuilder)
             {
                 stackData.currentStacks += stackSetting.stackAmountPerUse;
-                Debug.Log($"[STACKING] {stackTarget.name} bị tích {stackId}: {stackData.currentStacks}/{stackSetting.stackThreshold}");
             }
 
             if (stackSetting.isStackFinisher && stackData.currentStacks >= stackSetting.stackThreshold)
@@ -489,7 +442,6 @@ namespace Turnbase
                     if (!IsDebuffStackActive(stackTarget.debuffManager, activeType))
                     {
                         stackTarget.debuffManager.ApplyDebuff(this.character, skill.activatedDebuff);
-                        Debug.Log($"<color=orange>[COUNTER-FINISH]</color> Đủ {stackSetting.stackThreshold} tầng! {character.name} phản đòn {activeType} lên {stackTarget.name}");
                     }
                 }
 
@@ -527,32 +479,7 @@ namespace Turnbase
             attackBuffTurnsRemaining = 0;
             attackBuffIcon = null;
 
-            Debug.Log($"Buff PhysicalAttack của {character.name} đã hết hạn và bị gỡ bỏ. PhysicalAttack hiện tại: {stats.physicalAttack}");
         }
-
-        //public void RemoveExpiredShield()
-        //{
-        //    if (shieldTurnsRemaining > 0) return;
-
-        //    if (shieldVFXInstance != null)
-        //    {
-        //        shieldVFXInstance.transform.SetParent(null);
-        //        shieldVFXInstance.ReturnToPool();
-        //        shieldVFXInstance = null;
-        //    }
-
-        //    stats.currentShield = 0;
-        //    baseShieldAmount = 0;
-        //    shieldTurnsRemaining = 0;
-        //    shieldIcon = null;
-
-        //    Debug.Log($"Shield của {character.name} đã hết hạn và bị gỡ bỏ. Shield hiện tại: {stats.currentShield}");
-
-        //    if (character.battleManager != null)
-        //    {
-        //        character.battleUIManager.UpdateCharacterUI(character);
-        //    }
-        //}
         public void RemoveExpiredMaxHPBuff()
         {
             if (maxHPBuffTurnsRemaining > 0 || originalBaseMaxHP == 0) return;
@@ -581,29 +508,26 @@ namespace Turnbase
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
-            Debug.Log($"Buff MaxHP của {character.name} đã hết hạn. MaxHP mới: {stats.maxHP}");
         }
 
 
         public void RemoveExpiredDefenseBuff()
         {
-            if (defenseBuffTurnsRemaining > 0 || originalBaseDefense == 0) return;
-
-            if (defenseVFXInstance != null)
+            if (defenseBuffTurnsRemaining <= 0 && defenseVFXInstance != null)
             {
                 defenseVFXInstance.transform.SetParent(null);
                 defenseVFXInstance.ReturnToPool();
                 defenseVFXInstance = null;
             }
 
+            if (defenseBuffTurnsRemaining > 0) return;
+
             originalBaseDefense = 0;
             defenseBuffTurnsRemaining = 0;
             defenseBuffIcon = null;
-            defenseBuffAmount = 0; 
+            defenseBuffAmount = 0;
 
             RecalculateDefenseStat();
-
-            Debug.Log($"Buff PhysicalDefense của {character.name} đã hết hạn và bị gỡ bỏ. PhysicalDefense hiện tại: {stats.physicalDefense}");
         }
 
 
@@ -624,7 +548,6 @@ namespace Turnbase
 
             RecalculateSpeedStat();
 
-            Debug.Log($"Buff Agility của {character.name} đã hết hạn. Agility hiện tại: {stats.speed}");
         }
 
         public void RemoveExpiredMagicalAttackBuff()
@@ -644,20 +567,18 @@ namespace Turnbase
             magicalAttackBuffTurnsRemaining = 0;
             magicalAttackBuffIcon = null;
 
-            Debug.Log($"Buff Magical PhysicalAttack của {character.name} đã hết hạn và bị gỡ bỏ. Magical PhysicalAttack hiện tại: {stats.magicAttack}");
         }
 
         public void RemoveExpiredMagicalDefenseBuff()
         {
-            if (magicalDefenseBuffTurnsRemaining > 0 || magicalOriginalBaseDefense == 0) return;
-
-
-            if (magicalDefenseVFXInstance != null)
+            if (magicalDefenseBuffTurnsRemaining <= 0 && magicalDefenseVFXInstance != null)
             {
                 magicalDefenseVFXInstance.transform.SetParent(null);
                 magicalDefenseVFXInstance.ReturnToPool();
                 magicalDefenseVFXInstance = null;
             }
+
+            if (magicalDefenseBuffTurnsRemaining > 0) return;
 
             magicalOriginalBaseDefense = 0;
             magicalDefenseBuffTurnsRemaining = 0;
@@ -666,7 +587,6 @@ namespace Turnbase
 
             RecalculateDefenseStat();
 
-            Debug.Log($"Buff Magical PhysicalDefense của {character.name} đã hết hạn và bị gỡ bỏ. Magical PhysicalDefense hiện tại: {stats.magicDefense}");
         }
 
         public void RemoveExpireLifeForPower()
@@ -689,7 +609,6 @@ namespace Turnbase
                 character.battleUIManager.UpdateCharacterUI(character);
             }
 
-            Debug.Log($"Trạng thái Hiến Tế của {character.name} đã hết hạn. Sát thương bonus đã bị gỡ bỏ.");
         }
 
         public void RecalculateDefenseStat()
@@ -719,15 +638,19 @@ namespace Turnbase
             }
             stats.magicDefense = Mathf.Max(0, finalMDef);
 
-            Debug.Log($"[{character.name}] New Def: P={stats.physicalDefense}, M={stats.magicDefense} (Total Red: {totalReductionPercent * 100}%)");
             character.UpdateOwnUI();
         }
 
         public void RecalculateSpeedStat()
         {
-            if (character.debuffManager == null) return;
+            if (character == null || stats == null) return;
 
-            float speedReductionPercentage = character.debuffManager.speedReductionPercentage;
+            if (originalBaseAgility <= 0 && stats.speed > 0)
+            {
+                originalBaseAgility = stats.speed;
+            }
+
+            if (originalBaseAgility <= 0) return;
 
             int finalAgility = originalBaseAgility;
 
@@ -736,15 +659,17 @@ namespace Turnbase
                 finalAgility += agilityBuffAmount;
             }
 
-            if (speedReductionPercentage > 0f)
+            if (character.debuffManager != null)
             {
-                float reduction = finalAgility * speedReductionPercentage;
-                finalAgility -= Mathf.FloorToInt(reduction);
+                float speedReductionPercentage = character.debuffManager.speedReductionPercentage;
+                if (speedReductionPercentage > 0f)
+                {
+                    float reduction = (float)finalAgility * speedReductionPercentage;
+                    finalAgility -= Mathf.FloorToInt(reduction);
+                }
             }
+            stats.speed = Mathf.Max(1, finalAgility);
 
-            stats.speed = Mathf.Max(0, finalAgility);
-
-            Debug.Log($"[{character.name}] Recalculate: Agility={stats.speed}. Debuff: -{speedReductionPercentage * 100:F0}%");
             character.UpdateOwnUI();
         }
 
@@ -761,8 +686,6 @@ namespace Turnbase
                 }
                 divineShieldIcon = null;
 
-                Debug.Log($"<color=cyan>[BLOCK]</color> Khiên của {character.name} đã vỡ, sát thương bị triệt tiêu!");
-
                 character.UpdateOwnUI();
                 EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
                 return true;
@@ -778,37 +701,11 @@ namespace Turnbase
             splashAttackTurnsRemaining = 0;
             splashAttackIcon = null;
 
-            Debug.Log($"<color=gray>[EXPIRED]</color> Buff Đánh Lan của {character.name} đã hết hạn.");
-
             if (character.battleUIManager != null)
             {
                 character.battleUIManager.UpdateCharacterUI(character);
             }
         }
-
-        //public void BreakShield()
-        //{
-        //    stats.currentShield = 0;
-        //    baseShieldAmount = 0;
-        //    shieldTurnsRemaining = 0;
-        //    shieldIcon = null;
-
-        //    if (shieldVFXInstance != null)
-        //    {
-        //        shieldVFXInstance.transform.SetParent(null);
-        //        shieldVFXInstance.ReturnToPool();
-        //        shieldVFXInstance = null;
-        //    }
-
-        //    if (character.battleUIManager != null)
-        //    {
-        //        character.battleUIManager.UpdateCharacterUI(character);
-        //    }
-
-        //    EventBusUI<StatusEffectChangedEvent>.Raise(new StatusEffectChangedEvent(character));
-
-        //    Debug.Log($"<color=yellow>[SHIELD BROKEN]</color> Giáp của {character.name} đã bị đánh vỡ!");
-        //}
 
         public bool IsBuffActive(StatType statType)
         {
@@ -897,15 +794,6 @@ namespace Turnbase
                 }
             }
 
-            //if (shieldTurnsRemaining > 0)
-            //{
-            //    shieldTurnsRemaining--;
-            //    if (shieldTurnsRemaining <= 0)
-            //    {
-            //        RemoveExpiredShield();
-            //        uiUpdateNeeded = true;
-            //    }
-            //}
 
             if (magicalDefenseBuffTurnsRemaining > 0)
             {
