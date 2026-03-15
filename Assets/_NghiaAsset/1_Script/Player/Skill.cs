@@ -165,6 +165,8 @@ public enum SkillType
     Chain,
     XPassive,
     DebuffPunisher,
+    DebuffExtender,
+
 
 }
 
