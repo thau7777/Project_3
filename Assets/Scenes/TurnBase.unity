@@ -2781,7 +2781,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8063
+    m_Bits: 16785279
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3218,7 +3218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5985949, y: 0.30208772, z: -0.2602765, w: 0.6947542}
+  m_LocalRotation: {x: 0.5865159, y: 0.30653453, z: -0.25502437, w: 0.7049811}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6385,6 +6385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b021a90e14461774d92a6df9b20e5d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.BattleSpawner
+  _warpDriveController: {fileID: 2073374186}
   enemySpawnEffect: {fileID: 11400000, guid: 4cb071f04f80478478d1c7e7ea9ffc01, type: 2}
   enemyRiseDuration: 0.8
   enemySinkDepth: 2.5
@@ -8562,6 +8563,79 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &1330805058
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 13.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.000006388181
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.066
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515140873855574997, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2087367900430775285, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_Name
+      value: WarpDrive
+      objectReference: {fileID: 0}
+    - target: {fileID: 2087367900430775285, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586387304716082097, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: TPVolume
+      value: 
+      objectReference: {fileID: 888924103}
+    - target: {fileID: 8586387304716082097, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: _cameraNoiseChannel
+      value: 
+      objectReference: {fileID: 570302010}
+    - target: {fileID: 8858036497240382784, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
 --- !u!1 &1370409602
 GameObject:
   m_ObjectHideFlags: 0
@@ -11624,7 +11698,7 @@ MonoBehaviour:
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 9.4
+  currentTimeOfDay: 9.3
   timeSpeed: 0
   sunriseTime: 4
   sunriseDuration: 0.88
@@ -13118,6 +13192,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2073179411}
   m_CullTransparentMesh: 1
+--- !u!114 &2073374186 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8586387304716082097, guid: 60602c7484e6b1e438ddd79ef509cff7, type: 3}
+  m_PrefabInstance: {fileID: 1330805058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 274249dcb6c534a40ba126770f670dd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TopdownWarpDriveController
 --- !u!1 &2087385676
 GameObject:
   m_ObjectHideFlags: 0
@@ -13485,3 +13570,4 @@ SceneRoots:
   - {fileID: 2087649731}
   - {fileID: 888924104}
   - {fileID: 821987052}
+  - {fileID: 1330805058}
