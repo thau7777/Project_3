@@ -72,6 +72,7 @@ namespace MyRule
             {
                 case NodeType.MinorEnemy:
                     {
+                        BlackFade.Instance.FadeIn();
                         CombatManager.Instance.CreateNewCombat();
                         await WaveManager.Instance.CreateNewWave();
                         await UniTask.Delay(1000);

@@ -53,6 +53,8 @@ namespace MyRule
             
             hasRecived = true;
 
+            MatchManager.Instance.MatchData.SetHasRecivedStartingSigil(true);
+
             CardTracker.Instance.canInteract = false;
 
             await UniTask.Delay(100);

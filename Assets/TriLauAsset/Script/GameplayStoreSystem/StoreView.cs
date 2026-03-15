@@ -37,6 +37,9 @@ namespace MyRule
         {
             if (isShowing) return;
             
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+            
             DialogueManager.Instance.CanContinueDialogue = false;
             RTSCameraController.Instance.CanInteract = false;
 
@@ -56,9 +59,6 @@ namespace MyRule
 
             await UniTask.Delay((int)fadeDuration * 1000);
 
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
             SpawnActiveSigil();
             
             passiveCardsCons.SetActive(true);
@@ -75,14 +75,14 @@ namespace MyRule
         {
             if (!isShowing) return;
 
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+
             await ShowingPassiveSigilCard(false);
 
             DesTroyCard();
 
             passiveCardsCons?.SetActive(false);
-
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
 
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,

@@ -157,6 +157,8 @@ namespace MyRule
             _critChance = critChance;
             _critMult = critMult;
         }
+        
+        public float GetHealthRate() => _currentHealth / _maxHealth;
     }
 
     [Serializable]

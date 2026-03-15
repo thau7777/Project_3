@@ -167,6 +167,8 @@ namespace MyRule
             {
                 Destroy(card);
             }
+
+            gameObjects.Clear();
         }
     }
 }
