@@ -28,7 +28,7 @@ public class TopDownItemStrategy : ScriptableObject , IStrategy
         {
             foreach (EffectData effect in effectsToApply)
             {
-                manager.AddEffect(effect);
+                manager.AddEffect(user, effect);
             }
         }
     }

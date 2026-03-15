@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class ActiveEffect
 {
+    public GameObject sender;
     public Effect effect;
     public float remainingTime;
     public float maxDuration;
@@ -21,8 +22,9 @@ public class ActiveEffect
     public float storedCriticalMultiplierChanges;
     public float storedAttackSizeScaleChanges;
 
-    public ActiveEffect(Effect eff, float time, int stacks)
+    public ActiveEffect(GameObject sender, Effect eff, float time, int stacks)
     {
+        this.sender = sender;
         effect = eff;
         remainingTime = time;
         maxDuration = time;
@@ -58,7 +60,7 @@ public class EffectsManager : MonoBehaviour
     [Button]
     public void ApplyTestEffect()
     {
-        AddEffect(testEffectData);
+        AddEffect(gameObject, testEffectData);
     }
     private void ActiveEffectsHandler()
     {
@@ -80,7 +82,7 @@ public class EffectsManager : MonoBehaviour
                 if (ae.tickTimer <= 0 && ae.IsApplied)
                 {
                     ae.tickTimer = 1f;
-                    ae.effect.ApplyModifier(gameObject, ae, false);
+                    ae.effect.ApplyModifier(ae.sender,gameObject, ae, false);
                 }
 
                 if (ae.remainingTime <= 0)
@@ -90,7 +92,7 @@ public class EffectsManager : MonoBehaviour
             }
         }
     }
-    public void AddEffect(EffectData effectData)
+    public void AddEffect(GameObject sender,EffectData effectData)
     {
         if (_invincibleElapsedTime > 0) return;
 
@@ -102,7 +104,7 @@ public class EffectsManager : MonoBehaviour
             existing.currentStacks += effectData.stacksToApply;
             if (existing.currentStacks >= existing.effect.stackRequired)
             {
-                existing.activeVFX = existing.effect.OnApply(gameObject, existing);
+                existing.activeVFX = existing.effect.OnApply(sender, gameObject, existing);
                 existing.remainingTime = effectData.effect.durationOnApply;
                 existing.maxDuration = effectData.effect.durationOnApply;
                 existing.currentStacks = 0;
@@ -124,12 +126,12 @@ public class EffectsManager : MonoBehaviour
                 RemoveAllActiveEffects();
             }
 
-            ActiveEffect newEffect = new ActiveEffect(effectData.effect, effectData.effect.holdDuration, effectData.stacksToApply);
+            ActiveEffect newEffect = new ActiveEffect(sender, effectData.effect, effectData.effect.holdDuration, effectData.stacksToApply);
             activeEffectsList.Add(newEffect);
 
             if (!effectData.effect.isStackable || effectData.stacksToApply >= effectData.effect.stackRequired)
             {
-                newEffect.activeVFX = effectData.effect.OnApply(gameObject, newEffect);
+                newEffect.activeVFX = effectData.effect.OnApply(sender, gameObject, newEffect);
                 newEffect.remainingTime = effectData.effect.durationOnApply;
                 newEffect.maxDuration = effectData.effect.durationOnApply;
                 newEffect.currentStacks = 0;

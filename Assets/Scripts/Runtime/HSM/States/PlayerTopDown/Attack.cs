@@ -50,8 +50,8 @@ public class Attack : State
     }
     protected override State GetTransition()
     {
-        if (ctx.IsVictory)
-            return ((Grounded)Parent).Victory;
+        if (ctx.IsDespawning)
+            return ((Grounded)Parent).Despawn;
         if (ctx.IsDead)
         {
             return ((Grounded)Parent).Die;

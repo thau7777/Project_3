@@ -4,15 +4,17 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 using UnityEngine.Rendering;
+using Unity.Cinemachine;
 
 public class TopdownWarpDriveController : MonoBehaviour
 {
     [SerializeField] private Volume TPVolume;
     [SerializeField] private VisualEffect _visualEffect;
+    [SerializeField] private CinemachineBasicMultiChannelPerlin _cameraNoiseChannel;
 
-    [SerializeField, TabGroup("Warp Settings")] private float _waitDuration = 1f;
+    private float _waitDuration = 1f;
     [SerializeField, TabGroup("Warp Settings")] private float _fadeInDuration = 1f;
-    [SerializeField, TabGroup("Warp Settings")] private float _holdDuration = 2f;
+    private float _holdDuration = 2f;
     [SerializeField, TabGroup("Warp Settings")] private float _fadeOutDuration = 1f;
 
     private Material _firstCylinderMaterial;
@@ -20,7 +22,6 @@ public class TopdownWarpDriveController : MonoBehaviour
     private CancellationTokenSource _cts;
 
     private float _activeAmount = 0;
-    private float _vfxDuration;
     public float ActiveAmount
     {
         get { return _activeAmount; }
@@ -30,6 +31,8 @@ public class TopdownWarpDriveController : MonoBehaviour
             _visualEffect.SetFloat("WarpAmount", value);
             _firstCylinderMaterial.SetFloat("_Active", value);
             _secondCylinderMaterial.SetFloat("_Active", value);
+            _cameraNoiseChannel.AmplitudeGain = value;
+            _cameraNoiseChannel.FrequencyGain = value;
 
             TPVolume.weight = value;
         }
@@ -42,9 +45,15 @@ public class TopdownWarpDriveController : MonoBehaviour
         _secondCylinderMaterial = transform.GetChild(1).GetComponent<MeshRenderer>().material = new Material(transform.GetChild(1).GetComponent<MeshRenderer>().material);
         ActiveAmount = 0;
 
+        _waitDuration = _visualEffect.GetFloat("DelayTime");
+        _holdDuration = _visualEffect.GetFloat("Duration");
+
+        
+    }
+    private void OnEnable()
+    {
         PlayWarpSequence().Forget();
     }
-
     private void OnDestroy()
     {
         _cts?.Cancel();

@@ -17,18 +17,36 @@ public struct TopDownEndGameEvent : IEvent
         this.endGameExecuteState = endGameExecuteState;
     }
 }
-public struct TopDownInitializeSkillsEvent : IEvent 
+public struct TopdownOnEndGameContinueEvent : IEvent { }
+public struct TopdownInitializeSkillsEvent : IEvent
 {
     public SkillRuntimeInstance[] skillRuntimeInstances;
-    public TopDownInitializeSkillsEvent(SkillRuntimeInstance[] instances)
+    public TopdownInitializeSkillsEvent(SkillRuntimeInstance[] instances)
     {
         skillRuntimeInstances = instances;
     }
 }
-public struct TopDownInitializeItemsEvent : IEvent
+public enum SkillOnUseState
+{
+    Reset,
+    Use,
+    OnCooldown,
+    NotEnoughMana
+}
+public struct TopdownSkillOnUseEvent : IEvent
+{
+    public SkillOnUseState skillOnUseState;
+    public int skillIndex;
+    public TopdownSkillOnUseEvent(SkillOnUseState skillOnUseState, int skillIndex)
+    {
+        this.skillOnUseState = skillOnUseState;
+        this.skillIndex = skillIndex;
+    }
+}
+public struct TopdownInitializeItemsEvent : IEvent
 {
     public ItemRuntimeInstance[] items;
-    public TopDownInitializeItemsEvent(ItemRuntimeInstance[] items)
+    public TopdownInitializeItemsEvent(ItemRuntimeInstance[] items)
     {
         this.items = items;
     }

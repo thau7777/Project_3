@@ -50,13 +50,43 @@ public class DamageDealer : MonoBehaviour
             Vector3 hitDirection = target.transform.position - hitOrigin.transform.position;
 
             //if player is parrying
-            if(target.TryGetComponent<PlayerTopDownStateDriver>(out var player) && player.IsParrying && GetComponent<HitBoxHandler>().ParryAble)
+            if(target.TryGetComponent<PlayerTopDownStateDriver>(out var player) && player.IsParrying && TryGetComponent<HitBoxHandler>(out var hitBoxHandler) && hitBoxHandler.ParryAble)
             {
                 GetComponent<Flyweight>().ReturnToPool();
+                if (sender.TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
+                {
+                    enemy.OnTakeDamage(sender, 0, -hitDirection.normalized, 5);
+                }
+                if (sender.TryGetComponent<Damageable>(out var enemyDamageable) && enemyDamageable.floatingCombatTextSettings != null)
+                {
+                    FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(enemyDamageable.floatingCombatTextSettings) as FloatingCombatText;
+                    if (floatingCombatTextNumber)
+                    {
+                        FloatingCombatText.CombatTextType combatTextType = _elementalType switch
+                        {
+                            ElementalType.Fire => FloatingCombatText.CombatTextType.Fire,
+                            ElementalType.Water => FloatingCombatText.CombatTextType.Water,
+                            ElementalType.Frost => FloatingCombatText.CombatTextType.Frost,
+                            ElementalType.Lightning => FloatingCombatText.CombatTextType.Lightning,
+                            ElementalType.Poison => FloatingCombatText.CombatTextType.Poison,
+                            ElementalType.Holy => FloatingCombatText.CombatTextType.Holy,
+                            ElementalType.Dark => FloatingCombatText.CombatTextType.Dark,
+                            _ => FloatingCombatText.CombatTextType.Normal
+                        };
 
-                if (sender.TryGetComponent<Damageable>(out var enemy))
-                    enemy.TakeDamage(sender, hitOrigin, _isMagicAttack, 0, _dealTrueDamage, -hitDirection.normalized, 5, _elementalType, _hitImpactVfx);
+                        floatingCombatTextNumber.Init("Parried", combatTextType, player.transform.position.Add(y: 1), false);
+                    }
+                    
+                }
 
+                CharacterStats senderStats = sender.GetComponent<CharacterStats>();
+                CharacterStats receiverStats = target.GetComponent<CharacterStats>();
+                float parriedDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, _isMagicAttack, _damage, _elementalType);
+
+                bool isCrit = senderStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < senderStats.CriticalRate;
+                parriedDamage = isCrit ? Mathf.RoundToInt(parriedDamage * senderStats.CriticalMultiplier) : Mathf.RoundToInt(parriedDamage);
+                TopDownGameManager.Instance.AddParriedDamage(Mathf.RoundToInt(parriedDamage));
+                TopDownGameManager.Instance.TriggerParryEffect();
                 return;
             }
 

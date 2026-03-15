@@ -94,7 +94,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""7f8627b4-ec34-47da-91a9-441e1f538483"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -103,7 +103,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""LeftClick"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""bfc637ae-053b-450b-895d-90e7707eabbd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -112,7 +112,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""RightClick"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""733936f5-3e6a-40d2-9f05-ca2dabf60066"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -121,7 +121,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skill_1"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""f07a66c5-54a6-4088-ba9d-9c2b2bec5599"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -130,7 +130,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skill_2"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""e1b11398-1a81-4e00-9fd9-0de71ddab5c3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -139,7 +139,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skill_3"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""def1ea3f-85d1-4869-9bf8-ca5540cced4c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -148,7 +148,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skill_4"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""4abc420d-1392-47bc-a976-7a4a7e889f2f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -157,7 +157,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skill_5"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""785c3a74-96c5-48d2-87d5-51c12d5da3d6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -166,7 +166,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skill_6"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""17577850-ef1d-4a96-88d9-e56c67c45f75"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -175,7 +175,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Item_1"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""3055fd13-43b0-43b2-8423-c5c871f41878"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -184,7 +184,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Item_2"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""9d8b05c9-c4ef-4f44-a746-da87ac838291"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -193,7 +193,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Item_3"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""be6aeaf2-7a19-467b-a2ef-7d828f459961"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -202,7 +202,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Item_4"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""2ac0240e-e010-4c08-9a64-d93fdf866713"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -211,7 +211,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Item_5"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""d2719443-0aee-453c-8519-155c89e13b7e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -220,7 +220,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Item_6"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""f590f034-c4ba-446c-ac2d-b317c06a99c6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -353,7 +353,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""fc47e1da-e9c7-42bc-a39c-37ea010d37f0"",
-                    ""path"": ""<Keyboard>/t"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -446,7 +446,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""A"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""54d35e2c-5775-42dc-9888-ac9e229508f8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -455,7 +455,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""D"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""504807e2-33c4-43fa-880a-fa2e3131dc26"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -464,7 +464,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Q"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""86817ba9-a3e9-4802-a1eb-599f09b85b64"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -473,7 +473,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Space"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""8e83fc7f-3460-4ea1-b979-38af44ff8fc6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -482,7 +482,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""E"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""85c4587d-2599-47ae-acba-3a6e98765586"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -491,7 +491,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""R"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""284ade61-0234-4918-821e-973e87963e55"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -500,7 +500,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""F"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""02136b7d-9820-405e-98ce-b5a2f3c6eaa6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -606,7 +606,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Navigate"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""c02e8333-fe4c-4417-be50-6c2f3393713e"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -615,7 +615,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Look"",
-                    ""itemType"": ""PassThrough"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""9eb41c14-a0ce-41e9-ab6a-873f408f7dff"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -624,7 +624,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""PressAnyButton"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""3996dbc4-7caa-465e-837a-e07737bf94da"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -633,7 +633,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Submit"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""23ff2bba-ae7f-48d8-893a-23f91257ec33"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -642,7 +642,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Cancel"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""88403b65-35ac-4765-a4c2-eb4d2e9d6f50"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -651,7 +651,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Adjust"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""2e393d06-bcb8-410e-96ca-e92cc3b91947"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -660,7 +660,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""PreviousTab"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""a5549d34-97f9-4513-a285-04931f8896e8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -669,7 +669,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""NextTab"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""b429f3ae-497e-4981-8248-a72d5abb6d28"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -678,7 +678,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""OpenTabView"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""78a894c2-6763-4bb3-a394-d053964deb0a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1157,7 +1157,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Naviagate"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""28070395-4e0c-4f75-b595-30cf23a4924e"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -1166,7 +1166,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Left Click"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""7b2ef7d7-2dfd-433f-b7cb-12e213512edc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1175,7 +1175,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Right Click"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""4a878e6c-b530-44e8-abb9-d3d8d3048274"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1324,7 +1324,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""e9079524-3695-4c4f-9670-47f84702b6b3"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -1333,7 +1333,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Look"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""4aaa348d-af35-4b68-a93b-6a165ea69122"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -1342,7 +1342,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Interact"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""1735d113-9a6c-41cb-9e33-2859e7b22a5a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1351,7 +1351,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Esc"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""ff79d6f1-4418-4aa0-b923-345044aaecc0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1360,7 +1360,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Actve"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""abcc113e-50ff-45fb-a266-d85edf4bb60f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1369,7 +1369,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Tab"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""a1a8c41e-c6ec-47b9-8ab9-42714d019f29"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1518,7 +1518,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""TabMenu"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""bf90226f-3bce-4c5b-84a6-ebab7e6bcd91"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1527,7 +1527,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Roll"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""60335a20-fe04-4c48-9428-af3f8de91a98"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1536,7 +1536,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Look"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""66ab5b59-1133-4040-8bf2-ca1bf3e47e2c"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -1545,7 +1545,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Move"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""e4a3e88f-51e5-4e31-9da0-1499d3042d88"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -1554,7 +1554,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Scroll"",
-                    ""itemType"": ""Value"",
+                    ""type"": ""Value"",
                     ""id"": ""2be4011d-b6fc-4289-a348-9683530b9792"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -1563,7 +1563,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""RightClick"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""591bec2f-a802-4852-bebd-6669f6e615dd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1572,7 +1572,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Esc"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""49cbcd4f-e7e5-4bb4-b191-0490c494d65b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -1581,7 +1581,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Submit"",
-                    ""itemType"": ""Button"",
+                    ""type"": ""Button"",
                     ""id"": ""24831b3b-7f17-4716-be25-21d07be3ddf3"",
                     ""expectedControlType"": """",
                     ""processors"": """",

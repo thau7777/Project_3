@@ -24,6 +24,10 @@ public class PlayerTopdownContext
     [field: SerializeField] public bool IsHurting { get; set; }
     [field: SerializeField] public bool IsDead { get; set; }
     [field: SerializeField] public bool IsVictory { get; set; }
+    [field: SerializeField] public bool IsDespawning { get; set; }
+    [field: SerializeField] public bool IsSpawning { get; set; }
+
+
     [field: SerializeField] public bool IsNextAttackQueued { get; set; }
     public string FirstAttackAnimName { get; set; }
     public string SkillAnimName { get; set; }
@@ -54,6 +58,7 @@ public class PlayerTopdownContext
     public bool IsRangeClass => CharacterClass == CharacterClass.Mage || CharacterClass == CharacterClass.Summoner;
 
     // Cached Animator Hashes
+    public int SpawnStateHash => Animator.StringToHash("Spawn");
     public int StrafeStateHash => Animator.StringToHash("Strafe");
     public int MovementStateHash => Animator.StringToHash("Movement");
     public int HurtStateHash => Animator.StringToHash("Hurt");
@@ -61,6 +66,7 @@ public class PlayerTopdownContext
     public int MoveSpeedHash => Animator.StringToHash("MoveSpeed");
     public int InputXHash => Animator.StringToHash("MoveDirX");
     public int InputYHash => Animator.StringToHash("MoveDirY");
+    public int VictoryStateHash => Animator.StringToHash("Despawn");
     public int UpperBodyLayerIndex => 1;
 
     private PlayerTopdownContext() { }

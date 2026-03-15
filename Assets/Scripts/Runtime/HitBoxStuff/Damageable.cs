@@ -123,7 +123,7 @@ public class Damageable : MonoBehaviour
                 effect = EffectsDatabase.Instance.GetEffectByName("Poison Effect"),
                 stacksToApply = 1
             };
-            sender.GetComponent<EffectsManager>()?.AddEffect(PoisonEffectData);
+            sender.GetComponent<EffectsManager>()?.AddEffect(gameObject, PoisonEffectData);
             if (floatingCombatTextEffect) 
                 floatingCombatTextEffect.Init("Unbreaking Thorn", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
         }
@@ -134,7 +134,7 @@ public class Damageable : MonoBehaviour
                 effect = EffectsDatabase.Instance.GetEffectByName("Freeze Effect"),
                 stacksToApply = 1
             };
-            sender.GetComponent<EffectsManager>()?.AddEffect(effectData);
+            sender.GetComponent<EffectsManager>()?.AddEffect(gameObject, effectData);
             if(floatingCombatTextEffect)
                 floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1), false);
              return;
@@ -178,7 +178,7 @@ public class Damageable : MonoBehaviour
             {
                 foreach (var activeEffect in activeEffects)
                 {
-                    effectsManager.AddEffect(new EffectData
+                    effectsManager.AddEffect(gameObject, new EffectData
                     {
                         effect = activeEffect.effect,
                         stacksToApply = 1
@@ -189,6 +189,11 @@ public class Damageable : MonoBehaviour
 
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
+        if(!CompareTag("Player"))
+            TopDownGameManager.Instance.AddDamageDealt(Mathf.RoundToInt(finalDamage));
+        else
+            TopDownGameManager.Instance.AddDamageReceived(Mathf.RoundToInt(finalDamage));
 
         FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
         if (floatingCombatTextNumber)
@@ -240,7 +245,7 @@ public class Damageable : MonoBehaviour
                     effect = stunEffect,
                     stacksToApply = 1
                 };
-                GetComponent<EffectsManager>().AddEffect(stunEffectData);
+                GetComponent<EffectsManager>().AddEffect(gameObject, stunEffectData);
 
                 OnShieldBreak?.Invoke(stunEffect.durationOnApply);
                 StartStunCoroutine(stunEffect.durationOnApply);
