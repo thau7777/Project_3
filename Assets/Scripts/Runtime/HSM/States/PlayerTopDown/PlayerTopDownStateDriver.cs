@@ -119,7 +119,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _executor.InitializeMana(baseStatsData.MaxMana);
 
         _context = new PlayerTopdownContext.Builder()
-        .SetBaseMoveSpeed(_characterStats.Speed)
+        .SetBaseMoveSpeed(_characterStats.Speed / 2)
         .SetStrafeMoveSpeed(_strafeMoveSpeed)
         .SetMoveSpeedSmoothTime(_smoothTime)
         .SetRotateSpeed(_rotateSpeed)

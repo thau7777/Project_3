@@ -130,6 +130,8 @@ namespace MyRule
     {
         [JsonProperty] private string id;
         [JsonProperty] private string name;
+        [JsonProperty] private int baseDamage;
+        [JsonProperty] private int manaCost;
         [JsonProperty] private SigilType sigilType;
         [JsonProperty] private ERarity rarity;
         [JsonProperty] private float weight;
@@ -137,19 +139,23 @@ namespace MyRule
 
         [JsonIgnore] public string Id => id;
         [JsonIgnore] public string Name => name;
+        [JsonIgnore] public int BaseDamage => baseDamage;
+        [JsonIgnore] public int ManaCost => manaCost;
         [JsonIgnore] public SigilType SigilType => sigilType;
         [JsonIgnore] public ERarity Rarity => rarity;
         [JsonIgnore] public float Weight => weight;
         [JsonIgnore] public EKeyBinding EKeyBinding => eKeyBinding;
 
-        public SigilData(string id, SigilType sigilType, string name, ERarity rarity, EKeyBinding eKeyBinding)
+        public SigilData(string id, SigilType sigilType, string name, int baseDamage, int manaCost, ERarity rarity, EKeyBinding eKeyBinding)
         {
             this.id = id;
             this.name = name;
+            this.baseDamage = baseDamage;
+            this.manaCost = manaCost;
             this.sigilType = sigilType;
             this.rarity = rarity;
             this.eKeyBinding = eKeyBinding;
-
+            
             switch (rarity)
             {
                 case ERarity.Common:

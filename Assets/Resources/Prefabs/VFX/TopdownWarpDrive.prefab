@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 8149911321533923481}
   - component: {fileID: 3816094205801943803}
   - component: {fileID: 5294101332880471154}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: TopdownWarpDrive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2000517480302929976
 Transform:
   m_ObjectHideFlags: 0
@@ -64,10 +64,10 @@ VisualEffect:
       - m_Value: 5.5
         m_Name: RocksVerticalForce
         m_Overridden: 1
-      - m_Value: 3
+      - m_Value: 2
         m_Name: Duration
         m_Overridden: 1
-      - m_Value: 2.1
+      - m_Value: 0
         m_Name: DelayTime
         m_Overridden: 1
     m_Vector2f:
@@ -101,7 +101,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1444273029439083907}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -153,11 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopdownWarpDriveController
   TPVolume: {fileID: 0}
-  _visualEffect: {fileID: 0}
-  _waitDuration: 3
-  _fadeInDuration: 0.5
-  _holdDuration: 3
-  _fadeOutDuration: 0.5
+  _visualEffect: {fileID: 6384004552034128909}
+  _cameraNoiseChannel: {fileID: 0}
+  _fadeInDuration: 0.3
+  _fadeOutDuration: 0.3
 --- !u!114 &5294101332880471154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,7 +191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 600
+      value: 580
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -200,7 +199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0001548216
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -235,12 +234,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 756aef4c257f1a740b2861958b1b2537, type: 2}
     - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_Name
       value: WarpCylinder
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
+      propertyPath: m_Layer
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_IsActive
@@ -274,7 +281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 600
+      value: 580
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -317,12 +324,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a37ea8d415245ef4e9593b8a34efa68f, type: 2}
     - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_Name
       value: WarpCylinder (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
+      propertyPath: m_Layer
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ef3a7229b1ec61d4e9e78991eca585e1, type: 3}
       propertyPath: m_IsActive
