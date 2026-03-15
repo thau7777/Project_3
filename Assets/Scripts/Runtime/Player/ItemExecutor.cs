@@ -75,7 +75,11 @@ public class ItemExecutor : MonoBehaviour
 
         var context = new ItemStrategyContext(transform, Vector3.zero, Quaternion.identity);
         item.Cast(context);
-
+        for(int i = 0; i < 6; i++)
+        {
+            if (i == index) continue;
+            _itemRuntimeInstances[i].MarkUsed();
+        }
         if (item.Definition.loseQuantityOnUse)
         {
             item.currentQuantity--;
@@ -88,6 +92,8 @@ public class ItemExecutor : MonoBehaviour
         _itemArray[index] = null;
         _itemRuntimeInstances[index] = new ItemRuntimeInstance(null, index);
         EventBus<TopdownInitializeItemsEvent>.Raise(new TopdownInitializeItemsEvent(_itemRuntimeInstances));
+
+        ItemStorageManager.Instance.GetItemStorage().RemoveItemSlot(index);
     }
 
     public void SwapItems(int fromIndex, int toIndex)
