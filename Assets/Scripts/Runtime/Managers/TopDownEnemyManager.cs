@@ -125,11 +125,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     {
         WaveData[] waves = _groupWave.WaveDatas;
 
-        if (waveIndex >= waves.Length)
-        {
-            // Shouldn't reach here anymore — WinGame is handled in OnEnemyDied
-            yield break;
-        }
+        if (waveIndex >= waves.Length) yield break;
 
         WaveData wave = waves[waveIndex];
         if (wave == null)
@@ -141,33 +137,60 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
         Debug.Log($"[WaveManager] Starting Wave {waveIndex + 1} / {waves.Length}");
 
-        // Count valid enemies in this wave
-        RemainingEnemiesInWave = 0;
+        // Never reset — always add new wave's enemies on top of surviving stragglers
+        int newEnemyCount = 0;
         foreach (var enemy in wave.Enemies)
-        {
-            if (enemy != null) RemainingEnemiesInWave++;
-        }
+            if (enemy != null) newEnemyCount++;
+
+        RemainingEnemiesInWave += newEnemyCount;
 
         _isSpawning = true;
-        _activeEnemies.Clear();
 
-        // Spawn all enemies in the wave
         for (int i = 0; i < wave.Enemies.Length; i++)
         {
             EnemyData enemyData = wave.Enemies[i];
             if (enemyData == null) continue;
 
             SpawnEnemy(enemyData);
-            yield return new WaitForSeconds(Random.Range(0, 0.3f)); // slight stagger per spawn
+            yield return new WaitForSeconds(Random.Range(0, 0.3f));
         }
 
         _isSpawning = false;
 
-        // Start the wave timer
         if (_waveTimerCoroutine != null)
             StopCoroutine(_waveTimerCoroutine);
 
         _waveTimerCoroutine = StartCoroutine(WaveTimer());
+    }
+
+    public void OnEnemyDied(GameObject enemyGO)
+    {
+        _activeEnemies.Remove(enemyGO);
+
+        RemainingEnemiesInWave--;
+        RemainingEnemiesInWave = Mathf.Max(0, RemainingEnemiesInWave);
+
+        Debug.Log($"[WaveManager] Enemy died. Remaining: {RemainingEnemiesInWave} | Active tracked: {_activeEnemies.Count}");
+
+        // Use _activeEnemies.Count as the authoritative source — catches stragglers too
+        if (_activeEnemies.Count == 0)
+        {
+            if (_waveTimerCoroutine != null)
+            {
+                StopCoroutine(_waveTimerCoroutine);
+                _waveTimerCoroutine = null;
+            }
+
+            if (IsLastWave())
+            {
+                Debug.Log("[WaveManager] Final wave — all enemies killed. YOU WIN!");
+                WinGame();
+                return;
+            }
+
+            Debug.Log($"[WaveManager] Wave {CurrentWaveIndex + 1} cleared early! Advancing.");
+            StartCoroutine(AdvanceToNextWave());
+        }
     }
 
     private IEnumerator WaveTimer()
@@ -242,37 +265,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     // ─── Enemy Death Callback ─────────────────────────────────────────────────
 
-    // Called by each enemy when they die
-    public void OnEnemyDied(GameObject enemyGO)
-    {
-        if (_activeEnemies.Contains(enemyGO))
-            _activeEnemies.Remove(enemyGO);
-
-        RemainingEnemiesInWave--;
-        RemainingEnemiesInWave = Mathf.Max(0, RemainingEnemiesInWave);
-
-        Debug.Log($"[WaveManager] Enemy died. Remaining in wave: {RemainingEnemiesInWave}");
-
-        if (RemainingEnemiesInWave == 0)
-        {
-            if (_waveTimerCoroutine != null)
-                StopCoroutine(_waveTimerCoroutine);
-
-            _waveTimerCoroutine = null;
-
-            // Win only triggers when the final wave is fully cleared
-            if (IsLastWave())
-            {
-                Debug.Log($"[WaveManager] Final wave cleared — YOU WIN!");
-                WinGame();
-                return;
-            }
-
-            Debug.Log($"[WaveManager] Wave {CurrentWaveIndex + 1} cleared early! Advancing to next wave.");
-            StartCoroutine(AdvanceToNextWave());
-        }
-    }
-
     // ─── Cleanup ──────────────────────────────────────────────────────────────
 
     private void ClearRemainingEnemies()
@@ -289,6 +281,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     private void WinGame()
     {
+        ClearRemainingEnemies();
         _gameOver = true;
         EventBus<TopDownEndGameEvent>.Raise(new TopDownEndGameEvent(UIEndGameExecuteState.Win));
     }

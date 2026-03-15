@@ -26,7 +26,8 @@ public class SkillExecutor : MonoBehaviour
     private Coroutine _lerpCoroutine;
     private SkillIndicator _skillIndicator;
 
-
+    [SerializeField, TabGroup("Stats")]
+    private float _manaRegenPercentage = 1f;
     [SerializeField, TabGroup("Stats")]
     private float _currentMana;
     public float CurrentMana => _currentMana;
@@ -54,6 +55,19 @@ public class SkillExecutor : MonoBehaviour
     private void Start()
     {
         InitializeSkillInstance();
+        StartManaRegenLoop();
+    }
+   
+    private void StartManaRegenLoop()
+    {
+        InvokeRepeating(nameof(RegenMana), 1f, 1f);
+    }
+
+    private void RegenMana()
+    {
+        if (_currentMana >= _maxMana) return;
+        float regenAmount = _maxMana * (_manaRegenPercentage / 100f);
+        RestoreMana(regenAmount);
     }
     public void InitializeMana(float maxMana)
     {

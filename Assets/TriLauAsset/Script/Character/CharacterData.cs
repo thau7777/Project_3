@@ -157,6 +157,8 @@ namespace MyRule
             _critChance = critChance;
             _critMult = critMult;
         }
+        public void SetCurrentHealth(int amount)
+            { _currentHealth = amount; }
     }
 
     [Serializable]

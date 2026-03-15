@@ -43,6 +43,10 @@ public class Damageable : MonoBehaviour
     {
         MaxHealth = maxHealth;
         CurrentHealth = maxHealth;
+
+        if (!CompareTag("Player"))
+            GetComponentInChildren<TopDownEnemyUIController>().InitializeValue(CurrentHealth, MaxHealth, shieldHealth, shieldHealth);
+
         if(hasShieldBreakingMechanic)
         {
             MaxShieldHealth = shieldHealth;
@@ -51,7 +55,6 @@ public class Damageable : MonoBehaviour
         }
 
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
-
     }
     public void UpdateMaxHealth(float newMaxHealth)
     {
@@ -186,14 +189,14 @@ public class Damageable : MonoBehaviour
                 }
             }
         }
-
+        finalDamage = Mathf.RoundToInt(finalDamage);
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
         if(!CompareTag("Player"))
-            TopDownGameManager.Instance.AddDamageDealt(Mathf.RoundToInt(finalDamage));
+            TopDownGameManager.Instance.AddDamageDealt((int)finalDamage);
         else
-            TopDownGameManager.Instance.AddDamageReceived(Mathf.RoundToInt(finalDamage));
+            TopDownGameManager.Instance.AddDamageReceived((int)finalDamage);
 
         FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
         if (floatingCombatTextNumber)

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Controls shader effects on multiple renderers using VFXMaterialData scriptable objects
@@ -26,9 +27,9 @@ public class ShaderEffectController : MonoBehaviour
         // Auto-assign renderers if list is empty
         if (targetRenderers.Count == 0)
         {
-            Renderer renderer = GetComponent<Renderer>();
+            Renderer[] renderer = GetComponentsInChildren<Renderer>();
             if (renderer != null)
-                targetRenderers.Add(renderer);
+                targetRenderers = renderer.ToList();
         }
 
         // Store original materials for each renderer
@@ -74,6 +75,7 @@ public class ShaderEffectController : MonoBehaviour
     /// <param name="data">The VFX material data to use</param>
     public void PlayEffectWithData(VFXMaterialData data)
     {
+        Debug.Log(gameObject.name);
         if (data == null)
         {
             Debug.LogError("VFXMaterialData is null!");
@@ -88,7 +90,7 @@ public class ShaderEffectController : MonoBehaviour
 
         if (targetRenderers.Count == 0)
         {
-            Debug.LogError("Target renderers list is empty!");
+            Debug.LogError("Target renderers list is empty!" + gameObject.name);
             return;
         }
 

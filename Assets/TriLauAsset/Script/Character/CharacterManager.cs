@@ -33,7 +33,10 @@ namespace MyRule
 
             character = new CharacterData(characterSO.name, characterSO.backStory, characterSO.characterClass, characterStatsData);
         }
-
+        public void SetCurrentHealth(int amount)
+        {
+            character.CharacterStatsData.BaseStatsData.SetCurrentHealth(amount);
+        }
         public CharacterData GetCharacterStats() => character;
 
         public EClass GetCharacterClass() => character.CharacterClass;
