@@ -63,14 +63,14 @@ namespace Turnbase
 
             float currentSpeed = characterOwner.stats.speed;
 
-            if (characterOwner.actionGauge >= 9999.9f)
+            if (characterOwner.actionGauge >= 99.9f)
             {
                 actionGaugeText.text = "0";
                 actionGaugeText.color = Color.yellow;
             }
             else
             {
-                float avValue = (10000f - characterOwner.actionGauge) / Mathf.Max(1f, currentSpeed);
+                float avValue = (100f - characterOwner.actionGauge) / Mathf.Max(1f, currentSpeed);
                 int displayAV = Mathf.CeilToInt(avValue);
 
                 actionGaugeText.text = displayAV.ToString();

@@ -7,7 +7,7 @@ namespace Turnbase
 {
     public class InterruptedState : BaseState
     {
-        private float moveSpeed = 5f;
+        private float moveSpeed = 25f;
 
         private float Duradition;
 
