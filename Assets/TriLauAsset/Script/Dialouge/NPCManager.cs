@@ -15,18 +15,29 @@ namespace MyRule
     {
         [SerializeField] private NPCInMatch[] nPCInMatches;
         [SerializeField] private NPCInMatch salesman;
+        [SerializeField] private NPCInMatch tae;
 
         private NPCInMatch currentNPC;
 
         public void RandomNPC()
         {
             int index = UnityEngine.Random.Range(0, nPCInMatches.Length);
-            TriggetNPC(nPCInMatches[index]);
+            TriggerNPC(nPCInMatches[index]);
         }
 
-        public void TriggetStore() => TriggetNPC(salesman);
+        public void TriggetStore() => TriggerNPC(salesman);
 
-        private async void TriggetNPC(NPCInMatch npc)
+        public async UniTask TriggerTAE()
+        {
+            await UniTask.WaitUntil(() => GameSystemManager.Instance != null);
+
+            if (MatchManager.Instance.MatchData.IsNewMatch)
+            {
+                TriggerNPC(tae);
+            }
+        }
+
+        private async void TriggerNPC(NPCInMatch npc)
         {
             currentNPC = npc;
 

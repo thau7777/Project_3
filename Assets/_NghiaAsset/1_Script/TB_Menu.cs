@@ -42,20 +42,23 @@ namespace Turnbase
         {
             victoryMenu.SetActive(true);
 
+            CombatManager.Instance.SetCombatResultWin();
+
             isVicrory = true;
         }
 
         public void ShowLoseMenu()
         {
             loseMenu.SetActive(true);
+
+            CombatManager.Instance.SetCombatResultLose();
+
             isVicrory = false;
         }
 
         public void LoadSceneMain(bool result)
         {
             Debug.Log("Adjust the number of runes here.");
-            int runAmount = 100;
-            MazeGameplayRewardManager.Instance.CreateNewReward(runAmount);
 
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
             

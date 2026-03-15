@@ -72,6 +72,7 @@ namespace MyRule
             {
                 case NodeType.MinorEnemy:
                     {
+                        CombatManager.Instance.CreateNewCombat();
                         await WaveManager.Instance.CreateNewWave();
                         await UniTask.Delay(1000);
                         SceneManager.LoadScene("TurnBase");

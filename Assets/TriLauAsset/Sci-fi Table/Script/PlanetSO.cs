@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public enum PlanetType
+    public enum EMap
     {
         GreenLand,
         Desert,
@@ -12,7 +12,7 @@ namespace MyRule
     [CreateAssetMenu(fileName = "PlanetSO", menuName = "Scriptable Objects/PlanetSO")]
     public class PlanetSO : ScriptableObject
     {
-        public PlanetType planetType;
+        public EMap planetType;
         public string planetName;
         public Sprite image;
         [TextArea(3, 4)]

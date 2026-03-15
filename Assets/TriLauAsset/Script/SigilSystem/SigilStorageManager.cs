@@ -32,15 +32,19 @@ namespace MyRule
 
         private void OnSigilChosen(SigilChosenEvent evt)
         {
-            SigilData sigilData = new SigilData(evt.sigilSO.id, evt.sigilSO.sigilType, evt.sigilSO.name, evt.sigilSO.rarity);
+            SigilData sigilData = new SigilData(evt.sigilSO.id, evt.sigilSO.sigilType, evt.sigilSO.name, evt.sigilSO.rarity, evt.sigilSO.keyBinding);
 
-            string id = sigilData.Id;
+            string id = evt.sigilSO.id;
+            EKeyBinding keyType = sigilData.EKeyBinding;
 
             var existActive = sigilStorageData.ActiveSigils.ContainsKey(id);
             if (existActive) sigilStorageData.ActiveSigils.Remove(id);
 
             var existPassive = sigilStorageData.PassiveSigils.ContainsKey(id);
             if (existPassive) sigilStorageData.PassiveSigils.Remove(id);
+
+            var duplicateActiveKey = sigilStorageData.ActiveSigils.FirstOrDefault(s => s.Value.EKeyBinding == keyType);
+            if (duplicateActiveKey.Value != null) sigilStorageData.ActiveSigils.Remove(duplicateActiveKey.Key);
 
             if (evt.sigilSO.sigilType == SigilType.Active)
                 sigilStorageData.ActiveSigils.Add(sigilData.Id, sigilData);

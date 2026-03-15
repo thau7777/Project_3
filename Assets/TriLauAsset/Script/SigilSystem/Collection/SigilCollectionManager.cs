@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,9 +80,11 @@ namespace MyRule
 
             foreach (var sigilSO in baseSigil.sigilSOs)
             {
-                SigilData sigil = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.rarity);
+                SigilData sigil = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.rarity, sigilSO.keyBinding);
                 sigilCollection.AddSigil(sigil);
             }
+
+            EventBus<UpdateSigilCollectionEvent>.Raise(new UpdateSigilCollectionEvent(sigilCollection));
         }
 
         public UniTask LoadData(GameData data)
@@ -93,6 +96,7 @@ namespace MyRule
             else if (data.SigilCollection != null && data.SigilCollection.Count != 0)
             {
                 sigilCollection = data.SigilCollection;
+                EventBus<UpdateSigilCollectionEvent>.Raise(new UpdateSigilCollectionEvent(sigilCollection));
             }
 
             return UniTask.CompletedTask;

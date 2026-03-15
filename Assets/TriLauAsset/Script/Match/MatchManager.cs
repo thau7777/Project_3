@@ -21,9 +21,9 @@ namespace MyRule
 
         public bool IsNewMatch() => _matchData.IsNewMatch;
 
-        public void CreateNewMatch(CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
+        public void CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
-            _matchData = GameSystemManager.Instance.GameData.CreateNewMatch(characterStatsData, runeAmount, sigilsInMatch);
+            _matchData = GameSystemManager.Instance.GameData.CreateNewMatch(mapType, characterStatsData, runeAmount, sigilsInMatch);
         }
 
         public void FinishMatch() => _matchData = null;

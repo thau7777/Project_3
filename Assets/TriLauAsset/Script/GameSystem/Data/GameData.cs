@@ -23,9 +23,11 @@ namespace MyRule
             this._history = new HistoryData();
         }
 
+        public void SetHistory(HistoryData historyData) => this._history = historyData; 
+
         public void SetSigilCollection(SigilCollectionData sigilCollection) => this._sigilCollection = sigilCollection;
 
-        public MatchData CreateNewMatch(CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilInMatch) => _matchData = new MatchData(characterStatsData, runeAmount, sigilInMatch);
+        public MatchData CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilInMatch) => _matchData = new MatchData(mapType, characterStatsData, runeAmount, sigilInMatch);
 
         public void SetMatch(MatchData matchData) => this._matchData = matchData;
     }

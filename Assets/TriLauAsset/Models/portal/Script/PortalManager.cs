@@ -91,7 +91,8 @@ namespace MyRule
                 CharacterData characterStatsData = CharacterManager.Instance.GetCharacterStats();
                 int runeAmount = RuneManger.Instance.CurrentRuneAmount;
                 SigilsInMatchData sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
-                MatchManager.Instance.CreateNewMatch(characterStatsData, runeAmount, sigilsInGame);
+                EMap mapType = MapTypeManager.Instance.GetMapType();
+                MatchManager.Instance.CreateNewMatch(mapType, characterStatsData, runeAmount, sigilsInGame);
 
                 CommandInvoker.UndoCommand();
 
@@ -105,7 +106,7 @@ namespace MyRule
 
                 warpController.StartRunWarpDrive();
 
-                await UniTask.Delay(4600);
+                await UniTask.Delay(5200);
                 
                 Cursor.lockState = CursorLockMode.None;
 

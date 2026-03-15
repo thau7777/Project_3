@@ -4,20 +4,26 @@ namespace MyRule
 {
     public abstract class Reward
     {
-        public abstract int GetReward();
     }
 
     public class MazeGameplayReward : Reward
     {
-        private int runeAmound;
+        private int runeAmount;
+        private int sigilAmount;
 
-        public int RuneAmount => runeAmound;
+        public int RuneAmount => runeAmount;    
+        public int SigilAmount => sigilAmount;
 
-        public MazeGameplayReward(int runeAmount)
+        public MazeGameplayReward()
         {
-            this.runeAmound = runeAmount;
+            runeAmount = 0;
+            sigilAmount = 0;
         }
 
-        public override int GetReward() => runeAmound;
+        public MazeGameplayReward(int runeAmount, int sigilAmount)
+        {
+            this.runeAmount = runeAmount;
+            this.sigilAmount = sigilAmount;
+        }
     }
 }
