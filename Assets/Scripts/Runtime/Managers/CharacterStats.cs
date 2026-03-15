@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    [SerializeField]
-    private CharacterSO _statsSO;
-
     [field: SerializeField]
     public ElementalType ElementalType { get; set; } = ElementalType.Normal;
 
@@ -81,16 +78,7 @@ public class CharacterStats : MonoBehaviour
     [field: SerializeField]
     public float AttackSizeScale { get; private set; } = 1f;
 
-    private void Awake()
-    {
-        if(_statsSO)
-            Setup(ElementalType.Normal, _statsSO.hp, 0, _statsSO.fp, _statsSO.attackDmg,
-                _statsSO.magicDmg, _statsSO.fireDmg, _statsSO.waterDmg, _statsSO.frostDmg,
-                _statsSO.lightningDmg, _statsSO.holyDmg, _statsSO.darkDmg, _statsSO.poisonDmg,
-                _statsSO.phyDef, _statsSO.magicDef, _statsSO.fireDef, _statsSO.waterDef,
-                _statsSO.frostDef, _statsSO.lightningDef, _statsSO.holyDef, _statsSO.darkDef,
-                _statsSO.poisonDef, _statsSO.speed, _statsSO.critChance, _statsSO.critMult);
-    }
+   
 
     public void Setup(ElementalType elementalType, int initialHealth, int stamina, int initialMana, int attackDamage,
         int magicAttackDamage, int fireDamage, int waterDamage, int frostDamage, int lightningDamage,
@@ -98,6 +86,7 @@ public class CharacterStats : MonoBehaviour
         int fireDefense, int waterDefense, int frostDefense, int lightningDefense, int holyDefense,
         int darkDefense, int poisonDefense, float speed, float criticalRate, float criticalMultiplier)
     {
+        Debug.LogWarning("init pplayer");
         ElementalType = elementalType;
         InitialHealth = initialHealth;
         InitialMana = initialMana;
@@ -124,7 +113,8 @@ public class CharacterStats : MonoBehaviour
         CriticalMultiplier = criticalMultiplier;
         AttackSizeScale = 1;
 
-        GetComponent<Damageable>().Initialize((float)initialHealth,(float)stamina);
+        if(!CompareTag("Player"))
+            GetComponent<Damageable>().Initialize((float)initialHealth, (float)initialHealth,(float)stamina);
 
     }
 

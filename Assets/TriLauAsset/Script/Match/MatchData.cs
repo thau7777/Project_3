@@ -14,6 +14,7 @@ namespace MyRule
     [Serializable]
     public class MatchData
     {
+        [JsonProperty] private EMap _mapType;
         [JsonProperty] private bool _isNewMatch;
         [JsonProperty] private EMatchResult _result;
         [JsonProperty] private int _runeInMatch;
@@ -22,7 +23,10 @@ namespace MyRule
         [JsonProperty] private SigilsInMatchData _sigilsInMatch;
         [JsonProperty] private SigilStorageData _sigilStorageInMatch;
         [JsonProperty] private ItemStorageData _itemStorageInMatch;
+        [JsonProperty] private int _enmiesDefeated;
+        [JsonProperty] private int _nodesExplored;
 
+        [JsonIgnore] public EMap MapType => _mapType;
         [JsonIgnore] public bool IsNewMatch => _isNewMatch;
         [JsonIgnore] public EMatchResult Result => _result;
         [JsonIgnore] public CharacterData CharacterData => _characterData;
@@ -31,9 +35,12 @@ namespace MyRule
         [JsonIgnore] public SigilsInMatchData SigilsInMatch => _sigilsInMatch;
         [JsonIgnore] public SigilStorageData SigilStorageInMatch => _sigilStorageInMatch;
         [JsonIgnore] public ItemStorageData ItemStorageInMatch => _itemStorageInMatch;
+        [JsonIgnore] public int EnemiesDefeated => _enmiesDefeated;
+        [JsonIgnore] public int NodesExplored => _nodesExplored;
 
-        public MatchData(CharacterData character, int runeAmount, SigilsInMatchData sigilsInMatch)
+        public MatchData(EMap eMap, CharacterData character, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
+            _mapType = eMap;
             _isNewMatch = true;
             _result = EMatchResult.None;
             _characterData = character;
@@ -42,8 +49,11 @@ namespace MyRule
             _sigilsInMatch = sigilsInMatch;
             _sigilStorageInMatch = new SigilStorageData();
             _itemStorageInMatch = new ItemStorageData();
+            _enmiesDefeated = 0;
+            _nodesExplored = 0;
         }
 
+        public void SetMap(EMap eMap) => _mapType = eMap;
         public void SetIsNewMatch(bool isNewMatch) => _isNewMatch = isNewMatch;
 
         public void SetMatchResult(EMatchResult result) => this._result = result;
@@ -57,20 +67,9 @@ namespace MyRule
         public void SetSigilStorageInMatch(SigilStorageData sigilStorageData) => this._sigilStorageInMatch = sigilStorageData;
     
         public void SetItemStorageInMatch(ItemStorageData itemStorageData) => this._itemStorageInMatch = itemStorageData;
-    }
+        
+        public void IncreaseEnmiesDefeated() => _enmiesDefeated++;
 
-    [Serializable]
-    public class HistoryData
-    {
-        [JsonProperty] public List<MatchData> _matchs;
-
-        [JsonIgnore] public List<MatchData> Matchs => _matchs;
-
-        public HistoryData()
-        {
-            _matchs = new List<MatchData>();
-        }
-
-        public void AddMatch(MatchData match) => _matchs.Add(match);
+        public void IncreaseNodesExplored() => _nodesExplored++;
     }
 }

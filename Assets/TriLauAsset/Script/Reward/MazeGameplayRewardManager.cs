@@ -10,11 +10,11 @@ namespace MyRule
 
         public bool HasRewards => hasRewards;
 
-        public void CreateNewReward(int runeAmount)
+        public void CreateNewReward(int runeAmount, int sigil = 1)
         {
             if (hasRewards) return;
 
-            reward = new MazeGameplayReward(runeAmount);
+            reward = new MazeGameplayReward(runeAmount, sigil);
             hasRewards = true;
         }
 
@@ -24,7 +24,10 @@ namespace MyRule
 
             hasRewards = false;
 
-            return reward;
+            MazeGameplayReward recivedReward = reward;
+            reward = null;
+
+            return recivedReward;
         }    
     }
 }

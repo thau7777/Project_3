@@ -8,7 +8,7 @@ namespace MyRule
     [Serializable]
     public class EnemyInMap
     {
-        [SerializeField] public PlanetType planetType;
+        [SerializeField] public EMap planetType;
         [SerializeField] public MapEnemies enemies;
     }
 

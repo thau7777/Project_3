@@ -11,7 +11,7 @@ namespace MyRule.UI
         [SerializeField] private TextMeshProUGUI tabText;
         [SerializeField] private Color normalColor = Color.gray;
         [SerializeField] private Color selectedColor = Color.white;
-        [SerializeField] private GameObject tabContent;
+        [SerializeField] private CanvasGroup tabContent;
 
         [Header("Events")]
         [SerializeField] private UnityEvent onFirstSelect;
@@ -29,8 +29,14 @@ namespace MyRule.UI
             if (tabText != null)
                 tabText.color = isSelected ? selectedColor : normalColor;
 
-            if (tabContent != null)
-                tabContent.SetActive(isSelected);
+            if (isSelected)
+            {
+                tabContent.alpha = 1;
+            }
+            else
+            {
+                tabContent.alpha = 0;
+            }
 
             if (isSelected)
             {

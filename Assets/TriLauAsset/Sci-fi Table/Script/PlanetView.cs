@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
@@ -16,10 +17,12 @@ namespace MyRule.UI
         [SerializeField] private Transform planetEnemiesParent;
         [SerializeField] private GameObject planetEnemyView;
 
-        private List<GameObject> planetEneymiesViewObj;
+        private List<GameObject> planetEneymiesViewObj = new List<GameObject>();
 
-        public void Show(PlanetSO planetSO)
+        public async void Show(PlanetSO planetSO)
         {
+            await UniTask.Delay(200);
+
             _group.DOFade(1f, fadeDuration);
             planetName.text = planetSO.planetName;
             planetImage.sprite = planetSO.image;
@@ -27,9 +30,10 @@ namespace MyRule.UI
 
             for (int i = 0; i < planetSO.mapEnemies.enemies.Count; i++)
             {
-                var ennemyView = Instantiate(planetEnemyView, planetEnemiesParent).GetComponent<PlanetEnemyView>();
-                ennemyView.SetEnemyData(planetSO.mapEnemies.enemies[i]);
-                planetEneymiesViewObj.Add(ennemyView.gameObject);
+                GameObject ennemy = Instantiate(planetEnemyView, planetEnemiesParent);
+                PlanetEnemyView enemyView = ennemy.GetComponent<PlanetEnemyView>();
+                enemyView.SetEnemyData(planetSO.mapEnemies.enemies[i]);
+                planetEneymiesViewObj.Add(ennemy.gameObject);
             }
         }
 
