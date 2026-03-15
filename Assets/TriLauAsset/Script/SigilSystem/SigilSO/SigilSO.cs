@@ -12,10 +12,8 @@ namespace MyRule
     {
         Q,
         E,
-        Space,
         F,
         R,
-        Shift
     }
 
     [CreateAssetMenu(fileName = "SigilSO", menuName = "Sigil/SigilSO")]

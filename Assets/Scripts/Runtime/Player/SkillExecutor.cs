@@ -100,16 +100,6 @@ public class SkillExecutor : MonoBehaviour
                     skill.SetManaCost(kvp.Value.ManaCost);
                     switch (kvp.Value.EKeyBinding)
                     {
-                        case EKeyBinding.Shift:
-                            {
-                                //_skillStrategies[0] = skill;
-                                break;
-                            }
-                        case EKeyBinding.Space:
-                            {
-                                //_skillStrategies[1] = skill;
-                                break;
-                            }
                         case EKeyBinding.Q:
                             {
                                 _skillStrategies[2] = skill;
