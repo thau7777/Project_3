@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Turnbase;
 using UnityEngine;
 
@@ -723,9 +724,8 @@ namespace Turnbase
             {
                 characterTarget.battleUIManager.UpdateCharacterUI(characterTarget);
             }
-        }
-
-
+        }  
+        
 
         public bool IsPoisoned()
         {
