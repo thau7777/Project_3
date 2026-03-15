@@ -133,19 +133,22 @@ namespace MyRule
         [JsonProperty] private SigilType sigilType;
         [JsonProperty] private ERarity rarity;
         [JsonProperty] private float weight;
+        [JsonProperty] private EKeyBinding eKeyBinding;
 
         [JsonIgnore] public string Id => id;
         [JsonIgnore] public string Name => name;
         [JsonIgnore] public SigilType SigilType => sigilType;
         [JsonIgnore] public ERarity Rarity => rarity;
         [JsonIgnore] public float Weight => weight;
+        [JsonIgnore] public EKeyBinding EKeyBinding => eKeyBinding;
 
-        public SigilData(string id, SigilType sigilType, string name, ERarity rarity)
+        public SigilData(string id, SigilType sigilType, string name, ERarity rarity, EKeyBinding eKeyBinding)
         {
             this.id = id;
             this.name = name;
             this.sigilType = sigilType;
             this.rarity = rarity;
+            this.eKeyBinding = eKeyBinding;
 
             switch (rarity)
             {

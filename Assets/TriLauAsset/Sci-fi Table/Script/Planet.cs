@@ -76,7 +76,7 @@ namespace MyRule
             isDetailShown = true;
             canActive = true;
 
-            //PlanetView.Instance.Show(planetSO);
+            PlanetView.Instance.Show(planetSO);
         }
 
         public void HideDetailPlanet()
@@ -85,26 +85,16 @@ namespace MyRule
             isDetailShown = false;
             canActive = false;
 
-            //PlanetView.Instance.Hide();
+            PlanetView.Instance.Hide();
         }
 
         private void ActivePlanet(ScifitableActiveEvent obj)
         {
             if (!canActive) return;
 
-            switch (planetSO.planetType)
-            {
-                case PlanetType.GreenLand:
-                    PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
-                    //Loader.Load(Loader.EScene.MazeScene);
-                    break;
-                case PlanetType.Desert:
-                    PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
-                    break;
-                case PlanetType.IceLand:
-                    PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
-                    break;
-            }
+            MapTypeManager.Instance.SetMapType(planetSO.planetType);
+
+            PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
 
             Cursor.lockState = CursorLockMode.None;
         }

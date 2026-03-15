@@ -10,6 +10,7 @@ namespace MyRule
     {
         [Header("References")]
         [SerializeField] private VisualEffect effect;
+        [SerializeField] private ParticleSystem scanEffect;
         [SerializeField] private MeshRenderer cylinder1;
         [SerializeField] private MeshRenderer cylinder2;
 
@@ -28,6 +29,7 @@ namespace MyRule
         private void Start()
         {
             effect.Stop();
+            scanEffect.Stop();
             cylinder1.material.SetFloat("_Active", 0f);
             cylinder2.material.SetFloat("_Active", 0f);
             cylinder1.material.SetFloat("_Power", powerFrom1);
@@ -39,6 +41,7 @@ namespace MyRule
             cts = new CancellationTokenSource();
             
             effect.Play();
+            scanEffect.Play();
             effect.SetFloat("WarpAmount", 0f);
             cylinder1.material.SetFloat("_Active", 0f);
             cylinder2.material.SetFloat("_Active", 0f);

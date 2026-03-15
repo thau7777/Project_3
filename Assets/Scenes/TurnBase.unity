@@ -3218,7 +3218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.43560925, y: 0.35100004, z: -0.18944365, w: 0.80694157}
+  m_LocalRotation: {x: 0.8171058, y: 0.1810289, z: -0.35528767, w: 0.416338}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3768,6 +3768,7 @@ MonoBehaviour:
   availableRules:
   - {fileID: 11400000, guid: 51ad5a1614f0b8b42be0de5825e5facd, type: 2}
   roundTrackerPrefab: {fileID: 4099315421075818728, guid: edd848f1989d3814286a19ee26141ddd, type: 3}
+  roundSpeed: 10
   startRounds: 10
   mainDirector: {fileID: 215960479}
   parryUI: {fileID: 1137879817}
@@ -11623,7 +11624,7 @@ MonoBehaviour:
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 8.1520605
+  currentTimeOfDay: 11.655816
   timeSpeed: 2
   sunriseTime: 4
   sunriseDuration: 0.88
@@ -11759,8 +11760,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.WaveManager
   AutoUnparentOnAwake: 1
-  enemyDataSOs:
-  - {fileID: 11400000, guid: b7e54b1b2541793499ec0d356f5539d9, type: 2}
+  enemiesInMap: []
+  mapEnemies: {fileID: 0}
 --- !u!4 &1878351156
 Transform:
   m_ObjectHideFlags: 0
