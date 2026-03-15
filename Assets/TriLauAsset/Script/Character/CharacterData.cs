@@ -158,7 +158,7 @@ namespace MyRule
             _critMult = critMult;
         }
         
-        public float GetHealthRate() => _currentHealth / _maxHealth;
+        public float GetHealthRate() => (float)_currentHealth / (float)_maxHealth;
         public void SetCurrentHealth(int amount)
             { _currentHealth = amount; }
     }

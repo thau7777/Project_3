@@ -112,8 +112,6 @@ namespace MyRule
 
         public async UniTask LoadData(GameData data)
         {
-            if (data.MatchData == null) return;
-
             await UniTask.WaitUntil(() => MatchManager.Instance.MatchData != null);
 
             hasRecived = data.MatchData.HasReceivedStartingSigil;
@@ -122,7 +120,7 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            data.MatchData.SetHasRecivedStartingSigil(hasRecived);
+            //data.MatchData.SetHasRecivedStartingSigil(hasRecived);
         }
     }
 }

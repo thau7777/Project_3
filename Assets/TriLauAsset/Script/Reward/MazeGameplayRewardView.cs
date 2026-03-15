@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace MyRule
 {
@@ -61,6 +62,9 @@ namespace MyRule
         {
             if (!isShowing) return;
             
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+
             CardTracker.Instance.canInteract = false;
 
             Transition.TransitionValue(
@@ -95,6 +99,9 @@ namespace MyRule
                 to: 1f,
                 duration: fadeDuration,
                 cts.Token).Forget();
+
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
 
             continueBtn.Select();
 
@@ -140,6 +147,8 @@ namespace MyRule
                 if (sigilData == null) break;
 
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+                if (sigilSO == null) continue;
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
                 Card card = cardObj.GetComponent<Card>();

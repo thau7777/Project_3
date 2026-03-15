@@ -26,6 +26,7 @@ namespace MyRule.UI
             currentHealth.text = evt.character.CharacterStatsData.BaseStatsData.CurrentHealth + "/" + 
                                 evt.character.CharacterStatsData.BaseStatsData.MaxHealth;
             float healthRate = evt.character.CharacterStatsData.BaseStatsData.GetHealthRate();
+            Debug.Log(healthRate);
             healthFill.SetFloat("_FillLevel", healthRate);
         }
     }
