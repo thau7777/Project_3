@@ -1,3 +1,4 @@
+using MyRule;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.Events;
 
 public class SkillExecutor : MonoBehaviour
 {
+    [SerializeField] private bool _useTestSkill;
     [SerializeField, TabGroup("Skills Setup")]
     private SkillStrategy[] _skillStrategies = new SkillStrategy[6];
 
@@ -39,7 +41,6 @@ public class SkillExecutor : MonoBehaviour
     void Awake()
     {
         _layerIgnoreController = GetComponent<CCLayerIgnoreController>();
-        InitializeMana(100);
     }
     private void OnEnable()
     {
@@ -54,7 +55,7 @@ public class SkillExecutor : MonoBehaviour
     {
         InitializeSkillInstance();
     }
-    private void InitializeMana(float maxMana)
+    public void InitializeMana(float maxMana)
     {
         _maxMana = maxMana;
         _currentMana = maxMana;
@@ -62,7 +63,63 @@ public class SkillExecutor : MonoBehaviour
     }
     private void InitializeSkillInstance()
     {
-        for(int i = 0; i < 6; i++)
+        if (!_useTestSkill)
+        {
+            Dictionary<string, SigilData> activeSigilsDic = SigilStorageManager.Instance.SigilStorageData.ActiveSigils;
+            if (activeSigilsDic != null)
+            {
+                _skillStrategies = new SkillStrategy[6];
+                foreach (var kvp in activeSigilsDic)
+                {
+                    SkillStrategy skill = TopdownSkillDataBase.Instance.GetSkillStrategyByName(kvp.Value.Name);
+                    if (skill == null)
+                    {
+                        Debug.LogWarning("Cant find skill");
+
+                        continue;
+                    }
+
+                    skill.SetBaseDamage(kvp.Value.BaseDamage);
+                    skill.SetManaCost(kvp.Value.ManaCost);
+                    switch (kvp.Value.EKeyBinding)
+                    {
+                        case EKeyBinding.Shift:
+                            {
+                                _skillStrategies[0] = skill;
+                                break;
+                            }
+                        case EKeyBinding.Space:
+                            {
+                                _skillStrategies[1] = skill;
+                                break;
+                            }
+                        case EKeyBinding.Q:
+                            {
+                                _skillStrategies[2] = skill;
+                                break;
+                            }
+                        case EKeyBinding.E:
+                            {
+                                _skillStrategies[3] = skill;
+                                break;
+                            }
+                        case EKeyBinding.R:
+                            {
+                                _skillStrategies[4] = skill;
+                                break;
+                            }
+                        case EKeyBinding.F:
+                            {
+                                _skillStrategies[5] = skill;
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+        
+        
+        for (int i = 0; i < 6; i++)
         {
             _skillInstance[i] = new SkillRuntimeInstance(_skillStrategies[i], i);
         }

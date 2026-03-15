@@ -1,7 +1,10 @@
+using MyRule;
 using UnityEngine;
 
 public class ItemExecutor : MonoBehaviour
 {
+    [SerializeField]
+    private bool _useTestItem;
     [SerializeField, TabGroup("Item Setup")]
     private TopDownItemStrategy[] _itemArray = new TopDownItemStrategy[6];
     private ItemRuntimeInstance[] _itemRuntimeInstances = new ItemRuntimeInstance[6];
@@ -25,9 +28,34 @@ public class ItemExecutor : MonoBehaviour
 
     private void InitializeItems()
     {
+        if (!_useTestItem)
+        {
+            ItemData[] itemData = ItemStorageManager.Instance.ItemStorage.Items;
+            if (itemData != null)
+            {
+                _itemArray = new TopDownItemStrategy[6];
+                foreach (var item in itemData)
+                {
+                    if (item == null) continue;
+                    Debug.LogWarning(item.ItemType);
+                    TopDownItemStrategy foundItem = TopdownItemDataBase.Instance.GetItemStrategyByType(item.ItemType);
+                    if (foundItem == null)
+                    {
+                        Debug.LogWarning("Cant find item");
+                        continue;
+                    }
+
+                    _itemArray[item.SlotIndex] = foundItem;
+
+                }
+            }
+
+        }
+
+
         for (int i = 0; i < 6; i++)
         {
-            _itemRuntimeInstances[i] = new ItemRuntimeInstance(_itemArray[i], i,3);
+            _itemRuntimeInstances[i] = new ItemRuntimeInstance(_itemArray[i], i,1);
         }
         EventBus<TopdownInitializeItemsEvent>.Raise(new TopdownInitializeItemsEvent(_itemRuntimeInstances));
     }
