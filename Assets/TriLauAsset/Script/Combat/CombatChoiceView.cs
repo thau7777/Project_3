@@ -112,6 +112,7 @@ namespace MyRule.UI
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
             canvasGroup.DOFade(1f, fadeDuration);
+            VolumeController.Instance.AdjustUIVolumeWeight();
         }
 
         private void Hide()
@@ -120,6 +121,7 @@ namespace MyRule.UI
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
             canvasGroup.DOFade(0f, fadeDuration);
+            VolumeController.Instance.AdjustUIVolumeWeight();
         }
 
         private async void LoadTDScene()

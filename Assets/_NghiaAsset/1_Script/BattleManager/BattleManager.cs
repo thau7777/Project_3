@@ -176,6 +176,7 @@ namespace Turnbase
                     CameraAction.instance.TargetDeadCamera();
 
                     await UniTask.Delay(3000);
+                    CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
                     TB_Menu.instance.ShowLoseMenu();
                 }
             }
@@ -222,13 +223,6 @@ namespace Turnbase
                 {
                     yield return StartCoroutine(currentRule.ExecuteRule(this, activeCharacter));
                     yield return new WaitForSeconds(1.5f);
-                }
-
-                if (roundTracker.currentRound <= -1)
-                {
-                    TB_Menu.instance.ShowLoseMenu();
-                    isProcessingTurn = true;
-                    yield break;
                 }
                 EndTurn(roundTracker);
                 yield break;
@@ -345,7 +339,11 @@ namespace Turnbase
 
         private void CheckWinCondition(bool finalWin = false)
         {
-            if (finalWin) TB_Menu.instance.ShowVictoryMenu();
+            if (finalWin)
+            {
+                CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
+                TB_Menu.instance.ShowVictoryMenu();
+            }
         }
 
         public void ChooseRandomRule()

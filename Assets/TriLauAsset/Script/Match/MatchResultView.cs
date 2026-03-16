@@ -60,7 +60,7 @@ namespace MyRule
         private async void OnSubmit()
         {
             MatchData matchData = MatchManager.Instance.MatchData;
-            HistoryManager.Instance.AddMatchToHistory(matchData);
+            //HistoryManager.Instance.AddMatchToHistory(matchData);
             MatchManager.Instance.FinishMatch();
 
             await Loader.LoadSceneWithLoading(Loader.EScene.SpaceStationScene);

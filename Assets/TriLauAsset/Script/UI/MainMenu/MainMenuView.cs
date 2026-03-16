@@ -36,7 +36,7 @@ namespace MyRule.UI
 
             inputReader.SwitchActionMap(ActionMap.UI);
 
-            AudioManager.Instance.PlayMusic(MusicType.MainMenu);
+            //AudioManager.Instance.PlayMusic(MusicType.MainMenu);
         }
 
         public override void Show()

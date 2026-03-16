@@ -1,4 +1,5 @@
 using MyRule;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -56,13 +57,14 @@ namespace Turnbase
             isVicrory = false;
         }
 
-        public void LoadSceneMain(bool result)
+        public async void LoadSceneMain(bool result)
         {
+
             Debug.Log("Adjust the number of runes here.");
 
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
             
-            SceneManager.LoadScene("MazeScene");
+            await Loader.LoadSceneDirect(Loader.EScene.MazeScene);
 
             //FlyweightFactory_TB.Instance.ClearAllPools();
             //SceneManager.LoadScene("Map");
