@@ -146,7 +146,7 @@ namespace MyRule
 
                 if (sigilData == null) break;
 
-                SigilSO sigilSO = GetSigilFromCollection(sigilData);
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
                 
                 if (sigilSO == null) continue;
 
