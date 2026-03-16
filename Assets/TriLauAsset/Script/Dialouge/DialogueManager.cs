@@ -70,6 +70,8 @@ namespace MyRule
 
         private void OnSubmit()
         {
+            if (!dialogueIsPlaying) return;
+
             if (CanContinueDialogue) ContinueStoryOrExitStory();
             else return;
         }

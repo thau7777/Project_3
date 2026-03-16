@@ -33,9 +33,6 @@ namespace MyRule.CommandPattern
         {
             switch (targetScene)
             {
-                case Loader.EScene.SpaceStationScene:
-                    UndoLoadWithLoading();
-                    break;
                 case Loader.EScene.SettingsScene:
                     CloseSetting();
                     break;

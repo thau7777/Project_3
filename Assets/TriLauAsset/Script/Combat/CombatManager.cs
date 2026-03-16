@@ -30,6 +30,10 @@ namespace MyRule
             MazeGameplayRewardManager.Instance.CreateNewReward(100);
         }
 
-        public void SetCombatResultLose() => combatResult.SetResult(EMatchResult.Lose);
+        public void SetCombatResultLose()
+        {
+            combatResult.SetResult(EMatchResult.Lose);
+            MatchManager.Instance.MatchData.SetMatchResult(EMatchResult.Lose);
+        }
     }
 }

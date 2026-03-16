@@ -8,7 +8,7 @@ namespace MyRule
     {
         private CharacterData character;
 
-        [SerializeField] private CharacterSO _testPlayerStats;
+        //[SerializeField] private CharacterSO _testPlayerStats;
         private void OnEnable()
         {
             GameSystemManager.Instance.Register(this);
@@ -55,9 +55,8 @@ namespace MyRule
                 character = data.MatchData.CharacterData;
             }
             EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(character));
-
             //test purpose
-            SetBase(_testPlayerStats);
+            //SetBase(_testPlayerStats);
             return UniTask.CompletedTask;
         }
 

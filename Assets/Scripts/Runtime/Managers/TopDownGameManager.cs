@@ -195,7 +195,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         CharacterManager.Instance.SetCurrentHealth(Mathf.RoundToInt(PlayerTopDownStateDriver.Instance.GetComponent<Damageable>().CurrentHealth));
 
         await UniTask.Delay(2000, true);
-        SceneManager.LoadScene("MazeScene");
+        await Loader.LoadSceneDirect(Loader.EScene.MazeScene);
     }
     public void TrigerLowHealthEffect(float currentHealth, float maxHealth)
     {

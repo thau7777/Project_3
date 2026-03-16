@@ -25,7 +25,6 @@ public class PoolManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
