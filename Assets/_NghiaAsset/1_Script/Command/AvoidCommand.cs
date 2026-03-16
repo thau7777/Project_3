@@ -6,8 +6,8 @@ namespace Turnbase
     public class AvoidCommand : ICommand
     {
         private Character character;
-        private float moveDistance = 2.0f; 
-        private float moveDuration = 0.5f; 
+        private float moveDistance = 2f; 
+        private float moveDuration = 0.2f; 
 
         public AvoidCommand(Character character)
         {

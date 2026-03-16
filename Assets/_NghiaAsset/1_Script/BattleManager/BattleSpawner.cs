@@ -12,6 +12,8 @@ namespace Turnbase
     {
         private BattleManager bm;
 
+        [SerializeField] private TopdownWarpDriveController _warpDriveController;
+
         [Header("Enemy Spawn Settings")]
         public FlyweightSettings_TB enemySpawnEffect;
         public float enemyRiseDuration = 0.8f;
@@ -186,20 +188,13 @@ namespace Turnbase
 
             target.position = startPos;
 
-            GameObject effectPrefab = Resources.Load<GameObject>("Projectiles/WarpDrive");
-            GameObject effectInstance = null;
-
-            if (effectPrefab != null)
+            if (_warpDriveController != null)
             {
-                effectInstance = Instantiate(effectPrefab, target.position, Quaternion.identity);
+                _warpDriveController.gameObject.SetActive(false);
+                _warpDriveController.gameObject.SetActive(true);
             }
 
             yield return new WaitForSeconds(delay);
-
-            if (effectInstance != null)
-            {
-                Destroy(effectInstance,2f);
-            }
 
             if (target != null)
             {

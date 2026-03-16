@@ -22,7 +22,7 @@ namespace MyRule
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
-        private List<GameObject> gameObjects = new List<GameObject>();
+        private List<Card> gameObjects = new List<Card>();
 
         protected override void Start()
         {
@@ -132,14 +132,26 @@ namespace MyRule
 
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
+                if (sigilSO == null) continue;
+
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
-
-                gameObjects.Add(cardObj);
-
                 Card card = cardObj.GetComponent<Card>();
+                gameObjects.Add(card);
                 card.SetSigil(sigilData, sigilSO);
                 card.IsShowing = true;
                 card.ShowPrice(true);
+            }
+        }
+
+        private SigilSO GetSigilFromCollection(SigilData sigilData)
+        {
+            while (true)
+            {
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+                var existSigil = gameObjects.Find(s => s.SigilSO.id == sigilSO.id);
+
+                if (existSigil == null) return sigilSO;
             }
         }
 
