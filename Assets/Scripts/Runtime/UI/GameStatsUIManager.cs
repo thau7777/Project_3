@@ -23,7 +23,6 @@ public class GameStatsUIManager : Singleton<GameStatsUIManager>
 
     public async UniTaskVoid Init(int damageDealt, int damageReceived, int parriedDamage)
     {
-        Debug.LogWarning("ran");
         _damageDealtText = _damageDealtBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         _damageReceivedText = _damageReceivedBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         _parriedDamageText = _parriedDamageBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
