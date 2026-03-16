@@ -13,6 +13,8 @@ namespace MyRule
             MazeScene,
             LoadingScene,
             SettingsScene,
+            TopDown,
+            TurnBase,
         }
 
         private static EScene targetScene = EScene.MainMenuScene;

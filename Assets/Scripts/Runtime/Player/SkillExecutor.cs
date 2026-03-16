@@ -26,7 +26,8 @@ public class SkillExecutor : MonoBehaviour
     private Coroutine _lerpCoroutine;
     private SkillIndicator _skillIndicator;
 
-
+    [SerializeField, TabGroup("Stats")]
+    private float _manaRegenPercentage = 1f;
     [SerializeField, TabGroup("Stats")]
     private float _currentMana;
     public float CurrentMana => _currentMana;
@@ -54,6 +55,19 @@ public class SkillExecutor : MonoBehaviour
     private void Start()
     {
         InitializeSkillInstance();
+        StartManaRegenLoop();
+    }
+   
+    private void StartManaRegenLoop()
+    {
+        InvokeRepeating(nameof(RegenMana), 1f, 1f);
+    }
+
+    private void RegenMana()
+    {
+        if (_currentMana >= _maxMana) return;
+        float regenAmount = _maxMana * (_manaRegenPercentage / 100f);
+        RestoreMana(regenAmount);
     }
     public void InitializeMana(float maxMana)
     {
@@ -68,7 +82,10 @@ public class SkillExecutor : MonoBehaviour
             Dictionary<string, SigilData> activeSigilsDic = SigilStorageManager.Instance.SigilStorageData.ActiveSigils;
             if (activeSigilsDic != null)
             {
-                _skillStrategies = new SkillStrategy[6];
+                for(int i = 2; i < 6; i++)
+                {
+                    _skillStrategies[i] = null;
+                }
                 foreach (var kvp in activeSigilsDic)
                 {
                     SkillStrategy skill = TopdownSkillDataBase.Instance.GetSkillStrategyByName(kvp.Value.Name);
@@ -83,16 +100,6 @@ public class SkillExecutor : MonoBehaviour
                     skill.SetManaCost(kvp.Value.ManaCost);
                     switch (kvp.Value.EKeyBinding)
                     {
-                        case EKeyBinding.Shift:
-                            {
-                                _skillStrategies[0] = skill;
-                                break;
-                            }
-                        case EKeyBinding.Space:
-                            {
-                                _skillStrategies[1] = skill;
-                                break;
-                            }
                         case EKeyBinding.Q:
                             {
                                 _skillStrategies[2] = skill;

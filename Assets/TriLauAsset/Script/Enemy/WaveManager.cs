@@ -26,9 +26,6 @@ namespace MyRule
         {
             eventBinding = new EventBinding<WaveEvent>(OnWaveEvent);
             EventBus<WaveEvent>.Register(eventBinding);
-
-            //test purpose
-            InitWave();
         }
 
         private void OnDisable()
@@ -41,17 +38,12 @@ namespace MyRule
             groupWave = waveEvent.GroupWave;
         }
 
-        private void Start()
-        {
-           
-        }
+        //public UniTask CreateNewWave()
+        //{
+        //    InitWave();
 
-        public UniTask CreateNewWave()
-        {
-            InitWave();
-
-            return UniTask.CompletedTask;
-        }    
+        //    return UniTask.CompletedTask;
+        //}    
 
         public EnemyDataSO GetEnemySOById(EnemyId id)
         {
@@ -63,11 +55,11 @@ namespace MyRule
             return groupWave;
         }
 
-        private void InitWave()
+        public GroupWave CreateNewWave()
         {
             int waveCount = UnityEngine.Random.Range(2, 5);
             
-            groupWave = new GroupWave(waveCount);
+            GroupWave groupWave = new GroupWave(waveCount);
 
             for (int i = 0; i < waveCount; i++)
             {
@@ -106,6 +98,8 @@ namespace MyRule
 
                 groupWave.AddWaveData(i, waveData);
             }
+
+            return groupWave;
         }
 
         private EnemyDataSO GetRandomEnemyDataSO()

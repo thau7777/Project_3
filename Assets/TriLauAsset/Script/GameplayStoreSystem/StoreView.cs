@@ -22,7 +22,7 @@ namespace MyRule
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
-        private List<GameObject> gameObjects = new List<GameObject>();
+        private List<Card> gameObjects = new List<Card>();
 
         protected override void Start()
         {
@@ -36,6 +36,9 @@ namespace MyRule
         public override async void Show()
         {
             if (isShowing) return;
+            
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
             
             DialogueManager.Instance.CanContinueDialogue = false;
             RTSCameraController.Instance.CanInteract = false;
@@ -56,9 +59,6 @@ namespace MyRule
 
             await UniTask.Delay((int)fadeDuration * 1000);
 
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
             SpawnActiveSigil();
             
             passiveCardsCons.SetActive(true);
@@ -75,14 +75,14 @@ namespace MyRule
         {
             if (!isShowing) return;
 
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+
             await ShowingPassiveSigilCard(false);
 
             DesTroyCard();
 
             passiveCardsCons?.SetActive(false);
-
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
 
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,
@@ -130,16 +130,28 @@ namespace MyRule
                 
                 if (sigilData == null) break;
 
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+                SigilSO sigilSO = GetSigilFromCollection(sigilData);
+
+                if (sigilSO == null) continue;
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
-
-                gameObjects.Add(cardObj);
-
                 Card card = cardObj.GetComponent<Card>();
+                gameObjects.Add(card);
                 card.SetSigil(sigilData, sigilSO);
                 card.IsShowing = true;
                 card.ShowPrice(true);
+            }
+        }
+
+        private SigilSO GetSigilFromCollection(SigilData sigilData)
+        {
+            while (true)
+            {
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+                var existSigil = gameObjects.Find(s => s.SigilSO.id == sigilSO.id);
+
+                if (existSigil == null) return sigilSO;
             }
         }
 

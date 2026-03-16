@@ -19,6 +19,7 @@ namespace MyRule
             if (MatchManager.Instance.IsNewMatch())
             {
                 GenerateNewMap();
+                MatchManager.Instance.MatchData.SetIsNewMatch(false);
             }
             else
             {

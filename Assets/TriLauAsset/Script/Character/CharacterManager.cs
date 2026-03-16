@@ -8,7 +8,7 @@ namespace MyRule
     {
         private CharacterData character;
 
-        [SerializeField] private CharacterSO _testPlayerStats;
+        //[SerializeField] private CharacterSO _testPlayerStats;
         private void OnEnable()
         {
             GameSystemManager.Instance.Register(this);
@@ -33,6 +33,17 @@ namespace MyRule
 
             character = new CharacterData(characterSO.name, characterSO.backStory, characterSO.characterClass, characterStatsData);
         }
+        public void SetCurrentHealth(int amount)
+        {
+            character.CharacterStatsData.BaseStatsData.SetCurrentHealth(amount);
+        }
+
+        public void IncreaseHealth(int amount)
+        {
+            character.CharacterStatsData.BaseStatsData.IncreaseHealth(amount);
+
+            EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(character));
+        }
 
         public CharacterData GetCharacterStats() => character;
 
@@ -40,7 +51,7 @@ namespace MyRule
 
         public void UpdateSigilStats(SigilSO sigilSO)
         {
-            
+            character.CharacterStatsData.AdjustStats(sigilSO);
         }
 
         public UniTask LoadData(GameData data)
@@ -52,9 +63,8 @@ namespace MyRule
                 character = data.MatchData.CharacterData;
             }
             EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(character));
-
             //test purpose
-            SetBase(_testPlayerStats);
+            //SetBase(_testPlayerStats);
             return UniTask.CompletedTask;
         }
 

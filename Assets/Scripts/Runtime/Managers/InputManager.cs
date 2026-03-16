@@ -17,6 +17,8 @@ public class InputManager : PersistentSingleton<InputManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (mode == LoadSceneMode.Additive) return;
+
         switch (scene.name)
         {
             case "TopDown": 
@@ -33,6 +35,16 @@ public class InputManager : PersistentSingleton<InputManager>
                 break;
             case "PopupGame":
                 _inputReader.SwitchActionMap(ActionMap.PopUpGame);
+                break;
+            case "MainMenuScene":
+                _inputReader.SwitchActionMap(ActionMap.UI);
+                break;
+            case "SpaceStationScene":
+                Debug.Log("spacestation");
+                _inputReader.SwitchActionMap(ActionMap.SpaceStation);
+                break;
+            case "MazeScene":
+                _inputReader.SwitchActionMap(ActionMap.DiceRoll);
                 break;
             default:
                 _inputReader.SwitchActionMap(ActionMap.UI);

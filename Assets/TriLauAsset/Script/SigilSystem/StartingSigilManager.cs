@@ -53,6 +53,8 @@ namespace MyRule
             
             hasRecived = true;
 
+            MatchManager.Instance.MatchData.SetHasRecivedStartingSigil(true);
+
             CardTracker.Instance.canInteract = false;
 
             await UniTask.Delay(100);
@@ -76,7 +78,9 @@ namespace MyRule
 
                 if (sigilData == null) break;
 
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+                SigilSO sigilSO = GetSigilFromCollection(sigilData);
+
+                if (sigilSO == null) continue;
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoints[i]);
                 Card card = cardObj.GetComponent<Card>();
@@ -85,6 +89,18 @@ namespace MyRule
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;
+            }
+        }
+
+        private SigilSO GetSigilFromCollection(SigilData sigilData)
+        {
+            while (true)
+            {
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+                var existSigil = cardObjs.Find(s => s.SigilSO.id == sigilSO.id);
+
+                if (existSigil == null) return sigilSO;
             }
         }
 
@@ -110,8 +126,6 @@ namespace MyRule
 
         public async UniTask LoadData(GameData data)
         {
-            if (data.MatchData == null) return;
-
             await UniTask.WaitUntil(() => MatchManager.Instance.MatchData != null);
 
             hasRecived = data.MatchData.HasReceivedStartingSigil;
@@ -120,7 +134,7 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            data.MatchData.SetHasRecivedStartingSigil(hasRecived);
+            //data.MatchData.SetHasRecivedStartingSigil(hasRecived);
         }
     }
 }

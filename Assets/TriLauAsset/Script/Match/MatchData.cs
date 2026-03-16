@@ -54,6 +54,7 @@ namespace MyRule
         }
 
         public void SetMap(EMap eMap) => _mapType = eMap;
+
         public void SetIsNewMatch(bool isNewMatch) => _isNewMatch = isNewMatch;
 
         public void SetMatchResult(EMatchResult result) => this._result = result;

@@ -57,8 +57,11 @@ namespace MyRule
                     {
                         if (item != null)
                         {
-                            ItemSO itemSO = ItemManager.Instance.GetItemByType(item.ItemType);
-                            EventBus<AddItemEvent>.Raise(new AddItemEvent(item.SlotIndex, itemSO));
+                            if (ItemManager.Instance != null)
+                            {
+                                ItemSO itemSO = ItemManager.Instance.GetItemByType(item.ItemType);
+                                EventBus<AddItemEvent>.Raise(new AddItemEvent(item.SlotIndex, itemSO));
+                            }
                         }
                     }
                 }
