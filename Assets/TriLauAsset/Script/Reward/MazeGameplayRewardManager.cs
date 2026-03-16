@@ -28,6 +28,6 @@ namespace MyRule
             reward = null;
 
             return recivedReward;
-        }    
+        }
     }
 }

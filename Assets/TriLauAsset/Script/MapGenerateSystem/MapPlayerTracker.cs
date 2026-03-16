@@ -72,13 +72,11 @@ namespace MyRule
             {
                 case NodeType.MinorEnemy:
                     {
-                        BlackFade.Instance.FadeIn();
-                        CombatManager.Instance.CreateNewCombat();
-                        await WaveManager.Instance.CreateNewWave();
-                        SceneManager.LoadScene("TopDown");
+                        CombatManager.Instance.CreateCombat();
                         break;
                     }
                 case NodeType.RestSite:
+                    CharacterManager.Instance.IncreaseHealth(60);
                     break;
                 case NodeType.Treasure:
                     break;

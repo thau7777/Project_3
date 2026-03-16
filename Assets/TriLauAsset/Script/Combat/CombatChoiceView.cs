@@ -1,0 +1,146 @@
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using MyRule.Event;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace MyRule.UI
+{
+    public class CombatChoiceView : MonoBehaviour
+    {
+        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private float fadeDuration = 0.4f;
+
+        [Header("Top down")]
+        [SerializeField] private TextMeshProUGUI numbOfWavesTD;
+        [SerializeField] private Transform waveViewTDParent;
+        [SerializeField] private Button tdBtn;
+
+        [Header("Turn base")]
+        [SerializeField] private TextMeshProUGUI numbOfWavesTB;
+        [SerializeField] private Transform waveViewTBParent;
+        [SerializeField] private Button tbBtn;
+
+        [SerializeField] private GameObject waveViewPreb;
+
+        private EventBinding<UpdateTDCombatWavesEvent> updateTDEventBinding;
+        private EventBinding<UpdateTBCombatWavesEvent> updateTBEventBinding;
+        private EventBinding<ShowCombatChoiceEvent> showCombatChoiceEventBinding;
+
+        private GroupWave tdWaves;
+        private GroupWave tbWaves;
+
+        private void OnEnable()
+        {
+            updateTDEventBinding = new EventBinding<UpdateTDCombatWavesEvent>(UpdateTDWaveView);
+            EventBus<UpdateTDCombatWavesEvent>.Register(updateTDEventBinding);
+
+            updateTBEventBinding = new EventBinding<UpdateTBCombatWavesEvent>(UpdateTBWaveView);
+            EventBus<UpdateTBCombatWavesEvent>.Register(updateTBEventBinding);
+
+            showCombatChoiceEventBinding = new EventBinding<ShowCombatChoiceEvent>(ShowCombatHandle);
+            EventBus<ShowCombatChoiceEvent>.Register(showCombatChoiceEventBinding);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<UpdateTDCombatWavesEvent>.Deregister(updateTDEventBinding);
+            EventBus<UpdateTBCombatWavesEvent>.Deregister(updateTBEventBinding);
+            EventBus<ShowCombatChoiceEvent>.Deregister(showCombatChoiceEventBinding);
+        }
+
+        private void Start()
+        {
+            tdBtn.onClick.AddListener(LoadTDScene);
+            tbBtn.onClick.AddListener(LoadTBScene);
+        }
+
+        private void UpdateTDWaveView(UpdateTDCombatWavesEvent evt)
+        {
+            tdWaves = evt.groupWave;
+            numbOfWavesTD.text = evt.groupWave.WaveDatas.Length.ToString();
+
+            for (int i = 0; i < evt.groupWave.WaveDatas.Length; i++)
+            {
+                WaveData waveData = evt.groupWave.WaveDatas[i];
+
+                if (waveData != null)
+                {
+                    var waveViewObj = Instantiate(waveViewPreb, waveViewTDParent);
+                    CombatWaveView combatWaveView = waveViewObj.GetComponent<CombatWaveView>();
+                    combatWaveView.SetUpWave(i + 1, waveData);
+                }
+            }
+        }
+
+        private void UpdateTBWaveView(UpdateTBCombatWavesEvent evt)
+        {
+            tbWaves = evt.groupWave;
+            numbOfWavesTB.text = evt.groupWave.WaveDatas.Length.ToString();
+
+            for (int i = 0; i < evt.groupWave.WaveDatas.Length; i++)
+            {
+                WaveData waveData = evt.groupWave.WaveDatas[i];
+
+                if (waveData != null)
+                {
+                    var waveViewObj = Instantiate(waveViewPreb, waveViewTBParent);
+                    CombatWaveView combatWaveView = waveViewObj.GetComponent<CombatWaveView>();
+                    combatWaveView.SetUpWave(i + 1, waveData);
+                }
+            }
+        }
+
+        private void ShowCombatHandle(ShowCombatChoiceEvent evt)
+        {
+            if (evt.showCombatChoice)
+            {
+                Show();
+                EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(false));
+            }
+            else
+            {
+                Hide();
+                EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(true));
+            }
+        }
+
+        private void Show()
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.DOFade(1f, fadeDuration);
+        }
+
+        private void Hide()
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.DOFade(0f, fadeDuration);
+        }
+
+        private async void LoadTDScene()
+        {
+            EventBus<WaveEvent>.Raise(new WaveEvent(tdWaves));
+            await DelayToLoad();
+            await Loader.LoadSceneDirect(Loader.EScene.TopDown);
+        }
+        private async void LoadTBScene()
+        {
+            EventBus<WaveEvent>.Raise(new WaveEvent(tbWaves));
+            await DelayToLoad();
+            await Loader.LoadSceneDirect(Loader.EScene.TurnBase);
+        }
+
+        private async UniTask DelayToLoad()
+        {
+            Hide();
+            await UniTask.Delay(400);
+            BlackFade.Instance.FadeIn();
+            await UniTask.Delay(1000);
+        }
+    }
+}

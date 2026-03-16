@@ -1,3 +1,4 @@
+using MyRule.Event;
 using System;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace MyRule
 
         public EMatchResult Result => combatResult.result;
 
-        public void CreateNewCombat() => combatResult = new CombatResult();
+        private void CreateNewCombat() => combatResult = new CombatResult();
 
         public void SetCombatResultWin()
         {
@@ -34,6 +35,18 @@ namespace MyRule
         {
             combatResult.SetResult(EMatchResult.Lose);
             MatchManager.Instance.MatchData.SetMatchResult(EMatchResult.Lose);
+        }
+
+        public void CreateCombat()
+        {
+            GroupWave tdWaves = WaveManager.Instance.CreateNewWave();
+            GroupWave tbWaves = WaveManager.Instance.CreateNewWave();
+            
+            CreateNewCombat();
+
+            EventBus<UpdateTDCombatWavesEvent>.Raise(new UpdateTDCombatWavesEvent(tdWaves));
+            EventBus<UpdateTBCombatWavesEvent>.Raise(new UpdateTBCombatWavesEvent(tbWaves));
+            EventBus<ShowCombatChoiceEvent>.Raise(new ShowCombatChoiceEvent(true));
         }
     }
 }

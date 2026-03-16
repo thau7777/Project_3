@@ -78,7 +78,9 @@ namespace MyRule
 
                 if (sigilData == null) break;
 
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+                SigilSO sigilSO = GetSigilFromCollection(sigilData);
+
+                if (sigilSO == null) continue;
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoints[i]);
                 Card card = cardObj.GetComponent<Card>();
@@ -87,6 +89,18 @@ namespace MyRule
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;
+            }
+        }
+
+        private SigilSO GetSigilFromCollection(SigilData sigilData)
+        {
+            while (true)
+            {
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+                var existSigil = cardObjs.Find(s => s.SigilSO.id == sigilSO.id);
+
+                if (existSigil == null) return sigilSO;
             }
         }
 
