@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MyRule.Event;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -41,11 +42,11 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private TMP_Text resultText;
 
     #region Unity
-    void Start()
+    private void Start()
     {
-
         SetUpStartGame();
     }
+
     private void Update()
     {
         UpdateUI();
@@ -55,7 +56,6 @@ public class ChatNiorGameManager : MonoBehaviour
     #region UI Update
     public void UpdateUI()
     {
-        
         scoreText.text = string.Format(scoreTextFormat, score);
         moveCountText.text = string.Format(moveCountTextFormat, moveCount);
         
@@ -65,9 +65,6 @@ public class ChatNiorGameManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(MoveCatSmooth(target));
     }
-
-   
-
 
     public void SetUpStartGame()
     {
@@ -105,6 +102,7 @@ public class ChatNiorGameManager : MonoBehaviour
         {
             resultText.text = winText;
             isGameEnd = true;
+            EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(true));
             EndGame();
             return;
         }
@@ -116,6 +114,7 @@ public class ChatNiorGameManager : MonoBehaviour
         {
             resultText.text = loseText;
             isGameEnd = true;
+            EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
             EndGame();
         }
     }

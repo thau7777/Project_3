@@ -72,10 +72,10 @@ namespace MyRule
             {
                 case NodeType.MinorEnemy:
                     {
+                        BlackFade.Instance.FadeIn();
                         CombatManager.Instance.CreateNewCombat();
                         await WaveManager.Instance.CreateNewWave();
-                        await UniTask.Delay(1000);
-                        SceneManager.LoadScene("TurnBase");
+                        SceneManager.LoadScene("TopDown");
                         break;
                     }
                 case NodeType.RestSite:

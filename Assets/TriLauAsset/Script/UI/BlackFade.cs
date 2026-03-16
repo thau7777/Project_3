@@ -18,6 +18,8 @@ namespace MyRule
 
         public void FadeIn()
         {
+            canvasGroup.alpha = 0f;
+
             Transition.TransitionValue(
                     setter: value => canvasGroup.alpha = value,
                     from: canvasGroup.alpha,
@@ -28,6 +30,8 @@ namespace MyRule
 
         public void FadeOut()
         {
+            canvasGroup.alpha = 1f;
+
             Transition.TransitionValue(
                     setter: value => canvasGroup.alpha = value,
                     from: canvasGroup.alpha,

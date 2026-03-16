@@ -50,6 +50,12 @@ namespace Turnbase
                 case SkillType.XPassive:
                     return new XPassiveCommand(user, skill, battleManager);
 
+                case SkillType.DebuffPunisher:
+                    return new DebuffPunisherCommand(user, target, skill, battleManager);
+
+                case SkillType.DebuffExtender:
+                    return new DebuffExtenderCommand(user, target, skill, battleManager);
+
                 default:
                     Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
                     return null;

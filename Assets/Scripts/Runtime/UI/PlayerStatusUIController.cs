@@ -47,7 +47,7 @@ public class PlayerStatusUIController : MonoBehaviour
         }
         if(_hpText != null)
         {
-            _hpText.text = currentHP.ToString() + " / " + maxHP.ToString();
+            _hpText.text = Mathf.RoundToInt(currentHP).ToString() + " / " + Mathf.RoundToInt(maxHP).ToString();
         }
     }
     public void UpdateMana(float currentMana, float maxMana)
@@ -58,7 +58,7 @@ public class PlayerStatusUIController : MonoBehaviour
         }
         if(_manaText != null)
         {
-            _manaText.text = currentMana.ToString() + " / " + maxMana.ToString();
+            _manaText.text = Mathf.RoundToInt(currentMana).ToString() + " / " + Mathf.RoundToInt(maxMana).ToString();
         }
     }
     private void OnNotEnoughMana(TopdownSkillOnUseEvent topdownSkillOnUseEvent)

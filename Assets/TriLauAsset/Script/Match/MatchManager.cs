@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using UnityEngine;
 
 namespace MyRule
@@ -19,7 +20,7 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
         }
 
-        public bool IsNewMatch() => _matchData.IsNewMatch;
+        public bool IsNewMatch() => _matchData.IsNewMatch == true;
 
         public void CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
@@ -61,6 +62,8 @@ namespace MyRule
             {
                 _matchData = null;
             }
+
+            EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
 
             return UniTask.CompletedTask;
         }

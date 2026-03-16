@@ -28,7 +28,7 @@ namespace MyRule
             EventBus<WaveEvent>.Register(eventBinding);
 
             //test purpose
-            InitWave();
+            //InitWave();
         }
 
         private void OnDisable()
