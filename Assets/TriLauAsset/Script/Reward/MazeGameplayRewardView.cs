@@ -135,7 +135,7 @@ namespace MyRule
 
             Transition.TransitionValue(
                 setter: value => rewardCanvasGroup.alpha = value,
-                from: canvasGroup.alpha,
+                from: rewardCanvasGroup.alpha,
                 to: 0f,
                 duration: fadeDuration,
                 cts.Token).Forget();
@@ -146,8 +146,8 @@ namespace MyRule
 
                 if (sigilData == null) break;
 
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
+                SigilSO sigilSO = GetSigilFromCollection(sigilData);
+                
                 if (sigilSO == null) continue;
 
                 var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
@@ -157,6 +157,18 @@ namespace MyRule
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;
+            }
+        }
+
+        private SigilSO GetSigilFromCollection(SigilData sigilData)
+        {
+            while (true)
+            {
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+                var existSigil = gameObjects.Find(s => s.SigilSO.id == sigilSO.id);
+
+                if (existSigil == null) return sigilSO;
             }
         }
 
@@ -174,7 +186,7 @@ namespace MyRule
         {
             foreach (var card in gameObjects)
             {
-                Destroy(card);
+                Destroy(card.gameObject);
             }
 
             gameObjects.Clear();

@@ -37,13 +37,21 @@ namespace MyRule
         {
             character.CharacterStatsData.BaseStatsData.SetCurrentHealth(amount);
         }
+
+        public void IncreaseHealth(int amount)
+        {
+            character.CharacterStatsData.BaseStatsData.IncreaseHealth(amount);
+
+            EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(character));
+        }
+
         public CharacterData GetCharacterStats() => character;
 
         public EClass GetCharacterClass() => character.CharacterClass;
 
         public void UpdateSigilStats(SigilSO sigilSO)
         {
-            
+            character.CharacterStatsData.AdjustStats(sigilSO);
         }
 
         public UniTask LoadData(GameData data)

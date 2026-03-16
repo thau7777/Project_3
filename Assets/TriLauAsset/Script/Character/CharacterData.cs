@@ -37,19 +37,19 @@ namespace MyRule
     public class CharacterStatsData
     {
         [JsonProperty] private AttributesData _attributesData;
-        [JsonProperty] private BaseStatsData _BaseData;
+        [JsonProperty] private BaseStatsData _baseData;
         [JsonProperty] private DamageData _damage;
         [JsonProperty] private DefenseData _defense;
 
         [JsonIgnore] public AttributesData AttributesData => _attributesData;
-        [JsonIgnore] public BaseStatsData BaseStatsData => _BaseData;
+        [JsonIgnore] public BaseStatsData BaseStatsData => _baseData;
         [JsonIgnore] public DamageData Damage => _damage;
         [JsonIgnore] public DefenseData Defense => _defense;
 
         public CharacterStatsData()
         {
             _attributesData = new AttributesData();
-            _BaseData = new BaseStatsData();
+            _baseData = new BaseStatsData();
             _damage = new DamageData();
             _defense = new DefenseData();
         }
@@ -57,9 +57,66 @@ namespace MyRule
         public CharacterStatsData(AttributesData attributesData, BaseStatsData baseData, DamageData damage, DefenseData defense)
         {
             _attributesData = attributesData;
-            _BaseData = baseData;
+            _baseData = baseData;
             _damage = damage;
             _defense = defense;
+        }
+
+        public void AdjustStats(SigilSO sigilSO)
+        {
+            _attributesData.IncreaseVigor(sigilSO.vigor);
+            int vigor = GetBonus(_attributesData.Vigor);
+            _baseData.IncreaseMaxHealth(vigor);
+
+            _attributesData.IncreaseMind(sigilSO.mind);
+            int mind = GetBonus(_attributesData.Mind);
+            _baseData.IncreaseMaxMana(mind);
+
+            _attributesData.IncreaseEndurance(sigilSO.endurance);
+            int endurance = GetBonus(_attributesData.Endurance);
+
+            _attributesData.IncreaseStrength(sigilSO.strength);
+            int strength = GetBonus(_attributesData.Strength);
+            _damage.IncreasePhysDmg(sigilSO.phys, strength);
+
+            _attributesData.IncreaseDexterity(sigilSO.dexterity);
+            int dexterity = GetBonus(_attributesData.Dexterity);
+            _baseData.IncreaseCritMult(dexterity);
+            _baseData.IncreaseSpeed(dexterity);
+
+            _attributesData.IncreaseIntelligence(sigilSO.intelligence);
+            int intelligence = GetBonus(_attributesData.Intelligence);
+            _damage.IncreaseMagDmg(sigilSO.mag, intelligence);
+
+            _attributesData.IncreaseFaith(sigilSO.faith);
+            int faith = GetBonus(_attributesData.Faith);
+            _damage.IncreaseFireDmg(sigilSO.fire, faith);
+            _damage.IncreaseLightningDmg(sigilSO.lightning, faith);
+            _damage.IncreaseFrostDmg(sigilSO.frost, faith);
+            _damage.IncreaseWaterDmg(sigilSO.water, faith);
+            _damage.IncreasePoisonDmg(sigilSO.poison, faith);
+            _damage.IncreaseDarkDmg(sigilSO.dark, faith);
+            _damage.IncreaseHolyDmg(sigilSO.holy, faith);
+
+            _attributesData.IncreaseArcane(sigilSO.arcane);
+            int arcane = GetBonus(_attributesData.Arcane);
+            _defense.IncreasePhysDef(sigilSO.phyDef, arcane);
+            _defense.IncreaseMagDef(sigilSO.magicDef, arcane);
+            _defense.IncreaseFireDef(sigilSO.fireDef, arcane);
+            _defense.IncreaseLightningDef(sigilSO.lightningDef, arcane);
+            _defense.IncreaseFrostDef(sigilSO.frostDef, arcane);
+            _defense.IncreaseMagDef(sigilSO.waterDef, arcane);
+            _defense.IncreasePoisonDef(sigilSO.poisonDef, arcane);
+            _defense.IncreaseDarkDef(sigilSO.darkDef, arcane);
+            _defense.IncreaseHolyDef(sigilSO.holyDef, arcane);
+        }
+
+        private int GetBonus(int stat)
+        {
+            if (stat >= 0)
+                return (int)(1f + (stat / 100f));
+            else
+                return (int)(1f - (stat / 100f));
         }
     }
 
@@ -107,6 +164,15 @@ namespace MyRule
             _faith = faith;
             _arcane = arcane;
         }
+
+        public void IncreaseVigor(int amount) => _vigor += amount;
+        public void IncreaseMind(int amount) => _mind += amount;
+        public void IncreaseEndurance(int amount) => _endurance += amount;
+        public void IncreaseStrength(int amount) => _strength += amount;
+        public void IncreaseDexterity(int amount) => _dexterity += amount;
+        public void IncreaseIntelligence(int amount) => _intelligence += amount; 
+        public void IncreaseFaith(int amount) => _faith += amount;
+        public void IncreaseArcane(int amount) => _arcane += amount; 
     }
 
     [Serializable] 
@@ -161,6 +227,21 @@ namespace MyRule
         public float GetHealthRate() => (float)_currentHealth / (float)_maxHealth;
         public void SetCurrentHealth(int amount)
             { _currentHealth = amount; }
+
+        public void IncreaseHealth(int amount)
+        {
+            _currentHealth += amount;
+
+            if (_currentHealth > _maxHealth)
+                _currentHealth = MaxHealth;
+        }
+
+        public void IncreaseMaxHealth(int amount) => _maxHealth *= amount;
+        public void IncreaseMaxMana(int amount) => _maxMana *= amount;
+        public void IncreaseMaxStamina(int amount) => _maxStamina *= amount;
+        public void IncreaseSpeed(int amount) => _speed *= amount;
+        public void IncreaseCritChance(int amount) => _critChance += amount;
+        public void IncreaseCritMult(int amount) => _critMult += amount;  
     }
 
     [Serializable]
@@ -211,6 +292,53 @@ namespace MyRule
             this._waterDmg = waterDmg;
             this._poisonDmg = poisonDmg;
         }
+
+        public void IncreasePhysDmg(int amount, int bonus)
+        {
+            _physDmg += amount;
+            _physDmg *= bonus;
+        }
+
+        public void IncreaseMagDmg(int amount, int bonus)
+        {
+            _magDmg += amount;
+            _magDmg *= bonus;
+        }
+        public void IncreaseFireDmg(int amount, int bonus)
+        {
+            _fireDmg += amount;
+            _fireDmg *= bonus;
+        }
+        public void IncreaseLightningDmg(int amount, int bonus)
+        { 
+            _lightningDmg += amount;
+            _lightningDmg *= bonus;
+        }
+        public void IncreaseHolyDmg(int amount, int bonus)
+        {
+            _holyDmg += amount;
+            _holyDmg *= bonus;
+        }
+        public void IncreaseDarkDmg(int amount, int bonus)
+        {
+            _darkDmg += amount;
+            _darkDmg *= bonus;
+        }
+        public void IncreaseFrostDmg(int amount, int bonus)
+        {
+            _frostDmg += amount;
+            _frostDmg *= bonus;
+        }
+        public void IncreaseWaterDmg(int amount, int bonus)
+        {
+            _waterDmg += amount;
+            _waterDmg *= bonus;
+        }
+        public void IncreasePoisonDmg(int amount, int bonus)
+        {
+            _poisonDmg += amount;
+            _poisonDmg *= bonus;
+        }
     }
 
     [Serializable]
@@ -260,6 +388,53 @@ namespace MyRule
             _frostDef = frostDef;
             _waterDef = waterDef;
             _poisonDef = poisonDef;
+        }
+
+        public void IncreasePhysDef(int amount, int bonus)
+        {
+            _physDef += amount;
+            _physDef *= bonus;
+        }
+
+        public void IncreaseMagDef(int amount, int bonus)
+        {
+            _magDef += amount;
+            _magDef *= bonus;
+        }
+        public void IncreaseFireDef(int amount, int bonus)
+        {
+            _fireDef += amount;
+            _fireDef *= bonus;
+        }
+        public void IncreaseLightningDef(int amount, int bonus)
+        {
+            _lightningDef += amount;
+            _lightningDef *= bonus;
+        }
+        public void IncreaseHolyDef(int amount, int bonus)
+        {
+            _holyDef += amount;
+            _holyDef *= bonus;
+        }
+        public void IncreaseDarkDef(int amount, int bonus)
+        {
+            _darkDef += amount;
+            _darkDef *= bonus;
+        }
+        public void IncreaseFrostDef(int amount, int bonus)
+        {
+            _frostDef += amount;
+            _frostDef *= bonus;
+        }
+        public void IncreaseWaterDef(int amount, int bonus)
+        {
+            _waterDef += amount;
+            _waterDef *= bonus;
+        }
+        public void IncreasePoisonDef(int amount, int bonus)
+        {
+            _poisonDef += amount;
+            _poisonDef *= bonus;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ namespace MyRule.UI
 {
     public class Health : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI currentHealth;
+        [SerializeField] private TextMeshProUGUI currentHealthTxt;
         [SerializeField] private Material healthFill;
 
         private EventBinding<CharacterUpdatedEvent> healthUpdateEvent;
@@ -21,12 +22,31 @@ namespace MyRule.UI
             EventBus<CharacterUpdatedEvent>.Deregister(healthUpdateEvent);
         }
 
-        private void UpdateHealth(CharacterUpdatedEvent evt)
+        private async void UpdateHealth(CharacterUpdatedEvent evt)
         {
-            currentHealth.text = evt.character.CharacterStatsData.BaseStatsData.CurrentHealth + "/" + 
-                                evt.character.CharacterStatsData.BaseStatsData.MaxHealth;
+            int currentHealth = evt.character.CharacterStatsData.BaseStatsData.CurrentHealth;
+            int maxHealth = evt.character.CharacterStatsData.BaseStatsData.MaxHealth;
             float healthRate = evt.character.CharacterStatsData.BaseStatsData.GetHealthRate();
-            Debug.Log(healthRate);
+
+            int start = 0;
+            float time = 0f;
+            float duration = 0.5f;
+
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+
+                int value = Mathf.RoundToInt(Mathf.Lerp(start, currentHealth, time / duration));
+                float fillLevel = Mathf.Lerp(start, healthRate, time / duration);
+
+                currentHealthTxt.text = value + "/" + maxHealth;
+                healthFill.SetFloat("_FillLevel", fillLevel);
+
+                await UniTask.Yield();
+            }
+
+
+            currentHealthTxt.text = currentHealth.ToString() + "/" + maxHealth.ToString();
             healthFill.SetFloat("_FillLevel", healthRate);
         }
     }

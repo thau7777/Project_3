@@ -53,16 +53,32 @@ namespace MyRule
         public string sigilDesTB;
         public GameObject sigilPreb;
         public ERarity rarity;
-        public bool isActiveSigil;
         [ShowIfEnumValue("sigilType", SigilType.Active)]
         public EKeyBinding keyBinding;
 
-        [ShowIf("isActiveSigil")]
+        [ShowIfEnumValue("sigilType", SigilType.Active)]
         [Header("Sigil Effect")]
         public Skill sigilEffect;
 
         public int baseDmg;
         public int manaCost;
+
+        [TabGroup("AttributePoints")]
+        public int vigor;
+        [TabGroup("AttributePoints")]
+        public int mind;
+        [TabGroup("AttributePoints")]
+        public int endurance;
+        [TabGroup("AttributePoints")]
+        public int strength;
+        [TabGroup("AttributePoints")]
+        public int dexterity;
+        [TabGroup("AttributePoints")]
+        public int intelligence;
+        [TabGroup("AttributePoints")]
+        public int faith;
+        [TabGroup("AttributePoints")]
+        public int arcane;
 
         [TabGroup("Stats")]
         [LabelText("phys", LabelTextAttribute.LabelColor.gray)]
@@ -83,6 +99,8 @@ namespace MyRule
         [TabGroup("Stats")] 
         public int water;
         [TabGroup("Stats")]
+        public int poison;
+        [TabGroup("Stats")]
         [LabelText("health", LabelTextAttribute.LabelColor.green)]
         public int health;
         [TabGroup("Stats")]
@@ -102,6 +120,8 @@ namespace MyRule
         [TabGroup("Stats")]
         public int waterDef;
         [TabGroup("Stats")]
+        public int poisonDef;
+        [TabGroup("Stats")]
         [LabelText("Speed", LabelTextAttribute.LabelColor.blue)]
         public float speed;
         [TabGroup("Stats")]
@@ -111,16 +131,6 @@ namespace MyRule
         [Range(1.5f, 2.3f)]
         public float critMult = 1.5f;
 
-        [TabGroup("Requirements")]
-        public int str;
-        [TabGroup("Requirements")]
-        public int intel;
-        [TabGroup("Requirements")]
-        public int dex;
-        [TabGroup("Requirements")]
-        public int faith;
-        [TabGroup("Requirements")]
-        public int arcane;
         [TabGroup("Requirements")]
         public int price;
 
