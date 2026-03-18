@@ -107,7 +107,7 @@ namespace Turnbase
         {
             LookAtAnchorTransform(DeadCameraTarget, teleportImmediately = true);
 
-            Camera.main.cullingMask = LayerMask.GetMask("Default", "Player");
+            Camera.main.cullingMask = LayerMask.GetMask("Default", "Player", "WarpDrive");
 
             StopAllCoroutines(); 
             StartCoroutine(FadeVignetteRoutine(2.0f));
@@ -126,14 +126,14 @@ namespace Turnbase
                 elapsed += Time.deltaTime;
                 float percent = elapsed / duration;
 
-                vignette.intensity.value = Mathf.Lerp(startIntensity, 1f, percent);
-                vignette.smoothness.value = Mathf.Lerp(startSmoothness, 1f, percent);
+                vignette.intensity.value = Mathf.Lerp(startIntensity, 0.6f, percent);
+                vignette.smoothness.value = Mathf.Lerp(startSmoothness, 0.5f, percent);
 
                 yield return null;
             }
 
-            vignette.intensity.value = 1f;
-            vignette.smoothness.value = 1f;
+            vignette.intensity.value = 0.6f;
+            vignette.smoothness.value = 0.5f;
         }
 
 

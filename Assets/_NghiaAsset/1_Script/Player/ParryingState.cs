@@ -26,6 +26,8 @@ namespace Turnbase
 
         public override void OnExit()
         {
+            Time.timeScale = 1f;
+
             CameraAction.instance.NormalCamera(stateMachine.character);
 
             stateMachine.character.StopAllCoroutines();

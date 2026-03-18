@@ -1,6 +1,10 @@
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using MyRule;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -18,6 +22,11 @@ namespace Turnbase
 
         public Button loseCloseBtn;
 
+        public Volume globalVolume;
+        private Vignette vignette;
+
+        public BattleSpawner spawner;
+
         private bool isVicrory = false;
 
         public void Awake()
@@ -34,6 +43,11 @@ namespace Turnbase
 
         private void Start()
         {
+            if (globalVolume.profile.TryGet<Vignette>(out var v))
+            {
+                vignette = v;
+            }
+
             victoryCloseBtn.onClick.AddListener(() => LoadSceneMain(true));
             loseCloseBtn.onClick.AddListener(() => LoadSceneMain(false));
         }
@@ -63,12 +77,27 @@ namespace Turnbase
             Debug.Log("Adjust the number of runes here.");
 
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
+
+            loseMenu.SetActive(false);
+            victoryMenu.SetActive(false);
+
+            vignette.intensity.value = 0f;
+            vignette.smoothness.value = 0f;
+
+            CameraAction.instance.TargetAllEnemies();
+
+            spawner.playerOffsetFromSlot = new Vector3(10.8f, 0, -6);
+            Vector3 targetPos = spawner.playerOffsetFromSlot;
+            spawner.WarpDriveBackk(targetPos);
+
+            await UniTask.Delay(5000);
             
             await Loader.LoadSceneDirect(Loader.EScene.MazeScene);
 
             //FlyweightFactory_TB.Instance.ClearAllPools();
             //SceneManager.LoadScene("Map");
         }
+        
     }
 
 }

@@ -43,16 +43,23 @@ namespace Turnbase
 
             if (stateMachine.battleManager != null)
             {
+                stateMachine.battleManager.RemoveCombatant(stateMachine.character);
+
                 if (stateMachine.battleManager.activeCharacter == stateMachine.character)
                 {
                     stateMachine.battleManager.activeCharacter = null;
                     stateMachine.battleManager.isProcessingTurn = false;
                 }
-
-                stateMachine.battleManager.RemoveCombatant(stateMachine.character);
             }
 
-            stateMachine.character.gameObject.SetActive(false);
+            if (!stateMachine.character.isPlayer)
+            {
+                stateMachine.character.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("Player die, giữ xác lại để làm hiệu ứng tối màn hình.");
+            }
         }
 
         public override void OnExit()
