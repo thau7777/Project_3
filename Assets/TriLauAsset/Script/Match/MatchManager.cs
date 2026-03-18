@@ -57,13 +57,13 @@ namespace MyRule
             if (data.MatchData != null)
             {
                 _matchData = data.MatchData;
+                EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
             }
             else
             {
                 _matchData = null;
             }
 
-            EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
 
             return UniTask.CompletedTask;
         }

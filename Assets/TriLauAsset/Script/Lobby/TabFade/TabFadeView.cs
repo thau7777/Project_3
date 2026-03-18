@@ -1,3 +1,4 @@
+using MyRule.Event;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -38,7 +39,8 @@ namespace MyRule.UI
                 case "SpaceStationScene":
                     inputReader.SwitchActionMap(ActionMap.SpaceStation);
                     break;
-                case "MazeScene":
+                default:
+                    EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(true));
                     inputReader.SwitchActionMap(ActionMap.DiceRoll);
                     break;
             }
@@ -54,6 +56,8 @@ namespace MyRule.UI
             VolumeController.Instance.AdjustUIVolumeWeight();
             
             inputReader.SwitchActionMap(ActionMap.UI);
+
+            EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(false));
         }
     }
 }

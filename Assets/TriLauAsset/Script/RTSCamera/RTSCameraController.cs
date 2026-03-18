@@ -190,24 +190,24 @@ namespace MyRule
         #endregion
 
         #region Gizmos
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.green;
 
-            Vector3 center = new Vector3(
-                (minX + maxX) / 2f,
-                0,
-                (minZ + maxZ) / 2f
-            );
+        //    Vector3 center = new Vector3(
+        //        (minX + maxX) / 2f,
+        //        0,
+        //        (minZ + maxZ) / 2f
+        //    );
 
-            Vector3 size = new Vector3(
-                maxX - minX,
-                0.1f,
-                maxZ - minZ
-            );
+        //    Vector3 size = new Vector3(
+        //        maxX - minX,
+        //        0.1f,
+        //        maxZ - minZ
+        //    );
 
-            Gizmos.DrawWireCube(center, size);
-        }
+        //    Gizmos.DrawWireCube(center, size);
+        //}
         #endregion
     }
 }

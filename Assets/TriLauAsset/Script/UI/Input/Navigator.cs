@@ -2,12 +2,13 @@ using UnityEngine;
 using MyRule.UI;
 using MyRule.CommandPattern;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 namespace MyRule
 {
     public static class Navigator
     {
-        public static void OnSubmitPress(Button btnSubmit, ButtonType buttonType)
+        public static async Task OnSubmitPress(Button btnSubmit, ButtonType buttonType)
         {
             Loader.EScene currentScene = Loader.GetTargetScene();
 
@@ -31,8 +32,8 @@ namespace MyRule
                         break;
                     }
                 case ButtonType.NewGameButton:
-                    ICommand newGameCommand = new SceneCommand(btnSubmit, currentScene, Loader.EScene.SpaceStationScene);
-                    CommandInvoker.ExecuteCommand(newGameCommand);
+                    GameSystemManager.Instance.CreateNewGame();
+                    await Loader.LoadSceneWithLoading(Loader.EScene.SpaceStationScene);
                     break;
                 case ButtonType.SystemButton:
                     ICommand settingCommand = new SceneCommand(btnSubmit, currentScene, Loader.EScene.SettingsScene);

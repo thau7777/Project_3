@@ -41,9 +41,11 @@ namespace MyRule
         }
 
         #region Load, Save
-        public void CreateNewGame()
+        public UniTask CreateNewGame()
         {
-            _gameData = new();
+            _gameData = new GameData();
+
+            return UniTask.CompletedTask;
         }
 
         public async UniTask LoadData()

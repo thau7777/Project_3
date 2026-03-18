@@ -21,6 +21,7 @@ namespace MyRule
             this._lobby = new LobbyData();
             this._sigilCollection = new SigilCollectionData();
             this._history = new HistoryData();
+            this._matchData = null;
         }
 
         public void SetHistory(HistoryData historyData) => this._history = historyData; 
