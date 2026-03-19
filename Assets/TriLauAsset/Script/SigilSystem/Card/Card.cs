@@ -81,11 +81,9 @@ namespace MyRule
 
         private void OnMouseEnter()
         {
-            Debug.Log("Hover " + sigilSO.name);
             if (!isShowing) return;
 
             transform.localScale = hoverScale;
-
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(this));
         }
