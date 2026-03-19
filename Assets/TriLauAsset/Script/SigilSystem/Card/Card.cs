@@ -2,8 +2,6 @@
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
-using MyRule.CommandPattern;
-using Unity.VisualScripting;
 
 namespace MyRule
 {
@@ -83,9 +81,11 @@ namespace MyRule
 
         private void OnMouseEnter()
         {
+            Debug.Log("Hover " + sigilSO.name);
             if (!isShowing) return;
 
             transform.localScale = hoverScale;
+
 
             EventBus<HoverSigilCardEvent>.Raise(new HoverSigilCardEvent(this));
         }

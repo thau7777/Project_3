@@ -13,6 +13,7 @@ namespace MyRule
     public class PlanetSO : ScriptableObject
     {
         public EMap planetType;
+        public Loader.EScene scene;
         public string planetName;
         public Sprite image;
         [TextArea(3, 4)]

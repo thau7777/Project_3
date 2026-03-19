@@ -46,6 +46,15 @@ public class InputManager : PersistentSingleton<InputManager>
             case "MazeScene":
                 _inputReader.SwitchActionMap(ActionMap.DiceRoll);
                 break;
+            case "GreenlandScene":
+                _inputReader.SwitchActionMap(ActionMap.DiceRoll);
+                break;
+            case "DesertScene":
+                _inputReader.SwitchActionMap(ActionMap.DiceRoll);
+                break;
+            case "IcelandScene":
+                _inputReader.SwitchActionMap(ActionMap.DiceRoll);
+                break;
             default:
                 _inputReader.SwitchActionMap(ActionMap.UI);
                 break;

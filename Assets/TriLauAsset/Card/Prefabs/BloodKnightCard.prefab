@@ -547,7 +547,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.Card
   sigilSO: {fileID: 0}
-  hoverScale: 1.2
+  borderMesh: {fileID: 7189432475909105697}
+  borderMaterial:
+  - {fileID: 2100000, guid: d00fff9843b0f554cadc5ae6b3ddfbfd, type: 2}
+  - {fileID: 2100000, guid: 272f604b65b31ac4cbda18c7c6449d20, type: 2}
+  - {fileID: 2100000, guid: 6421cbfdf44d88044a0ae301e08b278d, type: 2}
+  - {fileID: 2100000, guid: bc2bd4b2a910ba3428bca70e9cf7d2f3, type: 2}
+  - {fileID: 2100000, guid: ce41a581057440044bb6c1d3192e7373, type: 2}
+  - {fileID: 2100000, guid: 70a2270d727e5cd41b220908302abb82, type: 2}
+  hoverScale: {x: 1.2, y: 1.2, z: 1.2}
   sigilImg: {fileID: 0}
   sigilNameTxt: {fileID: 6433231973227250899}
   sigilDescTxt: {fileID: 129692654818568094}
@@ -860,7 +868,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2666515536127143657, guid: e3f54f2386eacfb498711344712aeeef, type: 2}
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -906,8 +914,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ascascascascascascsacascascsacascascascascascascascascac
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e3f54f2386eacfb498711344712aeeef, type: 2}
-  m_sharedMaterial: {fileID: -2666515536127143657, guid: e3f54f2386eacfb498711344712aeeef, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1278,6 +1286,11 @@ PrefabInstance:
 --- !u!4 &4688971906921602503 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a602f69b62f794544991725ecb786a71, type: 3}
+  m_PrefabInstance: {fileID: 5086862398156208684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7189432475909105697 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2692542178703200781, guid: a602f69b62f794544991725ecb786a71, type: 3}
   m_PrefabInstance: {fileID: 5086862398156208684}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7354019742430992905

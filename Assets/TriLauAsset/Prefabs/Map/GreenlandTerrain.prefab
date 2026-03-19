@@ -567,6 +567,18 @@ Transform:
   - {fileID: 885754585504783944}
   - {fileID: 4143545603210914101}
   - {fileID: 1177237587523040305}
+  - {fileID: 6341306430935118566}
+  - {fileID: 3332378743462754642}
+  - {fileID: 9034497174430297708}
+  - {fileID: 7725821704298354857}
+  - {fileID: 2073458142740260420}
+  - {fileID: 6407947417383835003}
+  - {fileID: 5800980842115255336}
+  - {fileID: 1550009245151188463}
+  - {fileID: 2405975181603427345}
+  - {fileID: 3965483465079695808}
+  - {fileID: 758456165487260956}
+  - {fileID: 1662485585968350971}
   m_Father: {fileID: 106204911069221693}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3692769507178254343
@@ -579,7 +591,6 @@ GameObject:
   m_Component:
   - component: {fileID: 106204911069221693}
   - component: {fileID: 291069279547911257}
-  - component: {fileID: 9173758927299657420}
   m_Layer: 6
   m_Name: GreenlandTerrain
   m_TagString: Untagged
@@ -613,7 +624,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: e895fd7a0c0899c4aa278c0b32fc6a9f, type: 2}
-  m_TreeDistance: 5000
+  m_TreeDistance: 100
   m_TreeBillboardDistance: 500
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -625,7 +636,7 @@ Terrain:
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
-  m_DrawInstanced: 0
+  m_DrawInstanced: 1
   m_DrawTreesAndFoliage: 1
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
@@ -643,26 +654,6 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
---- !u!154 &9173758927299657420
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3692769507178254343}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: e895fd7a0c0899c4aa278c0b32fc6a9f, type: 2}
-  m_EnableTreeColliders: 1
 --- !u!1001 &1522350675515786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -949,6 +940,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -76.20715
@@ -989,7 +984,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1137,7 +1133,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1199,7 +1200,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (9)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1339,6 +1345,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic2 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2760647024266982361, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3243745648039455075, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -231.10443
@@ -1379,7 +1389,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 390253827542759552, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1683,6 +1694,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic7
       objectReference: {fileID: 0}
+    - target: {fileID: 7455140895876954567, guid: bd3a06be3ae23c44b8230a37f59efce1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7799719475477734269, guid: bd3a06be3ae23c44b8230a37f59efce1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 261.22418
@@ -1723,7 +1738,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4922512711519810206, guid: bd3a06be3ae23c44b8230a37f59efce1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3055,6 +3071,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Waterfall2
       objectReference: {fileID: 0}
+    - target: {fileID: 6074266293544586653, guid: bbb9fcc729e35b041ae6a9402a850f86, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6847707489197807399, guid: bbb9fcc729e35b041ae6a9402a850f86, type: 3}
       propertyPath: m_LocalPosition.x
       value: 211.3305
@@ -3321,6 +3341,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -145.26764
@@ -3361,7 +3385,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3488,6 +3513,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 209975694507402628, guid: f35571e3d3ee760458b6e7e77bbc4b70, type: 3}
   m_PrefabInstance: {fileID: 647982184354882998}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &651420433819168508
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 1712250698730987945, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Spire01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1712250698730987945, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 138.32367
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.6031857
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -329.21503
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -1989006011240987357, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+--- !u!4 &1550009245151188463 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2056159710384896787, guid: 20b031f75db564044af6c0eb98f2e15c, type: 3}
+  m_PrefabInstance: {fileID: 651420433819168508}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &658920925767369134
 PrefabInstance:
@@ -3799,7 +3891,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (5)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4025,6 +4122,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic3 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2429118667063086452, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3097955522643531726, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
       propertyPath: m_LocalPosition.x
       value: -340.03162
@@ -4065,7 +4166,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 184729569588201005, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4715,7 +4817,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (12)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5145,6 +5252,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3779119016842992634, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4555936474140885312, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
       propertyPath: m_LocalPosition.x
       value: 229.73761
@@ -5185,7 +5296,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1681985228926193827, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5591,6 +5703,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic2 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3779119016842992634, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4555936474140885312, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
       propertyPath: m_LocalPosition.x
       value: -209.88806
@@ -5631,7 +5747,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1681985228926193827, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5693,7 +5810,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (18)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5801,6 +5923,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic3
       objectReference: {fileID: 0}
+    - target: {fileID: 8362336819944152280, guid: 858158bdf4a305740baf756e42131928, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 9171349351350437474, guid: 858158bdf4a305740baf756e42131928, type: 3}
       propertyPath: m_LocalPosition.x
       value: -245.18604
@@ -5841,7 +5967,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6280622719863150465, guid: 858158bdf4a305740baf756e42131928, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6263,6 +6390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 202.90277
@@ -6303,7 +6434,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6615,6 +6747,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic9
       objectReference: {fileID: 0}
+    - target: {fileID: 2723892136268015999, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3352619704841434053, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
       propertyPath: m_LocalPosition.x
       value: -94.3642
@@ -6655,7 +6791,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 497798842922312230, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -7445,6 +7582,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6088509591810269219, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6860507924018018969, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
       propertyPath: m_LocalPosition.x
       value: -295.30182
@@ -7485,7 +7626,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8600475787984431994, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8123,6 +8265,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic6
       objectReference: {fileID: 0}
+    - target: {fileID: 6994825826200283202, guid: 994d8c338abc84b499a5d03216b8cccb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7663241641118216952, guid: 994d8c338abc84b499a5d03216b8cccb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -305.2071
@@ -8163,7 +8309,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4771318721633674011, guid: 994d8c338abc84b499a5d03216b8cccb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8225,7 +8372,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -9267,7 +9419,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -9693,6 +9850,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -172.9184
@@ -9733,7 +9894,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10025,6 +10187,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_PlatformClassic1
       objectReference: {fileID: 0}
+    - target: {fileID: 1340105872138551735, guid: 28fa52d6f54d054429dc332e89605100, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1860782264578448141, guid: 28fa52d6f54d054429dc332e89605100, type: 3}
       propertyPath: m_LocalPosition.x
       value: -115.59827
@@ -10065,7 +10231,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3583949610243836654, guid: 28fa52d6f54d054429dc332e89605100, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10441,7 +10608,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -11884,7 +12056,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (15)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -11905,6 +12082,10 @@ PrefabInstance:
     - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11946,7 +12127,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -12208,7 +12390,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (6)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -12217,6 +12404,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2821218431201426715, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
   m_PrefabInstance: {fileID: 2090719109596462532}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2099274836527572586
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 106848542631262763, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Platform03
+      objectReference: {fileID: 0}
+    - target: {fileID: 106848542631262763, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 108.65228
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.158463
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -305.40265
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6304212863475458616, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+--- !u!4 &1662485585968350971 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 734168663329710225, guid: 064977018ac13ac4c9d968a59583174b, type: 3}
+  m_PrefabInstance: {fileID: 2099274836527572586}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2165454694451491431
 PrefabInstance:
@@ -12270,7 +12524,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (5)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -12794,7 +13053,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic8 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8998298355171756908, guid: 5e8c171ab29199845b0e8c92e8d5886c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6901164667649818677, guid: 5e8c171ab29199845b0e8c92e8d5886c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13264,7 +13528,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (8)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13285,6 +13554,10 @@ PrefabInstance:
     - target: {fileID: 3473311212655498457, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
       propertyPath: m_Name
       value: P_RockClassic4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3473311212655498457, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4285314175976476259, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13326,7 +13599,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1375306781189103488, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13388,7 +13662,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (23)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13560,7 +13839,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (17)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13708,7 +13992,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (4)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14142,7 +14431,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3155803217584034488, guid: cf74e8f10d973f04ab307266f2e78438, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 643476330425457121, guid: cf74e8f10d973f04ab307266f2e78438, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14278,6 +14572,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic9 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2723892136268015999, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3352619704841434053, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
       propertyPath: m_LocalPosition.x
       value: 347.4301
@@ -14318,7 +14616,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 497798842922312230, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14756,6 +15055,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
       value: 134.97638
@@ -14796,7 +15099,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14944,7 +15248,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (5)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -15092,7 +15401,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (7)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -15590,6 +15904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Waterfall8
       objectReference: {fileID: 0}
+    - target: {fileID: 9069308475367307281, guid: eff713447ef3bef4cb270576193f822e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15611,6 +15929,10 @@ PrefabInstance:
     - target: {fileID: 2429118667063086452, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
       propertyPath: m_Name
       value: P_ShelfClassic3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2429118667063086452, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3097955522643531726, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15652,7 +15974,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 184729569588201005, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16104,6 +16427,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic5 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7270559258662539535, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8047342867073616821, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 116.711365
@@ -16144,7 +16471,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5171129636754692694, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16165,6 +16493,10 @@ PrefabInstance:
     - target: {fileID: 7270559258662539535, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
       propertyPath: m_Name
       value: P_BoulderClassic5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270559258662539535, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8047342867073616821, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16206,7 +16538,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5171129636754692694, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16354,7 +16687,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (10)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16363,6 +16701,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8616888540329638772, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
   m_PrefabInstance: {fileID: 2914297939545572507}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2931580410566170085
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 232.48749
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.040512085
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -311.6795
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865716627148216868, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_RockSlanted08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865716627148216868, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -1604364557741137714, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+--- !u!4 &6407947417383835003 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8089180576910786718, guid: 762ca2066eab1884096651d589d5abca, type: 3}
+  m_PrefabInstance: {fileID: 2931580410566170085}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2965571196712554147
 PrefabInstance:
@@ -16416,7 +16821,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (17)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16662,7 +17072,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (27)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -17046,7 +17461,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (20)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -17194,7 +17614,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (4)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -18050,6 +18475,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic9
       objectReference: {fileID: 0}
+    - target: {fileID: 2723892136268015999, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3352619704841434053, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
       propertyPath: m_LocalPosition.x
       value: 252.91107
@@ -18090,7 +18519,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 497798842922312230, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -18582,7 +19012,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (8)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -18722,6 +19157,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClassic4 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3473311212655498457, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4285314175976476259, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
       propertyPath: m_LocalPosition.x
       value: 289.83624
@@ -18762,7 +19201,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1375306781189103488, guid: ea70d4a3acd095246ae3a1fafc052623, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -19196,7 +19636,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (16)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -19405,6 +19850,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6917372803760251572, guid: c96a9c3206c761f4a8a45ae02ad70d2d, type: 3}
   m_PrefabInstance: {fileID: 3518350499699878517}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3519139832483688842
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 174.96332
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.2302608
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -340.36432
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 906795376939156208, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Piece09
+      objectReference: {fileID: 0}
+    - target: {fileID: 906795376939156208, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3566490390830959287, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+--- !u!4 &3965483465079695808 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 566966726506092618, guid: a56ec8e798b9efb4dab8a6170b47df51, type: 3}
+  m_PrefabInstance: {fileID: 3519139832483688842}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3576562670915959286
 PrefabInstance:
@@ -19814,7 +20326,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -19954,6 +20471,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -134.16626
@@ -19994,7 +20515,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -20199,6 +20721,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8295052171456046328, guid: e8654265811b2424792f646ce1b790aa, type: 3}
   m_PrefabInstance: {fileID: 3828646321849443805}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3873380841973128570
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 3750443143770567388, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Rocks02
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750443143770567388, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 181.91302
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.013967514
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -341.98468
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -5712510800307750047, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+--- !u!4 &758456165487260956 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4559772060385945702, guid: a2e4b7d911ef399439be71bacf5bffcb, type: 3}
+  m_PrefabInstance: {fileID: 3873380841973128570}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3879918735730396287
 PrefabInstance:
@@ -20424,7 +21013,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (8)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -20704,6 +21298,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2760647024266982361, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3243745648039455075, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 217.66107
@@ -20744,7 +21342,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 390253827542759552, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -21174,7 +21773,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (6)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -21666,7 +22270,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (22)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -21842,7 +22451,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -22148,7 +22762,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (24)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -22616,6 +23235,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6680373611311484900, guid: beab5e1a429de734bb3a84f21f4edca5, type: 3}
   m_PrefabInstance: {fileID: 4348101008447215419}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4372423864435272861
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 7450943545357826575, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_RockSlanted09
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450943545357826575, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 112.13837
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.50663
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -336.30292
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1672767916414933791, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+--- !u!4 &5800980842115255336 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7794817268939661493, guid: 8947a4bf5570f194e93bc5609e759c34, type: 3}
+  m_PrefabInstance: {fileID: 4372423864435272861}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4424609917100740947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22970,7 +23656,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (28)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -23078,6 +23769,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -199.92072
@@ -23118,7 +23813,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -23312,6 +24008,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Waterfall3
       objectReference: {fileID: 0}
+    - target: {fileID: 4923327938111499851, guid: 7da6a046e94aee84a8e54f6a40f78092, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5699582405993837809, guid: 7da6a046e94aee84a8e54f6a40f78092, type: 3}
       propertyPath: m_LocalPosition.x
       value: 190.43842
@@ -23414,7 +24114,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (7)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -23737,6 +24442,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6e4f69a2b2facbc4299b3a761a00f2ed, type: 3}
   m_PrefabInstance: {fileID: 4621281673256959640}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4639156356134174569
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 3912136987093437375, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_RockSlanted03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912136987093437375, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 132.85712
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.5350246
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -313.768
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4371704081204037538, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+--- !u!4 &9034497174430297708 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+  m_PrefabInstance: {fileID: 4639156356134174569}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4641756161502663032
 PrefabInstance:
@@ -24272,6 +25044,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Waterfall5
       objectReference: {fileID: 0}
+    - target: {fileID: 4566311164884972757, guid: 6f9ef2f8244ff934ba152f4bf49cea77, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24380,6 +25156,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
       value: -193.01575
@@ -24420,7 +25200,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -24441,6 +25222,10 @@ PrefabInstance:
     - target: {fileID: 2760647024266982361, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
       propertyPath: m_Name
       value: P_BoulderClumpClassic2 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2760647024266982361, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3243745648039455075, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -24482,7 +25267,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 390253827542759552, guid: 173744a806cd9db4bb78d8c523162bf9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -24676,6 +25462,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic9 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2723892136268015999, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3352619704841434053, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
       propertyPath: m_LocalPosition.x
       value: -51.716187
@@ -24716,7 +25506,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 497798842922312230, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -25240,7 +26031,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (12)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -25261,6 +26057,10 @@ PrefabInstance:
     - target: {fileID: 386873251733242900, guid: 672124e21477157428eddacdb7587899, type: 3}
       propertyPath: m_Name
       value: P_PlatformClassic2
+      objectReference: {fileID: 0}
+    - target: {fileID: 386873251733242900, guid: 672124e21477157428eddacdb7587899, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1014897064080400046, guid: 672124e21477157428eddacdb7587899, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25302,7 +26102,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2773037810908204877, guid: 672124e21477157428eddacdb7587899, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -25594,6 +26395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
       value: -172.87317
@@ -25634,7 +26439,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26428,7 +27234,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26490,7 +27301,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic6 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5404506105498546968, guid: 3759edc56b8f15d4f9d5f026b49f6078, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7504428223261554753, guid: 3759edc56b8f15d4f9d5f026b49f6078, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26511,6 +27327,10 @@ PrefabInstance:
     - target: {fileID: 1506789064469092839, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
       propertyPath: m_Name
       value: P_RockClassic3 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1506789064469092839, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2279630682637452125, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26552,7 +27372,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4020743280351220414, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26614,7 +27435,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (4)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26635,6 +27461,10 @@ PrefabInstance:
     - target: {fileID: 7270559258662539535, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
       propertyPath: m_Name
       value: P_BoulderClassic5 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270559258662539535, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8047342867073616821, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26676,7 +27506,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5171129636754692694, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26852,7 +27683,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (26)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -26980,6 +27816,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 209975694507402628, guid: f35571e3d3ee760458b6e7e77bbc4b70, type: 3}
   m_PrefabInstance: {fileID: 5306658382384108101}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5313561113401736366
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 7175890812330521093, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Piece07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7175890812330521093, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 177.85272
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.7259121
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -337.76166
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4958285721076297474, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+--- !u!4 &2405975181603427345 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7556532200443963583, guid: 89578323f9407c1488a275ce8cd40d75, type: 3}
+  m_PrefabInstance: {fileID: 5313561113401736366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5366407285879474385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27106,6 +28009,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClassic3
       objectReference: {fileID: 0}
+    - target: {fileID: 1506789064469092839, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2279630682637452125, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -276.12054
@@ -27146,7 +28053,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4020743280351220414, guid: d67ca20882bc73d48960f2c9fe95a31f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -28610,6 +29518,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic2
       objectReference: {fileID: 0}
+    - target: {fileID: 3779119016842992634, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4555936474140885312, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.96875
@@ -28650,7 +29562,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1681985228926193827, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -28659,6 +29572,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4555936474140885312, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
   m_PrefabInstance: {fileID: 5574477769538578154}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5600873903347064566
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 98.41669
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3968678
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -322.83307
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229639253493036714, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Rocks06
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229639253493036714, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6442219695448384843, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+--- !u!4 &6341306430935118566 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1565728447014661136, guid: ec8f15a3f1edd0f44bed3906bc67c79c, type: 3}
+  m_PrefabInstance: {fileID: 5600873903347064566}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5605320462561391811
 PrefabInstance:
@@ -28884,7 +29864,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -28905,6 +29890,10 @@ PrefabInstance:
     - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
@@ -28946,7 +29935,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -29212,7 +30202,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (7)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -29470,7 +30465,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (21)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -29834,6 +30834,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic5 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7270559258662539535, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8047342867073616821, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
       propertyPath: m_LocalPosition.x
       value: -119.22162
@@ -29874,7 +30878,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5171129636754692694, guid: 645afe493a7ad4a4ba4e82e68f75c4de, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -30054,7 +31059,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (11)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -30452,6 +31462,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 72.35712
@@ -30492,7 +31506,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -30554,7 +31569,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (10)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -30914,7 +31934,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8998298355171756908, guid: 5e8c171ab29199845b0e8c92e8d5886c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6901164667649818677, guid: 5e8c171ab29199845b0e8c92e8d5886c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -30923,6 +31948,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8623179431085527510, guid: 5e8c171ab29199845b0e8c92e8d5886c, type: 3}
   m_PrefabInstance: {fileID: 6116539337948987083}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6120919691702623173
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 8179887556120836141, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Spire03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179887556120836141, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 81.88385
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.130163
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -307.8499
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6257828633426272209, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+--- !u!4 &3332378743462754642 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+  m_PrefabInstance: {fileID: 6120919691702623173}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6125723739906005231
 PrefabInstance:
@@ -31234,7 +32326,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (11)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -31296,7 +32393,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -31392,6 +32494,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2673407744976533745, guid: c09994bbecd7f694fadd2cff0c67e21b, type: 3}
   m_PrefabInstance: {fileID: 6211600067465082499}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6212366696047151532
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 3912136987093437375, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_RockSlanted03 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912136987093437375, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 120.51703
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.9985676
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -321.43536
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4371704081204037538, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+--- !u!4 &7725821704298354857 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4395904045570543877, guid: faacd432572dcda4792cb6ebea98abea, type: 3}
+  m_PrefabInstance: {fileID: 6212366696047151532}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6224835060213455276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31444,7 +32613,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (9)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -31576,6 +32750,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -310.08417
@@ -31616,7 +32794,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -31878,7 +33057,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5404506105498546968, guid: 3759edc56b8f15d4f9d5f026b49f6078, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7504428223261554753, guid: 3759edc56b8f15d4f9d5f026b49f6078, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -32300,6 +33484,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_WaterfallSplit2
       objectReference: {fileID: 0}
+    - target: {fileID: 1255843833970888523, guid: 07f5958af821cb4419489774e7710780, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1884325421194106353, guid: 07f5958af821cb4419489774e7710780, type: 3}
       propertyPath: m_LocalPosition.x
       value: 100.22711
@@ -32534,6 +33722,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic2 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6088509591810269219, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6860507924018018969, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 127.64789
@@ -32574,7 +33766,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8600475787984431994, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -32852,7 +34045,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (16)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -33250,6 +34448,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_PlatformClassic1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1340105872138551735, guid: 28fa52d6f54d054429dc332e89605100, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1860782264578448141, guid: 28fa52d6f54d054429dc332e89605100, type: 3}
       propertyPath: m_LocalPosition.x
       value: 167.11139
@@ -33290,7 +34492,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3583949610243836654, guid: 28fa52d6f54d054429dc332e89605100, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -33520,6 +34723,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
       value: -132.70306
@@ -33560,7 +34767,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -33581,6 +34789,10 @@ PrefabInstance:
     - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_Name
       value: P_BoulderClumpClassic1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
@@ -33622,7 +34834,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -33794,7 +35007,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (7)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -33902,6 +35120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic3 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8362336819944152280, guid: 858158bdf4a305740baf756e42131928, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 9171349351350437474, guid: 858158bdf4a305740baf756e42131928, type: 3}
       propertyPath: m_LocalPosition.x
       value: 255.06635
@@ -33942,7 +35164,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6280622719863150465, guid: 858158bdf4a305740baf756e42131928, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -34222,6 +35445,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 61.555847
@@ -34262,7 +35489,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -34868,6 +36096,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 299.2481
@@ -34908,7 +36140,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -35516,6 +36749,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic2
       objectReference: {fileID: 0}
+    - target: {fileID: 3779119016842992634, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4555936474140885312, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
       propertyPath: m_LocalPosition.x
       value: 194.92865
@@ -35556,7 +36793,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1681985228926193827, guid: 54c4970544fc105469e5ac007eb0a877, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -35577,6 +36815,10 @@ PrefabInstance:
     - target: {fileID: 204419553794242446, guid: 3a1bb5dbbcb96424c91bbdae460319e3, type: 3}
       propertyPath: m_Name
       value: P_Waterfall7
+      objectReference: {fileID: 0}
+    - target: {fileID: 204419553794242446, guid: 3a1bb5dbbcb96424c91bbdae460319e3, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 692971793983270196, guid: 3a1bb5dbbcb96424c91bbdae460319e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -35938,7 +37180,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (11)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -36187,6 +37434,10 @@ PrefabInstance:
     - target: {fileID: 2469245213476720503, guid: b0f6ef3fb0001de4ebf70bf4f7ed0b50, type: 3}
       propertyPath: m_Name
       value: P_WaterfallSplit3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2469245213476720503, guid: b0f6ef3fb0001de4ebf70bf4f7ed0b50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2958677887851255245, guid: b0f6ef3fb0001de4ebf70bf4f7ed0b50, type: 3}
       propertyPath: m_LocalPosition.x
@@ -36654,6 +37905,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8225730943279765763, guid: 2e53b49cd7287a743be028b13f88aae5, type: 3}
   m_PrefabInstance: {fileID: 7326712193677789562}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7352544179679167699
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9034253406823053605}
+    m_Modifications:
+    - target: {fileID: 8179887556120836141, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_Name
+      value: P_RockHexic_Spire03 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179887556120836141, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 224.99188
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.0368767
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -338.08704
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6257828633426272209, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+--- !u!4 &2073458142740260420 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8849323438922801815, guid: 916871589e2345c4698bfc6ce57f4e56, type: 3}
+  m_PrefabInstance: {fileID: 7352544179679167699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7398933691228330476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36764,6 +38082,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic2
       objectReference: {fileID: 0}
+    - target: {fileID: 6088509591810269219, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6860507924018018969, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 296.71112
@@ -36804,7 +38126,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8600475787984431994, guid: 7e0793331f40daf43a38df0cef4d49db, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -37430,7 +38753,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (25)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -37624,6 +38952,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 151.42865
@@ -37664,7 +38996,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -37812,7 +39145,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (14)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -38670,7 +40008,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (10)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -38732,7 +40075,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (5)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -40040,6 +41388,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Waterfall4
       objectReference: {fileID: 0}
+    - target: {fileID: 5832508171072185231, guid: 9d60d40678d3a54429525eb3ee246b2a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6609854797885634869, guid: 9d60d40678d3a54429525eb3ee246b2a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 146.5014
@@ -40142,7 +41494,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (19)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -40540,6 +41897,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
       value: 89.6474
@@ -40580,7 +41941,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -40870,7 +42232,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -41254,7 +42621,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (14)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -41316,7 +42688,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (15)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -41337,6 +42714,10 @@ PrefabInstance:
     - target: {fileID: 2429118667063086452, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
       propertyPath: m_Name
       value: P_ShelfClassic3 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2429118667063086452, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3097955522643531726, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -41378,7 +42759,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 184729569588201005, guid: 78edcc088dee4ad42b6b945e4b37a930, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -41440,7 +42822,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7862485000383466080, guid: cb0f1f1ba71e1f346b108f7b8036e520, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5636418129777230137, guid: cb0f1f1ba71e1f346b108f7b8036e520, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -41674,6 +43061,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 101.68158
@@ -41714,7 +43105,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -41948,7 +43340,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -42644,6 +44041,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_RockClumpClassic9 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2723892136268015999, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3352619704841434053, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
       propertyPath: m_LocalPosition.x
       value: 331.62372
@@ -42684,7 +44085,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 497798842922312230, guid: 661e4c1dc44d24d48946f846a9686113, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -42996,6 +44398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -146.15149
@@ -43036,7 +44442,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -43388,7 +44795,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (6)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -43582,6 +44994,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.2805786
@@ -43622,7 +45038,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -43770,7 +45187,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ShelfClassic4 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7862485000383466080, guid: cb0f1f1ba71e1f346b108f7b8036e520, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5636418129777230137, guid: cb0f1f1ba71e1f346b108f7b8036e520, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44264,7 +45686,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (9)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44285,6 +45712,10 @@ PrefabInstance:
     - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_Name
       value: P_BoulderClumpClassic1 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701000163381655886, guid: ec2fabdbec682e241991705084e4e887, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2076434368394355700, guid: ec2fabdbec682e241991705084e4e887, type: 3}
       propertyPath: m_LocalPosition.x
@@ -44326,7 +45757,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3800640872706388503, guid: ec2fabdbec682e241991705084e4e887, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44388,7 +45820,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5404506105498546968, guid: 3759edc56b8f15d4f9d5f026b49f6078, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7504428223261554753, guid: 3759edc56b8f15d4f9d5f026b49f6078, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44450,7 +45887,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic2 (13)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8800946113022530221, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6414957389850614260, guid: 64e3149501f84704889eaee1c0df2117, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44558,6 +46000,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic1 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 113.550964
@@ -44598,7 +46044,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44619,6 +46066,10 @@ PrefabInstance:
     - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_Name
       value: P_BoulderClassic1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 351720490677871901, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1128819387804221351, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -44660,7 +46111,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2865472379240623684, guid: 3bdd971261f50284dbcf9ad07cc75e0e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -45044,7 +46496,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic4 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3201262857588828065, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1101296710513847544, guid: 628e0a53818570d4ab828e8512f5e293, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -45204,7 +46661,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (13)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -45712,6 +47174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_WaterfallSplit1
       objectReference: {fileID: 0}
+    - target: {fileID: 3625756496547466006, guid: d4b59305cf3ec9d42bc33723a114cb68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4114767228437959084, guid: d4b59305cf3ec9d42bc33723a114cb68, type: 3}
       propertyPath: m_LocalPosition.x
       value: 264.29913
@@ -46010,6 +47476,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.646118
@@ -46050,7 +47520,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -46410,7 +47881,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic5 (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5466909441988118322, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7564887606004960363, guid: 7b8b7d3c0b7147d4ea00087fac6beb41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -46604,6 +48080,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 278.97443
@@ -46644,7 +48124,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -46775,6 +48256,14 @@ PrefabInstance:
     - target: {fileID: 802339559495243202, guid: 623ff708cff91794fb1a71aa999d1476, type: 3}
       propertyPath: m_Name
       value: P_Water
+      objectReference: {fileID: 0}
+    - target: {fileID: 802339559495243202, guid: 623ff708cff91794fb1a71aa999d1476, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629816680535584664, guid: 623ff708cff91794fb1a71aa999d1476, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8355643378142925880, guid: 623ff708cff91794fb1a71aa999d1476, type: 3}
       propertyPath: m_LocalScale.x
@@ -47226,6 +48715,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BoulderClassic4 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2678328572102290975, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3341817200454399141, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 82.09137
@@ -47266,7 +48759,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436543203516065094, guid: 9015de009792e0845b23b6025f8ca1e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -47696,7 +49190,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (4)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -48060,7 +49559,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_CliffClassic1 (6)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8997777358036083150, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6916186300278844055, guid: 07ad69fd18a0ae4409a57c08441acbde, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

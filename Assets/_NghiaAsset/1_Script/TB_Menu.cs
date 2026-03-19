@@ -63,8 +63,10 @@ namespace Turnbase
             Debug.Log("Adjust the number of runes here.");
 
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
-            
-            await Loader.LoadSceneDirect(Loader.EScene.MazeScene);
+
+            Loader.EScene scene = MatchManager.Instance.MatchData.Scene;
+
+            await Loader.LoadSceneDirect(scene);
 
             //FlyweightFactory_TB.Instance.ClearAllPools();
             //SceneManager.LoadScene("Map");

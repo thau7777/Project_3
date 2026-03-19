@@ -15,7 +15,6 @@ namespace MyRule
     {
         [SerializeField] private NPCInMatch[] nPCInMatches;
         [SerializeField] private NPCInMatch salesman;
-        [SerializeField] private NPCInMatch tae;
 
         private NPCInMatch currentNPC;
 
@@ -26,16 +25,6 @@ namespace MyRule
         }
 
         public void TriggetStore() => TriggerNPC(salesman);
-
-        public async UniTask TriggerTAE()
-        {
-            await UniTask.WaitUntil(() => GameSystemManager.Instance != null);
-
-            if (MatchManager.Instance.MatchData.IsNewMatch)
-            {
-                TriggerNPC(tae);
-            }
-        }
 
         private async void TriggerNPC(NPCInMatch npc)
         {
