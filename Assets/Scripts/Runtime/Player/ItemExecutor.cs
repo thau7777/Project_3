@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class ItemExecutor : MonoBehaviour
 {
-    [SerializeField]
-    private bool _useTestItem;
     [SerializeField, TabGroup("Item Setup")]
     private TopDownItemStrategy[] _itemArray = new TopDownItemStrategy[6];
     private ItemRuntimeInstance[] _itemRuntimeInstances = new ItemRuntimeInstance[6];
 
-    [SerializeField,TabGroup("References")]
+    [SerializeField, TabGroup("References")]
     private InputReader _inputReader;
 
     private void OnEnable()
@@ -28,7 +26,7 @@ public class ItemExecutor : MonoBehaviour
 
     private void InitializeItems()
     {
-        if (!_useTestItem)
+        if (!TopDownGameManager.Instance.isTestGameplay)
         {
             ItemData[] itemData = ItemStorageManager.Instance.ItemStorage.Items;
             if (itemData != null)
@@ -55,7 +53,7 @@ public class ItemExecutor : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            _itemRuntimeInstances[i] = new ItemRuntimeInstance(_itemArray[i], i,1);
+            _itemRuntimeInstances[i] = new ItemRuntimeInstance(_itemArray[i], i, 1);
         }
         EventBus<TopdownInitializeItemsEvent>.Raise(new TopdownInitializeItemsEvent(_itemRuntimeInstances));
     }
@@ -75,7 +73,7 @@ public class ItemExecutor : MonoBehaviour
 
         var context = new ItemStrategyContext(transform, Vector3.zero, Quaternion.identity);
         item.Cast(context);
-        for(int i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (i == index) continue;
             _itemRuntimeInstances[i].MarkUsed();

@@ -22,11 +22,11 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     #region References
     [SerializeField, Required]
     [TabGroup("References")]
-    private InputReader _inputReader; 
+    private InputReader _inputReader;
 
     [SerializeField, Required]
     [TabGroup("References")]
-    private LocomotionSet _locomotionSet; 
+    private LocomotionSet _locomotionSet;
 
     [SerializeField, Required]
     [TabGroup("References")]
@@ -39,7 +39,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     [SerializeField, Required]
     [TabGroup("References")]
     private Animator _animator;
-     
+
     [SerializeField, Required]
     [TabGroup("References")]
     private Renderer _renderer;
@@ -71,7 +71,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     State root;
 
     Vector3 _rotateDirOnAttack;
-    
+
     bool _isInSpecialMoveAnim
         => _animator.GetCurrentAnimatorStateInfo(_context.IsUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
 
@@ -104,19 +104,32 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _characterStats = GetComponent<CharacterStats>();
         _animator.runtimeAnimatorController = _locomotionSet.animationController;
 
+        if (!TopDownGameManager.Instance.isTestGameplay)
+        {
+            CharacterData playerStats = CharacterManager.Instance.GetCharacterStats();
+            BaseStatsData baseStatsData = playerStats.CharacterStatsData.BaseStatsData;
+            DamageData damageData = playerStats.CharacterStatsData.Damage;
+            DefenseData defenseData = playerStats.CharacterStatsData.Defense;
+            _characterStats.Setup(ElementalType.Normal, baseStatsData.MaxHealth, 0, baseStatsData.MaxMana, damageData.PhysDmg,
+                damageData.MagDmg, damageData.FireDmg, damageData.WaterDmg, damageData.FrostDmg, damageData.LightningDmg, damageData.HolyDmg,
+                damageData.DarkDmg, damageData.PoisonDmg, defenseData.PhysDef, defenseData.MagDef, defenseData.FireDef, defenseData.WaterDef,
+                defenseData.FrostDef, defenseData.LightningDef, defenseData.HolyDef, defenseData.DarkDef, defenseData.PoisonDef, baseStatsData.Speed,
+                baseStatsData.CritChance, baseStatsData.CritMult);
 
-        CharacterData playerStats = CharacterManager.Instance.GetCharacterStats();
-        BaseStatsData baseStatsData = playerStats.CharacterStatsData.BaseStatsData;
-        DamageData damageData = playerStats.CharacterStatsData.Damage;
-        DefenseData defenseData = playerStats.CharacterStatsData.Defense;
-        _characterStats.Setup(ElementalType.Normal, baseStatsData.MaxHealth, 0, baseStatsData.MaxMana, damageData.PhysDmg,
-            damageData.MagDmg, damageData.FireDmg, damageData.WaterDmg, damageData.FrostDmg, damageData.LightningDmg, damageData.HolyDmg,
-            damageData.DarkDmg, damageData.PoisonDmg, defenseData.PhysDef, defenseData.MagDef, defenseData.FireDef, defenseData.WaterDef,
-            defenseData.FrostDef, defenseData.LightningDef, defenseData.HolyDef, defenseData.DarkDef, defenseData.PoisonDef, baseStatsData.Speed,
-            baseStatsData.CritChance, baseStatsData.CritMult);
+            GetComponent<Damageable>().Initialize(baseStatsData.CurrentHealth, baseStatsData.MaxHealth, 0);
+            _executor.InitializeMana(baseStatsData.MaxMana);
+        }
+        else
+        {
+            _characterStats.Setup(ElementalType.Normal, 100, 0, 100, 20,
+                20, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 10,
+                10, 1.5f);
 
-        GetComponent<Damageable>().Initialize(baseStatsData.CurrentHealth, baseStatsData.MaxHealth, 0);
-        _executor.InitializeMana(baseStatsData.MaxMana);
+            GetComponent<Damageable>().Initialize(100, 100, 0);
+            _executor.InitializeMana(100);
+        }
 
         _context = new PlayerTopdownContext.Builder()
         .SetBaseMoveSpeed(_characterStats.Speed / 2)
@@ -168,7 +181,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
             bool isActiveClass = classWeaponData.Class == characterClass;
             foreach (var weapon in classWeaponData.weaponOfThisClass)
             {
-                if(weapon != null)
+                if (weapon != null)
                     weapon.SetActive(isActiveClass);
             }
         }
@@ -181,13 +194,13 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
         UseSKill(skillIndex, value, SaveDirToAttack);
     }
-    
+
     private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
     {
         if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
 
         if (_context.IsHurting ||
-            _isInSpecialMoveAnim || _context.IsInSpecialMove || 
+            _isInSpecialMoveAnim || _context.IsInSpecialMove ||
             _context.CastingSkill != -1 && _context.CastingSkill != skillIndex) return;
 
         if (isPressed)
@@ -212,7 +225,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         SaveDirToAttack();
         if (_context.IsNextAttackQueued || _context.IsInSpecialMove ||
             !_context.IsAttacking && _inIsInAttackAnim) return;
-        if (_context.CastingSkill != -1) 
+        if (_context.CastingSkill != -1)
         {
             _executor.CastSkill(_context);
             SaveDirToAttack();
@@ -286,7 +299,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         {
             isDashForward = _executor.StoredSkillDataForClass.Value.isDashForward;
             dashForce = _executor.StoredSkillDataForClass.Value.dashForce;
-            
+
         }
         else
         {
@@ -302,9 +315,9 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         if (_context.IsDashing && isDashTrigerredThis == 0) return;
         _context.TargetMoveSpeed = 0; // stop moving when attacking
         _context.MoveSpeedSmoothTime = 0.1f;
-        
+
     }
-    
+
     public void OnAttackTrigger()
     {
         SpawnVFX(_locomotionSet.CurrentAttackData.flyweightSettings, _locomotionSet.CurrentAttackData.spawnLocation);
@@ -316,11 +329,11 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
             Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
 
             vfx.FlyweightInitialize(_savedMousePosition);
-            if(vfx is OneShotVFX) 
+            if (vfx is OneShotVFX)
             {
                 var oneshotVFX = vfx as OneShotVFX;
                 var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
-                if(oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
+                if (oneshotVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
                 {
                     hitBoxHandler.Setup(
                         gameObject,
@@ -330,7 +343,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                         oneshotSettings.triggerStayTickInterval,
                         false);
                 }
-                if(oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
+                if (oneshotVFX.TryGetComponent<DamageDealer>(out var damageDealer))
                 {
                     int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
                     damageDealer.Setup(
@@ -357,8 +370,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         }
         foreach (var spawnPoint in _attackVfxSpawnPoints)
         {
-            
-            if(location.ToString() == spawnPoint.name)
+
+            if (location.ToString() == spawnPoint.name)
             {
                 Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
                 vfx.FlyweightInitialize(spawnPoint.position, transform.rotation); // set position
@@ -370,8 +383,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
 
                     straightProjectile.InitializeProjectile(
                         gameObject,
-                        spawnPoint.forward, 
-                        _locomotionSet.CurrentAttackData.projectileSpeed, 
+                        spawnPoint.forward,
+                        _locomotionSet.CurrentAttackData.projectileSpeed,
                         _locomotionSet.CurrentAttackData.projectileDuration,
                         _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale,
                         finalDamage,
@@ -379,7 +392,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                         false,
                         _locomotionSet.CurrentAttackData.dodgeLayers);
                 }
-                else if(vfx is OneShotVFX) 
+                else if (vfx is OneShotVFX)
                 {
                     var oneshotVFX = vfx as OneShotVFX;
                     var oneshotSettings = oneshotVFX.settings as OneShotVFXSettings;
@@ -442,7 +455,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         return false;
     }
 
-    
+
     public void OnSkillDone()
     {
         _context.IsInSpecialMove = false;
@@ -459,7 +472,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         }
         // execute cai queued combo
         _context.IsNextAttackQueued = false;
-        _animator.Play(_locomotionSet.QueuedAttackData.animName, _context.IsRangeClass ? _context.UpperBodyLayerIndex : 0,0);
+        _animator.Play(_locomotionSet.QueuedAttackData.animName, _context.IsRangeClass ? _context.UpperBodyLayerIndex : 0, 0);
     }
     public void OnHurtDone()
     {
@@ -517,7 +530,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     }
     public void OnEndGame(TopDownEndGameEvent topDownEndGameEvent)
     {
-        if(topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Win)
+        if (topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Win)
         {
             _context.IsVictory = true;
             _layerIgnoreController.IgnoreAllExceptGround();
