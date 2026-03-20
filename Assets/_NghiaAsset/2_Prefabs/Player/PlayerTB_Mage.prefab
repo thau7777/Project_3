@@ -28025,6 +28025,7 @@ GameObject:
   - component: {fileID: 8832482024150264086}
   - component: {fileID: -4996430161403432769}
   - component: {fileID: 6817866221514577180}
+  - component: {fileID: 2923324579388499992}
   m_Layer: 0
   m_Name: PlayerTB_Mage
   m_TagString: Player
@@ -28158,6 +28159,7 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 2679676773879030577}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
@@ -28305,6 +28307,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterIItemBuffManager
   activeBuffs: []
+--- !u!114 &2923324579388499992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7a00be6a53a2e459b7f6bd902c8b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.ParryPopup
+  popupPrefab: {fileID: 6339077806955394922, guid: d54edf3e186a8604fb416ee7e7203ac7, type: 3}
+  spawnOffset: {x: 0.7, y: 2, z: 1}
 --- !u!1 &8144461621592026007
 GameObject:
   m_ObjectHideFlags: 0

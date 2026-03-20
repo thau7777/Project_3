@@ -29,7 +29,7 @@ namespace Turnbase
             parryPopupComponent.ShowParryPopup(character);
 
 
-            CameraShaker.Instance.ShakeByDirection(new Vector3(0.2f, 0.2f, 1.5f), CinemachineImpulseDefinition.ImpulseShapes.Bump, 0.2f);
+            CameraShaker.Instance.ShakeByDirection(new Vector3(0f, 0f, 1f), CinemachineImpulseDefinition.ImpulseShapes.Bump, 0.2f);
 
             SpawnEffectParry();
 
