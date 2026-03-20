@@ -23,21 +23,6 @@ namespace Turnbase
 
             int remainingDamage = damageAmount;
 
-            ////if (owner.stats.currentShield > 0)
-            ////{
-            ////    int shieldAbsorb = Mathf.Min(owner.stats.currentShield, remainingDamage);
-            ////    owner.stats.currentShield -= shieldAbsorb;
-            ////    remainingDamage -= shieldAbsorb;
-
-            ////    if (owner.stats.currentShield <= 0)
-            ////    {
-            ////        if (owner.buffManager != null)
-            ////        {
-            ////            owner.buffManager.BreakShield();
-            ////        }
-            ////    }
-            ////}
-
             if (remainingDamage > 0)
             {
                 ApplyCoreDamage(remainingDamage, damageElement, isCrit);

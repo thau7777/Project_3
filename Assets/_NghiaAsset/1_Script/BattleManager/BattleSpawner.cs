@@ -136,7 +136,6 @@ namespace Turnbase
         {
             if (prefab == null) return null;
 
-            // Kiểm tra script Enemy để xem có phải boss không
             Enemy eComp = prefab.GetComponent<Enemy>();
             bool isBoss = (eComp != null && eComp.isBoss);
 
@@ -164,7 +163,6 @@ namespace Turnbase
             if (isPlayerFaction)
             {
                 Vector3 startPos = finalPosition + playerOffsetFromSlot;
-                 UniTask.Delay(3000);
                 StartCoroutine(MoveWithDelay(characterInstance.transform, startPos, finalPosition, playerMoveDuration, 5f));
             }
             else
@@ -199,6 +197,31 @@ namespace Turnbase
             if (target != null)
             {
                 yield return StartCoroutine(MoveToPosition(target, startPos, finalPos, duration));
+            }
+        }
+
+
+        public async void WarpDriveBackk(Vector3 targetPosition)
+        {
+            if (_warpDriveController != null)
+            {
+                _warpDriveController.transform.position = targetPosition;
+
+                _warpDriveController.gameObject.SetActive(false);
+                _warpDriveController.gameObject.SetActive(true);
+
+                await UniTask.Delay(2000);
+
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+                foreach (GameObject p in players)
+                {
+                    if (p != null)
+                    {
+                        p.SetActive(false);
+                    }
+                }
+
             }
         }
 
