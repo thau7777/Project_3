@@ -194,6 +194,9 @@ public class Damageable : MonoBehaviour
                 }
             }
         }
+        // check stun 
+        if(hasShieldBreakingMechanic)
+            finalDamage = CurrentShieldHealth <= 0 ? finalDamage * 1.5f : finalDamage;
         finalDamage = Mathf.RoundToInt(finalDamage);
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);

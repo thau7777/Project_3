@@ -40,25 +40,20 @@ public class EnemyTopdownIdle : State
         if (ctx.EnemyType == EnemyTopdownMovementType.Range)
         {
 
-            // In optimal range - can attack
-            if (ctx.DistanceToTarget >= ctx.MinRangeDistance &&
-                ctx.DistanceToTarget <= ctx.MaxRangeDistance)
+            if (ctx.CheckAndPickRandomAttack())
             {
 
-                if (ctx.CheckAndPickRandomAttack())
-                {
+                if (ctx.CurrentEnemyAttackData.needCharge)
+                    return ((EnemyTopdownRoot)Parent).Charge;
+                return ((EnemyTopdownRoot)Parent).Attack;
 
-                    if (ctx.CurrentEnemyAttackData.needCharge)
-                        return ((EnemyTopdownRoot)Parent).Charge;
-                    return ((EnemyTopdownRoot)Parent).Attack;
-
-                }
-                else
-                    return null;
             }
-            else if(ctx.DistanceToTarget < ctx.MinRangeDistance)
+            else if(ctx.DistanceToTarget <= ctx.MinRangeDistance)
+            {
+                ((EnemyTopdownRoot)Parent).Move.isRunAwayFromTarget = true;
                 return ((EnemyTopdownRoot)Parent).Move;
-            else if(ctx.DistanceToTarget > ctx.MaxRangeDistance)
+            }
+            else if(ctx.DistanceToTarget >= ctx.MaxRangeDistance && _moveTimer >= ctx.MovePauseDuration)
                 return ((EnemyTopdownRoot)Parent).Move;
             // Continue moving to get into optimal range
         }

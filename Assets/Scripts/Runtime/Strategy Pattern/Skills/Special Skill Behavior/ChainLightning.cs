@@ -214,13 +214,22 @@ public class ChainLightning : SkillStrategy
         }
         if (target.transform.root.TryGetComponent<Damageable>(out var damageable))
         {
+            
+
+            if (damageable.hasShieldBreakingMechanic &&
+                damageable.CurrentShieldHealth > 0 &&
+                ElementalManager.Instance.IsStrongAgainst(ElementalType.Lightning, damageable.GetComponent<CharacterStats>().ElementalType))
+            {
+                damageable.TakeShieldDamage(10);
+            }
+
             Vector3 knockBackDirection = (target.transform.position - _skillContext.origin.position).normalized;
 
             CharacterStats userStats = _skillContext.origin.GetComponent<CharacterStats>();
             bool isCrit = userStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < userStats.CriticalRate;
-            int finalDamage = isCrit ? Mathf.RoundToInt(Damage * userStats.CriticalMultiplier) : Damage;
+            float finalDamage = isCrit ? Damage * userStats.CriticalMultiplier : Damage;
 
-            damageable.TakeDamage(_skillContext.origin.gameObject, null, true, finalDamage, DealTrueDamage, knockBackDirection,1,ElementalType.Lightning);
+            damageable.TakeDamage(_skillContext.origin.gameObject, null, true, Mathf.RoundToInt(finalDamage), DealTrueDamage, knockBackDirection,1,ElementalType.Lightning);
         }
         if(target.transform.root.TryGetComponent<EffectsManager>(out var effectsManager))
         {

@@ -98,8 +98,6 @@ public class DamageDealer : MonoBehaviour
                 ElementalManager.Instance.IsStrongAgainst(_elementalType, damageable.GetComponent<CharacterStats>().ElementalType))
             {
                 damageable.TakeShieldDamage(10); 
-                if (enemyTopdownStateDriver.GetComponent<Damageable>().CurrentShieldHealth <= 0)
-                    finalDamage *= 1.5f;
             }
 
             
