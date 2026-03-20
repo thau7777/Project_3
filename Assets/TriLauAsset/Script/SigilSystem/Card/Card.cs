@@ -2,8 +2,6 @@
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
-using MyRule.CommandPattern;
-using Unity.VisualScripting;
 
 namespace MyRule
 {

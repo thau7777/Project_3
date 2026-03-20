@@ -15,6 +15,9 @@ namespace MyRule
             SettingsScene,
             TopDown,
             TurnBase,
+            GreenlandScene,
+            DesertScene,
+            IcelandScene,
         }
 
         private static EScene targetScene = EScene.MainMenuScene;

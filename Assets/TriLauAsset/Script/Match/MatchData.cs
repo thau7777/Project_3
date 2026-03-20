@@ -15,6 +15,7 @@ namespace MyRule
     public class MatchData
     {
         [JsonProperty] private EMap _mapType;
+        [JsonProperty] private Loader.EScene _scene;
         [JsonProperty] private bool _isNewMatch;
         [JsonProperty] private EMatchResult _result;
         [JsonProperty] private int _runeInMatch;
@@ -27,6 +28,7 @@ namespace MyRule
         [JsonProperty] private int _nodesExplored;
 
         [JsonIgnore] public EMap MapType => _mapType;
+        [JsonIgnore] public Loader.EScene Scene => _scene;
         [JsonIgnore] public bool IsNewMatch => _isNewMatch;
         [JsonIgnore] public EMatchResult Result => _result;
         [JsonIgnore] public CharacterData CharacterData => _characterData;
@@ -41,6 +43,20 @@ namespace MyRule
         public MatchData(EMap eMap, CharacterData character, int runeAmount, SigilsInMatchData sigilsInMatch)
         {
             _mapType = eMap;
+
+            switch (eMap)
+            {
+                case EMap.GreenLand:
+                    _scene = Loader.EScene.GreenlandScene;
+                    break;
+                case EMap.Desert:
+                    _scene = Loader.EScene.DesertScene;
+                    break;
+                case EMap.IceLand:
+                    _scene = Loader.EScene.IcelandScene;
+                    break;
+            }
+
             _isNewMatch = true;
             _result = EMatchResult.None;
             _characterData = character;

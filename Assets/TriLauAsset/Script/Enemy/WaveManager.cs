@@ -12,7 +12,7 @@ namespace MyRule
         [SerializeField] public MapEnemies enemies;
     }
 
-    public class WaveManager : PersistentSingleton<WaveManager>
+    public class WaveManager : PersistentSingleton<WaveManager>, IGameData
     {
         [SerializeField] private List<EnemyInMap> enemiesInMap;
         private int currentLevel = 1;
@@ -26,11 +26,15 @@ namespace MyRule
         {
             eventBinding = new EventBinding<WaveEvent>(OnWaveEvent);
             EventBus<WaveEvent>.Register(eventBinding);
+
+            GameSystemManager.Instance.Register(this);
         }
 
         private void OnDisable()
         {
             EventBus<WaveEvent>.Deregister(eventBinding);
+
+            GameSystemManager.Instance.Unregister(this);
         }
 
         private void OnWaveEvent(WaveEvent waveEvent)
@@ -106,6 +110,21 @@ namespace MyRule
         {
             int index = UnityEngine.Random.Range(0, mapEnemies.enemies.Count);
             return mapEnemies.enemies[index];
+        }
+
+        public UniTask LoadData(GameData data)
+        {
+            if (data.MatchData != null)
+            {
+                mapEnemies = enemiesInMap.Find(m => m.planetType == data.MatchData.MapType).enemies;
+            }
+
+            return UniTask.CompletedTask;
+        }
+
+        public void SaveData(GameData data)
+        {
+            return;
         }
     }
 }

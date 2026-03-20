@@ -1,4 +1,5 @@
-﻿using MyRule;
+﻿using Cysharp.Threading.Tasks;
+using MyRule;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -80,6 +81,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     {
         _startGameEventBinding = new EventBinding<TopdownStartGameEvent>(LoadCurrentWave);
         _startGameEventBinding.Add(SpawnEnemies);
+        _startGameEventBinding.Add(StartShowEnemyTutorial);
         EventBus<TopdownStartGameEvent>.Register(_startGameEventBinding);
     }
 
@@ -87,10 +89,64 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     {
         EventBus<TopdownStartGameEvent>.Deregister(_startGameEventBinding);
     }
+    private void StartShowEnemyTutorial()
+    {
+        if (transform.childCount == 0)
+            return;
+        ShowEnemyTutorial();
+    }
+    private async UniTaskVoid ShowEnemyTutorial() 
+    {
+        await UniTask.Delay(2000);
 
+        // Find nearest enemy
+        GameObject nearestEnemy = _activeEnemies[0];
+        foreach (var enemy in _activeEnemies)
+        {
+            if (Vector3.Distance(_player.position, enemy.transform.position) <
+                Vector3.Distance(_player.position, nearestEnemy.transform.position))
+            {
+                nearestEnemy = enemy;
+            }
+        }
+        // Grab UI elements from the enemy's canvas
+        Canvas enemyCanvas = nearestEnemy.GetComponentInChildren<Canvas>();
+        GameObject elementUI = enemyCanvas.transform.GetChild(1).gameObject;
+        GameObject healthBar = enemyCanvas.transform.GetChild(2).GetChild(0).gameObject;
+        GameObject staminaBar = enemyCanvas.transform.GetChild(2).GetChild(1).gameObject;
+
+        // Build 3 step bindings — one per tutorial step
+        TutorialStepBinding[] bindings = new TutorialStepBinding[3];
+
+        bindings[0] = new TutorialStepBinding
+        {
+            highlightTargets = new GameObject[] { healthBar },
+            anchorOverride = healthBar.transform
+        };
+
+        bindings[1] = new TutorialStepBinding
+        {
+            highlightTargets = new GameObject[] { staminaBar },
+            anchorOverride = staminaBar.transform
+        };
+
+        bindings[2] = new TutorialStepBinding
+        {
+            highlightTargets = new GameObject[] { elementUI },
+            anchorOverride = elementUI.transform
+        };
+
+        // Setup and fire the tutorial trigger
+        TutorialTrigger trigger = transform.GetChild(0).GetComponent<TutorialTrigger>();
+        trigger.ManualTriggerSetup(enemyCanvas.transform, bindings);
+        trigger.Trigger();
+    }
     private void LoadCurrentWave()
     {
-        _groupWave = WaveManager.Instance.GetCurrentWave();
+        if (TopDownGameManager.Instance.isTestGameplay)
+            _groupWave = WaveManager.Instance.CreateNewWave();
+        else
+            _groupWave = WaveManager.Instance.GetCurrentWave();
 
         if (_groupWave == null)
         {

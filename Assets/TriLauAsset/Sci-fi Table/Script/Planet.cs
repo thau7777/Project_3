@@ -94,7 +94,7 @@ namespace MyRule
 
             MapTypeManager.Instance.SetMapType(planetSO.planetType);
 
-            PortalManager.Instance.SetTargetScene(Loader.EScene.MazeScene);
+            PortalManager.Instance.SetTargetScene(planetSO.scene);
 
             Cursor.lockState = CursorLockMode.None;
         }

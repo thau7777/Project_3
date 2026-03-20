@@ -1,6 +1,11 @@
 using UnityEngine;
 
-public class Tutorial
+namespace TutorialTri 
 {
-    
+    public class Tutorial
+    {
+
+    }
 }
+
+

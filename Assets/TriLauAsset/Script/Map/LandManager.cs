@@ -4,16 +4,9 @@ namespace MyRule
 {
     public class LandManager : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private async void Start()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            await Loader.LoadSceneAdditive(Loader.EScene.MazeScene);
         }
     }
 }
