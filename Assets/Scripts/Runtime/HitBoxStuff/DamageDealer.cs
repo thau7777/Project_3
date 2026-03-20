@@ -81,7 +81,7 @@ public class DamageDealer : MonoBehaviour
 
                 CharacterStats senderStats = sender.GetComponent<CharacterStats>();
                 CharacterStats receiverStats = target.GetComponent<CharacterStats>();
-                float parriedDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, _isMagicAttack, _damage, _elementalType);
+                float parriedDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, _isMagicAttack, _damage, _elementalType, _dealTrueDamage);
 
                 bool isCrit = senderStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < senderStats.CriticalRate;
                 parriedDamage = isCrit ? Mathf.RoundToInt(parriedDamage * senderStats.CriticalMultiplier) : Mathf.RoundToInt(parriedDamage);

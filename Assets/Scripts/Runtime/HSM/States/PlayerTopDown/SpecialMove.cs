@@ -16,6 +16,10 @@ public class SpecialMove : State
     {
         ctx.Animator.CrossFade(ctx.SkillAnimName, 0.1f);
     }
+    protected override void OnExit()
+    {
+        ctx.IsInSpecialMove = false;
+    }
     protected override State GetTransition()
     {
         if (ctx.IsDespawning)

@@ -368,6 +368,7 @@ public class EnemyTopdownStateDriver : Flyweight
     public void SetMoveSpeed(float newSpeed)
     {
         _context.BaseMoveSpeed = newSpeed;
+        _context.MoveSpeedAnimScale = _context.BaseMoveSpeed / _context.OgMoveSpeed;
     }
     #endregion
 }

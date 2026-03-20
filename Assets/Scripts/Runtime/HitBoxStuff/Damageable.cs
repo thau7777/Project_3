@@ -159,7 +159,7 @@ public class Damageable : MonoBehaviour
         }
         CharacterStats senderStats = sender.GetComponent<CharacterStats>();
         CharacterStats receiverStats = GetComponent<CharacterStats>();
-        float finalDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, isMagicAttack, damage, attackElementalType);
+        float finalDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, isMagicAttack, damage, attackElementalType, dealTrueDamage);
 
         bool isCrit = senderStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < senderStats.CriticalRate;
         finalDamage = isCrit ? Mathf.RoundToInt(finalDamage * senderStats.CriticalMultiplier) : Mathf.RoundToInt(finalDamage);

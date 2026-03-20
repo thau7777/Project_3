@@ -36,7 +36,7 @@ public class ChainLightning : SkillStrategy
         MonoBehaviour mono = _skillContext.origin.GetComponent<MonoBehaviour>();
         if (mono != null)
         {
-            mono.StartCoroutine(CastChainLightningCoroutine(_skillContext.spawnTransform));
+            mono.StartCoroutine(CastChainLightningCoroutine(_skillContext.origin));
         }
     }
 

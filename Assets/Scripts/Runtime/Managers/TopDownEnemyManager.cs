@@ -91,7 +91,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     }
     private void StartShowEnemyTutorial()
     {
-        if (transform.childCount == 0)
+        if (!transform.GetChild(0).gameObject.activeSelf)
             return;
         ShowEnemyTutorial();
     }

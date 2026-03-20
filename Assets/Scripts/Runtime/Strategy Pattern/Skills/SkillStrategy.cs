@@ -285,16 +285,26 @@ public class SkillStrategy : ScriptableObject, IStrategy
     {
         if (MainSkillVfxSettings == null) return;
         Flyweight flyweightObj = FlyweightFactory.Spawn(MainSkillVfxSettings);
-        Vector3 spawnPosition = context.spawnTransform.AddLocal(context.positionOffset.x, context.positionOffset.y, context.positionOffset.z);
+        Vector3 spawnPosition = context.spawnPos.Add(context.positionOffset.x, context.positionOffset.y, context.positionOffset.z);
         flyweightObj.FlyweightInitialize(spawnPosition, context.origin.rotation * (context.rotationOffset == Vector3.zero ? Quaternion.Euler(1, 1, 1): Quaternion.Euler(rotationOffset)));
-        
+
+        bool dealTrueDmg = false;
+        if (context.origin.TryGetComponent<EffectsManager>(out var effectsManager))
+        {
+            if (effectsManager.HasEffect("Show Your True Form"))
+            {
+                dealTrueDmg = true;
+            }
+        }
+
+
         if (flyweightObj is StraightProjectile straightProjectile)
         {
             StraightProjectileSettings projectileSettings = straightProjectile.settings as StraightProjectileSettings;
 
             straightProjectile.InitializeProjectile(context.origin.gameObject, context.origin.forward, 
                 10, Range, projectileSettings.defaultSize, Damage, 
-                _knockbackForce, _dealTrueDamage, DodgeLayers);
+                _knockbackForce, dealTrueDmg, DodgeLayers);
         }
         else if (flyweightObj is OneShotVFX oneShotVFX)
         {
@@ -318,7 +328,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
                 damageDealer.Setup(
                     oneShotVFXSettings.isMagicAttack,
                     Damage,
-                    _dealTrueDamage,
+                    dealTrueDmg,
                     _knockbackForce,
                     oneShotVFXSettings.reverseKnockBackDirection,
                     oneShotVFXSettings.elementalType);
@@ -352,6 +362,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     public void OnInterupted(Transform user)
     {
+        if (!user.Find(_mainSkillVfxSettings.prefab.name)) return;
         Flyweight skillVfx = user.Find(_mainSkillVfxSettings.prefab.name)?.GetComponent<Flyweight>();
         skillVfx.ReturnToPool();
     }
