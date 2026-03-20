@@ -188,6 +188,7 @@ public class EnemyTopdownContext
         {
             ctx.OgMoveSpeed = moveSpeed;
             ctx.BaseMoveSpeed = moveSpeed;
+            ctx.MoveSpeedAnimScale = 1;
             return this;
         }
 
