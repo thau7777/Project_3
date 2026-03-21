@@ -57,9 +57,9 @@ public class DamageDealer : MonoBehaviour
                 {
                     enemy.OnTakeDamage(sender, 0, -hitDirection.normalized, 5);
                 }
-                if (sender.TryGetComponent<Damageable>(out var enemyDamageable) && enemyDamageable.floatingCombatTextSettings != null)
+                if (targetDamageable.floatingCombatTextSettings != null)
                 {
-                    FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(enemyDamageable.floatingCombatTextSettings) as FloatingCombatText;
+                    FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(targetDamageable.floatingCombatTextSettings) as FloatingCombatText;
                     if (floatingCombatTextNumber)
                     {
                         FloatingCombatText.CombatTextType combatTextType = _elementalType switch
@@ -77,6 +77,13 @@ public class DamageDealer : MonoBehaviour
                         floatingCombatTextNumber.Init("Parried", combatTextType, player.transform.position.Add(y: 1), false);
                     }
                     
+                }
+                if (targetDamageable.parrySuccessVFXSettings)
+                {
+                    OneShotVFX vfx = FlyweightFactory.Spawn(targetDamageable.parrySuccessVFXSettings) as OneShotVFX;
+                    Vector3 direction = (sender.transform.position - target.transform.position).normalized;
+                    vfx.FlyweightInitialize(targetDamageable.transform.position.Add(y: 1) + direction * 1f);
+                    vfx.InitializeVFX(targetDamageable.parrySuccessVFXSettings.DefaultSize, targetDamageable.parrySuccessVFXSettings.DefaultLifeTime);
                 }
 
                 CharacterStats senderStats = sender.GetComponent<CharacterStats>();

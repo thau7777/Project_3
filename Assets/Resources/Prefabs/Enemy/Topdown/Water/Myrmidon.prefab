@@ -1004,6 +1004,7 @@ GameObject:
   - component: {fileID: 9205364045399276113}
   - component: {fileID: 675739404075907859}
   - component: {fileID: 4469948451489977754}
+  - component: {fileID: 6426515037234472486}
   m_Layer: 9
   m_Name: Myrmidon
   m_TagString: Untagged
@@ -1157,8 +1158,8 @@ MonoBehaviour:
     chargeEffectSize: 0
     chargeDuration: 0
     indicator: {fileID: 0}
-    indicatorWidth: 2
-    indicatorLength: 2
+    indicatorWidth: 10
+    indicatorLength: 20
   - Parryable: 1
     spawnType: 0
     skillSpawnTransform: {fileID: 0}
@@ -1441,6 +1442,23 @@ MonoBehaviour:
   <CriticalRate>k__BackingField: 0.1
   <CriticalMultiplier>k__BackingField: 1.5
   <AttackSizeScale>k__BackingField: 1
+--- !u!114 &6426515037234472486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692083754281589657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackWarningVFXSpawner
+  _presets:
+  - {fileID: 11400000, guid: b161291f9cadc2c46aa117c57e82dad7, type: 2}
+  - {fileID: 11400000, guid: a959adb89db63f24b808f266b1afe6e6, type: 2}
+  _spawnPoints:
+  - {fileID: 1261388865586980891}
 --- !u!1 &4708293543652385405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1855,7 +1873,8 @@ Transform:
   m_LocalPosition: {x: -0.03286149, y: 0.003398872, z: -0.004620252}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1261388865586980891}
   m_Father: {fileID: 5911736508455070350}
   m_LocalEulerAnglesHint: {x: -40.576626, y: -124.31244, z: -156.06241}
 --- !u!33 &276234555554939822
@@ -2298,6 +2317,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8003123532162033028}
   m_LocalEulerAnglesHint: {x: 0.028303921, y: -0.5803404, z: 7.199267}
+--- !u!1 &7885031674567935272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261388865586980891}
+  m_Layer: 9
+  m_Name: AttackWarningParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1261388865586980891
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7885031674567935272}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.67912215, y: -0.8109949, z: 0.42760515}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4712514656711675364}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8098200565603254522
 GameObject:
   m_ObjectHideFlags: 0

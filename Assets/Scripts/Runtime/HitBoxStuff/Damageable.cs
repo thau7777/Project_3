@@ -33,6 +33,7 @@ public class Damageable : MonoBehaviour
     public UnityEvent<float, float> OnShieldChanged;
 
     public FloatingCombatTextSettings floatingCombatTextSettings;
+    public OneShotVFXSettings parrySuccessVFXSettings;
 
     private void Awake()
     {

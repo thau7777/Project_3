@@ -165,4 +165,5 @@ public enum FlyweightType
     EnemyEffectsIcon,
     Explosion_Poison_3,
     FloatingCombatText,
+    ParrySuccessVFX,
 }

@@ -573,8 +573,8 @@ GameObject:
   - component: {fileID: 3494576099919352330}
   - component: {fileID: 8389205744248119667}
   - component: {fileID: 7239081314217607071}
-  - component: {fileID: 5307929894531464938}
   - component: {fileID: -8029710970875621466}
+  - component: {fileID: 5307929894531464938}
   m_Layer: 9
   m_Name: Beholder
   m_TagString: Untagged
@@ -1012,22 +1012,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
   targetRenderers:
   - {fileID: 7829276796752519883}
---- !u!114 &5307929894531464938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4388488547567127404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OneShotVFXSpawner
-  _presets:
-  - {fileID: 11400000, guid: b161291f9cadc2c46aa117c57e82dad7, type: 2}
-  _spawnPoints:
-  - {fileID: 5301789049303465750}
 --- !u!114 &-8029710970875621466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1049,22 @@ MonoBehaviour:
   <CriticalRate>k__BackingField: 0.1
   <CriticalMultiplier>k__BackingField: 1.5
   <AttackSizeScale>k__BackingField: 1
+--- !u!114 &5307929894531464938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4388488547567127404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OneShotVFXSpawner
+  _presets:
+  - {fileID: 11400000, guid: a959adb89db63f24b808f266b1afe6e6, type: 2}
+  _spawnPoints:
+  - {fileID: 5301789049303465750}
 --- !u!1 &4658137214672481826
 GameObject:
   m_ObjectHideFlags: 0
