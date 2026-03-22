@@ -127,12 +127,14 @@ namespace MyRule.UI
         private async void LoadTDScene()
         {
             EventBus<WaveEvent>.Raise(new WaveEvent(tdWaves));
+            CombatManager.Instance.CombatData.SetScene(Loader.EScene.TopDown);
             await DelayToLoad();
             await Loader.LoadSceneDirect(Loader.EScene.TopDown);
         }
         private async void LoadTBScene()
         {
             EventBus<WaveEvent>.Raise(new WaveEvent(tbWaves));
+            CombatManager.Instance.CombatData.SetScene(Loader.EScene.TurnBase);
             await DelayToLoad();
             await Loader.LoadSceneDirect(Loader.EScene.TurnBase);
         }

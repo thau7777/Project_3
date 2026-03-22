@@ -25,6 +25,8 @@ namespace MyRule
         [JsonProperty] private ItemStorageData _itemStorageInMatch;
         [JsonProperty] private int _enmiesDefeated;
         [JsonProperty] private int _nodesExplored;
+        [JsonProperty] private CombatData _combatData;
+        [JsonProperty] private MazeGameplayReward _reward;
 
         [JsonIgnore] public EMap MapType => _mapType;
         [JsonIgnore] public Loader.EScene Scene => _scene;
@@ -38,6 +40,8 @@ namespace MyRule
         [JsonIgnore] public ItemStorageData ItemStorageInMatch => _itemStorageInMatch;
         [JsonIgnore] public int EnemiesDefeated => _enmiesDefeated;
         [JsonIgnore] public int NodesExplored => _nodesExplored;
+        [JsonIgnore] public CombatData CombatData => _combatData;
+        [JsonIgnore] public MazeGameplayReward Reward => _reward;
 
         public MatchData(EMap eMap, CharacterData character, int runeAmount)
         {
@@ -66,6 +70,8 @@ namespace MyRule
             _itemStorageInMatch = new ItemStorageData();
             _enmiesDefeated = 0;
             _nodesExplored = 0;
+            _combatData = null;
+            _reward = null;
         }
 
         public async void MoveToNextMap()
@@ -106,5 +112,9 @@ namespace MyRule
         public void IncreaseEnmiesDefeated() => _enmiesDefeated++;
 
         public void IncreaseNodesExplored() => _nodesExplored++;
+
+        public void SetCombat(CombatData combatData) => this._combatData = combatData;
+
+        public void SetReward(MazeGameplayReward reward) => this._reward = reward;
     }
 }
