@@ -70,6 +70,8 @@ public class Skill : ScriptableObject
     public SFXType castSFXType;  
     public SFXType impactSFXType;
 
+    public bool canParry = true;
+
 
     [System.Serializable]
     public struct StackSetting 

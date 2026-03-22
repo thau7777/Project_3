@@ -162,6 +162,8 @@ namespace Turnbase
         Spell_Dark_4,
         EnemySpawnVFX,
         Parry,
+        ParrySuccess,
+        StingraySkill,
 
 
 
