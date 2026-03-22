@@ -24,6 +24,8 @@ namespace MyRule.CommandPattern
                 case Loader.EScene.DesertScene:
                 case Loader.EScene.IcelandScene:
                 case Loader.EScene.SpaceStationScene:
+                case Loader.EScene.TopDown:
+                case Loader.EScene.TurnBase:
                     LoadWithLoading();
                     break;
                 case Loader.EScene.SettingsScene:

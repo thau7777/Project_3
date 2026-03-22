@@ -19,7 +19,14 @@ namespace MyRule
 
                         if (GameSystemManager.Instance.GameData.MatchData != null)
                         {
-                            eScene = GameSystemManager.Instance.GameData.MatchData.Scene;    
+                            if (GameSystemManager.Instance.GameData.MatchData.CombatData != null)
+                            {
+                                eScene = GameSystemManager.Instance.GameData.MatchData.CombatData.Scene;
+                            }
+                            else
+                            {
+                                eScene = GameSystemManager.Instance.GameData.MatchData.Scene;
+                            }
                         }
                         else
                         {

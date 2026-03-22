@@ -84,7 +84,7 @@ namespace MyRule
 
             RTSCameraController.Instance.CanInteract = true;
 
-            if (CombatManager.Instance.combatType == CombatType.BossFigihting)
+            if (CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
             {
                 BlackFade.Instance.FadeIn();
                 await UniTask.Delay(1000);
