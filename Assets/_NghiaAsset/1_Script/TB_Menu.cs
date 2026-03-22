@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DG.Tweening;
 using MyRule;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -54,9 +55,21 @@ namespace Turnbase
         public void ShowVictoryMenu()
         {
             victoryMenu.SetActive(true);
+            CanvasGroup cg = victoryMenu.GetComponent<CanvasGroup>();
+
+            if (cg != null)
+            {
+                cg.alpha = 0;
+                cg.interactable = false;
+                cg.blocksRaycasts = false;
+
+                cg.DOFade(1, 0.5f).SetUpdate(true).OnComplete(() => {
+                    cg.interactable = true;
+                    cg.blocksRaycasts = true;
+                });
+            }
 
             CombatManager.Instance.SetCombatResultWin();
-
             isVicrory = true;
         }
 
@@ -64,8 +77,24 @@ namespace Turnbase
         {
             loseMenu.SetActive(true);
 
-            CombatManager.Instance.SetCombatResultLose();
+            CanvasGroup[] allCGs = loseMenu.GetComponentsInChildren<CanvasGroup>();
 
+            foreach (var cg in allCGs)
+            {
+                if (cg != null)
+                {
+                    cg.alpha = 0; 
+                    cg.interactable = false;
+                    cg.blocksRaycasts = false;
+
+                    cg.DOFade(1, 0.5f).SetUpdate(true).OnComplete(() => {
+                        cg.interactable = true;
+                        cg.blocksRaycasts = true;
+                    });
+                }
+            }
+
+            CombatManager.Instance.SetCombatResultLose();
             isVicrory = false;
         }
 

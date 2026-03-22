@@ -61,15 +61,23 @@ namespace Turnbase
 
         public void Animation_TriggerEvent()
         {
-            if (telegraphManager != null)
+            if (telegraphManager != null && selectedSkill != null)
             {
-                telegraphManager.Play();
+                telegraphManager.Play(selectedSkill.canParry);
             }
 
             if (battleManager != null && target != null && !target.isAttackBlocked)
             {
                 battleManager.TriggerEvadeOnly(target, this);
-                battleManager.TriggerParryOnly(target, this);
+
+                if (selectedSkill != null && selectedSkill.canParry)
+                {
+                    battleManager.TriggerParryOnly(target, this);
+                }
+                else
+                {
+                    Debug.Log($"<color=red>[SKILL LOG]</color> {selectedSkill.skillName} là Unblockable, bỏ qua Parry.");
+                }
             }
         }
 

@@ -6,18 +6,25 @@ namespace Turnbase
     {
         [Header("Settings")]
         public GameObject telegraphPrefab;
+        public GameObject telegraphPrefab2;
+
         public Transform telegraphSpawnPoint;
 
         private GameObject currentEffect;
 
-        public void Play()
+        public void Play(bool canParry)
         {
-            if (telegraphPrefab == null || telegraphSpawnPoint == null) return;
+            if (telegraphSpawnPoint == null) return;
 
             if (currentEffect != null) Destroy(currentEffect);
 
-            currentEffect = Instantiate(telegraphPrefab, telegraphSpawnPoint.position, telegraphSpawnPoint.rotation);
-            currentEffect.transform.SetParent(telegraphSpawnPoint);
+            GameObject prefabToSpawn = canParry ? telegraphPrefab : telegraphPrefab2;
+
+            if (prefabToSpawn != null)
+            {
+                currentEffect = Instantiate(prefabToSpawn, telegraphSpawnPoint.position, telegraphSpawnPoint.rotation);
+                currentEffect.transform.SetParent(telegraphSpawnPoint);
+            }
         }
 
         public void Stop()
