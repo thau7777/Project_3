@@ -75,8 +75,10 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     bool _isInSpecialMoveAnim
         => _animator.GetCurrentAnimatorStateInfo(_context.IsUseSkillByUpperBody ? 1 : 0).IsTag("SpecialMove");
 
-    bool _inIsInAttackAnim
-        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("PhysicalAttack");
+    bool _isInAttackAnim
+        => _animator.GetCurrentAnimatorStateInfo(_context.IsRangeClass ? 1 : 0).IsTag("Attack");
+
+    bool _isInHurtAnim => _animator.GetCurrentAnimatorStateInfo(0).IsName("Hurt");
 
     [field: SerializeField] public bool IsParrying { get; set; } = false;
 
@@ -121,14 +123,14 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         }
         else
         {
-            _characterStats.Setup(ElementalType.Normal, 100, 0, 100, 20,
-                20, 2, 2, 2, 2, 2,
-                2, 2, 2, 2, 2, 2,
-                2, 2, 2, 2, 2, 10,
-                10, 1.5f);
+            _characterStats.Setup(ElementalType.Normal, _characterStats.InitialHealth, 0, _characterStats.InitialMana, _characterStats.AttackDamage,
+                _characterStats.MagicAttackDamage, _characterStats.FireDamage, _characterStats.WaterDamage, _characterStats.FrostDamage, _characterStats.LightningDamage, _characterStats.HolyDamage,
+                _characterStats.DarkDamage, _characterStats.PoisonDamage, _characterStats.PhysicalDefense, _characterStats.MagicDefense, _characterStats.FireDefense, _characterStats.WaterDefense,
+                _characterStats.FrostDefense, _characterStats.LightningDefense, _characterStats.HolyDefense, _characterStats.DarkDefense, _characterStats.PoisonDefense, _characterStats.Speed,
+                _characterStats.CriticalRate, _characterStats.CriticalMultiplier);
 
-            GetComponent<Damageable>().Initialize(100, 100, 0);
-            _executor.InitializeMana(100);
+            GetComponent<Damageable>().Initialize(_characterStats.InitialHealth, _characterStats.InitialHealth, 0);
+            _executor.InitializeMana(_characterStats.InitialMana);
         }
 
         _context = new PlayerTopdownContext.Builder()
@@ -191,17 +193,13 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     #region Input Handlers
     private void OnSkillUse(bool value, int skillIndex)
     {
-        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
+        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory || _context.IsHurting || _isInHurtAnim || _isInSpecialMoveAnim || _context.IsInSpecialMove) return;
         UseSKill(skillIndex, value, SaveDirToAttack);
     }
 
     private void UseSKill(int skillIndex, bool isPressed, Action onCastInstantly = null)
     {
-        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
-
-        if (_context.IsHurting ||
-            _isInSpecialMoveAnim || _context.IsInSpecialMove ||
-            _context.CastingSkill != -1 && _context.CastingSkill != skillIndex) return;
+        if ( _context.CastingSkill != -1 && _context.CastingSkill != skillIndex) return;
 
         if (isPressed)
         {
@@ -221,14 +219,13 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     }
     public void OnLeftClick()
     {
-        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory) return;
+        if (_context.IsSpawning || _context.IsDespawning || _context.IsVictory || _context.IsHurting || _isInHurtAnim || _isInSpecialMoveAnim || _context.IsInSpecialMove) return;
         SaveDirToAttack();
-        if (_context.IsNextAttackQueued || _context.IsInSpecialMove ||
-            !_context.IsAttacking && _inIsInAttackAnim) return;
+        if (_context.IsNextAttackQueued ||
+            !_context.IsAttacking && _isInAttackAnim) return;
         if (_context.CastingSkill != -1)
         {
             _executor.CastSkill(_context);
-            SaveDirToAttack();
             return;
         }
 
@@ -368,11 +365,20 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
             }
             return;
         }
+
         foreach (var spawnPoint in _attackVfxSpawnPoints)
         {
-
+            
             if (location.ToString() == spawnPoint.name)
             {
+                bool dealTrueDmg = false;
+                if (TryGetComponent<EffectsManager>(out var effectsManager))
+                {
+                    if (effectsManager.HasEffect("Show Your True Form"))
+                    {
+                        dealTrueDmg = true;
+                    }
+                }
                 Flyweight vfx = FlyweightFactory.Spawn(flyweightSettings); // do the onGet stuff
                 vfx.FlyweightInitialize(spawnPoint.position, transform.rotation); // set position
                 int finalDamage = Mathf.RoundToInt(_locomotionSet.CurrentAttackData.damageScale * _characterStats.AttackDamage);
@@ -389,7 +395,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                         _locomotionSet.CurrentAttackData.size * _characterStats.AttackSizeScale,
                         finalDamage,
                         _locomotionSet.CurrentAttackData.knockbackForce,
-                        false,
+                        dealTrueDmg,
                         _locomotionSet.CurrentAttackData.dodgeLayers);
                 }
                 else if (vfx is OneShotVFX)
@@ -413,7 +419,7 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
                         damageDealer.Setup(
                             oneshotSettings.isMagicAttack,
                             finalDamage,
-                            false,
+                            dealTrueDmg,
                             _locomotionSet.CurrentAttackData.knockbackForce,
                             false);
 
@@ -461,7 +467,8 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
         _context.IsInSpecialMove = false;
         _context.IsAiming = false;
         _context.CastingSkill = -1;
-        _context.IsDashing = false;
+        _context.IsDashing = false; 
+        _layerIgnoreController.ResetLayerIgnore();
     }
     public void OnAttackDone()
     {
@@ -488,12 +495,6 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     }
     public void OnSpecialMoveAnimExit()
     {
-        _context.IsInSpecialMove = false;
-        _context.IsAiming = false;
-        _context.CastingSkill = -1;
-        _context.IsDashing = false;
-        _layerIgnoreController.ResetLayerIgnore();
-        IsParrying = false;
         _executor.ClearSkillData();
     }
 
@@ -511,17 +512,14 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     public void OnTakeDamage(GameObject sender, float currentHealth, Vector3 knockBackDirection, float knockBackForce)
     {
         _context.IsHurting = true;
-        _context.CastingSkill = -1;
         _context.KnockBackDirection = knockBackDirection;
         _context.KnockbackForce = knockBackForce;
         CameraShaker.Instance.ShakeRandomDirection(force: 0.5f);
 
-        _context.IsInSpecialMove = false;
-        _context.IsAiming = false;
-        _context.IsDashing = false;
-        _context.IsDespawning = false;
-        _context.IsVictory = false;
-        _layerIgnoreController.ResetLayerIgnore();
+        OnSkillDone();
+        IsParrying = false;
+
+        _locomotionSet.ResetAttackAnimCycle();
     }
     public void OnDeath()
     {

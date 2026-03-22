@@ -70,6 +70,7 @@ public class Strafe : State
     protected override void OnExit()
     {
         ctx.Animator.Play("Empty State", ctx.UpperBodyLayerIndex);
+        ctx.IsAiming = false;
     }
     protected override State GetTransition()
     {

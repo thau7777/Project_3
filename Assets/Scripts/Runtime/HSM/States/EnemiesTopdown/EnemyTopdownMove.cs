@@ -16,13 +16,13 @@ public class EnemyTopdownMove : State
             if (ctx.EnemyType == EnemyTopdownMovementType.Range)
             {
                 // For Range enemies, calculate position based on keeping distance
-                return GetRangeEnemyTargetPosition();
+                return GetRangeEnemyTargetDirection();
             }
             return ctx.NavMeshSteering.GetDirection();
             //return ctx.CurrentTargetTransform.position;
         }
     }
-
+    public bool isRunAwayFromTarget = false;
     public EnemyTopdownMove(StateMachine machine, State parent, EnemyTopdownContext context) : base(machine, parent)
     {
         ctx = context;
@@ -40,6 +40,7 @@ public class EnemyTopdownMove : State
     protected override void OnExit()
     {
         ctx.IsMoving = false;
+        isRunAwayFromTarget = false;
     }
 
     protected override void OnUpdate(float deltaTime)
@@ -53,7 +54,7 @@ public class EnemyTopdownMove : State
         ctx.MoveDir = _targetDirection;
     }
 
-    private Vector3 GetRangeEnemyTargetPosition()
+    private Vector3 GetRangeEnemyTargetDirection()
     {
         Vector3 targetPos = ctx.CurrentTargetTransform.position;
         Vector3 currentPos = ctx.RootTransform.position;
@@ -66,11 +67,18 @@ public class EnemyTopdownMove : State
             Vector3 directionAwayFromTarget = (currentPos - targetPos).normalized;
             return directionAwayFromTarget;
         }
-            // Too far - move toward target
-        else if(distanceToTarget > ctx.MaxRangeDistance)
-            return ctx.NavMeshSteering.GetDirection();
-
-        return (targetPos - currentPos).normalized;
+        if (isRunAwayFromTarget)
+        {
+            if(distanceToTarget >= ctx.MaxRangeDistance)
+            {
+                isRunAwayFromTarget = false;
+                return ctx.NavMeshSteering.GetDirection();
+            }
+            Vector3 directionAwayFromTarget = (currentPos - targetPos).normalized;
+            return directionAwayFromTarget;
+        }
+        // Too far - move toward target
+        return ctx.NavMeshSteering.GetDirection();
         //else if (distanceToTarget >= ctx.MinRangeDistance)
         //{
         //    return targetPos;
@@ -116,7 +124,7 @@ public class EnemyTopdownMove : State
         // Range enemy logic
         else if (ctx.EnemyType == EnemyTopdownMovementType.Range)
         {
-
+            if (isRunAwayFromTarget) return null;
             // In optimal range - can attack
             if (ctx.DistanceToTarget >= ctx.MinRangeDistance && 
                 ctx.DistanceToTarget <= ctx.MaxRangeDistance)

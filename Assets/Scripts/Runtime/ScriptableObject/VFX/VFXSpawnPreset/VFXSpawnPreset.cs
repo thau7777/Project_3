@@ -12,10 +12,4 @@ public class VFXSpawnPreset : ScriptableObject
     public Vector3 positionOffset = Vector3.zero;
     public Vector3 rotationOffset = Vector3.zero;
 
-    [Header("Optional Overrides")]
-    public bool useCustomColor;
-    public Color customColor = Color.white;
-
-    public bool useCustomSpeed;
-    public float customSpeed = 1f;
 }

@@ -63,6 +63,8 @@ public class EnemyTopdownRoot : State
         // reset vertical velocity if grounded
         if (ctx.CharacterController.isGrounded && verticalVelocity < 0f)
             verticalVelocity = -1f; // small negative to keep grounded
+
+        ctx.Animator.SetFloat("MoveSpeedScale", ctx.MoveSpeedAnimScale);
     }
     protected override State GetInitialState() => Spawn;
     protected override State GetTransition() => null;

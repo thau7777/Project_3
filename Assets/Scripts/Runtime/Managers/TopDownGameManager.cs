@@ -257,7 +257,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     {
         if (_isFlashing) return;
 
-        ParryVolumeFlash(cancellationTokenSource.Token).Forget();
+        TriggerParryVolumeEffect(cancellationTokenSource.Token).Forget();
 
         //if (_slowMoCooldownReady)
         //    TriggerSlowMotion();
@@ -302,7 +302,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         _slowMoCooldownReady = true;
     }
 
-    private async UniTask ParryVolumeFlash(CancellationToken cancellationToken)
+    private async UniTask TriggerParryVolumeEffect(CancellationToken cancellationToken)
     {
         if (!_parryVolume) return;
 

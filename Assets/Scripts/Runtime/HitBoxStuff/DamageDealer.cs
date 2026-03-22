@@ -57,9 +57,9 @@ public class DamageDealer : MonoBehaviour
                 {
                     enemy.OnTakeDamage(sender, 0, -hitDirection.normalized, 5);
                 }
-                if (sender.TryGetComponent<Damageable>(out var enemyDamageable) && enemyDamageable.floatingCombatTextSettings != null)
+                if (targetDamageable.floatingCombatTextSettings != null)
                 {
-                    FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(enemyDamageable.floatingCombatTextSettings) as FloatingCombatText;
+                    FloatingCombatText floatingCombatTextNumber = FlyweightFactory.Spawn(targetDamageable.floatingCombatTextSettings) as FloatingCombatText;
                     if (floatingCombatTextNumber)
                     {
                         FloatingCombatText.CombatTextType combatTextType = _elementalType switch
@@ -78,10 +78,17 @@ public class DamageDealer : MonoBehaviour
                     }
                     
                 }
+                if (targetDamageable.parrySuccessVFXSettings)
+                {
+                    OneShotVFX vfx = FlyweightFactory.Spawn(targetDamageable.parrySuccessVFXSettings) as OneShotVFX;
+                    Vector3 direction = (sender.transform.position - target.transform.position).normalized;
+                    vfx.FlyweightInitialize(targetDamageable.transform.position.Add(y: 1) + direction * 1f);
+                    vfx.InitializeVFX(targetDamageable.parrySuccessVFXSettings.DefaultSize, targetDamageable.parrySuccessVFXSettings.DefaultLifeTime);
+                }
 
                 CharacterStats senderStats = sender.GetComponent<CharacterStats>();
                 CharacterStats receiverStats = target.GetComponent<CharacterStats>();
-                float parriedDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, _isMagicAttack, _damage, _elementalType);
+                float parriedDamage = DamageCalculator.CalculateDamageByStats(senderStats, receiverStats, _isMagicAttack, _damage, _elementalType, _dealTrueDamage);
 
                 bool isCrit = senderStats.CriticalRate > 0 && UnityEngine.Random.Range(0, 100) < senderStats.CriticalRate;
                 parriedDamage = isCrit ? Mathf.RoundToInt(parriedDamage * senderStats.CriticalMultiplier) : Mathf.RoundToInt(parriedDamage);
@@ -98,8 +105,6 @@ public class DamageDealer : MonoBehaviour
                 ElementalManager.Instance.IsStrongAgainst(_elementalType, damageable.GetComponent<CharacterStats>().ElementalType))
             {
                 damageable.TakeShieldDamage(10); 
-                if (enemyTopdownStateDriver.GetComponent<Damageable>().CurrentShieldHealth <= 0)
-                    finalDamage *= 1.5f;
             }
 
             
