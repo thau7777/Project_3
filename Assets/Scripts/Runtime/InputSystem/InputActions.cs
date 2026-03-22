@@ -111,7 +111,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RightClick"",
+                    ""name"": ""MiddleClick"",
                     ""type"": ""Button"",
                     ""id"": ""733936f5-3e6a-40d2-9f05-ca2dabf60066"",
                     ""expectedControlType"": """",
@@ -298,18 +298,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc00f203-71cd-44f8-9afc-db31adc717a3"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""RightClick"",
+                    ""action"": ""MiddleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""2644cc17-855a-4e94-a7f6-0687bb860535"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -364,7 +364,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""280f985f-35f5-49f8-9b5f-9e4f94d64d1b"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1793,7 +1793,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown = asset.FindActionMap("PlayerTopDown", throwIfNotFound: true);
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_LeftClick = m_PlayerTopDown.FindAction("LeftClick", throwIfNotFound: true);
-        m_PlayerTopDown_RightClick = m_PlayerTopDown.FindAction("RightClick", throwIfNotFound: true);
+        m_PlayerTopDown_MiddleClick = m_PlayerTopDown.FindAction("MiddleClick", throwIfNotFound: true);
         m_PlayerTopDown_Skill_1 = m_PlayerTopDown.FindAction("Skill_1", throwIfNotFound: true);
         m_PlayerTopDown_Skill_2 = m_PlayerTopDown.FindAction("Skill_2", throwIfNotFound: true);
         m_PlayerTopDown_Skill_3 = m_PlayerTopDown.FindAction("Skill_3", throwIfNotFound: true);
@@ -1944,7 +1944,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerTopDownActions> m_PlayerTopDownActionsCallbackInterfaces = new List<IPlayerTopDownActions>();
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_LeftClick;
-    private readonly InputAction m_PlayerTopDown_RightClick;
+    private readonly InputAction m_PlayerTopDown_MiddleClick;
     private readonly InputAction m_PlayerTopDown_Skill_1;
     private readonly InputAction m_PlayerTopDown_Skill_2;
     private readonly InputAction m_PlayerTopDown_Skill_3;
@@ -1977,9 +1977,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @LeftClick => m_Wrapper.m_PlayerTopDown_LeftClick;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/RightClick".
+        /// Provides access to the underlying input action "PlayerTopDown/MiddleClick".
         /// </summary>
-        public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
+        public InputAction @MiddleClick => m_Wrapper.m_PlayerTopDown_MiddleClick;
         /// <summary>
         /// Provides access to the underlying input action "PlayerTopDown/Skill_1".
         /// </summary>
@@ -2060,9 +2060,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftClick.started += instance.OnLeftClick;
             @LeftClick.performed += instance.OnLeftClick;
             @LeftClick.canceled += instance.OnLeftClick;
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
+            @MiddleClick.started += instance.OnMiddleClick;
+            @MiddleClick.performed += instance.OnMiddleClick;
+            @MiddleClick.canceled += instance.OnMiddleClick;
             @Skill_1.started += instance.OnSkill_1;
             @Skill_1.performed += instance.OnSkill_1;
             @Skill_1.canceled += instance.OnSkill_1;
@@ -2116,9 +2116,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftClick.started -= instance.OnLeftClick;
             @LeftClick.performed -= instance.OnLeftClick;
             @LeftClick.canceled -= instance.OnLeftClick;
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
+            @MiddleClick.started -= instance.OnMiddleClick;
+            @MiddleClick.performed -= instance.OnMiddleClick;
+            @MiddleClick.canceled -= instance.OnMiddleClick;
             @Skill_1.started -= instance.OnSkill_1;
             @Skill_1.performed -= instance.OnSkill_1;
             @Skill_1.canceled -= instance.OnSkill_1;
@@ -3190,12 +3190,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "RightClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "MiddleClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRightClick(InputAction.CallbackContext context);
+        void OnMiddleClick(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Skill_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
