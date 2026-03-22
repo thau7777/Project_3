@@ -16,6 +16,8 @@ public class EnemyTopDownSettings : FlyweightSettings
     [SerializeField] private OneShotVFXSettings _spawnVFXSettings;
     private Transform _player;
 
+    private Collider _groundCollider;
+    private Terrain _groundTerrain;
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);
@@ -38,10 +40,57 @@ public class EnemyTopDownSettings : FlyweightSettings
         _spawnRadius = spawnRadius;
     }
 
+
+    private void CacheGroundReference()
+    {
+        if (_groundCollider != null || _groundTerrain != null) return;
+
+        var groundObj = GameObject.FindWithTag("Ground");
+        if (groundObj == null)
+        {
+            Debug.LogWarning("No GameObject with tag 'Ground' found.");
+            return;
+        }
+
+        // Prefer Terrain for accurate height sampling
+        _groundTerrain = groundObj.GetComponent<Terrain>();
+        if (_groundTerrain == null)
+            _groundCollider = groundObj.GetComponent<Collider>();
+    }
+
+    private bool TryGetGroundHeight(float x, float z, out float height)
+    {
+        height = 0f;
+
+        // Terrain path — most accurate, zero physics cost
+        if (_groundTerrain != null)
+        {
+            height = _groundTerrain.SampleHeight(new Vector3(x, 0f, z));
+            // Make sure the XZ point is actually within terrain bounds
+            var bounds = _groundTerrain.GetComponent<Collider>().bounds;
+            return bounds.Contains(new Vector3(x, height, z));
+        }
+
+        // Collider path (MeshCollider, BoxCollider, etc.)
+        if (_groundCollider != null)
+        {
+            Vector3 samplePoint = new Vector3(x, _raycastHeight, z);
+            Vector3 closest = _groundCollider.ClosestPoint(samplePoint);
+
+            // If closest point snapped far away in XZ, this spot is off the ground mesh
+            bool isOnGround = Vector2.Distance(new Vector2(closest.x, closest.z), new Vector2(x, z)) < 0.5f;
+            if (!isOnGround) return false;
+
+            height = closest.y;
+            return true;
+        }
+
+        return false;
+    }
+
     private Vector3 PickRandomLocationAroundPlayer()
     {
-        int groundLayer = LayerMask.GetMask("Ground");
-        int allLayers = Physics.AllLayers;
+        CacheGroundReference();
 
         const int maxAttempts = 30;
 
@@ -51,28 +100,16 @@ public class EnemyTopDownSettings : FlyweightSettings
             float potentialX = _player.position.x + randomCircle.x;
             float potentialZ = _player.position.z + randomCircle.y;
 
-            Vector3 rayOrigin = new Vector3(potentialX, _raycastHeight, potentialZ);
-
-            // Cast against ALL layers to find whatever is hit first
-            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, _raycastHeight * 2f, allLayers))
+            if (TryGetGroundHeight(potentialX, potentialZ, out float groundY))
             {
-                // Only valid if the FIRST thing hit is on the Ground layer
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-                {
-                    Vector3 spawnPosition = new Vector3(potentialX, hit.point.y - _spawnOffsetBelowGround, potentialZ);
-                    return spawnPosition;
-                }
-                // If something else (building, object, etc.) was hit first, skip this point
+                return new Vector3(potentialX, groundY - _spawnOffsetBelowGround, potentialZ);
             }
         }
 
-        // Fallback: spawn directly at player position using a raycast straight down
-        Debug.LogWarning($"Could not find valid ground-only position after {maxAttempts} attempts. Falling back to player position.");
-        Vector3 fallbackOrigin = new Vector3(_player.position.x, _raycastHeight, _player.position.z);
-        if (Physics.Raycast(fallbackOrigin, Vector3.down, out RaycastHit fallbackHit, _raycastHeight * 2f, groundLayer))
-        {
-            return new Vector3(_player.position.x, fallbackHit.point.y - _spawnOffsetBelowGround, _player.position.z);
-        }
+        // Fallback to directly under player
+        Debug.LogWarning($"Could not find valid ground position after {maxAttempts} attempts. Falling back to player position.");
+        if (TryGetGroundHeight(_player.position.x, _player.position.z, out float fallbackY))
+            return new Vector3(_player.position.x, fallbackY - _spawnOffsetBelowGround, _player.position.z);
 
         return _player.position;
     }
