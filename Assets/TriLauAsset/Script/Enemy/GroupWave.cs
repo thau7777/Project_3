@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using UnityEngine;
 
@@ -6,10 +7,9 @@ namespace MyRule
     [Serializable]
     public class GroupWave
     {
-        [Range(2, 4)]
-        private int waveCount;
-        private WaveData[] waveDatas;
-        public WaveData[] WaveDatas => waveDatas;
+        [JsonProperty] private int waveCount;
+        [JsonProperty] private WaveData[] waveDatas;
+        [JsonIgnore] public WaveData[] WaveDatas => waveDatas;
 
         public GroupWave(int waveCount)
         {
@@ -30,11 +30,13 @@ namespace MyRule
     [Serializable]
     public class WaveData
     {
-        private int enemyCount;
-        private EnemyData[] enemies;
-        public EnemyData[] Enemies => enemies;
+        [JsonProperty] private int enemyCount;
+        [JsonProperty] private EnemyData[] enemies;
+        [JsonIgnore] public EnemyData[] Enemies => enemies;
+        
         public WaveData(int maxEnemyCount)
         {
+            enemyCount = maxEnemyCount;
             enemies = new EnemyData[maxEnemyCount];
         }
 
@@ -48,57 +50,57 @@ namespace MyRule
     [Serializable]
     public class EnemyData
     {
-        private EnemyId enemyId;
-        private int health;
-        private int stamina;
-        private int phys;
-        private int mag;
-        private int fire;
-        private int frost;
-        private int lightning;
-        private int holy;
-        private int dark;
-        private int water;
-        private int poison;
-        private int phyDef;
-        private int magDef;
-        private int fireDef;
-        private int frostDef;
-        private int lightningDef;
-        private int holyDef;
-        private int darkDef;
-        private int waterDef;
-        private int poisonDef;
-        private int resRate;
-        private float attackSpeed;
-        private float critChance;
-        private float critMult;
+        [JsonProperty] private EnemyId enemyId;
+        [JsonProperty] private int health;
+        [JsonProperty] private int stamina;
+        [JsonProperty] private int phys;
+        [JsonProperty] private int mag;
+        [JsonProperty] private int fire;
+        [JsonProperty] private int frost;
+        [JsonProperty] private int lightning;
+        [JsonProperty] private int holy;
+        [JsonProperty] private int dark;
+        [JsonProperty] private int water;
+        [JsonProperty] private int poison;
+        [JsonProperty] private int phyDef;
+        [JsonProperty] private int magDef;
+        [JsonProperty] private int fireDef;
+        [JsonProperty] private int frostDef;
+        [JsonProperty] private int lightningDef;
+        [JsonProperty] private int holyDef;
+        [JsonProperty] private int darkDef;
+        [JsonProperty] private int waterDef;
+        [JsonProperty] private int poisonDef;
+        [JsonProperty] private int resRate;
+        [JsonProperty] private float attackSpeed;
+        [JsonProperty] private float critChance;
+        [JsonProperty] private float critMult;
 
-        public EnemyId EnemyId => enemyId;
-        public int Health => health;
-        public int Stamina => stamina;
-        public int Phys => phys;
-        public int Mag => mag;
-        public int Fire => fire;
-        public int Frost => frost;
-        public int Lightning => lightning;
-        public int Holy => holy;
-        public int Dark => dark;
-        public int Water => water;
-        public int Poison => poison;
-        public int PhyDef => phyDef;
-        public int MagDef => magDef;
-        public int FireDef => fireDef;
-        public int FrostDef => frostDef;
-        public int LightningDef => lightningDef;
-        public int HolyDef => holyDef;
-        public int DarkDef => darkDef;
-        public int WaterDef => waterDef;
-        public int PoisonDef => poisonDef;
-        public int ResRate => resRate;
-        public float AttackSpeed => attackSpeed;
-        public float CritChance => critChance;
-        public float CritMult => critMult;
+        [JsonIgnore] public EnemyId EnemyId => enemyId;
+        [JsonIgnore] public int Health => health;
+        [JsonIgnore] public int Stamina => stamina;
+        [JsonIgnore] public int Phys => phys;
+        [JsonIgnore] public int Mag => mag;
+        [JsonIgnore] public int Fire => fire;
+        [JsonIgnore] public int Frost => frost;
+        [JsonIgnore] public int Lightning => lightning;
+        [JsonIgnore] public int Holy => holy;
+        [JsonIgnore] public int Dark => dark;
+        [JsonIgnore] public int Water => water;
+        [JsonIgnore] public int Poison => poison;
+        [JsonIgnore] public int PhyDef => phyDef;
+        [JsonIgnore] public int MagDef => magDef;
+        [JsonIgnore] public int FireDef => fireDef;
+        [JsonIgnore] public int FrostDef => frostDef;
+        [JsonIgnore] public int LightningDef => lightningDef;
+        [JsonIgnore] public int HolyDef => holyDef;
+        [JsonIgnore] public int DarkDef => darkDef;
+        [JsonIgnore] public int WaterDef => waterDef;
+        [JsonIgnore] public int PoisonDef => poisonDef;
+        [JsonIgnore] public int ResRate => resRate;
+        [JsonIgnore] public float AttackSpeed => attackSpeed;
+        [JsonIgnore] public float CritChance => critChance;
+        [JsonIgnore] public float CritMult => critMult;
 
         public EnemyData(int level, EnemyId enemyId, int phys, int mag, int fire, int frost, int lightning, int holy, int dark, int water, int poison, int health, int stamina, int phydef, int magdef, int firedef, int frostdef, int lightningdef, int holydef, int darkdef, int waterdef, int poisonDef, int resRate, float attackSpeed, float critChance, float critMult)
         {

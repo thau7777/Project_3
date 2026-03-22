@@ -5,17 +5,17 @@ public class NavMeshSteering : MonoBehaviour
 {
     [Header("Pathfinding")]
     public Transform target;
-    public float pathRefreshRate = 0.3f;
-    public float waypointReachedDistance = 0.4f;
+    private float pathRefreshRate = 0.3f;
+    private float waypointReachedDistance = 0.4f;
 
     [Header("Off-Mesh Recovery")]
-    public float offMeshSearchRadius = 5f;
+    private float offMeshSearchRadius = 5f;
 
     [Header("Separation")]
-    public float separationRadius = 2f;
-    public float separationStrength = 0.5f;
-    public float separationOverrideDuration = 0.5f;
-    public LayerMask enemyLayer;
+    private float separationRadius = 7f;
+    private float separationStrength = 0.55f;
+    private float separationOverrideDuration = 1f;
+    private LayerMask enemyLayer;
 
     NavMeshPath _path;
     int _waypointIndex;

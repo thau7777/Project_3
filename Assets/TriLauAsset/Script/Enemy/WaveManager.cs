@@ -40,6 +40,7 @@ namespace MyRule
         private void OnWaveEvent(WaveEvent waveEvent)
         {
             groupWave = waveEvent.GroupWave;
+            CombatManager.Instance.CombatData.SetGroupWave(groupWave);
         }
 
         //public UniTask CreateNewWave()
@@ -117,6 +118,11 @@ namespace MyRule
             if (data.MatchData != null)
             {
                 mapEnemies = enemiesInMap.Find(m => m.planetType == data.MatchData.MapType).enemies;
+
+                if (data.MatchData.CombatData != null)
+                {
+                    groupWave = data.MatchData.CombatData.GroupWave;
+                }
             }
 
             return UniTask.CompletedTask;

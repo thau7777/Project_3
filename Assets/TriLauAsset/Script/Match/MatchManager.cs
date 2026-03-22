@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MyRule.Event;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
@@ -22,35 +23,13 @@ namespace MyRule
 
         public bool IsNewMatch() => _matchData.IsNewMatch == true;
 
-        public void CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, SigilsInMatchData sigilsInMatch)
+        public void CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, List<SigilData> sigilsInMatch)
         {
-            _matchData = GameSystemManager.Instance.GameData.CreateNewMatch(mapType, characterStatsData, runeAmount, sigilsInMatch);
+            _matchData = GameSystemManager.Instance.GameData.CreateNewMatch(mapType, characterStatsData, runeAmount);
+            _matchData.SigilPool.CreatePool(sigilsInMatch);
         }
 
         public void FinishMatch() => _matchData = null;
-
-        public SigilData GetRandomSigilInMatch()
-        {
-            SigilData sigilData = _matchData.SigilsInMatch.GetRandomSigil();
-
-            return sigilData;
-        }
-
-        public SigilData GetRandomActiveSigilInMatch()
-        {
-            SigilData sigilData = _matchData.SigilsInMatch.GetRandomActiveSigil();
-
-            return sigilData;
-        }
-
-        public SigilData GetRandomPassiveSigilInMatch()
-        {
-            SigilData sigilData = _matchData.SigilsInMatch.GetRandomPassiveSigil();
-
-            return sigilData;
-        }
-
-        public void RemoveSigilInMatch(SigilData sigilData) => _matchData.SigilsInMatch.RemoveSigil(sigilData);
 
         public UniTask LoadData(GameData data)
         {

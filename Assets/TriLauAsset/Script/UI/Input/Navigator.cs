@@ -2,13 +2,12 @@ using UnityEngine;
 using MyRule.UI;
 using MyRule.CommandPattern;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 
 namespace MyRule
 {
     public static class Navigator
     {
-        public static async Task OnSubmitPress(Button btnSubmit, ButtonType buttonType)
+        public static async void OnSubmitPress(Button btnSubmit, ButtonType buttonType)
         {
             Loader.EScene currentScene = Loader.GetTargetScene();
 
@@ -20,19 +19,26 @@ namespace MyRule
 
                         if (GameSystemManager.Instance.GameData.MatchData != null)
                         {
-                            eScene = Loader.EScene.MazeScene;    
+                            if (GameSystemManager.Instance.GameData.MatchData.CombatData != null)
+                            {
+                                eScene = GameSystemManager.Instance.GameData.MatchData.CombatData.Scene;
+                            }
+                            else
+                            {
+                                eScene = GameSystemManager.Instance.GameData.MatchData.Scene;
+                            }
                         }
                         else
                         {
                             eScene = Loader.EScene.SpaceStationScene;
                         }
 
-                        ICommand continueCommand = new SceneCommand(btnSubmit, currentScene, Loader.EScene.MazeScene);
+                        ICommand continueCommand = new SceneCommand(btnSubmit, currentScene, eScene);
                         CommandInvoker.ExecuteCommand(continueCommand);
                         break;
                     }
                 case ButtonType.NewGameButton:
-                    GameSystemManager.Instance.CreateNewGame();
+                    await GameSystemManager.Instance.CreateNewGame();
                     await Loader.LoadSceneWithLoading(Loader.EScene.SpaceStationScene);
                     break;
                 case ButtonType.SystemButton:

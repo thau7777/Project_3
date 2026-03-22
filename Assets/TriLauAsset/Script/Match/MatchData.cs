@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace MyRule
 {
@@ -21,11 +20,13 @@ namespace MyRule
         [JsonProperty] private int _runeInMatch;
         [JsonProperty] private bool _hasReceivedStartingSigil;
         [JsonProperty] private CharacterData _characterData;
-        [JsonProperty] private SigilsInMatchData _sigilsInMatch;
+        [JsonProperty] private SigilPool _sigilPoolInMatch;
         [JsonProperty] private SigilStorageData _sigilStorageInMatch;
         [JsonProperty] private ItemStorageData _itemStorageInMatch;
         [JsonProperty] private int _enmiesDefeated;
         [JsonProperty] private int _nodesExplored;
+        [JsonProperty] private CombatData _combatData;
+        [JsonProperty] private MazeGameplayReward _reward;
 
         [JsonIgnore] public EMap MapType => _mapType;
         [JsonIgnore] public Loader.EScene Scene => _scene;
@@ -34,13 +35,15 @@ namespace MyRule
         [JsonIgnore] public CharacterData CharacterData => _characterData;
         [JsonIgnore] public int RuneInMatch => _runeInMatch;
         [JsonIgnore] public bool HasReceivedStartingSigil => _hasReceivedStartingSigil;
-        [JsonIgnore] public SigilsInMatchData SigilsInMatch => _sigilsInMatch;
+        [JsonIgnore] public SigilPool SigilPool => _sigilPoolInMatch;
         [JsonIgnore] public SigilStorageData SigilStorageInMatch => _sigilStorageInMatch;
         [JsonIgnore] public ItemStorageData ItemStorageInMatch => _itemStorageInMatch;
         [JsonIgnore] public int EnemiesDefeated => _enmiesDefeated;
         [JsonIgnore] public int NodesExplored => _nodesExplored;
+        [JsonIgnore] public CombatData CombatData => _combatData;
+        [JsonIgnore] public MazeGameplayReward Reward => _reward;
 
-        public MatchData(EMap eMap, CharacterData character, int runeAmount, SigilsInMatchData sigilsInMatch)
+        public MatchData(EMap eMap, CharacterData character, int runeAmount)
         {
             _mapType = eMap;
 
@@ -62,11 +65,32 @@ namespace MyRule
             _characterData = character;
             _runeInMatch = runeAmount;
             _hasReceivedStartingSigil = false;
-            _sigilsInMatch = sigilsInMatch;
+            _sigilPoolInMatch = new SigilPool();
             _sigilStorageInMatch = new SigilStorageData();
             _itemStorageInMatch = new ItemStorageData();
             _enmiesDefeated = 0;
             _nodesExplored = 0;
+            _combatData = null;
+            _reward = null;
+        }
+
+        public async void MoveToNextMap()
+        {
+            switch (_mapType)
+            {
+                case EMap.GreenLand:
+                    _mapType = EMap.Desert;
+                    _scene = Loader.EScene.DesertScene;
+                    await Loader.LoadSceneWithLoading(Loader.EScene.DesertScene);
+                    break;
+                case EMap.Desert:
+                    _mapType = EMap.IceLand;
+                    _scene = Loader.EScene.IcelandScene;
+                    await Loader.LoadSceneWithLoading(Loader.EScene.IcelandScene);
+                    break;
+                case EMap.IceLand:
+                    break;
+            }
         }
 
         public void SetMap(EMap eMap) => _mapType = eMap;
@@ -88,5 +112,9 @@ namespace MyRule
         public void IncreaseEnmiesDefeated() => _enmiesDefeated++;
 
         public void IncreaseNodesExplored() => _nodesExplored++;
+
+        public void SetCombat(CombatData combatData) => this._combatData = combatData;
+
+        public void SetReward(MazeGameplayReward reward) => this._reward = reward;
     }
 }

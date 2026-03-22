@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace MyRule
 {
@@ -106,9 +107,11 @@ namespace MyRule
 
         private UniTask ShowingPassiveSigilCard(bool showing)
         {
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetPassiveSigils(passiveCards.Length);
+
             for (int i = 0; i < passiveCards.Length; i++)
             {
-                SigilData sigilData = MatchManager.Instance.GetRandomPassiveSigilInMatch();
+                SigilData sigilData = sigils[i];
 
                 if (sigilData == null) break;
                 
@@ -124,9 +127,11 @@ namespace MyRule
 
         private void SpawnActiveSigil()
         {
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetActiveSigils(spawnPoint.Length);
+
             for (int i = 0; i < spawnPoint.Length; i++) 
             {
-                SigilData sigilData = MatchManager.Instance.GetRandomActiveSigilInMatch();
+                SigilData sigilData = sigils[i];
                 
                 if (sigilData == null) break;
 
@@ -143,18 +148,6 @@ namespace MyRule
             }
         }
 
-        private SigilSO GetSigilFromCollection(SigilData sigilData)
-        {
-            while (true)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                var existSigil = gameObjects.Find(s => s.SigilSO.id == sigilSO.id);
-
-                if (existSigil == null) return sigilSO;
-            }
-        }
-
         private void ShowingItem()
         {
             for (int i = 0; i < items.Length; i++)
@@ -162,6 +155,8 @@ namespace MyRule
                 ItemSO itemSO = ItemManager.Instance.GetRandomItem();
                 items[i].SetUp(itemSO);
             }
+
+            items[0].Select();
         }
 
         private void DesTroyCard()

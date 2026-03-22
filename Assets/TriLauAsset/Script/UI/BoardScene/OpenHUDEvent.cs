@@ -12,12 +12,26 @@ namespace MyRule.Event
         }
     }
 
-    public struct AddSigilEvent : IEvent
+    public struct AddActiveSigilEvent : IEvent
     {
+        public readonly int index;
         public readonly SigilSO sigilSO;
 
-        public AddSigilEvent(SigilSO sigilSO)
+        public AddActiveSigilEvent(int index, SigilSO sigilSO)
         {
+            this.index = index;
+            this.sigilSO = sigilSO;
+        }
+    }
+
+    public struct AddPassiveSigilEvent : IEvent
+    {
+        public readonly int index;
+        public readonly SigilSO sigilSO;
+
+        public AddPassiveSigilEvent(int index, SigilSO sigilSO)
+        {
+            this.index = index;
             this.sigilSO = sigilSO;
         }
     }

@@ -25,6 +25,11 @@ namespace MyRule
             soldObj.SetActive(false);
         }
 
+        public void Select()
+        {
+            btn.Select();
+        }
+
         private void OnClick()
         {
             var rune = RuneManger.Instance.CurrentRuneAmount;

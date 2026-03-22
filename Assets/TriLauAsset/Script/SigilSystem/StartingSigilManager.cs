@@ -72,9 +72,11 @@ namespace MyRule
 
         private async UniTask SpawnStartingSigilCardAsync()
         {
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetActiveSigils(spawnPoints.Length);
+
             for (int i = 0; i < spawnPoints.Length; i++)
             {
-                SigilData sigilData = MatchManager.Instance.GetRandomSigilInMatch();
+                SigilData sigilData = sigils[i];
 
                 if (sigilData == null) break;
 
@@ -89,18 +91,6 @@ namespace MyRule
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;
-            }
-        }
-
-        private SigilSO GetSigilFromCollection(SigilData sigilData)
-        {
-            while (true)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                var existSigil = cardObjs.Find(s => s.SigilSO.id == sigilSO.id);
-
-                if (existSigil == null) return sigilSO;
             }
         }
 

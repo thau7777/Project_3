@@ -25,7 +25,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RightClick",
+                    "name": "MiddleClick",
                     "type": "Button",
                     "id": "733936f5-3e6a-40d2-9f05-ca2dabf60066",
                     "expectedControlType": "",
@@ -212,18 +212,18 @@
                 {
                     "name": "",
                     "id": "bc00f203-71cd-44f8-9afc-db31adc717a3",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightClick",
+                    "action": "MiddleClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "2644cc17-855a-4e94-a7f6-0687bb860535",
-                    "path": "<Keyboard>/space",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -278,7 +278,7 @@
                 {
                     "name": "",
                     "id": "280f985f-35f5-49f8-9b5f-9e4f94d64d1b",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1501,6 +1501,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenSigilStorage",
+                    "type": "Button",
+                    "id": "aa1c8125-3dc1-4181-8375-915d7e9c8d9f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenPassiveSigilStorage",
+                    "type": "Button",
+                    "id": "f1b629f8-734a-4062-89db-02b5d0a76da1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1655,6 +1673,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a586ea1-36bf-4a68-a701-5b246195050a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenSigilStorage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "95fef124-30c2-4b22-bc3c-b3011e846820",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenPassiveSigilStorage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

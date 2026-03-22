@@ -111,7 +111,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RightClick"",
+                    ""name"": ""MiddleClick"",
                     ""type"": ""Button"",
                     ""id"": ""733936f5-3e6a-40d2-9f05-ca2dabf60066"",
                     ""expectedControlType"": """",
@@ -298,18 +298,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc00f203-71cd-44f8-9afc-db31adc717a3"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""RightClick"",
+                    ""action"": ""MiddleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""2644cc17-855a-4e94-a7f6-0687bb860535"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -364,7 +364,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""280f985f-35f5-49f8-9b5f-9e4f94d64d1b"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1587,6 +1587,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenSigilStorage"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa1c8125-3dc1-4181-8375-915d7e9c8d9f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenPassiveSigilStorage"",
+                    ""type"": ""Button"",
+                    ""id"": ""f1b629f8-734a-4062-89db-02b5d0a76da1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1743,6 +1761,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a586ea1-36bf-4a68-a701-5b246195050a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenSigilStorage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95fef124-30c2-4b22-bc3c-b3011e846820"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenPassiveSigilStorage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1753,7 +1793,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerTopDown = asset.FindActionMap("PlayerTopDown", throwIfNotFound: true);
         m_PlayerTopDown_Move = m_PlayerTopDown.FindAction("Move", throwIfNotFound: true);
         m_PlayerTopDown_LeftClick = m_PlayerTopDown.FindAction("LeftClick", throwIfNotFound: true);
-        m_PlayerTopDown_RightClick = m_PlayerTopDown.FindAction("RightClick", throwIfNotFound: true);
+        m_PlayerTopDown_MiddleClick = m_PlayerTopDown.FindAction("MiddleClick", throwIfNotFound: true);
         m_PlayerTopDown_Skill_1 = m_PlayerTopDown.FindAction("Skill_1", throwIfNotFound: true);
         m_PlayerTopDown_Skill_2 = m_PlayerTopDown.FindAction("Skill_2", throwIfNotFound: true);
         m_PlayerTopDown_Skill_3 = m_PlayerTopDown.FindAction("Skill_3", throwIfNotFound: true);
@@ -1813,6 +1853,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_DiceRoll_RightClick = m_DiceRoll.FindAction("RightClick", throwIfNotFound: true);
         m_DiceRoll_Esc = m_DiceRoll.FindAction("Esc", throwIfNotFound: true);
         m_DiceRoll_Submit = m_DiceRoll.FindAction("Submit", throwIfNotFound: true);
+        m_DiceRoll_OpenSigilStorage = m_DiceRoll.FindAction("OpenSigilStorage", throwIfNotFound: true);
+        m_DiceRoll_OpenPassiveSigilStorage = m_DiceRoll.FindAction("OpenPassiveSigilStorage", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1902,7 +1944,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerTopDownActions> m_PlayerTopDownActionsCallbackInterfaces = new List<IPlayerTopDownActions>();
     private readonly InputAction m_PlayerTopDown_Move;
     private readonly InputAction m_PlayerTopDown_LeftClick;
-    private readonly InputAction m_PlayerTopDown_RightClick;
+    private readonly InputAction m_PlayerTopDown_MiddleClick;
     private readonly InputAction m_PlayerTopDown_Skill_1;
     private readonly InputAction m_PlayerTopDown_Skill_2;
     private readonly InputAction m_PlayerTopDown_Skill_3;
@@ -1935,9 +1977,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @LeftClick => m_Wrapper.m_PlayerTopDown_LeftClick;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerTopDown/RightClick".
+        /// Provides access to the underlying input action "PlayerTopDown/MiddleClick".
         /// </summary>
-        public InputAction @RightClick => m_Wrapper.m_PlayerTopDown_RightClick;
+        public InputAction @MiddleClick => m_Wrapper.m_PlayerTopDown_MiddleClick;
         /// <summary>
         /// Provides access to the underlying input action "PlayerTopDown/Skill_1".
         /// </summary>
@@ -2018,9 +2060,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftClick.started += instance.OnLeftClick;
             @LeftClick.performed += instance.OnLeftClick;
             @LeftClick.canceled += instance.OnLeftClick;
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
+            @MiddleClick.started += instance.OnMiddleClick;
+            @MiddleClick.performed += instance.OnMiddleClick;
+            @MiddleClick.canceled += instance.OnMiddleClick;
             @Skill_1.started += instance.OnSkill_1;
             @Skill_1.performed += instance.OnSkill_1;
             @Skill_1.canceled += instance.OnSkill_1;
@@ -2074,9 +2116,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftClick.started -= instance.OnLeftClick;
             @LeftClick.performed -= instance.OnLeftClick;
             @LeftClick.canceled -= instance.OnLeftClick;
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
+            @MiddleClick.started -= instance.OnMiddleClick;
+            @MiddleClick.performed -= instance.OnMiddleClick;
+            @MiddleClick.canceled -= instance.OnMiddleClick;
             @Skill_1.started -= instance.OnSkill_1;
             @Skill_1.performed -= instance.OnSkill_1;
             @Skill_1.canceled -= instance.OnSkill_1;
@@ -2943,6 +2985,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_DiceRoll_RightClick;
     private readonly InputAction m_DiceRoll_Esc;
     private readonly InputAction m_DiceRoll_Submit;
+    private readonly InputAction m_DiceRoll_OpenSigilStorage;
+    private readonly InputAction m_DiceRoll_OpenPassiveSigilStorage;
     /// <summary>
     /// Provides access to input actions defined in input action map "DiceRoll".
     /// </summary>
@@ -2986,6 +3030,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "DiceRoll/Submit".
         /// </summary>
         public InputAction @Submit => m_Wrapper.m_DiceRoll_Submit;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/OpenSigilStorage".
+        /// </summary>
+        public InputAction @OpenSigilStorage => m_Wrapper.m_DiceRoll_OpenSigilStorage;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/OpenPassiveSigilStorage".
+        /// </summary>
+        public InputAction @OpenPassiveSigilStorage => m_Wrapper.m_DiceRoll_OpenPassiveSigilStorage;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -3036,6 +3088,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Submit.started += instance.OnSubmit;
             @Submit.performed += instance.OnSubmit;
             @Submit.canceled += instance.OnSubmit;
+            @OpenSigilStorage.started += instance.OnOpenSigilStorage;
+            @OpenSigilStorage.performed += instance.OnOpenSigilStorage;
+            @OpenSigilStorage.canceled += instance.OnOpenSigilStorage;
+            @OpenPassiveSigilStorage.started += instance.OnOpenPassiveSigilStorage;
+            @OpenPassiveSigilStorage.performed += instance.OnOpenPassiveSigilStorage;
+            @OpenPassiveSigilStorage.canceled += instance.OnOpenPassiveSigilStorage;
         }
 
         /// <summary>
@@ -3071,6 +3129,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Submit.started -= instance.OnSubmit;
             @Submit.performed -= instance.OnSubmit;
             @Submit.canceled -= instance.OnSubmit;
+            @OpenSigilStorage.started -= instance.OnOpenSigilStorage;
+            @OpenSigilStorage.performed -= instance.OnOpenSigilStorage;
+            @OpenSigilStorage.canceled -= instance.OnOpenSigilStorage;
+            @OpenPassiveSigilStorage.started -= instance.OnOpenPassiveSigilStorage;
+            @OpenPassiveSigilStorage.performed -= instance.OnOpenPassiveSigilStorage;
+            @OpenPassiveSigilStorage.canceled -= instance.OnOpenPassiveSigilStorage;
         }
 
         /// <summary>
@@ -3126,12 +3190,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "RightClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "MiddleClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRightClick(InputAction.CallbackContext context);
+        void OnMiddleClick(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Skill_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -3503,5 +3567,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSubmit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenSigilStorage" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenSigilStorage(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenPassiveSigilStorage" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenPassiveSigilStorage(InputAction.CallbackContext context);
     }
 }

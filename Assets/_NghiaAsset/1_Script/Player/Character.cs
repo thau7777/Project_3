@@ -173,13 +173,20 @@ namespace Turnbase
                 return;
             }
 
-            HashSet<string> ownedSigilNames = new HashSet<string>();
             Dictionary<string, SigilData> ownedSigils = new Dictionary<string, SigilData>();
-            foreach (var s in storageManager.SigilStorageData.ActiveSigils)
-                if (s.Value != null) ownedSigils[s.Value.Name] = s.Value;
+            for (int i = 0; i < 4; i++)
+            {
+                SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
+                if (sigilData == null) continue;
+                else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
+            }
 
-            foreach (var s in storageManager.SigilStorageData.PassiveSigils)
-                if (s.Value != null) ownedSigils[s.Value.Name] = s.Value;
+            for (int i = 0; i < storageManager.SigilStorageData.PassiveSigils.Length; i++)
+            {
+                SigilData sigilData = storageManager.SigilStorageData.PassiveSigils[i];
+                if (sigilData == null) continue;
+                else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
+            }
 
             skills.Clear();
             if (targetProfile.initialSkills != null)
@@ -203,7 +210,7 @@ namespace Turnbase
             {
                 foreach (var pSkill in targetProfile.initialPassiveSkills)
                 {
-                    if (pSkill != null && ownedSigilNames.Contains(pSkill.name))
+                    if (pSkill != null && ownedSigils.ContainsKey(pSkill.name))
                     {
                         passiveSkills.Add(pSkill);
                     }

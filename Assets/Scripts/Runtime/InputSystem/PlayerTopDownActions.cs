@@ -7,7 +7,7 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
 {
     public Action<Vector2> onMove;
     public Action onLeftClick;
-    public Action<bool> onRightClick;
+    public Action<bool> onMiddleClick;
     public Action<bool,int> onSkillUse;
     public Action<int> onItemUse;
 
@@ -41,12 +41,12 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
         onMove?.Invoke(value);
     }
 
-    public void OnRightClick(InputAction.CallbackContext context)
+    public void OnMiddleClick(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onRightClick?.Invoke(true);
+            onMiddleClick?.Invoke(true);
         else if (context.canceled)
-            onRightClick?.Invoke(false);
+            onMiddleClick?.Invoke(false);
     }
 
     public void OnSkill_1(InputAction.CallbackContext context)
@@ -132,4 +132,5 @@ public class PlayerTopDownActions : InputActions.IPlayerTopDownActions
         if (context.performed)
             onItemUse?.Invoke(5);
     }
+
 }

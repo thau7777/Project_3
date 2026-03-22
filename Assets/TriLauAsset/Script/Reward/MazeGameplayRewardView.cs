@@ -83,6 +83,13 @@ namespace MyRule
             isShowing = false;
 
             RTSCameraController.Instance.CanInteract = true;
+
+            if (CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
+            {
+                BlackFade.Instance.FadeIn();
+                await UniTask.Delay(1000);
+                MatchManager.Instance.MatchData.MoveToNextMap();
+            }
         }
 
         public override void Show()
@@ -140,9 +147,11 @@ namespace MyRule
                 duration: fadeDuration,
                 cts.Token).Forget();
 
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetMixedSigils(spawnPoint.Length);
+
             for (int i = 0; i < spawnPoint.Length; i++)
             {
-                SigilData sigilData = MatchManager.Instance.GetRandomSigilInMatch();
+                SigilData sigilData = sigils[i];
 
                 if (sigilData == null) break;
 
@@ -157,18 +166,6 @@ namespace MyRule
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
                 await UniTask.Delay(200);
                 card.IsShowing = true;
-            }
-        }
-
-        private SigilSO GetSigilFromCollection(SigilData sigilData)
-        {
-            while (true)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                var existSigil = gameObjects.Find(s => s.SigilSO.id == sigilSO.id);
-
-                if (existSigil == null) return sigilSO;
             }
         }
 
