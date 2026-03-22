@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace MyRule
 {
@@ -154,6 +155,8 @@ namespace MyRule
                 ItemSO itemSO = ItemManager.Instance.GetRandomItem();
                 items[i].SetUp(itemSO);
             }
+
+            items[0].Select();
         }
 
         private void DesTroyCard()
