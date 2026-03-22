@@ -3,20 +3,27 @@ using UnityEngine.UI;
 
 public static class DamageCalculator
 {
-    public static int CalculateDamageByStats(CharacterStats attackerStats, CharacterStats defenderStats, bool isMagicAttack, int baseDamage, ElementalType attackElementalType)
+    public static int CalculateDamageByStats(CharacterStats attackerStats, CharacterStats defenderStats, bool isMagicAttack, int baseDamage, ElementalType attackElementalType, bool dealTrueDamage)
     {
         float finalDamage = baseDamage;
 
         finalDamage += isMagicAttack ? attackerStats.MagicAttackDamage : attackerStats.AttackDamage;
 
-        float defenseMultiplier = 100f / (100f + (isMagicAttack ? defenderStats.MagicDefense : defenderStats.PhysicalDefense));
-        finalDamage *= defenseMultiplier;
+        if (!dealTrueDamage)
+        {
+            float defenseMultiplier = 100f / (100f + (isMagicAttack ? defenderStats.MagicDefense : defenderStats.PhysicalDefense));
+            finalDamage *= defenseMultiplier;
 
-        float elementalDamage = GetElementalDamageStat(attackElementalType, attackerStats);
-        float elementalDefense = GetElementalDefenseStat(attackElementalType, defenderStats);
-
-        float elementMultiplier = (1f + elementalDamage / 100f) * (1f - elementalDefense / 100f);
-        finalDamage *= elementMultiplier;
+            float elementalDamage = GetElementalDamageStat(attackElementalType, attackerStats);
+            float elementalDefense = GetElementalDefenseStat(attackElementalType, defenderStats);
+            float elementMultiplier = (1f + elementalDamage / 100f) * (1f - elementalDefense / 100f);
+            finalDamage *= elementMultiplier;
+        }
+        else
+        {
+            float elementalDamage = GetElementalDamageStat(attackElementalType, attackerStats);
+            finalDamage *= (1f + elementalDamage / 100f);
+        }
 
         var elementalDamageMultiplier = ElementalManager.Instance.GetDamageMultiplier(attackElementalType, defenderStats.ElementalType);
         finalDamage *= elementalDamageMultiplier;

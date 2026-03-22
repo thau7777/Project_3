@@ -80,6 +80,8 @@ namespace Turnbase
 
         [HideInInspector] public HealthSystem healthSystem;
 
+        [SerializeField] private ScreenEffectUIController _screenEffectController;
+
         public bool isAlive
         {
             get { return stats.currentHP > 0; }
@@ -115,6 +117,11 @@ namespace Turnbase
 
             InitializeCharacterFrom(characterClass);
 
+            if (_screenEffectController == null)
+            {
+                _screenEffectController = GameObject.FindAnyObjectByType<ScreenEffectUIController>();
+            }
+
         }
 
         public async void InitializeCharacterFrom(CharacterClass classTypeToLoad)
@@ -140,24 +147,16 @@ namespace Turnbase
 
             if (itemStorageMgr != null && itemStorageMgr.ItemStorage != null)
             {
-                // Duyệt qua từng ô vật phẩm trong kho đồ thực tế
                 foreach (var storageItem in itemStorageMgr.ItemStorage.Items)
                 {
                     if (storageItem == null) continue;
-
-                    // Tìm mẫu vật phẩm (Template) tương ứng trong Profile của Character
-                    // dựa trên ItemType của ô đồ đó
                     var template = targetProfile.initiaItem
                         .FirstOrDefault(t => t != null && t.type == storageItem.ItemType);
 
                     if (template != null)
                     {
-                        // Vì mỗi ô chỉ chứa 1 món, ta Instantiate một bản sao riêng
                         Tb_Item clonedItem = Instantiate(template);
-                        clonedItem.quantity = 1; // Luôn là 1 theo quy định của bạn
-
-                        // Đồng bộ thêm recoveryAmount từ dữ liệu lưu trữ nếu cần
-                        // clonedItem.value = storageItem.RecoveryAmount; 
+                        clonedItem.quantity = 1;
 
                         item.Add(clonedItem);
                     }
@@ -174,29 +173,34 @@ namespace Turnbase
                 return;
             }
 
-            HashSet<string> ownedSigilNames = new HashSet<string>();
+            Dictionary<string, SigilData> ownedSigils = new Dictionary<string, SigilData>();
             for (int i = 0; i < 4; i++)
             {
                 SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
                 if (sigilData == null) continue;
-                else if (sigilData != null) ownedSigilNames.Add(sigilData.Name);
+                else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
             }
 
             for (int i = 0; i < storageManager.SigilStorageData.PassiveSigils.Length; i++)
             {
                 SigilData sigilData = storageManager.SigilStorageData.PassiveSigils[i];
                 if (sigilData == null) continue;
-                else if (sigilData != null) ownedSigilNames.Add(sigilData.Name);
+                else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
             }
 
             skills.Clear();
             if (targetProfile.initialSkills != null)
             {
-                foreach (var skill in targetProfile.initialSkills)
+                foreach (var skillTemplate in targetProfile.initialSkills)
                 {
-                    if (skill != null && ownedSigilNames.Contains(skill.skillName))
+                    if (skillTemplate != null && ownedSigils.TryGetValue(skillTemplate.skillName, out SigilData data))
                     {
-                        skills.Add(skill);
+                        Skill clonedSkill = Instantiate(skillTemplate);
+
+                        clonedSkill.damage = data.BaseDamage;
+                        clonedSkill.manaCost = data.ManaCost;
+
+                        skills.Add(clonedSkill);
                     }
                 }
             }
@@ -206,7 +210,7 @@ namespace Turnbase
             {
                 foreach (var pSkill in targetProfile.initialPassiveSkills)
                 {
-                    if (pSkill != null && ownedSigilNames.Contains(pSkill.name))
+                    if (pSkill != null && ownedSigils.ContainsKey(pSkill.name))
                     {
                         passiveSkills.Add(pSkill);
                     }
@@ -251,6 +255,11 @@ namespace Turnbase
                     healthSystem = gameObject.AddComponent<HealthSystem>();
                 }
                 healthSystem.Init(this);
+            }
+
+            if (isPlayer && _screenEffectController != null)
+            {
+                _screenEffectController.OnDamaged();
             }
 
             healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);

@@ -8,6 +8,8 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 public class TopDownGameManager : Singleton<TopDownGameManager>
 {
+    public bool isTestGameplay = false;
+
     [SerializeField, TabGroup("References")]
     private InputReader _inputReader;
 
@@ -48,7 +50,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
 
     private bool _isTriggeringLowHealthEffect;
 
-    private CancellationTokenSource cancellationTokenSource; 
+    private CancellationTokenSource cancellationTokenSource;
     private CancellationTokenSource _lowHealthCTS;
 
     private EventBinding<TopDownEndGameEvent> _topdownEndGameEventBinding;
@@ -72,7 +74,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     {
         cancellationTokenSource = new CancellationTokenSource();
         _continueBtnClickable = false;
-        if(_deathVolume)
+        if (_deathVolume)
             _deathVolume.weight = 0f;
         StartMatch();
 
@@ -101,13 +103,13 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
             _player.SetActive(true);
             //_playerPrefab.transform.position = Vector3.zero;
         }
-        
+
     }
     private void EnableTPEffect()
     {
         if (_tpEffect)
         {
-            if(_tpEffect.activeSelf)
+            if (_tpEffect.activeSelf)
                 _tpEffect.SetActive(false);
             _tpEffect.SetActive(true);
             _tpEffect.transform.position = _player.transform.position;
@@ -184,7 +186,8 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         {
             _player.GetComponent<PlayerTopDownStateDriver>().Despawn();
             CombatManager.Instance.SetCombatResultWin();
-        }else
+        }
+        else
             CombatManager.Instance.SetCombatResultLose();
 
         await UniTask.Delay(1000, true);
@@ -195,8 +198,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         CharacterManager.Instance.SetCurrentHealth(Mathf.RoundToInt(PlayerTopDownStateDriver.Instance.GetComponent<Damageable>().CurrentHealth));
 
         await UniTask.Delay(2000, true);
-        Loader.EScene scene = MatchManager.Instance.MatchData.Scene;
-        await Loader.LoadSceneDirect(scene);
+        await Loader.LoadSceneDirect(Loader.EScene.MazeScene);
     }
     public void TrigerLowHealthEffect(float currentHealth, float maxHealth)
     {
@@ -255,7 +257,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     {
         if (_isFlashing) return;
 
-        ParryVolumeFlash(cancellationTokenSource.Token).Forget();
+        TriggerParryVolumeEffect(cancellationTokenSource.Token).Forget();
 
         //if (_slowMoCooldownReady)
         //    TriggerSlowMotion();
@@ -300,7 +302,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         _slowMoCooldownReady = true;
     }
 
-    private async UniTask ParryVolumeFlash(CancellationToken cancellationToken)
+    private async UniTask TriggerParryVolumeEffect(CancellationToken cancellationToken)
     {
         if (!_parryVolume) return;
 

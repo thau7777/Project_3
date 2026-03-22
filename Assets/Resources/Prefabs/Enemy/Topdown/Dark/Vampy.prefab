@@ -1279,8 +1279,8 @@ GameObject:
   - component: {fileID: 7742788236679808220}
   - component: {fileID: 1419332570100213344}
   - component: {fileID: 3366406870689442136}
-  - component: {fileID: 6293030835280946747}
   - component: {fileID: 7689402433116380337}
+  - component: {fileID: 6293030835280946747}
   m_Layer: 9
   m_Name: Vampy
   m_TagString: Untagged
@@ -1644,22 +1644,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a7e7c65602ce2140b479eb69069d981, type: 2}
   targetRenderers:
   - {fileID: 5122791751599443553}
---- !u!114 &6293030835280946747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5122791751604650877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PresetBasedVFXSpawner
-  _presets:
-  - {fileID: 11400000, guid: a959adb89db63f24b808f266b1afe6e6, type: 2}
-  _spawnPoints:
-  - {fileID: 4978011179010489830}
 --- !u!114 &7689402433116380337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1672,7 +1656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
-  _statsSO: {fileID: 0}
   <ElementalType>k__BackingField: 7
   <InitialHealth>k__BackingField: 100
   <InitialMana>k__BackingField: 100
@@ -1698,6 +1681,22 @@ MonoBehaviour:
   <CriticalRate>k__BackingField: 0.1
   <CriticalMultiplier>k__BackingField: 1.5
   <AttackSizeScale>k__BackingField: 1
+--- !u!114 &6293030835280946747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PresetBasedVFXSpawner
+  _presets:
+  - {fileID: 11400000, guid: a959adb89db63f24b808f266b1afe6e6, type: 2}
+  _spawnPoints:
+  - {fileID: 4978011179010489830}
 --- !u!1 &5122791751604650879
 GameObject:
   m_ObjectHideFlags: 0

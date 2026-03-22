@@ -15,12 +15,14 @@ public class EnemyTopdownContext
     public NavMeshSteering NavMeshSteering { get; private set; }
     public Transform RootTransform { get; private set; }
     [field: SerializeField] public Transform CurrentTargetTransform { get; private set; }
+    public float OgMoveSpeed { get; set; }
     public float BaseMoveSpeed { get; set; }
     public float BaseRotateSpeed { get; private set; }
     public float MovePauseDuration { get; private set; }
     [field: SerializeField]
     public float CurrentSpeed { get; set; }
     public float RotateSpeed { get; set; }
+    public float MoveSpeedAnimScale { get; set; }
     [field: SerializeField]
     public Vector3 MoveDir { get; set; }
 
@@ -182,9 +184,11 @@ public class EnemyTopdownContext
             return this;
         }
 
-        public Builder SetMoveSpeed(float distance)
+        public Builder SetMoveSpeed(float moveSpeed)
         {
-            ctx.BaseMoveSpeed = distance;
+            ctx.OgMoveSpeed = moveSpeed;
+            ctx.BaseMoveSpeed = moveSpeed;
+            ctx.MoveSpeedAnimScale = 1;
             return this;
         }
 
@@ -194,10 +198,10 @@ public class EnemyTopdownContext
             return this;
         }
 
-        public Builder SetRotateSpeed(float speed)
+        public Builder SetRotateSpeed(float rotateSpeed)
         {
-            ctx.BaseRotateSpeed = speed;
-            ctx.RotateSpeed = speed;
+            ctx.BaseRotateSpeed = rotateSpeed;
+            ctx.RotateSpeed = rotateSpeed;
             return this;
         }
 

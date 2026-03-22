@@ -1,7 +1,8 @@
-using MyRule;
 using System.Threading.Tasks;
+using MyRule;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace Turnbase
@@ -17,6 +18,12 @@ namespace Turnbase
         public Button victoryCloseBtn;
 
         public Button loseCloseBtn;
+
+
+        public Volume globalVolume;
+        private Vignette vignette;
+
+        public BattleSpawner spawner;
 
         private bool isVicrory = false;
 
@@ -34,6 +41,11 @@ namespace Turnbase
 
         private void Start()
         {
+            if (globalVolume.profile.TryGet<Vignette>(out var v))
+            {
+                vignette = v;
+            }
+
             victoryCloseBtn.onClick.AddListener(() => LoadSceneMain(true));
             loseCloseBtn.onClick.AddListener(() => LoadSceneMain(false));
         }
@@ -62,6 +74,10 @@ namespace Turnbase
 
             Debug.Log("Adjust the number of runes here.");
 
+            SpawnWarpDrive();
+
+            await Task.Delay(5000);
+
             EventBus<TBVictoryEvent>.Raise(new TBVictoryEvent(result));
 
             Loader.EScene scene = MatchManager.Instance.MatchData.Scene;
@@ -70,6 +86,21 @@ namespace Turnbase
 
             //FlyweightFactory_TB.Instance.ClearAllPools();
             //SceneManager.LoadScene("Map");
+        }
+
+        public void SpawnWarpDrive()
+        {
+            loseMenu.SetActive(false);
+            victoryMenu.SetActive(false);
+
+            vignette.intensity.value = 0f;
+            vignette.smoothness.value = 0f;
+
+            CameraAction.instance.TargetAllEnemies();
+
+            spawner.playerOffsetFromSlot = new Vector3(10.8f, 0, -6);
+            Vector3 targetPos = spawner.playerOffsetFromSlot;
+            spawner.WarpDriveBackk(targetPos);
         }
     }
 

@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.FilePathAttribute;
 
 public class SkillExecutor : MonoBehaviour
 {
-    [SerializeField] private bool _useTestSkill;
     [SerializeField, TabGroup("Skills Setup")]
     private SkillStrategy[] _skillStrategies = new SkillStrategy[6];
 
@@ -35,6 +35,8 @@ public class SkillExecutor : MonoBehaviour
     private float _maxMana;
     public float MaxMana => _maxMana;
 
+    private Vector3 _indicatorPos;
+
     [TabGroup("Stats")]
     public UnityEvent<float, float> OnManaChanged;
 
@@ -57,7 +59,7 @@ public class SkillExecutor : MonoBehaviour
         InitializeSkillInstance();
         StartManaRegenLoop();
     }
-   
+
     private void StartManaRegenLoop()
     {
         InvokeRepeating(nameof(RegenMana), 1f, 1f);
@@ -77,12 +79,12 @@ public class SkillExecutor : MonoBehaviour
     }
     private void InitializeSkillInstance()
     {
-        if (!_useTestSkill)
+        if (!TopDownGameManager.Instance.isTestGameplay)
         {
             SigilData[] activeSigilsArray = SigilStorageManager.Instance.SigilStorageData.ActiveSigils;
             if (activeSigilsArray != null)
             {
-                for(int i = 2; i < 6; i++)
+                for (int i = 2; i < 6; i++)
                 {
                     _skillStrategies[i] = null;
                 }
@@ -105,27 +107,28 @@ public class SkillExecutor : MonoBehaviour
                 }
             }
         }
-        
-        
+
+
         for (int i = 0; i < 6; i++)
         {
             _skillInstance[i] = new SkillRuntimeInstance(_skillStrategies[i], i);
         }
-        
+
         EventBus<TopdownInitializeSkillsEvent>.Raise(new TopdownInitializeSkillsEvent(_skillInstance));
     }
     public void ExecuteAllPassiveSkills()
     {
         foreach (var skill in _skillStrategies)
         {
-            if (skill && skill.isPassiveSkill){
-                var ctx = new SkillStrategyContext(transform, transform, Vector3.zero, Vector3.one);
+            if (skill && skill.isPassiveSkill)
+            {
+                var ctx = new SkillStrategyContext(transform, transform.position, Vector3.zero, Vector3.one);
                 if (skill is FireCircle)
                     (skill as FireCircle).Execute(ctx);
                 else
                     skill.Execute(ctx);
             }
-            
+
         }
     }
     public void RestoreMana(float amount)
@@ -146,7 +149,7 @@ public class SkillExecutor : MonoBehaviour
     // always get that skill data first if return ok then we can cast it later
     public bool SetSkillData(int index, CharacterClass characterClass)
     {
-        if(index < 0 || index > 5 || _skillStrategies[index] == null || _skillStrategies[index].isPassiveSkill) return false;
+        if (index < 0 || index > 5 || _skillStrategies[index] == null || _skillStrategies[index].isPassiveSkill) return false;
         var skillData = _skillInstance[index].Definition.GetSkillDataForClass(characterClass);
         if (skillData == null) return false;
         if (_skillInstance[index].IsOnCooldown)
@@ -154,7 +157,7 @@ public class SkillExecutor : MonoBehaviour
             EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.OnCooldown, index));
             return false;
         }
-        if(CurrentMana < _skillInstance[index].Definition.ManaCost && _skillInstance[index].Definition.ManaCost != 0)
+        if (CurrentMana < _skillInstance[index].Definition.ManaCost && _skillInstance[index].Definition.ManaCost != 0)
         {
             EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.NotEnoughMana, index));
             return false;
@@ -164,10 +167,10 @@ public class SkillExecutor : MonoBehaviour
         _storedSkillDataForClass = skillData;
         return true;
     }
-    public void UseSkill(int index, CharacterClass characterClass,PlayerTopdownContext context, Action onCastInstantly = null)
+    public void UseSkill(int index, CharacterClass characterClass, PlayerTopdownContext context, Action onCastInstantly = null)
     {
         if (!SetSkillData(index, characterClass)) return;
-        
+
         context.IsNextAttackQueued = false;
         context.CastingSkill = index;
         bool isAimNeeded = _storedSkillDataForClass.Value.aimType != AimType.None;
@@ -184,7 +187,7 @@ public class SkillExecutor : MonoBehaviour
             Transform chargeSpawnTransform = GetSkillSpawnTransform(_skillToCast.Definition.chargeVFXSpawnLocation);
 
             _chargedSkillFlyweight.FlyweightInitialize(chargeSpawnTransform.position);
-            if(_chargedSkillFlyweight is OneShotVFX _chargeOneShotVfx)
+            if (_chargedSkillFlyweight is OneShotVFX _chargeOneShotVfx)
             {
                 var chargeEffectVFXSettings = _chargeOneShotVfx.settings as OneShotVFXSettings;
                 _chargeOneShotVfx.InitializeVFX(chargeEffectVFXSettings.DefaultSize, chargeEffectVFXSettings.DefaultLifeTime);
@@ -208,27 +211,21 @@ public class SkillExecutor : MonoBehaviour
                 default:
                     break;
                 case FlyweightType.IndicatorStraightAlly:
-                {
-                    _skillIndicator.FlyweightInitialize(transform.position,transform.rotation);
-                    var followedIndicator = _skillIndicator as FollowedIndicator;
-                    followedIndicator.Initialize(transform, _skillToCast.Definition.indicatorWidth, _skillToCast.Definition.indicatorLength);
-                    break;
-                }
                 case FlyweightType.IndicatorConeAlly:
-                {
-                    _skillIndicator.FlyweightInitialize(transform.position,transform.rotation);
-                    var followedIndicator = _skillIndicator as FollowedIndicator;
-                    followedIndicator.Initialize(transform, _skillToCast.Definition.indicatorWidth, _skillToCast.Definition.indicatorLength);
-                    break;
-                }
+                    {
+                        _skillIndicator.FlyweightInitialize(transform.position, transform.rotation);
+                        var followedIndicator = _skillIndicator as FollowedIndicator;
+                        followedIndicator.Initialize(transform, _skillToCast.Definition.indicatorWidth, _skillToCast.Definition.indicatorLength);
+                        break;
+                    }
                 case FlyweightType.IndicatorCircleAlly:
-                {
-                    _skillIndicator.FlyweightInitialize(transform.position.Add(y:-1f));
-                    var circleIndicator = _skillIndicator as CircleIndicator;
-                    circleIndicator.Initialize(_skillToCast.Definition.indicatorWidth);
+                    {
+                        _skillIndicator.FlyweightInitialize(transform.position.Add(y: -1f));
+                        var circleIndicator = _skillIndicator as CircleIndicator;
+                        circleIndicator.Initialize(_skillToCast.Definition.indicatorWidth);
 
-                    break;
-                }
+                        break;
+                    }
             }
             EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.Use, _skillToCast.SlotIndex));
 
@@ -243,17 +240,16 @@ public class SkillExecutor : MonoBehaviour
     {
         if (_skillToCast == null) return;
 
-        if(_skillIndicator != null)
-        {
-            _skillIndicator.ReturnToPool();
-        }
+        if(_skillIndicator)
+            _indicatorPos = _skillIndicator.transform.position;
+        TurnOffSkillIndicator();
 
         if (_chargeCoroutine != null)
         {
             StopCoroutine(_chargeCoroutine);
             _chargeCoroutine = null;
 
-            if(_lerpCoroutine != null)
+            if (_lerpCoroutine != null)
             {
                 StopCoroutine(_lerpCoroutine);
                 _lerpCoroutine = null;
@@ -261,11 +257,10 @@ public class SkillExecutor : MonoBehaviour
         }
         if (!_skillToCast.Definition.CheckSpecialCondition(transform))
         {
-            TurnOffSkillIndicator();
+            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.Reset, _skillToCast.SlotIndex));
             ClearSkillData();
             context.IsAiming = false;
             context.CastingSkill = -1;
-            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.OnCooldown, _skillToCast.SlotIndex));
             return;
         }
         string animName = _storedSkillDataForClass.Value.animName;
@@ -290,36 +285,40 @@ public class SkillExecutor : MonoBehaviour
     private void ExecuteSkill()
     {
         if (_skillToCast == null || _storedSkillDataForClass == null) return;
-        Transform spawnTransform = GetSkillSpawnTransform(_skillToCast.Definition.spawnLocation);
-        var ctx = new SkillStrategyContext(transform, spawnTransform, _skillToCast.Definition.positionOffset, _skillToCast.Definition.rotationOffset, _chargedSkillFlyweight);
+        Vector3 spawnPos;
+        if (_skillToCast.Definition.spawnLocation == VFXSpawnLocation.Mouse)
+            spawnPos = _indicatorPos;
+        else
+            spawnPos = GetSkillSpawnTransform(_skillToCast.Definition.spawnLocation).position;
+        var ctx = new SkillStrategyContext(transform, spawnPos, _skillToCast.Definition.positionOffset, _skillToCast.Definition.rotationOffset, _chargedSkillFlyweight);
 
         _skillToCast.Cast(ctx);
 
-        //ClearSkillData();
     }
     public void ApplyEffectToPlayer()
     {
-        _skillToCast.Definition.ApplyEffectsToUser(gameObject); 
+        _skillToCast.Definition.ApplyEffectsToUser(gameObject);
     }
-    public void OnHitWhileAiming()
+    public void OnHitWhileUsingSkill()
     {
         if (_skillToCast != null && _skillToCast.Definition.canBeInterrupted)
+        {
             _skillToCast.Definition.OnInterupted(transform);
+            EventBus<TopdownSkillOnUseEvent>.Raise(new TopdownSkillOnUseEvent(SkillOnUseState.Reset, _skillToCast.SlotIndex));
+        }
         TurnOffSkillIndicator();
         ClearSkillData();
-        
     }
     public void ClearSkillData()
     {
-        _skillIndicator = null;
         _skillToCast = null;
         _storedSkillDataForClass = null;
         _chargedSkillFlyweight = null;
+        _indicatorPos = Vector3.zero;
     }
     private Transform GetSkillSpawnTransform(VFXSpawnLocation location)
     {
-        if (location == VFXSpawnLocation.Mouse)
-            return _skillIndicator.transform;
+        
         Transform skillSpawnTransform = transform;
         foreach (var sp in _skillSpawnPoints)
         {
@@ -336,10 +335,8 @@ public class SkillExecutor : MonoBehaviour
         if (_skillIndicator)
         {
             _skillIndicator.ReturnToPool();
+            _skillIndicator = null;
         }
-        
-        _storedSkillDataForClass = null;
-        _chargedSkillFlyweight = null;
     }
 
     public void AddOrReplaceSkill(int index, SkillStrategy strategy)

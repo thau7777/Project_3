@@ -1846,8 +1846,8 @@ GameObject:
   - component: {fileID: 6826083189585053063}
   - component: {fileID: 8930038730003927948}
   - component: {fileID: 6526840212380848127}
-  - component: {fileID: 7777352188614032883}
   - component: {fileID: 7067843828875373144}
+  - component: {fileID: 7777352188614032883}
   m_Layer: 9
   m_Name: BlackKnight
   m_TagString: Untagged
@@ -2249,23 +2249,6 @@ MonoBehaviour:
   - {fileID: 2540387601971123301}
   - {fileID: 443701775060060366}
   - {fileID: 5297838398184483669}
---- !u!114 &7777352188614032883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8244968335488023483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackWarningVFXSpawner
-  _presets:
-  - {fileID: 11400000, guid: 42ce1b3e98e790a4c9bdb95a0c967c10, type: 2}
-  _spawnPoints:
-  - {fileID: 2687605591761130756}
-  - {fileID: 4970684883740420542}
 --- !u!114 &7067843828875373144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2278,7 +2261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867c07e146718b6469d7ee4e2c51b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
-  _statsSO: {fileID: 0}
   <ElementalType>k__BackingField: 7
   <InitialHealth>k__BackingField: 100
   <InitialMana>k__BackingField: 100
@@ -2304,6 +2286,23 @@ MonoBehaviour:
   <CriticalRate>k__BackingField: 0.1
   <CriticalMultiplier>k__BackingField: 1.5
   <AttackSizeScale>k__BackingField: 1
+--- !u!114 &7777352188614032883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8244968335488023483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219aa70855e67d84090d4b6827d4fb71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackWarningVFXSpawner
+  _presets:
+  - {fileID: 11400000, guid: a959adb89db63f24b808f266b1afe6e6, type: 2}
+  _spawnPoints:
+  - {fileID: 2687605591761130756}
+  - {fileID: 4970684883740420542}
 --- !u!1 &8417933185421575406
 GameObject:
   m_ObjectHideFlags: 0

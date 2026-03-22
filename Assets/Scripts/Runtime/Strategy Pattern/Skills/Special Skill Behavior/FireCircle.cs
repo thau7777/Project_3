@@ -26,7 +26,7 @@ public class FireCircle : SkillStrategy
         if (controller != null)
         {
             ContinousVFXSettings skillVfxSettings = _mainSkillVfxSettings as ContinousVFXSettings;
-            controller.FlyweightInitialize(_skillContext.spawnTransform.AddLocal(positionOffset.x, positionOffset.y, positionOffset.z), parent: _skillContext.origin);
+            controller.FlyweightInitialize(_skillContext.origin.AddLocal(positionOffset.x, positionOffset.y, positionOffset.z), parent: _skillContext.origin);
             controller.InitializeVFX(skillVfxSettings.DefaultSize);
 
             GameObject skillVfx = controller.transform.GetChild(0).gameObject;

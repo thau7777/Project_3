@@ -176,7 +176,7 @@ namespace Turnbase
                     CameraAction.instance.TargetDeadCamera();
 
                     await UniTask.Delay(3000);
-                    CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
+                    //CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
                     TB_Menu.instance.ShowLoseMenu();
                 }
             }
