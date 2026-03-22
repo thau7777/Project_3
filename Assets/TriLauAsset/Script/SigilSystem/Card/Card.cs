@@ -112,7 +112,7 @@ namespace MyRule
                     EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-sigilSO.price));
                     HideCard();
                     isShowing = false;
-                    MatchManager.Instance.RemoveSigilInMatch(sigilData);
+                    MatchManager.Instance.MatchData.SigilPool.RemoveSigil(sigilData);
                 }
                 else
                 {
@@ -122,7 +122,7 @@ namespace MyRule
             else if (isReward)
             {
                 EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
-                MatchManager.Instance.RemoveSigilInMatch(sigilData);
+                MatchManager.Instance.MatchData.SigilPool.RemoveSigil(sigilData);
             }
         }
 

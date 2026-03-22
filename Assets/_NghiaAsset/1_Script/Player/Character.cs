@@ -175,11 +175,19 @@ namespace Turnbase
             }
 
             HashSet<string> ownedSigilNames = new HashSet<string>();
-            foreach (var s in storageManager.SigilStorageData.ActiveSigils)
-                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
+            for (int i = 0; i < 4; i++)
+            {
+                SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
+                if (sigilData == null) continue;
+                else if (sigilData != null) ownedSigilNames.Add(sigilData.Name);
+            }
 
-            foreach (var s in storageManager.SigilStorageData.PassiveSigils)
-                if (s.Value != null) ownedSigilNames.Add(s.Value.Name);
+            for (int i = 0; i < storageManager.SigilStorageData.PassiveSigils.Length; i++)
+            {
+                SigilData sigilData = storageManager.SigilStorageData.PassiveSigils[i];
+                if (sigilData == null) continue;
+                else if (sigilData != null) ownedSigilNames.Add(sigilData.Name);
+            }
 
             skills.Clear();
             if (targetProfile.initialSkills != null)

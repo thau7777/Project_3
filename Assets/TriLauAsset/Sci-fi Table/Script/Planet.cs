@@ -92,7 +92,7 @@ namespace MyRule
         {
             if (!canActive) return;
 
-            MapTypeManager.Instance.SetMapType(planetSO.planetType);
+            //MapTypeManager.Instance.SetMapType(planetSO.planetType);
 
             PortalManager.Instance.SetTargetScene(planetSO.scene);
 

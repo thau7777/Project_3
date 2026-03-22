@@ -79,16 +79,19 @@ public class SkillExecutor : MonoBehaviour
     {
         if (!_useTestSkill)
         {
-            Dictionary<string, SigilData> activeSigilsDic = SigilStorageManager.Instance.SigilStorageData.ActiveSigils;
-            if (activeSigilsDic != null)
+            SigilData[] activeSigilsArray = SigilStorageManager.Instance.SigilStorageData.ActiveSigils;
+            if (activeSigilsArray != null)
             {
                 for(int i = 2; i < 6; i++)
                 {
                     _skillStrategies[i] = null;
                 }
-                foreach (var kvp in activeSigilsDic)
+                for (int i = 0; i < 4; i++)
                 {
-                    SkillStrategy skill = TopdownSkillDataBase.Instance.GetSkillStrategyByName(kvp.Value.Name);
+                    SigilData sigilData = activeSigilsArray[i];
+                    if (sigilData == null) continue;
+
+                    SkillStrategy skill = TopdownSkillDataBase.Instance.GetSkillStrategyByName(sigilData.Name);
                     if (skill == null)
                     {
                         Debug.LogWarning("Cant find skill");
@@ -96,31 +99,9 @@ public class SkillExecutor : MonoBehaviour
                         continue;
                     }
 
-                    skill.SetBaseDamage(kvp.Value.BaseDamage);
-                    skill.SetManaCost(kvp.Value.ManaCost);
-                    switch (kvp.Value.EKeyBinding)
-                    {
-                        case EKeyBinding.Q:
-                            {
-                                _skillStrategies[2] = skill;
-                                break;
-                            }
-                        case EKeyBinding.E:
-                            {
-                                _skillStrategies[3] = skill;
-                                break;
-                            }
-                        case EKeyBinding.R:
-                            {
-                                _skillStrategies[4] = skill;
-                                break;
-                            }
-                        case EKeyBinding.F:
-                            {
-                                _skillStrategies[5] = skill;
-                                break;
-                            }
-                    }
+                    skill.SetBaseDamage(sigilData.BaseDamage);
+                    skill.SetManaCost(sigilData.ManaCost);
+                    _skillStrategies[i + 2] = skill;
                 }
             }
         }

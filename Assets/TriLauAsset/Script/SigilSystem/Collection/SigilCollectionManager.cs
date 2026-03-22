@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using MyRule.Event;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -25,11 +25,11 @@ namespace MyRule
             GameSystemManager.instance.Unregister(this);
         }
 
-        public SigilsInMatchData GetSigilCollection()
+        public List<SigilData> GetSigilCollection()
         {
             if (sigilCollection == null) return null;
 
-            SigilsInMatchData sigilsInMatchData = new SigilsInMatchData();
+            List<SigilData> sigilsInMatchData = new List<SigilData>();
 
             if (sigilCollection.ActiveSigils != null && sigilCollection.ActiveSigils.Count > 0)
             {
@@ -43,7 +43,7 @@ namespace MyRule
 
                 var result = activeSigilList.Take(activeSigilList.Count - 2).ToDictionary(x => x.Key, x => x.Value);
 
-                sigilsInMatchData.SetActiveSigils(result);
+                sigilsInMatchData.AddRange(result.Values);
             }
 
             if (sigilCollection.PassiveSigils != null && sigilCollection.PassiveSigils.Count > 0)
@@ -58,7 +58,7 @@ namespace MyRule
 
                 var result = passiveSigilList.Take(passiveSigilList.Count - 2).ToDictionary(x => x.Key, x => x.Value);
 
-                sigilsInMatchData.SetPassiveSigils(result);
+                sigilsInMatchData.AddRange(result.Values);
             }
 
             return sigilsInMatchData;

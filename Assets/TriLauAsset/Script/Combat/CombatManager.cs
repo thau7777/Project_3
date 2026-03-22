@@ -4,14 +4,22 @@ using UnityEngine;
 
 namespace MyRule
 {
-    [Serializable]
-    public class CombatResult
+    public enum CombatType
     {
+        EnemyFighting,
+        BossFigihting,
+    }
+
+    [Serializable]
+    public class CombatData
+    {
+        public CombatType combatType;
         public EMatchResult result;
         
-        public CombatResult() 
+        public CombatData(CombatType combatType)
         {
             result = EMatchResult.None;
+            this.combatType = combatType;
         }
 
         public void SetResult(EMatchResult result) => this.result = result;
@@ -19,11 +27,12 @@ namespace MyRule
 
     public class CombatManager : PersistentSingleton<CombatManager>
     {
-        private CombatResult combatResult;
+        private CombatData combatResult;
 
+        public CombatType combatType => combatResult.combatType;
         public EMatchResult Result => combatResult.result;
 
-        private void CreateNewCombat() => combatResult = new CombatResult();
+        private void CreateNewCombat(CombatType combatType) => combatResult = new CombatData(combatType);
 
         public void SetCombatResultWin()
         {
@@ -42,7 +51,19 @@ namespace MyRule
             GroupWave tdWaves = WaveManager.Instance.CreateNewWave();
             GroupWave tbWaves = WaveManager.Instance.CreateNewWave();
             
-            CreateNewCombat();
+            CreateNewCombat(CombatType.EnemyFighting);
+
+            EventBus<UpdateTDCombatWavesEvent>.Raise(new UpdateTDCombatWavesEvent(tdWaves));
+            EventBus<UpdateTBCombatWavesEvent>.Raise(new UpdateTBCombatWavesEvent(tbWaves));
+            EventBus<ShowCombatChoiceEvent>.Raise(new ShowCombatChoiceEvent(true));
+        }
+
+        public void CreateBossFighting()
+        {
+            GroupWave tdWaves = WaveManager.Instance.CreateNewWave();
+            GroupWave tbWaves = WaveManager.Instance.CreateNewWave();
+
+            CreateNewCombat(CombatType.BossFigihting);
 
             EventBus<UpdateTDCombatWavesEvent>.Raise(new UpdateTDCombatWavesEvent(tdWaves));
             EventBus<UpdateTBCombatWavesEvent>.Raise(new UpdateTBCombatWavesEvent(tbWaves));

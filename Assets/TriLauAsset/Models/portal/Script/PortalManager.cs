@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using MyRule.CommandPattern;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -90,7 +91,7 @@ namespace MyRule
             {
                 CharacterData characterStatsData = CharacterManager.Instance.GetCharacterStats();
                 int runeAmount = RuneManger.Instance.CurrentRuneAmount;
-                SigilsInMatchData sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
+                List<SigilData> sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
                 EMap mapType = MapTypeManager.Instance.GetMapType();
                 MatchManager.Instance.CreateNewMatch(mapType, characterStatsData, runeAmount, sigilsInGame);
 
