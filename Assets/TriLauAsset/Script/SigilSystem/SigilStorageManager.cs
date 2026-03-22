@@ -1,9 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MyRule.Event;
-using MyRule.UI;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace MyRule
 {
@@ -34,24 +31,31 @@ namespace MyRule
         {
             SigilData sigilData = new SigilData(evt.sigilSO.id, evt.sigilSO.sigilType, evt.sigilSO.name, evt.sigilSO.mag, evt.sigilSO.manaCost, evt.sigilSO.rarity, evt.sigilSO.keyBinding);
 
-            string id = evt.sigilSO.id;
-            EKeyBinding keyType = sigilData.EKeyBinding;
+            if (sigilData.SigilType == SigilType.Active)
+            {
+                if (!sigilStorageData.IsActiveSigilFull())
+                {
+                    int index = sigilStorageData.GetFirstEmptySlotActive();
 
-            var existActive = sigilStorageData.ActiveSigils.ContainsKey(id);
-            if (existActive) sigilStorageData.ActiveSigils.Remove(id);
+                    sigilStorageData.TryAddActiveSigil(index, sigilData);
 
-            var existPassive = sigilStorageData.PassiveSigils.ContainsKey(id);
-            if (existPassive) sigilStorageData.PassiveSigils.Remove(id);
+                    EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(index, evt.sigilSO));
+                }
+                else return;
+            }
+            else if (sigilData.SigilType == SigilType.Passive)
+            {
+                if (!sigilStorageData.IsPassiveSigilFull())
+                {
+                    int index = sigilStorageData.GetFirstEmptySlotPassive();
 
-            var duplicateActiveKey = sigilStorageData.ActiveSigils.FirstOrDefault(s => s.Value.EKeyBinding == keyType);
-            if (duplicateActiveKey.Value != null) sigilStorageData.ActiveSigils.Remove(duplicateActiveKey.Key);
+                    sigilStorageData.TryAddPassiveSigil(index, sigilData);
 
-            if (evt.sigilSO.sigilType == SigilType.Active)
-                sigilStorageData.ActiveSigils.Add(sigilData.Id, sigilData);
-            else if (evt.sigilSO.sigilType == SigilType.Passive)
-                sigilStorageData.PassiveSigils.Add(sigilData.Id, sigilData);
+                    EventBus<AddPassiveSigilEvent>.Raise(new AddPassiveSigilEvent(index, evt.sigilSO));
+                }
+                else return;
+            }
 
-            EventBus<AddSigilEvent>.Raise(new AddSigilEvent(evt.sigilSO));
             CharacterManager.Instance.UpdateSigilStats(evt.sigilSO);
         }
 
@@ -60,22 +64,27 @@ namespace MyRule
         {
             sigilStorageData = new SigilStorageData();
 
-            if (data.MatchData != null)
+            if (data.MatchData?.SigilStorageInMatch == null)
+                return UniTask.CompletedTask;
+
+            sigilStorageData = data.MatchData.SigilStorageInMatch;
+
+            foreach (var (sigilData, i) in sigilStorageData.ActiveSigils.Select((s, i) => (s, i)))
             {
-                if (data.MatchData.SigilStorageInMatch != null)
-                {
-                    sigilStorageData = data.MatchData.SigilStorageInMatch;
+                if (sigilData == null) continue;
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+                if (sigilSO == null) continue;
 
-                    foreach (var sigil in sigilStorageData.ActiveSigils)
-                    {
-                        SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigil.Key);
+                EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(i, sigilSO));
+            }
 
-                        if (sigilSO != null)
-                        {
-                            EventBus<AddSigilEvent>.Raise(new AddSigilEvent(sigilSO));
-                        }
-                    }
-                }
+            foreach (var (sigilData, i) in sigilStorageData.PassiveSigils.Select((s, i) => (s, i)))
+            {
+                if (sigilData == null) continue;
+                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+                if (sigilSO == null) continue;
+
+                EventBus<AddPassiveSigilEvent>.Raise(new AddPassiveSigilEvent(i, sigilSO));
             }
 
             return UniTask.CompletedTask;

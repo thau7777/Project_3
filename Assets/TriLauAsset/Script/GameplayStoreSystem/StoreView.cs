@@ -106,9 +106,11 @@ namespace MyRule
 
         private UniTask ShowingPassiveSigilCard(bool showing)
         {
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetPassiveSigils(passiveCards.Length);
+
             for (int i = 0; i < passiveCards.Length; i++)
             {
-                SigilData sigilData = MatchManager.Instance.GetRandomPassiveSigilInMatch();
+                SigilData sigilData = sigils[i];
 
                 if (sigilData == null) break;
                 
@@ -124,9 +126,11 @@ namespace MyRule
 
         private void SpawnActiveSigil()
         {
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetActiveSigils(spawnPoint.Length);
+
             for (int i = 0; i < spawnPoint.Length; i++) 
             {
-                SigilData sigilData = MatchManager.Instance.GetRandomActiveSigilInMatch();
+                SigilData sigilData = sigils[i];
                 
                 if (sigilData == null) break;
 
@@ -140,18 +144,6 @@ namespace MyRule
                 card.SetSigil(sigilData, sigilSO);
                 card.IsShowing = true;
                 card.ShowPrice(true);
-            }
-        }
-
-        private SigilSO GetSigilFromCollection(SigilData sigilData)
-        {
-            while (true)
-            {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
-
-                var existSigil = gameObjects.Find(s => s.SigilSO.id == sigilSO.id);
-
-                if (existSigil == null) return sigilSO;
             }
         }
 

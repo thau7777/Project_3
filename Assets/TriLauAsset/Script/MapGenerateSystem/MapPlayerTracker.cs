@@ -84,6 +84,7 @@ namespace MyRule
                     NPCManager.Instance.TriggetStore();
                     break;
                 case NodeType.Boss:
+                    CombatManager.Instance.CreateBossFighting();
                     break;
                 case NodeType.Mystery:
                     NPCManager.Instance.RandomNPC();

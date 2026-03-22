@@ -20,6 +20,9 @@ namespace MyRule.CommandPattern
             switch (targetScene)
             {
                 case Loader.EScene.MazeScene:
+                case Loader.EScene.GreenlandScene:
+                case Loader.EScene.DesertScene:
+                case Loader.EScene.IcelandScene:
                 case Loader.EScene.SpaceStationScene:
                     LoadWithLoading();
                     break;

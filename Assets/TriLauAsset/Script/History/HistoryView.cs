@@ -64,7 +64,7 @@ namespace MyRule.UI
             {
                 GameObject sigilViewObj = Instantiate(sigilPreb, sigilContentsParent);
                 LobbySigilView historySigilView = sigilViewObj.GetComponent<LobbySigilView>();
-                historySigilView.SetSigil(sigil.Value);
+                historySigilView.SetSigil(sigil);
                 historySigilObjs.Add(sigilViewObj);
             }
         }
