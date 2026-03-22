@@ -38,14 +38,14 @@ public class CinemachineCameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.playerTopDownActions.onRightClick += OnRightClick;
+        _inputReader.playerTopDownActions.onMiddleClick += OnRightClick;
         _playerDeadEventBinding = new(TriggerDeathAnimation);
         EventBus<TopDownEndGameEvent>.Register(_playerDeadEventBinding);
     }
 
     private void OnDisable()
     {
-        _inputReader.playerTopDownActions.onRightClick -= OnRightClick;
+        _inputReader.playerTopDownActions.onMiddleClick -= OnRightClick;
         EventBus<TopDownEndGameEvent>.Deregister(_playerDeadEventBinding);
     }
 
