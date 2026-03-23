@@ -22,7 +22,7 @@ namespace MyRule
 
         public WeatherData() 
         {
-            
+
         }
 
         public void SetWeatherType(EWeatherType type) => this.type = type;
@@ -64,7 +64,7 @@ namespace MyRule
             {
                 weatherData = data.MatchData.WeatherData;
             }
-            else
+            else if (data.MatchData.WeatherData == null)
             {
                 weatherData = new WeatherData();
 
@@ -91,7 +91,7 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            data.MatchData.WeatherData.SetWeatherType(weatherData.WeatherType);
+            data.MatchData.SetWeather(weatherData);
         }
     }
 }
