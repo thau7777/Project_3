@@ -70,6 +70,10 @@ namespace Turnbase
 
         public bool isAnimBased = false;
 
+        [Header("VFX Settings")]
+        public GameObject parryEffectPrefab;
+        public float effectDuration = 2f;
+
         async void Start()
         {
             isProcessingTurn = true;
@@ -430,11 +434,20 @@ namespace Turnbase
                     player.isAttackBlocked = true;
                     enemy.isAttackBlocked = true;
 
-                    if (enemy.stateMachine != null)
+                    if (enemy != null && enemy.buffEffectSpawnPoint != null && parryEffectPrefab != null)
+                    {
+                        GameObject effect = Instantiate(parryEffectPrefab,
+                                                        enemy.buffEffectSpawnPoint.position,
+                                                        enemy.buffEffectSpawnPoint.rotation);
+
+                        effect.transform.SetParent(enemy.buffEffectSpawnPoint);
+
+                        Destroy(effect, 2.0f);
+                    }
+
 
                     if (player.stateMachine != null)
                         player.stateMachine.SwitchState(new ParryingState(player.stateMachine));
-
                 }
             });
         }

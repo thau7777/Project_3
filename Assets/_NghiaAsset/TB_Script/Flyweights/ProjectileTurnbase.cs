@@ -67,6 +67,12 @@ namespace Turnbase
         {
             ElementType element = projectileElement;
 
+            if (target != null && target.isAttackBlocked && target.isParrySuccessful)
+            {
+                onHitCallback?.Invoke();
+                return;
+            }
+
             target.TakeDamage(owner, damageAmount, element);
 
             SpawnImpactEffect(target.transform.position, skillData);
