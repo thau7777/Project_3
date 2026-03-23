@@ -1,28 +1,62 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 namespace Turnbase
 {
     public class ParryPopup : MonoBehaviour
     {
-        public GameObject popupPrefab;
-
-        public Vector3 spawnOffset = new Vector3(0.7f, 2f, 1f);
+        public GameObject parryPopupPrefab;
+        public GameObject avoidPopupPrefab;
+        public Transform spawnPoint;
 
         public void ShowParryPopup(Character character)
         {
-            Vector3 spawnPosition = character.transform.position + spawnOffset;
+            Vector3 pos = spawnPoint != null ? spawnPoint.position : character.transform.position + Vector3.up * 2f;
+            GameObject popup = Instantiate(parryPopupPrefab, pos, Quaternion.identity);
 
-            GameObject popupInstance = Instantiate(popupPrefab, spawnPosition, Quaternion.identity);
+            StartCoroutine(FadeOutAndDestroy(popup, "PARRY"));
+        }
 
-            TextMeshPro textComponent = popupInstance.GetComponentInChildren<TextMeshPro>();
+        public void ShowAvoidPopup(Character character)
+        {
+            Vector3 pos = spawnPoint != null ? spawnPoint.position : character.transform.position + Vector3.up * 2f;
+            GameObject popup = Instantiate(avoidPopupPrefab, pos, Quaternion.identity);
 
-            if (textComponent != null)
+            StartCoroutine(FadeOutAndDestroy(popup, "AVOID"));
+        }
+
+        private IEnumerator FadeOutAndDestroy(GameObject popup, string message)
+        {
+            TextMeshPro textComponent = popup.GetComponentInChildren<TextMeshPro>();
+            if (textComponent == null)
             {
-                textComponent.text = "PARRY";
+                Destroy(popup);
+                yield break;
             }
 
-            Destroy(popupInstance, 1.0f);
+            textComponent.text = message;
+
+            float duration = 1.0f;
+            float elapsed = 0f;
+
+            Color originalColor = textComponent.color;
+            Vector3 startPos = popup.transform.position;
+            Vector3 targetPos = startPos + Vector3.up * 0.5f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float normalizedTime = elapsed / duration;
+
+                textComponent.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f - normalizedTime);
+
+                popup.transform.position = Vector3.Lerp(startPos, targetPos, normalizedTime);
+
+                yield return null;
+            }
+
+            Destroy(popup);
         }
     }
 }
