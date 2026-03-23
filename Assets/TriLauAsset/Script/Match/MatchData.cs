@@ -27,6 +27,7 @@ namespace MyRule
         [JsonProperty] private int _nodesExplored;
         [JsonProperty] private CombatData _combatData;
         [JsonProperty] private MazeGameplayReward _reward;
+        [JsonProperty] private WeatherData _weatherData;
 
         [JsonIgnore] public EMap MapType => _mapType;
         [JsonIgnore] public Loader.EScene Scene => _scene;
@@ -42,6 +43,7 @@ namespace MyRule
         [JsonIgnore] public int NodesExplored => _nodesExplored;
         [JsonIgnore] public CombatData CombatData => _combatData;
         [JsonIgnore] public MazeGameplayReward Reward => _reward;
+        [JsonIgnore] public WeatherData WeatherData => _weatherData;
 
         public MatchData(EMap eMap, CharacterData character, int runeAmount)
         {
@@ -72,6 +74,7 @@ namespace MyRule
             _nodesExplored = 0;
             _combatData = null;
             _reward = null;
+            _weatherData = null;
         }
 
         public async void MoveToNextMap()
@@ -116,5 +119,7 @@ namespace MyRule
         public void SetCombat(CombatData combatData) => this._combatData = combatData;
 
         public void SetReward(MazeGameplayReward reward) => this._reward = reward;
+
+        public void SetWeather(WeatherData weatherData) => this._weatherData = weatherData;
     }
 }
