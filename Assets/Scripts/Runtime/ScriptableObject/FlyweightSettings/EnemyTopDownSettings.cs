@@ -14,8 +14,8 @@ public class EnemyTopDownSettings : FlyweightSettings
     public ElementalType elementalType = ElementalType.Normal;
     public float spawnAnimationDuration = 0.5f;
     [SerializeField] private OneShotVFXSettings _spawnVFXSettings;
-    [SerializeField] private LayerMask _obstacleLayerMask;
-    [SerializeField] private float _spawnClearanceRadius = 0.5f;
+    private LayerMask _obstacleLayerMask;
+    private float _spawnClearanceRadius = 0.5f;
     private Transform _player;
 
     private Collider _groundCollider;
@@ -40,6 +40,7 @@ public class EnemyTopDownSettings : FlyweightSettings
     {
         _player = player;
         _spawnRadius = spawnRadius;
+        _obstacleLayerMask = LayerMask.NameToLayer("Obstacle");
     }
 
 

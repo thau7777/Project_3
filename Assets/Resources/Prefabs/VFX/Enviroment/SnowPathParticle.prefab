@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5512905825106883320
+--- !u!1 &9131251617943403861
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 768345359963509851}
-  - component: {fileID: 8577009320472817186}
-  - component: {fileID: 8260120015152944736}
-  m_Layer: 22
-  m_Name: Indicator_Circle_Range
+  - component: {fileID: 6444935536649430328}
+  - component: {fileID: 8431744586557216871}
+  - component: {fileID: 7432470758271100735}
+  m_Layer: 25
+  m_Name: SnowPathParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &768345359963509851
+--- !u!4 &6444935536649430328
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5512905825106883320}
+  m_GameObject: {fileID: 9131251617943403861}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.6, y: 0.154, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &8577009320472817186
+--- !u!2083052967 &8431744586557216871
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5512905825106883320}
+  m_GameObject: {fileID: 9131251617943403861}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 0da9f95147cbaef4288e2f2d804e9fab, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: ee113cb51045d39468600bc7b4bb7d91, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -51,7 +51,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 10
+      - m_Value: 3
         m_Name: Size
         m_Overridden: 1
     m_Vector2f:
@@ -73,19 +73,16 @@ VisualEffect:
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array:
-      - m_Value: 1
-        m_Name: IsRangeIndicator
-        m_Overridden: 1
---- !u!73398921 &8260120015152944736
+      m_Array: []
+--- !u!73398921 &7432470758271100735
 VFXRenderer:
   serializedVersion: 1
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5512905825106883320}
-  m_Enabled: 1
+  m_GameObject: {fileID: 9131251617943403861}
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
