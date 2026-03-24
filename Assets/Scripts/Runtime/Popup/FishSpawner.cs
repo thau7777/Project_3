@@ -20,9 +20,17 @@ public class FishingSpawner : MonoBehaviour
     public GameObject treasurePrefab;
     [Range(0f, 1f)] public float treasureChance = 0.35f;
 
+    public static FishingSpawner instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        
+    }
     private void Start()
     {
-        fishCount = 5;
+        fishCount = Random.Range(3,5);
         SpawnWave();
     }
 

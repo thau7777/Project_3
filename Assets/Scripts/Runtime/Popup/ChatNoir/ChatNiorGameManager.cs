@@ -291,10 +291,7 @@ public class ChatNiorGameManager : MonoBehaviour
         }
     }
 
-    bool IsCatTrapped()
-    {
-        return FindSmartPath() == null;
-    }
+    
     bool IsAtEdge(HexNode n)
     {
         return n.row == 0 || n.row == rows - 1 ||
