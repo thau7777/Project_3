@@ -14,10 +14,12 @@ public class EnemyTopDownSettings : FlyweightSettings
     public ElementalType elementalType = ElementalType.Normal;
     public float spawnAnimationDuration = 0.5f;
     [SerializeField] private OneShotVFXSettings _spawnVFXSettings;
+    private LayerMask _obstacleLayerMask;
+    private float _spawnClearanceRadius = 0.5f;
     private Transform _player;
 
     private Collider _groundCollider;
-    private Terrain _groundTerrain;
+    private Terrain _groundTerrain; 
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);
@@ -38,6 +40,7 @@ public class EnemyTopDownSettings : FlyweightSettings
     {
         _player = player;
         _spawnRadius = spawnRadius;
+        _obstacleLayerMask = LayerMask.NameToLayer("Obstacle");
     }
 
 
@@ -102,7 +105,17 @@ public class EnemyTopDownSettings : FlyweightSettings
 
             if (TryGetGroundHeight(potentialX, potentialZ, out float groundY))
             {
-                return new Vector3(potentialX, groundY - _spawnOffsetBelowGround, potentialZ);
+                Vector3 candidate = new Vector3(potentialX, groundY - _spawnOffsetBelowGround, potentialZ);
+
+                // Reject if an obstacle is at this position
+                bool blocked = Physics.CheckSphere(
+                    candidate + Vector3.up * _spawnClearanceRadius,
+                    _spawnClearanceRadius,
+                    _obstacleLayerMask
+                );
+
+                if (!blocked)
+                    return candidate;
             }
         }
 

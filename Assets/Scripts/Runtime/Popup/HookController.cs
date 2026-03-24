@@ -28,6 +28,7 @@ public class HookController : MonoBehaviour
     private bool isCharging;
     private bool hasThrown;
     private bool inWater;
+    private bool OnGround;
     private FishItem hookedItem;
     private Vector2 initialPosition;
 
@@ -63,7 +64,7 @@ public class HookController : MonoBehaviour
                 ThrowHook(chargeBar.fillAmount);
             }
         }
-        if(Input.GetKey(KeyCode.R) && inWater)
+        if(Input.GetKey(KeyCode.R) && OnGround)
         {
             ResetHook();
         }
@@ -101,6 +102,7 @@ public class HookController : MonoBehaviour
             rb.linearDamping = waterDrag;
             rb.gravityScale = waterGravity;
         }
+        
 
         if (!other.TryGetComponent(out FishItem item)) return;
         if (item.state != FishState.Swimming) return;
@@ -110,12 +112,21 @@ public class HookController : MonoBehaviour
 
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0f;
+        rb.simulated = false;
 
         FishingUI.instance.StartFishing(this);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            OnGround = true;
+        }
     }
     public void PullUp(bool success)
     {
         rb.linearVelocity = Vector2.zero;
+        
 
         if (hookedItem != null)
         {
@@ -133,10 +144,12 @@ public class HookController : MonoBehaviour
         transform.position = initialPosition;
         hasThrown = false;
         inWater = false;
+        OnGround = false;
         hookedItem = null;
         rb.mass = normalMass;
         rb.gravityScale = normalGravity;
         rb.linearDamping = 0f;
         rb.linearVelocity = Vector2.zero;
+        rb.simulated = true;
     }
 }
