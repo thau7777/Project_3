@@ -11,14 +11,18 @@ namespace MyRule.UI
 
         private int currentTabIndex = 0;
 
+        private bool isShowing = false;
+
         private void OnEnable()
         {
             inputReader.uiActions.onNavigateTab += OnNavigateTab;
+            inputReader.uiActions.onCancel += BlockTab;
         }
 
         private void OnDisable()
         {
             inputReader.uiActions.onNavigateTab -= OnNavigateTab;
+            inputReader.uiActions.onCancel -= BlockTab;
         }
 
         private void Start()
@@ -29,6 +33,8 @@ namespace MyRule.UI
 
         private void OnNavigateTab(int direction)
         {
+            if (!isShowing) return;
+
             if (tabNames == null || tabNames.Count == 0) return;
             
             currentTabIndex += direction;
@@ -51,8 +57,16 @@ namespace MyRule.UI
 
         public void ResetTab()
         {
+            isShowing = true;
             currentTabIndex = 0;
             UpdateTabSelection();
+        }
+
+        public void BlockTab()
+        {
+            if (!isShowing) return;
+
+            isShowing = false;
         }
     }
 }

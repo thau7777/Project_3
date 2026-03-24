@@ -9,6 +9,14 @@ namespace MyRule
         Discovery,
     }
 
+    public enum RewardType
+    {
+        None,
+        Gold,
+        Crystal,
+        Sigil,
+    }
+
     [CreateAssetMenu(fileName = "AchievementConfig", menuName = "Scriptable Objects/AchievementConfig")]
     public class AchievementConfig : ScriptableObject
     {
@@ -26,11 +34,12 @@ namespace MyRule
         public string achievementName;
         public AchievementType type;
         [ShowIfEnumValue("type", AchievementType.KillEnemy)] public int targetValue;
-        [ShowIfEnumValue("type", AchievementType.CollectSigil)] public string targetSigilName;
         [ShowIfEnumValue("type", AchievementType.Discovery)] public EMap map;
 
         [Header("Reward")]
-        public int goldReward;
-        public string sigilRewardId;
+        public RewardType rewardType;
+        [ShowIfEnumValue("rewardType", RewardType.Gold)] public int goldReward;
+        [ShowIfEnumValue("rewardType", RewardType.Crystal)] public int crystalReward;
+        [ShowIfEnumValue("rewardType", RewardType.Sigil)] public SigilSO sigilReward;
     }
 }

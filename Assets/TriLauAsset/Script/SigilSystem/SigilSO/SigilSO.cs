@@ -20,7 +20,7 @@ namespace MyRule
     public class SigilSO : ScriptableObject
     {
         [Header("SigilInfo")]
-        [SerializeField, ReadOnly] public string id;
+        [SerializeField] public string id;
 
 #if UNITY_EDITOR
         [ContextMenu("Generate New ID")]

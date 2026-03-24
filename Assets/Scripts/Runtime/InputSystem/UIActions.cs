@@ -14,6 +14,7 @@ public class UIActions : InputActions.IUIActions
     public event Action<int> onNavigateTab;
     public event Action onOpenTabView;
     public event Action onAnyPressed;
+    public event Action<Vector2> onNavigate;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -65,7 +66,11 @@ public class UIActions : InputActions.IUIActions
 
     public void OnNavigate(InputAction.CallbackContext context)
     {
-        
+        if (context.performed)
+        {
+            var value = context.ReadValue<Vector2>();
+            onNavigate?.Invoke(value);
+        }
     }
 
     public void OnPreviousTab(InputAction.CallbackContext context)
