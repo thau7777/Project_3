@@ -13,6 +13,8 @@ namespace Turnbase
         [Header("Dynamic Stat Display")]
         public StatEntry statEntryPrefab;
         public Transform statsContainer;
+        public Transform statsBonusContainer; 
+        public Transform statsDefenseContainer;
 
         [Header("Effect Stat Display")]
         public StatusEffectEntry statusEffectEntryPrefab;
@@ -27,14 +29,12 @@ namespace Turnbase
         public TextMeshProUGUI level;
         public GameObject statPanel;
 
-        [Header("Tab Buttons")]
-        public Button statsTabButton; 
-        public Button skillsTabButton;
-
         [Header("Tooltip Reference")]
         public SkillTooltipUI skillTooltip;
 
         private Dictionary<string, StatEntry> activeStatEntries = new Dictionary<string, StatEntry>();
+        private Dictionary<string, StatEntry> activeBonusEntries = new Dictionary<string, StatEntry>();
+        private Dictionary<string, StatEntry> activeDefenseEntries = new Dictionary<string, StatEntry>(); 
         private Dictionary<string, StatusEffectEntry> activeEffectEntries = new Dictionary<string, StatusEffectEntry>();
         private Dictionary<string, SkillEntryUI> activeSkillEntries = new Dictionary<string, SkillEntryUI>();
         private Character currentCharacter;
@@ -43,32 +43,12 @@ namespace Turnbase
 
         void Awake()
         {
-            if (statsTabButton != null)
-                statsTabButton.onClick.AddListener(() => SwitchTab(true));
-
-            if (skillsTabButton != null)
-                skillsTabButton.onClick.AddListener(() => SwitchTab(false));
-
             skillTooltip = GetComponent<SkillTooltipUI>();
         }
 
         void Start()
         {
             HideStats();
-        }
-
-        public void SwitchTab(bool showStats)
-        {
-            if (statsContainer != null) statsContainer.gameObject.SetActive(showStats);
-            if (skillContainer != null) skillContainer.gameObject.SetActive(!showStats);
-
-            if (skillTooltip != null)
-            {
-                skillTooltip.Hide();
-            }
-
-            if (showStats) UpdateStatsUI();
-            else UpdateSkillsUI();
         }
 
         private void OnEnable()
@@ -85,10 +65,10 @@ namespace Turnbase
             if (currentCharacter == null) { HideStats(); return; }
 
             currentDataProvider = currentCharacter.GetComponent<CharacterStatusDataProvider>();
-
             statPanel.SetActive(true);
 
-            SwitchTab(true);
+            if (statsContainer != null) statsContainer.gameObject.SetActive(true);
+            if (skillContainer != null) skillContainer.gameObject.SetActive(true);
 
             UpdateHeader();
             ClearOldStats();
@@ -108,8 +88,11 @@ namespace Turnbase
             if (currentCharacter == null || currentCharacter.stats == null) return;
 
             UpdateHeader();
-            List<StatData> statsToShow = GetStatsList(currentCharacter.stats);
-            UpdateOrCreateStatEntries(statsToShow);
+
+            UpdateStatGroup(GetStatsList(currentCharacter.stats), statsContainer, activeStatEntries);
+            UpdateStatGroup(GetBonusStatsList(currentCharacter.stats), statsBonusContainer, activeBonusEntries);
+            UpdateStatGroup(GetDefenseStatsList(currentCharacter.stats), statsDefenseContainer, activeDefenseEntries);
+
             UpdateStatusEffects();
         }
 
@@ -170,6 +153,16 @@ namespace Turnbase
                 new StatData { Name = "P. Defense", Value = stats.physicalDefense.ToString() },
                 new StatData { Name = "M. Defense", Value = stats.magicDefense.ToString() },
 
+                new StatData { Name = "Crit Chance", Value = stats.critChance.ToString(), Suffix = "%" },
+                new StatData { Name = "Crit Damage", Value = stats.critMult.ToString(), Suffix = "%" },
+                new StatData { Name = "Speed", Value = stats.speed.ToString() },
+            };
+        }
+
+        private List<StatData> GetBonusStatsList(CharacterStats stats)
+        {
+            return new List<StatData>
+            {
                 new StatData { Name = "Fire Bonus", Value = stats.fireDamageBonus.ToString() },
                 new StatData { Name = "Frost Bonus", Value = stats.frostDamageBonus.ToString() },
                 new StatData { Name = "Light Bonus", Value = stats.lightningDamageBonus.ToString() },
@@ -177,7 +170,13 @@ namespace Turnbase
                 new StatData { Name = "Holy Bonus", Value = stats.holyDamageBonus.ToString() },
                 new StatData { Name = "Water Bonus", Value = stats.waterDamageBonus.ToString() },
                 new StatData { Name = "Poison Bonus", Value = stats.poisonDamageBonus.ToString() },
+            };
+        }
 
+        private List<StatData> GetDefenseStatsList(CharacterStats stats)
+        {
+            return new List<StatData>
+            {
                 new StatData { Name = "Fire Def", Value = stats.fireDefense.ToString() },
                 new StatData { Name = "Light Def", Value = stats.lightningDefense.ToString() },
                 new StatData { Name = "Frost Def", Value = stats.frostDefense.ToString() },
@@ -185,32 +184,34 @@ namespace Turnbase
                 new StatData { Name = "Holy Def", Value = stats.holyDefense.ToString() },
                 new StatData { Name = "Water Def", Value = stats.waterDefense.ToString() },
                 new StatData { Name = "Poison Def", Value = stats.poisonDefense.ToString() },
-
-
-                new StatData { Name = "Crit Chance", Value = stats.critChance.ToString(), Suffix = "%" },
-                new StatData { Name = "Crit Damage", Value = stats.critMult.ToString(), Suffix = "%" },
-                new StatData { Name = "Speed", Value = stats.speed.ToString() },
             };
         }
-        private void UpdateOrCreateStatEntries(List<StatData> stats)
+
+
+        private void UpdateStatGroup(List<StatData> stats, Transform container, Dictionary<string, StatEntry> activeEntries)
         {
-            HashSet<string> keysToRemove = new HashSet<string>(activeStatEntries.Keys);
+            if (container == null) return;
+
+            HashSet<string> keysToRemove = new HashSet<string>(activeEntries.Keys);
             foreach (var stat in stats)
             {
                 keysToRemove.Remove(stat.Name);
-                if (activeStatEntries.TryGetValue(stat.Name, out StatEntry entry))
-                    entry.Setup(stat.Name, stat.Value + stat.Suffix);
-                else if (statEntryPrefab != null && statsContainer != null)
+                if (activeEntries.TryGetValue(stat.Name, out StatEntry entry))
                 {
-                    StatEntry newEntry = Instantiate(statEntryPrefab, statsContainer);
+                    entry.Setup(stat.Name, stat.Value + stat.Suffix);
+                }
+                else if (statEntryPrefab != null)
+                {
+                    StatEntry newEntry = Instantiate(statEntryPrefab, container);
                     newEntry.Setup(stat.Name, stat.Value + stat.Suffix);
-                    activeStatEntries.Add(stat.Name, newEntry);
+                    activeEntries.Add(stat.Name, newEntry);
                 }
             }
+
             foreach (string key in keysToRemove)
             {
-                Destroy(activeStatEntries[key].gameObject);
-                activeStatEntries.Remove(key);
+                Destroy(activeEntries[key].gameObject);
+                activeEntries.Remove(key);
             }
         }
 
@@ -224,7 +225,6 @@ namespace Turnbase
                 keysToRemove.Remove(effect.Name);
                 if (activeEffectEntries.TryGetValue(effect.Name, out StatusEffectEntry entry))
                 {
-                    //entry.Setup(effect.Name, $"{effect.Detail} ({effect.TurnsRemaining}t)");
                     entry.UpdateVisuals(effect);
                 }
                 else if (statusEffectEntryPrefab != null && statusEffectsContainer != null)
@@ -243,14 +243,17 @@ namespace Turnbase
         }
         private void ClearOldStats()
         {
-            foreach (var entry in activeStatEntries.Values) Destroy(entry.gameObject);
-            activeStatEntries.Clear();
+            ClearDictionary(activeStatEntries);
+            ClearDictionary(activeBonusEntries);
+            ClearDictionary(activeDefenseEntries);
+            ClearDictionary(activeEffectEntries);
+            ClearDictionary(activeSkillEntries);
+        }
 
-            foreach (var entry in activeEffectEntries.Values) Destroy(entry.gameObject);
-            activeEffectEntries.Clear();
-
-            foreach (var entry in activeSkillEntries.Values) Destroy(entry.gameObject);
-            activeSkillEntries.Clear();
+        private void ClearDictionary<TKey, TValue>(Dictionary<TKey, TValue> dict) where TValue : Component
+        {
+            foreach (var entry in dict.Values) if (entry != null) Destroy(entry.gameObject);
+            dict.Clear();
         }
 
         public void HideStats()
