@@ -119,5 +119,7 @@ namespace MyRule
         public void SetCombat(CombatData combatData) => this._combatData = combatData;
 
         public void SetReward(MazeGameplayReward reward) => this._reward = reward;
+
+        public void SetWeather(WeatherData weatherData) => this._weatherData = weatherData;
     }
 }
