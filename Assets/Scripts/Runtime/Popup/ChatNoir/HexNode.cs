@@ -8,11 +8,16 @@ public class HexNode : MonoBehaviour
     public bool isBlocked;
 
     [Header("UI References")]
-    [SerializeField] private Image displayImage; // Kéo Image component vào đây
+    [SerializeField] private Image displayImage; 
+    [SerializeField] private Image backGroundImage;
     [SerializeField] private Button btn;
 
     [Header("Sprites Settings")]
-    [SerializeField] private List<Sprite> nodeSprites; // Index 0: Trống, Index 1: Tường
+    [SerializeField] private List<Sprite> grassSprites; 
+    [SerializeField] private List<Sprite> desertSprites; 
+    [SerializeField] private List<Sprite> iceSprites;
+    [SerializeField] private List<Sprite> nodeSprites;
+
 
     public void Init(int r, int c, System.Action<HexNode> onClickAction)
     {
@@ -21,8 +26,9 @@ public class HexNode : MonoBehaviour
         isBlocked = false;
 
         // Reset về Sprite trống (index 0)
-        if (nodeSprites.Count > 0)
-            displayImage.sprite = nodeSprites[0];
+        if (iceSprites.Count > 0)
+            displayImage.sprite = iceSprites[0];
+        backGroundImage.sprite = nodeSprites[2];
 
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() => onClickAction(this));
@@ -34,8 +40,8 @@ public class HexNode : MonoBehaviour
     {
         isBlocked = true;
         // Đổi sang Sprite tường (index 1)
-        if (nodeSprites.Count > 1)
-            displayImage.sprite = nodeSprites[1];
+        if (iceSprites.Count > 1)
+            displayImage.sprite = iceSprites[1];
         else
             Debug.LogError("Chưa kéo đủ 2 Sprite vào list nodeSprites!");
     }

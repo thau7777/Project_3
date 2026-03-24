@@ -149,15 +149,19 @@ public class FishItem : MonoBehaviour
         {
             case FishingItemType.Fish:
                 FishingGameManager.Instance.AddScore(scoreValue);
+                FishingGameManager.Instance.Caught(5f);
                 break;
             case FishingItemType.Treasure:
                 FishingGameManager.Instance.AddScore(scoreValue * 5);
+                FishingGameManager.Instance.Caught(10f);
                 break;
             case FishingItemType.Trash:
                 FishingGameManager.Instance.AddScore(-scoreValue);
                 break;
         }
+        FishingSpawner.instance.fishCount--;
         StartCoroutine(HideAndDestroy());
+        
     }
 
     IEnumerator HideAndDestroy()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChatNiorGameManager : MonoBehaviour
@@ -29,8 +30,9 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private bool isGameEnd = false;
     [SerializeField] private int moveCount;
     [SerializeField] private int score;
+    [SerializeField] private bool skillUsed = false;
 
-    
+
     private string winText = "Bạn đã bắt được mèo!";
     private string loseText = "Mèo đã trốn thoát!";
     private string scoreTextFormat = "Điểm: {0}";
@@ -40,11 +42,13 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text moveCountText;
     [SerializeField] private TMP_Text resultText;
+    [SerializeField] private GameObject skillButton;
 
     #region Unity
     private void Start()
     {
         SetUpStartGame();
+        skillButton.SetActive(true);
     }
 
     private void Update()
@@ -93,7 +97,12 @@ public class ChatNiorGameManager : MonoBehaviour
         {
             chatNoir.SetActive(false);
         }));
-    }    
+    } 
+    public void TriggerSkill()
+    {
+        skillUsed = true;
+
+    }
     void MoveCat()
     {
         HexNode next = FindSmartPath();
@@ -165,7 +174,7 @@ public class ChatNiorGameManager : MonoBehaviour
         UpdateCatUIAnimated(catNode);
 
 
-        int wallCount = Random.Range(4, 20);
+        int wallCount = Random.Range(8, 24);
         for (int i = 0; i < wallCount; i++)
         {
             int r = Random.Range(0, rows);
@@ -184,9 +193,27 @@ public class ChatNiorGameManager : MonoBehaviour
 
         node.SetAsWall();
         moveCount++;
-        score = Mathf.Max(0, score - 100); // Mỗi bước trừ 100 điểm
-        MoveCat();
+        score = Mathf.Max(0, score - 100);
 
+        HexNode next = FindSmartPath();
+
+        if (next == null)
+        {
+            resultText.text = winText;
+            isGameEnd = true;
+            EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(true));
+            EndGame();
+            return;
+        }
+
+        if (skillUsed)
+        {
+            
+            score = Mathf.Max(0, score - 200);
+            skillUsed = false;
+            return;
+        }
+        MoveCat();
     }
     #endregion
 
@@ -264,7 +291,7 @@ public class ChatNiorGameManager : MonoBehaviour
         }
     }
 
-
+    
     bool IsAtEdge(HexNode n)
     {
         return n.row == 0 || n.row == rows - 1 ||
