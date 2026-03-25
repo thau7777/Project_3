@@ -7,7 +7,8 @@ public class PopUpGame : InputActions.IPopUpGameActions
 {
     public Action<Vector2> onNaviagate;
     public Action onLeftClick;
-    public Action onRightClick;
+    public Action onThrow;
+    public Action onReset;
 
     public void OnNaviagate(InputAction.CallbackContext context)
     {
@@ -19,8 +20,16 @@ public class PopUpGame : InputActions.IPopUpGameActions
         if (context.performed)
             onLeftClick?.Invoke();
     }
-    public void OnRightClick(InputAction.CallbackContext context)
+    public void OnThrow(InputAction.CallbackContext context)
     {
-
+        if (context.performed)
+            onThrow?.Invoke();
+            
     }
+    public void OnReset(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+            onReset?.Invoke();
+    }
+     
 }
