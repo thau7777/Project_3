@@ -34,10 +34,10 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private bool skillUsed = false;
 
 
-    private string winText = "Bạn đã bắt được mèo!";
-    private string loseText = "Mèo đã trốn thoát!";
-    private string scoreTextFormat = "Điểm: {0}";
-    private string moveCountTextFormat = "Số bước: {0}";
+    private string winText = "You catched the BamBear!";
+    private string loseText = "The BamBear has been escaped!";
+    private string scoreTextFormat = "Score: {0}";
+    private string moveCountTextFormat = "Moves: {0}";
 
     [Header("UI References")]
     [SerializeField] private TMP_Text scoreText;
@@ -50,7 +50,7 @@ public class ChatNiorGameManager : MonoBehaviour
     private void Start()
     {
         SetUpStartGame();
-        skillButton.SetActive(true);
+        
     }
 
     private void Update()
@@ -75,6 +75,12 @@ public class ChatNiorGameManager : MonoBehaviour
 
     public void SetUpStartGame()
     {
+        skillButton.SetActive(true);
+        //if (catAnimator == null)
+        //{
+        //    catAnimator = catUI.GetComponent<Animator>();
+        //    catAnimator.enabled = false;
+        //}
         StartNewGame();
 
         score = 2000;
@@ -105,6 +111,9 @@ public class ChatNiorGameManager : MonoBehaviour
     public void TriggerSkill()
     {
         skillUsed = true;
+        //catAnimator.enabled = true;
+        //catAnimator.SetTrigger("Freeze");
+
 
     }
     void MoveCat()
