@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -43,6 +44,7 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private TMP_Text moveCountText;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private GameObject skillButton;
+    [SerializeField] private List<GameObject> image;
 
     #region Unity
     private void Start()
@@ -54,6 +56,7 @@ public class ChatNiorGameManager : MonoBehaviour
     private void Update()
     {
         UpdateUI();
+        
     }
     #endregion
 
@@ -77,6 +80,7 @@ public class ChatNiorGameManager : MonoBehaviour
         score = 2000;
         moveCount = 0;
 
+        image.ForEach(i => i.SetActive(true));
         UpdateUI();
     }
     #endregion
@@ -190,7 +194,13 @@ public class ChatNiorGameManager : MonoBehaviour
     void OnNodeClicked(HexNode node)
     {
         if (node.isBlocked || node == catNode||isGameEnd) return;
-
+        if (score <= 0 && !isGameEnd)
+        {
+            resultText.text = loseText;
+            isGameEnd = true;
+            EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
+            EndGame();
+        }
         node.SetAsWall();
         moveCount++;
         score = Mathf.Max(0, score - 100);
