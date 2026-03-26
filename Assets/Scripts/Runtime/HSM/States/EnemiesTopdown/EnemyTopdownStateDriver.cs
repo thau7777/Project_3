@@ -1,4 +1,5 @@
 using HSM;
+using PixPlays.ElementalVFX;
 using System.Collections;
 using System.Collections.Generic;
 using Turnbase;
@@ -186,8 +187,76 @@ public class EnemyTopdownStateDriver : Flyweight
             setParentForVFX == 1 ? spawnTransform : null); // Apply the rotation offset here
         if (vfx is OneShotVFX)
         {
-            OneShotVFX oneShotVFX = (OneShotVFX) vfx;
+            OneShotVFX oneShotVFX = (OneShotVFX)vfx;
             OneShotVFXSettings oneShotVFXSettings = (OneShotVFXSettings)_context.CurrentEnemyAttackData.skillVFX;
+
+            if (oneShotVFX.TryGetComponent<BaseVfx>(out var baseVfx))
+            {
+                baseVfx.gameObject.SetActive(true);
+
+                Transform target = null;
+                switch (_context.CurrentEnemyAttackData.spawnType)
+                {
+                    case EnemyAttackData.SpawnType.AtCustomSpawnTransform:
+                        target = _context.CurrentEnemyAttackData.skillSpawnTransform;
+                        break;
+                    case EnemyAttackData.SpawnType.AtSelf:
+                        target = _context.RootTransform;
+                        break;
+                    case EnemyAttackData.SpawnType.AtTarget:
+                        target = _context.CurrentTargetTransform;
+                        break;
+                }
+
+                VfxData vfxData = new(transform, target, oneShotVFXSettings.DefaultLifeTime, 1);
+
+                foreach (Transform child in baseVfx.transform)
+                {
+                    if (child.TryGetComponent<HitBoxHandler>(out var specialVfxHitBoxHandler))
+                    {
+                        specialVfxHitBoxHandler.Setup(
+                            gameObject,
+                            _context.CurrentEnemyAttackData.dodgeLayers,
+                            oneShotVFXSettings.hitboxOnOffTime,
+                            oneShotVFXSettings.useTriggerStays,
+                            oneShotVFXSettings.triggerStayTickInterval,
+                            _context.CurrentEnemyAttackData.Parryable);
+
+                        if (child.TryGetComponent<DamageDealer>(out var specialVfxDamageDealer))
+                        {
+                            specialVfxDamageDealer.Setup(
+                                oneShotVFXSettings.isMagicAttack,
+                                _characterStats.AttackDamage,
+                                _context.CurrentEnemyAttackData.dealTrueDamage,
+                                _context.CurrentEnemyAttackData.knockBackForce,
+                                _context.CurrentEnemyAttackData.reverseKnockbackDirection,
+                                oneShotVFXSettings.elementalType,
+                                oneShotVFXSettings.hitImpactVFXSetting,
+                                false);
+                            if (oneShotVFXSettings.UseParticleCollision)
+                                specialVfxDamageDealer.SetupParicleDamageDealer(gameObject);
+                        }
+
+                        if (child.TryGetComponent<EffectApplier>(out var specialVfxEffectApplier))
+                        {
+                            specialVfxEffectApplier.SetEffects(oneShotVFXSettings.effectsToApplyList);
+                            specialVfxEffectApplier.SetUpForParticle(gameObject);
+                        }
+
+                        break;
+                    }
+                    
+
+                }
+
+                baseVfx.Play(vfxData);
+                return;
+            }
+            
+
+            
+
+
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
             {
                 hitBoxHandler.Setup(
@@ -217,7 +286,7 @@ public class EnemyTopdownStateDriver : Flyweight
                 effectApplier.SetUpForParticle(gameObject);
             }
             (vfx as OneShotVFX).InitializeVFX(_context.CurrentEnemyAttackData.skillSize,
-                _context.CurrentEnemyAttackData.skillDuration);
+                oneShotVFXSettings.DefaultLifeTime);
             
         }
             
@@ -247,11 +316,11 @@ public class EnemyTopdownStateDriver : Flyweight
 
     public void SpawnChargeEffect()
     {
-        var chargeSettings = _context.CurrentEnemyAttackData.chargeEffect;
+        OneShotVFXSettings chargeSettings = _context.CurrentEnemyAttackData.chargeEffect;
         _chargeEffect = FlyweightFactory.Spawn(chargeSettings);
         OneShotVFX vfx = _chargeEffect as OneShotVFX;
         vfx.FlyweightInitialize(_context.CurrentEnemyAttackData.chargeSpawnTransform.position.Add(y: 0.01f));
-        vfx.InitializeVFX(_context.CurrentEnemyAttackData.chargeEffectSize, _context.CurrentEnemyAttackData.chargeDuration);
+        vfx.InitializeVFX(_context.CurrentEnemyAttackData.chargeEffectSize, chargeSettings.DefaultLifeTime);
     }
     public void ShowSkillIndicator()
     {
@@ -278,7 +347,7 @@ public class EnemyTopdownStateDriver : Flyweight
                     target = _context.RootTransform;
                     break;
                 case EnemyAttackData.SpawnType.AtTarget:
-                    target = _context.PlayerTransform;
+                    target = _context.CurrentTargetTransform;
                     break;
             }
             _skillIndicator.FlyweightInitialize(target.position.Add(y: 0.1f));
