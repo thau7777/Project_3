@@ -1174,9 +1174,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Right Click"",
+                    ""name"": ""Throw"",
                     ""type"": ""Button"",
-                    ""id"": ""4a878e6c-b530-44e8-abb9-d3d8d3048274"",
+                    ""id"": ""95f7bd1d-4736-49c8-bdd4-1ed32a120edb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0aba2a9-86bb-4f31-907b-18b75caa288c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1197,69 +1206,25 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""957d5d35-1faa-4a19-b778-6ac72bcc4ff9"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""4a20d454-3584-4d58-b978-4e07220044fd"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Right Click"",
+                    ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""058192e8-e8bb-4b52-a544-491f83c60cad"",
-                    ""path"": ""2DVector"",
+                    ""name"": """",
+                    ""id"": ""5839de24-7741-4373-b1cb-db4f9cb0ff15"",
+                    ""path"": ""<Keyboard>/#(R)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Naviagate"",
-                    ""isComposite"": true,
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""9b65d882-de84-45a1-a066-40661de4d2b1"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Naviagate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""dee4422b-9cad-4b57-b4fe-dd7baa4cb6b9"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Naviagate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""352cc35c-afbb-4580-9aa1-92fbc178bd2a"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Naviagate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""df207c47-faec-4ce4-8a5c-4bef7f3e2ab7"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Naviagate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""2D Vector"",
@@ -1834,7 +1799,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PopUpGame = asset.FindActionMap("PopUpGame", throwIfNotFound: true);
         m_PopUpGame_Naviagate = m_PopUpGame.FindAction("Naviagate", throwIfNotFound: true);
         m_PopUpGame_LeftClick = m_PopUpGame.FindAction("Left Click", throwIfNotFound: true);
-        m_PopUpGame_RightClick = m_PopUpGame.FindAction("Right Click", throwIfNotFound: true);
+        m_PopUpGame_Throw = m_PopUpGame.FindAction("Throw", throwIfNotFound: true);
+        m_PopUpGame_Reset = m_PopUpGame.FindAction("Reset", throwIfNotFound: true);
         // SpaceStation
         m_SpaceStation = asset.FindActionMap("SpaceStation", throwIfNotFound: true);
         m_SpaceStation_Move = m_SpaceStation.FindAction("Move", throwIfNotFound: true);
@@ -2710,7 +2676,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPopUpGameActions> m_PopUpGameActionsCallbackInterfaces = new List<IPopUpGameActions>();
     private readonly InputAction m_PopUpGame_Naviagate;
     private readonly InputAction m_PopUpGame_LeftClick;
-    private readonly InputAction m_PopUpGame_RightClick;
+    private readonly InputAction m_PopUpGame_Throw;
+    private readonly InputAction m_PopUpGame_Reset;
     /// <summary>
     /// Provides access to input actions defined in input action map "PopUpGame".
     /// </summary>
@@ -2731,9 +2698,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @LeftClick => m_Wrapper.m_PopUpGame_LeftClick;
         /// <summary>
-        /// Provides access to the underlying input action "PopUpGame/RightClick".
+        /// Provides access to the underlying input action "PopUpGame/Throw".
         /// </summary>
-        public InputAction @RightClick => m_Wrapper.m_PopUpGame_RightClick;
+        public InputAction @Throw => m_Wrapper.m_PopUpGame_Throw;
+        /// <summary>
+        /// Provides access to the underlying input action "PopUpGame/Reset".
+        /// </summary>
+        public InputAction @Reset => m_Wrapper.m_PopUpGame_Reset;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2766,9 +2737,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftClick.started += instance.OnLeftClick;
             @LeftClick.performed += instance.OnLeftClick;
             @LeftClick.canceled += instance.OnLeftClick;
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
+            @Reset.started += instance.OnReset;
+            @Reset.performed += instance.OnReset;
+            @Reset.canceled += instance.OnReset;
         }
 
         /// <summary>
@@ -2786,9 +2760,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftClick.started -= instance.OnLeftClick;
             @LeftClick.performed -= instance.OnLeftClick;
             @LeftClick.canceled -= instance.OnLeftClick;
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
+            @Reset.started -= instance.OnReset;
+            @Reset.performed -= instance.OnReset;
+            @Reset.canceled -= instance.OnReset;
         }
 
         /// <summary>
@@ -3447,12 +3424,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftClick(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Right Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Throw" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRightClick(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Reset" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnReset(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "SpaceStation" which allows adding and removing callbacks.

@@ -76,4 +76,5 @@ public class FishingUI : MonoBehaviour
 
         timer += correct ? value : -value;
     }
+    
 }

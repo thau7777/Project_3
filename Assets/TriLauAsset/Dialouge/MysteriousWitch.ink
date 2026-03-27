@@ -6,24 +6,33 @@ You look like you're new here. #speaker:Mysterious Witch
 It's great to see you again, my fellow traveler. #speaker:Mysterious Witch
 }
 
-{ hasBloodBone == false:
+{ hasBloodFang == false:
 I have some cool stuff for you. Would you like to trade? #speaker:Mysterious Witch
-* [Exchange <color=\#EEC15F>100 runes</color> for <b><color=\#FF001D>Bloodborne</color></b> Sigil.]
-//~ chosenSigil("bloodborne")
+{currentRune >= 50:
+* [Exchange <color=\#EEC15F>100 runes</color> for <b><color=\#FF001D>Blood Fang</color></b> Sigil.]
+~ ChosenSigil("BloodFang")
+~ UpdateRune(-100)
+That's a wise choice. #speaker:Mysterious Witch
 -> chosen
-* [No, I don't want to exchange.] 
--> no_choice    
+- else:
+* [Get <b><color=\#FF001D>Blood Fang</color></b>, but you can't get any more runes in the next <b><color=\#FF001D>5</color></b> combats.]
+~ ChosenSigil("BloodFang")
+~ BlockEarnRune(5)
+That's a wise choice. #speaker:Mysterious Witch
+-> chosen
+}
 - else:
 Oh, it seems you own a sigil that's very useful to me. Would you like to trade? #speaker:Mysterious Witch
-* [Exchange <color=\#EEC15F>God Hand</color> for <b><color=\#FF001D>Blood Knight's Oath</color></b> Sigil.]
-//~ chosenSigil("Black Knight's Oath")
+* [Exchange <b><color=\#FF001D>Blood Fang</color></b> for <b><color=\#FF001D>Blood Knight's Oath</color></b> Sigil.]
+~ ChosenSigil("Black Knight's Oath")
+That's a wise choice. #speaker:Mysterious Witch
 -> chosen
+}
 * [No, I don't want to exchange.]
 -> no_choice   
-}
 
 === chosen ===
-That's a wise choice. Good luck on your journey. #speaker:Mysterious Witch
+Good luck on your journey. #speaker:Mysterious Witch
 -> END
 
 === no_choice ===

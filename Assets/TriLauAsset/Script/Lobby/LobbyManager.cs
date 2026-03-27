@@ -4,10 +4,13 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public class Lobbymanager : Singleton<Lobbymanager>, IGameData
+    public class LobbyManager : Singleton<LobbyManager>, IGameData
     {
         [SerializeField] int gold;
         [SerializeField] int crystal;
+
+        public int CurrentGold => gold;
+        public int CurrentCrystal => crystal;
 
         private void OnEnable()
         {

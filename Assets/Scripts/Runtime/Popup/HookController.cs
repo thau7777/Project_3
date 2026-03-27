@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,8 @@ public class HookController : MonoBehaviour
     public Rigidbody2D rb;
     [SerializeField] private Image chargeBar;
     public GameObject powerBar;
+    public TutorialTrigger fishTutorial;
+    [SerializeField] private List<GameObject> image;
 
     [Header("Charge")]
     public float chargeSpeed = 1.5f;
@@ -17,19 +21,21 @@ public class HookController : MonoBehaviour
     public float maxForce = 15f;
 
     [Header("Water Physics")]
-    public float waterDrag = 2f;
+    public float waterDrag = 1.5f;
     public float waterGravity = 10f;
 
     [Header("Normal Physics")]
     public float normalMass = 0.5f;
     public float normalGravity = 10f;
 
-    // ===== State =====
+
     private bool isCharging;
     private bool hasThrown;
     private bool inWater;
+    private bool OnGround;
     private FishItem hookedItem;
     private Vector2 initialPosition;
+    private float chargeStartTime;
 
     void Start()
     {
@@ -53,6 +59,8 @@ public class HookController : MonoBehaviour
             {
                 isCharging = true;
                 powerBar.SetActive(true);
+
+                chargeStartTime = Time.time;
             }
             // SPACE lần 2 → ném hook
             else if (isCharging)
@@ -63,7 +71,7 @@ public class HookController : MonoBehaviour
                 ThrowHook(chargeBar.fillAmount);
             }
         }
-        if(Input.GetKey(KeyCode.R) && inWater)
+        if(Input.GetKey(KeyCode.R) && OnGround)
         {
             ResetHook();
         }
@@ -73,8 +81,9 @@ public class HookController : MonoBehaviour
     {
         if (!isCharging) return;
 
-        chargeBar.fillAmount =
-            Mathf.PingPong(Time.time * chargeSpeed, 1f);
+        float t = (Time.time - chargeStartTime) * chargeSpeed;
+
+        chargeBar.fillAmount = Mathf.PingPong(t + 0.5f, 1f);
     }
 
     void ThrowHook(float charge01)
@@ -101,21 +110,35 @@ public class HookController : MonoBehaviour
             rb.linearDamping = waterDrag;
             rb.gravityScale = waterGravity;
         }
+        
 
         if (!other.TryGetComponent(out FishItem item)) return;
         if (item.state != FishState.Swimming) return;
 
         hookedItem = item;
         item.OnHooked();
+        image.ForEach(i => i.SetActive(true));
+
+        fishTutorial.Trigger();
 
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0f;
+        rb.simulated = false;
 
         FishingUI.instance.StartFishing(this);
+        StartCoroutine(DelayAction(1f, () => image.ForEach(i => i.SetActive(false))));
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            OnGround = true;
+        }
     }
     public void PullUp(bool success)
     {
         rb.linearVelocity = Vector2.zero;
+        
 
         if (hookedItem != null)
         {
@@ -133,10 +156,17 @@ public class HookController : MonoBehaviour
         transform.position = initialPosition;
         hasThrown = false;
         inWater = false;
+        OnGround = false;
         hookedItem = null;
         rb.mass = normalMass;
         rb.gravityScale = normalGravity;
         rb.linearDamping = 0f;
         rb.linearVelocity = Vector2.zero;
+        rb.simulated = true;
+    }
+    private IEnumerator DelayAction(float delay, System.Action action)
+    {
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
     }
 }

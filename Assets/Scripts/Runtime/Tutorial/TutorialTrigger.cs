@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using MyRule;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -83,6 +84,8 @@ public class TutorialTrigger : MonoBehaviour
             await UniTask.Delay(_onStartTriggerDelayDuration * 1000);
             Trigger();
         }
+
+        onSequenceEnd.AddListener(SaveData);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -107,6 +110,10 @@ public class TutorialTrigger : MonoBehaviour
     /// </summary>
     public void Trigger()
     {
+        if (GameSystemManager.Instance != null && 
+            GameSystemManager.Instance.GameData.Tutorial.HasCompletedAllTutorial()) 
+            return;
+
         if (TutorialManager.Instance == null)
         {
             Debug.LogError("[TutorialTrigger] No TutorialManager found in scene!");
@@ -131,5 +138,13 @@ public class TutorialTrigger : MonoBehaviour
         while (TutorialManager.Instance != null && TutorialManager.Instance.IsRunning)
             yield return null;
         onSequenceEnd?.Invoke();
+    }
+
+    private void SaveData()
+    {
+        if (GameSystemManager.Instance != null)
+        {
+            GameSystemManager.Instance.GameData.Tutorial.Tutorials[sequence.id] = true;
+        }
     }
 }

@@ -11,6 +11,16 @@
 [CreateAssetMenu(fileName = "NewTutorialSequence", menuName = "Scriptable Objects/Tutorial/Sequence")]
 public class TutorialSequence : ScriptableObject
 {
+    [ReadOnly] public string id;
+#if UNITY_EDITOR
+    [ContextMenu("Generate New ID")]
+    public void GenerateNewID()
+    {
+        id = System.Guid.NewGuid().ToString();
+        UnityEditor.EditorUtility.SetDirty(this);
+        UnityEditor.AssetDatabase.SaveAssets();
+    }
+#endif
     [Tooltip("Human-readable label, used in logs and the editor.")]
     public string sequenceName = "My Tutorial";
 
