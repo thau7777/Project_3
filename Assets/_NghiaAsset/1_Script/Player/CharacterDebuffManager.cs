@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Turnbase;
 using UnityEngine;
@@ -294,10 +294,13 @@ namespace Turnbase
         }
         public void ApplyParalysisDebuff(float percentage, int duration, Flyweight_TB vfxInstance, Sprite icon)
         {
-            if(percentage <= 0 || duration <= 0) return;
+            if (percentage <= 0 || duration <= 0) return;
 
-            this.paralysisDamageReduction = percentage;
-            this.paralysisTurnsRemaining = duration;
+            if (percentage > paralysisDamageReduction)
+            {
+                paralysisDamageReduction = percentage;
+            }
+            paralysisTurnsRemaining = duration;
 
             if (paralysisVFXInstance != null && paralysisVFXInstance != vfxInstance)
             {
@@ -306,6 +309,28 @@ namespace Turnbase
 
             paralysisVFXInstance = vfxInstance;
             paralysisIcon = icon;
+
+            if (paralysisVFXInstance != null)
+            {
+                var effectController = paralysisVFXInstance.GetComponentInChildren<CharacterEffectController>();
+                var skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+
+                if (effectController != null && skinnedMesh != null)
+                {
+                    paralysisVFXInstance.transform.SetParent(null);
+                    paralysisVFXInstance.transform.position = Vector3.zero;
+                    paralysisVFXInstance.transform.rotation = Quaternion.identity;
+
+                    effectController.SetupCharacterEffect(skinnedMesh.transform);
+                }
+                else
+                {
+                    Transform vfxParent = skinnedMesh?.transform.Find("CharacterEffectTarget") ?? characterTarget.buffEffectSpawnPoint;
+                    paralysisVFXInstance.transform.SetParent(vfxParent ?? this.transform);
+                    paralysisVFXInstance.transform.localPosition = Vector3.zero;
+                    paralysisVFXInstance.transform.localRotation = Quaternion.identity;
+                }
+            }
 
             characterTarget.UpdateOwnUI();
         }
@@ -584,9 +609,9 @@ namespace Turnbase
             Debug.Log($"Debuff giảm Speed của {characterTarget.name} đã hết hạn.");
         }
 
-        public void RemoveExpiredParalysisDebuf()
+        public void RemoveExpiredParalysisDebuff()
         {
-            speedReductionTurnsRemaining = 0;
+            paralysisTurnsRemaining = 0;
 
             if (paralysisVFXInstance != null)
             {
@@ -736,7 +761,7 @@ namespace Turnbase
                 paralysisTurnsRemaining--;
                 if(paralysisTurnsRemaining <= 0)
                 {
-                    RemoveExpiredParalysisDebuf();
+                    RemoveExpiredParalysisDebuff();
                     uiUpdateNeeded = true;
                 }
             }

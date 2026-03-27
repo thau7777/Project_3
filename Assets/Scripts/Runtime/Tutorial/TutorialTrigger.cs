@@ -20,6 +20,9 @@ public class TutorialStepBinding
     [Tooltip("Override the trigger's shared anchor for just this step.\n" +
              "Leave empty to use the trigger's main Anchor Target.")]
     public Transform anchorOverride;
+
+    public string[] targetIdKeys;
+
 }
 
 // ─────────────────────────────────────────────────────────────

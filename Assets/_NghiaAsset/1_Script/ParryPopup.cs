@@ -15,7 +15,7 @@ namespace Turnbase
             Vector3 pos = spawnPoint != null ? spawnPoint.position : character.transform.position + Vector3.up * 2f;
             GameObject popup = Instantiate(parryPopupPrefab, pos, Quaternion.identity);
 
-            StartCoroutine(FadeOutAndDestroy(popup, "PARRY"));
+            StartCoroutine(FadeOutAndDestroy(popup, "PARRIED"));
         }
 
         public void ShowAvoidPopup(Character character)
