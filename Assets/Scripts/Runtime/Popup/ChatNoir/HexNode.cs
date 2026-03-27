@@ -26,9 +26,9 @@ public class HexNode : MonoBehaviour
         isBlocked = false;
 
         // Reset về Sprite trống (index 0)
-        if (iceSprites.Count > 0)
-            displayImage.sprite = iceSprites[0];
-        backGroundImage.sprite = nodeSprites[2];
+        if (grassSprites.Count > 0)
+            displayImage.sprite = grassSprites[0];
+        backGroundImage.sprite = nodeSprites[0];
 
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() => onClickAction(this));
@@ -40,8 +40,8 @@ public class HexNode : MonoBehaviour
     {
         isBlocked = true;
         // Đổi sang Sprite tường (index 1)
-        if (iceSprites.Count > 1)
-            displayImage.sprite = iceSprites[1];
+        if (grassSprites.Count > 1)
+            displayImage.sprite = grassSprites[1];
         else
             Debug.LogError("Chưa kéo đủ 2 Sprite vào list nodeSprites!");
     }

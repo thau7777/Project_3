@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -33,27 +34,29 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private bool skillUsed = false;
 
 
-    private string winText = "Bạn đã bắt được mèo!";
-    private string loseText = "Mèo đã trốn thoát!";
-    private string scoreTextFormat = "Điểm: {0}";
-    private string moveCountTextFormat = "Số bước: {0}";
+    private string winText = "You catched the BamBear!";
+    private string loseText = "The BamBear has been escaped!";
+    private string scoreTextFormat = "Score: {0}";
+    private string moveCountTextFormat = "Moves: {0}";
 
     [Header("UI References")]
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text moveCountText;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private GameObject skillButton;
+    [SerializeField] private List<GameObject> image;
 
     #region Unity
     private void Start()
     {
         SetUpStartGame();
-        skillButton.SetActive(true);
+        
     }
 
     private void Update()
     {
         UpdateUI();
+        
     }
     #endregion
 
@@ -72,11 +75,18 @@ public class ChatNiorGameManager : MonoBehaviour
 
     public void SetUpStartGame()
     {
+        skillButton.SetActive(true);
+        //if (catAnimator == null)
+        //{
+        //    catAnimator = catUI.GetComponent<Animator>();
+        //    catAnimator.enabled = false;
+        //}
         StartNewGame();
 
         score = 2000;
         moveCount = 0;
 
+        image.ForEach(i => i.SetActive(true));
         UpdateUI();
     }
     #endregion
@@ -101,6 +111,9 @@ public class ChatNiorGameManager : MonoBehaviour
     public void TriggerSkill()
     {
         skillUsed = true;
+        //catAnimator.enabled = true;
+        //catAnimator.SetTrigger("Freeze");
+
 
     }
     void MoveCat()
@@ -190,7 +203,13 @@ public class ChatNiorGameManager : MonoBehaviour
     void OnNodeClicked(HexNode node)
     {
         if (node.isBlocked || node == catNode||isGameEnd) return;
-
+        if (score <= 0 && !isGameEnd)
+        {
+            resultText.text = loseText;
+            isGameEnd = true;
+            EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
+            EndGame();
+        }
         node.SetAsWall();
         moveCount++;
         score = Mathf.Max(0, score - 100);
