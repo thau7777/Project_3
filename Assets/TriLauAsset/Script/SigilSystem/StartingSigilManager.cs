@@ -12,7 +12,7 @@ namespace MyRule
         private bool hasRecived = false;
         private bool isShowing = false;
 
-        private List<Card> cardObjs = new List<Card>();
+        private List<Card> cards = new List<Card>();
 
         private EventBinding<SigilChosenEvent> evtBinhding;
 
@@ -41,8 +41,7 @@ namespace MyRule
 
             RTSCameraController.Instance.CanInteract = false;
 
-            CardTracker.Instance.canInteract = true;
-            CardTracker.Instance.isReward = true;
+            CardTracker.Instance.UnlockInteract(true);
 
             isShowing = true;
         }
@@ -55,15 +54,13 @@ namespace MyRule
 
             MatchManager.Instance.MatchData.SetHasRecivedStartingSigil(true);
 
-            CardTracker.Instance.canInteract = false;
+            CardTracker.Instance.UnlockInteract(false);
 
             await UniTask.Delay(100);
 
             VolumeController.Instance.AdjustUIVolumeWeight();
 
             await HideAllSigil();
-
-            DesTroyCard();
 
             isShowing = false;
 
@@ -84,34 +81,26 @@ namespace MyRule
 
                 if (sigilSO == null) continue;
 
-                var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoints[i]);
-                Card card = cardObj.GetComponent<Card>();
-                cardObjs.Add(card);
-                card.SetSigil(sigilData, sigilSO);
+                Card card = CardPoolManager.Instance.Spawn(sigilSO.id);
+                card.SetSigil(sigilData, sigilSO, CardGameplayType.Reward);
+                card.transform.SetParent(spawnPoints[i]);
+                card.transform.position = spawnPoints[i].position;
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
+                cards.Add(card);
                 await UniTask.Delay(200);
-                card.IsShowing = true;
             }
         }
 
         private async UniTask HideAllSigil()
         {
-            foreach (var card in cardObjs)
+            foreach (var card in cards)
             {
-                card.IsShowing = false;
-                await UniTask.Delay(400);
+                card.ReleasePool();
+                await UniTask.Delay(200);
                 card.transform.DOMoveY(-2200.4f, 0.2f).SetEase(Ease.Linear);
             }
-        }
-
-        private void DesTroyCard()
-        {
-            foreach (var card in cardObjs)
-            {
-                Destroy(card.gameObject);
-            }
-
-            cardObjs.Clear();
+            
+            cards.Clear();
         }
 
         public async UniTask LoadData(GameData data)

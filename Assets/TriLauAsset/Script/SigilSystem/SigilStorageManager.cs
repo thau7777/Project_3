@@ -59,6 +59,22 @@ namespace MyRule
             CharacterManager.Instance.UpdateSigilStats(evt.sigilSO);
         }
 
+        public SigilSO GetRandomActiveSigilInStorage() => GetRandomSigil(sigilStorageData.ActiveSigils);
+
+        public SigilSO GetRandomPassiveSigilInStorage() => GetRandomSigil(sigilStorageData.PassiveSigils);
+
+        private SigilSO GetRandomSigil(SigilData[] sigilDatas)
+        {
+            int i = UnityEngine.Random.Range(0, sigilDatas.Length);
+            SigilData sigilData = sigilDatas[i];
+            if (sigilData != null)
+            {
+                return SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+            }
+
+            return null;
+        }
+
         #region Save Load
         public UniTask LoadData(GameData data)
         {

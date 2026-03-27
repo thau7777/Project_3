@@ -81,10 +81,8 @@ namespace MyRule
         public int arcane;
 
         [TabGroup("Stats")]
-        [LabelText("phys", LabelTextAttribute.LabelColor.gray)]
         public int phys;
         [TabGroup("Stats")]
-        [LabelText("mag", LabelTextAttribute.LabelColor.cyan)]
         public int mag;
         [TabGroup("Stats")]
         public int fire;
@@ -101,7 +99,6 @@ namespace MyRule
         [TabGroup("Stats")]
         public int poison;
         [TabGroup("Stats")]
-        [LabelText("health", LabelTextAttribute.LabelColor.green)]
         public int health;
         [TabGroup("Stats")]
         public int phyDef;
@@ -122,10 +119,8 @@ namespace MyRule
         [TabGroup("Stats")]
         public int poisonDef;
         [TabGroup("Stats")]
-        [LabelText("Speed", LabelTextAttribute.LabelColor.blue)]
         public float speed;
         [TabGroup("Stats")]
-        [LabelText("critChance", LabelTextAttribute.LabelColor.red)]
         public int critChance;
         [TabGroup("Stats")]
         [Range(1.5f, 2.3f)]
@@ -133,19 +128,5 @@ namespace MyRule
 
         [TabGroup("Requirements")]
         public int price;
-
-        [ShowIfEnumValue("type", SigilType.Passive)]
-        [TabGroup("Stats")]
-        public int diceFaceIncrease;
-        [ShowIfEnumValue("type", SigilType.Passive)]
-        [TabGroup("Stats")]
-        public int rewardShapeDropRate;
-        [ShowIfEnumValue("type", SigilType.Passive)]
-        [TabGroup("Stats")]
-        public int goldIncrease;
-
-        [ShowIfEnumValue("type", SigilType.Passive)]
-        [TabGroup("Requirements")]
-        public int numbOfRolls;
     }
 }

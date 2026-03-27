@@ -54,6 +54,7 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
+            if (reward == null) return;
             data.MatchData.SetReward(reward);
         }
     }
