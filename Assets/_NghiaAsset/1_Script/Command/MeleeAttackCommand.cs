@@ -24,6 +24,8 @@ namespace Turnbase
         {
             initialPosition = user.initialPosition;
             int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
+            user.totalHitsInSequence = totalAttacks * (skill.numberOfHits > 0 ? skill.numberOfHits : 1);
+            user.currentHitInSequence = 0;
 
             bool isPerfectParry = true;
 
@@ -40,9 +42,8 @@ namespace Turnbase
                 target.isParrySuccessful = false;
                 user.isAttackBlocked = false;
 
-                yield return PerformAttack();
-
                 user.isLastHit = (i == totalAttacks - 1);
+                yield return PerformAttack();
 
                 if (target.isAttackBlocked)
                 {
@@ -105,6 +106,8 @@ namespace Turnbase
 
                 if (target.isAttackBlocked)
                 {
+                    // If blocked (evaded/parried), spawn at slot position but don't take damage
+                    SpawnImpactEffect(target.initialPosition, skill);
                     damageApplied = true;
                     return;
                 }
@@ -132,9 +135,15 @@ namespace Turnbase
 
                 for (int j = 0; j < extraHits; j++)
                 {
-                    if (target.isAttackBlocked || !target.isAlive) yield break;
+                    if (!target.isAlive) yield break;
 
                     yield return new WaitForSeconds(skill.delayBetweenHits);
+
+                    if (target.isAttackBlocked)
+                    {
+                        SpawnImpactEffect(target.initialPosition, skill);
+                        continue;
+                    }
 
                     int currentHitDamage = baseDamagePerHit + (j == extraHits - 1 ? damageRemainder : 0);
                     target.TakeDamage(user, baseDamagePerHit, skill.elementType);

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -8,25 +8,33 @@ namespace Turnbase
     public class ParryCommand : ICommand
     {
         private Character character;
-
-        public ParryCommand(Character character)
+        private Character attacker;
+        public ParryCommand(Character character, Character attacker = null)
         {
             this.character = character;
+            this.attacker = attacker;
         }
 
         public IEnumerator Execute()
         {
-            Debug.Log($"{character.name} bắt đầu Parry!");
+            string parryMsg = "PARRIED";
+            bool isPerfect = (attacker != null && attacker.parryMissCount == 0 && attacker.isLastHit);
 
-            CameraAction.instance.ParryCamera(character);
+            if (isPerfect)
+            {
+                parryMsg = "Perfect PARRIED";
+                CameraAction.instance.PerfectParryCamera(character);
+            }
+            else
+            {
+                CameraAction.instance.ParryCamera(character);
+            }
 
             character.animator.Play("Parry");
-
             Time.timeScale = 0.8f;
 
-
             ParryPopup parryPopupComponent = character.GetComponent<ParryPopup>();
-            parryPopupComponent.ShowParryPopup(character);
+            parryPopupComponent.ShowParryPopup(character, parryMsg);
 
 
             CameraShaker.Instance.ShakeByDirection(new Vector3(0f, 0f, 1f), CinemachineImpulseDefinition.ImpulseShapes.Bump, 0.2f);

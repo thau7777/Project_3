@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace Turnbase
@@ -22,6 +22,11 @@ namespace Turnbase
 
         public void StartGame(float duration, System.Action<bool> callback)
         {
+            if (isGameActive && onComplete != null)
+            {
+                EndGame(false);
+            }
+
             gameObject.SetActive(true);
             this.onComplete = callback;
             this.isGameActive = true; 
@@ -81,7 +86,10 @@ namespace Turnbase
             isGameActive = false;
             isParryWindowOpen = false;
 
-            onComplete?.Invoke(result);
+            var tempCallback = onComplete;
+            onComplete = null;
+
+            tempCallback?.Invoke(result);
 
             gameObject.SetActive(false);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -57,6 +57,8 @@ namespace Turnbase
         private IEnumerator PerformStationaryProjectileAttack()
         {
             finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
+            user.totalHitsInSequence = 1;
+            user.currentHitInSequence = 0;
             projectileHit = false;
 
             Action fireAction = () =>
@@ -65,6 +67,7 @@ namespace Turnbase
             };
 
             user.PrepareHitCallBack(fireAction);
+            user.isLastHit = true;
             user.animator.Play("Attack");
 
             float startTime = Time.time;

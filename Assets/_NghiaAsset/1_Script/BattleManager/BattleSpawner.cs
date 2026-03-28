@@ -13,6 +13,7 @@ namespace Turnbase
         private BattleManager bm;
 
         [SerializeField] private TopdownWarpDriveController _warpDriveController;
+        public ScreenEffectUIController screenEffectController;
 
         [Header("Enemy Spawn Settings")]
         public FlyweightSettings_TB enemySpawnEffect;
@@ -260,6 +261,8 @@ namespace Turnbase
                 characterInstance.stats.currentHP = characterInstance.stats.maxHP;
                 characterInstance.stats.currentMP = characterInstance.stats.maxMP;
             }
+
+            characterInstance._screenEffectController = screenEffectController;
 
             PlayerActionUI actionUI = characterInstance.GetComponentInChildren<PlayerActionUI>(true);
             if (actionUI != null)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -38,6 +38,8 @@ namespace Turnbase
             }
 
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            user.totalHitsInSequence = hits;
+            user.currentHitInSequence = 0;
             int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
             int baseDamagePerHit = totalDamage / hits;
             int damageRemainder = totalDamage % hits;
@@ -50,6 +52,12 @@ namespace Turnbase
             {
                 if (!damageApplied)
                 {
+                    if (target.isAttackBlocked)
+                    {
+                        SpawnImpactEffect(target.initialPosition, skill);
+                        damageApplied = true;
+                        return;
+                    }
                     ApplyStatusEffectsAndStacks(user, target, skill);
 
                     target.TakeDamage(user, baseDamagePerHit, skill.elementType);
@@ -91,6 +99,7 @@ namespace Turnbase
                 spawnAction.Invoke();
             }
 
+            user.isLastHit = true;
             user.animator.Play(skill.animationTriggerName);
 
             yield return null;
@@ -106,10 +115,16 @@ namespace Turnbase
 
             for (int i = 1; i < hits; i++)
             {
-                if (!target.isAlive || target.isAttackBlocked)
+                if (!target.isAlive)
                     break;
 
                 yield return new WaitForSeconds(delayBetweenHits);
+
+                if (target.isAttackBlocked)
+                {
+                    SpawnImpactEffect(target.initialPosition, skill);
+                    continue;
+                }
 
                 int currentHitDamage = baseDamagePerHit + (i == hits - 1 ? damageRemainder : 0);
                 target.TakeDamage(user, currentHitDamage, skill.elementType);
