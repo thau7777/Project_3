@@ -32,7 +32,7 @@ namespace PixPlays.ElementalVFX
         IEnumerator Coroutine_Projectile()
         {
             _CastEffect.gameObject.SetActive(true);
-            _CastEffect.transform.position = transform.position;
+            _CastEffect.transform.position = _data.Source;
             _CastEffect.transform.forward = (_data.Target - _data.Source);
             _CastEffect.Play();
 
@@ -135,8 +135,8 @@ namespace PixPlays.ElementalVFX
             _HitEffect.gameObject.SetActive(true);
             _HitEffect.Play();
 
-            if (_HitEffect.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
-                hitBoxHandler.StartHitBoxCoroutine(hitBoxLifeTime);
+            if (_forTopdown && _hitboxObject)
+                _hitboxObject.StartHitBoxCoroutine(hitboxVfxLifeTime);
 
 
             yield return new WaitForSeconds(_ProjectileDeactivateDelay);

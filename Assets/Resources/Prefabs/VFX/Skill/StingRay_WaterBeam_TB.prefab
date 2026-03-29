@@ -4848,7 +4848,7 @@ GameObject:
   - component: {fileID: 7957997927987848332}
   - component: {fileID: 5892933713131693555}
   m_Layer: 0
-  m_Name: WaterBeam
+  m_Name: StingRay_WaterBeam_TB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4864,7 +4864,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.43, y: 2.63, z: -3.55}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2574114246214218301}
@@ -4885,8 +4885,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a9fd255959ecd4ba215bccc466f49f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 0}
+  _forTopdown: 0
   _SafetyDestroy: 6
   _DestoyDelay: 1
+  hitboxVfxLifeTime: 1
   _BeamBodyEffect: {fileID: 2095702004809623694}
   _CastEffect: {fileID: 1276840705271388902}
   _HitEffect: {fileID: 4117031612062387590}

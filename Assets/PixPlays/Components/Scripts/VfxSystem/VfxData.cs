@@ -5,9 +5,10 @@ namespace PixPlays.ElementalVFX
 {
     public class VfxData
     {
-        public Vector3 Source => _sourceTransform != null ? _sourceTransform.position : _sourcePos;
-        public Vector3 Target => _targetTransform != null ? _targetTransform.position.Add(y: 0.5f) : _targetPos;
+        public Vector3 Source => _sourceTransform != null ? _sourceTransform.position: _sourcePos;
+        public Vector3 Target => _targetTransform != null ? _targetTransform.position.Add(_targetPosOffset.x, _targetPosOffset.y, _targetPosOffset.z) : _targetPos.Add(_targetPosOffset.x, _targetPosOffset.y, _targetPosOffset.z);
         public Vector3 Ground => _groundTransform != null ? _groundTransform.position : _groundPos;
+        public Vector3 PosOffset => _targetPosOffset;
 
         public float Duration => _duration;
         public float Radius => _radius;
@@ -21,24 +22,27 @@ namespace PixPlays.ElementalVFX
         private Vector3 _sourcePos;
         private Vector3 _targetPos;
         private Vector3 _groundPos;
+        private Vector3 _targetPosOffset;
 
-        public VfxData(Vector3 source,Vector3 target,float duration,float radius)
+        public VfxData(Vector3 source,Vector3 target,float duration,float radius, Vector3 targetPosOffset)
         {
             _radius = radius;
             _sourcePos = source;
             _targetPos = target;
             _duration = duration;
+            _targetPosOffset = targetPosOffset;
         }
-        public VfxData(Transform source, Vector3 target, float duration, float radius)
+        public VfxData(Transform source, Vector3 target, float duration, float radius, Vector3 targetPosOffset)
         {
             _radius = radius;
             _sourceTransform = source;
             _sourcePos = source.position;
             _targetPos = target;
             _duration = duration;
+            _targetPosOffset = targetPosOffset;
         }
 
-        public VfxData(Transform source,Transform target,float duration,float radius)
+        public VfxData(Transform source,Transform target,float duration,float radius, Vector3 targetPosOffset)
         {
             _radius = radius;
             _sourceTransform = source;
@@ -46,6 +50,7 @@ namespace PixPlays.ElementalVFX
             _sourcePos = source.position;
             _targetPos = target.position;
             _duration = duration;
+            _targetPosOffset = targetPosOffset;
         }
 
         public void SetGround(Transform groundPoint)

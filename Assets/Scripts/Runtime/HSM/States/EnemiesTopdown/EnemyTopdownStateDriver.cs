@@ -171,14 +171,31 @@ public class EnemyTopdownStateDriver : Flyweight
     public void OnAttackTrigger(int setParentForVFX = 0)
     {
         if (_context.CurrentEnemyAttackData.skillVFX == null) return;
-        Transform spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform ?? transform;
+
+
+        Transform spawnTransform = null;
+        switch (_context.CurrentEnemyAttackData.spawnType)
+        {
+            case EnemyAttackData.SpawnType.AtCustomSpawnTransform:
+                spawnTransform = _context.CurrentEnemyAttackData.skillSpawnTransform;
+                break;
+            case EnemyAttackData.SpawnType.AtSelf:
+                spawnTransform = _context.RootTransform;
+                break;
+            case EnemyAttackData.SpawnType.AtTarget:
+                spawnTransform = _context.CurrentTargetTransform;
+                break;
+        }
+
         if (_skillIndicator && _context.CurrentEnemyAttackData.spawnType == EnemyAttackData.SpawnType.AtTarget)
         {
             spawnTransform = _skillIndicator.transform;
+            _skillIndicator = null;
         }
-        _skillIndicator = null;
         Flyweight vfx = FlyweightFactory.Spawn(_context.CurrentEnemyAttackData.skillVFX);
-        
+        if (vfx.name == "StingRay_WaterBeam" || vfx.name == "StingRay_WaterBullet" || vfx.name == "StingRay_WaterBlast")
+            spawnTransform = transform;
+
         var rotationOffset = Quaternion.Euler(_context.CurrentEnemyAttackData.rotationOffset);
         var positionOffset = _context.CurrentEnemyAttackData.positionOffset;
         vfx.FlyweightInitialize(
@@ -193,7 +210,7 @@ public class EnemyTopdownStateDriver : Flyweight
             if (oneShotVFX.TryGetComponent<BaseVfx>(out var baseVfx))
             {
                 baseVfx.gameObject.SetActive(true);
-
+                baseVfx.transform.localScale = Vector3.one * _context.CurrentEnemyAttackData.skillSize;
                 Transform target = null;
                 switch (_context.CurrentEnemyAttackData.spawnType)
                 {
@@ -208,47 +225,24 @@ public class EnemyTopdownStateDriver : Flyweight
                         break;
                 }
 
-                VfxData vfxData = new(transform, target, oneShotVFXSettings.DefaultLifeTime, 1);
 
-                foreach (Transform child in baseVfx.transform)
+                SetupVfxHitBox(baseVfx.transform, oneShotVFXSettings);
+                Vector3 targetPosOffset = Vector3.zero;
+                switch (vfx.name)
                 {
-                    if (child.TryGetComponent<HitBoxHandler>(out var specialVfxHitBoxHandler))
-                    {
-                        specialVfxHitBoxHandler.Setup(
-                            gameObject,
-                            _context.CurrentEnemyAttackData.dodgeLayers,
-                            oneShotVFXSettings.hitboxOnOffTime,
-                            oneShotVFXSettings.useTriggerStays,
-                            oneShotVFXSettings.triggerStayTickInterval,
-                            _context.CurrentEnemyAttackData.Parryable);
-
-                        if (child.TryGetComponent<DamageDealer>(out var specialVfxDamageDealer))
+                    case "StingRay_WaterBeam":
                         {
-                            specialVfxDamageDealer.Setup(
-                                oneShotVFXSettings.isMagicAttack,
-                                _characterStats.AttackDamage,
-                                _context.CurrentEnemyAttackData.dealTrueDamage,
-                                _context.CurrentEnemyAttackData.knockBackForce,
-                                _context.CurrentEnemyAttackData.reverseKnockbackDirection,
-                                oneShotVFXSettings.elementalType,
-                                oneShotVFXSettings.hitImpactVFXSetting,
-                                false);
-                            if (oneShotVFXSettings.UseParticleCollision)
-                                specialVfxDamageDealer.SetupParicleDamageDealer(gameObject);
+                            targetPosOffset = Vector3.zero;
+                            break;
                         }
-
-                        if (child.TryGetComponent<EffectApplier>(out var specialVfxEffectApplier))
+                    case "StingRay_WaterBullet":
                         {
-                            specialVfxEffectApplier.SetEffects(oneShotVFXSettings.effectsToApplyList);
-                            specialVfxEffectApplier.SetUpForParticle(gameObject);
+                            targetPosOffset = new Vector3(0,0.5f,0);
+                            break;
                         }
-
-                        break;
-                    }
-                    
-
                 }
 
+                VfxData vfxData = new(baseVfx.transform, target, oneShotVFXSettings.DefaultLifeTime, _context.CurrentEnemyAttackData.skillSize, targetPosOffset);
                 baseVfx.Play(vfxData);
                 return;
             }
@@ -313,7 +307,48 @@ public class EnemyTopdownStateDriver : Flyweight
         }
             
     }
+    private void SetupVfxHitBox(Transform parent, OneShotVFXSettings settings)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.TryGetComponent<HitBoxHandler>(out var specialVfxHitBoxHandler))
+            {
+                specialVfxHitBoxHandler.Setup(
+                    gameObject,
+                    _context.CurrentEnemyAttackData.dodgeLayers,
+                    settings.hitboxOnOffTime,
+                    settings.useTriggerStays,
+                    settings.triggerStayTickInterval,
+                    _context.CurrentEnemyAttackData.Parryable);
 
+                if (child.TryGetComponent<DamageDealer>(out var specialVfxDamageDealer))
+                {
+                    specialVfxDamageDealer.Setup(
+                        settings.isMagicAttack,
+                        _characterStats.AttackDamage,
+                        _context.CurrentEnemyAttackData.dealTrueDamage,
+                        _context.CurrentEnemyAttackData.knockBackForce,
+                        _context.CurrentEnemyAttackData.reverseKnockbackDirection,
+                        settings.elementalType,
+                        settings.hitImpactVFXSetting,
+                        false);
+
+                    if (settings.UseParticleCollision)
+                        specialVfxDamageDealer.SetupParicleDamageDealer(gameObject);
+                }
+
+                if (child.TryGetComponent<EffectApplier>(out var specialVfxEffectApplier))
+                {
+                    specialVfxEffectApplier.SetEffects(settings.effectsToApplyList);
+                    specialVfxEffectApplier.SetUpForParticle(gameObject);
+                }
+
+                return; // Found it — stop traversal
+            }
+
+            SetupVfxHitBox(child, settings); // Recurse into children
+        }
+    }
     public void SpawnChargeEffect()
     {
         OneShotVFXSettings chargeSettings = _context.CurrentEnemyAttackData.chargeEffect;

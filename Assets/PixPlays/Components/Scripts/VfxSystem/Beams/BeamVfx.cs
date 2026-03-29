@@ -48,24 +48,33 @@ namespace PixPlays.ElementalVFX
             _BeamBodyEffect.transform.forward = direction;
             _BeamBodyEffect.Play();
 
+            if (_forTopdown && _hitboxObject) 
+                _hitboxObject.StartHitBoxCoroutine(hitboxVfxLifeTime);
+
             _BodyTip.Play();
             Vector3 startScale = _BeamBodyEffect.transform.localScale;
             startScale.z = 0;
+
+            float skillScaleZ = transform.lossyScale.z;
+
             while (lerp < 1)
             {
                 length = (_data.Target - _data.Source).magnitude;
                 direction = (_data.Target - _data.Source);
                 _CastEffect.transform.position = _data.Source;
                 _CastEffect.transform.forward = direction;
-                _BeamBodyEffect.transform.localScale = Vector3.Lerp(startScale, new Vector3(startScale.x, startScale.y, length), lerp);
+                _BeamBodyEffect.transform.localScale = Vector3.Lerp(startScale, new Vector3(startScale.x, startScale.y, length / skillScaleZ), lerp);
                 _BeamBodyEffect.transform.position = _data.Source;
                 _BeamBodyEffect.transform.forward = direction;
-                _BodyTip.transform.position = _data.Source + direction.normalized * _BeamBodyEffect.transform.localScale.z;
-                _BodyTip.transform.forward = direction;
-                lerp += (Time.deltaTime*_ScaleSpeed)/_Length;
+                _BodyTip.transform.position = _data.Source + direction.normalized * _BeamBodyEffect.transform.lossyScale.z;
+                _BodyTip.transform.rotation = Quaternion.LookRotation(direction.normalized);
+                lerp += (Time.deltaTime * _ScaleSpeed) / _Length;
                 yield return null;
             }
-            _BodyTip.transform.position = _data.Source + direction.normalized * _BeamBodyEffect.transform.localScale.z;
+
+            _BodyTip.transform.position = _data.Source + direction.normalized * _BeamBodyEffect.transform.lossyScale.z;
+            _BodyTip.transform.rotation = Quaternion.LookRotation(direction.normalized);
+
             _HitEffect.gameObject.SetActive(true);
             _HitEffect.transform.position = _data.Target;
             _HitEffect.transform.forward = -direction;
@@ -75,10 +84,11 @@ namespace PixPlays.ElementalVFX
             {
                 length = (_data.Target - _data.Source).magnitude;
                 direction = (_data.Target - _data.Source);
-                _BodyTip.transform.position = _data.Source + direction.normalized * _BeamBodyEffect.transform.localScale.z;
+                _BodyTip.transform.position = _data.Source + direction.normalized * _BeamBodyEffect.transform.lossyScale.z;
+                _BodyTip.transform.rotation = Quaternion.LookRotation(direction.normalized);
                 _CastEffect.transform.position = _data.Source;
                 _CastEffect.transform.forward = direction;
-                _BeamBodyEffect.transform.localScale = new Vector3(startScale.x, startScale.y, length);
+                _BeamBodyEffect.transform.localScale = new Vector3(startScale.x, startScale.y, length / skillScaleZ);
                 _BeamBodyEffect.transform.position = _data.Source;
                 _BeamBodyEffect.transform.forward = direction;
                 _HitEffect.transform.position = _data.Target;

@@ -14707,12 +14707,12 @@ GameObject:
   - component: {fileID: 7223640214784275257}
   - component: {fileID: 3198041600129778323}
   m_Layer: 0
-  m_Name: WaterBlast
+  m_Name: StingRay_WaterBlast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1661849055536065488
 Transform:
   m_ObjectHideFlags: 0
@@ -14723,7 +14723,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.664266, y: 2.43, z: 2.3305943}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4137870607048169984}
@@ -14754,10 +14754,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a960bc488c2f3048a90116f91a3eaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 0}
+  _forTopdown: 1
   _SafetyDestroy: 3
   _DestoyDelay: 1
+  _hitboxObject: {fileID: 7564825766994877220}
+  hitboxVfxLifeTime: 2
   _LocationEffect: {fileID: 7223640214784275257}
-  _RadiusFactor: 0.5
+  _RadiusFactor: 1
   _IgnoreYDirection: 1
 --- !u!1 &2232504350388364489
 GameObject:
@@ -14993,8 +14997,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a960bc488c2f3048a90116f91a3eaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 0}
+  _forTopdown: 1
   _SafetyDestroy: 3
   _DestoyDelay: 1
+  _hitboxObject: {fileID: 0}
+  hitboxVfxLifeTime: 2
   _LocationEffect: {fileID: 7302566949693184387}
   _RadiusFactor: 0.42045
   _IgnoreYDirection: 1
@@ -58978,6 +58986,9 @@ GameObject:
   - component: {fileID: 8256204798323652423}
   - component: {fileID: 4425179301930245697}
   - component: {fileID: 5475457801486672683}
+  - component: {fileID: 8497189250823711064}
+  - component: {fileID: 2275477138862188804}
+  - component: {fileID: 7564825766994877220}
   m_Layer: 0
   m_Name: WaterWaveObj
   m_TagString: Untagged
@@ -58994,7 +59005,7 @@ Transform:
   m_GameObject: {fileID: 8039150271236001973}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59060,6 +59071,58 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8497189250823711064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8039150271236001973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0809c4c0574c10b44bd62230b15c0dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
+  _hitImpactVfx: {fileID: 0}
+  _damage: 40
+--- !u!136 &2275477138862188804
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8039150271236001973}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.6
+  m_Height: 5.9
+  m_Direction: 0
+  m_Center: {x: 3.3, y: 0.92, z: 0}
+--- !u!114 &7564825766994877220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8039150271236001973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144849a07d1333d4bad9c0edd571f79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
+  OnColliderHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8543239587146924722
 GameObject:
   m_ObjectHideFlags: 0

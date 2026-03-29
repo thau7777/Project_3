@@ -44,7 +44,7 @@ namespace PixPlays.ElementalVFX
             yield return new WaitForSeconds(_Data[index].VfxSpawnDelay);
             BaseVfx go = Instantiate(_Data[index].VFX);
             Transform sourcePoint = _Character.BindingPoints.GetBindingPoint(_Data[index].Source);
-            var vfxData = new VfxData(sourcePoint, _Character.GetTarget(), _Data[index]._Duration, _Data[index]._Radius);
+            var vfxData = new VfxData(sourcePoint, _Character.GetTarget(), _Data[index]._Duration, _Data[index]._Radius, Vector3.zero);
             vfxData.SetGround(_Character.BindingPoints.GetBindingPoint(BindingPointType.Ground));
             go.Play(vfxData);
         }

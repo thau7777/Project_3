@@ -11,6 +11,10 @@ public class StraightProjectileSettings : FlyweightSettings
 
     [field: SerializeField]
     public LayerMask DodgeLayers { get; private set; }
+
+    public bool canDealDamageByProjectile;
+
+    [ShowIf("_canDealDamageByProjectile")] public ElementalType projectileDamageElementType;
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);

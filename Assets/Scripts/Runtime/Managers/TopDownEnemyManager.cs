@@ -188,7 +188,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     private IEnumerator StartWave(int waveIndex)
     {
         WaveData[] waves = _groupWave.WaveDatas;
-
         if (waveIndex >= (!_spawnWithLimitCount ? waves.Length : 1)) yield break;
 
         WaveData wave = waves[waveIndex];

@@ -22,6 +22,9 @@ namespace PixPlays.ElementalVFX
             _LocationEffect.transform.forward = direction;
             _LocationEffect.gameObject.SetActive(true);
             _LocationEffect.Play();
+
+            if (_forTopdown && _hitboxObject)
+                _hitboxObject.StartHitBoxCoroutine(hitboxVfxLifeTime);
         }
 
         public override void Stop()

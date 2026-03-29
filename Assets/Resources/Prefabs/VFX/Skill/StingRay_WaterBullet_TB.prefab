@@ -48,8 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 0}
+  _forTopdown: 0
   _SafetyDestroy: 6
   _DestoyDelay: 1
+  hitboxVfxLifeTime: 1
   _stopChasingThreshold: 1
   _CastEffect: {fileID: 1259823718525019566}
   _HitEffect: {fileID: 242498439727304392}
@@ -99,9 +101,16 @@ MonoBehaviour:
     m_RotationOrder: 4
   _RandomizeFlyCurveDirection: 1
   _FlyCurveDirection: {x: 0, y: 0}
+  _randomizedMinMaxX: {x: 0, y: 0}
+  _randomizedMinMaxY: {x: 0, y: 0}
   _FlyCurveStrength: 3
   _ProjectileFlyDelay: 0
   _ProjectileDeactivateDelay: 1
+  _ExplosionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  _CollisionRadius: 0.2
+  _MaxFlightTime: 5
 --- !u!1001 &2750743052572288124
 PrefabInstance:
   m_ObjectHideFlags: 0

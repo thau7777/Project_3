@@ -6,11 +6,13 @@ using System.Threading;
 
 namespace PixPlays.ElementalVFX
 {
-    public class BaseVfx : Flyweight
+    public class BaseVfx : OneShotVFX
     {
-        [SerializeField] float _SafetyDestroy;
-        [SerializeField] float _DestoyDelay;
-        public float hitBoxLifeTime = 1;
+        [SerializeField, TabGroup("BaseVfxSettings")] protected bool _forTopdown = true;
+        [SerializeField, TabGroup("BaseVfxSettings")] protected float _SafetyDestroy;
+        [SerializeField, TabGroup("BaseVfxSettings")] protected float _DestoyDelay;
+        [SerializeField, TabGroup("BaseVfxSettings")] protected HitBoxHandler _hitboxObject;
+        public float hitboxVfxLifeTime = 1;
         protected VfxData _data;
 
         private CancellationTokenSource _cts;
@@ -50,6 +52,7 @@ namespace PixPlays.ElementalVFX
         {
             await UniTask.WaitForSeconds(_SafetyDestroy, cancellationToken: token);
             // Safety net: force return if Stop() was never called properly
+            CancelAndReset();
             ReturnToPool();
         }
 
@@ -57,7 +60,7 @@ namespace PixPlays.ElementalVFX
         {
             if (delay > 0)
                 await UniTask.WaitForSeconds(delay);
-
+            CancelAndReset();
             ReturnToPool();
         }
 
@@ -68,12 +71,6 @@ namespace PixPlays.ElementalVFX
             _cts = null;
         }
 
-        private void ReturnToPool()
-        {
-            CancelAndReset();
-            // Replace this with your actual Flyweight pool return call
-            gameObject.SetActive(false);
-        }
 
         private void OnDestroy()
         {

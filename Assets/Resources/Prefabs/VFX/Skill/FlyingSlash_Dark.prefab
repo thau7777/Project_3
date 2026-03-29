@@ -33,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 7697849658295164617}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!2083052967 &215471697339077572
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -51,13 +51,22 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 2
+        m_Name: LifeTime
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
       m_Array: []
     m_Vector4f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 1.9359239, y: 0.1837219, z: 2.9960787, w: 1}
+        m_Name: GroundTrailColor
+        m_Overridden: 1
+      - m_Value: {x: 15.487391, y: 1.4697752, z: 23.96863, w: 1}
+        m_Name: SlashColor
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -71,7 +80,10 @@ VisualEffect:
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array: []
+      m_Array:
+      - m_Value: 1
+        m_Name: HasGroundParticle?
+        m_Overridden: 1
 --- !u!73398921 &6535343535327712026
 VFXRenderer:
   serializedVersion: 1

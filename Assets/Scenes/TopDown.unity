@@ -7249,7 +7249,7 @@ MonoBehaviour:
     enemies: {fileID: 11400000, guid: cd7f11ed964312a4e84638044ea77d17, type: 2}
   - planetType: 2
     enemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
-  mapEnemies: {fileID: 11400000, guid: e2b66474030efeb468848c22c81d200f, type: 2}
+  mapEnemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}
 --- !u!4 &274391605
 Transform:
   m_ObjectHideFlags: 0
@@ -33993,7 +33993,7 @@ VisualEffect:
       - m_Value: 1.03
         m_Name: InteractDistance
         m_Overridden: 1
-      - m_Value: 14.3
+      - m_Value: 20
         m_Name: VerticalForce
         m_Overridden: 1
       - m_Value: 12
@@ -37173,9 +37173,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 0}
+  _forTopdown: 1
   _SafetyDestroy: 3
   _DestoyDelay: 1
-  hitBoxLifeTime: 0
+  _hitboxObject: {fileID: 0}
+  hitboxVfxLifeTime: 1
   _LocationEffect: {fileID: 1220822536}
   _RadiusFactor: 0.5
   _IgnoreYDirection: 1
@@ -44284,7 +44286,7 @@ VisualEffect:
       - m_Value: 1.03
         m_Name: InteractDistance
         m_Overridden: 1
-      - m_Value: 14.3
+      - m_Value: 20
         m_Name: VerticalForce
         m_Overridden: 1
       - m_Value: 12
@@ -44617,7 +44619,7 @@ VisualEffect:
       - m_Value: 1.03
         m_Name: InteractDistance
         m_Overridden: 1
-      - m_Value: 14.3
+      - m_Value: 20
         m_Name: VerticalForce
         m_Overridden: 1
       - m_Value: 12
@@ -44806,7 +44808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf724339fc16634787cb18dc75a013f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
-  _spawnWithLimitCount: 1
+  _spawnWithLimitCount: 0
   _spawnCountLimit: 1
   _currentWaveText: {fileID: 516317633}
   _remainingEnemiesText: {fileID: 1224004466}
@@ -53757,7 +53759,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1778567505155684646, guid: 7f20bbe9be3b11d4c83dadceab326348, type: 3}
 --- !u!1001 &1827325200
@@ -57125,63 +57127,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbc1b4fec048d014194778fa347056bf, type: 3}
---- !u!1001 &2895752174224547501
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.664266
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.43
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.3305943
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1661849055536065488, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2123197451578103894, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
-      propertyPath: m_Name
-      value: WaterBlast
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 61759fcf9a0eef342b4dc9e146934805, type: 3}
 --- !u!1001 &4063842123427361237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58045,5 +57990,4 @@ SceneRoots:
   - {fileID: 843454442}
   - {fileID: 979275903}
   - {fileID: 1220822540}
-  - {fileID: 2895752174224547501}
   - {fileID: 8689643753412743371}
