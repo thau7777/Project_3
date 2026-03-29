@@ -11,6 +11,7 @@ public class DamageDealer : MonoBehaviour
     private float _knockBackForce;
     private bool _reverseKnockBackDirection = false;
     private ElementalType _elementalType;
+    private bool _doKnockBackOnParried = true;
 
     private GameObject _senderForParticle;
 
@@ -28,7 +29,8 @@ public class DamageDealer : MonoBehaviour
             hitBoxHandler.OnColliderHit.RemoveListener(DealDamage);
         }
     }
-    public void Setup(bool isMagicAttack, int damage, bool dealTrueDamage, float knockBackForce, bool reverseKnockBackDirection, ElementalType elementalType = ElementalType.Normal, OneShotVFXSettings hitImpactVfx = null)
+    public void Setup(bool isMagicAttack, int damage, bool dealTrueDamage, float knockBackForce, bool reverseKnockBackDirection,
+        ElementalType elementalType = ElementalType.Normal, OneShotVFXSettings hitImpactVfx = null, bool doKnockBackOnParried = true)
     {
         _isMagicAttack = isMagicAttack;
         _damage = damage;
@@ -37,6 +39,7 @@ public class DamageDealer : MonoBehaviour
         _reverseKnockBackDirection = reverseKnockBackDirection;
         _elementalType = elementalType;
         _hitImpactVfx = hitImpactVfx;
+        _doKnockBackOnParried = doKnockBackOnParried;
     }
     public void SetupParicleDamageDealer(GameObject sender)
     {
@@ -52,8 +55,10 @@ public class DamageDealer : MonoBehaviour
             //if player is parrying
             if(target.TryGetComponent<PlayerTopDownStateDriver>(out var player) && player.IsParrying && TryGetComponent<HitBoxHandler>(out var hitBoxHandler) && hitBoxHandler.ParryAble)
             {
-                GetComponent<Flyweight>().ReturnToPool();
-                if (sender.TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
+                if(TryGetComponent<Flyweight>(out var flyweight))
+                    flyweight.ReturnToPool();
+                
+                if (_doKnockBackOnParried && sender.TryGetComponent<EnemyTopdownStateDriver>(out var enemy))
                 {
                     enemy.OnTakeDamage(sender, 0, -hitDirection.normalized, 5);
                 }
@@ -81,7 +86,7 @@ public class DamageDealer : MonoBehaviour
                 if (targetDamageable.parrySuccessVFXSettings)
                 {
                     OneShotVFX vfx = FlyweightFactory.Spawn(targetDamageable.parrySuccessVFXSettings) as OneShotVFX;
-                    Vector3 direction = (sender.transform.position - target.transform.position).normalized;
+                    Vector3 direction = (transform.position - target.transform.position).normalized;
                     vfx.FlyweightInitialize(targetDamageable.transform.position.Add(y: 1) + direction * 1f);
                     vfx.InitializeVFX(targetDamageable.parrySuccessVFXSettings.DefaultSize, targetDamageable.parrySuccessVFXSettings.DefaultLifeTime);
                 }

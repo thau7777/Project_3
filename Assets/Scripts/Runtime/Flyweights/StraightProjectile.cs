@@ -17,6 +17,8 @@ public class StraightProjectile : Flyweight
     private bool _dealTrueDamage;
     private float _currentSize;
 
+    private DamageDealer _damageDealer;
+
     private const float MaxHeight = 1.35f;
     private const float DescentSpeed = 2f; // how fast it moves down when above height
 
@@ -56,6 +58,14 @@ public class StraightProjectile : Flyweight
         _knockBackForce = knockBackForce;
         _dealTrueDamage = dealTrueDamage;
         _dodgeLayers = dodgeLayers;
+
+        if (settings.canDealDamageByProjectile)
+        {
+            _damageDealer = gameObject.GetOrAdd<DamageDealer>();
+            _damageDealer.Setup(true, _damage, _dealTrueDamage, _knockBackForce, false, settings.projectileDamageElementType);
+        }
+
+
     }
 
     private void FixedUpdate()
@@ -86,11 +96,11 @@ public class StraightProjectile : Flyweight
         // Check if reached max range
         if (_traveledDistance >= _range)
         {
-            DespawnFlyweight();
+            DespawnProjectile();
         }
     }
 
-    public void DespawnFlyweight()
+    public void DespawnProjectile()
     {
         SpawnHitVFX();
         ReturnToPool();
@@ -133,7 +143,11 @@ public class StraightProjectile : Flyweight
         if ((_dodgeLayers.value & (1 << other.gameObject.layer)) == 0)
         {
             if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
-            DespawnFlyweight();
+            if(!settings.canDealDamageByProjectile)
+                DespawnProjectile();
+            else
+                _damageDealer.DealDamage(_sender, gameObject, damageable.gameObject);
+
         }
     }
 }

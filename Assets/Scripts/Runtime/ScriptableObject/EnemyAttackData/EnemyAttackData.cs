@@ -64,7 +64,7 @@ public class EnemyAttackData
     public bool needCharge;
     public string chargeAnimationName = "";
     public Transform chargeSpawnTransform;
-    public FlyweightSettings chargeEffect;
+    public OneShotVFXSettings chargeEffect;
     public float chargeEffectSize;
     public float chargeDuration;
 

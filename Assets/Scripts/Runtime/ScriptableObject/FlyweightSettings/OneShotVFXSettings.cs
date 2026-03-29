@@ -63,8 +63,7 @@ public class OneShotVFXSettings : FlyweightSettings
 
     [ShowIf("_canApplyEffect")]
     [TabGroup("Effect Settings")]
-    [SerializeField]
-    private List<EffectData> _effectsToApplyList = new();
+    public List<EffectData> effectsToApplyList = new();
 
     #endregion
 
@@ -116,6 +115,8 @@ public class OneShotVFXSettings : FlyweightSettings
     public float triggerStayTickInterval = 0.2f;
 
     #endregion
+
+    [SerializeField] private bool _addComponentsFirst = true;
     private void OnValidate()
     {
         _hasHitBox = _canDealDamage || _canApplyEffect;
@@ -129,7 +130,8 @@ public class OneShotVFXSettings : FlyweightSettings
         var flyweight = go.GetOrAdd<OneShotVFX>();
         flyweight.settings = this;
 
-        if (HasHitBox)
+
+        if (HasHitBox && _addComponentsFirst)
         {
             if (!_useParticleCollision)
                 go.GetOrAdd<HitBoxHandler>();
@@ -139,8 +141,8 @@ public class OneShotVFXSettings : FlyweightSettings
             {
                 var effectApplier = go.GetOrAdd<EffectApplier>();
 
-                if (_effectsToApplyList.Count > 0)
-                    effectApplier.SetEffects(_effectsToApplyList);
+                if (effectsToApplyList.Count > 0)
+                    effectApplier.SetEffects(effectsToApplyList);
             }
         }
 

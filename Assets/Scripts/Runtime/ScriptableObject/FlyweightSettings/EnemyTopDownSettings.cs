@@ -15,7 +15,7 @@ public class EnemyTopDownSettings : FlyweightSettings
     public float spawnAnimationDuration = 0.5f;
     [SerializeField] private OneShotVFXSettings _spawnVFXSettings;
     private LayerMask _obstacleLayerMask;
-    private float _spawnClearanceRadius = 0.5f;
+    private float _spawnClearanceRadius = 1.5f;
     private Transform _player;
 
     private Collider _groundCollider;

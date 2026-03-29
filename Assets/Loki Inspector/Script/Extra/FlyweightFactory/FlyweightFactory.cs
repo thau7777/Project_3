@@ -166,4 +166,8 @@ public enum FlyweightType
     Explosion_Poison_3,
     FloatingCombatText,
     ParrySuccessVFX,
+    WaterAuraVFX,
+    Spell_Water_Stingray_Enemy_2,
+    Spell_Water_Stingray_Enemy_3,
+    Spell_Water_Stingray_Enemy_4,
 }
