@@ -37,7 +37,7 @@ namespace MyRule
             RemoveCrossConnections();
 
             // select all the nodes with connections:
-            List<Node> nodesList = nodes.SelectMany(n => n).Where(n => n.incoming.Count > 0 || n.outgoing.Count > 0).ToList();
+            List<Node> nodesList = nodes.SelectMany(n => n).Where(n => n.Incoming.Count > 0 || n.Outgoing.Count > 0).ToList();
 
             // pick a random name of the boss level for this map:
             string bossNodeName = config.nodeBlueprints.Where(b => b.nodeType == NodeType.Boss).ToList().Random().name;
@@ -74,10 +74,10 @@ namespace MyRule
                     ? supportedRandomNodeTypes.Random()
                     : layer.nodeType;
                 string blueprintName = config.nodeBlueprints.Where(b => b.nodeType == nodeType).ToList().Random().name;
-                Node node = new Node(nodeType, blueprintName, new Vector2Int(i, layerIndex))
-                {
-                    position = new Vector2(-offset + i * layer.nodesApartDistance, GetDistanceToLayer(layerIndex))
-                };
+                Node node = new Node(nodeType, blueprintName, new Vector2Int(i, layerIndex));
+
+                node.Position = new Vector2(-offset + i * layer.nodesApartDistance, GetDistanceToLayer(layerIndex));
+                
                 nodesOnThisLayer.Add(node);
             }
 
@@ -103,7 +103,7 @@ namespace MyRule
                     float x = xRnd * layer.nodesApartDistance;
                     float y = yRnd < 0 ? distToPreviousLayer * yRnd: distToNextLayer * yRnd;
 
-                    node.position += new Vector2(x, y) * layer.randomizePosition;
+                    node.Position += new Vector2(x, y) * layer.randomizePosition;
                 }
             }
         }
@@ -116,8 +116,8 @@ namespace MyRule
                 {
                     Node node = GetNode(path[i]);
                     Node nextNode = GetNode(path[i + 1]);
-                    node.AddOutgoing(nextNode.point);
-                    nextNode.AddIncoming(node.point);
+                    node.AddOutgoing(nextNode.Point);
+                    nextNode.AddIncoming(node.Point);
                 }
             }
         }
@@ -137,41 +137,41 @@ namespace MyRule
                     if (topRight == null || topRight.HasNoConnections()) continue;
 
                     // Debug.Log("Inspecting node for connections: " + node.point);
-                    if (!node.outgoing.Any(element => element.Equals(topRight.point))) continue;
-                    if (!right.outgoing.Any(element => element.Equals(top.point))) continue;
+                    if (!node.Outgoing.Any(element => element.Equals(topRight.Point))) continue;
+                    if (!right.Outgoing.Any(element => element.Equals(top.Point))) continue;
 
                     // Debug.Log("Found a cross node: " + node.point);
 
                     // we managed to find a cross node:
                     // 1) add direct connections:
-                    node.AddOutgoing(top.point);
-                    top.AddIncoming(node.point);
+                    node.AddOutgoing(top.Point);
+                    top.AddIncoming(node.Point);
 
-                    right.AddOutgoing(topRight.point);
-                    topRight.AddIncoming(right.point);
+                    right.AddOutgoing(topRight.Point);
+                    topRight.AddIncoming(right.Point);
 
                     float rnd = Random.Range(0f, 1f);
                     if (rnd < 0.2f)
                     {
                         // remove both cross connections:
                         // a) 
-                        node.RemoveOutgoing(topRight.point);
-                        topRight.RemoveIncoming(node.point);
+                        node.RemoveOutgoing(topRight.Point);
+                        topRight.RemoveIncoming(node.Point);
                         // b) 
-                        right.RemoveOutgoing(top.point);
-                        top.RemoveIncoming(right.point);
+                        right.RemoveOutgoing(top.Point);
+                        top.RemoveIncoming(right.Point);
                     }
                     else if (rnd < 0.6f)
                     {
                         // a) 
-                        node.RemoveOutgoing(topRight.point);
-                        topRight.RemoveIncoming(node.point);
+                        node.RemoveOutgoing(topRight.Point);
+                        topRight.RemoveIncoming(node.Point);
                     }
                     else
                     {
                         // b) 
-                        right.RemoveOutgoing(top.point);
-                        top.RemoveIncoming(right.point);
+                        right.RemoveOutgoing(top.Point);
+                        top.RemoveIncoming(right.Point);
                     }
                 }
         }

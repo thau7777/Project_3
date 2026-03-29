@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using System;
 
@@ -14,10 +15,13 @@ namespace MyRule
     public class MatchData
     {
         [JsonProperty] private EMap _mapType;
+        [JsonProperty] private Map _map;
+        [JsonProperty] private int _currentStep;
         [JsonProperty] private Loader.EScene _scene;
         [JsonProperty] private bool _isNewMatch;
         [JsonProperty] private EMatchResult _result;
         [JsonProperty] private int _runeInMatch;
+        [JsonProperty] private int _lockReceiveRuneTurn;
         [JsonProperty] private bool _hasReceivedStartingSigil;
         [JsonProperty] private CharacterData _characterData;
         [JsonProperty] private SigilPool _sigilPoolInMatch;
@@ -30,11 +34,14 @@ namespace MyRule
         [JsonProperty] private WeatherData _weatherData;
 
         [JsonIgnore] public EMap MapType => _mapType;
+        [JsonIgnore] public Map Map => _map;
+        [JsonIgnore] public int CurrentStep => _currentStep;
         [JsonIgnore] public Loader.EScene Scene => _scene;
         [JsonIgnore] public bool IsNewMatch => _isNewMatch;
         [JsonIgnore] public EMatchResult Result => _result;
         [JsonIgnore] public CharacterData CharacterData => _characterData;
         [JsonIgnore] public int RuneInMatch => _runeInMatch;
+        [JsonIgnore] public int LockReceiveRuneTurn => _lockReceiveRuneTurn;
         [JsonIgnore] public bool HasReceivedStartingSigil => _hasReceivedStartingSigil;
         [JsonIgnore] public SigilPool SigilPool => _sigilPoolInMatch;
         [JsonIgnore] public SigilStorageData SigilStorageInMatch => _sigilStorageInMatch;
@@ -48,6 +55,10 @@ namespace MyRule
         public MatchData(EMap eMap, CharacterData character, int runeAmount)
         {
             _mapType = eMap;
+
+            _map = null;
+
+            _currentStep = 0;
 
             switch (eMap)
             {
@@ -66,6 +77,7 @@ namespace MyRule
             _result = EMatchResult.None;
             _characterData = character;
             _runeInMatch = runeAmount;
+            _lockReceiveRuneTurn = 0;
             _hasReceivedStartingSigil = false;
             _sigilPoolInMatch = new SigilPool();
             _sigilStorageInMatch = new SigilStorageData();
@@ -77,7 +89,7 @@ namespace MyRule
             _weatherData = null;
         }
 
-        public async void MoveToNextMap()
+        public async UniTask MoveToNextMap()
         {
             switch (_mapType)
             {
@@ -98,6 +110,8 @@ namespace MyRule
 
         public void SetMap(EMap eMap) => _mapType = eMap;
 
+        public void SetMap(Map map) => _map = map;
+
         public void SetIsNewMatch(bool isNewMatch) => _isNewMatch = isNewMatch;
 
         public void SetMatchResult(EMatchResult result) => this._result = result;
@@ -105,6 +119,8 @@ namespace MyRule
         public void SetCharacter(CharacterData character) => this._characterData = character;
 
         public void SetRuneInMatch(int runeAmount) => this._runeInMatch = runeAmount;
+
+        public void SetLockReceiveRuneTurn(int turn) => this._lockReceiveRuneTurn = turn;
 
         public void SetHasRecivedStartingSigil(bool hasRecivedStartingSigil) => _hasReceivedStartingSigil= hasRecivedStartingSigil;
 
@@ -121,5 +137,7 @@ namespace MyRule
         public void SetReward(MazeGameplayReward reward) => this._reward = reward;
 
         public void SetWeather(WeatherData weatherData) => this._weatherData = weatherData;
+
+        public void IncreaseStep() => _currentStep++;
     }
 }

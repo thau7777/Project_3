@@ -6,8 +6,6 @@ namespace MyRule
 {
     public class CharacterStatsView : Singleton<CharacterStatsView>
     {
-        [SerializeField] private TextMeshProUGUI backStory;
-
         [SerializeField] private TextMeshProUGUI vigor;
         [SerializeField] private TextMeshProUGUI mind;
         [SerializeField] private TextMeshProUGUI endurance;
@@ -63,8 +61,6 @@ namespace MyRule
 
         public void UpdateStats(CharacterData character)
         {
-            if (backStory != null) backStory.text = character.BackStory;
-
             if (vigor != null) vigor.text = character.CharacterStatsData.AttributesData.Vigor.ToString();
             if (mind != null) mind.text = character.CharacterStatsData.AttributesData.Mind.ToString();
             if (endurance != null) endurance.text = character.CharacterStatsData.AttributesData.Endurance.ToString();

@@ -110,7 +110,7 @@ namespace MyRule
         {
             GameObject mapNodeObject = Instantiate(nodePrefab, mapParent.transform);
             MapNode mapNode = mapNodeObject.GetComponent<MapNode>();
-            NodeBlueprint blueprint = GetBlueprint(node.blueprintName);
+            NodeBlueprint blueprint = GetBlueprint(node.BlueprintName);
             mapNode.SetUp(node, blueprint);
             mapNode.transform.localPosition = GetNodePosition(node);
             return mapNode;
@@ -124,16 +124,16 @@ namespace MyRule
             {
                 case MapOrientation.BottomToTop:
                     return new Vector2(-backgroundPadding.x / 2f, (padding - length) / 2f) +
-                           node.position * unitsToPixelsMultiplier;
+                           node.Position * unitsToPixelsMultiplier;
                 case MapOrientation.TopToBottom:
                     return new Vector2(backgroundPadding.x / 2f, (length - padding) / 2f) -
-                           node.position * unitsToPixelsMultiplier;
+                           node.Position * unitsToPixelsMultiplier;
                 case MapOrientation.RightToLeft:
                     return new Vector2((length - padding) / 2f, backgroundPadding.y / 2f) -
-                           Flip(node.position) * unitsToPixelsMultiplier;
+                           Flip(node.Position) * unitsToPixelsMultiplier;
                 case MapOrientation.LeftToRight:
                     return new Vector2((padding - length) / 2f, -backgroundPadding.y / 2f) +
-                           Flip(node.position) * unitsToPixelsMultiplier;
+                           Flip(node.Position) * unitsToPixelsMultiplier;
                 default:
                     return Vector2.zero;
             }

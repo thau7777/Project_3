@@ -1,5 +1,7 @@
-using Ink.Runtime;
+﻿using Ink.Runtime;
 using MyRule.Event;
+using MyRule.UI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +14,8 @@ namespace MyRule
         [Header("Load Global JSON")]
         [SerializeField] private TextAsset inkJSON;
 
+        [SerializeField] private DialogueView view;
+
         [SerializeField] private InputReader inputReader;
             
         private Story story;
@@ -20,9 +24,9 @@ namespace MyRule
 
         private bool dialogueIsPlaying = false;
 
-        public bool CanContinueDialogue = true;
+        private bool canContinueDialogue = true;
 
-        private DialogueVariable dialogueVarialble;
+        private InkVariable dialogueVarialble;
 
         private InkExternalFunction inkExternalFunction;
 
@@ -35,14 +39,18 @@ namespace MyRule
             base.Awake();
 
             story = new Story(inkJSON.text);
-            dialogueVarialble = new DialogueVariable(story);
+            dialogueVarialble = new InkVariable(story);
             inkExternalFunction = new InkExternalFunction();
             inkExternalFunction.Bind(story);
+
+            GameSystemManager.Instance.Register(dialogueVarialble);
         }
 
         protected void OnDestroy()
         {
             inkExternalFunction.Unbind(story);
+
+            GameSystemManager.Instance.Unregister(dialogueVarialble);
         }
 
         private void OnEnable()
@@ -72,9 +80,19 @@ namespace MyRule
         {
             if (!dialogueIsPlaying) return;
 
-            if (CanContinueDialogue) ContinueStoryOrExitStory();
-            else return;
+            if (view.IsTyping)
+            {
+                view.SkipTyping();
+                return;
+            }
+
+            if (canContinueDialogue)
+            {
+                ContinueStoryOrExitStory();
+            }
         }
+
+        public void CanContinueDialouge(bool locking) => canContinueDialogue = locking;
 
         public void EnterDialogue(EnterDialogueEvent evt)
         {
@@ -85,6 +103,8 @@ namespace MyRule
             dialogueIsPlaying = true;
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(false));
+
+            RTSCameraController.Instance.LockInteract();
 
             EventBus<DialougeStartedEvent>.Raise(new DialougeStartedEvent());
 
@@ -105,6 +125,8 @@ namespace MyRule
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(true));
 
+            RTSCameraController.Instance.UnlockInteract();
+
             EventBus<DialogueFinishedEvent>.Raise(new DialogueFinishedEvent());
 
             NPCManager.Instance.ExitDialogue();
@@ -116,7 +138,7 @@ namespace MyRule
 
         public void ContinueStoryOrExitStory()
         {
-            if (!CanContinueDialogue) return;
+            if (!canContinueDialogue) return;
 
             if (story.currentChoices.Count > 0 && currentChoiceIndex != -1)
             {
@@ -152,11 +174,39 @@ namespace MyRule
         private void UpdateChoiceIndex(UpdateChoiceIndexEvent evt)
         {
             this.currentChoiceIndex = evt.index;
+
+            ContinueStoryOrExitStory();
         }
 
         private void UpdateInkDialogueVariable(UpdateInkDialogueVariableEvent evt)
         {
-            this.dialogueVarialble.UpdateVariableState(evt.name, evt.value);
+            Ink.Runtime.Object inkValue = ConvertToInkValue(evt.value);
+            this.dialogueVarialble.UpdateVariableState(evt.name, inkValue);
+        }
+
+        private Ink.Runtime.Object ConvertToInkValue(object value)
+        {
+            switch (value)
+            {
+                case int i:
+                    return new IntValue(i);
+
+                case bool b:
+                    return new BoolValue(b);
+
+                case string s:
+                    return new StringValue(s);
+
+                case float f:
+                    return new FloatValue(f);
+
+                case Enum e:
+                    return new IntValue(Convert.ToInt32(e));
+
+                default:
+                    Debug.LogError($"Unsupported Ink variable type: {value.GetType()}");
+                    return null;
+            }
         }
 
         private bool IsLineBlank(string dialogueLine)

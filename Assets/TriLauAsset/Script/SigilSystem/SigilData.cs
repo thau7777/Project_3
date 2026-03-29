@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using UnityEngine;
 
@@ -33,7 +33,6 @@ namespace MyRule
         [JsonIgnore] public int ManaCost => manaCost;
         [JsonIgnore] public SigilType SigilType => sigilType;
         [JsonIgnore] public ERarity Rarity => rarity;
-        [JsonIgnore] public float Weight => weight;
         [JsonIgnore] public EKeyBinding EKeyBinding => eKeyBinding;
 
         public SigilData(string id, SigilType sigilType, string name, int baseDamage, int manaCost, ERarity rarity, EKeyBinding eKeyBinding)
@@ -67,6 +66,67 @@ namespace MyRule
                     this.weight = 0.2f;
                     break;
             }
+        }
+
+        public float GetWeight(int steps)
+        {
+            if (steps >= 35)
+                return 0;
+
+            float t = Mathf.Clamp01(steps / 36f);
+
+            // Late spike zone (32–34)
+            bool isLateSpike = steps >= 32;
+
+            switch (rarity)
+            {
+                case ERarity.Common:
+                    return isLateSpike
+                        ? Mathf.Lerp(20, 5, t)
+                        : Mathf.Lerp(50, 20, t);
+
+                case ERarity.Uncommon:
+                    return isLateSpike
+                        ? Mathf.Lerp(15, 8, t)
+                        : Mathf.Lerp(30, 18, t);
+
+                case ERarity.Rare:
+                    return isLateSpike
+                        ? Mathf.Lerp(18, 25, t)
+                        : Mathf.Lerp(12, 18, t);
+
+                case ERarity.Epic:
+                    return isLateSpike
+                        ? Mathf.Lerp(14, 22, t)
+                        : Mathf.Lerp(6, 14, t);
+
+                case ERarity.Legendary:
+                    return isLateSpike
+                        ? Mathf.Lerp(8, 18, SpikeCurve(t)) 
+                        : Mathf.Lerp(1.8f, 8f, EaseOut(t));
+
+                case ERarity.Mythic:
+                    return isLateSpike
+                        ? Mathf.Lerp(2f, 12f, SpikeCurve(t)) 
+                        : Mathf.Lerp(0.2f, 3f, LateCurve(t));
+            }
+
+            return 0;
+        }
+
+        private float EaseOut(float t)
+        {
+            return 1 - Mathf.Pow(1 - t, 2);
+        }
+
+        private float LateCurve(float t)
+        {
+            return Mathf.Pow(t, 3);
+        }
+
+        private float SpikeCurve(float t)
+        {
+            return Mathf.Pow(t, 5);
         }
     }
 }

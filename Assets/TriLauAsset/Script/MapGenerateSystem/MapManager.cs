@@ -5,14 +5,31 @@ using Cysharp.Threading.Tasks;
 
 namespace MyRule
 {
-    public class MapManager : MonoBehaviour
+    public class MapManager : Singleton<MapManager>, IGameData
     {
-        public MapConfig config;
-        public MapView view;
+        [SerializeField] private MapConfig config;
+        [SerializeField] private MapView view;
 
         public Map CurrentMap { get; private set; }
 
-        private async void Start()
+        private void OnEnable()
+        {
+            GameSystemManager.Instance.Register(this);
+        }
+
+        private void OnDisable()
+        {
+            GameSystemManager.Instance.Unregister(this);
+        }
+
+        public void GenerateNewMap()
+        {
+            Map map = MapGenerator.GetMap(config);
+            CurrentMap = map;
+            view.ShowMap(map);
+        }
+
+        public async UniTask LoadData(GameData data)
         {
             await UniTask.WaitUntil(() => MatchManager.Instance != null);
 
@@ -23,12 +40,11 @@ namespace MyRule
             }
             else
             {
-                if (PlayerPrefs.HasKey("Map"))
+                Map map = data.MatchData.Map;
+
+                if (map != null)
                 {
-                    string mapJson = PlayerPrefs.GetString("Map");
-                    Map map = JsonConvert.DeserializeObject<Map>(mapJson);
-                    // using this instead of .Contains()
-                    if (map.path.Any(p => p.Equals(map.GetBossNode().point)))
+                    if (map.Path.Any(p => p == map.GetBossNode().Point))
                     {
                         GenerateNewMap();
                     }
@@ -45,27 +61,14 @@ namespace MyRule
             }
         }
 
-        public void GenerateNewMap()
-        {
-            Map map = MapGenerator.GetMap(config);
-            CurrentMap = map;
-            Debug.Log(map.ToJson());
-            view.ShowMap(map);
-        }
-
-        public void SaveMap()
+        public void SaveData(GameData data)
         {
             if (CurrentMap == null) return;
 
-            string json = JsonConvert.SerializeObject(CurrentMap, Formatting.Indented,
-                new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
-            PlayerPrefs.SetString("Map", json);
-            PlayerPrefs.Save();
-        }
-
-        private void OnApplicationQuit()
-        {
-            SaveMap();
+            if (data.MatchData != null)
+            {
+                data.MatchData.SetMap(CurrentMap);
+            }
         }
     }
 }

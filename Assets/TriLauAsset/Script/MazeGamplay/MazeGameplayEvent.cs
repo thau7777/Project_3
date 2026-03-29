@@ -15,10 +15,12 @@ namespace MyRule
     public struct SigilChosenEvent : IEvent
     {
         public readonly SigilSO sigilSO;
+        public readonly int index;
 
-        public SigilChosenEvent(SigilSO normalSigilSO)
+        public SigilChosenEvent(SigilSO normalSigilSO, int index)
         {
             this.sigilSO = normalSigilSO;
+            this.index = index;
         }
     }
 

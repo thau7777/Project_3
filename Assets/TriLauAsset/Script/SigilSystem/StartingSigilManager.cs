@@ -39,7 +39,9 @@ namespace MyRule
 
             VolumeController.Instance.AdjustUIVolumeWeight();
 
-            RTSCameraController.Instance.CanInteract = false;
+            RTSCameraController.Instance.LockInteract();
+
+            MapPlayerTracker.Instance.LockMapTracker();
 
             CardTracker.Instance.UnlockInteract(true);
 
@@ -64,7 +66,9 @@ namespace MyRule
 
             isShowing = false;
 
-            RTSCameraController.Instance.CanInteract = true;
+            RTSCameraController.Instance.UnlockInteract();
+
+            MapPlayerTracker.Instance.UnlockMapTracker();
         }
 
         private async UniTask SpawnStartingSigilCardAsync()

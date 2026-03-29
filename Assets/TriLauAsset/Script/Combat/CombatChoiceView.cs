@@ -13,16 +13,14 @@ namespace MyRule.UI
         [SerializeField] private float fadeDuration = 0.4f;
 
         [Header("Top down")]
-        [SerializeField] private TextMeshProUGUI numbOfWavesTD;
         [SerializeField] private Transform waveViewTDParent;
         [SerializeField] private Button tdBtn;
+        [SerializeField] private GameObject tdWaveViewPreb;
 
         [Header("Turn base")]
-        [SerializeField] private TextMeshProUGUI numbOfWavesTB;
         [SerializeField] private Transform waveViewTBParent;
         [SerializeField] private Button tbBtn;
-
-        [SerializeField] private GameObject waveViewPreb;
+        [SerializeField] private GameObject tbWaveViewPreb;
 
         private EventBinding<UpdateTDCombatWavesEvent> updateTDEventBinding;
         private EventBinding<UpdateTBCombatWavesEvent> updateTBEventBinding;
@@ -59,7 +57,6 @@ namespace MyRule.UI
         private void UpdateTDWaveView(UpdateTDCombatWavesEvent evt)
         {
             tdWaves = evt.groupWave;
-            numbOfWavesTD.text = evt.groupWave.WaveDatas.Length.ToString();
 
             for (int i = 0; i < evt.groupWave.WaveDatas.Length; i++)
             {
@@ -67,7 +64,7 @@ namespace MyRule.UI
 
                 if (waveData != null)
                 {
-                    var waveViewObj = Instantiate(waveViewPreb, waveViewTDParent);
+                    var waveViewObj = Instantiate(tdWaveViewPreb, waveViewTDParent);
                     CombatWaveView combatWaveView = waveViewObj.GetComponent<CombatWaveView>();
                     combatWaveView.SetUpWave(i + 1, waveData);
                 }
@@ -77,7 +74,6 @@ namespace MyRule.UI
         private void UpdateTBWaveView(UpdateTBCombatWavesEvent evt)
         {
             tbWaves = evt.groupWave;
-            numbOfWavesTB.text = evt.groupWave.WaveDatas.Length.ToString();
 
             for (int i = 0; i < evt.groupWave.WaveDatas.Length; i++)
             {
@@ -85,7 +81,7 @@ namespace MyRule.UI
 
                 if (waveData != null)
                 {
-                    var waveViewObj = Instantiate(waveViewPreb, waveViewTBParent);
+                    var waveViewObj = Instantiate(tbWaveViewPreb, waveViewTBParent);
                     CombatWaveView combatWaveView = waveViewObj.GetComponent<CombatWaveView>();
                     combatWaveView.SetUpWave(i + 1, waveData);
                 }

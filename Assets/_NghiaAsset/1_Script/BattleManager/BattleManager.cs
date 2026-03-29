@@ -345,7 +345,7 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
+                //CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
                 TB_Menu.instance.ShowVictoryMenu();
             }
         }

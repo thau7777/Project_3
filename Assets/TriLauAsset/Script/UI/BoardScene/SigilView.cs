@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 namespace MyRule
 {
-    public class SigilView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class SigilView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
         [SerializeField] private Image icon;
         [SerializeField] private SigilSO sigilSO;
         [SerializeField] private bool canDrag = false;
         [SerializeField] private bool isPassive = false;
+
+        private SigilData sigilData;
 
         private Canvas rootCanvas;
 
@@ -22,9 +24,10 @@ namespace MyRule
             icon.raycastTarget = false;
         }
 
-        public void SetSigil(SigilSO sigilSO)
+        public void SetSigil(SigilSO sigilSO, SigilData sigilData)
         {
             this.sigilSO = sigilSO;
+            this.sigilData = sigilData;
             canDrag = true;
             icon.raycastTarget = true;
             Color c = icon.color;
@@ -69,6 +72,14 @@ namespace MyRule
 
             icon.raycastTarget = true;
             transform.SetParent(parentAfterDrag);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                EventBus<ShowCardDetailEvent>.Raise(new ShowCardDetailEvent(sigilSO, sigilData));
+            }
         }
     }
 }

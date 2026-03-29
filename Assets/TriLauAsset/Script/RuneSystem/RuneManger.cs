@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using UnityEngine;
 
 namespace MyRule
@@ -8,7 +9,9 @@ namespace MyRule
         private int currentRuneAmount = 100;
 
         public int CurrentRuneAmount => currentRuneAmount;
-        
+
+        private int lockReceiveTurn = 0;
+
         private EventBinding<ReceiveRuneEvent> receiveRuneEventBinding;
 
         private void OnEnable()
@@ -28,9 +31,16 @@ namespace MyRule
 
         private void OnReceiveRune(ReceiveRuneEvent evt)
         {
-            currentRuneAmount += evt.runeAmount;
+            if (lockReceiveTurn <= 0)
+            {
+                currentRuneAmount += evt.runeAmount;
 
-            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
+                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
+            }
+            else
+            {
+                lockReceiveTurn -= 1;
+            }
         }
 
         public void SetStartRune(int amount)
@@ -38,15 +48,20 @@ namespace MyRule
             currentRuneAmount = amount;
         }
 
-        public UniTask LoadData(GameData data)
+        public void SetLockReceiveTurn(int turn) => lockReceiveTurn = turn;
+
+        public async UniTask LoadData(GameData data)
         {
             if (data.MatchData != null)
             {
                 currentRuneAmount = data.MatchData.RuneInMatch;
+                lockReceiveTurn = data.MatchData.LockReceiveRuneTurn;
                 EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
+
+                await UniTask.WaitUntil(() => DialogueManager.Instance);
+
+                EventBus<UpdateInkDialogueVariableEvent>.Raise(new UpdateInkDialogueVariableEvent("currentRune", currentRuneAmount));
             }
-            
-            return UniTask.CompletedTask;
         }
 
         public void SaveData(GameData data)
@@ -54,6 +69,7 @@ namespace MyRule
             if (data.MatchData != null)
             {
                 data.MatchData.SetRuneInMatch(currentRuneAmount);
+                data.MatchData.SetLockReceiveRuneTurn(lockReceiveTurn);
             }
         }
     }

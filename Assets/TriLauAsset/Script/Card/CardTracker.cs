@@ -41,7 +41,7 @@ namespace MyRule
 
         private void HandleClick()
         {
-            if (!canInteract) return;
+            if (!canInteract || currentHover == null) return;
 
             if (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
             {

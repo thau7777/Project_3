@@ -64,7 +64,7 @@ namespace MyRule
 
             foreach (var data in datas)
             {
-                await data.LoadData(_gameData);
+                data.LoadData(_gameData).Forget();
             }
 
             IsLoadCompleted = true;
@@ -90,7 +90,7 @@ namespace MyRule
 
             foreach (var data in datas)
             {
-                await data.LoadData(_gameData);
+                data.LoadData(_gameData).Forget();
             }
         }
         #endregion

@@ -1,7 +1,8 @@
 === MysteriousHunter ===
-{hasCompletedFirstGame == false:
+{MysteriousHunterCompletedFirstMeet == false:
 Hello my friend, it seems you're new here. #speaker:Captain of the brave warriors
 So I think you should get used to some things here. #speaker:Captain of the brave warriors
+~ MysteriousHunterCompletedFirstMeet = true
 }
 I have a little challenge for you. #speaker:Captain of the brave warriors
 Overcome it, and I will reward you handsomely. #speaker:Captain of the brave warriors

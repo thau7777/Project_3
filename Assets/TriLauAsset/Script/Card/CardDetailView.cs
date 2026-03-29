@@ -96,6 +96,7 @@ namespace MyRule
             fireDmg.text = sigilSO.fire.ToString();
             lightningDmg.text = sigilSO.lightning.ToString();
             waterDmg.text = sigilSO.water.ToString();
+            frostDmg.text = sigilSO.frost.ToString();
             poisonDmg.text = sigilSO.poison.ToString();
             holyDmg.text = sigilSO.holy.ToString();
             darkDmg.text = sigilSO.dark.ToString();
@@ -105,6 +106,7 @@ namespace MyRule
             fireDef.text = sigilSO.fireDef.ToString();
             lightningDef.text = sigilSO.lightningDef.ToString();
             waterDef.text = sigilSO.waterDef.ToString();
+            frostDef.text = sigilSO.frostDef.ToString();
             poisonDef.text = sigilSO.poisonDef.ToString();
             holyDef.text = sigilSO.holyDef.ToString();
             darkDef.text = sigilSO.darkDef.ToString();
@@ -116,6 +118,7 @@ namespace MyRule
             card.transform.SetParent(cardPoint);
             card.transform.localPosition = Vector3.zero;
             card.SetSigil(sigilData, sigilSO, CardGameplayType.Detail);
+            card.CardRotator.SetOriginalLocalRotation();
         }
 
         public void ShowDetail()
@@ -124,9 +127,12 @@ namespace MyRule
             
             EventBus<CardDetailLockEvent>.Raise(new CardDetailLockEvent(true));
             CardTracker.Instance.UnlockInteract(false);
+            RTSCameraController.Instance.LockInteract();
 
             canvasGroup.alpha = 0f;
             canvasGroup.DOFade(1f, fadeDuration);
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
 
             isShowing = true;
         }
@@ -142,6 +148,9 @@ namespace MyRule
             await UniTask.Delay(200);
             canvasGroup.alpha = 1f;
             canvasGroup.DOFade(0f, fadeDuration);
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+            RTSCameraController.Instance.UnlockInteract();
 
             isShowing = false;
         }

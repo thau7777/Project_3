@@ -18,6 +18,8 @@ namespace MyRule
         [SerializeField] private Transform[] passivePoints;
         [SerializeField] private StoreItemView[] items;
 
+        [SerializeField] private GameObject storeCam;
+
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
@@ -53,13 +55,13 @@ namespace MyRule
 
             InitCommand();
             
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-            
-            DialogueManager.Instance.CanContinueDialogue = false;
-            RTSCameraController.Instance.CanInteract = false;
+            DialogueManager.Instance.CanContinueDialouge(false);
 
             await UniTask.Delay(800);
+            
+            if (storeCam != null) storeCam.SetActive(true); 
+            
+            await UniTask.Delay(1000);
 
             ShowingItem();
 
@@ -72,12 +74,14 @@ namespace MyRule
 
             VolumeController.Instance.AdjustUIVolumeWeight();
 
-
-            await UniTask.Delay((int)(fadeDuration * 1000));
-
             SpawnActiveSigil();
             
             SpawnPassiveSigil();
+
+            await UniTask.Delay((int)(fadeDuration * 1000));
+
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
 
             isShowing = true;
 
@@ -106,9 +110,13 @@ namespace MyRule
 
             CardTracker.Instance.UnlockInteract(false);
 
-            RTSCameraController.Instance.CanInteract = true;
+            await UniTask.Delay((int)(fadeDuration * 1000));
 
-            DialogueManager.Instance.CanContinueDialogue = true;
+            storeCam.SetActive(false);
+
+            await UniTask.Delay(800);
+
+            DialogueManager.Instance.CanContinueDialouge(true);
 
             DialogueManager.Instance.ContinueStoryOrExitStory();
         }

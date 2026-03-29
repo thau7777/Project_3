@@ -7,9 +7,13 @@ EXTERNAL UpdateRune(rune)
 EXTERNAL BlockEarnRune(number)
 EXTERNAL UpdateHealth(health)
 
-VAR hasCompletedFirstGame = false
 VAR hasBloodFang = false
 VAR currentRune = 0
+
+VAR MysteriousWitchCompletedFirstMeet = false
+VAR TheSalesmanCompletedFirstMeet = false
+VAR MysteriousHunterCompletedFirstMeet = false
+VAR MysteriousHeroCompletedFistMeet = false
 
 INCLUDE TheSalesman.ink
 INCLUDE MysteriousWitch.ink

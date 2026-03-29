@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -6,15 +7,46 @@ using UnityEngine;
 
 namespace MyRule
 {
+    [Serializable]
     public class Node
     {
-        public readonly Vector2Int point;
-        public readonly List<Vector2Int> incoming = new List<Vector2Int>();
-        public readonly List<Vector2Int> outgoing = new List<Vector2Int>();
-        [JsonConverter(typeof(StringEnumConverter))]
-        public readonly NodeType nodeType;
-        public readonly string blueprintName;
-        public Vector2 position;
+        [JsonProperty] private Vector2Int point;
+        [JsonProperty] private List<Vector2Int> incoming = new List<Vector2Int>();
+        [JsonProperty] private List<Vector2Int> outgoing = new List<Vector2Int>();
+        [JsonProperty] [JsonConverter(typeof(StringEnumConverter))] private NodeType nodeType;
+        [JsonProperty] private string blueprintName;
+        [JsonProperty] private Vector2 position;
+
+        [JsonIgnore] public Vector2Int Point
+        {
+            get { return point; }
+            set { point = value; }
+        }
+        [JsonIgnore] public List<Vector2Int> Incoming
+        {
+            get { return incoming; }
+            set { incoming = value; }
+        }
+        [JsonIgnore] public List <Vector2Int> Outgoing
+        {
+            get { return outgoing; }
+            set { outgoing = value; }
+        }
+        [JsonIgnore] public NodeType NodeType
+        {
+            get { return nodeType; }
+            set { nodeType = value; }
+        }
+        [JsonIgnore] public string BlueprintName
+        {
+            get { return blueprintName; }
+            set { blueprintName = value; }
+        }
+        [JsonIgnore] public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
 
         public Node(NodeType nodeType, string blueprintName, Vector2Int point)
         {

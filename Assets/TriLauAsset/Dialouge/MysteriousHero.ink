@@ -1,7 +1,8 @@
 === MysteriousHero ===
-{ hasCompletedFirstGame == false:
+{ MysteriousHeroCompletedFistMeet == false:
 Hello, I heard there's a new person here, so it turns out it's you! #speaker:Mysterious Hunter
 There are so many traps out there. I can't let a newcomer with unknown abilities go out there and throw themselves to their death. #speaker:Mysterious Hunter
+~ MysteriousHeroCompletedFistMeet = true
 }
 I have a challenge: catch a BamBear and bring it back here, and I will acknowledge your abilities. #speaker:Mysterious Hunter
 * [Accept the challenge]

@@ -32,6 +32,7 @@ namespace MyRule
 
         public void OnSubmit(BaseEventData eventData)
         {
+            select.SetActive(false);
             EventBus<UpdateChoiceIndexEvent>.Raise(new UpdateChoiceIndexEvent(choiceIndex));
         }
     }

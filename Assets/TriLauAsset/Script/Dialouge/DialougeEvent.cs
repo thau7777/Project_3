@@ -59,9 +59,9 @@ namespace MyRule.Event
     public struct UpdateInkDialogueVariableEvent : IEvent
     {
         public readonly string name;
-        public Ink.Runtime.Object value;
+        public object value;
 
-        public UpdateInkDialogueVariableEvent(string name, Ink.Runtime.Object value)
+        public UpdateInkDialogueVariableEvent(string name, object value)
         {
             this .name = name;
             this .value = value;

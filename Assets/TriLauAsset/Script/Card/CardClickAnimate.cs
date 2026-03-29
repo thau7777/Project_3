@@ -43,7 +43,7 @@ namespace MyRule
             currentTween?.Kill();
 
             currentTween = card
-                .DOLocalRotateQuaternion(Quaternion.Euler(Vector3.zero), flipDuration)
+                .DOLocalRotate(new Vector3(0, 0 ,0), flipDuration, RotateMode.FastBeyond360)
                 .SetEase(Ease.InOutQuad);
 
             await currentTween.AsyncWaitForCompletion();
@@ -58,7 +58,7 @@ namespace MyRule
             currentTween?.Kill();
 
             currentTween = card
-                .DOLocalRotateQuaternion(Quaternion.Euler(0, 180, 0), flipDuration)
+                .DOLocalRotate(new Vector3(0, -180, 0), flipDuration, RotateMode.FastBeyond360)
                 .SetEase(Ease.InOutQuad);
 
             await currentTween.AsyncWaitForCompletion();
