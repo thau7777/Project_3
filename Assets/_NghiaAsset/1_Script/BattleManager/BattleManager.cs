@@ -361,7 +361,11 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
+                var mainPlayer = allCombatants.FirstOrDefault(c => c.isPlayer);
+                if (mainPlayer != null)
+                {
+                    CharacterManager.Instance.SetCurrentHealth(mainPlayer.stats.currentHP);
+                }
                 TB_Menu.instance.ShowVictoryMenu();
             }
         }
