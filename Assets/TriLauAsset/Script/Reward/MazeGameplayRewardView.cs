@@ -109,7 +109,7 @@ namespace MyRule
             RTSCameraController.Instance.UnlockInteract();
             MapPlayerTracker.Instance.UnlockMapTracker();
 
-            if (CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
+            if (CombatManager.Instance.CombatData != null && CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
             {
                 BlackFade.Instance.FadeIn();
                 await UniTask.Delay(1000);

@@ -7,6 +7,7 @@ namespace MyRule
         KillEnemy,
         CollectSigil,
         Discovery,
+        Basic,
     }
 
     public enum RewardType
@@ -32,9 +33,11 @@ namespace MyRule
         }
 #endif
         public string achievementName;
+        public Sprite icon;
         public AchievementType type;
         [ShowIfEnumValue("type", AchievementType.KillEnemy)] public int targetValue;
-        [ShowIfEnumValue("type", AchievementType.Discovery)] public EMap map;
+        [ShowIfEnumValue("type", AchievementType.Discovery)] public EMap targetMap;
+        [ShowIfEnumValue("type", AchievementType.CollectSigil)] public SigilSO targetSigil;
 
         [Header("Reward")]
         public RewardType rewardType;

@@ -45,16 +45,6 @@ namespace MyRule.UI
                 hasReceive.SetActive(true);
             }
 
-            int progress = 0;
-            if (achievementData.Progress > achivementConfig.targetValue)
-            {
-                progress = achivementConfig.targetValue;
-            }
-            else
-            {
-                progress = achievementData.Progress;
-            }
-
             switch (achivementConfig.rewardType)
             {
                 case RewardType.Gold:
@@ -83,7 +73,7 @@ namespace MyRule.UI
                     }
             }
 
-            achiementProgress.value = (float)(progress / achivementConfig.targetValue);
+            achiementProgress.value = achievementData.GetCurrentProgress();
         }
 
         public void OnSelect(BaseEventData eventData)

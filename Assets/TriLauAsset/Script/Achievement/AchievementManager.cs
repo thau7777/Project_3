@@ -32,9 +32,40 @@ namespace MyRule
 
                 _configByType[config.type].Add(config);
 
-                if (!_achievementDict.ContainsKey(config.id))
+                switch (config.type)
                 {
-                    _achievementDict[config.id] = new AchievementData(config.id, false, 0);
+                    case AchievementType.KillEnemy:
+                        {
+                            if (!_achievementDict.ContainsKey(config.id))
+                            {
+                                _achievementDict[config.id] = new KillEnemyAchievementData(config.id, false, 0, config.targetValue);
+                            }
+                            break;
+                        }
+                    case AchievementType.Discovery:
+                        {
+                            if (!_achievementDict.ContainsKey(config.id))
+                            {
+                                _achievementDict[config.id] = new DiscoveryAchievementData(config.id, false, config.targetMap);
+                            }
+                            break;
+                        }
+                    case AchievementType.CollectSigil:
+                        {
+                            if (!_achievementDict.ContainsKey(config.id))
+                            {
+                                _achievementDict[config.id] = new CollectSigilAchievementData(config.id, false, config.targetSigil.id);
+                            }
+                            break;
+                        }
+                    case AchievementType.Basic:
+                        {
+                            if (!_achievementDict.ContainsKey(config.id))
+                            {
+                                _achievementDict[config.id] = new AchievementData(config.id, false);
+                            }
+                            break;
+                        }
                 }
             }
         }
@@ -44,35 +75,28 @@ namespace MyRule
             return configs.Find(x => x.id == id);
         }
 
-        public void Trigger(AchievementType type, int value = 1)
+        public void Trigger(AchievementType type, object value)
         {
             if (!_configByType.ContainsKey(type)) return;
 
             foreach (var config in _configByType[type])
             {
-                var data = _achievementDict[config.id];
+                if (!_achievementDict.TryGetValue(config.id, out var data)) continue;
 
                 if (data.IsUnlocked) continue;
 
-                data.IncreaseProgress(value);
-
-                if (data.Progress >= config.targetValue)
-                {
-                    UnlockAchievement(config, data);
-                }
+                data.UpdateProgress(value);
             }
         }
 
         private void UnlockAchievement(AchievementConfig config, AchievementData data)
         {
-            data.UnlockAchievement();
-
             Debug.Log($"Unlocked Achievement: {config.id}");
 
             //GiveReward(config);
 
             // UI
-            //EventBus<NoctificationAchievementEvent>.Raise(new NoctificationAchievementEvent)
+            //EventBus<NoctificationAchievementEvent>.Raise(new NoctificationAchievementEvent(config));
         }
 
         public void GiveReward(AchievementConfig config)
@@ -104,11 +128,9 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            if (data.Achievements != null && data.Achievements.Count == 0)
-            {
-                SetConfig();
-            }
-            else if (data.Achievements != null && data.Achievements.Count > 0)
+            SetConfig();
+
+            if (data.Achievements != null && data.Achievements.Count > 0)
             {
                 foreach (var achievement in data.Achievements)
                 {
@@ -117,7 +139,6 @@ namespace MyRule
             }
 
             UpdateUIAchiement();
-
             return UniTask.CompletedTask;
         }
 
