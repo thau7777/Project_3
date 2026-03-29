@@ -24,6 +24,11 @@ namespace MyRule
             }
             return true;
         }
+
+        public bool HasCompletedTutorial(string tutorialId)
+        {
+            return _tutorials.ContainsKey(tutorialId) && _tutorials[tutorialId];
+        }
     }
 }
 

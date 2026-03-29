@@ -12,4 +12,13 @@ namespace MyRule.Event
             this.achievementDatas = achievementDatas;
         }
     }
+
+    public struct NoctificationAchievementEvent : IEvent
+    {
+        public readonly AchievementData achievementData;
+        public NoctificationAchievementEvent(AchievementData achievementData)
+        {
+            this.achievementData = achievementData;
+        }
+    }
 }

@@ -72,7 +72,7 @@ namespace MyRule
             //GiveReward(config);
 
             // UI
-            // AchievementUI.Show(config);
+            //EventBus<NoctificationAchievementEvent>.Raise(new NoctificationAchievementEvent)
         }
 
         public void GiveReward(AchievementConfig config)
