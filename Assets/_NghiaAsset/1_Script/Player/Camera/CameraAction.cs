@@ -198,7 +198,7 @@ namespace Turnbase
 
         public void PerfectParryCamera(Character character)
         {
-            Vector3 pos = new Vector3(-1.5f, 0.5f, -1.5f);
+            Vector3 pos = new Vector3(-1.5f, 0.5f, -3f);
             Vector3 rot = new Vector3(10f, 30f, 0f);
             SetTargetAndOffset(character, pos, rot);
         }

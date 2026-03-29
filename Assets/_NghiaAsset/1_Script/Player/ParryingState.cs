@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+using Cysharp.Threading.Tasks;
 
 
 
@@ -30,8 +30,6 @@ namespace Turnbase
 
         public override void OnExit()
         {
-            Time.timeScale = 1f;
-
             CameraAction.instance.NormalCamera(stateMachine.character);
 
             stateMachine.character.StopAllCoroutines();

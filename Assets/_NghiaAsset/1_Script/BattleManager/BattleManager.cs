@@ -443,7 +443,14 @@ namespace Turnbase
 
         public void TriggerParryOnly(Character player, Enemy enemy)
         {
-            parryUI.StartGame(1.0f, (isSuccess) => {
+            if (player.isParrySuccessful) return; 
+
+            parryUI.onAttempt = () => {
+                player.animator.Play("Parry");
+                SpawnEffectParry(player);
+            };
+
+            parryUI.StartGame(2f, (isSuccess) => {
                 if (isSuccess)
                 {
                     player.isParrySuccessful = true;
@@ -469,7 +476,28 @@ namespace Turnbase
                 {
                     enemy.parryMissCount++;
                 }
+
+                parryUI.onAttempt = null;
             });
+        }
+
+        public void SpawnEffectParry(Character targetCharacter)
+        {
+            OneShotVFXSettings_TB settings = Resources.Load<OneShotVFXSettings_TB>("Projectiles/Parry");
+
+            if (settings != null)
+            {
+                Flyweight_TB effect = FlyweightFactory_TB.Spawn(settings);
+
+                if (effect != null)
+                {
+                    effect.transform.SetParent(targetCharacter.transform); // Sửa 'character' thành 'targetCharacter'
+                    effect.transform.localPosition = Vector3.zero;
+                    effect.transform.localRotation = Quaternion.identity;
+
+                    effect.Initialize(targetCharacter.transform.position, targetCharacter.transform.rotation);
+                }
+            }
         }
 
 

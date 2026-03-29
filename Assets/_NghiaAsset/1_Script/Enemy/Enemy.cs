@@ -61,7 +61,7 @@ namespace Turnbase
 
         public void Animation_TriggerEvent()
         {
-            if (telegraphManager != null && selectedSkill != null)
+            if (telegraphManager != null && selectedSkill != null && isLastHit)
             {
                 telegraphManager.Play(selectedSkill.canParry);
             }

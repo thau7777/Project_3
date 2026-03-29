@@ -2616,7 +2616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &290208675
 Transform:
   m_ObjectHideFlags: 0
@@ -2774,7 +2774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!154 &325222964
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -4440,7 +4440,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40079206, y: 0.35865167, z: -0.17426936, w: 0.8248424}
+  m_LocalRotation: {x: 0.5865159, y: 0.30653453, z: -0.25502437, w: 0.7049811}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10618,7 +10618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
   mode: 1
-  size: {x: 303.01, y: 71.53226, z: 303.01}
+  size: {x: 3, y: 3, z: 3}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -10658,7 +10658,7 @@ Transform:
   m_GameObject: {fileID: 1029347334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5476837, y: 34.261127, z: 5.7907867}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11466,6 +11466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583dbc57e71db7e4e807ce25ed5d3597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.ParryMiniGame
+  lockOutDuration: 0.3
 --- !u!114 &1137879818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13339,6 +13340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1385618348}
   - component: {fileID: 1385618347}
+  - component: {fileID: 1385618349}
   m_Layer: 0
   m_Name: TutorialManager
   m_TagString: Untagged
@@ -13388,6 +13390,21 @@ Transform:
   - {fileID: 1868495789}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1385618349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385618346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c08598b8e8ee84e9c6d9bdd692ec33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.GameSystemManager
+  AutoUnparentOnAwake: 1
+  encrypted: 0
+  HasSaveData: 0
 --- !u!1 &1390608410
 GameObject:
   m_ObjectHideFlags: 0
@@ -16727,7 +16744,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591609222}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -19407,7 +19424,7 @@ MonoBehaviour:
   shaderUpdateInterval: 1.21
   timeOfDaySlider: {fileID: 0}
   timeText: {fileID: 0}
-  currentTimeOfDay: 7.9
+  currentTimeOfDay: 9.3
   timeSpeed: 0
   sunriseTime: 4
   sunriseDuration: 0.88

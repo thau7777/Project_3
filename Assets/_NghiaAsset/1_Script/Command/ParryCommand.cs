@@ -1,7 +1,9 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
-
+using MyRule;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace Turnbase
 {
@@ -9,6 +11,7 @@ namespace Turnbase
     {
         private Character character;
         private Character attacker;
+        private CancellationTokenSource cts;
         public ParryCommand(Character character, Character attacker = null)
         {
             this.character = character;
@@ -20,18 +23,53 @@ namespace Turnbase
             string parryMsg = "PARRIED";
             bool isPerfect = (attacker != null && attacker.parryMissCount == 0 && attacker.isLastHit);
 
+            if (!isPerfect && attacker != null) {
+                Debug.Log($"<color=yellow>[PARRY DEBUG]</color> MissCount: {attacker.parryMissCount}, isLastHit: {attacker.isLastHit}");
+            }
+
+            
+            cts?.Cancel();
+            cts?.Dispose();
+            cts= new CancellationTokenSource();
+
+            Transition.TransitionValue(
+                setter:value => Time.timeScale = value,
+                from : 1 ,
+                to: 0.8f,
+                duration: 0.1f,
+                cts.Token).Forget();
+            
+
             if (isPerfect)
             {
                 parryMsg = "Perfect PARRIED";
+                character.animator.Play("Parry 2");
                 CameraAction.instance.PerfectParryCamera(character);
+
+                yield return new WaitForSeconds(0.2f);
+
+                Transition.TransitionValue(
+                setter: value => Time.timeScale = value,
+                from: 0.8f,
+                to: 0.1f,
+                duration: 0.05f,
+                cts.Token).Forget();
+
+                yield return new WaitForSeconds(0.055f);
+                Transition.TransitionValue(
+                setter: value => Time.timeScale = value,
+                from: 0.1f,
+                to: 1f,
+                duration: 0.3f,
+                cts.Token).Forget();
+
             }
             else
             {
+                character.animator.Play("Parry");
                 CameraAction.instance.ParryCamera(character);
             }
 
-            character.animator.Play("Parry");
-            Time.timeScale = 0.8f;
 
             ParryPopup parryPopupComponent = character.GetComponent<ParryPopup>();
             parryPopupComponent.ShowParryPopup(character, parryMsg);

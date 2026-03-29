@@ -22,6 +22,8 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
+            user.parryMissCount = 0;
+
             initialPosition = user.initialPosition;
             int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
             user.totalHitsInSequence = totalAttacks * (skill.numberOfHits > 0 ? skill.numberOfHits : 1);
@@ -42,7 +44,10 @@ namespace Turnbase
                 target.isParrySuccessful = false;
                 user.isAttackBlocked = false;
 
+                user.parryMissCount = 0; 
+
                 user.isLastHit = (i == totalAttacks - 1);
+                
                 yield return PerformAttack();
 
                 if (target.isAttackBlocked)
@@ -122,7 +127,14 @@ namespace Turnbase
             };
 
             user.PrepareHitCallBack(hitAction);
-            user.animator.Play(skill.animationTriggerName, 0, 0f);
+
+            string animationToPlay = skill.animationTriggerName;
+            if (user.isLastHit && !string.IsNullOrEmpty(skill.animationLastHitName))
+            {
+                animationToPlay = skill.animationLastHitName;
+                Debug.Log("<color=red>[INFO]</color> Last Hit");
+            }            
+            user.animator.Play(animationToPlay, 0, 0f);
 
             while (!damageApplied) yield return null;
 
