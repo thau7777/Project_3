@@ -2264,7 +2264,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 6
   info:
-    name: Plant
+    name: Nepenthes
     Avatar: {fileID: -363266606, guid: 1ebd30b3c1fc3d749936bd57797c1fbc, type: 3}
     level: 0
   stats:
@@ -2298,11 +2298,10 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: 73d9e86be590eaf4cb329486c9a76656, type: 2}
   skills:
-  - {fileID: 11400000, guid: 92a1fed47d10e9e45ba8681193e1539c, type: 2}
-  - {fileID: 11400000, guid: eb46bfc563a13c6438c16c217d5792d1, type: 2}
+  - {fileID: 11400000, guid: 507c600e21a32cb41acec6744576d8b2, type: 2}
+  - {fileID: 11400000, guid: 082a7ec54475b664daf9125c767c1b66, type: 2}
   item: []
-  passiveSkills:
-  - {fileID: 11400000, guid: 0f15e4bd46597fe4081b5fefe4e2a3d0, type: 2}
+  passiveSkills: []
   isPlayer: 0
   isVirtualTracker: 0
   target: {fileID: 0}
@@ -2328,8 +2327,11 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 5172770899858302578}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
+  isLastHit: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 1338538099076997050}
   BreakDebuffSettings:

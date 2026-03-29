@@ -22,7 +22,7 @@ namespace Turnbase
 
             character.animator.Play("Parry");
 
-            Time.timeScale = 0.5f;
+            Time.timeScale = 0.8f;
 
 
             ParryPopup parryPopupComponent = character.GetComponent<ParryPopup>();
@@ -33,7 +33,7 @@ namespace Turnbase
 
             SpawnEffectParry();
 
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.5f);
 
             character.animator.Play("Idle");
 

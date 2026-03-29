@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,15 +68,13 @@ namespace Turnbase
 
             if (battleManager != null && target != null && !target.isAttackBlocked)
             {
-                battleManager.TriggerEvadeOnly(target, this);
-
                 if (selectedSkill != null && selectedSkill.canParry)
                 {
                     battleManager.TriggerParryOnly(target, this);
                 }
                 else
                 {
-                    Debug.Log($"<color=red>[SKILL LOG]</color> {selectedSkill.skillName} là Unblockable, bỏ qua Parry.");
+                    battleManager.TriggerEvadeOnly(target, this);
                 }
             }
         }
@@ -91,9 +89,9 @@ namespace Turnbase
 
             if (telegraphManager != null) telegraphManager.Stop();
 
-            if (target != null && target.isAttackBlocked && target.isParrySuccessful)
+            if (target != null && target.isAttackBlocked && target.isParrySuccessful && isLastHit)
             {
-                Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn nhịp này.");
+                Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn tại đòn cuối.");
 
                 if (stateMachine != null)
                 {

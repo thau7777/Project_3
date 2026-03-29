@@ -2885,7 +2885,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 6
   info:
-    name: Rat
+    name: Rat Assassin
     Avatar: {fileID: 128110245, guid: 1ebd30b3c1fc3d749936bd57797c1fbc, type: 3}
     level: 0
   stats:
@@ -2919,7 +2919,8 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: d9af842c491593642b94fcbcc39c6246, type: 2}
   skills:
-  - {fileID: 11400000, guid: b990bde66e49d4a4ba22827221d4ad95, type: 2}
+  - {fileID: 11400000, guid: bfcccc50f684fb048aa75fba4ceea5ce, type: 2}
+  - {fileID: 11400000, guid: 27cfb17791e96204980d504059317bdb, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -2947,8 +2948,11 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 1158086947030079300}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
+  isLastHit: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:

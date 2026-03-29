@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -313,6 +313,7 @@ namespace Turnbase
                     if (c == null) continue;
                     c.isAttackBlocked = false;
                     c.isParrySuccessful = false;
+                    c.isLastHit = false;
                 }
 
                 if (character != null && character.stateMachine != null)
