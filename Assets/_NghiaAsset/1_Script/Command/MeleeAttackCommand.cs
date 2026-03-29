@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -42,7 +42,7 @@ namespace Turnbase
 
                 yield return PerformAttack();
 
-                bool isLastAttack = (i == totalAttacks - 1);
+                user.isLastHit = (i == totalAttacks - 1);
 
                 if (target.isAttackBlocked)
                 {
@@ -51,7 +51,7 @@ namespace Turnbase
                         isPerfectParry = false;
                     }
 
-                    if (isLastAttack)
+                    if (user.isLastHit)
                     {
                         if (target.isParrySuccessful && isPerfectParry)
                         {
@@ -77,17 +77,17 @@ namespace Turnbase
                     }
                     else
                     {
-                        user.animator.Play("Hit", 0, 0f);
-                        yield return new WaitForSeconds(0.6f);
-                        user.animator.Play("Idle");
+                        // Không gọi animation Hit/Hurt nếu không phải đòn cuối
                     }
                 }
                 else
                 {
                     isPerfectParry = false; 
 
-                    if (!isLastAttack) yield return new WaitForSeconds(0.2f);
-                    user.animator.Play("Idle");
+                    if (user.isLastHit)
+                    {
+                        user.animator.Play("Idle");
+                    }
                 }
             }
 

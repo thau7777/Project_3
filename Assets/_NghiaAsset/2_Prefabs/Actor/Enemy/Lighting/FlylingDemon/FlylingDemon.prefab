@@ -2926,7 +2926,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 7
   info:
-    name: FlylingDemon
+    name: Gargoyle
     Avatar: {fileID: 1923179513, guid: a079d1744413bcc498345a6255e61273, type: 3}
     level: 0
   stats:
@@ -2960,8 +2960,9 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: cfc812b00d0849b4d803ee86729750b0, type: 2}
   skills:
-  - {fileID: 11400000, guid: 8f2a1ac71a534f0428897c90afd28162, type: 2}
-  - {fileID: 11400000, guid: dc780ec6868fbd34baffdd0d55ca0a1b, type: 2}
+  - {fileID: 11400000, guid: 0e03863150abb3249ba97b59c5b4c3a2, type: 2}
+  - {fileID: 11400000, guid: e6b6b1738a9e2d549bd48bbff1e025f2, type: 2}
+  - {fileID: 11400000, guid: f4ed0a4aa5efdab428c227a6403a4dcd, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -2989,8 +2990,11 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 8777450255854127542}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
+  isLastHit: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:

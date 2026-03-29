@@ -64,13 +64,18 @@ namespace MyRule
             return sigilsInMatchData;
         }
 
-        public SigilSO GetSigilSOById(string id)
-        {
-            return allSigil.sigilSOs.Find(s => s.id == id);
-        }
+        public SigilSO GetSigilSOById(string id) => allSigil.sigilSOs.Find(s => s.id == id);
+
+        public SigilSO GetSigilSOByName(string name) => allSigil.sigilSOs.Find(s => s.sigilName == name);
 
         public void AddSigil(SigilData sigil)
         {
+            sigilCollection.AddSigil(sigil);
+        }
+
+        public void AddSigil(SigilSO sigilSO)
+        {
+            SigilData sigil = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.mag, sigilSO.manaCost, sigilSO.rarity, sigilSO.keyBinding);
             sigilCollection.AddSigil(sigil);
         }
 

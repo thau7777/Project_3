@@ -19,43 +19,69 @@ namespace MyRule
         [SerializeField] private Button continueBtn;
         [SerializeField] private Transform[] spawnPoint;
         [SerializeField] private float fadeDuration = 0.2f;
+        [SerializeField] private ParticleSystem runeParticles;
 
-        private List<Card> gameObjects = new List<Card>();
+        private List<Card> cards = new List<Card>();
 
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
 
+        private int locking = 1;
+
         private MazeGameplayReward reward;
 
         private EventBinding<SigilChosenEvent> evtBinhding;
+        private EventBinding<CardDetailLockEvent> evtCardLocking;
 
         protected override void OnEnable()
         {
             base.OnEnable();
             evtBinhding = new EventBinding<SigilChosenEvent>(Hide);
             EventBus<SigilChosenEvent>.Register(evtBinhding);
+
+            evtCardLocking = new EventBinding<CardDetailLockEvent>(LockReward);
+            EventBus<CardDetailLockEvent>.Register(evtCardLocking);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             EventBus<SigilChosenEvent>.Deregister(evtBinhding);
+            EventBus<CardDetailLockEvent>.Deregister(evtCardLocking);
         }
 
-        protected override void Start()
+        protected async override void Start()
         {
             cts = new CancellationTokenSource();
 
-            inputReader.diceRollActions.onEsc += Hide;
+            inputReader.diceRollActions.onEsc += HandleEscBtn;
             continueBtn.onClick.AddListener(OnClick);
+
+            //EMatchResult matchResult = MatchManager.Instance.MatchData.Result;
+
+            //if (matchResult == EMatchResult.Win || matchResult == EMatchResult.Lose) return;
+
+            await UniTask.WaitUntil(() => MazeGameplayRewardManager.Instance != null);
 
             reward = MazeGameplayRewardManager.Instance.GetReward();
 
             if (reward != null)
             {
+                locking--;
                 Show();
             }
+        }
+
+        private void LockReward(CardDetailLockEvent evt)
+        {
+            locking++;
+        }
+
+        private void HandleEscBtn()
+        {
+            if (locking > 0) return;
+            Hide();
         }
 
         public override async void Hide()
@@ -65,7 +91,7 @@ namespace MyRule
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
-            CardTracker.Instance.canInteract = false;
+            CardTracker.Instance.UnlockInteract(false);
 
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,
@@ -78,23 +104,24 @@ namespace MyRule
 
             await HideAllSigil();
 
-            DesTroyCard();
-
             isShowing = false;
 
-            RTSCameraController.Instance.CanInteract = true;
+            RTSCameraController.Instance.UnlockInteract();
+            MapPlayerTracker.Instance.UnlockMapTracker();
 
             if (CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
             {
                 BlackFade.Instance.FadeIn();
                 await UniTask.Delay(1000);
-                MatchManager.Instance.MatchData.MoveToNextMap();
+                await MatchManager.Instance.MatchData.MoveToNextMap();
             }
+
+            locking = 1;
         }
 
         public override void Show()
         {
-            if (isShowing) return;
+            if (isShowing || locking > 0) return;
 
             if (reward != null) runeRewardTxt.text = reward.RuneAmount.ToString();
 
@@ -112,17 +139,22 @@ namespace MyRule
 
             continueBtn.Select();
 
-            RTSCameraController.Instance.CanInteract = false;
+            RTSCameraController.Instance.LockInteract();
 
-            CardTracker.Instance.canInteract = true;
-            CardTracker.Instance.isReward = true;
+            CardTracker.Instance.UnlockInteract(true);
+
+            MapPlayerTracker.Instance.LockMapTracker();
 
             isShowing = true;
         }
 
-        private void OnClick()
+        private async void OnClick()
         {
             if (!isShowing) return;
+
+            runeParticles.Play();
+            
+            await UniTask.Delay(300);
 
             if (reward != null)
             {
@@ -138,6 +170,8 @@ namespace MyRule
 
         private async void SpawnRewardSigil()
         {
+            await UniTask.Delay(800);
+
             winningTxtObj.DOLocalMoveY(800, 0.2f).SetEase(Ease.Linear);
 
             Transition.TransitionValue(
@@ -159,34 +193,26 @@ namespace MyRule
                 
                 if (sigilSO == null) continue;
 
-                var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
-                Card card = cardObj.GetComponent<Card>();
-                gameObjects.Add(card);
-                card.SetSigil(sigilData, sigilSO);
+                Card card = CardPoolManager.Instance.Spawn(sigilSO.id);
+                card.SetSigil(sigilData, sigilSO, CardGameplayType.Reward);
+                card.transform.SetParent(spawnPoint[i]);
+                card.transform.position = spawnPoint[i].position;
                 card.transform.DOMoveY(-2000f, 0.2f).SetEase(Ease.Linear);
+                cards.Add(card);
                 await UniTask.Delay(200);
-                card.IsShowing = true;
             }
         }
 
         private async UniTask HideAllSigil()
         {
-            foreach (var card in gameObjects)
+            foreach (var card in cards)
             {
-                card.IsShowing = false;
-                await UniTask.Delay(400);
+                card.ReleasePool();
+                await UniTask.Delay(200);
                 card.transform.DOMoveY(-2200.4f, 0.2f).SetEase(Ease.Linear);
             }
-        }
 
-        private void DesTroyCard()
-        {
-            foreach (var card in gameObjects)
-            {
-                Destroy(card.gameObject);
-            }
-
-            gameObjects.Clear();
+            cards.Clear();
         }
     }
 }

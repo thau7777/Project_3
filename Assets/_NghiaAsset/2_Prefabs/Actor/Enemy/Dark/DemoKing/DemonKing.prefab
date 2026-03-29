@@ -2040,7 +2040,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 8
   info:
-    name: DemonKing
+    name: Demon General
     Avatar: {fileID: 765260304, guid: 1ebd30b3c1fc3d749936bd57797c1fbc, type: 3}
     level: 0
   stats:
@@ -2074,7 +2074,8 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
   skills:
-  - {fileID: 11400000, guid: 0e4cd3b13775c96409c16de9d5c56f9a, type: 2}
+  - {fileID: 11400000, guid: a493ce515cc363b4bac726c22fb9992e, type: 2}
+  - {fileID: 11400000, guid: b07997d58a59b5a4b82213a5d9c10dbe, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -2102,8 +2103,11 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 1422260187614378637}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
+  isLastHit: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:

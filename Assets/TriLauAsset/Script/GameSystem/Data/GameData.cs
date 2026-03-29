@@ -12,12 +12,16 @@ namespace MyRule
         [JsonProperty] private HistoryData _history;
         [JsonProperty] private List<AchievementData> _achievements;
         [JsonProperty] private MatchData _matchData;
+        [JsonProperty] private TutorialData _tutorial;
+        [JsonProperty] private DialougeData _dialougeData;
 
         [JsonIgnore] public LobbyData LobbyData => _lobby;
         [JsonIgnore] public SigilCollectionData SigilCollection => _sigilCollection;
         [JsonIgnore] public HistoryData History => _history;
         [JsonIgnore] public List<AchievementData> Achievements => _achievements;
         [JsonIgnore] public MatchData MatchData => _matchData;
+        [JsonIgnore] public TutorialData Tutorial => _tutorial;
+        [JsonIgnore] public DialougeData DialougeData => _dialougeData;
 
         public GameData() 
         {
@@ -26,6 +30,8 @@ namespace MyRule
             this._history = new HistoryData();
             this._achievements = new List<AchievementData>();
             this._matchData = null;
+            this._tutorial = new TutorialData();
+            this._dialougeData = new DialougeData();
         }
 
         public void SetHistory(HistoryData historyData) => this._history = historyData; 

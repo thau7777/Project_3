@@ -1,10 +1,12 @@
-﻿using MyRule.Event;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Ink.Runtime;
+using MyRule.Event;
+using System;
+using System.Threading;
 using TMPro;
 using UnityEngine;
-using Ink.Runtime;
 using UnityEngine.EventSystems;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using UnityEngine.Rendering;
 
 namespace MyRule.UI
@@ -25,6 +27,7 @@ namespace MyRule.UI
 
         [Header("Choices")]
         [SerializeField] private DialougeChoiceButtonView[] choiceButtons;
+        [SerializeField] private InputReader inputReader;
 
         private EventBinding<DialougeStartedEvent> dialougeStartedEventBinding;
         private EventBinding<DialogueFinishedEvent> dialougeFinishedEventBinding;
@@ -34,7 +37,17 @@ namespace MyRule.UI
         private CancellationTokenSource cts;
         private CancellationTokenSource typingCts;
 
+        private DisplayDialogueEvent currentEvent;
+
         private bool isTyping;
+
+        public bool IsTyping => isTyping;
+
+        private int currentChoiceIndex = 0;
+        private int currentChoiceCount = 0;
+        private bool isShowingChoices = false;
+        public bool IsShowingChoices => isShowingChoices;
+
         private string currentLine;
 
         private void OnEnable()
@@ -50,6 +63,8 @@ namespace MyRule.UI
 
             updateSpeakerNameEventBinding = new EventBinding<UpdateSpeakerNameEvent>(UpdateSpeakerName);
             EventBus<UpdateSpeakerNameEvent>.Register(updateSpeakerNameEventBinding);
+
+            inputReader.diceRollActions.onMove += NavigateChoiceView;
         }
 
         private void OnDisable()
@@ -58,6 +73,8 @@ namespace MyRule.UI
             EventBus<DialogueFinishedEvent>.Deregister(dialougeFinishedEventBinding);
             EventBus<DisplayDialogueEvent>.Deregister(displayDialogueEventBinding);
             EventBus<UpdateSpeakerNameEvent>.Deregister(updateSpeakerNameEventBinding);
+
+            inputReader.diceRollActions.onMove -= NavigateChoiceView;
         }
 
         private void Start()
@@ -70,12 +87,7 @@ namespace MyRule.UI
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
-            Transition.TransitionValue(
-                setter: value => canvasGroup.alpha = value,
-                from: canvasGroup.alpha,
-                to: 1f,
-                duration: fadeDuration,
-                cts.Token).Forget();
+            canvasGroup.DOFade(1f, fadeDuration);
 
             Transition.TransitionValue(
                 setter: value => dialogueVolume.weight = value,
@@ -90,12 +102,7 @@ namespace MyRule.UI
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
-            Transition.TransitionValue(
-                setter: value => canvasGroup.alpha = value,
-                from: canvasGroup.alpha,
-                to: 0f,
-                duration: fadeDuration,
-                cts.Token).Forget();
+            canvasGroup.DOFade(0, fadeDuration);
 
             Transition.TransitionValue(
                 setter: value => dialogueVolume.weight = value,
@@ -142,11 +149,17 @@ namespace MyRule.UI
 
         private async UniTask TypeDialogue(DisplayDialogueEvent evt)
         {
+            typingCts?.Cancel();
+            typingCts?.Dispose();
             typingCts = new CancellationTokenSource();
+
             isTyping = true;
 
+            isShowingChoices = false;
+
+            currentEvent = evt;
+
             continueIcon.SetActive(false);
-            DialogueManager.Instance.CanContinueDialogue = false;
 
             dialogueText.text = evt.dialogueLine;
             dialogueText.maxVisibleCharacters = 0;
@@ -154,41 +167,27 @@ namespace MyRule.UI
             dialogueText.ForceMeshUpdate();
             int totalCharacters = dialogueText.textInfo.characterCount;
 
-            for (int i = 0; i <= totalCharacters; i++)
+            try
             {
-                dialogueText.maxVisibleCharacters = i;
+                for (int i = 0; i <= totalCharacters; i++)
+                {
+                    dialogueText.maxVisibleCharacters = i;
 
-                await UniTask.Delay(
-                    (int)(typingSpeed * 1000),
-                    cancellationToken: typingCts.Token
-                );
+                    await UniTask.Delay(
+                        (int)(typingSpeed * 1000),
+                        cancellationToken: typingCts.Token
+                    );
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                return;
             }
 
             isTyping = false;
 
-            ShowChoices(evt);
-
+            ShowChoices(evt).Forget();
             continueIcon.SetActive(true);
-
-            DialogueManager.Instance.CanContinueDialogue = true;
-        }
-
-        private void ShowChoices(DisplayDialogueEvent evt)
-        {
-            for (int i = 0; i < evt.dialogueChoices.Count; i++)
-            {
-                Choice dialogueChoice = evt.dialogueChoices[i];
-                DialougeChoiceButtonView choiceButton = choiceButtons[i];
-
-                choiceButton.gameObject.SetActive(true);
-                choiceButton.SetText(dialogueChoice.text);
-                choiceButton.SetIndex(i);
-
-                if (i == 0)
-                {
-                    EventSystem.current.SetSelectedGameObject(choiceButton.gameObject);
-                }
-            }
         }
 
         public void SkipTyping()
@@ -197,10 +196,54 @@ namespace MyRule.UI
 
             typingCts?.Cancel();
 
-            dialogueText.maxVisibleCharacters = int.MaxValue;
+            dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
 
             isTyping = false;
+
+            ShowChoices(currentEvent).Forget();
             continueIcon.SetActive(true);
+        }
+
+        private async UniTask ShowChoices(DisplayDialogueEvent evt)
+        {
+            if (isShowingChoices) return;
+
+            isShowingChoices = true;
+
+            currentChoiceIndex = 0;
+            currentChoiceCount = Mathf.Min(evt.dialogueChoices.Count, choiceButtons.Length);
+
+            for (int i = 0; i < currentChoiceCount; i++)
+            {
+                Choice dialogueChoice = evt.dialogueChoices[i];
+                DialougeChoiceButtonView choiceButton = choiceButtons[i];
+
+                choiceButton.gameObject.SetActive(true);
+                choiceButton.SetText(dialogueChoice.text);
+                choiceButton.SetIndex(i);
+            }
+
+            await UniTask.WaitForEndOfFrame();
+
+            EventSystem.current.SetSelectedGameObject(choiceButtons[currentChoiceIndex].gameObject);
+        }
+
+        private void NavigateChoiceView(Vector2 input)
+        {
+            if (!isShowingChoices || currentChoiceCount == 0) return;
+
+            if (input.y < 0)
+            {
+                currentChoiceIndex++;
+                if (currentChoiceIndex >= currentChoiceCount) currentChoiceIndex = 0;
+            }
+            else if (input.y > 0)
+            {
+                currentChoiceIndex--;
+                if (currentChoiceIndex < 0) currentChoiceIndex = currentChoiceCount - 1;
+            }
+
+            EventSystem.current.SetSelectedGameObject(choiceButtons[currentChoiceIndex].gameObject);
         }
 
         private void UpdateSpeakerName(UpdateSpeakerNameEvent evt)

@@ -38,7 +38,14 @@ namespace MyRule
         [SerializeField] private float zoomSmoothing = 5f;
         private float currentZoomSpeed = 0f;
 
-        public bool CanInteract = true;
+        private int lockInteract = 0;
+
+        public void LockInteract() => lockInteract++;
+        public void UnlockInteract()
+        {
+            lockInteract--;
+            lockInteract = Mathf.Max(0, lockInteract);
+        }
 
         public float ZoomLevel
         {
@@ -64,7 +71,7 @@ namespace MyRule
 
         private void LateUpdate()
         {
-            if (!CanInteract) return;
+            if (lockInteract != 0) return;
 
             float deltaTime = Time.unscaledDeltaTime;
 

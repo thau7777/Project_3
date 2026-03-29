@@ -1,11 +1,10 @@
 using Cysharp.Threading.Tasks;
+using MyRule.CommandPattern;
 using MyRule.UI;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace MyRule
 {
@@ -15,36 +14,54 @@ namespace MyRule
         [SerializeField] private TextMeshProUGUI runeTxt;
         [SerializeField] private float fadeDuration = 0.2f;
 
-        [SerializeField] private Transform[] spawnPoint;
-        [SerializeField] private GameObject passiveCardsCons;
-        [SerializeField] private Card[] passiveCards;
+        [SerializeField] private Transform[] activePoints;
+        [SerializeField] private Transform[] passivePoints;
         [SerializeField] private StoreItemView[] items;
+
+        [SerializeField] private GameObject storeCam;
 
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
-        private List<Card> gameObjects = new List<Card>();
+
+        private List<Card> cards = new();
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
 
         protected override void Start()
         {
             base.Start();
 
             cts = new CancellationTokenSource();
+        }
 
-            inputReader.diceRollActions.onEsc += Hide;
+        private void InitCommand()
+        {
+            ICommand command = new GameplayStoreCommand(this);
+            CommandInvoker.ExecuteCommand(command);
         }
 
         public override async void Show()
         {
             if (isShowing) return;
+
+            InitCommand();
             
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-            
-            DialogueManager.Instance.CanContinueDialogue = false;
-            RTSCameraController.Instance.CanInteract = false;
+            DialogueManager.Instance.CanContinueDialouge(false);
 
             await UniTask.Delay(800);
+            
+            if (storeCam != null) storeCam.SetActive(true); 
+            
+            await UniTask.Delay(1000);
 
             ShowingItem();
 
@@ -56,20 +73,19 @@ namespace MyRule
                 cts.Token).Forget();
 
             VolumeController.Instance.AdjustUIVolumeWeight();
-            
-
-            await UniTask.Delay((int)fadeDuration * 1000);
 
             SpawnActiveSigil();
             
-            passiveCardsCons.SetActive(true);
+            SpawnPassiveSigil();
 
-            await ShowingPassiveSigilCard(true);
+            await UniTask.Delay((int)(fadeDuration * 1000));
+
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
 
             isShowing = true;
 
-            CardTracker.Instance.canInteract = true;
-            CardTracker.Instance.isReward = false;
+            CardTracker.Instance.UnlockInteract(true);
         }
 
         public override async void Hide() 
@@ -79,11 +95,7 @@ namespace MyRule
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
-            await ShowingPassiveSigilCard(false);
-
-            DesTroyCard();
-
-            passiveCardsCons?.SetActive(false);
+            await ReleaseSigilCard();
 
             Transition.TransitionValue(
                 setter: value => canvasGroup.alpha = value,
@@ -96,77 +108,82 @@ namespace MyRule
 
             isShowing = false;
 
-            CardTracker.Instance.canInteract = false;
+            CardTracker.Instance.UnlockInteract(false);
 
-            RTSCameraController.Instance.CanInteract = true;
+            await UniTask.Delay((int)(fadeDuration * 1000));
 
-            DialogueManager.Instance.CanContinueDialogue = true;
+            storeCam.SetActive(false);
+
+            await UniTask.Delay(800);
+
+            DialogueManager.Instance.CanContinueDialouge(true);
 
             DialogueManager.Instance.ContinueStoryOrExitStory();
         }
 
-        private UniTask ShowingPassiveSigilCard(bool showing)
+        private void SpawnPassiveSigil()
         {
-            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetPassiveSigils(passiveCards.Length);
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetPassiveSigils(passivePoints.Length);
 
-            for (int i = 0; i < passiveCards.Length; i++)
+            for (int i = 0; i < passivePoints.Length; i++)
             {
                 SigilData sigilData = sigils[i];
 
-                if (sigilData == null) break;
+                if (sigilData == null) continue;
                 
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
-                passiveCards[i].SetSigil(sigilData, sigilSO);
-                passiveCards[i].IsShowing = showing;
-                passiveCards[i].ShowPrice(showing);
-            }
+                if (sigilSO == null) continue;
 
-            return UniTask.CompletedTask;
+                Card card = CardPoolManager.Instance.Spawn(sigilSO.id);
+                card.transform.SetParent(passivePoints[i]);
+                card.transform.position = passivePoints[i].transform.position;
+                card.SetSigil(sigilData, sigilSO, CardGameplayType.StoreItem);
+                cards.Add(card);
+            }
         }
 
         private void SpawnActiveSigil()
         {
-            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetActiveSigils(spawnPoint.Length);
+            List<SigilData> sigils = MatchManager.Instance.MatchData.SigilPool.GetActiveSigils(activePoints.Length);
 
-            for (int i = 0; i < spawnPoint.Length; i++) 
+            for (int i = 0; i < activePoints.Length; i++) 
             {
                 SigilData sigilData = sigils[i];
                 
-                if (sigilData == null) break;
+                if (sigilData == null) continue;
 
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
                 if (sigilSO == null) continue;
 
-                var cardObj = Instantiate(sigilSO.sigilPreb, spawnPoint[i]);
-                Card card = cardObj.GetComponent<Card>();
-                gameObjects.Add(card);
-                card.SetSigil(sigilData, sigilSO);
-                card.IsShowing = true;
-                card.ShowPrice(true);
+                Card card = CardPoolManager.Instance.Spawn(sigilSO.id);
+                card.transform.SetParent(activePoints[i]);
+                card.transform.position = activePoints[i].transform.position;
+                card.SetSigil(sigilData, sigilSO, CardGameplayType.StoreItem);
+                cards.Add(card);
             }
         }
 
         private void ShowingItem()
-        {
+        { 
             for (int i = 0; i < items.Length; i++)
             {
                 ItemSO itemSO = ItemManager.Instance.GetRandomItem();
                 items[i].SetUp(itemSO);
             }
-
-            items[0].Select();
         }
 
-        private void DesTroyCard()
+        private UniTask ReleaseSigilCard()
         {
-            foreach (var card in gameObjects)
+            foreach (Card card in cards)
             {
-                Destroy(card.gameObject);
+                card.ReleasePool();
             }
 
-            gameObjects.Clear();
+            cards.Clear();
+
+            return UniTask.CompletedTask;
         }
     }
 }

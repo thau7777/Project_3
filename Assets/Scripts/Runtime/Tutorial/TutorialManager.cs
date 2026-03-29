@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -372,8 +372,46 @@ public class TutorialManager : MonoBehaviour
         Transform anchor = (_currentBinding?.anchorOverride != null) ? _currentBinding.anchorOverride : _anchorTarget;
 
         CleanupHighlights();
-        if (_currentBinding?.highlightTargets != null)
+
+        // DEBUG: kiểm tra trạng thái binding
+        Debug.Log($"[Tutorial] ShowStep {stepIndex} — binding={(object)_currentBinding ?? "NULL"} | " +
+                  $"highlightTargets={(_currentBinding?.highlightTargets?.Length.ToString() ?? "null")} | " +
+                  $"targetIdKeys={(_currentBinding?.targetIdKeys?.Length.ToString() ?? "null")}");
+
+        // Ưu tiên highlightTargets kéo thả; nếu không có thì tìm theo targetIdKeys
+        if (_currentBinding?.highlightTargets != null && _currentBinding.highlightTargets.Length > 0)
+        {
+            foreach (var t in _currentBinding.highlightTargets)
+                Debug.Log($"[Tutorial] highlightTargets → {(t != null ? t.name : "NULL")} (active={t?.activeInHierarchy})");
             LiftUIObjects(_currentBinding.highlightTargets);
+        }
+        else if (_currentBinding?.targetIdKeys != null && _currentBinding.targetIdKeys.Length > 0)
+        {
+            var found = new List<GameObject>();
+            var identities = FindObjectsOfType<TutorialIdentity>(true);
+
+            Debug.Log($"[Tutorial] targetIdKeys lookup — keys: [{string.Join(", ", _currentBinding.targetIdKeys)}] | TutorialIdentity found in scene: {identities.Length}");
+
+            foreach (string key in _currentBinding.targetIdKeys)
+            {
+                bool matched = false;
+                foreach (var id in identities)
+                {
+                    if (id.tutorialId == key)
+                    {
+                        found.Add(id.gameObject);
+                        Debug.Log($"[Tutorial] ✅ Matched key '{key}' → {id.gameObject.name} (active={id.gameObject.activeInHierarchy})");
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched)
+                    Debug.LogWarning($"[Tutorial] ❌ No TutorialIdentity found for key '{key}'");
+            }
+
+            if (found.Count > 0) LiftUIObjects(found.ToArray());
+            else Debug.LogWarning("[Tutorial] targetIdKeys: không tìm thấy object nào để highlight!");
+        }
 
         PositionTutorialBox(step, anchor);
         StartPulseAnimation();
@@ -531,7 +569,7 @@ public class TutorialManager : MonoBehaviour
                 // 3. Reparent into the highlight canvas (no worldPositionStays so
                 //    scale/rotation don't inherit the world-space canvas transform)
                 obj.transform.SetParent(highlightCanvas.transform, worldPositionStays: false);
-                obj.transform.localScale = Vector3.one * 95;
+                obj.transform.localScale = Vector3.one * 1;
                 obj.transform.localRotation = Quaternion.identity;
                 // 4. Convert screen point → local position inside the highlight canvas
                 //    and apply it so the element sits exactly where it did on screen

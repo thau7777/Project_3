@@ -1,47 +1,170 @@
 using Cysharp.Threading.Tasks;
+using MyRule.Event;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyRule
 {
-    public class LobbyShopManager : MonoBehaviour, IGameData
+    public class LobbyShopManager : Singleton<LobbyShopManager>, IGameData
     {
-        [SerializeField] private GroupSigil baseLobbyShopSigils;
+        [SerializeField] private List<LobbyShopProductConfig> configs;
 
-        private LobbyShopData shopData;
+        private LobbyShopData shopData = new();
+        private Dictionary<string, LobbyShopProductConfig> productsConfig = new();
 
         public LobbyShopData ShopData => shopData;
 
-        private void CreateNewShop()
+        private void OnEnable()
         {
-            shopData = new LobbyShopData();
+            GameSystemManager.Instance.Register(this);
+        }
 
-            foreach (var sigil in baseLobbyShopSigils.sigilSOs)
+        private void OnDisable()
+        {
+            GameSystemManager.Instance.Unregister(this);
+        }
+
+        private void SetConfig()
+        {
+            foreach (var config in configs)
             {
-                SigilData sigilData = new SigilData(sigil.id, sigil.sigilType, sigil.name, sigil.phys, sigil.manaCost, sigil.rarity, sigil.keyBinding);
-                shopData.LobbyShopSigils.Add(sigil.id, sigilData);
+                if (!shopData.LobbyShopProducts.ContainsKey(config.productType))
+                {
+                    shopData.CreateNewListProduct(config.productType);
+                }
+
+                LobbyShopProductData lobbyShopProductData = new LobbyShopProductData(config.id);
+
+                if (!shopData.ConstainProduct(config.productType, lobbyShopProductData))
+                {
+                    shopData.LobbyShopProducts[config.productType].Add(lobbyShopProductData);
+                }
+
+                if (!productsConfig.ContainsKey(config.id))
+                {
+                    productsConfig[config.id] = config;
+                }
             }
         }
 
-        public bool BuySigil(string id)
+        public bool BuySigil(EUnit unit, int prices, LobbyShopProductConfig productConfic)
         {
-            if (shopData.LobbyShopSigils.ContainsKey(id))
+            switch (unit)
             {
-                shopData.LobbyShopSigils.Remove(id);
-                return true;
+                case EUnit.Gold:
+                    {
+                        int currentGold = LobbyManager.Instance.CurrentGold;
+                        if (currentGold >= prices)
+                        {
+                            SigilCollectionManager.Instance.AddSigil(productConfic.sigilSO);
+
+                            LobbyManager.Instance.DecreaseGold(prices);
+
+                            RemoveProduct(productConfic);
+
+                            return true;
+                        }
+                        else return false;
+                    }
+                case EUnit.Crystal:
+                    {
+                        int currentCrystal = LobbyManager.Instance.CurrentCrystal;
+                        if (currentCrystal >= prices)
+                        {
+                            SigilCollectionManager.Instance.AddSigil(productConfic.sigilSO);
+
+                            LobbyManager.Instance.DecreaseCrystal(prices);
+
+                            RemoveProduct(productConfic);
+
+                            return true;
+                        }
+                        else return false;
+                    }
             }
             return false;
         }
 
+        public LobbyShopProductConfig GetProductConfic(string id) => productsConfig[id];
+
+        public bool BuyCard(EUnit unit, int prices, LobbyShopProductConfig productConfic)
+        {
+            switch (unit)
+            {
+                case EUnit.Gold:
+                    {
+                        int currentGold = LobbyManager.Instance.CurrentGold;
+                        if (currentGold >= prices)
+                        {
+                            //SigilCollectionManager.Instance.AddSigil(sigilSO);
+
+                            LobbyManager.Instance.DecreaseGold(prices);
+
+                            RemoveProduct(productConfic);
+
+                            return true;
+                        }
+                        else return false;
+                    }
+                case EUnit.Crystal:
+                    {
+                        int currentCrystal = LobbyManager.Instance.CurrentCrystal;
+                        if (currentCrystal >= prices)
+                        {
+                            //SigilCollectionManager.Instance.AddSigil(sigilSO);
+
+                            LobbyManager.Instance.DecreaseCrystal(prices);
+
+                            RemoveProduct(productConfic);
+
+                            return true;
+                        }
+                        else return false;
+                    }
+            }
+            return false;
+        }
+
+        public bool BuyGold(int prices, int gold)
+        {
+            int currentCrystal = LobbyManager.Instance.CurrentCrystal;
+
+            if (currentCrystal >= prices)
+            {
+                LobbyManager.Instance.IncreaseGold(gold);
+                LobbyManager.Instance.DecreaseCrystal(prices);
+                return true;
+            }
+            return false;
+        }   
+
+        public bool BuyCrystal(int prices, int crystal)
+        {
+            LobbyManager.Instance.IncreaseCrystal(crystal);
+            return true;
+        }
+
+        private void RemoveProduct(LobbyShopProductConfig productConfic)
+        {
+            if (shopData.ConstainProduct(productConfic.productType, productConfic.sigilSO.id))
+            {
+                shopData.RemoveProduct(productConfic.productType, productConfic.sigilSO.id);
+            }
+        }
+
         public UniTask LoadData(GameData data)
         {
-            if (data.LobbyData.Shop.LobbyShopSigils != null && data.LobbyData.Shop.LobbyShopSigils.Count > 0)
+            if (data.LobbyData.Shop != null && data.LobbyData.Shop.LobbyShopProducts.Count > 0)
             {
                 shopData = data.LobbyData.Shop;
             }
             else
             {
-                CreateNewShop();
+                SetConfig();
             }
+
+            EventBus<UpdateLobbyShopSigilEvent>.Raise(new UpdateLobbyShopSigilEvent(shopData.LobbyShopProducts[EProduct.Sigil]));
+            EventBus<UpdateLobbyShopCardEvent>.Raise(new UpdateLobbyShopCardEvent(shopData.LobbyShopProducts[EProduct.Card]));
 
             return UniTask.CompletedTask;
         }

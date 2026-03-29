@@ -1,5 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace MyRule
@@ -10,6 +12,16 @@ namespace MyRule
 
         private Dictionary<string, AchievementData> _achievementDict = new();
         private Dictionary<AchievementType, List<AchievementConfig>> _configByType = new();
+
+        private void OnEnable()
+        {
+            GameSystemManager.Instance.Register(this);
+        }
+
+        private void OnDisable()
+        {
+            GameSystemManager.Instance.Unregister(this);
+        }
 
         private void SetConfig()
         {
@@ -25,6 +37,11 @@ namespace MyRule
                     _achievementDict[config.id] = new AchievementData(config.id, false, 0);
                 }
             }
+        }
+
+        public AchievementConfig GetAchievementById(string id)
+        {
+            return configs.Find(x => x.id == id);
         }
 
         public void Trigger(AchievementType type, int value = 1)
@@ -58,19 +75,30 @@ namespace MyRule
             // AchievementUI.Show(config);
         }
 
-        private void GiveReward(AchievementConfig config)
+        public void GiveReward(AchievementConfig config)
         {
             if (config.goldReward > 0)
             {
-                // Player.AddGold(config.goldReward);
+                LobbyManager.Instance.IncreaseGold(config.goldReward);
+            }
+            
+            if (config.crystalReward > 0)
+            {
+                LobbyManager.Instance.IncreaseCrystal(config.crystalReward);
             }
 
-            if (!string.IsNullOrEmpty(config.sigilRewardId))
+            if (config.sigilReward != null)
             {
-                SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(config.sigilRewardId);
-                SigilData sigilData = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.sigilName, sigilSO.phys, sigilSO.manaCost, sigilSO.rarity, sigilSO.keyBinding);
+                SigilData sigilData = new SigilData(config.sigilReward.id, config.sigilReward.sigilType, config.sigilReward.name, config.sigilReward.baseDmg, config.sigilReward.manaCost, config.sigilReward.rarity, config.sigilReward.keyBinding);
                 SigilCollectionManager.Instance.AddSigil(sigilData);
             }
+        }
+
+        private void UpdateUIAchiement()
+        {
+            List<AchievementData> achievementDatas = new List<AchievementData>(_achievementDict.Values);
+
+            EventBus<UpdateAchievementEvent>.Raise(new UpdateAchievementEvent(achievementDatas));
         }
 
 
@@ -87,6 +115,8 @@ namespace MyRule
                     _achievementDict[achievement.ID] = achievement;
                 }
             }
+
+            UpdateUIAchiement();
 
             return UniTask.CompletedTask;
         }

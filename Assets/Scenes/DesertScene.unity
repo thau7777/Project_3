@@ -242,17 +242,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
---- !u!114 &57508613 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7866897625979384796, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
-  m_PrefabInstance: {fileID: 57508612}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1683b183192ecd408a9d9266a00a951, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardController
 --- !u!1 &59720237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3506763969966819629, guid: ee7a0cf85cb044f40b2b8721bb3f7043, type: 3}
@@ -562,8 +551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.DialougeManager
   inkJSON: {fileID: 4900000, guid: cb1cdd917dcebf14eaf803948f035e14, type: 3}
+  view: {fileID: 0}
   inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
-  CanContinueDialogue: 1
 --- !u!4 &95061721
 Transform:
   m_ObjectHideFlags: 0
@@ -1421,13 +1410,13 @@ GameObject:
   m_Component:
   - component: {fileID: 353742106}
   - component: {fileID: 353742107}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: StoreCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 18
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &353742106
 Transform:
   m_ObjectHideFlags: 0
@@ -1949,8 +1938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179ad1a68a0a8aa42b33a274bdba4f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoreRaycaster
-  canInteract: 0
-  isReward: 0
 --- !u!4 &389517821
 Transform:
   m_ObjectHideFlags: 0
@@ -2636,17 +2623,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 376615739651117579, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
   m_PrefabInstance: {fileID: 481992928}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &481992930 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7866897625979384796, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
-  m_PrefabInstance: {fileID: 481992928}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1683b183192ecd408a9d9266a00a951, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardController
 --- !u!1001 &491080191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2741,17 +2717,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 376615739651117579, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
   m_PrefabInstance: {fileID: 491080191}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &491080193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7866897625979384796, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
-  m_PrefabInstance: {fileID: 491080191}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1683b183192ecd408a9d9266a00a951, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardController
 --- !u!1 &522782444
 GameObject:
   m_ObjectHideFlags: 0
@@ -2811,6 +2776,7 @@ MonoBehaviour:
   choiceButtons:
   - {fileID: 2069370137}
   - {fileID: 128538670}
+  inputReader: {fileID: 0}
 --- !u!1001 &554634346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2880,17 +2846,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
---- !u!114 &554634347 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7866897625979384796, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
-  m_PrefabInstance: {fileID: 554634346}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1683b183192ecd408a9d9266a00a951, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardController
 --- !u!1 &558442526
 GameObject:
   m_ObjectHideFlags: 0
@@ -3212,7 +3167,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -3272,9 +3227,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 5
-  far clip plane: 1500
-  field of view: 30
+  near clip plane: 0.01
+  far clip plane: 1000
+  field of view: 29.8664
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -3300,8 +3255,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617664583}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.36964384, y: -0.23911758, z: 0.09904575, w: 0.89239913}
-  m_LocalPosition: {x: 70.71066, y: 161.42136, z: -122.47448}
+  m_LocalRotation: {x: -0.08187623, y: 0.33569905, z: -0.024951652, w: -0.93807244}
+  m_LocalPosition: {x: 63.24465, y: 12.183929, z: 97.267715}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3744,7 +3699,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -3894,23 +3849,23 @@ PrefabInstance:
     - target: {fileID: 4891724099301705796, guid: aeda612bc98a1d743a289c2c53e39a62, type: 3}
       propertyPath: 'passiveCards.Array.data[0]'
       value: 
-      objectReference: {fileID: 554634347}
+      objectReference: {fileID: 0}
     - target: {fileID: 4891724099301705796, guid: aeda612bc98a1d743a289c2c53e39a62, type: 3}
       propertyPath: 'passiveCards.Array.data[1]'
       value: 
-      objectReference: {fileID: 491080193}
+      objectReference: {fileID: 0}
     - target: {fileID: 4891724099301705796, guid: aeda612bc98a1d743a289c2c53e39a62, type: 3}
       propertyPath: 'passiveCards.Array.data[2]'
       value: 
-      objectReference: {fileID: 1704915089}
+      objectReference: {fileID: 0}
     - target: {fileID: 4891724099301705796, guid: aeda612bc98a1d743a289c2c53e39a62, type: 3}
       propertyPath: 'passiveCards.Array.data[3]'
       value: 
-      objectReference: {fileID: 481992930}
+      objectReference: {fileID: 0}
     - target: {fileID: 4891724099301705796, guid: aeda612bc98a1d743a289c2c53e39a62, type: 3}
       propertyPath: 'passiveCards.Array.data[4]'
       value: 
-      objectReference: {fileID: 57508613}
+      objectReference: {fileID: 0}
     - target: {fileID: 8804577028971589841, guid: aeda612bc98a1d743a289c2c53e39a62, type: 3}
       propertyPath: m_Alpha
       value: 0
@@ -5647,7 +5602,7 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 1
   blendDistance: 0
-  weight: 0
+  weight: 1
   sharedProfile: {fileID: 11400000, guid: 73b1a18a9344ede45855367b3cc9d0b9, type: 2}
 --- !u!1001 &1066385089
 PrefabInstance:
@@ -10236,6 +10191,10 @@ PrefabInstance:
       value: M_Sorcerer_prePosed
       objectReference: {fileID: 0}
     - target: {fileID: 3506763969966819629, guid: ee7a0cf85cb044f40b2b8721bb3f7043, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506763969966819629, guid: ee7a0cf85cb044f40b2b8721bb3f7043, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -10366,17 +10325,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
---- !u!114 &1704915089 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7866897625979384796, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
-  m_PrefabInstance: {fileID: 1704915088}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1683b183192ecd408a9d9266a00a951, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardController
 --- !u!1 &1706027002
 GameObject:
   m_ObjectHideFlags: 0
@@ -10767,16 +10715,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -828860533573159993, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -828860533573159993, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 156866779590764389, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 156866779590764389, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 392014308762274378, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 392014308762274378, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 706175064179194377, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 706175064179194377, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
       propertyPath: m_IsActive
@@ -10789,6 +10753,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
       propertyPath: m_Name
       value: Composition_98
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6264332182acbc6499f0494e66a00e06, type: 3}
       propertyPath: m_IsActive

@@ -2,6 +2,7 @@ using MyRule.Event;
 using System.Threading;
 using TMPro;
 using Cysharp.Threading.Tasks;
+using MyRule.UI;
 
 namespace MyRule
 {
@@ -17,15 +18,20 @@ namespace MyRule
 
         private EventBinding<UpdateLobbyGoldUIEvent> _goldEventBinding;
         private EventBinding<UpdateLobbyCrystalUIEvent> _crystalEventBinding;
+        private EventBinding<ShowLobbyEvent> _showEventBinding;
 
         private CancellationTokenSource cts;
 
-        public LobbyPresenter(TextMeshProUGUI goldTxt, TextMeshProUGUI crystalTxt, float transitionDuration)
+        private LobbyView lobbyView;
+
+        public LobbyPresenter(TextMeshProUGUI goldTxt, TextMeshProUGUI crystalTxt, float transitionDuration, LobbyView lobbyView)
         {
             this.goldTxt = goldTxt;
             this.crystalTxt = crystalTxt;
 
             this.transitionDuration = transitionDuration;
+
+            this.lobbyView = lobbyView;
 
             cts = new CancellationTokenSource();
 
@@ -34,38 +40,52 @@ namespace MyRule
 
             _crystalEventBinding = new EventBinding<UpdateLobbyCrystalUIEvent>(HandleCrystal);
             EventBus<UpdateLobbyCrystalUIEvent>.Register(_crystalEventBinding);
+
+            _showEventBinding = new EventBinding<ShowLobbyEvent>(HandleShowLobby);
+            EventBus<ShowLobbyEvent>.Register(_showEventBinding);
         }
 
         public void Clearup()
         {
             EventBus<UpdateLobbyGoldUIEvent>.Deregister(_goldEventBinding);
             EventBus<UpdateLobbyCrystalUIEvent>.Deregister(_crystalEventBinding);
+            EventBus<ShowLobbyEvent>.Deregister(_showEventBinding);
         }
 
-        private void HandleGold()
+        private void HandleGold(UpdateLobbyGoldUIEvent evt)
         {
-            cts.Cancel();
-            cts.Dispose();
-
             Transition.TransitionValue(
                     setter: value => goldTxt.text = value.ToString(),
                     from: currentGold,
-                    to: 0f,
+                    to: evt.value,
                     duration: transitionDuration,
                     cts.Token).Forget();
+
+            currentGold = evt.value;
         }
 
-        private void HandleCrystal()
+        private void HandleCrystal(UpdateLobbyCrystalUIEvent evt)
         {
-            cts.Cancel();
-            cts.Dispose();
-
             Transition.TransitionValue(
                     setter: value => crystalTxt.text = value.ToString(),
                     from: currentCrystal,
-                    to: 0f,
+                    to: evt.value,
                     duration: transitionDuration,
                     cts.Token).Forget();
+
+            currentCrystal = evt.value;
+        }
+
+        private void HandleShowLobby(ShowLobbyEvent evt)
+        {
+            if (evt.show)
+            {
+                lobbyView.Show();
+            }
+            else
+            {
+                lobbyView.Hide();
+            }
         }
     }
 }

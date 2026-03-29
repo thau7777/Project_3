@@ -21,4 +21,14 @@ namespace MyRule.Event
             this.value = value;
         }
     }
+
+    public struct ShowLobbyEvent : IEvent
+    {
+        public readonly bool show;
+
+        public ShowLobbyEvent(bool shown)
+        {
+            this.show = shown;
+        }
+    }
 }

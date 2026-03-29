@@ -37,6 +37,7 @@ namespace MyRule.UI
             switch (sceneName)
             {
                 case "SpaceStationScene":
+                    EventBus<ShowLobbyEvent>.Raise(new ShowLobbyEvent(true));
                     inputReader.SwitchActionMap(ActionMap.SpaceStation);
                     break;
                 default:
@@ -58,6 +59,8 @@ namespace MyRule.UI
             inputReader.SwitchActionMap(ActionMap.UI);
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(false));
+
+            EventBus<ShowLobbyEvent>.Raise(new ShowLobbyEvent(false));
         }
     }
 }

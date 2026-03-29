@@ -1243,7 +1243,7 @@ MonoBehaviour:
   characterClass: 4
   characterElement: 11
   info:
-    name: Chest
+    name: Mimic
     Avatar: {fileID: 601680917, guid: 1ebd30b3c1fc3d749936bd57797c1fbc, type: 3}
     level: 0
   stats:
@@ -1277,7 +1277,8 @@ MonoBehaviour:
   allClassProfiles:
   - {fileID: 11400000, guid: 2a1561a5d7b34844d8bf2d083a860fc6, type: 2}
   skills:
-  - {fileID: 11400000, guid: 7108fa51155ff0f458acf58d64aa0089, type: 2}
+  - {fileID: 11400000, guid: 7de4cab07c2035b4d8835281a4c21025, type: 2}
+  - {fileID: 11400000, guid: ea224e9f4682b5e4a87baa6e9049c15b, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -1305,8 +1306,11 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 1343660029674395783}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
+  isLastHit: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:

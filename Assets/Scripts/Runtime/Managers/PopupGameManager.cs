@@ -5,10 +5,7 @@ using System;
 public enum PopupGameType
 {
     Fishing,
-    Racing,
-    Reflecting,
-    Quizzing,
-    Beating // game rhythm
+    Chatnoir,
 }
 
 public class PopupGameManager : MonoBehaviour
@@ -16,8 +13,8 @@ public class PopupGameManager : MonoBehaviour
     [SerializeField] private InputReader inputReader;
 
     [Header("Mini Game Prefabs")]
-    //[SerializeField] private UpdateArrownUI beatingPrefab;
-    //[SerializeField] private FishingGameUI fishingPrefab;
+    [SerializeField] private ChatNiorGameManager beatingPrefab;
+    [SerializeField] private FishingGameManager fishingPrefab;
     // thêm các prefab khác nếu cần
 
     private PopupMiniGameUIBase currentGameUI;
@@ -26,18 +23,16 @@ public class PopupGameManager : MonoBehaviour
     {
         EndCurrentPopup();
 
-        // Chuyển sang input UI game
         inputReader.SwitchActionMap(ActionMap.PopUpGame);
 
         switch (type)
         {
-            case PopupGameType.Beating:
+            case PopupGameType.Chatnoir:
                 //currentGameUI = Instantiate(beatingPrefab, transform);
                 break;
             case PopupGameType.Fishing:
                 //currentGameUI = Instantiate(fishingPrefab, transform);
                 break;
-                // thêm các loại khác ở đây
         }
 
         currentGameUI.Init(inputReader, this);
@@ -53,7 +48,7 @@ public class PopupGameManager : MonoBehaviour
             currentGameUI = null;
 
             // Trả lại input cũ cho player
-            inputReader.SwitchActionMap(ActionMap.PlayerTopDown);
+            inputReader.SwitchActionMap(ActionMap.UI);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace MyRule
             if (!SceneManager.GetSceneByName(miniGameNameScene).isLoaded)
             {
                 SceneManager.LoadScene(miniGameNameScene, LoadSceneMode.Additive);
-                DialogueManager.Instance.CanContinueDialogue = false;
+                DialogueManager.Instance.CanContinueDialouge(false);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace MyRule
             if (SceneManager.GetSceneByName(miniGameNameScene).isLoaded)
             {
                 SceneManager.UnloadSceneAsync(miniGameNameScene);
-                DialogueManager.Instance.CanContinueDialogue = true;
+                DialogueManager.Instance.CanContinueDialouge(true);
             }
             else
             {

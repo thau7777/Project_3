@@ -18,6 +18,9 @@ namespace Turnbase
         {
             Debug.LogWarning($"{character.name} thực hiện né và lùi lại!");
 
+            ParryPopup parryPopupComponent = character.GetComponent<ParryPopup>();
+            parryPopupComponent.ShowAvoidPopup(character);
+
             Vector3 startPos = character.initialPosition;
             Vector3 backwardPos = startPos + (character.transform.forward * -moveDistance);
 

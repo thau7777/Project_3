@@ -9,41 +9,41 @@ using UnityEngine.SceneManagement;
 
 namespace MyRule
 {
-    public class MapPlayerTracker : MonoBehaviour
+    public class MapPlayerTracker : Singleton<MapPlayerTracker>
     {
         public bool lockAfterSelecting = false;
         public float enterNodeDelay = 1f;
         public MapManager mapManager;
         public MapView view;
 
-        public static MapPlayerTracker Instance;
-
         public bool Locked { get; set; }
 
-        private void Awake()
-        {
-            Instance = this;
-        }
+        private int locking = 0;
+
+        public void LockMapTracker() => locking++;
+        public void UnlockMapTracker() => locking--;
 
         public void SelectNode(MapNode mapNode)
         {
+            if (locking > 0) return;
+
             if (Locked) return;
 
             // Debug.Log("Selected node: " + mapNode.Node.point);
 
-            if (mapManager.CurrentMap.path.Count == 0)
+            if (mapManager.CurrentMap.Path.Count == 0)
             {
-                if (mapNode.Node.point.y == 0)
+                if (mapNode.Node.Point.y == 0)
                     SendPlayerToNode(mapNode);
                 else
                     PlayWarningThatNodeCannotBeAccessed();
             }
             else
             {
-                Vector2Int currentPoint = mapManager.CurrentMap.path[mapManager.CurrentMap.path.Count - 1];
+                Vector2Int currentPoint = mapManager.CurrentMap.Path[mapManager.CurrentMap.Path.Count - 1];
                 Node currentNode = mapManager.CurrentMap.GetNode(currentPoint);
 
-                if (currentNode != null && currentNode.outgoing.Any(point => point.Equals(mapNode.Node.point)))
+                if (currentNode != null && currentNode.Outgoing.Any(point => point.Equals(mapNode.Node.Point)))
                     SendPlayerToNode(mapNode);
                 else
                     PlayWarningThatNodeCannotBeAccessed();
@@ -53,8 +53,7 @@ namespace MyRule
         private void SendPlayerToNode(MapNode mapNode)
         {
             Locked = lockAfterSelecting;
-            mapManager.CurrentMap.path.Add(mapNode.Node.point);
-            mapManager.SaveMap();
+            mapManager.CurrentMap.Path.Add(mapNode.Node.Point);
             view.SetAttainableNodes();
             view.SetLineColors();
             mapNode.ShowSwirlAnimation();
@@ -62,13 +61,15 @@ namespace MyRule
             DOTween.Sequence().AppendInterval(enterNodeDelay).OnComplete(() => EnterNode(mapNode));
         }
 
-        private static async void EnterNode(MapNode mapNode)
+        private void EnterNode(MapNode mapNode)
         {
-            Debug.Log("Entering node: " + mapNode.Node.blueprintName + " of type: " + mapNode.Node.nodeType + mapNode.transform.position);
+            Debug.Log("Entering node: " + mapNode.Node.BlueprintName + " of type: " + mapNode.Node.NodeType + mapNode.transform.position);
 
             //EventBus<MazeMoveEvent>.Raise(new MazeMoveEvent(mapNode.transform, mapNode.Node.nodeType));
 
-            switch (mapNode.Node.nodeType)
+            MatchManager.Instance.MatchData.IncreaseStep();
+
+            switch (mapNode.Node.NodeType)
             {
                 case NodeType.MinorEnemy:
                     {
