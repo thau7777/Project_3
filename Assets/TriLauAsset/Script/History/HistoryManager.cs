@@ -26,7 +26,7 @@ namespace MyRule
         {
             historyData = new HistoryData();
 
-            if (data.History != null && data.History.Matchs != null && data.History.Matchs.Count > 0)
+            if (data.History != null && data.History.Matchs != null)
             {
                 historyData = data.History;
                 EventBus<UpdateHistoryEvent>.Raise(new UpdateHistoryEvent(historyData));

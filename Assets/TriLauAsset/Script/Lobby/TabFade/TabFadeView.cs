@@ -26,6 +26,9 @@ namespace MyRule.UI
 
         public override void Hide()
         {
+            tabContent.interactable = false;
+            tabContent.blocksRaycasts = false;
+
             tabContent.gameObject.SetActive(false);
             
             VolumeController.Instance.AdjustUIVolumeWeight();
@@ -50,6 +53,9 @@ namespace MyRule.UI
         public override void Show()
         {
             tabContent.gameObject.SetActive(true);
+
+            tabContent.interactable = true;
+            tabContent.blocksRaycasts = true;
 
             if (firstSelect != null) firstSelect?.Select();
             else EventSystem.current.SetSelectedGameObject(null);

@@ -29,7 +29,11 @@ namespace MyRule
             _matchData.SigilPool.CreatePool(sigilsInMatch);
         }
 
-        public void FinishMatch() => _matchData = null;
+        public void FinishMatch()
+        {
+            HistoryManager.Instance.AddMatchToHistory(_matchData);
+            _matchData = null;
+        }
 
         public UniTask LoadData(GameData data)
         {
