@@ -48,7 +48,7 @@ public class EnemyAttackData
     public string executeAnimationName = "Attack1";
     public float crossfadeDuration = 0.1f;
     public FlyweightSettings skillVFX;
-    public float skillDuration = 1f;
+    public float projectileRange = 1f;
     public float projectileSpeed = 10;
     public float skillSize = 1;
     public AudioClip executionSound;

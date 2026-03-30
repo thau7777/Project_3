@@ -48,7 +48,10 @@ public class CameraCullingMaskController : MonoBehaviour
         if(topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Lose)
             await SetCullingMaskToNothingAsync(_cancellationTokenSource.Token);
     }
-
+    public void AddLayerToCulling(LayerMask layerMask)
+    {
+        _mainCamera.cullingMask |= layerMask;
+    }
     /// <summary>
     /// Set culling mask to nothing after a delay
     /// </summary>

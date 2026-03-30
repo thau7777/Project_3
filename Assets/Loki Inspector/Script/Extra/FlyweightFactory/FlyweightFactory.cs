@@ -118,7 +118,7 @@ public enum FlyweightType
     EnemyTopDownFishman,
     Slash_Water_Enemy,
     Thrust_Water_Enemy,
-    Spell_Water_Stingray_Enemy_1,
+    Spell_Stingray_1,
     EnemyTopDownStingray,
     ChainLightning_LineRenderer,
     ChainLightning_ImpactVFX,
@@ -167,7 +167,9 @@ public enum FlyweightType
     FloatingCombatText,
     ParrySuccessVFX,
     WaterAuraVFX,
-    Spell_Water_Stingray_Enemy_2,
-    Spell_Water_Stingray_Enemy_3,
-    Spell_Water_Stingray_Enemy_4,
+    Spell_Stingray_2,
+    Spell_Stingray_3,
+    Spell_Stingray_4,
+
+    FlyingSlash_Dark,
 }
