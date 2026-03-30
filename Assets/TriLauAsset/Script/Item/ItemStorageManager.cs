@@ -45,8 +45,6 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            itemStorage = new ItemStorageData();
-
             if (data.MatchData != null)
             {
                 if (data.MatchData.ItemStorageInMatch != null)

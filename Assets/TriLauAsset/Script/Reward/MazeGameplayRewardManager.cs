@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace MyRule
@@ -43,7 +44,7 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            if (data.MatchData.Reward != null)
+            if (data.MatchData != null && data.MatchData.Reward != null)
             {
                 reward = data.MatchData.Reward;
                 hasRewards = true;

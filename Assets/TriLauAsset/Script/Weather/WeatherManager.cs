@@ -70,8 +70,8 @@ namespace MyRule
 
                 if (data.MatchData.MapType == EMap.GreenLand)
                 {
-                    EWeatherType weatherType = GetRandomWeather(EWeatherType.None, EWeatherType.Rain);
-                    weatherData.SetWeatherType(weatherType);
+                    //EWeatherType weatherType = GetRandomWeather(EWeatherType.None, EWeatherType.Rain);
+                    weatherData.SetWeatherType(EWeatherType.Rain);
                 }
                 else if (data.MatchData.MapType == EMap.Desert)
                 {

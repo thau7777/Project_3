@@ -1,4 +1,5 @@
 using Ami.BroAudio;
+using Cysharp.Threading.Tasks;
 using MyRule;
 using System;
 using System.Collections.Generic;
@@ -72,9 +73,12 @@ public class EnviromentManager : MonoBehaviour
         }
     }
 
-    private void UpdateMapType()
+    private async void UpdateMapType()
     {
         DisableAllMap();
+
+        await UniTask.WaitUntil(() => MatchManager.Instance.MatchData != null);
+
         switch (MatchManager.Instance.MatchData.MapType)
         {
             case EMap.GreenLand: EnableMap(EMap.GreenLand); break;
@@ -111,7 +115,7 @@ public class EnviromentManager : MonoBehaviour
 
     private void CheckWeather(MapInfo map)
     {
-        bool isBad = !TopDownGameManager.Instance.isTestGameplay ? MatchManager.Instance.MatchData.WeatherData.Equals(EWeatherType.Rain) : _isBadWeatherForTest;
+        bool isBad = !TopDownGameManager.Instance.isTestGameplay ? MatchManager.Instance.MatchData.WeatherData.WeatherType == EWeatherType.Rain : _isBadWeatherForTest;
         ApplyMapAmbienceSound(map, isBad);
 
         map.WeatherMainLight.gameObject.SetActive(!isBad);
