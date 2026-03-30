@@ -4,10 +4,12 @@ using UnityEngine;
 public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
+
     private GameObject _sender;
     private LayerMask _dodgeLayers;
     private Vector3? _direction = null;
     private Rigidbody _rb;
+
     private float _speed;
     private float _range;
     private float _traveledDistance = 0f;
@@ -18,31 +20,41 @@ public class StraightProjectile : Flyweight
     private float _currentSize;
 
     private DamageDealer _damageDealer;
+    private EffectApplier _effectApplier;
 
     private const float MaxHeight = 1.35f;
-    private const float DescentSpeed = 2f; // how fast it moves down when above height
+    private const float DescentSpeed = 2f;
+    private const float StoppedSpeedThreshold = 0.01f;
+
+    private float _lifeTimeElapsed = 0f;
+    private bool _despawnScheduled = false;
+    private bool _canCurrentlyDealDamage = true;
 
     private void Awake()
     {
         _sender = transform.root.gameObject;
         _rb = gameObject.GetOrAdd<Rigidbody>();
-        _direction = null;
         _rb.useGravity = false;
     }
 
     private void OnEnable()
     {
         _traveledDistance = 0f;
+        _lifeTimeElapsed = 0f;
+        _despawnScheduled = false;
+        _canCurrentlyDealDamage = true;
+        _direction = null;
     }
 
     private void OnDisable()
     {
         _direction = null;
+        StopAllCoroutines();
     }
 
-    public void InitializeProjectile(GameObject sender, 
-        Vector3 direction, float speed, float range, 
-        float size, int damage, float knockBackForce, 
+    public void InitializeProjectile(GameObject sender,
+        Vector3 direction, float speed, float range,
+        float size, int damage, float knockBackForce,
         bool dealTrueDamage, LayerMask dodgeLayers)
     {
         _sender = sender;
@@ -50,7 +62,6 @@ public class StraightProjectile : Flyweight
         _speed = speed;
         _range = range;
         _startPosition = transform.position;
-        _traveledDistance = 0f;
         _currentSize = size;
 
         transform.localScale = new Vector3(size, size, size);
@@ -63,9 +74,13 @@ public class StraightProjectile : Flyweight
         {
             _damageDealer = gameObject.GetOrAdd<DamageDealer>();
             _damageDealer.Setup(true, _damage, _dealTrueDamage, _knockBackForce, false, settings.projectileDamageElementType);
+
+            if (settings.canApplyEffects && settings.effectsToApplyList.Count > 0)
+            {
+                _effectApplier = gameObject.GetOrAdd<EffectApplier>();
+                _effectApplier.SetEffects(settings.effectsToApplyList);
+            }
         }
-
-
     }
 
     private void FixedUpdate()
@@ -76,28 +91,62 @@ public class StraightProjectile : Flyweight
             return;
         }
 
-        // Base velocity
-        Vector3 velocity = _direction.Value * _speed;
+        _lifeTimeElapsed += Time.fixedDeltaTime;
 
-        // Adjust height if needed
+        float currentSpeed = ComputeCurrentSpeed();
+
+        // Gate damage when curve brings speed to zero
+        if (settings.useSpeedCurve && !settings.canDealDamageWhileStopping)
+            _canCurrentlyDealDamage = currentSpeed > StoppedSpeedThreshold;
+
+        Vector3 velocity = _direction.Value * currentSpeed;
+        AdjustHeightVelocity(ref velocity);
+        _rb.linearVelocity = velocity;
+
+        if (settings.useLifeTime)
+        {
+            // Lifetime path — ignore distance, despawn when time is up
+            if (_lifeTimeElapsed >= settings.lifeTime && !_despawnScheduled)
+            {
+                _despawnScheduled = true;
+                _rb.linearVelocity = Vector3.zero;
+                StartCoroutine(DespawnAfterDelay(settings.delayDurationToDespawn));
+            }
+        }
+        else
+        {
+            // Distance path — despawn when range is reached
+            _traveledDistance = Vector3.Distance(_startPosition, transform.position);
+            if (_traveledDistance >= _range)
+                DespawnProjectile();
+        }
+    }
+
+    private float ComputeCurrentSpeed()
+    {
+        if (!settings.useLifeTime || !settings.useSpeedCurve)
+            return _speed;
+
+        float normalizedTime = Mathf.Clamp01(_lifeTimeElapsed / settings.lifeTime);
+        float curveValue = settings.speedCurve.Evaluate(normalizedTime);
+        return _speed * curveValue;
+    }
+
+    private void AdjustHeightVelocity(ref Vector3 velocity)
+    {
         float currentY = transform.position.y;
         if (currentY > MaxHeight)
         {
             float descent = Mathf.Min((currentY - MaxHeight), DescentSpeed * Time.fixedDeltaTime);
             velocity.y -= descent * (1f / Time.fixedDeltaTime);
         }
+    }
 
-        // Apply velocity
-        _rb.linearVelocity = velocity;
-
-        // Track distance traveled
-        _traveledDistance = Vector3.Distance(_startPosition, transform.position);
-
-        // Check if reached max range
-        if (_traveledDistance >= _range)
-        {
-            DespawnProjectile();
-        }
+    private IEnumerator DespawnAfterDelay(float delay)
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+        DespawnProjectile();
     }
 
     public void DespawnProjectile()
@@ -108,6 +157,8 @@ public class StraightProjectile : Flyweight
 
     private void SpawnHitVFX()
     {
+        if (!settings.ProjectileImpactVFX) return;
+
         var projectileImpactFlyweight = FlyweightFactory.Spawn(settings.ProjectileImpactVFX);
         projectileImpactFlyweight.FlyweightInitialize(transform.position, Quaternion.identity);
 
@@ -116,38 +167,38 @@ public class StraightProjectile : Flyweight
 
         if (impactVFX.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
         {
-            hitBoxHandler.Setup(
-                _sender, 
-                _dodgeLayers,
+            hitBoxHandler.Setup(_sender, _dodgeLayers,
                 impactVFXSettings.hitboxOnOffTime,
-                impactVFXSettings.useTriggerStays, 
-                impactVFXSettings.triggerStayTickInterval, 
+                impactVFXSettings.useTriggerStays,
+                impactVFXSettings.triggerStayTickInterval,
                 false);
         }
         if (impactVFX.TryGetComponent<DamageDealer>(out var damageDealer))
         {
-            damageDealer.Setup(impactVFXSettings.isMagicAttack, _damage, _dealTrueDamage, _knockBackForce, false, impactVFXSettings.elementalType);
+            damageDealer.Setup(impactVFXSettings.isMagicAttack, _damage, _dealTrueDamage,
+                _knockBackForce, false, impactVFXSettings.elementalType);
             if (impactVFXSettings.UseParticleCollision)
                 damageDealer.SetupParicleDamageDealer(_sender);
         }
-        if(impactVFX.TryGetComponent<EffectApplier>(out var effectApplier))
-        {
+        if (impactVFX.TryGetComponent<EffectApplier>(out var effectApplier))
             effectApplier.SetUpForParticle(_sender);
-        }
 
-            impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);
+        impactVFX.InitializeVFX(_currentSize, impactVFXSettings.DefaultLifeTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((_dodgeLayers.value & (1 << other.gameObject.layer)) == 0)
-        {
-            if (other.TryGetComponent<Damageable>(out var damageable) && (damageable.CurrentHealth == 0)) return;
-            if(!settings.canDealDamageByProjectile)
-                DespawnProjectile();
-            else
-                _damageDealer.DealDamage(_sender, gameObject, damageable.gameObject);
+        if ((_dodgeLayers.value & (1 << other.gameObject.layer)) != 0) return;
+        if (!other.TryGetComponent<Damageable>(out var damageable)) return;
+        if (damageable.CurrentHealth == 0) return;
+        if (!_canCurrentlyDealDamage) return;
 
-        }
+        if (settings.canDealDamageByProjectile)
+            _damageDealer.DealDamage(_sender, gameObject, damageable.gameObject);
+
+        if (settings.canApplyEffects && settings.effectsToApplyList.Count > 0)
+            _effectApplier.ApplyEffect(_sender, gameObject, damageable.gameObject);
+
+        if (settings.despawnOnHit) DespawnProjectile();
     }
 }

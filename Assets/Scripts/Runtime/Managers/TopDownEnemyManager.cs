@@ -35,6 +35,8 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     [TabGroup("Spawn Settings")]
     [Range(20, 60)]
     [SerializeField] private float _waveDuration = 60f; // 1 minute per wave
+    [SerializeField] private LayerMask obstacleLayerMask;
+    [SerializeField] private LayerMask groundLayerMask;
 
     // Wave state
     private GroupWave _groupWave;
@@ -305,7 +307,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             RemainingEnemiesInWave--;
             return;
         }
-        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform, Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y));
+        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform, Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y),groundLayerMask,obstacleLayerMask);
 
         var enemy = FlyweightFactory.Spawn(settings);
         if (enemy.TryGetComponent<CharacterStats>(out var enemyStats))

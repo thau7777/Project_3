@@ -41,17 +41,35 @@ public class EffectApplier : MonoBehaviour
 
         EffectsManager manager = target.GetOrAdd<EffectsManager>();
 
-        OneShotVFXSettings oneShotVFXSettings = GetComponent<OneShotVFX>().settings as OneShotVFXSettings;
-        if (oneShotVFXSettings.pickRandomEffectFromList)
+        FlyweightSettings flyweightSettings = GetComponent<Flyweight>().settings as FlyweightSettings;
+        if(flyweightSettings is OneShotVFXSettings oneShotVFXSettings)
         {
-            EffectData randomEffect = _effectsToApply[Random.Range(0, _effectsToApply.Count)];
-            manager.AddEffect(sender,randomEffect);
-        }
-        else
-        {
-            foreach (EffectData effect in _effectsToApply)
+            if (oneShotVFXSettings.pickRandomEffectFromList)
             {
-                manager.AddEffect(sender,effect);
+                EffectData randomEffect = _effectsToApply[Random.Range(0, _effectsToApply.Count)];
+                manager.AddEffect(sender,randomEffect);
+            }
+            else
+            {
+                foreach (EffectData effect in _effectsToApply)
+                {
+                    manager.AddEffect(sender,effect);
+                }
+            }
+
+        }else if(flyweightSettings is StraightProjectileSettings straightProjectileSettings)
+        {
+            if (straightProjectileSettings.pickRandomEffectFromList)
+            {
+                EffectData randomEffect = _effectsToApply[Random.Range(0, _effectsToApply.Count)];
+                manager.AddEffect(sender, randomEffect);
+            }
+            else
+            {
+                foreach (EffectData effect in _effectsToApply)
+                {
+                    manager.AddEffect(sender, effect);
+                }
             }
         }
             
