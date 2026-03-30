@@ -59,12 +59,12 @@ namespace MyRule.UI
 
         private void HandleASIC(AddActiveSigilEvent evt)
         {
-            activeSigils[evt.index].SetSigilView(evt.sigilSO);
+            activeSigils[evt.index].SetSigilView(evt.sigilSO, evt.sigilData);
         }
 
         private void HandlePS(AddPassiveSigilEvent evt)
         {
-            passiveSigils[evt.index].SetSigilView(evt.sigilSO);
+            passiveSigils[evt.index].SetSigilView(evt.sigilSO, evt.sigilData);
         }
 
         private void HandleItem(AddItemEvent evt)

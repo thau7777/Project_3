@@ -4,6 +4,22 @@ using System;
 namespace MyRule
 {
     [Serializable]
+    public class SigilStorageSlotData
+    {
+        private int _index;
+        private SigilData _data;
+
+        public int Index => _index;
+        public SigilData Data => _data;
+
+        public SigilStorageSlotData(int index, SigilData data)
+        {
+            _index = index;
+            _data = data;
+        }
+    }
+
+    [Serializable]
     public class SigilStorageData
     {
         [JsonProperty] private SigilData[] _activeSigils;
@@ -55,5 +71,20 @@ namespace MyRule
 
         public int GetFirstEmptySlotActive() => GetFirstEmptySlot(_activeSigils);
         public int GetFirstEmptySlotPassive() => GetFirstEmptySlot(_passiveSigils);
+
+        // Get index
+        public int GetIndexOfSigil(string sigilName, SigilData[] sigilDatas)
+        {
+            for (int i = 0; i < sigilDatas.Length; i++)
+            {
+                if (sigilDatas[i].Name == sigilName) return i;
+            }
+
+            return -1;
+        }
+
+        public int GetIndexOfActiveSigil(string name) => GetIndexOfSigil(name, _activeSigils);
+
+        public int GetIndexOfPassiveSigil(string name) => GetIndexOfSigil(name, _passiveSigils);
     }
 }

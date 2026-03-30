@@ -30,8 +30,12 @@ namespace MyRule
         [SerializeField] private GameObject sigilReplacedContainer;
         [SerializeField] private SpriteRenderer sigilReplacedIcon;
         [SerializeField] private SigilSO sigilReplaced;
+        [SerializeField] private int replaceIndex = -1;
         [SerializeField] private CardRotator cardRotator;
         [SerializeField] private CardClickAnimate clickAnimate;
+
+        public CardRotator CardRotator => cardRotator;
+        public CardClickAnimate ClickAnimate => clickAnimate;
 
         private bool isShowing = false;
 
@@ -77,8 +81,10 @@ namespace MyRule
 
         public void SetCardGameplayType(CardGameplayType cardGameplayType) => this.cardType = cardGameplayType;
 
-        public void SetSigil(SigilData sigilData, SigilSO sigilSO, CardGameplayType cardGameplayType)
+        public async void SetSigil(SigilData sigilData, SigilSO sigilSO, CardGameplayType cardGameplayType)
         {
+            await UniTask.NextFrame();
+
             this.sigilData = sigilData;
             this.sigilSO = sigilSO;
             this.cardType = cardGameplayType;
@@ -120,6 +126,7 @@ namespace MyRule
 
         private void CheckSigilStorage()
         {
+            replaceIndex = -1;
             sigilReplacedContainer.SetActive(false);
 
             if (sigilSO == null) return;
@@ -129,8 +136,13 @@ namespace MyRule
                 if (SigilStorageManager.Instance.SigilStorageData.IsActiveSigilFull())
                 {
                     sigilReplacedContainer.SetActive(true);
-                    sigilReplaced = SigilStorageManager.Instance.GetRandomActiveSigilInStorage();
-                    sigilReplacedIcon.sprite = sigilReplaced.sigilIcon;
+                    SigilStorageSlotData slotData = SigilStorageManager.Instance.GetRandomActiveSigilInStorage();
+                    if (slotData != null)
+                    {
+                        sigilReplaced = SigilCollectionManager.Instance.GetSigilSOById(slotData.Data.Id);
+                        sigilReplacedIcon.sprite = sigilReplaced.sigilIcon;
+                        replaceIndex = slotData.Index;
+                    }
                 }
             }
             else if (sigilSO.sigilType == SigilType.Passive)
@@ -138,8 +150,13 @@ namespace MyRule
                 if (SigilStorageManager.Instance.SigilStorageData.IsPassiveSigilFull())
                 {
                     sigilReplacedContainer.SetActive(true);
-                    sigilReplaced = SigilStorageManager.Instance.GetRandomPassiveSigilInStorage();
-                    sigilReplacedIcon.sprite = sigilReplaced.sigilIcon;
+                    SigilStorageSlotData slotData = SigilStorageManager.Instance.GetRandomPassiveSigilInStorage();
+                    if (slotData != null)
+                    {
+                        sigilReplaced = SigilCollectionManager.Instance.GetSigilSOById(slotData.Data.Id);
+                        sigilReplacedIcon.sprite = sigilReplaced.sigilIcon;
+                        replaceIndex = slotData.Index;
+                    }
                 }
             }
         }   
@@ -193,7 +210,7 @@ namespace MyRule
                     {
                         await clickAnimate.PlayCircular();
                         await UniTask.Delay(200);
-                        EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
+                        EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO, replaceIndex));
                         MatchManager.Instance.MatchData.SigilPool.RemoveSigil(sigilData);
                         break;
                     }
@@ -205,7 +222,7 @@ namespace MyRule
                         {
                             clickAnimate.FlipDown().Forget();
                             Debug.Log("Click " + sigilNameTxt.text);
-                            EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO));
+                            EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO, replaceIndex));
                             EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-sigilSO.price));
                             isShowing = false;
                             transform.localScale = originalScale;

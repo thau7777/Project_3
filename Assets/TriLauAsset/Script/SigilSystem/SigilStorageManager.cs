@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MyRule.Event;
+using System;
 using System.Linq;
 
 namespace MyRule
@@ -29,51 +30,94 @@ namespace MyRule
 
         private void OnSigilChosen(SigilChosenEvent evt)
         {
-            SigilData sigilData = new SigilData(evt.sigilSO.id, evt.sigilSO.sigilType, evt.sigilSO.name, evt.sigilSO.mag, evt.sigilSO.manaCost, evt.sigilSO.rarity, evt.sigilSO.keyBinding);
+            AddSigilToStorage(evt.sigilSO, evt.index);
+        }
+
+        public void AddSigilToStorage(SigilSO sigilSO, int slotIndex = -1)
+        {
+            SigilData sigilData = new SigilData(sigilSO.id, sigilSO.sigilType, sigilSO.name, sigilSO.mag, sigilSO.manaCost, sigilSO.rarity, sigilSO.keyBinding);
 
             if (sigilData.SigilType == SigilType.Active)
             {
+                int index = 0;
+
                 if (!sigilStorageData.IsActiveSigilFull())
                 {
-                    int index = sigilStorageData.GetFirstEmptySlotActive();
-
-                    sigilStorageData.TryAddActiveSigil(index, sigilData);
-
-                    EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(index, evt.sigilSO));
+                    index = sigilStorageData.GetFirstEmptySlotActive();
                 }
-                else return;
+                else if (slotIndex != -1)
+                {
+                    index = slotIndex;
+                }
+                else if (slotIndex == -1 && sigilStorageData.IsActiveSigilFull())
+                {
+                    index = UnityEngine.Random.Range(0, sigilStorageData.ActiveSigils.Length);
+                }
+
+                sigilStorageData.TryAddActiveSigil(index, sigilData);
+
+                EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(index, sigilSO, sigilData));
             }
             else if (sigilData.SigilType == SigilType.Passive)
             {
+                int index = 0;
                 if (!sigilStorageData.IsPassiveSigilFull())
                 {
-                    int index = sigilStorageData.GetFirstEmptySlotPassive();
-
-                    sigilStorageData.TryAddPassiveSigil(index, sigilData);
-
-                    EventBus<AddPassiveSigilEvent>.Raise(new AddPassiveSigilEvent(index, evt.sigilSO));
+                    index = sigilStorageData.GetFirstEmptySlotPassive();
                 }
-                else return;
+                else if (slotIndex != -1)
+                {
+                    index = slotIndex;
+                }
+                else if (slotIndex == -1 && sigilStorageData.IsPassiveSigilFull())
+                {
+                    index = UnityEngine.Random.Range(0, sigilStorageData.PassiveSigils.Length);
+                }
+
+                sigilStorageData.TryAddPassiveSigil(index, sigilData);
+
+                EventBus<AddPassiveSigilEvent>.Raise(new AddPassiveSigilEvent(index, sigilSO, sigilData));
             }
 
-            CharacterManager.Instance.UpdateSigilStats(evt.sigilSO);
+            CharacterManager.Instance.UpdateSigilStats(sigilSO);
+
+            switch (sigilSO.sigilName)
+            {
+                case "Blood Fang":
+                    EventBus<UpdateInkDialogueVariableEvent>.Raise(new UpdateInkDialogueVariableEvent("hasBloodFang", true));
+                    break;
+            }
         }
 
-        public SigilSO GetRandomActiveSigilInStorage() => GetRandomSigil(sigilStorageData.ActiveSigils);
+        public SigilStorageSlotData GetRandomActiveSigilInStorage() => GetRandomSigil(sigilStorageData.ActiveSigils);
 
-        public SigilSO GetRandomPassiveSigilInStorage() => GetRandomSigil(sigilStorageData.PassiveSigils);
+        public SigilStorageSlotData GetRandomPassiveSigilInStorage() => GetRandomSigil(sigilStorageData.PassiveSigils);
 
-        private SigilSO GetRandomSigil(SigilData[] sigilDatas)
+        private SigilStorageSlotData GetRandomSigil(SigilData[] sigilDatas)
         {
             int i = UnityEngine.Random.Range(0, sigilDatas.Length);
             SigilData sigilData = sigilDatas[i];
             if (sigilData != null)
             {
-                return SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+                return new SigilStorageSlotData(i, sigilData);
             }
 
             return null;
         }
+
+        public void RemoveSigil(int index, SigilSO sigilSO)
+        {
+            if (sigilSO.sigilType == SigilType.Active)
+            {
+                sigilStorageData.RemoveActiveSigil(index);
+                EventBus<RemoveActiveSigilEvent>.Raise(new RemoveActiveSigilEvent(index));
+            }
+            else if (sigilSO.sigilType == SigilType.Passive)
+            {
+                sigilStorageData.RemovePassiveSigil(index);
+                EventBus<RemovePassiveSigilEvent>.Raise(new RemovePassiveSigilEvent(index));
+            }    
+        }    
 
         #region Save Load
         public UniTask LoadData(GameData data)
@@ -91,7 +135,7 @@ namespace MyRule
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
                 if (sigilSO == null) continue;
 
-                EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(i, sigilSO));
+                EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(i, sigilSO, sigilData));
             }
 
             foreach (var (sigilData, i) in sigilStorageData.PassiveSigils.Select((s, i) => (s, i)))
@@ -100,7 +144,7 @@ namespace MyRule
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
                 if (sigilSO == null) continue;
 
-                EventBus<AddPassiveSigilEvent>.Raise(new AddPassiveSigilEvent(i, sigilSO));
+                EventBus<AddPassiveSigilEvent>.Raise(new AddPassiveSigilEvent(i, sigilSO, sigilData));
             }
 
             return UniTask.CompletedTask;

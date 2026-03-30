@@ -16,11 +16,13 @@ namespace MyRule.Event
     {
         public readonly int index;
         public readonly SigilSO sigilSO;
+        public readonly SigilData sigilData;
 
-        public AddActiveSigilEvent(int index, SigilSO sigilSO)
+        public AddActiveSigilEvent(int index, SigilSO sigilSO, SigilData sigilData)
         {
             this.index = index;
             this.sigilSO = sigilSO;
+            this.sigilData = sigilData;
         }
     }
 
@@ -28,11 +30,33 @@ namespace MyRule.Event
     {
         public readonly int index;
         public readonly SigilSO sigilSO;
+        public readonly SigilData sigilData;
 
-        public AddPassiveSigilEvent(int index, SigilSO sigilSO)
+        public AddPassiveSigilEvent(int index, SigilSO sigilSO, SigilData sigilData)
         {
             this.index = index;
             this.sigilSO = sigilSO;
+            this.sigilData = sigilData;
+        }
+    }
+
+    public struct RemoveActiveSigilEvent : IEvent
+    {
+        public readonly int index;
+
+        public RemoveActiveSigilEvent(int index)
+        {
+            this.index = index;
+        }
+    }
+
+    public struct RemovePassiveSigilEvent : IEvent
+    {
+        public readonly int index;
+
+        public RemovePassiveSigilEvent(int index)
+        {
+            this.index = index;
         }
     }
 

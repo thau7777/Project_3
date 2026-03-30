@@ -1,8 +1,9 @@
 ===TheSalesman===
-{hasCompletedFirstGame == false:
+{TheSalesmanCompletedFirstMeet == false:
 Oh, it seems another one has come here to offer themselves up to him. #speaker:Salesman
 This world is a loop, and it will never end as long as he's still here. #speaker:Salesman
 Anyway, I'm just a humble street vendor; what right do I have to judge anyone? #speaker:Salesman
+~ TheSalesmanCompletedFirstMeet = true
 }
 My young friend asked me, "What do you want to buy today?" #speaker:Salesman
 * [Go to the store]

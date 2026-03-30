@@ -7,19 +7,16 @@ namespace MyRule
     public class CharacterData
     {
         [JsonProperty] public string _name;
-        [JsonProperty] public string _backStory;
         [JsonProperty] private EClass _characterClass;
         [JsonProperty] private CharacterStatsData _characterStatsData;
 
         [JsonIgnore] public string Name => _name;
-        [JsonIgnore] public string BackStory => _backStory;
         [JsonIgnore] public EClass CharacterClass => _characterClass;
         [JsonIgnore] public CharacterStatsData CharacterStatsData => _characterStatsData;
 
         public CharacterData() 
         {
             _name = "Mage";
-            _backStory = "...";
             _characterClass = EClass.Mage;
             _characterStatsData = new CharacterStatsData();
         }
@@ -27,7 +24,6 @@ namespace MyRule
         public CharacterData(string name, string backStory, EClass characterClass, CharacterStatsData characterStatsData)
         {
             _name = name;
-            _backStory = backStory;
             _characterClass = characterClass;
             _characterStatsData = characterStatsData;
         }

@@ -12,11 +12,13 @@ namespace MyRule
 
         private const float maxRotationX = 30f;
         private const float maxRotationY = 30f;
-        private const float rotationSpeed = 0.2f;
+        private const float rotationSpeed = 0.1f;
         private const float snapBackDuration = 0.15f;
 
         private bool canRotate = false;
         private bool isRotating = false;
+
+        private bool cardFaceUp = true;
 
         private Vector3 rotationStartPos;
         private Camera mainCam;
@@ -28,7 +30,7 @@ namespace MyRule
         private void Awake()
         {
             mainCam = Camera.main;
-            SetOriginalLocalRotation(transform.localRotation);
+            SetOriginalLocalRotation();
         }
 
         private void Update()
@@ -40,7 +42,12 @@ namespace MyRule
 
             Vector2 mouseScreenPos = mouse.position.ReadValue();
 
-            if (!isRotating && mouse.rightButton.wasPressedThisFrame)
+            if (!isRotating && mouse.rightButton.wasReleasedThisFrame)
+            {
+                FlipTheCards();
+            }
+
+            if (!isRotating && mouse.leftButton.wasPressedThisFrame)
             {
                 isRotating = true;
                 CancelSnapBack();
@@ -48,7 +55,7 @@ namespace MyRule
                 rotationStartPos = GetWorldPoint(mouseScreenPos);
             }
 
-            if (isRotating && mouse.rightButton.wasReleasedThisFrame)
+            if (isRotating && mouse.leftButton.wasReleasedThisFrame)
             {
                 isRotating = false;
 
@@ -74,9 +81,10 @@ namespace MyRule
             return mainCam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, dist));
         }
 
-        public void SetOriginalLocalRotation(Quaternion rotation)
+        public void SetOriginalLocalRotation()
         {
             originalLocalRotation = Quaternion.Euler(Vector3.zero);
+            cardFaceUp = true;
         }
 
         public void UnlockRotate()
@@ -119,6 +127,22 @@ namespace MyRule
             catch (System.Exception e)
             {
                 Debug.LogWarning($"[CardRotator] SnapBackAsync error: {e}");
+            }
+        }
+
+        private void FlipTheCards()
+        {
+            if (cardFaceUp)
+            {
+                card.ClickAnimate.FlipDown().Forget();
+                originalLocalRotation = Quaternion.Euler(0, 180, 0);
+                cardFaceUp = false;
+            }
+            else
+            {
+                card.ClickAnimate.FlipUp().Forget();
+                originalLocalRotation = Quaternion.Euler(0, 0, 0);
+                cardFaceUp = true;
             }
         }
 

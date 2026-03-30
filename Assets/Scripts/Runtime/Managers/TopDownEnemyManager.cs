@@ -7,6 +7,12 @@ using UnityEngine;
 
 public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 {
+    [SerializeField]
+    private bool _spawnWithLimitCount = false;
+    [SerializeField]
+    private int _spawnCountLimit = 0;
+
+
     [System.Serializable]
     public struct TopdownEnemyWithIds
     {
@@ -76,6 +82,8 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     // Events
     private EventBinding<TopdownStartGameEvent> _startGameEventBinding;
+
+
 
     private void OnEnable()
     {
@@ -180,8 +188,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     private IEnumerator StartWave(int waveIndex)
     {
         WaveData[] waves = _groupWave.WaveDatas;
-
-        if (waveIndex >= waves.Length) yield break;
+        if (waveIndex >= (!_spawnWithLimitCount ? waves.Length : 1)) yield break;
 
         WaveData wave = waves[waveIndex];
         if (wave == null)
@@ -202,7 +209,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
         _isSpawning = true;
 
-        for (int i = 0; i < wave.Enemies.Length; i++)
+        for (int i = 0; i < (!_spawnWithLimitCount ? wave.Enemies.Length : _spawnCountLimit); i++)
         {
             EnemyData enemyData = wave.Enemies[i];
             if (enemyData == null) continue;

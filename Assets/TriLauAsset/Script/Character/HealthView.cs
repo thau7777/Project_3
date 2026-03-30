@@ -40,14 +40,14 @@ namespace MyRule.UI
                 float fillLevel = Mathf.Lerp(start, healthRate, time / duration);
 
                 currentHealthTxt.text = value + "/" + maxHealth;
-                healthFill.SetFloat("_FillAmount", fillLevel);
+                healthFill.SetFloat("_FillLevel", fillLevel);
 
                 await UniTask.Yield();
             }
 
 
             currentHealthTxt.text = currentHealth.ToString() + "/" + maxHealth.ToString();
-            healthFill.SetFloat("_FillAmount", healthRate);
+            healthFill.SetFloat("_FillLevel", healthRate);
         }
     }
 }

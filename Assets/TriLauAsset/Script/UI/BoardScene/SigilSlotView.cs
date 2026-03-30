@@ -37,9 +37,9 @@ namespace MyRule.UI
             SigilStorageManager.Instance.SigilStorageData.SwapActiveSigil(draggedSlotIndex, slotIndex);
         }
 
-        public void SetSigilView(SigilSO sigilSO)
+        public void SetSigilView(SigilSO sigilSO, SigilData sigilData)
         {
-            if (sigilView != null) sigilView.SetSigil(sigilSO);
+            if (sigilView != null) sigilView.SetSigil(sigilSO, sigilData);
         }
     }
 }

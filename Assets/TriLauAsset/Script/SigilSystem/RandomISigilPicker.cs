@@ -12,6 +12,8 @@ namespace MyRule.Utils
         {
             List<SigilData> result = new List<SigilData>();
 
+            int currentSteps = MatchManager.Instance.MatchData.CurrentStep;
+
             if (source == null || source.Count == 0 || count <= 0)
                 return result;
 
@@ -23,7 +25,7 @@ namespace MyRule.Utils
 
                 foreach (var item in temp)
                 {
-                    totalWeight += item.Weight;
+                    totalWeight += item.GetWeight(currentSteps);
                 }
 
                 float randomPoint = Random.Range(0f, totalWeight);
@@ -32,7 +34,7 @@ namespace MyRule.Utils
 
                 for (int i = 0; i < temp.Count; i++)
                 {
-                    current += temp[i].Weight;
+                    current += temp[i].GetWeight(currentSteps);
 
                     if (randomPoint <= current)
                     {

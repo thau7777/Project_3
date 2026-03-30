@@ -89,7 +89,7 @@ namespace MyRule
 
             CreateMapParent();
 
-            CreateNodes(m.nodes);
+            CreateNodes(m.Nodes);
 
             DrawLines();
 
@@ -113,7 +113,7 @@ namespace MyRule
 
             GameObject backgroundObject = new GameObject("Background");
             backgroundObject.transform.SetParent(mapParent.transform);
-            MapNode bossNode = MapNodes.FirstOrDefault(node => node.Node.nodeType == NodeType.Boss);
+            MapNode bossNode = MapNodes.FirstOrDefault(node => node.Node.NodeType == NodeType.Boss);
             float span = m.DistanceBetweenFirstAndLastLayers();
             backgroundObject.transform.localPosition = new Vector3(bossNode.transform.localPosition.x, span / 2f, 0f);
             backgroundObject.transform.localRotation = Quaternion.identity;
@@ -149,9 +149,9 @@ namespace MyRule
         {
             GameObject mapNodeObject = Instantiate(nodePrefab, mapParent.transform);
             MapNode mapNode = mapNodeObject.GetComponent<MapNode>();
-            NodeBlueprint blueprint = GetBlueprint(node.blueprintName);
+            NodeBlueprint blueprint = GetBlueprint(node.BlueprintName);
             mapNode.SetUp(node, blueprint);
-            mapNode.transform.localPosition = node.position;
+            mapNode.transform.localPosition = node.Position;
             return mapNode;
         }
 
@@ -161,27 +161,27 @@ namespace MyRule
             foreach (MapNode node in MapNodes)
                 node.SetState(NodeStates.Locked);
 
-            if (mapManager.CurrentMap.path.Count == 0)
+            if (mapManager.CurrentMap.Path.Count == 0)
             {
                 // we have not started traveling on this map yet, set entire first layer as attainable:
-                foreach (MapNode node in MapNodes.Where(n => n.Node.point.y == 0))
+                foreach (MapNode node in MapNodes.Where(n => n.Node.Point.y == 0))
                     node.SetState(NodeStates.Attainable);
             }
             else
             {
                 // we have already started moving on this map, first highlight the path as visited:
-                foreach (Vector2Int point in mapManager.CurrentMap.path)
+                foreach (Vector2Int point in mapManager.CurrentMap.Path)
                 {
                     MapNode mapNode = GetNode(point);
                     if (mapNode != null)
                         mapNode.SetState(NodeStates.Visited);
                 }
 
-                Vector2Int currentPoint = mapManager.CurrentMap.path[mapManager.CurrentMap.path.Count - 1];
+                Vector2Int currentPoint = mapManager.CurrentMap.Path[mapManager.CurrentMap.Path.Count - 1];
                 Node currentNode = mapManager.CurrentMap.GetNode(currentPoint);
 
                 // set all the nodes that we can travel to as attainable:
-                foreach (Vector2Int point in currentNode.outgoing)
+                foreach (Vector2Int point in currentNode.Outgoing)
                 {
                     MapNode mapNode = GetNode(point);
                     if (mapNode != null)
@@ -198,28 +198,28 @@ namespace MyRule
 
             // set all lines that are a part of the path to visited color:
             // if we have not started moving on the map yet, leave everything as is:
-            if (mapManager.CurrentMap.path.Count == 0)
+            if (mapManager.CurrentMap.Path.Count == 0)
                 return;
 
             // in any case, we mark outgoing connections from the final node with visible/attainable color:
-            Vector2Int currentPoint = mapManager.CurrentMap.path[mapManager.CurrentMap.path.Count - 1];
+            Vector2Int currentPoint = mapManager.CurrentMap.Path[mapManager.CurrentMap.Path.Count - 1];
             Node currentNode = mapManager.CurrentMap.GetNode(currentPoint);
 
-            foreach (Vector2Int point in currentNode.outgoing)
+            foreach (Vector2Int point in currentNode.Outgoing)
             {
                 LineConnection lineConnection = lineConnections.FirstOrDefault(conn => conn.from.Node == currentNode &&
-                                                                            conn.to.Node.point.Equals(point));
+                                                                            conn.to.Node.Point.Equals(point));
                 lineConnection?.SetColor(lineVisitedColor);
             }
 
-            if (mapManager.CurrentMap.path.Count <= 1) return;
+            if (mapManager.CurrentMap.Path.Count <= 1) return;
 
-            for (int i = 0; i < mapManager.CurrentMap.path.Count - 1; i++)
+            for (int i = 0; i < mapManager.CurrentMap.Path.Count - 1; i++)
             {
-                Vector2Int current = mapManager.CurrentMap.path[i];
-                Vector2Int next = mapManager.CurrentMap.path[i + 1];
-                LineConnection lineConnection = lineConnections.FirstOrDefault(conn => conn.@from.Node.point.Equals(current) &&
-                                                                            conn.to.Node.point.Equals(next));
+                Vector2Int current = mapManager.CurrentMap.Path[i];
+                Vector2Int next = mapManager.CurrentMap.Path[i + 1];
+                LineConnection lineConnection = lineConnections.FirstOrDefault(conn => conn.@from.Node.Point.Equals(current) &&
+                                                                            conn.to.Node.Point.Equals(next));
                 lineConnection?.SetColor(lineVisitedColor);
             }
         }
@@ -228,7 +228,7 @@ namespace MyRule
         {
             ScrollNonUI scrollNonUi = mapParent.GetComponent<ScrollNonUI>();
             float span = mapManager.CurrentMap.DistanceBetweenFirstAndLastLayers();
-            MapNode bossNode = MapNodes.FirstOrDefault(node => node.Node.nodeType == NodeType.Boss);
+            MapNode bossNode = MapNodes.FirstOrDefault(node => node.Node.NodeType == NodeType.Boss);
             Debug.Log("Map span in set orientation: " + span + " camera aspect: " + cam.aspect);
 
             // setting first parent to be right in front of the camera first:
@@ -284,7 +284,7 @@ namespace MyRule
         {
             foreach (MapNode node in MapNodes)
             {
-                foreach (Vector2Int connection in node.Node.outgoing)
+                foreach (Vector2Int connection in node.Node.Outgoing)
                     AddLineConnection(node, GetNode(connection));
             }
         }
@@ -327,7 +327,7 @@ namespace MyRule
 
         protected MapNode GetNode(Vector2Int p)
         {
-            return MapNodes.FirstOrDefault(n => n.Node.point.Equals(p));
+            return MapNodes.FirstOrDefault(n => n.Node.Point.Equals(p));
         }
 
         protected MapConfig GetConfig(string configName)
@@ -337,13 +337,13 @@ namespace MyRule
 
         protected NodeBlueprint GetBlueprint(NodeType type)
         {
-            MapConfig config = GetConfig(mapManager.CurrentMap.configName);
+            MapConfig config = GetConfig(mapManager.CurrentMap.ConfigName);
             return config.nodeBlueprints.FirstOrDefault(n => n.nodeType == type);
         }
 
         protected NodeBlueprint GetBlueprint(string blueprintName)
         {
-            MapConfig config = GetConfig(mapManager.CurrentMap.configName);
+            MapConfig config = GetConfig(mapManager.CurrentMap.ConfigName);
             return config.nodeBlueprints.FirstOrDefault(n => n.name == blueprintName);
         }
     }
