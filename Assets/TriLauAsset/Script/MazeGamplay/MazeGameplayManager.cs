@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using MyRule.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,14 @@ namespace MyRule
         private void OnDisable()
         {
             EventBus<MazeGameplayEvent>.Deregister(_mazeGameplayEventBinding);
+        }
+
+        private async void Start()
+        {
+            await UniTask.WaitUntil(() => AchievementManager.Instance != null);
+
+            AchievementManager.Instance.Trigger(AchievementType.Basic, true);
+            AchievementManager.Instance.Trigger(AchievementType.KillEnemy, 1);
         }
 
         private void OnMazeGameplayEvent(MazeGameplayEvent evt)

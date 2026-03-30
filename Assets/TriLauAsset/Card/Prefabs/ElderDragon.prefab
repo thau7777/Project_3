@@ -567,6 +567,7 @@ MonoBehaviour:
   sigilReplacedContainer: {fileID: 4625269885563775826}
   sigilReplacedIcon: {fileID: 1874122418348422829}
   sigilReplaced: {fileID: 0}
+  replaceIndex: -1
   cardRotator: {fileID: 1775175376743237044}
   clickAnimate: {fileID: 2114501671807445355}
 --- !u!114 &1775175376743237044
@@ -582,10 +583,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardRotator
   card: {fileID: 6732185119051698330}
-  maxRotationX: 30
-  maxRotationY: 30
-  rotationSpeed: 1
-  snapBackDuration: 0.1
 --- !u!114 &2114501671807445355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,7 +631,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5265298517684705715}

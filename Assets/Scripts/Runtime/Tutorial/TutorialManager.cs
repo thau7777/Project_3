@@ -382,7 +382,6 @@ public class TutorialManager : MonoBehaviour
         if (_currentBinding?.highlightTargets != null && _currentBinding.highlightTargets.Length > 0)
         {
             foreach (var t in _currentBinding.highlightTargets)
-                Debug.Log($"[Tutorial] highlightTargets → {(t != null ? t.name : "NULL")} (active={t?.activeInHierarchy})");
             LiftUIObjects(_currentBinding.highlightTargets);
         }
         else if (_currentBinding?.targetIdKeys != null && _currentBinding.targetIdKeys.Length > 0)

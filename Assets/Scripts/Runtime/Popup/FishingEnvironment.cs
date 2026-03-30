@@ -1,3 +1,4 @@
+using MyRule;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,19 +18,21 @@ public class FishingEnvironment : MonoBehaviour
             background = GetComponent<Image>();
         }
         background.sprite = enviSprites[0];
+
+        //SwitchEnvi();
     }
     private void SwitchEnvi()
     {
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        switch (sceneName)
+        EMap mapType = MatchManager.Instance.MatchData.MapType;
+        switch (mapType)
         {
-            case "GreenlandScene":
+            case EMap.GreenLand:
                 background.sprite = enviSprites[0];
                 break;
-            case "DesertScene":
+            case EMap.Desert:
                 background.sprite = enviSprites[1];
                 break;
-            case "IcelandScene":
+            case EMap.IceLand:
                 background.sprite = enviSprites[2];
                 break;
 

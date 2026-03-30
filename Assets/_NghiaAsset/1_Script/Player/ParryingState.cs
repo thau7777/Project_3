@@ -1,6 +1,6 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+using Cysharp.Threading.Tasks;
 
 
 
@@ -8,13 +8,17 @@ namespace Turnbase
 {
     public class ParryingState : BaseState
     {
-        public ParryingState(CharacterStateMachine stateMachine) : base(stateMachine) { }
+        private Character attacker;
+        public ParryingState(CharacterStateMachine stateMachine, Character attacker = null) : base(stateMachine)
+        {
+            this.attacker = attacker;
+        }
 
         public override void OnEnter()
         {
             Debug.Log($"{stateMachine.character.name} chuyển sang ParryingState.");
 
-            var cmd = new ParryCommand(stateMachine.character);
+            var cmd = new ParryCommand(stateMachine.character, attacker);
             stateMachine.character.StartCoroutine(ExecuteCommand(cmd));
         }
 
@@ -26,8 +30,6 @@ namespace Turnbase
 
         public override void OnExit()
         {
-            Time.timeScale = 1f;
-
             CameraAction.instance.NormalCamera(stateMachine.character);
 
             stateMachine.character.StopAllCoroutines();

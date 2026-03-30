@@ -12,6 +12,7 @@ public class Skill : ScriptableObject
     public int manaCost;
     public Sprite icon;
     public string animationTriggerName;
+    public string animationLastHitName;
 
     public SkillTargetType targetType;
     public SkillType skillType;

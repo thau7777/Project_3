@@ -153,6 +153,7 @@ public class FishItem : MonoBehaviour
                 break;
             case FishingItemType.Treasure:
                 FishingGameManager.Instance.AddScore(scoreValue * 5);
+                Debug.Log("Treasure");
                 FishingGameManager.Instance.Caught(10f);
                 break;
             case FishingItemType.Trash:

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MyRule;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,8 +27,29 @@ public class HexNode : MonoBehaviour
         isBlocked = false;
 
         // Reset về Sprite trống (index 0)
-        if (grassSprites.Count > 0)
-            displayImage.sprite = grassSprites[0];
+        //if (grassSprites.Count > 0)
+        //{
+        //    EMap mapType = MatchManager.Instance.MatchData.MapType;
+
+        //    switch (mapType)
+        //    {
+        //        case EMap.GreenLand:
+        //            displayImage.sprite = grassSprites[0];
+        //            backGroundImage.sprite = nodeSprites[0];
+        //            break;
+        //        case EMap.Desert:
+        //            displayImage.sprite = desertSprites[1];
+        //            backGroundImage.sprite = nodeSprites[1];
+        //            break;
+        //        case EMap.IceLand:
+        //            displayImage.sprite = iceSprites[2];
+        //            backGroundImage.sprite = nodeSprites[2];
+        //            break;
+        //    }
+
+        //}
+
+        displayImage.sprite = grassSprites[0];
         backGroundImage.sprite = nodeSprites[0];
 
         btn.onClick.RemoveAllListeners();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +28,7 @@ namespace Turnbase
         {
             if (!string.IsNullOrEmpty(skill.animationTriggerName))
             {
+                user.isLastHit = true;
                 user.animator.Play(skill.animationTriggerName);
             }
 
