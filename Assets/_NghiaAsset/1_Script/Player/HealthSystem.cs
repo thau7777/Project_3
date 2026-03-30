@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using UnityEngine;
+using MyRule;
 
 namespace Turnbase
 {
@@ -101,6 +102,11 @@ namespace Turnbase
                     {
                         passive.OnKill(attacker, owner);
                     }
+                }
+
+                if (!owner.isPlayer)
+                {
+                    AchievementManager.Instance.Trigger(AchievementType.KillEnemy, 1);
                 }
 
                 owner.stateMachine.SwitchState(owner.stateMachine.deadState);

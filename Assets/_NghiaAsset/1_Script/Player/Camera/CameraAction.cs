@@ -35,6 +35,8 @@ namespace Turnbase
 
         [SerializeField] private Transform DeadCameraTarget;
 
+        private CinemachineBasicMultiChannelPerlin noiseComponent;
+
 
 
         private Transform currentAnchor;
@@ -59,7 +61,53 @@ namespace Turnbase
             {
                 vignette = v;
             }
+            noiseComponent = cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+
         }
+
+        private void LateUpdate()
+        {
+            Vector3 desiredPos;
+            Quaternion desiredRot;
+
+            if (currentAnchor != null)
+            {
+                desiredPos = currentAnchor.position;
+                desiredRot = currentAnchor.rotation;
+            }
+            else if (targetPoint != null)
+            {
+                desiredPos = targetPoint.position + offsetPosition;
+                desiredRot = targetPoint.rotation * Quaternion.Euler(offsetRotation);
+            }
+            else return;
+
+            float distance = Vector3.Distance(transform.position, desiredPos);
+            float targetFOV = (distance > 0.1f && !shouldTeleport) ? zoomFOV : normalFOV;
+
+            if (shouldTeleport)
+            {
+                transform.position = desiredPos;
+                transform.rotation = desiredRot;
+                cam.Lens.FieldOfView = normalFOV;
+                shouldTeleport = false;
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * smoothSpeed);
+                transform.rotation = Quaternion.Slerp(transform.rotation, desiredRot, Time.deltaTime * smoothSpeed);
+
+                cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, targetFOV, Time.deltaTime * fovSmoothSpeed);
+            }
+
+            if (noiseComponent != null)
+            {
+                noiseComponent.AmplitudeGain = 0.5f;
+                noiseComponent.FrequencyGain = 0.5f;
+            }
+
+        }
+
 
         private void LookAtAnchorTransform(Transform anchor, bool teleportImmediately = false)
         {
@@ -198,46 +246,11 @@ namespace Turnbase
 
         public void PerfectParryCamera(Character character)
         {
-            Vector3 pos = new Vector3(-1.5f, 0.5f, -3f);
+            Vector3 pos = new Vector3(-2f, 0.5f, -3f);
             Vector3 rot = new Vector3(10f, 30f, 0f);
             SetTargetAndOffset(character, pos, rot);
         }
 
 
-        private void LateUpdate()
-        {
-            Vector3 desiredPos;
-            Quaternion desiredRot;
-
-            if (currentAnchor != null)
-            {
-                desiredPos = currentAnchor.position;
-                desiredRot = currentAnchor.rotation;
-            }
-            else if (targetPoint != null)
-            {
-                desiredPos = targetPoint.position + offsetPosition;
-                desiredRot = targetPoint.rotation * Quaternion.Euler(offsetRotation);
-            }
-            else return;
-
-            float distance = Vector3.Distance(transform.position, desiredPos);
-            float targetFOV = (distance > 0.1f && !shouldTeleport) ? zoomFOV : normalFOV;
-
-            if (shouldTeleport)
-            {
-                transform.position = desiredPos;
-                transform.rotation = desiredRot;
-                cam.Lens.FieldOfView = normalFOV;
-                shouldTeleport = false;
-            }
-            else
-            {
-                transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * smoothSpeed);
-                transform.rotation = Quaternion.Slerp(transform.rotation, desiredRot, Time.deltaTime * smoothSpeed);
-
-                cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, targetFOV, Time.deltaTime * fovSmoothSpeed);
-            }
-        }
     }
 }

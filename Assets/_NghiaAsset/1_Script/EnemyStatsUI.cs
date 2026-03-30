@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro; 
 using UnityEngine;
@@ -14,6 +14,7 @@ namespace Turnbase
 
         public Image mpBarFill;
         public Image trailblazeFill;
+        public Image trailblazeFillDelay;
         public Image shieldBarFill;
         public Image elementImage;
 
@@ -25,6 +26,7 @@ namespace Turnbase
         private Character ownerCharacter;
         private CharacterStatusDataProvider dataProvider;
         private Coroutine hpLerpCoroutine;
+        private Coroutine trailblazeLerpCoroutine;
 
         void Awake()
         {
@@ -133,7 +135,14 @@ namespace Turnbase
 
             if (trailblazeFill != null && maxTrailblaze > 0f)
             {
-                trailblazeFill.fillAmount = currentTrailblaze / maxTrailblaze;
+                float targetFill = currentTrailblaze / maxTrailblaze;
+                trailblazeFill.fillAmount = targetFill;
+
+                if (trailblazeFillDelay != null)
+                {
+                    if (trailblazeLerpCoroutine != null) StopCoroutine(trailblazeLerpCoroutine);
+                    trailblazeLerpCoroutine = StartCoroutine(LerpTrailblazeDelayed(targetFill));
+                }
             }
             else
             {
@@ -141,7 +150,23 @@ namespace Turnbase
                 {
                     trailblazeFill.fillAmount = 0f;
                 }
+                if (trailblazeFillDelay != null)
+                {
+                    trailblazeFillDelay.fillAmount = 0f;
+                }
             }
+        }
+
+        private IEnumerator LerpTrailblazeDelayed(float targetFill)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            while (Mathf.Abs(trailblazeFillDelay.fillAmount - targetFill) > 0.001f)
+            {
+                trailblazeFillDelay.fillAmount = Mathf.Lerp(trailblazeFillDelay.fillAmount, targetFill, Time.deltaTime * lerpSpeed);
+                yield return null;
+            }
+            trailblazeFillDelay.fillAmount = targetFill;
         }
 
         private void UpdateElementImage()
