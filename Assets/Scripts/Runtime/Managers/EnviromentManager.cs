@@ -4,8 +4,9 @@ using MyRule;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.TimeZoneInfo;
 
-public class EnviromentManager : MonoBehaviour
+public class EnviromentManager : Singleton<EnviromentManager>
 {
     [Serializable]
     private struct MaterialWeatherEntry
@@ -38,11 +39,14 @@ public class EnviromentManager : MonoBehaviour
     [TabGroup("SnowSpecialSettings"), SerializeField] private Camera _mainCamera;
     [TabGroup("SnowSpecialSettings"), SerializeField] private LayerMask _skillIndicatorLayer;
 
+    [TabGroup("SoundSettings"), SerializeField] private float _transitionDuration = default;
+
+
     [SerializeField] private bool _isBadWeatherForTest = true;
 
     private readonly Dictionary<Material, (float Metallic, float Smoothness)> _originalMaterialValues = new();
+    private SoundID _currentAmbienceSound;
 
-    
     private void Start()
     {
         CacheAllOriginalMaterialValues();
@@ -55,6 +59,7 @@ public class EnviromentManager : MonoBehaviour
         DisableAllMap();
         EnableMap(_mapInfos[0].MapType);
     }
+
 
     private void CacheAllOriginalMaterialValues()
     {
@@ -98,7 +103,7 @@ public class EnviromentManager : MonoBehaviour
 
     private void EnableMap(EMap mapType)
     {
-        if(mapType == EMap.IceLand)
+        if (mapType == EMap.IceLand)
         {
             _maskController.AddLayerToCulling(_skillIndicatorLayer);
             //remove that indicator layer from main
@@ -134,7 +139,8 @@ public class EnviromentManager : MonoBehaviour
     }
     private void ApplyMapAmbienceSound(MapInfo mapInfo, bool isBad)
     {
-        BroAudio.Play(isBad ? mapInfo.BadAmbienceSound : mapInfo.NormalAmbienceSound, 0.5f);
+        _currentAmbienceSound = isBad ? mapInfo.BadAmbienceSound : mapInfo.NormalAmbienceSound;
+        BroAudio.Play(_currentAmbienceSound, _transitionDuration);
     }
 
     private void ApplyRainMaterials(MapInfo map)
@@ -169,5 +175,6 @@ public class EnviromentManager : MonoBehaviour
     {
         foreach (var mapInfo in _mapInfos)
             RestoreMapMaterials(mapInfo);
+        BroAudio.Stop(_currentAmbienceSound, _transitionDuration);
     }
 }

@@ -25691,6 +25691,7 @@ MonoBehaviour:
   _skillIndicatorLayer:
     serializedVersion: 2
     m_Bits: 67108864
+  _transitionDuration: 1
   _isBadWeatherForTest: 1
 --- !u!4 &552950218 stripped
 Transform:
@@ -46494,7 +46495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1500490512
 Transform:
   m_ObjectHideFlags: 0
@@ -55558,7 +55559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightningLightController
   _light: {fileID: 1868028461}
-  _strikeInterval: {x: 3, y: 8}
+  _strikeInterval: {x: 10, y: 15}
   _flickerCount: {x: 1, y: 3}
   _flickLerpInDuration: {x: 0.01, y: 0.05}
   _flickHoldDuration: {x: 0.03, y: 0.1}
