@@ -25,6 +25,7 @@ namespace Turnbase
 
         [Header("Enemies")]
         public Transform[] enemySlots;
+        public GameObject testEnemyPrefab;
 
         public TurnOrderUI turnOrderUI;
 
@@ -129,16 +130,27 @@ namespace Turnbase
             }
 
             currentWaveIndex = 0;
-            currentGroupWave = WaveManager.Instance.GetCurrentWave();
 
-            if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
+            if (testEnemyPrefab != null)
             {
+                if (enemySlots != null && enemySlots.Length > 0)
+                {
+                    spawner.SpawnCombatant(testEnemyPrefab, false, enemySlots[0].position);
+                }
                 if (uiManager != null)
-                    uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
+                    uiManager.UpdateWaveDisplay(1, 1);
+            }
+            else
+            {
+                currentGroupWave = WaveManager.Instance.GetCurrentWave();
+                if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
+                {
+                    if (uiManager != null)
+                        uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
 
-                WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
-
-                spawner.SpawnWaveImmediately(firstWave, enemySlots);
+                    WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
+                    spawner.SpawnWaveImmediately(firstWave, enemySlots);
+                }
             }
 
             if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);
@@ -314,6 +326,9 @@ namespace Turnbase
                     c.isAttackBlocked = false;
                     c.isParrySuccessful = false;
                     c.isLastHit = false;
+                    c.parryMissCount = 0;
+                    c.currentHitInSequence = 0;
+                    c.totalHitsInSequence = 0;
                 }
 
                 if (character != null && character.stateMachine != null)
@@ -346,7 +361,11 @@ namespace Turnbase
         {
             if (finalWin)
             {
-                //CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
+                var mainPlayer = allCombatants.FirstOrDefault(c => c.isPlayer);
+                if (mainPlayer != null)
+                {
+                    CharacterManager.Instance.SetCurrentHealth(mainPlayer.stats.currentHP);
+                }
                 TB_Menu.instance.ShowVictoryMenu();
             }
         }
@@ -406,9 +425,7 @@ namespace Turnbase
 
         public void TriggerEvadeOnly(Character player, Enemy enemy)
         {
-            if (player.isAttackBlocked) return;
-
-            evadeUI.StartGame(5.0f, (isSuccess) => {
+            evadeUI.StartGame(1.0f, (isSuccess) => {
 
                 if (isSuccess)
                 {
@@ -426,9 +443,14 @@ namespace Turnbase
 
         public void TriggerParryOnly(Character player, Enemy enemy)
         {
-            if (player.isAttackBlocked) return;
+            if (player.isParrySuccessful) return; 
 
-            parryUI.StartGame(5.0f, (isSuccess) => {
+            parryUI.onAttempt = () => {
+                player.animator.Play("Parry");
+                SpawnEffectParry(player);
+            };
+
+            parryUI.StartGame(2f, (isSuccess) => {
                 if (isSuccess)
                 {
                     player.isParrySuccessful = true;
@@ -448,9 +470,34 @@ namespace Turnbase
 
 
                     if (player.stateMachine != null)
-                        player.stateMachine.SwitchState(new ParryingState(player.stateMachine));
+                        player.stateMachine.SwitchState(new ParryingState(player.stateMachine, enemy));
                 }
+                else
+                {
+                    enemy.parryMissCount++;
+                }
+
+                parryUI.onAttempt = null;
             });
+        }
+
+        public void SpawnEffectParry(Character targetCharacter)
+        {
+            OneShotVFXSettings_TB settings = Resources.Load<OneShotVFXSettings_TB>("Projectiles/Parry");
+
+            if (settings != null)
+            {
+                Flyweight_TB effect = FlyweightFactory_TB.Spawn(settings);
+
+                if (effect != null)
+                {
+                    effect.transform.SetParent(targetCharacter.transform); // Sửa 'character' thành 'targetCharacter'
+                    effect.transform.localPosition = Vector3.zero;
+                    effect.transform.localRotation = Quaternion.identity;
+
+                    effect.Initialize(targetCharacter.transform.position, targetCharacter.transform.rotation);
+                }
+            }
         }
 
 

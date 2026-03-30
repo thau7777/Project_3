@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using System.Collections;
 
@@ -10,12 +10,12 @@ namespace Turnbase
         public GameObject avoidPopupPrefab;
         public Transform spawnPoint;
 
-        public void ShowParryPopup(Character character)
+        public void ShowParryPopup(Character character, string message = "PARRIED")
         {
             Vector3 pos = spawnPoint != null ? spawnPoint.position : character.transform.position + Vector3.up * 2f;
             GameObject popup = Instantiate(parryPopupPrefab, pos, Quaternion.identity);
 
-            StartCoroutine(FadeOutAndDestroy(popup, "PARRIED"));
+            StartCoroutine(FadeOutAndDestroy(popup, message));
         }
 
         public void ShowAvoidPopup(Character character)

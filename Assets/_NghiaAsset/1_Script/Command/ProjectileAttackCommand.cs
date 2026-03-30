@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -61,6 +61,8 @@ namespace Turnbase
             finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            user.totalHitsInSequence = hits;
+            user.currentHitInSequence = 0;
             float delayBetweenHits = skill.delayBetweenHits;
 
             int baseDamagePerHit = finalDamage / hits;
@@ -69,6 +71,7 @@ namespace Turnbase
             bool isProjectile = skill.projectileSettings != null;
             bool statusEffectsApplied = false;
 
+            user.isLastHit = true;
             user.animator.Play(skill.animationTriggerName);
 
             float animationStartDelay = 0.5f;
@@ -190,6 +193,11 @@ namespace Turnbase
 
         private void ApplySingleHitDamage(int damage)
         {
+            if (target.isAttackBlocked)
+            {
+                SpawnImpactEffect(target.initialPosition, skill);
+                return;
+            }
             ElementType element = skill.elementType;
             target.TakeDamage(user, damage, element);
         }

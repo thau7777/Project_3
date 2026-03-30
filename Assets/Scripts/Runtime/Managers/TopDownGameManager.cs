@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿
+using Cysharp.Threading.Tasks;
 using MyRule;
 using System;
 using System.Threading;
@@ -40,6 +41,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
 
     [SerializeField, TabGroup("LowHealthEffectSettings")] private float _lowHealthLerpInDuration = 0.5f;
     [SerializeField, TabGroup("LowHealthEffectSettings")] private float _lowHealthLerpOutDuration = 0.5f;
+
 
     private bool _isFlashing = false;
     private bool _isWinning;

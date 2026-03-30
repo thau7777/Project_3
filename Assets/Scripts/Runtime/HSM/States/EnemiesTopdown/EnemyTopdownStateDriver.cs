@@ -202,11 +202,13 @@ public class EnemyTopdownStateDriver : Flyweight
             spawnTransform.AddLocal(positionOffset.x, positionOffset.y, positionOffset.z),
             spawnTransform.rotation * rotationOffset,
             setParentForVFX == 1 ? spawnTransform : null); // Apply the rotation offset here
+
         if (vfx is OneShotVFX)
         {
             OneShotVFX oneShotVFX = (OneShotVFX)vfx;
             OneShotVFXSettings oneShotVFXSettings = (OneShotVFXSettings)_context.CurrentEnemyAttackData.skillVFX;
 
+            // SpecialVfx Handling
             if (oneShotVFX.TryGetComponent<BaseVfx>(out var baseVfx))
             {
                 baseVfx.gameObject.SetActive(true);
@@ -248,9 +250,6 @@ public class EnemyTopdownStateDriver : Flyweight
             }
             
 
-            
-
-
             if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
             {
                 hitBoxHandler.Setup(
@@ -283,7 +282,6 @@ public class EnemyTopdownStateDriver : Flyweight
                 oneShotVFXSettings.DefaultLifeTime);
             
         }
-            
         else if (vfx is StraightProjectile)
         {
             
@@ -292,7 +290,7 @@ public class EnemyTopdownStateDriver : Flyweight
                 gameObject,
                 transform.forward,
                 _context.CurrentEnemyAttackData.projectileSpeed,
-                _context.CurrentEnemyAttackData.skillDuration,
+                _context.CurrentEnemyAttackData.projectileRange,
                 _context.CurrentEnemyAttackData.skillSize,
                 _context.CurrentEnemyAttackData.damage,
                 _context.CurrentEnemyAttackData.knockBackForce,
@@ -411,49 +409,27 @@ public class EnemyTopdownStateDriver : Flyweight
     }
 
     #region Outside Calls
-    public void StartSpawnAnim()
+    public void StartSpawnAnim(float groundSurfaceY)
     {
-        StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationDuration));
+        StartCoroutine(SpawnAnimationCoroutine(((EnemyTopDownSettings)settings).spawnAnimationDuration, groundSurfaceY));
     }
-    public IEnumerator SpawnAnimationCoroutine(float duration)
+
+    public IEnumerator SpawnAnimationCoroutine(float duration, float groundSurfaceY)
     {
-        // 1. Disable Controller so we can move the transform manually
         _characterController.enabled = false;
 
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = new Vector3(startPos.x, groundSurfaceY, startPos.z);
+
         float elapsedTime = 0f;
-        Vector3 startPos = transform.position; // Assumes enemy is already spawned underground
-        Vector3 rayStartPos = transform.position.Add(y: 10f);
-        // --- FIX START ---
-        // Raycast upward from current position to find the ground surface
-        Vector3 targetPos = startPos;
-
-        if (Physics.Raycast(rayStartPos, Vector3.down, out RaycastHit hit, 15, LayerMask.GetMask("Ground")))
-        {
-            // Found ground above, set target to surface level
-            targetPos = new Vector3(startPos.x, hit.point.y, startPos.z);
-        }
-        else
-        {
-            Debug.LogWarning("Could not find ground surface for spawn animation!");
-            targetPos = new Vector3(startPos.x, startPos.y + 2f, startPos.z); // Emergency fallback
-        }
-        // --- FIX END ---
-
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            float normalizedTime = elapsedTime / duration;
-
-            // Optional: Use SmoothStep for a more natural "Emerge" movement (Start slow, end slow)
-            // If you want linear movement, just use 'normalizedTime' instead of 'curve'
-            float curve = Mathf.SmoothStep(0, 1, normalizedTime);
-
+            float curve = Mathf.SmoothStep(0, 1, elapsedTime / duration);
             transform.position = Vector3.Lerp(startPos, targetPos, curve);
-
             yield return null;
         }
 
-        // 2. Snap to exact target and re-enable controller
         transform.position = targetPos;
         _characterController.enabled = true;
         _context.IsSpawning = false;

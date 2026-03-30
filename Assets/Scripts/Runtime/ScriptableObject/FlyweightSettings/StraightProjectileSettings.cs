@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = " New Straight Projectile Settings", menuName = "Scriptable Objects/Flyweight/Straight Projectile Settings")]
@@ -12,9 +13,25 @@ public class StraightProjectileSettings : FlyweightSettings
     [field: SerializeField]
     public LayerMask DodgeLayers { get; private set; }
 
+    public float delayDurationToDespawn = 0f;
+
+    [Header("Lifetime")]
+    public bool useLifeTime = false;
+    [ShowIf("useLifeTime"), TabGroup("LifeTimeSettings")] public float lifeTime = 3f;
+
+    [ShowIf("useLifeTime"), TabGroup("LifeTimeSettings")] public bool useSpeedCurve = false;
+    [ShowIf("useLifeTime"), TabGroup("LifeTimeSettings")] public AnimationCurve speedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
+
+    public bool canDealDamageWhileStopping = true;
+    public bool despawnOnHit = true;
     public bool canDealDamageByProjectile;
 
-    [ShowIf("_canDealDamageByProjectile")] public ElementalType projectileDamageElementType;
+    [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public ElementalType projectileDamageElementType;
+
+    [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public bool canApplyEffects;
+    [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public bool pickRandomEffectFromList;
+    [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public List<EffectData> effectsToApplyList;
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);

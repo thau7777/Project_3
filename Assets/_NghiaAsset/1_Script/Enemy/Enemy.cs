@@ -61,13 +61,17 @@ namespace Turnbase
 
         public void Animation_TriggerEvent()
         {
-            if (telegraphManager != null && selectedSkill != null)
+            if (telegraphManager != null && selectedSkill != null && isLastHit)
             {
                 telegraphManager.Play(selectedSkill.canParry);
             }
 
-            if (battleManager != null && target != null && !target.isAttackBlocked)
+            if (battleManager != null && target != null)
             {
+                currentHitInSequence++;
+                target.isAttackBlocked = false;
+                target.isParrySuccessful = false;
+
                 if (selectedSkill != null && selectedSkill.canParry)
                 {
                     battleManager.TriggerParryOnly(target, this);
@@ -92,6 +96,18 @@ namespace Turnbase
             if (target != null && target.isAttackBlocked && target.isParrySuccessful && isLastHit)
             {
                 Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị chặn tại đòn cuối.");
+
+                if (parryMissCount == 0 && !isBroken)
+                {
+                    traildblaze -= 10f;
+                    if (traildblaze <= 0)
+                    {
+                        traildblaze = 0;
+                        ApplyBreakStatus(BreakDebuffSettings);
+                    }
+                    if (enemyUI != null) enemyUI.UpdateUI();
+                    Debug.Log($"<color=cyan>[PARRY LOG]</color> {gameObject.name} bị trừ 10 trailblaze. Còn lại: {traildblaze}");
+                }
 
                 if (stateMachine != null)
                 {

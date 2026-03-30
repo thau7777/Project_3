@@ -22,8 +22,12 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
+            user.parryMissCount = 0;
+
             initialPosition = user.initialPosition;
             int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
+            user.totalHitsInSequence = totalAttacks * (skill.numberOfHits > 0 ? skill.numberOfHits : 1);
+            user.currentHitInSequence = 0;
 
             bool isPerfectParry = true;
 
@@ -40,9 +44,11 @@ namespace Turnbase
                 target.isParrySuccessful = false;
                 user.isAttackBlocked = false;
 
-                yield return PerformAttack();
+                user.parryMissCount = 0; 
 
                 user.isLastHit = (i == totalAttacks - 1);
+                
+                yield return PerformAttack();
 
                 if (target.isAttackBlocked)
                 {
@@ -105,6 +111,8 @@ namespace Turnbase
 
                 if (target.isAttackBlocked)
                 {
+                    // If blocked (evaded/parried), spawn at slot position but don't take damage
+                    SpawnImpactEffect(target.initialPosition, skill);
                     damageApplied = true;
                     return;
                 }
@@ -119,7 +127,14 @@ namespace Turnbase
             };
 
             user.PrepareHitCallBack(hitAction);
-            user.animator.Play(skill.animationTriggerName, 0, 0f);
+
+            string animationToPlay = skill.animationTriggerName;
+            if (user.isLastHit && !string.IsNullOrEmpty(skill.animationLastHitName))
+            {
+                animationToPlay = skill.animationLastHitName;
+                Debug.Log("<color=red>[INFO]</color> Last Hit");
+            }            
+            user.animator.Play(animationToPlay, 0, 0f);
 
             while (!damageApplied) yield return null;
 
@@ -132,9 +147,15 @@ namespace Turnbase
 
                 for (int j = 0; j < extraHits; j++)
                 {
-                    if (target.isAttackBlocked || !target.isAlive) yield break;
+                    if (!target.isAlive) yield break;
 
                     yield return new WaitForSeconds(skill.delayBetweenHits);
+
+                    if (target.isAttackBlocked)
+                    {
+                        SpawnImpactEffect(target.initialPosition, skill);
+                        continue;
+                    }
 
                     int currentHitDamage = baseDamagePerHit + (j == extraHits - 1 ? damageRemainder : 0);
                     target.TakeDamage(user, baseDamagePerHit, skill.elementType);

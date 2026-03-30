@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -44,12 +44,22 @@ namespace Turnbase
 
         private void ApplySingleHitDamage(int damage)
         {
+            if (target.isAttackBlocked)
+            {
+                SpawnImpactEffect(target.initialPosition, skill);
+                return;
+            }
             ElementType element = skill.elementType;
             target.TakeDamage(user, damage, element);
         }
 
         private void ApplySingleHitDamageAndEffect(int damage)
         {
+            if (target.isAttackBlocked)
+            {
+                SpawnImpactEffect(target.initialPosition, skill);
+                return;
+            }
             ElementType element = skill.elementType;
             target.TakeDamage(user, damage, element);
             SpawnImpactEffect(target.transform.position, skill);
@@ -62,6 +72,8 @@ namespace Turnbase
             finalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
 
             int hits = skill.numberOfHits > 0 ? skill.numberOfHits : 1;
+            user.totalHitsInSequence = hits;
+            user.currentHitInSequence = 0;
             float delayBetweenHits = skill.delayBetweenHits;
 
             int baseDamagePerHit = finalDamage / hits;
@@ -98,6 +110,7 @@ namespace Turnbase
 
             user.PrepareHitCallBack(hitAction);
 
+            user.isLastHit = true;
             user.animator.Play(skill.animationTriggerName);
 
             float startTime = Time.time;

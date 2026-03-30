@@ -28129,7 +28129,7 @@ MonoBehaviour:
     poisonDamageBonus: 0
     critChance: 0
     critMult: 0
-    speed: 10
+    speed: 1
   allClassProfiles:
   - {fileID: 11400000, guid: 6f74b0a0b9cf2234388a070c546b7b7a, type: 2}
   skills:
@@ -28166,6 +28166,9 @@ MonoBehaviour:
   _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
   isLastHit: 0
+  parryMissCount: 0
+  totalHitsInSequence: 0
+  currentHitInSequence: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0

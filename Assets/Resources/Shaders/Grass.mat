@@ -11,13 +11,15 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 14d147836f32eb6479da4896c63cc19e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHATEST_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -46,12 +48,26 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 1
+    - _AlphaToMask: 1
     - _BendStrength: 0.5
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _CastShadows: 1
+    - _Cull: 2
     - _CullingRadiusMultipler: 0.25
     - _DitherRadiusMaxMutiplier: 0.4
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _InteractBendStrength: 0.5
+    - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0.5
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
     - _SwayIntensity: 0.1
     - _SwayScale: 5
     - _SwaySpeed: 0.2
@@ -60,12 +76,16 @@ Material:
     - _WindIntensity: 0.05
     - _WindNoiseSpeed: -2
     - _WindSpeed: 0.5
+    - _WorkflowMode: 1
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _ZWriteControl: 0
     m_Colors:
     - _HighColor: {r: 0.26573902, g: 1.0592737, b: 0.04496915, a: 1}
     - _LowColor: {r: 0.06923011, g: 0.2169811, b: 0.02354041, a: 1}
     - _NoiseVelocity: {r: -1, g: -1, b: 0, a: 0}
     - _WindColor: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
-    - _WindNoiseContrast: {r: 0, g: 2, b: 0, a: 0}
+    - _WindNoiseContrast: {r: 0, g: 1.8, b: 0, a: 0}
     - _WindNoiseScale: {r: 50, g: 200, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

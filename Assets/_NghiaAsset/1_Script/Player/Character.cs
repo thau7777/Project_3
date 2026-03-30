@@ -80,7 +80,7 @@ namespace Turnbase
 
         [HideInInspector] public HealthSystem healthSystem;
 
-        [SerializeField] private ScreenEffectUIController _screenEffectController;
+        public ScreenEffectUIController _screenEffectController;
 
         public bool isAlive
         {
@@ -89,6 +89,9 @@ namespace Turnbase
 
         public bool isParrySuccessful = false;
         public bool isLastHit = false;
+        public int parryMissCount = 0;
+        public int totalHitsInSequence = 0;
+        public int currentHitInSequence = 0;
 
 
 
@@ -98,7 +101,6 @@ namespace Turnbase
             buffManager = GetComponent<CharacterBuffManager>();
             debuffManager = GetComponent<CharacterDebuffManager>();
             animator = GetComponent<Animator>();
-
             healthSystem = GetComponent<HealthSystem>();
             if (healthSystem == null) healthSystem = gameObject.AddComponent<HealthSystem>();
             healthSystem.Init(this);
@@ -118,10 +120,6 @@ namespace Turnbase
 
             InitializeCharacterFrom(characterClass);
 
-            if (_screenEffectController == null)
-            {
-                _screenEffectController = GameObject.FindAnyObjectByType<ScreenEffectUIController>();
-            }
 
         }
 
@@ -261,6 +259,7 @@ namespace Turnbase
             if (isPlayer && _screenEffectController != null)
             {
                 _screenEffectController.OnDamaged();
+                Debug.Log("show effect ondamgae");
             }
 
             healthSystem.TakeDamage(attacker, amount, element, ignoreBlock, isCrit);
