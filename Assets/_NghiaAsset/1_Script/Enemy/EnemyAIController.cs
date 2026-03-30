@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
@@ -22,6 +22,9 @@ namespace Turnbase
 
     public class EnemyAIController : MonoBehaviour
     {
+        private Skill lastUsedSkill;
+        private int consecutiveSkillUsageCount = 0;
+
         private const float RANDOMNESS_FACTOR_MIN = -0.05f;
         private const float RANDOMNESS_FACTOR_MAX = 0.05f;
 
@@ -50,6 +53,11 @@ namespace Turnbase
 
             foreach (Skill skill in user.skills)
             {
+                if (skill == lastUsedSkill && consecutiveSkillUsageCount >= 2)
+                {
+                    continue;
+                }
+
                 int skillTypeCost = 0;
 
                 if (SkillResource.CostPerUse.TryGetValue(skill.skillType, out int cost))
@@ -116,11 +124,28 @@ namespace Turnbase
                 if (defaultAttack != null)
                 {
                     Debug.LogWarning("AI không chọn được skill, đánh thường");
+                    UpdateSkillUsageState(defaultAttack);
                     return (defaultAttack, playerTargets.FirstOrDefault());
                 }
             }
 
+            UpdateSkillUsageState(bestSkill);
             return (bestSkill, bestTarget);
+        }
+
+        private void UpdateSkillUsageState(Skill skill)
+        {
+            if (skill == null) return;
+
+            if (lastUsedSkill == skill)
+            {
+                consecutiveSkillUsageCount++;
+            }
+            else
+            {
+                lastUsedSkill = skill;
+                consecutiveSkillUsageCount = 1;
+            }
         }
 
         private float EvaluateSingleTargetSkill(Character user, Character target, Skill skill, BattleManager battleManager)
