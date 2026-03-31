@@ -178,6 +178,7 @@ namespace Turnbase
                 }
                 else
                 {
+                    CombatManager.Instance.SetCombatResultWin();
                     CheckWinCondition(true);
                 }
             }
