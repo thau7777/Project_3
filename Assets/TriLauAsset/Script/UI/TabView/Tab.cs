@@ -32,10 +32,14 @@ namespace MyRule.UI
             if (isSelected)
             {
                 tabContent.alpha = 1;
+                tabContent.interactable = true;
+                tabContent.blocksRaycasts = true;
             }
             else
             {
                 tabContent.alpha = 0;
+                tabContent.interactable = false;
+                tabContent.blocksRaycasts = false;
             }
 
             if (isSelected)

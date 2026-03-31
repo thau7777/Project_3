@@ -1,8 +1,7 @@
 using MyRule.Event;
-using MyRule.UI;
-using System.Collections.Generic;
-using TMPro;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MyRule.UI
 {
@@ -10,19 +9,11 @@ namespace MyRule.UI
     {
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private GameObject noHistory;
-        [SerializeField] private TextMeshProUGUI session;
-        [SerializeField] private TextMeshProUGUI className;
-        [SerializeField] private TextMeshProUGUI enmiesDefeated;
-        [SerializeField] private TextMeshProUGUI nodesExplored;
-        [SerializeField] private TextMeshProUGUI reward;
-        [SerializeField] private Transform sigilContentsParent;
-        [SerializeField] private GameObject sigilPreb;
-        [SerializeField] private GameObject arrowPrev;
-        [SerializeField] private GameObject arrowNext;
+        [SerializeField] private Button arrowPrev;
+        [SerializeField] private Button arrowNext;
+        [SerializeField] private HistoryMatchInfoView[] historyMatchInfoViews;
 
-        private HistoryData historyData;
-
-        private List<GameObject> historySigilObjs = new List<GameObject>();
+        private int currentIndex = 0;
 
         private EventBinding<UpdateHistoryEvent> updateHistoryEvent;
 
@@ -30,11 +21,17 @@ namespace MyRule.UI
         {
             updateHistoryEvent = new EventBinding<UpdateHistoryEvent>(UpdateHistoryView);
             EventBus<UpdateHistoryEvent>.Register(updateHistoryEvent);
+
+            arrowPrev.onClick.AddListener(PreviousClick);
+            arrowNext.onClick.AddListener(NextClick);
         }
 
         private void OnDisable()
         {
             EventBus<UpdateHistoryEvent>.Deregister(updateHistoryEvent);
+
+            arrowPrev.onClick.RemoveListener(PreviousClick);
+            arrowNext.onClick.RemoveListener(NextClick);
         }
 
         private void Start()
@@ -45,38 +42,39 @@ namespace MyRule.UI
 
         private void UpdateHistoryView(UpdateHistoryEvent evt)
         {
-            this.historyData = evt.HistoryData;
             canvasGroup.alpha = 1;
-            noHistory.SetActive(false);
-            SetMatchValue(0, evt.HistoryData.Matchs[0]);
-        }
+            if (evt.HistoryData.Matchs[0] != null) noHistory.SetActive(false);
 
-        private void SetMatchValue(int index, MatchData matchData)
-        {
-            ResetHistorySigilView();
+            if (evt.HistoryData.Matchs[1] != null) arrowNext.gameObject.SetActive(true);
 
-            session.text = index.ToString();
-            className.text = matchData.CharacterData.CharacterClass.ToString();
-            enmiesDefeated.text = matchData.EnemiesDefeated.ToString();
-            nodesExplored.text = matchData.NodesExplored.ToString();
-
-            foreach (var sigil in matchData.SigilStorageInMatch.ActiveSigils)
+            for (int i = 0; i < evt.HistoryData.Matchs.Length; i++)
             {
-                GameObject sigilViewObj = Instantiate(sigilPreb, sigilContentsParent);
-                LobbySigilView historySigilView = sigilViewObj.GetComponent<LobbySigilView>();
-                historySigilView.SetSigil(sigil);
-                historySigilObjs.Add(sigilViewObj);
+                MatchData matchData = evt.HistoryData.Matchs[i];
+                
+                if (matchData == null) continue;
+
+                historyMatchInfoViews[i].gameObject.SetActive(true);
+                historyMatchInfoViews[i].SetMatchValue(i, evt.HistoryData.Matchs[i]);
             }
         }
 
-        private void ResetHistorySigilView()
+        private void PreviousClick()
         {
-            foreach (var sigilView in historySigilObjs)
-            {
-                Destroy(sigilView.gameObject);
-            }
+            if (currentIndex <= 0) return;
+            historyMatchInfoViews[currentIndex].Hide();
+            currentIndex--;
+            historyMatchInfoViews[currentIndex].Show();
+            if (currentIndex == 0) arrowPrev.gameObject.SetActive(false);
 
-            historySigilObjs.Clear();
+        }
+
+        private void NextClick()
+        {
+            if (currentIndex >= historyMatchInfoViews.Length - 1) return;
+            historyMatchInfoViews[currentIndex].Hide();
+            currentIndex++;
+            historyMatchInfoViews[currentIndex].Show();
+            if (currentIndex == historyMatchInfoViews.Length - 1) arrowNext.gameObject.SetActive(false);
         }
     }
 }

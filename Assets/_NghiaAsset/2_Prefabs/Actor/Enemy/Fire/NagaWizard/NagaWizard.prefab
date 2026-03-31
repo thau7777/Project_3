@@ -2297,6 +2297,7 @@ GameObject:
   - component: {fileID: 228614209179218366}
   - component: {fileID: 6763714473923026347}
   - component: {fileID: 5930411074134683441}
+  - component: {fileID: 4717967438108765056}
   m_Layer: 0
   m_Name: NagaWizard
   m_TagString: Untagged
@@ -2396,11 +2397,13 @@ MonoBehaviour:
     poisonDamageBonus: 0
     critChance: 0
     critMult: 0
-    speed: 0
+    speed: 100
   allClassProfiles:
   - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
   skills:
-  - {fileID: 11400000, guid: 8aa35c1b03a091148933b0021689e397, type: 2}
+  - {fileID: 11400000, guid: 51cd6ff7306657a4392cea443c65c9d6, type: 2}
+  - {fileID: 11400000, guid: 4dcdec53448c6ee4aad49e4da281bc75, type: 2}
+  - {fileID: 11400000, guid: 5722b222e5e2595449d88b0ac880ab5f, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 0
@@ -2423,13 +2426,19 @@ MonoBehaviour:
   RenderTexture: {fileID: 8400000, guid: 352ec01b2a7d8ff4d99d552aad98fd62, type: 2}
   damagePopupCanvasParent: {fileID: 7418561728310968114}
   enemyStatsUI: {fileID: 9145698497346757161}
-  SkillSpawnPoint: {fileID: 0}
-  SkillSpawnPoint2: {fileID: 0}
+  SkillSpawnPoint: {fileID: 7763750958274984738}
+  SkillSpawnPoint2: {fileID: 7763750958274984738}
   buffEffectSpawnPoint: {fileID: 8946232157768951762}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
+  isLastHit: 0
+  parryMissCount: 0
+  totalHitsInSequence: 0
+  currentHitInSequence: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:
@@ -2457,6 +2466,7 @@ MonoBehaviour:
   lerpSpeed: 2
   mpBarFill: {fileID: 6343429955527139453}
   trailblazeFill: {fileID: 414544424781297329}
+  trailblazeFillDelay: {fileID: 286686784262758348}
   shieldBarFill: {fileID: 1279019492483649976}
   elementImage: {fileID: 8745278089750654241}
   statusEffectContainer: {fileID: 4462461429892056083}
@@ -2612,6 +2622,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead553680eccfce47ab5e6589619c945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.EnemyAIController
+--- !u!114 &4717967438108765056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b85d7cb95699e64fa64429a202923ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterAnimationDispatcher
 --- !u!1 &8278771182878835063
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,6 +3299,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+--- !u!114 &286686784262758348 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1705837591089785852, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+  m_PrefabInstance: {fileID: 1465603218907984944}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &414544424781297329 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1267235159923016321, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}

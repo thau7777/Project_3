@@ -56,7 +56,7 @@ namespace MyRule
 
         private void TradeSigilByRune(int rune, string sigilName)
         {
-            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-rune));
+            EventBus<SpendRuneEvent>.Raise(new SpendRuneEvent(rune));
             SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOByName(sigilName);
             SigilStorageManager.Instance.AddSigilToStorage(sigilSO);
         }

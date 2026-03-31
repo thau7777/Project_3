@@ -45,8 +45,6 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            itemStorage = new ItemStorageData();
-
             if (data.MatchData != null)
             {
                 if (data.MatchData.ItemStorageInMatch != null)
@@ -79,6 +77,13 @@ namespace MyRule
             if (data.MatchData == null) return;
 
             data.MatchData.SetItemStorageInMatch(itemStorage);
+        }
+
+        public UniTask NewGame()
+        {
+            itemStorage = null;
+
+            return UniTask.CompletedTask;
         }
     }
 }

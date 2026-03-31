@@ -5,7 +5,7 @@ using static UnityEngine.Rendering.STP;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class AchievementData
     {
         [JsonProperty] protected string _id;
@@ -16,8 +16,7 @@ namespace MyRule
         [JsonIgnore] public bool IsUnlocked => _isUnlocked;
         [JsonIgnore] public bool HasReceiveRewards => _hasReceiveRewards;
 
-        public AchievementData() { }
-
+        [JsonConstructor]
         public AchievementData(string id, bool isUnlocked)
         {
             this._id = id;

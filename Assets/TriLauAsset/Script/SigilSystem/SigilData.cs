@@ -15,7 +15,7 @@ namespace MyRule
     }
 
 
-    [Serializable]
+    [JsonObject]
     public class SigilData
     {
         [JsonProperty] private string id;
@@ -35,6 +35,7 @@ namespace MyRule
         [JsonIgnore] public ERarity Rarity => rarity;
         [JsonIgnore] public EKeyBinding EKeyBinding => eKeyBinding;
 
+        [JsonConstructor]
         public SigilData(string id, SigilType sigilType, string name, int baseDamage, int manaCost, ERarity rarity, EKeyBinding eKeyBinding)
         {
             this.id = id;

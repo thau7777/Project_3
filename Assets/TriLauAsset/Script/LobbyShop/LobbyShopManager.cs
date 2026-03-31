@@ -173,5 +173,12 @@ namespace MyRule
         {
             data.LobbyData.SetShop(shopData);
         }
+
+        public UniTask NewGame()
+        {
+            shopData = new LobbyShopData();
+
+            return UniTask.CompletedTask;
+        }
     }
 }

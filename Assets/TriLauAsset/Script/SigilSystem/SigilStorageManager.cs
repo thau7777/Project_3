@@ -1,7 +1,5 @@
 using Cysharp.Threading.Tasks;
 using MyRule.Event;
-using System;
-using System.Linq;
 
 namespace MyRule
 {
@@ -122,15 +120,13 @@ namespace MyRule
         #region Save Load
         public UniTask LoadData(GameData data)
         {
-            sigilStorageData = new SigilStorageData();
-
-            if (data.MatchData?.SigilStorageInMatch == null)
-                return UniTask.CompletedTask;
+            if (data.MatchData == null) return UniTask.CompletedTask;
 
             sigilStorageData = data.MatchData.SigilStorageInMatch;
 
-            foreach (var (sigilData, i) in sigilStorageData.ActiveSigils.Select((s, i) => (s, i)))
+            for (int i = 0; i < sigilStorageData.ActiveSigils.Length; i++)
             {
+                SigilData sigilData = sigilStorageData.ActiveSigils[i];
                 if (sigilData == null) continue;
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
                 if (sigilSO == null) continue;
@@ -138,8 +134,9 @@ namespace MyRule
                 EventBus<AddActiveSigilEvent>.Raise(new AddActiveSigilEvent(i, sigilSO, sigilData));
             }
 
-            foreach (var (sigilData, i) in sigilStorageData.PassiveSigils.Select((s, i) => (s, i)))
+            for (int i = 0; i < sigilStorageData.PassiveSigils.Length; i++)
             {
+                SigilData sigilData = sigilStorageData.PassiveSigils[i];
                 if (sigilData == null) continue;
                 SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
                 if (sigilSO == null) continue;
@@ -152,10 +149,17 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            if (data.MatchData != null)
-            {         
-                data.MatchData.SetSigilStorageInMatch(sigilStorageData);
-            }
+            if (data.MatchData == null) return;
+
+            if (sigilStorageData == null) return;
+
+            data.MatchData.SetSigilStorageInMatch(sigilStorageData);
+        }
+
+        public UniTask NewGame()
+        {
+            sigilStorageData = new SigilStorageData();
+            return UniTask.CompletedTask;
         }
         #endregion
     }

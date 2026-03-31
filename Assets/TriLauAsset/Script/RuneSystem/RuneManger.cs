@@ -6,13 +6,14 @@ namespace MyRule
 {
     public class RuneManger : PersistentSingleton<RuneManger>, IGameData
     {
-        private int currentRuneAmount = 100;
+        private int currentRuneAmount = 0;
 
         public int CurrentRuneAmount => currentRuneAmount;
 
         private int lockReceiveTurn = 0;
 
         private EventBinding<ReceiveRuneEvent> receiveRuneEventBinding;
+        private EventBinding<SpendRuneEvent> spendRuneEventBinding;
 
         private void OnEnable()
         {
@@ -20,6 +21,9 @@ namespace MyRule
 
             receiveRuneEventBinding = new EventBinding<ReceiveRuneEvent>(OnReceiveRune);
             EventBus<ReceiveRuneEvent>.Register(receiveRuneEventBinding);
+
+            spendRuneEventBinding = new EventBinding<SpendRuneEvent>(OnSpendRune);
+            EventBus<SpendRuneEvent>.Register(spendRuneEventBinding);
         }
 
         private void OnDisable()
@@ -27,6 +31,7 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
 
             EventBus<ReceiveRuneEvent>.Deregister(receiveRuneEventBinding);
+            EventBus<SpendRuneEvent>.Deregister(spendRuneEventBinding);
         }
 
         private void OnReceiveRune(ReceiveRuneEvent evt)
@@ -35,12 +40,18 @@ namespace MyRule
             {
                 currentRuneAmount += evt.runeAmount;
 
-                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
+                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount, lockReceiveTurn));
             }
             else
             {
                 lockReceiveTurn -= 1;
             }
+        }
+
+        private void OnSpendRune(SpendRuneEvent evt)
+        {
+            currentRuneAmount -= evt.runeAmount;
+            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount, lockReceiveTurn));
         }
 
         public void SetStartRune(int amount)
@@ -56,7 +67,7 @@ namespace MyRule
             {
                 currentRuneAmount = data.MatchData.RuneInMatch;
                 lockReceiveTurn = data.MatchData.LockReceiveRuneTurn;
-                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount));
+                EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount, lockReceiveTurn));
 
                 await UniTask.WaitUntil(() => DialogueManager.Instance);
 
@@ -71,6 +82,13 @@ namespace MyRule
                 data.MatchData.SetRuneInMatch(currentRuneAmount);
                 data.MatchData.SetLockReceiveRuneTurn(lockReceiveTurn);
             }
+        }
+
+        public UniTask NewGame()
+        {
+            currentRuneAmount = 0;
+            lockReceiveTurn = 0;
+            return UniTask.CompletedTask;
         }
     }
 }

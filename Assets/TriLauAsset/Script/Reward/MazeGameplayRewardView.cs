@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
+using MyRule.Event;
 
 namespace MyRule
 {
@@ -23,16 +23,17 @@ namespace MyRule
 
         private List<Card> cards = new List<Card>();
 
+        private MazeGameplayReward reward;
+
         private CancellationTokenSource cts;
 
         private bool isShowing = false;
 
         private int locking = 1;
 
-        private MazeGameplayReward reward;
-
         private EventBinding<SigilChosenEvent> evtBinhding;
         private EventBinding<CardDetailLockEvent> evtCardLocking;
+        private EventBinding<MazeGameplayRewardEvent> rewardEvt;
 
         protected override void OnEnable()
         {
@@ -42,6 +43,9 @@ namespace MyRule
 
             evtCardLocking = new EventBinding<CardDetailLockEvent>(LockReward);
             EventBus<CardDetailLockEvent>.Register(evtCardLocking);
+
+            rewardEvt = new EventBinding<MazeGameplayRewardEvent>(HandleReward);
+            EventBus<MazeGameplayRewardEvent>.Register(rewardEvt);
         }
 
         protected override void OnDisable()
@@ -49,6 +53,7 @@ namespace MyRule
             base.OnDisable();
             EventBus<SigilChosenEvent>.Deregister(evtBinhding);
             EventBus<CardDetailLockEvent>.Deregister(evtCardLocking);
+            EventBus<MazeGameplayRewardEvent>.Deregister(rewardEvt);
         }
 
         protected async override void Start()
@@ -61,16 +66,13 @@ namespace MyRule
             //EMatchResult matchResult = MatchManager.Instance.MatchData.Result;
 
             //if (matchResult == EMatchResult.Win || matchResult == EMatchResult.Lose) return;
+        }
 
-            await UniTask.WaitUntil(() => MazeGameplayRewardManager.Instance != null);
-
-            reward = MazeGameplayRewardManager.Instance.GetReward();
-
-            if (reward != null)
-            {
-                locking--;
-                Show();
-            }
+        private void HandleReward(MazeGameplayRewardEvent evt)
+        {
+            reward = evt.reward;
+            locking--;
+            Show();
         }
 
         private void LockReward(CardDetailLockEvent evt)
@@ -109,12 +111,14 @@ namespace MyRule
             RTSCameraController.Instance.UnlockInteract();
             MapPlayerTracker.Instance.UnlockMapTracker();
 
-            if (CombatManager.Instance.CombatData != null && CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
-            {
-                BlackFade.Instance.FadeIn();
-                await UniTask.Delay(1000);
-                await MatchManager.Instance.MatchData.MoveToNextMap();
-            }
+            //if (CombatManager.Instance.CombatData != null && CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting)
+            //{
+            //    BlackFade.Instance.FadeIn();
+            //    await UniTask.Delay(1000);
+            //    await MatchManager.Instance.MatchData.MoveToNextMap();
+            //}
+
+            //CombatManager.Instance.FinishCombat();
 
             locking = 1;
         }

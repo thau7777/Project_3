@@ -21,6 +21,23 @@ namespace MyRule
 
         public void SetMapType(EMap mapType) => currentMap = mapType;
 
+        public void MoveToNextMap()
+        {
+            switch (currentMap)
+            {
+                case EMap.GreenLand:
+                    currentMap = EMap.Desert;
+                    MatchManager.Instance.MatchData.SetScene(Loader.EScene.DesertScene);
+                    break;
+                case EMap.Desert:
+                    currentMap = EMap.IceLand;
+                    MatchManager.Instance.MatchData.SetScene(Loader.EScene.IcelandScene);
+                    break;
+                case EMap.IceLand:
+                    break;
+            }
+        }
+
         public UniTask LoadData(GameData data)
         {
             currentMap = EMap.GreenLand;
@@ -39,6 +56,12 @@ namespace MyRule
             {
                 data.MatchData.SetMap(this.currentMap);
             }
+        }
+
+        public UniTask NewGame()
+        {
+            currentMap = EMap.GreenLand;
+            return UniTask.CompletedTask;
         }
     }
 }

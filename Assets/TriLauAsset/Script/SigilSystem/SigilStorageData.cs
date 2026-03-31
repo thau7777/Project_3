@@ -19,7 +19,7 @@ namespace MyRule
         }
     }
 
-    [Serializable]
+    [JsonObject]
     public class SigilStorageData
     {
         [JsonProperty] private SigilData[] _activeSigils;
@@ -28,6 +28,7 @@ namespace MyRule
         [JsonIgnore] public SigilData[] ActiveSigils => _activeSigils;
         [JsonIgnore] public SigilData[] PassiveSigils => _passiveSigils;
 
+        [JsonConstructor]
         public SigilStorageData()
         {
             _activeSigils = new SigilData[12];

@@ -7,6 +7,8 @@ namespace MyRule.UI
     public class RuneView : MonoBehaviour, IRuneView
     {
         [SerializeField] private TextMeshProUGUI runeTxt;
+        [SerializeField] private GameObject runeLockObj;
+        [SerializeField] private TextMeshProUGUI runeLockTxt;
 
         private RunePresenter presenter;
         private int currentRune;
@@ -14,9 +16,6 @@ namespace MyRule.UI
         private void Start()
         {
             presenter = new RunePresenter(this);
-
-            int runeAmount = RuneManger.Instance.CurrentRuneAmount;
-            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(runeAmount));
         }
 
         public async UniTask AdjustRune(int targetRune)
@@ -38,6 +37,12 @@ namespace MyRule.UI
 
             runeTxt.text = targetRune.ToString();
             currentRune = targetRune;
+        }
+
+        public void SetRuneLock(bool isLocked, string lockReason = "")
+        {
+            if (runeLockObj != null) runeLockObj.SetActive(isLocked);
+            if (runeLockTxt != null) runeLockTxt.text = lockReason;
         }
     }
 }

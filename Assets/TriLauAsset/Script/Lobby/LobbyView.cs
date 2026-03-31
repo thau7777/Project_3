@@ -25,12 +25,16 @@ namespace MyRule.UI
 
         public void Show()
         {
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
             transform.DOLocalMoveX(-1420, transitionDuration).SetEase(Ease.Linear);
             canvasGroup.DOFade(1f, transitionDuration);
         }
 
         public void Hide()
         {
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
             transform.DOLocalMoveX(-2880, transitionDuration).SetEase(Ease.Linear);
             canvasGroup.DOFade(0f, transitionDuration);
         }

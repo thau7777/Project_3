@@ -70,5 +70,11 @@ namespace MyRule
                 data.MatchData.SetMap(CurrentMap);
             }
         }
+
+        public UniTask NewGame()
+        {
+            CurrentMap = null;
+            return UniTask.CompletedTask;
+        }
     }
 }

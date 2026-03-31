@@ -9,6 +9,8 @@ namespace MyRule.UI
         [SerializeField] private TextMeshProUGUI currentHealthTxt;
         [SerializeField] private Material healthFill;
 
+        private int prevHealth = 0;
+
         private EventBinding<CharacterUpdatedEvent> healthUpdateEvent;
 
         private void OnEnable()
@@ -28,7 +30,6 @@ namespace MyRule.UI
             int maxHealth = evt.character.CharacterStatsData.BaseStatsData.MaxHealth;
             float healthRate = evt.character.CharacterStatsData.BaseStatsData.GetHealthRate();
 
-            int start = 0;
             float time = 0f;
             float duration = 0.5f;
 
@@ -36,8 +37,8 @@ namespace MyRule.UI
             {
                 time += Time.deltaTime;
 
-                int value = Mathf.RoundToInt(Mathf.Lerp(start, currentHealth, time / duration));
-                float fillLevel = Mathf.Lerp(start, healthRate, time / duration);
+                int value = Mathf.RoundToInt(Mathf.Lerp(prevHealth, currentHealth, time / duration));
+                float fillLevel = Mathf.Lerp(prevHealth, healthRate, time / duration);
 
                 currentHealthTxt.text = value + "/" + maxHealth;
                 healthFill.SetFloat("_FillLevel", fillLevel);
@@ -48,6 +49,8 @@ namespace MyRule.UI
 
             currentHealthTxt.text = currentHealth.ToString() + "/" + maxHealth.ToString();
             healthFill.SetFloat("_FillLevel", healthRate);
+
+            prevHealth = evt.character.CharacterStatsData.BaseStatsData.CurrentHealth;
         }
     }
 }

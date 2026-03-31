@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class TutorialData
     {
         [JsonProperty] private Dictionary<string, bool> _tutorials;
 
         [JsonIgnore] public Dictionary<string, bool> Tutorials => _tutorials;
 
+        [JsonConstructor]
         public TutorialData() 
         {
             _tutorials = new Dictionary<string, bool>();

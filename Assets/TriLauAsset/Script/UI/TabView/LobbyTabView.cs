@@ -28,12 +28,14 @@ namespace MyRule.UI
 
         public override void Hide()
         {
-            
+            tabContent.interactable = false;
+            tabContent.blocksRaycasts = false;
         }
 
         public override void Show()
         {
-
+            tabContent.interactable = true;
+            tabContent.blocksRaycasts = true;
         }
     }
 }

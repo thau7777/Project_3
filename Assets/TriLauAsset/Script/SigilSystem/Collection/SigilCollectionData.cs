@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class SigilCollectionData
     {
         [JsonProperty] protected Dictionary<string, SigilData> acctiveSigils;
@@ -16,6 +16,7 @@ namespace MyRule
         [JsonIgnore] public Dictionary<string, SigilData> ActiveSigils => acctiveSigils;
         [JsonIgnore] public Dictionary<string, SigilData> PassiveSigils => passiveSigils;
 
+        [JsonConstructor]
         public SigilCollectionData()
         {
             acctiveSigils = new Dictionary<string, SigilData>();

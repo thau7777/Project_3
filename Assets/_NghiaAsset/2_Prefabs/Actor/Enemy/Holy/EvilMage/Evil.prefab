@@ -2683,14 +2683,14 @@ MonoBehaviour:
     poisonDamageBonus: 0
     critChance: 0
     critMult: 0
-    speed: 0
+    speed: 100
   allClassProfiles:
   - {fileID: 11400000, guid: e17f4668808bb334396ba67fbdee4c63, type: 2}
   skills:
+  - {fileID: 11400000, guid: 879dac50e544aeb4a93d22c13829fbfc, type: 2}
   - {fileID: 11400000, guid: 3e8e07282e32e1f4e946e6d010b541bd, type: 2}
   item: []
-  passiveSkills:
-  - {fileID: 11400000, guid: 0f15e4bd46597fe4081b5fefe4e2a3d0, type: 2}
+  passiveSkills: []
   isPlayer: 0
   isVirtualTracker: 0
   target: {fileID: 0}
@@ -2719,6 +2719,9 @@ MonoBehaviour:
   _screenEffectController: {fileID: 0}
   isParrySuccessful: 0
   isLastHit: 0
+  parryMissCount: 0
+  totalHitsInSequence: 0
+  currentHitInSequence: 0
   traildblaze: 100
   isBoss: 0
   isBroken: 0
@@ -2748,6 +2751,7 @@ MonoBehaviour:
   lerpSpeed: 2
   mpBarFill: {fileID: 5216020307257980832}
   trailblazeFill: {fileID: 1561522908153815404}
+  trailblazeFillDelay: {fileID: 1410155713654048785}
   shieldBarFill: {fileID: 131897729907967589}
   elementImage: {fileID: 7581279099252488956}
   statusEffectContainer: {fileID: 3280516352909546446}
@@ -3062,6 +3066,17 @@ PrefabInstance:
 --- !u!114 &131897729907967589 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 425910326192776584, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
+  m_PrefabInstance: {fileID: 305606397485933549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1410155713654048785 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1705837591089785852, guid: 6b53748282d59124c8a0ec5522eecc23, type: 3}
   m_PrefabInstance: {fileID: 305606397485933549}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

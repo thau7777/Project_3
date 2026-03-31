@@ -11,12 +11,13 @@ namespace MyRule
         Lose
     }
 
-    [Serializable]
+    [JsonObject]
     public class MatchData
     {
         [JsonProperty] private EMap _mapType;
         [JsonProperty] private Map _map;
         [JsonProperty] private int _currentStep;
+        [JsonProperty] private float _timePlayed;
         [JsonProperty] private Loader.EScene _scene;
         [JsonProperty] private bool _isNewMatch;
         [JsonProperty] private EMatchResult _result;
@@ -29,6 +30,8 @@ namespace MyRule
         [JsonProperty] private ItemStorageData _itemStorageInMatch;
         [JsonProperty] private int _enmiesDefeated;
         [JsonProperty] private int _nodesExplored;
+        [JsonProperty] private int _damageInflicted;
+        [JsonProperty] private int _damagePrevented;
         [JsonProperty] private CombatData _combatData;
         [JsonProperty] private MazeGameplayReward _reward;
         [JsonProperty] private WeatherData _weatherData;
@@ -36,6 +39,7 @@ namespace MyRule
         [JsonIgnore] public EMap MapType => _mapType;
         [JsonIgnore] public Map Map => _map;
         [JsonIgnore] public int CurrentStep => _currentStep;
+        [JsonIgnore] public float TimePlayed => _timePlayed;
         [JsonIgnore] public Loader.EScene Scene => _scene;
         [JsonIgnore] public bool IsNewMatch => _isNewMatch;
         [JsonIgnore] public EMatchResult Result => _result;
@@ -48,10 +52,13 @@ namespace MyRule
         [JsonIgnore] public ItemStorageData ItemStorageInMatch => _itemStorageInMatch;
         [JsonIgnore] public int EnemiesDefeated => _enmiesDefeated;
         [JsonIgnore] public int NodesExplored => _nodesExplored;
+        [JsonIgnore] public int DamageInflicted => _damageInflicted;
+        [JsonIgnore] public int DamagePrevented => _damagePrevented;
         [JsonIgnore] public CombatData CombatData => _combatData;
         [JsonIgnore] public MazeGameplayReward Reward => _reward;
         [JsonIgnore] public WeatherData WeatherData => _weatherData;
 
+        [JsonConstructor]
         public MatchData(EMap eMap, CharacterData character, int runeAmount)
         {
             _mapType = eMap;
@@ -59,6 +66,8 @@ namespace MyRule
             _map = null;
 
             _currentStep = 0;
+
+            _timePlayed = 0f;
 
             switch (eMap)
             {
@@ -84,31 +93,16 @@ namespace MyRule
             _itemStorageInMatch = new ItemStorageData();
             _enmiesDefeated = 0;
             _nodesExplored = 0;
+            _damageInflicted = 0;
+            _damagePrevented = 0;
             _combatData = null;
             _reward = null;
             _weatherData = null;
         }
 
-        public async UniTask MoveToNextMap()
-        {
-            switch (_mapType)
-            {
-                case EMap.GreenLand:
-                    _mapType = EMap.Desert;
-                    _scene = Loader.EScene.DesertScene;
-                    await Loader.LoadSceneWithLoading(Loader.EScene.DesertScene);
-                    break;
-                case EMap.Desert:
-                    _mapType = EMap.IceLand;
-                    _scene = Loader.EScene.IcelandScene;
-                    await Loader.LoadSceneWithLoading(Loader.EScene.IcelandScene);
-                    break;
-                case EMap.IceLand:
-                    break;
-            }
-        }
-
         public void SetMap(EMap eMap) => _mapType = eMap;
+
+        public void SetScene(Loader.EScene scene) => _scene = scene;
 
         public void SetMap(Map map) => _map = map;
 
@@ -139,5 +133,10 @@ namespace MyRule
         public void SetWeather(WeatherData weatherData) => this._weatherData = weatherData;
 
         public void IncreaseStep() => _currentStep++;
+
+        public void IncreaseTimePlayed(float time) => _timePlayed += time;
+
+        public void IncreaseDamageInflicted(int damage) => _damageInflicted += damage;
+        public void IncreaseDamagePrevented(int damage) => _damagePrevented += damage;
     }
 }

@@ -29,20 +29,18 @@ namespace MyRule
             _matchData.SigilPool.CreatePool(sigilsInMatch);
         }
 
-        public void FinishMatch() => _matchData = null;
+        public void FinishMatch()
+        {
+            HistoryManager.Instance.AddMatchToHistory(_matchData);
+            _matchData = null;
+        }
 
         public UniTask LoadData(GameData data)
         {
-            if (data.MatchData != null)
-            {
-                _matchData = data.MatchData;
-                EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
-            }
-            else
-            {
-                _matchData = null;
-            }
+            if (data.MatchData == null) return UniTask.CompletedTask;
 
+            _matchData = data.MatchData;
+            EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
 
             return UniTask.CompletedTask;
         }
@@ -50,6 +48,12 @@ namespace MyRule
         public void SaveData(GameData data)
         {
             data.SetMatch(_matchData);
+        }
+
+        public UniTask NewGame()
+        {
+            _matchData = null;
+            return UniTask.CompletedTask;
         }
     }
 }

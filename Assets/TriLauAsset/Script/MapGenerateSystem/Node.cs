@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class Node
     {
         [JsonProperty] private Vector2Int point;
@@ -48,6 +48,7 @@ namespace MyRule
             set { position = value; }
         }
 
+        [JsonConstructor]
         public Node(NodeType nodeType, string blueprintName, Vector2Int point)
         {
             this.nodeType = nodeType;

@@ -1,22 +1,47 @@
-using MyRule;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class HistoryData
     {
-        [JsonProperty] public List<MatchData> _matchs;
+        [JsonProperty] private MatchData[] _matchs;
 
-        [JsonIgnore] public List<MatchData> Matchs => _matchs;
+        [JsonIgnore] public MatchData[] Matchs => _matchs;
 
+        [JsonConstructor]
         public HistoryData()
         {
-            _matchs = new List<MatchData>();
+            _matchs = new MatchData[5];
         }
 
-        public void AddMatch(MatchData match) => _matchs.Add(match);
+        private int GetEmpty()
+        {
+            for (int i = 0; i < _matchs.Length; i++)
+            {
+                if (_matchs[i] == null) return i;
+            }
+            return -1;
+        }
+
+        public void AddMatch(MatchData match)
+        {
+            int index = GetEmpty();
+
+            if (index == -1)
+            {
+                for (int i = 0; i < _matchs.Length - 1; i++)
+                {
+                    _matchs[i] = _matchs[i + 1];
+                }
+                _matchs[_matchs.Length - 1] = match;
+                return;
+            }
+            else
+            {
+                _matchs[index] = match;
+            }
+        }
     }
 }

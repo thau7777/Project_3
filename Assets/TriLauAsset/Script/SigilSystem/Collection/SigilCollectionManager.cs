@@ -17,12 +17,12 @@ namespace MyRule
 
         private void OnEnable()
         {
-            GameSystemManager.instance.Register(this);
+            GameSystemManager.Instance.Register(this);
         }
 
         private void OnDisable()
         {
-            GameSystemManager.instance.Unregister(this);
+            GameSystemManager.Instance.Unregister(this);
         }
 
         public List<SigilData> GetSigilCollection()
@@ -110,6 +110,13 @@ namespace MyRule
         public void SaveData(GameData data)
         {
             data.SetSigilCollection(sigilCollection);
+        }
+
+        public UniTask NewGame()
+        {
+            CreateNewSigilCollection();
+
+            return UniTask.CompletedTask;
         }
     }
 }

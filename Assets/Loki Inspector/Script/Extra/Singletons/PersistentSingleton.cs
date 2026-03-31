@@ -38,23 +38,19 @@ public class PersistentSingleton<T> : MonoBehaviour where T : Component
     protected virtual void InitializeSingleton()
     {
         if (!Application.isPlaying) return;
-
         if (AutoUnparentOnAwake)
         {
             transform.SetParent(null);
         }
-
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
-            if (instance != this)
-            {
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+            return;
         }
+        DontDestroyOnLoad(gameObject);
     }
 }

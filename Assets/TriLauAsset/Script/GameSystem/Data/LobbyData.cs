@@ -3,7 +3,7 @@ using System;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class LobbyData
     {
         [JsonProperty] private int _gold;
@@ -14,6 +14,7 @@ namespace MyRule
         [JsonIgnore] public int Crystal => _crystal;
         [JsonIgnore] public LobbyShopData Shop => _shop;
 
+        [JsonConstructor]
         public LobbyData()
         {
             this._gold = 0;
