@@ -19,7 +19,7 @@ public class FishingEnvironment : MonoBehaviour
         }
         background.sprite = enviSprites[0];
 
-        //SwitchEnvi();
+        SwitchEnvi();
     }
     private void SwitchEnvi()
     {

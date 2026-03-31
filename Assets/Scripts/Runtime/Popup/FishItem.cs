@@ -118,8 +118,8 @@ public class FishItem : MonoBehaviour
         float t = Time.time + timeOffset;
 
         rb.linearVelocity = new Vector2(
-            Mathf.Sin(t) * 0.3f,
-            Mathf.Cos(t * 0.5f) * 0.2f
+            Mathf.Sin(t) * 3f,
+            Mathf.Cos(t * 5f) * 2f
         );
     }
     #endregion
