@@ -5,13 +5,14 @@ using UnityEngine;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class DialougeData
     {
         [JsonProperty] private Dictionary<string, object> _keyValuePairs;
 
         [JsonIgnore] public Dictionary<string, object> KeyValuePairs => _keyValuePairs;
 
+        [JsonConstructor]
         public DialougeData()
         {
             _keyValuePairs = new Dictionary<string, object>();

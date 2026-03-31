@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1104688035641146750
+--- !u!1 &4032143973845976448
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6005075679909831151}
-  - component: {fileID: 8965825731289164454}
+  - component: {fileID: 5706872194879024341}
+  - component: {fileID: 9067809448076468441}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: WaveManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6005075679909831151
+--- !u!4 &5706872194879024341
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104688035641146750}
+  m_GameObject: {fileID: 4032143973845976448}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.14587, y: 6.49425, z: -2.21028}
+  m_LocalPosition: {x: -435.21796, y: 1.99235, z: -826.0048}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8965825731289164454
+--- !u!114 &9067809448076468441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104688035641146750}
+  m_GameObject: {fileID: 4032143973845976448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c08598b8e8ee84e9c6d9bdd692ec33, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c588255187534c47869e05441ba04ee, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyRule.GameManager
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.WaveManager
   AutoUnparentOnAwake: 1
-  encrypted: 0
-  HasSaveData: 0
+  enemiesInMap:
+  - mapType: 0
+    enemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}
+  - mapType: 1
+    enemies: {fileID: 11400000, guid: cd7f11ed964312a4e84638044ea77d17, type: 2}
+  - mapType: 2
+    enemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
+  mapEnemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}

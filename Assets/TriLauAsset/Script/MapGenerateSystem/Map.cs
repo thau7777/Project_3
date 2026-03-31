@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class Map
     {
         [JsonProperty] private List<Node> nodes;
@@ -19,6 +19,7 @@ namespace MyRule
         [JsonIgnore] public string BossNodeName => bossNodeName;
         [JsonIgnore] public string ConfigName => configName;
 
+        [JsonConstructor]
         public Map(string configName, string bossNodeName, List<Node> nodes, List<Vector2Int> path)
         {
             this.configName = configName;

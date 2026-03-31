@@ -21,11 +21,11 @@ namespace MyRule
         public void SetBase(CharacterSO characterSO)
         {
             AttributesData attributesData = new AttributesData(characterSO.vigor, characterSO.mind, characterSO.endurance, characterSO.strength, characterSO.dexterity, characterSO.intelligence, characterSO.faith, characterSO.arcane);
-            
+
             BaseStatsData baseData = new BaseStatsData(characterSO.hp, characterSO.fp, characterSO.stamina, characterSO.speed, characterSO.critChance, characterSO.critMult);
-            
+
             DamageData damageData = new DamageData(characterSO.attackDmg, characterSO.magicDmg, characterSO.fireDmg, characterSO.lightningDmg, characterSO.holyDmg, characterSO.darkDmg, characterSO.frostDmg, characterSO.waterDmg, characterSO.poisonDmg);
-            
+
             DefenseData defenseData = new DefenseData(characterSO.phyDef, characterSO.magicDef, characterSO.fireDef, characterSO.lightningDef, characterSO.holyDef, characterSO.darkDef, characterSO.frostDef, characterSO.waterDef, characterSO.poisonDef);
 
             CharacterStatsData characterStatsData = new CharacterStatsData(attributesData, baseData, damageData, defenseData);
@@ -56,13 +56,13 @@ namespace MyRule
         public UniTask LoadData(GameData data)
         {
             character = new CharacterData();
-            
+
             if (data.MatchData?.CharacterData != null)
             {
                 character = data.MatchData.CharacterData;
             }
             EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(character));
-            
+
             return UniTask.CompletedTask;
         }
 
@@ -72,6 +72,12 @@ namespace MyRule
             {
                 data.MatchData.SetCharacter(character);
             }
+        }
+
+        public UniTask NewGame()
+        {
+            character = null;
+            return UniTask.CompletedTask;
         }
     }
 }

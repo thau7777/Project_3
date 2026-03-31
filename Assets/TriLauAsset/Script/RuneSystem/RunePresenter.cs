@@ -25,6 +25,15 @@ namespace MyRule.UI
 
         private async void HandleRuneEvent(SendUIRuneEvent e)
         {
+            if (e.runeLockAmount > 0)
+            {
+                view.SetRuneLock(true, e.runeLockAmount.ToString());
+            }
+            else
+            {
+                view.SetRuneLock(false);
+            }
+
             await view.AdjustRune(e.runAmount);
         }
     }

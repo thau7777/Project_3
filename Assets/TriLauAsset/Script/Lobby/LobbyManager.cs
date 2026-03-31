@@ -76,5 +76,13 @@ namespace MyRule
             data.LobbyData.SetGold(gold);
             data.LobbyData.SetCrystal(crystal);
         }
+
+        public UniTask NewGame()
+        {
+            gold = 0;
+            crystal = 0;
+
+            return UniTask.CompletedTask;
+        }
     }
 }

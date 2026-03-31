@@ -87,5 +87,12 @@ namespace MyRule
                 data.DialougeData.KeyValuePairs[variable.Key] = value;
             }
         }
+
+        public UniTask NewGame()
+        {
+            variables = new Dictionary<string, Ink.Runtime.Object>();
+
+            return UniTask.CompletedTask;
+        }
     }
 }

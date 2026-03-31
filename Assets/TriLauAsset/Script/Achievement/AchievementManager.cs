@@ -146,5 +146,12 @@ namespace MyRule
         {
             data.SetAchivements(new List<AchievementData>(_achievementDict.Values));
         }
+
+        public UniTask NewGame()
+        {
+            _achievementDict.Clear();
+
+            return UniTask.CompletedTask;
+        }
     }
 }

@@ -37,6 +37,8 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
+            if (data.MatchData == null) return UniTask.CompletedTask;
+
             _matchData = data.MatchData;
             EventBus<UpdateMatchResultEvent>.Raise(new UpdateMatchResultEvent(data.MatchData.Result));
 
@@ -46,6 +48,12 @@ namespace MyRule
         public void SaveData(GameData data)
         {
             data.SetMatch(_matchData);
+        }
+
+        public UniTask NewGame()
+        {
+            _matchData = null;
+            return UniTask.CompletedTask;
         }
     }
 }

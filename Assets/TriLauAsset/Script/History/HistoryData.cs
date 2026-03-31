@@ -3,13 +3,14 @@ using System;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class HistoryData
     {
         [JsonProperty] private MatchData[] _matchs;
 
         [JsonIgnore] public MatchData[] Matchs => _matchs;
 
+        [JsonConstructor]
         public HistoryData()
         {
             _matchs = new MatchData[5];

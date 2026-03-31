@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using MyRule.DataService;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ namespace MyRule
 {
     public class GameSystemManager : PersistentSingleton<GameSystemManager>
     {
+        // public static GameSystemManager Instance { get; private set; }
         private const string fileName = "/gamedata.json";
         [SerializeField] private bool encrypted = false;
 
@@ -22,12 +24,12 @@ namespace MyRule
         public bool HasSaveData = false;
 
         public bool IsLoadCompleted { get; private set; }
-        
+
         protected override void Awake()
         {
+            Debug.Log($"[GameSystemManager] Awake - instance null: {instance == null}, this: {GetInstanceID()}");
             base.Awake();
-
-            LoadData().Forget();
+            Debug.Log($"[GameSystemManager] After base.Awake - instance ID: {instance.GetInstanceID()}");
         }
 
         private void OnEnable()
@@ -40,12 +42,20 @@ namespace MyRule
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
+        private void Start()
+        {
+            LoadData().Forget();
+        }
+
         #region Load, Save
-        public UniTask CreateNewGame()
+        public async UniTask CreateNewGame()
         {
             _gameData = new GameData();
 
-            return UniTask.CompletedTask;
+            foreach (var data in datas)
+            {
+                await data.NewGame();
+            }
         }
 
         public async UniTask LoadData()
@@ -99,7 +109,9 @@ namespace MyRule
         public void Register(IGameData data)
         {
             if (!datas.Contains(data))
+            {
                 datas.Add(data);
+            }
         }
 
         public void Unregister(IGameData data)

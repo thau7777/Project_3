@@ -60,6 +60,8 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
+            if (data.MatchData == null) return UniTask.CompletedTask;
+
             if (data.MatchData.WeatherData != null)
             {
                 weatherData = data.MatchData.WeatherData;
@@ -91,7 +93,15 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
+            if (data.MatchData == null) return;
+
             data.MatchData.SetWeather(weatherData);
+        }
+
+        public UniTask NewGame()
+        {
+            weatherData = null;
+            return UniTask.CompletedTask;
         }
     }
 }

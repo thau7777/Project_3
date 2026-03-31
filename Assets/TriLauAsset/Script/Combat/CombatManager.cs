@@ -62,7 +62,15 @@ namespace MyRule
         public void SetCombatResultWin()
         {
             combatData.SetResult(EMatchResult.Win);
-            MazeGameplayRewardManager.Instance.CreateNewReward(100);
+            if (combatData.CombatType == CombatType.EnemyFighting)
+            {
+                MazeGameplayRewardManager.Instance.CreateNewReward(100);
+            }
+            else if (combatData.CombatType == CombatType.BossFigihting)
+            {
+                MazeGameplayRewardManager.Instance.CreateNewReward(100);
+                MapTypeManager.Instance.MoveToNextMap();
+            }
             combatData = null;
         }
 
@@ -99,6 +107,8 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
+            if (data.MatchData == null) return UniTask.CompletedTask;
+
             if (data.MatchData.CombatData != null)
             {
                 combatData = data.MatchData.CombatData;
@@ -109,7 +119,16 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
+            if (data.MatchData == null) return;
+
             data.MatchData.SetCombat(combatData);
+        }
+
+        public UniTask NewGame()
+        {
+            combatData = null;
+
+            return UniTask.CompletedTask;
         }
     }
 }

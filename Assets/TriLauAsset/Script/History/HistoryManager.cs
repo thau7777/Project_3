@@ -39,5 +39,11 @@ namespace MyRule
         {
             data.SetHistory(historyData);
         }
+
+        public UniTask NewGame()
+        {
+            historyData = null;
+            return UniTask.CompletedTask;
+        }
     }
 }

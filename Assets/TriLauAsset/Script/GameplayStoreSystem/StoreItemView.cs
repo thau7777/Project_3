@@ -41,7 +41,7 @@ namespace MyRule
                 ItemStorageManager.Instance.AddItemToStorage(itemSo);
                 soldObj.SetActive(true);
                 
-                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(-itemSo.price));
+                EventBus<SpendRuneEvent>.Raise(new SpendRuneEvent(itemSo.price));
             }
             else
             {

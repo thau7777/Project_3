@@ -11,7 +11,7 @@ namespace MyRule
         Lose
     }
 
-    [Serializable]
+    [JsonObject]
     public class MatchData
     {
         [JsonProperty] private EMap _mapType;
@@ -58,6 +58,7 @@ namespace MyRule
         [JsonIgnore] public MazeGameplayReward Reward => _reward;
         [JsonIgnore] public WeatherData WeatherData => _weatherData;
 
+        [JsonConstructor]
         public MatchData(EMap eMap, CharacterData character, int runeAmount)
         {
             _mapType = eMap;
@@ -99,26 +100,9 @@ namespace MyRule
             _weatherData = null;
         }
 
-        public async UniTask MoveToNextMap()
-        {
-            switch (_mapType)
-            {
-                case EMap.GreenLand:
-                    _mapType = EMap.Desert;
-                    _scene = Loader.EScene.DesertScene;
-                    await Loader.LoadSceneWithLoading(Loader.EScene.DesertScene);
-                    break;
-                case EMap.Desert:
-                    _mapType = EMap.IceLand;
-                    _scene = Loader.EScene.IcelandScene;
-                    await Loader.LoadSceneWithLoading(Loader.EScene.IcelandScene);
-                    break;
-                case EMap.IceLand:
-                    break;
-            }
-        }
-
         public void SetMap(EMap eMap) => _mapType = eMap;
+
+        public void SetScene(Loader.EScene scene) => _scene = scene;
 
         public void SetMap(Map map) => _map = map;
 

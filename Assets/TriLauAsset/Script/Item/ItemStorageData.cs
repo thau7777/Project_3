@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class ItemStorageData
     {
         private const int MAX_LENGHT = 6;
@@ -14,6 +14,7 @@ namespace MyRule
         [JsonIgnore] public int Lenght => items.Length;
         [JsonIgnore] public ItemData[] Items => items;
 
+        [JsonConstructor]
         public ItemStorageData()
         {
             this.items = new ItemData[MAX_LENGHT];
@@ -34,7 +35,7 @@ namespace MyRule
         }
     }
 
-    [Serializable]
+    [JsonObject]
     public class ItemData
     {
         [JsonProperty] private int slotIndex;
@@ -45,6 +46,7 @@ namespace MyRule
         [JsonIgnore] public ItemType ItemType => itemType;
         [JsonIgnore] public int RecoveryAmount => recoveryAmount;
 
+        [JsonConstructor]
         public ItemData(int slotIndex, ItemType itemType, int recoveryAmount)
         {
             this.slotIndex = slotIndex;

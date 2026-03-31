@@ -119,5 +119,11 @@ namespace MyRule
         {
             //data.MatchData.SetHasRecivedStartingSigil(hasRecived);
         }
+
+        public UniTask NewGame()
+        {
+            hasRecived = false;
+            return UniTask.CompletedTask;
+        }
     }
 }

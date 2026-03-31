@@ -8,7 +8,7 @@ namespace MyRule
     [Serializable]
     public class EnemyInMap
     {
-        [SerializeField] public EMap planetType;
+        [SerializeField] public EMap mapType;
         [SerializeField] public MapEnemies enemies;
     }
 
@@ -117,7 +117,7 @@ namespace MyRule
         {
             if (data.MatchData != null)
             {
-                mapEnemies = enemiesInMap.Find(m => m.planetType == data.MatchData.MapType).enemies;
+                mapEnemies = enemiesInMap.Find(m => m.mapType == data.MatchData.MapType).enemies;
 
                 if (data.MatchData.CombatData != null)
                 {
@@ -131,6 +131,13 @@ namespace MyRule
         public void SaveData(GameData data)
         {
             return;
+        }
+
+        public UniTask NewGame()
+        {
+            currentLevel = 1;
+            groupWave = null;
+            return UniTask.CompletedTask;
         }
     }
 }

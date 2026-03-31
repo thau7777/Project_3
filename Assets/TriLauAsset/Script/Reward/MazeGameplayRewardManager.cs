@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -9,8 +10,6 @@ namespace MyRule
         private MazeGameplayReward reward;
 
         private bool hasRewards = false;
-
-        public bool HasRewards => hasRewards;
 
         private void OnEnable()
         {
@@ -30,24 +29,17 @@ namespace MyRule
             hasRewards = true;
         }
 
-        public MazeGameplayReward GetReward()
-        {
-            if (!hasRewards) return null;
-
-            hasRewards = false;
-
-            MazeGameplayReward recivedReward = reward;
-            reward = null;
-
-            return recivedReward;
-        }
-
         public UniTask LoadData(GameData data)
         {
             if (data.MatchData != null && data.MatchData.Reward != null)
             {
-                reward = data.MatchData.Reward;
-                hasRewards = true;
+                EventBus<MazeGameplayRewardEvent>.Raise(new MazeGameplayRewardEvent(reward));
+                reward = null;
+                hasRewards = false;
+            }
+            else
+            {
+                hasRewards = false;
             }
 
             return UniTask.CompletedTask;
@@ -55,8 +47,17 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
-            if (reward == null) return;
-            data.MatchData.SetReward(reward);
+            if (data.MatchData != null)
+            {
+                data.MatchData.SetReward(reward);
+            }
+        }
+
+        public UniTask NewGame()
+        {
+            reward = null;
+            hasRewards = false;
+            return UniTask.CompletedTask;
         }
     }
 }

@@ -6,5 +6,6 @@ namespace MyRule.UI
     public interface IRuneView
     {
         UniTask AdjustRune(int target);
+        void SetRuneLock(bool isLocked, string lockReason = "");
     }
 }

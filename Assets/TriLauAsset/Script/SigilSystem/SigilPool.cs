@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace MyRule
 {
+    [JsonObject]
     public class SigilPool
     {
         [JsonProperty] private List<SigilData> _activeSigilPool;

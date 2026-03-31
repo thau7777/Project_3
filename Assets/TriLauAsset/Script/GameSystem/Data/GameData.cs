@@ -1,10 +1,9 @@
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace MyRule
 {
-    [Serializable]
+    [JsonObject]
     public class GameData
     {
         [JsonProperty] private LobbyData _lobby;
@@ -23,6 +22,7 @@ namespace MyRule
         [JsonIgnore] public TutorialData Tutorial => _tutorial;
         [JsonIgnore] public DialougeData DialougeData => _dialougeData;
 
+        [JsonConstructor]
         public GameData() 
         {
             this._lobby = new LobbyData();

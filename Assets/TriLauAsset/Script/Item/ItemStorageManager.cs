@@ -78,5 +78,12 @@ namespace MyRule
 
             data.MatchData.SetItemStorageInMatch(itemStorage);
         }
+
+        public UniTask NewGame()
+        {
+            itemStorage = null;
+
+            return UniTask.CompletedTask;
+        }
     }
 }
