@@ -1,4 +1,6 @@
+using Ami.BroAudio;
 using System.Collections.Generic;
+using Unity.AppUI.UI;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = " New OneShotVFX Settings", menuName = "Scriptable Objects/Flyweight/OneShotVFX Settings")]
@@ -114,6 +116,11 @@ public class OneShotVFXSettings : FlyweightSettings
     [ShowIf("useTriggerStays")]
     public float triggerStayTickInterval = 0.2f;
 
+    #endregion
+
+    #region Sound Settings
+    public SoundID sfx;
+    public float soundDelayTime;
     #endregion
 
     [SerializeField] private bool _addComponentsFirst = true;

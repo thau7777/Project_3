@@ -297,7 +297,8 @@ public class SkillExecutor : MonoBehaviour
     }
     public void ApplyEffectToPlayer()
     {
-        _skillToCast.Definition.ApplyEffectsToUser(gameObject);
+        if(_skillToCast != null)
+            _skillToCast.Definition.ApplyEffectsToUser(gameObject);
     }
     public void OnHitWhileUsingSkill()
     {

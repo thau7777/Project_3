@@ -1069,7 +1069,7 @@ Transform:
   m_GameObject: {fileID: 110658947}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42392334, y: 0.00000001377309, z: -0.0000000064466663, w: 0.9056981}
-  m_LocalPosition: {x: -5.7886705, y: 9.59, z: -7.3597097}
+  m_LocalPosition: {x: -2.8, y: 9.59, z: -8.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7497,11 +7497,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.WaveManager
   AutoUnparentOnAwake: 1
   enemiesInMap:
-  - planetType: 0
+  - mapType: 0
     enemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}
-  - planetType: 1
+  - mapType: 0
     enemies: {fileID: 11400000, guid: cd7f11ed964312a4e84638044ea77d17, type: 2}
-  - planetType: 2
+  - mapType: 0
     enemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
   mapEnemies: {fileID: 11400000, guid: b2f0d2d77e5277e43a76aa646f00216a, type: 2}
 --- !u!4 &274391605
@@ -18682,15 +18682,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.b
-      value: 0
+      value: 0.10980392
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.g
-      value: 0.6981132
+      value: 0.5803922
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.r
-      value: 0.26724645
+      value: 0.8117647
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startSpeed.minMaxState
@@ -19976,7 +19976,7 @@ VisualEffect:
       - m_Value: {x: 0, y: 0, z: 0}
         m_Name: InteractorPosition_position
         m_Overridden: 1
-      - m_Value: {x: -5.7886705, y: 0, z: 0.64029}
+      - m_Value: {x: -2.8, y: 0, z: -0.47}
         m_Name: InteractorPosition
         m_Overridden: 1
     m_Vector4f:
@@ -25692,7 +25692,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 67108864
   _transitionDuration: 1
-  _isBadWeatherForTest: 1
+  _isBadWeatherForTest: 0
 --- !u!4 &552950218 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2318816471903477088, guid: 0a0ed3ca57b330c48918f5289e0d6e15, type: 3}
@@ -32178,15 +32178,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.b
-      value: 0
+      value: 0.10980392
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.g
-      value: 0.5471698
+      value: 0.5803922
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.r
-      value: 0.29303104
+      value: 0.8117647
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: EmissionModule.rateOverTime.minScalar
@@ -33193,15 +33193,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.b
-      value: 0.075694196
+      value: 0.11098258
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.g
-      value: 0.764151
+      value: 0.58183146
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startColor.minColor.r
-      value: 0.37502325
+      value: 0.8113208
       objectReference: {fileID: 0}
     - target: {fileID: 4195235193068057637, guid: 5ac108dc5c3a33c499ce983a74342c8a, type: 3}
       propertyPath: InitialModule.startSpeed.minMaxState
@@ -34841,7 +34841,7 @@ VisualEffect:
       - m_Value: {x: 0, y: 0, z: 0}
         m_Name: InteractorPosition_position
         m_Overridden: 1
-      - m_Value: {x: -5.7886705, y: 0, z: 0.64029}
+      - m_Value: {x: -2.8, y: 0, z: -0.47}
         m_Name: InteractorPosition
         m_Overridden: 1
     m_Vector4f:
@@ -35876,7 +35876,7 @@ Transform:
   m_GameObject: {fileID: 1014524982}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42392328, y: 0.000000013773087, z: -0.000000006446665, w: 0.9056981}
-  m_LocalPosition: {x: -5.7886705, y: 9.59, z: -7.3597097}
+  m_LocalPosition: {x: -2.8, y: 9.59, z: -8.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45391,7 +45391,7 @@ VisualEffect:
       - m_Value: {x: 0, y: 0, z: 0}
         m_Name: InteractorPosition_position
         m_Overridden: 1
-      - m_Value: {x: -5.7886705, y: 0, z: 0.64029}
+      - m_Value: {x: -2.8, y: 0, z: -0.47}
         m_Name: InteractorPosition
         m_Overridden: 1
     m_Vector4f:
@@ -45724,7 +45724,7 @@ VisualEffect:
       - m_Value: {x: 0, y: 0, z: 0}
         m_Name: InteractorPosition_position
         m_Overridden: 1
-      - m_Value: {x: -5.7886705, y: 0, z: 0.64029}
+      - m_Value: {x: -2.8, y: 0, z: -0.47}
         m_Name: InteractorPosition
         m_Overridden: 1
     m_Vector4f:
@@ -47144,6 +47144,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1071162874243563009, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: <AttackDamage>k__BackingField
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2040516743320327267, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: OnEffectAdded.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -47155,22 +47159,22 @@ PrefabInstance:
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: edd2dd10f75bff24690571863e6fe30d, type: 2}
+      objectReference: {fileID: 11400000, guid: 69c50b4d33d440c4794b4b6b3f2e6ecc, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[4]'
       value: 
-      objectReference: {fileID: 11400000, guid: 1def451f8d2b7774ea257b3f7c1180a0, type: 2}
+      objectReference: {fileID: 11400000, guid: c4d160f84c90d884ba56a44e3a0299d1, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[5]'
       value: 
-      objectReference: {fileID: 11400000, guid: 5542d180e5e34014a8b980d65aca8dfa, type: 2}
+      objectReference: {fileID: 11400000, guid: c77535aee97e58d4e9cf8696817eed10, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: OnManaChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 227910026}
     - target: {fileID: 4776089832414516250, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.7886705
+      value: -2.8
       objectReference: {fileID: 0}
     - target: {fileID: 4776089832414516250, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: m_LocalPosition.y
@@ -47178,7 +47182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4776089832414516250, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.64029
+      value: -0.47
       objectReference: {fileID: 0}
     - target: {fileID: 4776089832414516250, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: m_LocalRotation.w
@@ -47629,6 +47633,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4896724823933871089, guid: fbc1b4fec048d014194778fa347056bf, type: 3}
   m_PrefabInstance: {fileID: 2676219881195973317}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1634067750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634067752}
+  - component: {fileID: 1634067751}
+  m_Layer: 0
+  m_Name: MatchManager Auto-Generated
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1634067751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634067750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb6da52a4c37304db3898449ae59a74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.MatchManager
+  AutoUnparentOnAwake: 1
+--- !u!4 &1634067752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634067750}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1638782305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53417,7 +53466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 195e6bd412664884db319c6dc7d40524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownGameManager
-  isTestGameplay: 0
+  isTestGameplay: 1
   _inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
   _player: {fileID: 1568225709}
   _tpEffect: {fileID: 7141001731699096960}
@@ -59408,3 +59457,4 @@ SceneRoots:
   - {fileID: 979275903}
   - {fileID: 1220822540}
   - {fileID: 8689643753412743371}
+  - {fileID: 1634067752}
