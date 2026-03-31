@@ -26,7 +26,7 @@ namespace Turnbase
 
             yield return MoveCharacter(character.transform, startPos, backwardPos, moveDuration);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1.5f);
 
             yield return MoveCharacter(character.transform, backwardPos, startPos, moveDuration);
 

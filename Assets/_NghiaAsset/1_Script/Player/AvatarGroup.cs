@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,6 +15,8 @@ namespace Turnbase
         public float hpLerpSpeed = 2f;
 
         public Image mpBar;
+        public Image mpBarDelayed;
+        public float mpLerpSpeed = 2f;
         public Image shieldBar;
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI mpText;
@@ -25,6 +27,7 @@ namespace Turnbase
         private Character ownerCharacter;
         private CharacterStatusDataProvider dataProvider;
         private Coroutine hpLerpCoroutine;
+        private Coroutine mpLerpCoroutine;
 
 
         private void Awake()
@@ -78,7 +81,15 @@ namespace Turnbase
                 hpLerpCoroutine = StartCoroutine(LerpHpDelayed(targetFill));
             }
 
-            mpBar.fillAmount = (float)stats.currentMP / stats.maxMP;
+            float targetMpFill = (float)stats.currentMP / stats.maxMP;
+            mpBar.fillAmount = targetMpFill;
+
+            if (mpBarDelayed != null)
+            {
+                if (mpLerpCoroutine != null) StopCoroutine(mpLerpCoroutine);
+                mpLerpCoroutine = StartCoroutine(LerpMpDelayed(targetMpFill));
+            }
+
             //shieldBar.fillAmount = (float)stats.currentShield / stats.maxHP;
             hpText.text = $"{stats.currentHP} / {stats.maxHP}";
             mpText.text = $"{stats.currentMP} / {stats.maxMP}";
@@ -99,6 +110,18 @@ namespace Turnbase
                 yield return null;
             }
             hpBarDelayed.fillAmount = targetFill;
+        }
+
+        private IEnumerator LerpMpDelayed(float targetFill)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            while (Mathf.Abs(mpBarDelayed.fillAmount - targetFill) > 0.001f)
+            {
+                mpBarDelayed.fillAmount = Mathf.Lerp(mpBarDelayed.fillAmount, targetFill, Time.deltaTime * mpLerpSpeed);
+                yield return null;
+            }
+            mpBarDelayed.fillAmount = targetFill;
         }
 
         public void UpdateStatusEffect(List<StatusEffectData> statusEffects)

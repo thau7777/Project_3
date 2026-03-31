@@ -11,6 +11,7 @@ namespace Turnbase
         private BattleManager battleManager;
 
         private bool damageApplied = false;
+        private bool statusEffectsApplied = false;
         private Vector3 initialPosition;
         private Vector3 destination;
 
@@ -23,6 +24,7 @@ namespace Turnbase
         public override IEnumerator Execute()
         {
             user.parryMissCount = 0;
+            statusEffectsApplied = false;
 
             initialPosition = user.initialPosition;
             int totalAttacks = skill.attackCount > 0 ? skill.attackCount : 1;
@@ -113,8 +115,15 @@ namespace Turnbase
                 {
                     // If blocked (evaded/parried), spawn at slot position but don't take damage
                     SpawnImpactEffect(target.initialPosition, skill);
+                    SpawnMeleeEffect(target.initialPosition + Vector3.up * 1f, skill);
                     damageApplied = true;
                     return;
+                }
+
+                if (!statusEffectsApplied)
+                {
+                    ApplyStatusEffectsAndStacks(user, target, skill);
+                    statusEffectsApplied = true;
                 }
 
                 int totalDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
@@ -123,6 +132,7 @@ namespace Turnbase
 
                 target.TakeDamage(user, baseDamagePerHit, skill.elementType); 
                 SpawnImpactEffect(target.transform.position, skill);
+                SpawnMeleeEffect(target.transform.position + Vector3.up * 1f, skill);
                 damageApplied = true;
             };
 
@@ -154,12 +164,14 @@ namespace Turnbase
                     if (target.isAttackBlocked)
                     {
                         SpawnImpactEffect(target.initialPosition, skill);
+                        SpawnMeleeEffect(target.initialPosition + Vector3.up * 1f, skill);
                         continue;
                     }
 
                     int currentHitDamage = baseDamagePerHit + (j == extraHits - 1 ? damageRemainder : 0);
                     target.TakeDamage(user, baseDamagePerHit, skill.elementType);
                     SpawnImpactEffect(target.transform.position, skill);
+                    SpawnMeleeEffect(target.transform.position + Vector3.up * 1f, skill);
                 }
             }
 

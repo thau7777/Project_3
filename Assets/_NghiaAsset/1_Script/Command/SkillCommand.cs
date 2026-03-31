@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using MyRule.Audio;
 using UnityEngine;
 
@@ -102,6 +102,28 @@ namespace Turnbase
             }
 
             return effectInstance; 
+        }
+
+        protected Flyweight_TB SpawnMeleeEffect(Vector3 position, Skill skill)
+        {
+            FlyweightSettings_TB settingsToSpawn = skill.meleeSettings;
+            Flyweight_TB effectInstance = null;
+
+            if (settingsToSpawn != null)
+            {
+                effectInstance = FlyweightFactory_TB.Spawn(settingsToSpawn);
+
+                if (effectInstance != null)
+                {
+                    effectInstance.Initialize(position, Quaternion.identity);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Thiếu FlyweightSettings Melee VFX cho kỹ năng: {skill.skillName}.");
+            }
+
+            return effectInstance;
         }
 
         protected Flyweight_TB SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
