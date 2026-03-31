@@ -84,6 +84,8 @@ public class Effect : ScriptableObject
     [TabGroup("Visual Feedback")]
     public Vector3 positionOffset;
     [TabGroup("Visual Feedback")]
+    public Vector3 rotationOffset = Vector3.one;
+    [TabGroup("Visual Feedback")]
     public FlyweightSettings vfxSettings;
 
     public virtual Flyweight OnApply(GameObject sender, GameObject target, ActiveEffect activeEffect)
@@ -95,11 +97,11 @@ public class Effect : ScriptableObject
             var effectController = vfx.GetComponent<CharacterEffectController>();
             bool needParent = effectController == null;
             Transform vfxParent = target.GetComponentInChildren<SkinnedMeshRenderer>().transform.GetChild(0);
-
+            var quaternionRotationOffset = Quaternion.Euler(rotationOffset);
             vfx.FlyweightInitialize(
                 needParent ? vfxParent.transform.AddLocal(positionOffset.x, positionOffset.y, positionOffset.z) :
                 Vector3.zero.Add(positionOffset.x, positionOffset.y, positionOffset.z),
-                Quaternion.identity,
+                needParent ? vfxParent.transform.rotation * quaternionRotationOffset : Quaternion.identity,
                 needParent ? vfxParent : null);
 
             if(vfx is ContinousVFX)
