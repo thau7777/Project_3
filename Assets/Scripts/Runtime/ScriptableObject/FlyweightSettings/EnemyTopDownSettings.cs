@@ -16,7 +16,7 @@ public class EnemyTopDownSettings : FlyweightSettings
 
     [HideInInspector] public LayerMask groundLayerMask;
     [HideInInspector] public LayerMask obstacleLayerMask;
-    private float _spawnClearanceRadius = 1.5f;
+    private float _spawnClearanceRadius = 2.5f;
     private Transform _player;
 
     public override Flyweight Create()
@@ -67,16 +67,18 @@ public class EnemyTopDownSettings : FlyweightSettings
             if (!TryGetGroundHeight(potentialX, potentialZ, out float groundY))
                 continue;
 
-            Vector3 candidate = new Vector3(potentialX, groundY - _spawnOffsetBelowGround, potentialZ);
+            Vector3 boxCenter = new Vector3(potentialX, groundY + _spawnClearanceRadius, potentialZ);
+            Vector3 halfExtents = Vector3.one * _spawnClearanceRadius;
 
-            bool blocked = Physics.CheckSphere(
-                candidate + Vector3.up * _spawnClearanceRadius,
-                _spawnClearanceRadius,
+            bool blocked = Physics.CheckBox(
+                boxCenter,
+                halfExtents,
+                Quaternion.identity,
                 obstacleLayerMask
             );
 
             if (!blocked)
-                return candidate;
+                return new Vector3(potentialX, groundY - _spawnOffsetBelowGround, potentialZ);
         }
 
         Debug.LogWarning($"Could not find valid spawn position after {maxAttempts} attempts. Falling back to player position.");

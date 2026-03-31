@@ -217,7 +217,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             if (enemyData == null) continue;
 
             SpawnEnemy(enemyData);
-            yield return new WaitForSeconds(Random.Range(0, 0.3f));
+            //yield return new WaitForSeconds(Random.Range(0, 0.3f));
         }
 
         _isSpawning = false;
