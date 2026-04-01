@@ -82,8 +82,6 @@ public class StraightProjectile : Flyweight
                 _effectApplier.SetEffects(settings.effectsToApplyList);
             }
         }
-        if (settings.hasSound)
-            BroAudio.Play(settings.sfx);
     }
 
     private void FixedUpdate()

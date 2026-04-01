@@ -44,7 +44,6 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     [SerializeField, TabGroup("LowHealthEffectSettings")] private float _lowHealthLerpOutDuration = 0.5f;
 
     [SerializeField, TabGroup("Sounds")] private SoundID _bgm;
-    [SerializeField, TabGroup("Sounds")] private SoundID _playerHurtSound;
 
 
     private bool _isFlashing = false;
@@ -171,7 +170,6 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     public void AddDamageReceived(int amount)
     {
         _damageReceived += amount;
-        BroAudio.Play(_playerHurtSound);
     }
     public void AddDamageDealt(int amount)
     {

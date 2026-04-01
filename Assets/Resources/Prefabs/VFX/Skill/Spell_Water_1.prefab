@@ -34354,6 +34354,9 @@ GameObject:
   - component: {fileID: 4225253123469134568}
   - component: {fileID: 6740933791587859601}
   - component: {fileID: 9221472101199856381}
+  - component: {fileID: -8437657103195261092}
+  - component: {fileID: 8032529023023857930}
+  - component: {fileID: -8245534283302759617}
   m_Layer: 11
   m_Name: Spell_Water_1
   m_TagString: Untagged
@@ -39294,6 +39297,75 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8437657103195261092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636152364413172619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 99307461cba7e9f43bed7c73d22e02ca, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4636152364413172619}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &8032529023023857930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636152364413172619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: bec301a3bb2aaf943850ca15c65da140, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4636152364413172619}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1
+--- !u!114 &-8245534283302759617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636152364413172619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: ac4fdeea11de2e949a063f2ea2a3d126, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4636152364413172619}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.2
 --- !u!1 &5009756892800146773
 GameObject:
   m_ObjectHideFlags: 0

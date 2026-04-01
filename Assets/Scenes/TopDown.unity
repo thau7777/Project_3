@@ -47273,6 +47273,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1623136687}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_skillStrategies.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: c4d160f84c90d884ba56a44e3a0299d1, type: 2}
+    - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[3]'
       value: 
       objectReference: {fileID: 11400000, guid: 69c50b4d33d440c4794b4b6b3f2e6ecc, type: 2}
@@ -47329,9 +47333,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5181628910276376256, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: _HurtSound._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: e31cc18b51585c146acdf3f9384febe4, type: 2}
+    - target: {fileID: 5181628910276376256, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: parrySuccessVFXSettings
       value: 
       objectReference: {fileID: 11400000, guid: efbf55d7f6504874cb7a33828e3a74c9, type: 2}
+    - target: {fileID: 5181628910276376256, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: _HurtSound.<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 1568225709}
     - target: {fileID: 5181628910276376256, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: OnTakeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -53612,10 +53624,6 @@ MonoBehaviour:
   _lowHealthLerpOutDuration: 0.5
   _bgm:
     _entity: {fileID: 11400000, guid: 178966fee3c97f241a74b0ea915c12bf, type: 2}
-    ID: 0
-    <DebugObject>k__BackingField: {fileID: 1686145430}
-  _playerHurtSound:
-    _entity: {fileID: 11400000, guid: e31cc18b51585c146acdf3f9384febe4, type: 2}
     ID: 0
     <DebugObject>k__BackingField: {fileID: 1686145430}
 --- !u!1001 &1689557583

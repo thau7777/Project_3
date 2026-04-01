@@ -117,8 +117,6 @@ public class OneShotVFX : Flyweight
         //    GetComponent<DamageDealer>().Damage = Damage;
         _despawnCoroutine = StartCoroutine(LifetimeRoutine(lifeTime));
         
-        if(settings.hasSound)
-            BroAudio.Play(settings.sfx);
     }
     private IEnumerator LifetimeRoutine(float lifeTime)
     {
