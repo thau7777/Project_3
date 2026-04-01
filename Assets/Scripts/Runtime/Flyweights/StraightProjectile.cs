@@ -1,3 +1,4 @@
+using Ami.BroAudio;
 using System.Collections;
 using UnityEngine;
 
@@ -81,6 +82,8 @@ public class StraightProjectile : Flyweight
                 _effectApplier.SetEffects(settings.effectsToApplyList);
             }
         }
+        if (settings.hasSound)
+            BroAudio.Play(settings.sfx);
     }
 
     private void FixedUpdate()
@@ -189,6 +192,8 @@ public class StraightProjectile : Flyweight
     private void OnTriggerEnter(Collider other)
     {
         if ((_dodgeLayers.value & (1 << other.gameObject.layer)) != 0) return;
+        if (settings.despawnOnHit) DespawnProjectile();
+
         if (!other.TryGetComponent<Damageable>(out var damageable)) return;
         if (damageable.CurrentHealth == 0) return;
         if (!_canCurrentlyDealDamage) return;
@@ -199,6 +204,5 @@ public class StraightProjectile : Flyweight
         if (settings.canApplyEffects && settings.effectsToApplyList.Count > 0)
             _effectApplier.ApplyEffect(_sender, gameObject, damageable.gameObject);
 
-        if (settings.despawnOnHit) DespawnProjectile();
     }
 }

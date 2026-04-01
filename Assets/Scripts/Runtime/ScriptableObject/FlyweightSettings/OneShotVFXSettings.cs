@@ -119,8 +119,10 @@ public class OneShotVFXSettings : FlyweightSettings
     #endregion
 
     #region Sound Settings
-    public SoundID sfx;
-    public float soundDelayTime;
+    public bool hasSound = false;
+
+    [ShowIf("hasSound"), TabGroup("Sound")] public SoundID sfx;
+    [ShowIf("hasSound"), TabGroup("Sound")] public float soundDelayTime;
     #endregion
 
     [SerializeField] private bool _addComponentsFirst = true;

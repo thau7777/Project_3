@@ -68,7 +68,7 @@ public class EnemyTopdownStateDriver : Flyweight
             .SetNavMeshSteering(_navMeshSteering)
             .SetPlayerTransform(PlayerTopDownStateDriver.Instance.transform)
             .SetRootTransform(transform)
-            .SetMoveSpeed(_characterStats.Speed * 1.25f)
+            .SetMoveSpeed(_characterStats.Speed * 1.1f)
             .SetMovePauseDuration(_movePauseDuration)
             .SetRotateSpeed(_rotateSpeed)
             .SetEnemyType(_movementType)
