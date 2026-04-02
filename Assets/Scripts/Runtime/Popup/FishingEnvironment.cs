@@ -9,6 +9,7 @@ public class FishingEnvironment : MonoBehaviour
 {
     [SerializeField] private Image background;
     [SerializeField] private List<Sprite> enviSprites;
+    [SerializeField] private bool isTest;
 
 
     private void Awake()
@@ -19,6 +20,7 @@ public class FishingEnvironment : MonoBehaviour
         }
         background.sprite = enviSprites[0];
 
+        if(isTest) return;
         SwitchEnvi();
     }
     private void SwitchEnvi()

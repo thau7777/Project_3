@@ -37,6 +37,7 @@ public class FishItem : MonoBehaviour
     [SerializeField] private RectTransform rt;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float timeOffset;
+    [SerializeField] private string poolTag;
 
     private void Awake()
     {
@@ -44,6 +45,8 @@ public class FishItem : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         GetRandomNumber();
+        poolTag = itemType.ToString();
+        Debug.Log(poolTag);
     }
 
     private void Update()
@@ -159,15 +162,16 @@ public class FishItem : MonoBehaviour
                 break;
         }
         FishingSpawner.instance.fishCount--;
-        StartCoroutine(HideAndDestroy());
+        StartCoroutine(ReturnToPool());
         
     }
 
-    IEnumerator HideAndDestroy()
+    IEnumerator ReturnToPool()
     {
         gameObject.SetActive(false);
         yield return new WaitForSeconds(1f);
-        Destroy(gameObject);
+
+        PoolManager.Instance.Despawn(poolTag, gameObject);
     }
 
     public void OnEscape()

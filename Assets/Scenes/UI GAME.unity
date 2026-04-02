@@ -240,6 +240,9 @@ MonoBehaviour:
   - tag: Trash
     prefab: {fileID: 5467849190853849419, guid: f9711a867f90ba545bb39de3d25c454e, type: 3}
     size: 9
+  - tag: Bubble
+    prefab: {fileID: 8622334820999314911, guid: 6c409dc86c7a1e94e946086a1f2f997f, type: 3}
+    size: 20
 --- !u!1 &290431795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4068868363743844999, guid: cd63d3ef0c00afe45bb4027bb0b67f53, type: 3}
@@ -1701,41 +1704,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 819857051}
     m_Modifications:
-    - target: {fileID: 1232572596004570215, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: useTimer
-      value: 0
+    - target: {fileID: 2322386777372613760, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_Size.x
+      value: 41.927986
       objectReference: {fileID: 0}
-    - target: {fileID: 1232572596004570215, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: inputReader
-      value: 
-      objectReference: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: maxForce
-      value: 20
+    - target: {fileID: 2322386777372613760, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_Offset.x
+      value: -1.6760359
       objectReference: {fileID: 0}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: minForce
-      value: 5
+    - target: {fileID: 2322386777372613760, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_Offset.y
+      value: -4.4592094
       objectReference: {fileID: 0}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: waterDrag
-      value: 1.5
+    - target: {fileID: 4224646405064336884, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.79493
       objectReference: {fileID: 0}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: normalMass
-      value: 0.5
+    - target: {fileID: 4224646405064336884, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.79493
       objectReference: {fileID: 0}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: inputReader
-      value: 
-      objectReference: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: waterGravity
-      value: 30
+    - target: {fileID: 4224646405064336884, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.79493
       objectReference: {fileID: 0}
-    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: normalGravity
-      value: 30
+    - target: {fileID: 4224646405064336884, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -802.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4224646405064336884, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 369.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 7637958163214307742, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: isTest
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8031021024475418851, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
       propertyPath: m_Pivot.x
@@ -1820,10 +1823,6 @@ PrefabInstance:
     - target: {fileID: 8984493287582211289, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
       propertyPath: m_Name
       value: FishingGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 8984493287582211289, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
