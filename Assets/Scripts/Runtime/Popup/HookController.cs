@@ -12,6 +12,7 @@ public class HookController : MonoBehaviour
     public GameObject powerBar;
     public TutorialTrigger fishTutorial;
     [SerializeField] private List<GameObject> image;
+    [SerializeField] private InputReader inputReader;
 
     [Header("Charge")]
     public float chargeSpeed = 1.5f;
@@ -42,39 +43,41 @@ public class HookController : MonoBehaviour
         chargeBar.fillAmount = 0f;
         powerBar.SetActive(false);
         initialPosition = transform.position;
+        inputReader.popUpGame.onThrow += HandleSpace;
+        inputReader.popUpGame.onReset += HandleR;
+
+        inputReader.SwitchActionMap(ActionMap.PopUpGame);
     }
 
     void Update()
     {
-        HandleInput();
+        HandleSpace();
         UpdateChargeBar();
     }
 
-    void HandleInput()
+    void HandleSpace()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!isCharging && !hasThrown)
         {
-            // SPACE lần 1 → bắt đầu charge
-            if (!isCharging && !hasThrown)
-            {
-                isCharging = true;
-                powerBar.SetActive(true);
+            isCharging = true;
+            powerBar.SetActive(true);
 
-                chargeStartTime = Time.time;
-            }
-            // SPACE lần 2 → ném hook
-            else if (isCharging)
-            {
-                isCharging = false;
-                powerBar.SetActive(false);
-
-                ThrowHook(chargeBar.fillAmount);
-            }
+            chargeStartTime = Time.time;
         }
-        if(Input.GetKey(KeyCode.R) && OnGround)
+        // SPACE lần 2 → ném hook
+        else if (isCharging)
         {
-            ResetHook();
+            isCharging = false;
+            powerBar.SetActive(false);
+
+            ThrowHook(chargeBar.fillAmount);
         }
+    }
+
+    void HandleR()
+    {
+        ResetHook();
+
     }
 
     void UpdateChargeBar()

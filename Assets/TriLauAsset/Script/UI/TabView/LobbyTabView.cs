@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace MyRule.UI
 {
@@ -30,12 +31,14 @@ namespace MyRule.UI
         {
             tabContent.interactable = false;
             tabContent.blocksRaycasts = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public override void Show()
         {
             tabContent.interactable = true;
             tabContent.blocksRaycasts = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }

@@ -15,7 +15,6 @@ namespace MyRule
     public class WaveManager : PersistentSingleton<WaveManager>, IGameData
     {
         [SerializeField] private List<EnemyInMap> enemiesInMap;
-        private int currentLevel = 1;
         private GroupWave groupWave;
         
         [SerializeField] private MapEnemies mapEnemies;
@@ -63,7 +62,9 @@ namespace MyRule
         public GroupWave CreateNewWave()
         {
             int waveCount = UnityEngine.Random.Range(2, 5);
-            
+
+            int currentLevel = MatchManager.Instance.MatchData.CurrentStep;
+
             GroupWave groupWave = new GroupWave(waveCount);
 
             for (int i = 0; i < waveCount; i++)
@@ -135,7 +136,6 @@ namespace MyRule
 
         public UniTask NewGame()
         {
-            currentLevel = 1;
             groupWave = null;
             return UniTask.CompletedTask;
         }

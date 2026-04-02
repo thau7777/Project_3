@@ -10,6 +10,7 @@ public class FishingGameManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI scoreText;
     [SerializeField] private TMPro.TextMeshProUGUI timerText;
     [SerializeField] private GameObject fishing;
+    [SerializeField] private InputReader inputReader;
 
     public int score;
     float time = 60f;
@@ -49,6 +50,8 @@ public class FishingGameManager : MonoBehaviour
     {
         if (isGameEnded) return;
         isGameEnded = true;
+
+        inputReader.SwitchActionMap(ActionMap.DiceRoll);
 
         if (time <= 0 && currentFisht > 0)
         {

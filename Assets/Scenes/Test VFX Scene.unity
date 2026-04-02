@@ -1645,6 +1645,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 165fef1ef89c763428ee2999de43b15c, type: 3}
+--- !u!1 &1341439322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1341439324}
+  - component: {fileID: 1341439323}
+  m_Layer: 0
+  m_Name: 20260401_1848_01kkbgzvx9eybrxr5c6kbdr21m
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!328 &1341439323
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341439322}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: e16dca21acede9d4baf80d4bd6ed5ad0, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 330585545}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 1
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 1
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 2
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 00
+  m_ControlledAudioTrackCount: 1
+  m_PlayOnAwake: 1
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
+--- !u!4 &1341439324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341439322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.25228, y: -2004.4457, z: 16.00693}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1376683607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2310,22 +2378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1683b183192ecd408a9d9266a00a951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardController
-  sigilSO: {fileID: 0}
-  borderMesh: {fileID: 1941698901223367897}
-  borderMaterial:
-  - {fileID: 2100000, guid: d00fff9843b0f554cadc5ae6b3ddfbfd, type: 2}
-  - {fileID: 2100000, guid: 70a2270d727e5cd41b220908302abb82, type: 2}
-  - {fileID: 2100000, guid: ce41a581057440044bb6c1d3192e7373, type: 2}
-  - {fileID: 2100000, guid: 272f604b65b31ac4cbda18c7c6449d20, type: 2}
-  - {fileID: 2100000, guid: 6421cbfdf44d88044a0ae301e08b278d, type: 2}
-  - {fileID: 2100000, guid: bc2bd4b2a910ba3428bca70e9cf7d2f3, type: 2}
-  hoverScale: {x: 1.2, y: 1.2, z: 1.2}
-  sigilImg: {fileID: 6503564660158050510}
-  sigilNameTxt: {fileID: 1537306108836098746}
-  sigilDescTxt: {fileID: 5610983137873220087}
-  runeTxt: {fileID: 2018454071575735017}
-  priceObj: {fileID: 7759688280605813967}
-  showCardDuration: 0.4
 --- !u!224 &1475611543776564489
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3056,10 +3108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardRotator
   card: {fileID: 1403339005313968802}
-  maxRotationX: 30
-  maxRotationY: 30
-  rotationSpeed: 1
-  snapBackDuration: 0.2
 --- !u!23 &4841029077269314909
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3662,3 +3710,4 @@ SceneRoots:
   - {fileID: 826833938}
   - {fileID: 1864195138}
   - {fileID: 1399158848}
+  - {fileID: 1341439324}

@@ -11,7 +11,7 @@ It's great to see you again, my fellow traveler. #speaker:Mysterious Witch
 I have some cool stuff for you. Would you like to trade? #speaker:Mysterious Witch
     {currentRune >= 100:
     * [Exchange <color=\#EEC15F>100 runes</color> for <b><color=\#FF001D>Blood Fang</color></b> Sigil.]
-    ~ TradeSigilByRune(5, "Blood Fang")
+    ~ TradeSigilByRune(100, "Blood Fang")
     That's a wise choice. #speaker:Mysterious Witch
     -> chosen
     - else:

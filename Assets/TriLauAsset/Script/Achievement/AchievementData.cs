@@ -48,7 +48,7 @@ namespace MyRule
             }
         }
 
-        public virtual float GetCurrentProgress() => 0f;
+        public virtual float GetCurrentProgress() => IsUnlocked? 1f : 0f;
     }
 
     [Serializable]
@@ -114,11 +114,6 @@ namespace MyRule
                 }
             }
         }
-
-        public override float GetCurrentProgress()
-        {
-            return IsUnlocked ? 1f : 0f;
-        }
     }
 
     [Serializable]
@@ -142,11 +137,6 @@ namespace MyRule
                     UnlockAchievement();
                 }
             }
-        }
-
-        public override float GetCurrentProgress()
-        {
-            return IsUnlocked ? 1f : 0f;
         }
     }
 }

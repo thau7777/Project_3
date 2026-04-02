@@ -5,29 +5,13 @@ using UnityEngine.InputSystem;
 
 namespace MyRule
 {
-    public class PlanetManager : MonoBehaviour
+    public class PlanetManager : Singleton<PlanetManager>
     {
-        public static PlanetManager instance;
-
         [SerializeField] private List<Planet> planets;
         [SerializeField] private CinemachineCamera planetCam;
         public Planet planetTargetd;
 
         public bool isPlanetShow;
-
-        private void Awake()
-        {
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(gameObject);
-        }
-
-        private void OnDestroy()
-        {
-            if (instance == this)
-                instance = null;
-        }
 
         // ===================== INPUT =====================
 

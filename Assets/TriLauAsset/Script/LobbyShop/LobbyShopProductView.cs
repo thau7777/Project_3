@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace MyRule
 {
-    public class LobbyShopProductView : MonoBehaviour, ISelectHandler, IDeselectHandler, ISubmitHandler
+    public class LobbyShopProductView : MonoBehaviour
     {
         [SerializeField] private Image icon;
         [SerializeField] private TextMeshProUGUI productName;
@@ -14,9 +14,13 @@ namespace MyRule
         [SerializeField] private Sprite crystalImg;
         [SerializeField] private Sprite realMoneyImg;
         [SerializeField] private TextMeshProUGUI pricesTxt;
-        [SerializeField] private GameObject select;
-        [SerializeField] private GameObject deselect;
         [SerializeField] private LobbyShopProductConfig productConfig;
+        [SerializeField] private Button button;
+
+        private void Start()
+        {
+            button.onClick.AddListener(OnClick);
+        }
 
         public void SetProduct(LobbyShopProductConfig productConfig)
         {
@@ -64,20 +68,7 @@ namespace MyRule
             pricesTxt.text = productConfig.prices.ToString();
         }
 
-        public void OnSelect(BaseEventData eventData)
-        {
-            select.SetActive(true);
-            deselect.SetActive(false);
-        }
-
-        public void OnDeselect(BaseEventData eventData)
-        {
-            select.SetActive(false);
-            deselect.SetActive(true);
-        }
-
-
-        public void OnSubmit(BaseEventData eventData)
+        public void OnClick()
         {
             switch (productConfig.productType)
             {
@@ -110,7 +101,7 @@ namespace MyRule
                     }
                 case EProduct.Crystal:
                     {
-                        if (LobbyShopManager.Instance.BuyCrystal(productConfig.prices, productConfig.crystal))
+                        if (LobbyShopManager.Instance.BuyCrystal(0, productConfig.crystal))
                         {
 
                         }

@@ -69,7 +69,7 @@ namespace Turnbase
                 });
             }
 
-            CombatManager.Instance.SetCombatResultWin();
+            //CombatManager.Instance.SetCombatResultWin();
             isVicrory = true;
         }
 
@@ -94,7 +94,7 @@ namespace Turnbase
                 }
             }
 
-            CombatManager.Instance.SetCombatResultLose();
+            //CombatManager.Instance.SetCombatResultLose();
             isVicrory = false;
         }
 

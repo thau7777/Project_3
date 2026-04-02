@@ -23,12 +23,12 @@ namespace MyRule.UI
             if (moveDir == MoveDirection.Left)
             {
                 currentOptionIndex -= 1;
-                AudioManager.Instance.PlaySFX(SFXType.UI_Click);
+                AudioManager.Instance.PlaySound("UIButtonClick");
             }
             else if (moveDir == MoveDirection.Right)
             {
                 currentOptionIndex += 1;
-                AudioManager.Instance.PlaySFX(SFXType.UI_Click);
+                AudioManager.Instance.PlaySound("UIButtonClick");
             }
 
             if (currentOptionIndex < 0)
