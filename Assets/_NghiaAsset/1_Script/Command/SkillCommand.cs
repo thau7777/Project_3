@@ -80,7 +80,7 @@ namespace Turnbase
         {
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySFX(skill.impactSFXType);
+                //AudioManager.Instance.PlaySFX(skill.impactSFXType);
             }
 
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab;
@@ -130,7 +130,7 @@ namespace Turnbase
         {
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySFX(skill.impactSFXType);
+                //AudioManager.Instance.PlaySFX(skill.impactSFXType);
             }
 
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab; 

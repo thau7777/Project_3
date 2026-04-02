@@ -241,7 +241,7 @@ namespace Turnbase
                 if (AudioManager.Instance != null)
                 {
                     SFXType hurtSFX = isPlayer ? SFXType.Hurt : SFXType.EnemyHurt;
-                    AudioManager.Instance.PlaySFX(hurtSFX);
+                    //AudioManager.Instance.PlaySFX(hurtSFX);
                 }
                 lastHurtSoundTime = Time.time;
             }

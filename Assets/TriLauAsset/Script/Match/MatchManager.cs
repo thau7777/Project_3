@@ -21,6 +21,14 @@ namespace MyRule
             GameSystemManager.Instance.Unregister(this);
         }
 
+        private void Update()
+        {
+            if (_matchData != null)
+            {
+                _matchData.IncreaseTimePlayed(Time.deltaTime);
+            }
+        }
+
         public bool IsNewMatch() => _matchData.IsNewMatch == true;
 
         public void CreateNewMatch(EMap mapType, CharacterData characterStatsData, int runeAmount, List<SigilData> sigilsInMatch)
@@ -32,6 +40,7 @@ namespace MyRule
         public void FinishMatch()
         {
             HistoryManager.Instance.AddMatchToHistory(_matchData);
+            GameSystemManager.Instance.GameData.SetMatch(null);
             _matchData = null;
         }
 
@@ -47,6 +56,8 @@ namespace MyRule
 
         public void SaveData(GameData data)
         {
+            if (data.MatchData == null) return;
+
             data.SetMatch(_matchData);
         }
 

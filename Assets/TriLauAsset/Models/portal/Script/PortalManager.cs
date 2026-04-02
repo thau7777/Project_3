@@ -99,13 +99,7 @@ namespace MyRule
 
                 await UniTask.Delay(200);
 
-                startGameTimeline.Play();
-
-                VolumeController.Instance.AdjustFlareVolumeWeight();
-
-                HighlightPortalAsync(5000f, cutscene2Duration).Forget();
-
-                warpController.StartRunWarpDrive();
+                PlayPortalStartGameTimeLine();
 
                 await UniTask.Delay(5200);
                 
@@ -113,6 +107,23 @@ namespace MyRule
 
                 await Loader.LoadSceneWithLoading(targetScene);
             }
+        }
+
+        private async void PlayPortalStartGameTimeLine()
+        {
+            await BlackFade.Instance.FadeIn(0.2f);
+
+            await CinematicBorder.Instance.ShowBorder(0f);
+
+            BlackFade.Instance.FadeOut(0.1f).Forget();
+
+            startGameTimeline.Play();
+
+            VolumeController.Instance.AdjustFlareVolumeWeight();
+
+            HighlightPortalAsync(5000f, cutscene2Duration).Forget();
+
+            warpController.StartRunWarpDrive();
         }
     }
 }

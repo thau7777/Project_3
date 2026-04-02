@@ -194,7 +194,7 @@ namespace Turnbase
 
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySFX(selectedSkill.castSFXType);
+                //AudioManager.Instance.PlaySFX(selectedSkill.castSFXType);
             }
         }
 

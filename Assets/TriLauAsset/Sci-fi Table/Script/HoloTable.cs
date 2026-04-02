@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public class HoloTable : MonoBehaviour
+    public class HoloTable : Singleton<HoloTable>
     {
         [SerializeField] private GameObject holoTableCam;
         [SerializeField] private ScifiMouseController scifiMouse;
