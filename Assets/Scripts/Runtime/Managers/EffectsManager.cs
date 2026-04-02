@@ -139,7 +139,7 @@ public class EffectsManager : MonoBehaviour
         {
             if (effectData.effect.name == "The Wish Under Star")
             {
-                RemoveAllActiveEffects();
+                RemoveAllDebuff();
             }
 
             ActiveEffect newEffect = new ActiveEffect(sender, effectData.effect, effectData.effect.holdDuration, effectData.stacksToApply);
@@ -188,6 +188,15 @@ public class EffectsManager : MonoBehaviour
     {
         for (int i = activeEffectsList.Count - 1; i >= 0; i--)
             RemoveEffect(activeEffectsList[i]);
+    }
+
+    public void RemoveAllDebuff()
+    {
+        for (int i = activeEffectsList.Count - 1; i >= 0; i--)
+        {
+            if (activeEffectsList[i].effect.effectType == EffectType.Debuff)
+                RemoveEffect(activeEffectsList[i]);
+        }
     }
 
     public bool HasEffect(string effectName)

@@ -43,10 +43,12 @@ public class EnviromentManager : Singleton<EnviromentManager>
 
 
     [SerializeField] private bool _isBadWeatherForTest = true;
-
     private readonly Dictionary<Material, (float Metallic, float Smoothness)> _originalMaterialValues = new();
-    private SoundID _currentAmbienceSound;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     private void Start()
     {
         CacheAllOriginalMaterialValues();
@@ -139,8 +141,8 @@ public class EnviromentManager : Singleton<EnviromentManager>
     }
     private void ApplyMapAmbienceSound(MapInfo mapInfo, bool isBad)
     {
-        _currentAmbienceSound = isBad ? mapInfo.BadAmbienceSound : mapInfo.NormalAmbienceSound;
-        BroAudio.Play(_currentAmbienceSound, _transitionDuration);
+        SoundID sound = isBad ? mapInfo.BadAmbienceSound : mapInfo.NormalAmbienceSound;
+        BroAudio.Play(sound, _transitionDuration);
     }
 
     private void ApplyRainMaterials(MapInfo map)
@@ -175,6 +177,7 @@ public class EnviromentManager : Singleton<EnviromentManager>
     {
         foreach (var mapInfo in _mapInfos)
             RestoreMapMaterials(mapInfo);
-        BroAudio.Stop(_currentAmbienceSound, _transitionDuration);
+        BroAudio.Stop(BroAudioType.Ambience);
+
     }
 }

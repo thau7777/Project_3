@@ -436,6 +436,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4797240863399109881}
   - component: {fileID: 4500493742653011506}
+  - component: {fileID: 4766119866356756700}
   m_Layer: 0
   m_Name: Dash_Trail
   m_TagString: Untagged
@@ -558,3 +559,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4766119866356756700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8639793652224158569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 439c72eb8f0f00a4796d725df0960a22, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8639793652224158569}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0

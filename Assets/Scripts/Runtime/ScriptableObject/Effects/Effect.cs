@@ -1,3 +1,4 @@
+using Ami.BroAudio;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -88,9 +89,19 @@ public class Effect : ScriptableObject
     [TabGroup("Visual Feedback")]
     public FlyweightSettings vfxSettings;
 
+    [TabGroup("Sounds")]
+    [SerializeField] private List<SoundID> _effectApplySounds;
+    [TabGroup("Sounds")]
+    [SerializeField] private List<SoundID> _effectLoopSounds;
+    [TabGroup("Sounds")]
+    [SerializeField] private List<SoundID> _effectRemoveSounds;
+
     public virtual Flyweight OnApply(GameObject sender, GameObject target, ActiveEffect activeEffect)
     {
         ApplyModifier(sender, target, activeEffect, true);
+        TurnOnSound(_effectApplySounds);
+        TurnOnSound(_effectLoopSounds);
+
         if (vfxSettings != null)
         {
             var vfx = FlyweightFactory.Spawn(vfxSettings);
@@ -135,6 +146,29 @@ public class Effect : ScriptableObject
         activeEffect.activeVFX?.transform.SetParent(null);
         if (target != null && activeEffect != null)
             RemoveModifier(target, activeEffect);
+
+        TurnOffSound(_effectLoopSounds);
+        TurnOnSound(_effectRemoveSounds);
+    }
+
+    private void TurnOnSound(List<SoundID> soundIDs)
+    {
+        if (soundIDs == null || soundIDs.Count == 0) return;
+        foreach (var soundID in soundIDs)
+        {
+            if(soundID.ToString() != "None")
+                BroAudio.Play(soundID);
+        }
+    }
+
+    private void TurnOffSound(List<SoundID> soundIDs)
+    {
+        if (soundIDs == null || soundIDs.Count == 0) return;
+        foreach (var soundID in soundIDs)
+        {
+            if(soundID.ToString() != "None")
+                BroAudio.Stop(soundID);
+        }
     }
 
     public void ApplyModifier(GameObject sender, GameObject target, ActiveEffect activeEffect, bool isApplyInstant)

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5958321028893184468}
   - component: {fileID: 5261379459129503492}
   - component: {fileID: 5332723683002924971}
+  - component: {fileID: -7354949676395207842}
   m_Layer: 11
   m_Name: BasicStraightAttack
   m_TagString: Untagged
@@ -118,6 +119,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!136 &5332723683002924971
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -141,3 +143,26 @@ CapsuleCollider:
   m_Height: 2.73
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.69}
+--- !u!114 &-7354949676395207842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4661192045303504669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 7aebd93b8f36f9f41b4d93468566595b, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4661192045303504669}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0

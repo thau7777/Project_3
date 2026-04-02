@@ -118,10 +118,6 @@ public class OneShotVFXSettings : FlyweightSettings
 
     #endregion
 
-    #region Sound Settings
-    public SoundID sfx;
-    public float soundDelayTime;
-    #endregion
 
     [SerializeField] private bool _addComponentsFirst = true;
     private void OnValidate()

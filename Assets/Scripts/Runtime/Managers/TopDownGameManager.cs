@@ -1,4 +1,5 @@
 ﻿
+using Ami.BroAudio;
 using Cysharp.Threading.Tasks;
 using MyRule;
 using System;
@@ -21,13 +22,13 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     private GameObject _tpEffect;
 
     [SerializeField, TabGroup("References")]
-    private Volume _lowHealthVolume;
+    private UnityEngine.Rendering.Volume _lowHealthVolume;
 
     [SerializeField, TabGroup("References")]
-    private Volume _deathVolume;
+    private UnityEngine.Rendering.Volume _deathVolume;
 
     [SerializeField, TabGroup("References")]
-    private Volume _parryVolume;
+    private UnityEngine.Rendering.Volume _parryVolume;
 
     private bool _slowMoCooldownReady = true;
     [SerializeField, TabGroup("SlowMotionSettings")] private float _slowMoCooldown = 5f;
@@ -41,6 +42,8 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
 
     [SerializeField, TabGroup("LowHealthEffectSettings")] private float _lowHealthLerpInDuration = 0.5f;
     [SerializeField, TabGroup("LowHealthEffectSettings")] private float _lowHealthLerpOutDuration = 0.5f;
+
+    [SerializeField, TabGroup("Sounds")] private SoundID _bgm;
 
 
     private bool _isFlashing = false;
@@ -70,6 +73,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     {
         EventBus<TopDownEndGameEvent>.Deregister(_topdownEndGameEventBinding);
         _inputReader.playerTopDownActions.onSkillUse -= OnContinueBtn;
+        BroAudio.Stop(_bgm);
 
     }
     private void Start()
@@ -97,6 +101,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         EnablePlayer();
         await UniTask.Delay(3000);
         EventBus<TopdownStartGameEvent>.Raise(new TopdownStartGameEvent());
+        BroAudio.Play(_bgm);
     }
     private void EnablePlayer()
     {
@@ -180,7 +185,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     public async void OnEndGameContinueButton()
     {
         if (!_continueBtnClickable) return;
-
+        BroAudio.Stop(BroAudioType.Music,1);
 
         _continueBtnClickable = false;
         EventBus<TopdownOnEndGameContinueEvent>.Raise(new TopdownOnEndGameContinueEvent());

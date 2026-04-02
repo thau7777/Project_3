@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using Ami.BroAudio;
+using Cysharp.Threading.Tasks;
 using MyRule;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +38,8 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     [SerializeField] private float _waveDuration = 60f; // 1 minute per wave
     [SerializeField] private LayerMask obstacleLayerMask;
     [SerializeField] private LayerMask groundLayerMask;
+
+    [TabGroup("Sounds"), SerializeField] private SoundID _enemyDieSound;
 
     // Wave state
     private GroupWave _groupWave;
@@ -230,6 +233,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     public void OnEnemyDied(GameObject enemyGO)
     {
+        BroAudio.Play(_enemyDieSound);
         _activeEnemies.Remove(enemyGO);
 
         RemainingEnemiesInWave--;
