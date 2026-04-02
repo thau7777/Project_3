@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using MyRule.Audio;
 using Turnbase;
 using UnityEngine;
@@ -36,9 +36,9 @@ public class Skill : ScriptableObject
     public bool useSkillSpawnPoint2;
 
     [Header("Lazer & VFX")]
-    [ShowIfEnumValue("skillType", SkillType.LaserAttack,SkillType.Chain)]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain, SkillType.StingRayAttack)]
     public FlyweightSettings_TB lazerSettings;
-    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain)]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain, SkillType.StingRayAttack)]
     public float laserVFXDuration = 5;
 
     public float impactVFXDuration = 1.0f;
@@ -100,7 +100,7 @@ public class Skill : ScriptableObject
     public DebuffSettings debuffProperties;
     [System.Serializable]
     public struct DebuffSettings 
-    {
+    {
         public DebuffType statToModify;
         public int durationTurns;
         public int baseDamagePerTurn;
@@ -169,8 +169,7 @@ public enum SkillType
     XPassive,
     DebuffPunisher,
     DebuffExtender,
-
-
+    StingRayAttack,
 }
 
 public enum ElementType

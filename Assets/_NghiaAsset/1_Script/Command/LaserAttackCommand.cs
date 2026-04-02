@@ -19,6 +19,7 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
+            user.parryMissCount = 0;
             targetLookRotation = GetTargetLookRotation();
             yield return RotateTowardsTarget();
 
@@ -80,10 +81,8 @@ namespace Turnbase
                     if (laserFlyweight != null)
                     {
                         laserFlyweight.Initialize(spawnPoint.position, spawnPoint.rotation);
-                        laserFlyweight.transform.SetParent(spawnPoint);
-                        laserFlyweight.transform.localPosition = Vector3.zero;
-                        laserFlyweight.transform.localRotation = Quaternion.identity;
 
+                        laserFlyweight.transform.SetParent(null);
                         battleManager.StartCoroutine(UpdateLaserPositions(laserFlyweight.gameObject, spawnPoint, target.transform));
                     }
                 }
