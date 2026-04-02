@@ -366,7 +366,16 @@ namespace Turnbase
                 {
                     CharacterManager.Instance.SetCurrentHealth(mainPlayer.stats.currentHP);
                 }
+
+                CombatManager.Instance.SetCombatResultWin();
+
                 TB_Menu.instance.ShowVictoryMenu();
+
+                Debug.LogWarning("Check Win");
+            }
+            else
+            {
+                CombatManager.Instance.SetCombatResultLose();
             }
         }
 
