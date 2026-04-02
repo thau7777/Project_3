@@ -73,6 +73,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     {
         EventBus<TopDownEndGameEvent>.Deregister(_topdownEndGameEventBinding);
         _inputReader.playerTopDownActions.onSkillUse -= OnContinueBtn;
+        BroAudio.Stop(_bgm);
 
     }
     private void Start()
@@ -100,7 +101,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         EnablePlayer();
         await UniTask.Delay(3000);
         EventBus<TopdownStartGameEvent>.Raise(new TopdownStartGameEvent());
-        BroAudio.Play(_bgm).AsBGM().SetTransition(Ami.BroAudio.Transition.CrossFade);
+        BroAudio.Play(_bgm);
     }
     private void EnablePlayer()
     {

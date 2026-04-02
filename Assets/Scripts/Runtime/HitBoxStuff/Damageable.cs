@@ -143,7 +143,7 @@ public class Damageable : MonoBehaviour
             if (floatingCombatTextSettings)
             {
                 var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
-                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1.5f), false);
             }
         }
         if(effectsManager.HasEffect("Holy Shield Effect"))
@@ -154,7 +154,7 @@ public class Damageable : MonoBehaviour
             if (floatingCombatTextSettings)
             {
                 var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
-                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Holy, sender.transform.position.Add(y: 1.5f), false);
             }
             return;
 
