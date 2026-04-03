@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Ami.BroAudio;
+using Ami.BroAudio.Data;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -13,6 +15,9 @@ public class HookController : MonoBehaviour
     public TutorialTrigger fishTutorial;
     [SerializeField] private List<GameObject> image;
     [SerializeField] private InputReader inputReader;
+
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID bgm;
 
     [Header("Charge")]
     public float chargeSpeed = 1.5f;

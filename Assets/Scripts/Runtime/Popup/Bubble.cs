@@ -25,8 +25,8 @@ public class Bubble : MonoBehaviour
         float t = Time.time + speed;
 
         rb.linearVelocity = new Vector2(
-            Mathf.Sin(t) * 3f,
-            Mathf.Cos(t * 5f) * 2f
+            Mathf.Sin(t) * 8f,
+            Mathf.Cos(t * 15f) * 2f
         );
     }
     private void OnTriggerEnter2D(Collider2D collision)
