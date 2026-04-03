@@ -49003,7 +49003,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7870088656845102243}
   - component: {fileID: 2869027408423920049}
+  - component: {fileID: -5497514147696472621}
   - component: {fileID: 377335020629537907}
+  - component: {fileID: 570045406744152077}
   m_Layer: 11
   m_Name: Spell_Dark_2
   m_TagString: Untagged
@@ -53819,6 +53821,29 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &-5497514147696472621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6885387230498785720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 092668e1acaa7ce4388b57317a64b477, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 6885387230498785720}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!199 &377335020629537907
 ParticleSystemRenderer:
   serializedVersion: 7
@@ -53900,6 +53925,29 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &570045406744152077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6885387230498785720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 36e3eb1ff86442b478e9ae09dab75ae3, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 6885387230498785720}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0.6
 --- !u!1 &8430797150530076349
 GameObject:
   m_ObjectHideFlags: 0
