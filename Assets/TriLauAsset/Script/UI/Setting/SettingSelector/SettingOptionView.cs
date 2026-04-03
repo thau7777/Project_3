@@ -41,7 +41,7 @@ namespace MyRule.UI
 
             SettingDescriptionView.Instance.SetInfo(settingName, settingDesc);
 
-            AudioManager.Instance.PlaySound("UIButtonClick");
+            AudioManager.Instance.PlaySound("UIButtonSelect");
         }
 
         public void OnDeselect(BaseEventData eventData)

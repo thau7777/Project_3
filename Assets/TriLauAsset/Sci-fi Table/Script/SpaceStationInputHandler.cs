@@ -1,3 +1,4 @@
+using MyRule.Audio;
 using MyRule.CommandPattern;
 using MyRule.UI;
 using UnityEngine;
@@ -59,6 +60,7 @@ namespace MyRule
             if (PortalManager.Instance.CanInteract)
             {
                 EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Portal));
+                AudioManager.Instance.PlaySound("PortalInteract");
             }
         }
 

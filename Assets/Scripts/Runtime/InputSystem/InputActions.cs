@@ -1340,6 +1340,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SkipTutorial"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4d6e47c-fa1f-4ed5-bc31-315b3bbeb10d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1472,6 +1481,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc5a5cd4-d3f5-4a38-8df5-223b65b9ffb4"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipTutorial"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1809,6 +1829,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_SpaceStation_Esc = m_SpaceStation.FindAction("Esc", throwIfNotFound: true);
         m_SpaceStation_Actve = m_SpaceStation.FindAction("Actve", throwIfNotFound: true);
         m_SpaceStation_Tab = m_SpaceStation.FindAction("Tab", throwIfNotFound: true);
+        m_SpaceStation_SkipTutorial = m_SpaceStation.FindAction("SkipTutorial", throwIfNotFound: true);
         // DiceRoll
         m_DiceRoll = asset.FindActionMap("DiceRoll", throwIfNotFound: true);
         m_DiceRoll_TabMenu = m_DiceRoll.FindAction("TabMenu", throwIfNotFound: true);
@@ -2809,6 +2830,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_SpaceStation_Esc;
     private readonly InputAction m_SpaceStation_Actve;
     private readonly InputAction m_SpaceStation_Tab;
+    private readonly InputAction m_SpaceStation_SkipTutorial;
     /// <summary>
     /// Provides access to input actions defined in input action map "SpaceStation".
     /// </summary>
@@ -2844,6 +2866,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "SpaceStation/Tab".
         /// </summary>
         public InputAction @Tab => m_Wrapper.m_SpaceStation_Tab;
+        /// <summary>
+        /// Provides access to the underlying input action "SpaceStation/SkipTutorial".
+        /// </summary>
+        public InputAction @SkipTutorial => m_Wrapper.m_SpaceStation_SkipTutorial;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2888,6 +2914,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Tab.started += instance.OnTab;
             @Tab.performed += instance.OnTab;
             @Tab.canceled += instance.OnTab;
+            @SkipTutorial.started += instance.OnSkipTutorial;
+            @SkipTutorial.performed += instance.OnSkipTutorial;
+            @SkipTutorial.canceled += instance.OnSkipTutorial;
         }
 
         /// <summary>
@@ -2917,6 +2946,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Tab.started -= instance.OnTab;
             @Tab.performed -= instance.OnTab;
             @Tab.canceled -= instance.OnTab;
+            @SkipTutorial.started -= instance.OnSkipTutorial;
+            @SkipTutorial.performed -= instance.OnSkipTutorial;
+            @SkipTutorial.canceled -= instance.OnSkipTutorial;
         }
 
         /// <summary>
@@ -3487,6 +3519,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTab(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SkipTutorial" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkipTutorial(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "DiceRoll" which allows adding and removing callbacks.
