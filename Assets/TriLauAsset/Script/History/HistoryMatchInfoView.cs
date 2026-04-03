@@ -30,14 +30,14 @@ namespace MyRule.UI
             canvasGroup.blocksRaycasts = false;
         }
 
-        public void SetMatchValue(int index, MatchData matchData)
+        public void SetMatchValue(int index, HistotyMatchData matchData)
         {
             ResetHistorySigilView();
 
-            session.text = index.ToString(); 
+            session.text = (index + 1).ToString(); 
             TimeSpan timeSpan = TimeSpan.FromSeconds(matchData.TimePlayed);
             timePlayed.text = timeSpan.ToString(@"hh\:mm\:ss");
-            className.text = matchData.CharacterData.CharacterClass.ToString();
+            className.text = matchData.CharacterClass.ToString();
             enmiesDefeated.text = matchData.EnemiesDefeated.ToString();
             nodesExplored.text = matchData.NodesExplored.ToString();
             damage.text = matchData.DamageInflicted.ToString();
@@ -45,6 +45,8 @@ namespace MyRule.UI
 
             for (int i = 0; i < matchData.SigilStorageInMatch.ActiveSigils.Length; i++)
             {
+                SigilData sigilData = matchData.SigilStorageInMatch.ActiveSigils[i];
+                if (sigilData == null) continue;
                 lobbySigilViews[i].gameObject.SetActive(true);
                 lobbySigilViews[i].SetSigil(matchData.SigilStorageInMatch.ActiveSigils[i]);
             }

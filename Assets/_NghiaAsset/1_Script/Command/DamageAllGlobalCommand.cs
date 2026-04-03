@@ -172,7 +172,7 @@ namespace Turnbase
 
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySFX(skill.impactSFXType);
+                //AudioManager.Instance.PlaySFX(skill.impactSFXType);
             }
 
             if (effectToSpawn != null)

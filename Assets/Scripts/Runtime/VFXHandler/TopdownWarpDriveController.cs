@@ -1,14 +1,15 @@
-﻿using UnityEngine;
-using UnityEngine.VFX;
+﻿using Ami.BroAudio;
 using Cysharp.Threading.Tasks;
-using System.Threading;
 using System;
-using UnityEngine.Rendering;
+using System.Threading;
 using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.VFX;
 
 public class TopdownWarpDriveController : MonoBehaviour
 {
-    [SerializeField] private Volume TPVolume;
+    [SerializeField] private UnityEngine.Rendering.Volume TPVolume;
     [SerializeField] private VisualEffect _visualEffect;
     [SerializeField] private CinemachineBasicMultiChannelPerlin _cameraNoiseChannel;
 
@@ -16,6 +17,10 @@ public class TopdownWarpDriveController : MonoBehaviour
     [SerializeField, TabGroup("Warp Settings")] private float _fadeInDuration = 1f;
     private float _holdDuration = 2f;
     [SerializeField, TabGroup("Warp Settings")] private float _fadeOutDuration = 1f;
+
+    [SerializeField, TabGroup("Sounds")] private SoundID _portalIn;
+    [SerializeField, TabGroup("Sounds")] private SoundID _portalLoop;
+    [SerializeField, TabGroup("Sounds")] private SoundID _portalOut;
 
     private Material _firstCylinderMaterial;
     private Material _secondCylinderMaterial;
@@ -71,9 +76,15 @@ public class TopdownWarpDriveController : MonoBehaviour
 
         try
         {
+            float durationTurnOnSound = 0.1f;
             await UniTask.Delay(TimeSpan.FromSeconds(_waitDuration), cancellationToken: _cts.Token);
+            BroAudio.Play(_portalIn);
+            BroAudio.Play(_portalLoop);
             await Tween(0f, 1f, _fadeInDuration, _cts.Token);
-            await UniTask.Delay(TimeSpan.FromSeconds(_holdDuration), cancellationToken: _cts.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(_holdDuration - durationTurnOnSound), cancellationToken: _cts.Token);
+            BroAudio.Stop(_portalLoop);
+            BroAudio.Play(_portalOut);
+            await UniTask.Delay(TimeSpan.FromSeconds(durationTurnOnSound), cancellationToken: _cts.Token);
             await Tween(1f, 0f, _fadeOutDuration, _cts.Token);
             await UniTask.Delay(TimeSpan.FromSeconds(_fadeInDuration + _holdDuration + _fadeOutDuration + 5), cancellationToken: _cts.Token);
             gameObject.SetActive(false);

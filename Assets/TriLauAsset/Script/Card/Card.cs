@@ -223,7 +223,8 @@ namespace MyRule
                             clickAnimate.FlipDown().Forget();
                             Debug.Log("Click " + sigilNameTxt.text);
                             EventBus<SigilChosenEvent>.Raise(new SigilChosenEvent(sigilSO, replaceIndex));
-                            EventBus<SpendRuneEvent>.Raise(new SpendRuneEvent(-sigilSO.price));
+                            EventBus<SpendRuneEvent>.Raise(new SpendRuneEvent(sigilSO.price));
+                            priceObj.SetActive(false);
                             isShowing = false;
                             transform.localScale = originalScale;
                             MatchManager.Instance.MatchData.SigilPool.RemoveSigil(sigilData);

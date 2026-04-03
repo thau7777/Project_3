@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6968109281611421612}
   - component: {fileID: -344065899450251561}
   - component: {fileID: 8679451471360046833}
+  - component: {fileID: -7684545851767231514}
   m_Layer: 11
   m_Name: Explosion_Mage_Base
   m_TagString: Untagged
@@ -4830,7 +4831,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &6968109281611421612
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4876,6 +4877,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4907,7 +4909,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!136 &-344065899450251561
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4943,13 +4944,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144849a07d1333d4bad9c0edd571f79a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBoxHandler
-  <Origin>k__BackingField: {fileID: 0}
-  <DodgeLayers>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 8
   OnColliderHit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-7684545851767231514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144131363257151002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 5f0a4e3bfba993d4f8da78776432c9b8, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 5144131363257151002}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &7233378643706987766
 GameObject:
   m_ObjectHideFlags: 0
@@ -9775,7 +9795,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &5669363835279426967
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9821,6 +9841,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9852,7 +9873,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &7872598142058000268
 GameObject:
   m_ObjectHideFlags: 0
@@ -14669,7 +14689,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &8139718903748050683
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -14715,6 +14735,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -14746,7 +14767,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &8852465841626792216
 GameObject:
   m_ObjectHideFlags: 0
@@ -19572,7 +19592,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &7559329216904318498
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19618,6 +19638,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -19649,4 +19670,3 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0

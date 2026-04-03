@@ -3755,6 +3755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 591005832}
   - component: {fileID: 591005833}
+  - component: {fileID: 591005834}
   m_Layer: 0
   m_Name: MainMenuView
   m_TagString: Untagged
@@ -3797,6 +3798,29 @@ MonoBehaviour:
   loadGameBtn: {fileID: 0}
   settingsBtn: {fileID: 953561452}
   quitBtn: {fileID: 1037227102}
+--- !u!114 &591005834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591005830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 1
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 371048ab6c932a34690bfdf0a011d1f6, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 591005830}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1001 &609692421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3862,6 +3886,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 18909760996641151, guid: c863f656782d099438e2f1ba789301c8, type: 3}
   m_PrefabInstance: {fileID: 609692421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &636146288 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5773068584984630759, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+  m_PrefabInstance: {fileID: 1241195380822979807}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &637769308
 PrefabInstance:
@@ -4276,7 +4305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 696297210}
-  - component: {fileID: 696297209}
+  - component: {fileID: 696297211}
   m_Layer: 0
   m_Name: freesound_community-bonfire-hq-6991
   m_TagString: Untagged
@@ -4284,103 +4313,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!82 &696297209
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696297208}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 25256045ba3cd514681e59f6a762995d, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.5
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!4 &696297210
 Transform:
   m_ObjectHideFlags: 0
@@ -4396,6 +4328,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145739652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &696297211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696297208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 1
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: ac5435b895847cd47939de3ba0a0c341, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 696297208}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1001 &702286227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13237,6 +13192,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[0]._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: c47afc04a794edb43bb688adb88ddb10, type: 2}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[1]._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: d4ba48722f37a9d42937d44a21aba985, type: 2}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[2]._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: ac5435b895847cd47939de3ba0a0c341, type: 2}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[3]._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 371048ab6c932a34690bfdf0a011d1f6, type: 2}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[0].<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 636146288}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[1].<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 636146288}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[2].<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 636146288}
+    - target: {fileID: 7136805936438387435, guid: 41595a948fe407740b662dce806b52ab, type: 3}
+      propertyPath: soundIDStorage.Array.data[3].<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 636146288}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

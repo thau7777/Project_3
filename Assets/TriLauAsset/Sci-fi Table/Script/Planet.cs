@@ -1,3 +1,4 @@
+using MyRule.CommandPattern;
 using MyRule.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -97,6 +98,9 @@ namespace MyRule
             PortalManager.Instance.SetTargetScene(planetSO.scene);
 
             Cursor.lockState = CursorLockMode.None;
+
+            CommandInvoker.UndoCommand();
+            CommandInvoker.UndoCommand();
         }
     }
 }

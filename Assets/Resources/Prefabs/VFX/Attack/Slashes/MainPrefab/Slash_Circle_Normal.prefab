@@ -9800,6 +9800,7 @@ GameObject:
   - component: {fileID: 6839632563711459427}
   - component: {fileID: 6839632563711459426}
   - component: {fileID: 6595272437893496449}
+  - component: {fileID: 8327350269604829209}
   m_Layer: 11
   m_Name: Slash_Circle_Normal
   m_TagString: Untagged
@@ -14647,6 +14648,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8327350269604829209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6839632563711459424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 71c548426852a68469ad59eb7939fa0d, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 3867776138511933401, guid: 2e132850e2622e54fb113d7dbdebf68e, type: 3}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &6839632564679536165
 GameObject:
   m_ObjectHideFlags: 0

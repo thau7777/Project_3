@@ -41,6 +41,7 @@ namespace MyRule
                 currentRuneAmount += evt.runeAmount;
 
                 EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount, lockReceiveTurn));
+                EventBus<UpdateInkDialogueVariableEvent>.Raise(new UpdateInkDialogueVariableEvent("currentRune", currentRuneAmount));
             }
             else
             {

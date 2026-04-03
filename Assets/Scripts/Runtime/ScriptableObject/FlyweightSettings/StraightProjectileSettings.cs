@@ -1,3 +1,4 @@
+using Ami.BroAudio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +33,7 @@ public class StraightProjectileSettings : FlyweightSettings
     [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public bool canApplyEffects;
     [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public bool pickRandomEffectFromList;
     [ShowIf("canDealDamageByProjectile"), TabGroup("DamageProjectileSettings")] public List<EffectData> effectsToApplyList;
+
     public override Flyweight Create()
     {
         var go = Instantiate(prefab);

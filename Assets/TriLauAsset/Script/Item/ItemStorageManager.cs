@@ -45,27 +45,21 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
-            if (data.MatchData != null)
-            {
-                if (data.MatchData.ItemStorageInMatch != null)
-                {
-                    itemStorage = data.MatchData.ItemStorageInMatch;
+            itemStorage = new ItemStorageData();
 
-                    foreach (var item in itemStorage.Items)
-                    {
-                        if (item != null)
-                        {
-                            if (ItemManager.Instance != null)
-                            {
-                                ItemSO itemSO = ItemManager.Instance.GetItemByType(item.ItemType);
-                                EventBus<AddItemEvent>.Raise(new AddItemEvent(item.SlotIndex, itemSO));
-                            }
-                        }
-                    }
-                }
-                else
+            if (data.MatchData == null) return UniTask.CompletedTask;
+
+            itemStorage = data.MatchData.ItemStorageInMatch;
+
+            foreach (var item in itemStorage.Items)
+            {
+                if (item != null)
                 {
-                    itemStorage = new ItemStorageData();
+                    if (ItemManager.Instance != null)
+                    {
+                        ItemSO itemSO = ItemManager.Instance.GetItemByType(item.ItemType);
+                        EventBus<AddItemEvent>.Raise(new AddItemEvent(item.SlotIndex, itemSO));
+                    }
                 }
             }
 

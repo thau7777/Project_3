@@ -120,6 +120,8 @@ namespace MyRule
         #region Save Load
         public UniTask LoadData(GameData data)
         {
+            sigilStorageData = new SigilStorageData();
+
             if (data.MatchData == null) return UniTask.CompletedTask;
 
             sigilStorageData = data.MatchData.SigilStorageInMatch;

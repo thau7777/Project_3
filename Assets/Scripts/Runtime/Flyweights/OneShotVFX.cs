@@ -1,3 +1,4 @@
+using Ami.BroAudio;
 using System.Collections;
 using System.Drawing;
 using UnityEngine;
@@ -86,7 +87,7 @@ public class OneShotVFX : Flyweight
     {
         gameObject.SetActive(true);
         transform.localScale = new Vector3(size, size, size);
-            
+        
         if (settings.useAdvanceSettings)
         {
             //CheckAndSetProperty(settings.sizeName, size);
@@ -115,6 +116,7 @@ public class OneShotVFX : Flyweight
         //if(settings.CanDealDamage)
         //    GetComponent<DamageDealer>().Damage = Damage;
         _despawnCoroutine = StartCoroutine(LifetimeRoutine(lifeTime));
+        
     }
     private IEnumerator LifetimeRoutine(float lifeTime)
     {

@@ -81,7 +81,7 @@ namespace MyRule
             {
                 isOnPlanet = true;
                 planetPos = other.transform.position;
-                PlanetManager.instance.planetTargetd = other.GetComponent<Planet>();
+                PlanetManager.Instance.planetTargetd = other.GetComponent<Planet>();
             }
         }
 

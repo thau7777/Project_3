@@ -5145,6 +5145,7 @@ GameObject:
   - component: {fileID: 1255070778}
   - component: {fileID: 1255070777}
   - component: {fileID: 1255070776}
+  - component: {fileID: 1255070780}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5241,6 +5242,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1255070780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255070775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a8e5366b836044ca1d7a65d757a289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.UI.SettingsView
+  _tabView: {fileID: 674062051}
 --- !u!1001 &1266586484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9816,6 +9830,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: firtSelect.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -9827,6 +9845,10 @@ PrefabInstance:
       propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 776725429}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 674062051}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: firtSelect.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetFirstSelect
@@ -9840,12 +9862,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetFirstSelect
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: ResetTab
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: firtSelect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -9860,7 +9890,15 @@ PrefabInstance:
       value: MyRule.UI.SettingDescriptionView, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: MyRule.UI.TabView, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
@@ -9873,6 +9911,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
       propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2585110692659842429, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
+      propertyPath: onFirstSelect.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7677126917594470146, guid: 69e0dcb1a2cba204ba8576493b8b171b, type: 3}
@@ -10992,6 +11034,8 @@ GameObject:
   - component: {fileID: 3592591054680069410}
   - component: {fileID: 6508250635875898453}
   - component: {fileID: 7426378500731347353}
+  - component: {fileID: 7426378500731347354}
+  - component: {fileID: 7426378500731347355}
   m_Layer: 5
   m_Name: SoundsContents
   m_TagString: Untagged
@@ -11011,6 +11055,49 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &7426378500731347354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7426378500731347352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70540fba2898ab458b9d5df97f0ce5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundVolume
+  _applyOnEnable: 0
+  _onlyApplyOnce: 0
+  _resetOnDisable: 0
+  _fadeTime: 0
+  _sliderType: 0
+  _allowBoost: 0
+  _settings:
+  - _audioType: -1
+    _volume: 1
+    _slider: {fileID: 5648668695243557115}
+  - _audioType: 1
+    _volume: 1
+    _slider: {fileID: 1518101887}
+  - _audioType: 8
+    _volume: 1
+    _slider: {fileID: 704309236}
+--- !u!114 &7426378500731347355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7426378500731347352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5df60b8959d3ec244aafa88bedc50899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.UI.SoundSettingSliderView
+  masterSlider: {fileID: 5648668695243557115}
+  musicSlider: {fileID: 1518101887}
+  sfxSlider: {fileID: 704309236}
 --- !u!114 &7505687378140035847
 MonoBehaviour:
   m_ObjectHideFlags: 0

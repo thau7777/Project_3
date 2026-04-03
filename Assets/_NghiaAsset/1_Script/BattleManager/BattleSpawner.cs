@@ -66,7 +66,7 @@ namespace Turnbase
 
         private void OnSoundMonster()
         {
-            AudioManager.Instance.PlaySFX(SFXType.EnemySound);
+            //AudioManager.Instance.PlaySFX(SFXType.EnemySound);
         }
 
         public IEnumerator SpawnWaveRoutine(WaveData waveData, Transform[] enemySlots)
