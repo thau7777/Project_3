@@ -46,8 +46,6 @@ namespace Turnbase
                 target.isParrySuccessful = false;
                 user.isAttackBlocked = false;
 
-                user.parryMissCount = 0; 
-
                 user.isLastHit = (i == totalAttacks - 1);
                 
                 yield return PerformAttack();

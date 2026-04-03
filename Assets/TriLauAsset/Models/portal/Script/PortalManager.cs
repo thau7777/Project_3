@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using MyRule.Audio;
 using MyRule.CommandPattern;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,6 +56,8 @@ namespace MyRule
             float time = 0f;
             float from = portalRenderer.material.GetFloat("_Indestry");
 
+            AudioManager.Instance.PlaySound("PortalGlow");
+
             while (time < duration)
             {
                 float intensity = Mathf.Lerp(from, to, time / duration);
@@ -89,6 +92,7 @@ namespace MyRule
         {
             if (canInteract)
             {
+                AudioManager.Instance.PlaySound("UIButtonClick");
                 CharacterData characterStatsData = CharacterManager.Instance.GetCharacterStats();
                 int runeAmount = RuneManger.Instance.CurrentRuneAmount;
                 List<SigilData> sigilsInGame = SigilCollectionManager.Instance.GetSigilCollection();
@@ -118,6 +122,7 @@ namespace MyRule
             BlackFade.Instance.FadeOut(0.1f).Forget();
 
             startGameTimeline.Play();
+            AudioManager.Instance.PlaySound("QuantumBridgeUp");
 
             VolumeController.Instance.AdjustFlareVolumeWeight();
 

@@ -13,7 +13,7 @@ namespace Turnbase
     {
         private Character currentCharacter;
 
-        public float traildblaze = 100f;
+        [SerializeField] public float traildblaze = 10f;
 
         public bool isBoss = false;
 

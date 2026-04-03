@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using MyRule.Audio;
 
 namespace MyRule
 {
@@ -17,6 +17,12 @@ namespace MyRule
 
         public void Interact()
         {
+            if (!planetTargetd.canInteract)
+            {
+                AudioManager.Instance.PlaySound("PlannetError");
+                return;
+            }
+
             if (isPlanetShow) return;
             if (planetTargetd == null) return;
             if (!ScifiMouseController.instance.isOnPlanet) return;

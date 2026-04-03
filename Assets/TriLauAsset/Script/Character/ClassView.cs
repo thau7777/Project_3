@@ -13,10 +13,12 @@ namespace MyRule
         [SerializeField] private EClass classType;
         [SerializeField] private CharacterSO characterStatsSO;
         [SerializeField] private GameObject highlightObj;
+        [SerializeField] private Button button;
+        [SerializeField] private bool locking = true;
 
-        private void OnEnable()
+        private void Start()
         {
-            
+            button.onClick.AddListener(EnterPortal);
         }
 
         public void OnDeselect(BaseEventData eventData)
@@ -35,6 +37,11 @@ namespace MyRule
             EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(data));
 
             RuneManger.Instance.SetStartRune(characterStatsSO.startRune);
+        }
+
+        private void EnterPortal()
+        {
+            PortalManager.Instance.OnStartBtnClicked();
         }
     }
 }

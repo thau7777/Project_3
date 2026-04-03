@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using MyRule.CommandPattern;
 using MyRule.Event;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -85,9 +87,11 @@ namespace MyRule.UI
             isShowing = false;
         }
 
-        private async void OpenSettings()
+        private void OpenSettings()
         {
-            await Loader.LoadSceneAdditive(Loader.EScene.SettingsScene);
+            Loader.EScene eScene = MatchManager.Instance.MatchData.Scene;
+            ICommand settingCommand = new SceneCommand(settingsBtn, eScene, Loader.EScene.SettingsScene);
+            CommandInvoker.ExecuteCommand(settingCommand);
         }
 
         private async void Surrender()

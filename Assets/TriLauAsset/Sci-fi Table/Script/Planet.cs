@@ -1,3 +1,4 @@
+using MyRule.Audio;
 using MyRule.CommandPattern;
 using MyRule.UI;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace MyRule
         public PlanetSO planetSO;
         public GameObject highlightRing;
         public float moveSpeed = 3f;
+
+        public bool canInteract = false;
 
         private Vector3 baseLocalPos;
         private Vector3 baseLocalScale;
@@ -65,7 +68,9 @@ namespace MyRule
         private void SnapIfClose(Vector3 targetPos, Vector3 targetScale)
         {
             if (Vector3.Distance(transform.localPosition, targetPos) < SNAP_THRESHOLD)
+            {
                 transform.localPosition = targetPos;
+            }
 
             if (Vector3.Distance(transform.localScale, targetScale) < SNAP_THRESHOLD)
                 transform.localScale = targetScale;
@@ -73,15 +78,25 @@ namespace MyRule
 
         public void ShowDetailPlanet()
         {
+            if (!canInteract)
+            {
+                AudioManager.Instance.PlaySound("PlannetError");
+                return;
+            }
+
             highlightRing.SetActive(false);
             isDetailShown = true;
             canActive = true;
 
             PlanetView.Instance.Show(planetSO);
+
+            AudioManager.Instance.PlaySound("PlannetInteract");
         }
 
         public void HideDetailPlanet()
         {
+            if (!canInteract) return;
+
             highlightRing.SetActive(true);
             isDetailShown = false;
             canActive = false;

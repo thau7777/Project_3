@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Turnbase
 {
@@ -55,6 +55,12 @@ namespace Turnbase
 
                 case SkillType.DebuffExtender:
                     return new DebuffExtenderCommand(user, target, skill, battleManager);
+
+                case SkillType.StingRayAttack:
+                    return new StingRayAttackCommand(user, target, skill, battleManager);
+
+                case SkillType.StingRayProjectile:
+                    return new StingRayAttackCommand_2(user, target, skill, battleManager);
 
                 default:
                     Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);

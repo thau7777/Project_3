@@ -165,6 +165,9 @@ namespace Turnbase
         ParrySuccess,
         StingraySkill,
         Dragon_Roar,
+        StingRay_lazer,
+        StingRay_projectile,
+
 
 
 

@@ -228,7 +228,7 @@ namespace Turnbase
 
             if (activeCharacter.isAlive && activeCharacter.stats != null)
             {
-                activeCharacter.stats.currentMP = Mathf.Min(activeCharacter.stats.currentMP + 20, activeCharacter.stats.maxMP);
+                activeCharacter.stats.currentMP = Mathf.Min(activeCharacter.stats.currentMP + 5, activeCharacter.stats.maxMP);
                 uiManager.UpdateAllCharacterUIs(allCombatants);
             }
 
