@@ -78,11 +78,6 @@ namespace Turnbase
 
         protected Flyweight_TB SpawnImpactEffect(Vector3 position, Skill skill)
         {
-            if (AudioManager.Instance != null)
-            {
-                //AudioManager.Instance.PlaySFX(skill.impactSFXType);
-            }
-
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab;
             Flyweight_TB effectInstance = null; 
 
@@ -128,10 +123,6 @@ namespace Turnbase
 
         protected Flyweight_TB SpawnContinuousEffect(Vector3 position, Character targetCharacter, Skill skill)
         {
-            if (AudioManager.Instance != null)
-            {
-                //AudioManager.Instance.PlaySFX(skill.impactSFXType);
-            }
 
             FlyweightSettings_TB settingsToSpawn = skill.impactVFXPrefab; 
             Flyweight_TB effectInstance = null; 

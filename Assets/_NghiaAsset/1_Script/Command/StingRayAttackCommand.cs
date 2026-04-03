@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using PixPlays.ElementalVFX;
@@ -82,23 +82,30 @@ namespace Turnbase
             {
                 if (effectTriggered) return;
 
-                Transform spawnPoint = user.SkillSpawnPoint != null ? user.SkillSpawnPoint : user.transform;
-                if (skill.lazerSettings != null)
-                {
-                    Flyweight_TB vfxFlyweight = FlyweightFactory_TB.Spawn(skill.lazerSettings);
-                    if (vfxFlyweight != null)
-                    {
-                        vfxFlyweight.Initialize(spawnPoint.position, spawnPoint.rotation);
-                        vfxFlyweight.transform.SetParent(null);
+                // Sử dụng BattleManager để chạy Coroutine delay
+                battleManager.StartCoroutine(DelayedSpawnRoutine());
 
-                        spawnedBeam = vfxFlyweight.GetComponent<BeamVfx>();
-                        if (spawnedBeam != null)
+                IEnumerator DelayedSpawnRoutine()
+                {
+                    yield return new WaitForSeconds(1.0f); // Delay 1 giây ở đây
+
+                    Transform spawnPoint = user.SkillSpawnPoint != null ? user.SkillSpawnPoint : user.transform;
+                    if (skill.lazerSettings != null)
+                    {
+                        Flyweight_TB vfxFlyweight = FlyweightFactory_TB.Spawn(skill.lazerSettings);
+                        if (vfxFlyweight != null)
                         {
-                            var vfxData = new VfxData(spawnPoint, targetAnchor.transform, skill.laserVFXDuration, 0f, Vector3.zero);
-                            spawnedBeam.Play(vfxData);
-                            
-                            // Start sweeping up
-                            battleManager.StartCoroutine(SweepAnchorUp(targetAnchor.transform, startTargetPos, finalTargetPos, 0.5f));
+                            vfxFlyweight.Initialize(spawnPoint.position, spawnPoint.rotation);
+                            vfxFlyweight.transform.SetParent(null);
+
+                            spawnedBeam = vfxFlyweight.GetComponent<BeamVfx>();
+                            if (spawnedBeam != null)
+                            {
+                                var vfxData = new VfxData(spawnPoint, targetAnchor.transform, skill.laserVFXDuration, 0f, Vector3.zero);
+                                spawnedBeam.Play(vfxData);
+
+                                battleManager.StartCoroutine(SweepAnchorUp(targetAnchor.transform, startTargetPos, finalTargetPos, 0.5f));
+                            }
                         }
                     }
                 }
@@ -166,7 +173,7 @@ namespace Turnbase
                 spawnedBeam.Stop();
             }
 
-            GameObject.Destroy(targetAnchor, 1f); // Destroy anchor after a small delay
+            GameObject.Destroy(targetAnchor, 0.5f); // Destroy anchor after a small delay
 
             user.animator.Play("Idle");
         }

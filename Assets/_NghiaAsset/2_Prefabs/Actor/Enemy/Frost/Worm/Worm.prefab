@@ -1552,12 +1552,26 @@ MonoBehaviour:
     maxShield: 119
     currentShield: 0
     physicalAttack: 10
-    physicalDefense: 10
     magicAttack: 10
+    physicalDefense: 10
     magicDefense: 100
-    crit: 0
-    critDamage: 0
-    agility: 100
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: ecbe746f179a3ef4d84bb97961d352db, type: 2}
   skills:
@@ -1588,18 +1602,29 @@ MonoBehaviour:
   SkillSpawnPoint2: {fileID: 0}
   buffEffectSpawnPoint: {fileID: 823742131133356345}
   isAttackBlocked: 0
+  healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
+  hitSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8083454903267841439}
   isParrySuccessful: 0
+  isLastHit: 0
+  parryMissCount: 0
+  totalHitsInSequence: 0
+  currentHitInSequence: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:
     statToModify: 5
     durationTurns: 3
-    amount: 0
     baseDamagePerTurn: 0
     debuffValue: 0
     debuffEffect: {fileID: 11400000, guid: f340432155987d74ebfbdcf8122b3601, type: 2}
     icon: {fileID: 21300000, guid: 965f4a1575b2a66448a303bbd345c471, type: 3}
+  telegraphManager: {fileID: 0}
 --- !u!114 &9145698497346757161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1617,6 +1642,7 @@ MonoBehaviour:
   lerpSpeed: 2
   mpBarFill: {fileID: 6343429955527139453}
   trailblazeFill: {fileID: 414544424781297329}
+  trailblazeFillDelay: {fileID: 0}
   shieldBarFill: {fileID: 1279019492483649976}
   elementImage: {fileID: 8745278089750654241}
   statusEffectContainer: {fileID: 4462461429892056083}
@@ -1679,6 +1705,19 @@ MonoBehaviour:
   shieldTurnsRemaining: 0
   shieldVFXInstance: {fileID: 0}
   shieldIcon: {fileID: 0}
+  basicAttackBuffAmount: 0
+  basicAttackBuffTurnsRemaining: 0
+  basicAttackBuffIcon: {fileID: 0}
+  splashAttackTurnsRemaining: 0
+  splashDamagePercentage: 0
+  splashAttackIcon: {fileID: 0}
+  hasDivineShield: 0
+  divineShieldVFXInstance: {fileID: 0}
+  divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-7500645950520890881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1696,7 +1735,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -1713,6 +1752,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &228614209179218366
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
 using System.Threading.Tasks;
+using Ami.BroAudio;
 
 namespace Turnbase
 {
@@ -75,6 +76,8 @@ namespace Turnbase
         public GameObject parryEffectPrefab;
         public float effectDuration = 2f;
 
+        public SoundID _bgm;
+
         async void Start()
         {
             isProcessingTurn = true;
@@ -101,6 +104,14 @@ namespace Turnbase
                 turnHandler.isProcessingTurn = false;
                 StartCoroutine(turnHandler.UpdateActionGaugeRoutine());
             }
+
+            BroAudio.Play(_bgm);
+
+        }
+
+        private void OnDisable()
+        {
+            BroAudio.Stop(_bgm);
         }
 
         void Update()

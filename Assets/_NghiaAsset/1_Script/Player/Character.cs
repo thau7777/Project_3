@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ami.BroAudio;
 using Cysharp.Threading.Tasks;
 using MyRule;
 using MyRule.Audio;
@@ -81,6 +82,8 @@ namespace Turnbase
         [HideInInspector] public HealthSystem healthSystem;
 
         public ScreenEffectUIController _screenEffectController;
+
+        public SoundID hitSound;
 
         public bool isAlive
         {
@@ -320,6 +323,8 @@ namespace Turnbase
 
             damageCallback?.Invoke();
             damageCallback = null;
+
+            BroAudio.Play(hitSound);
         }
 
         #region Heal Methods
