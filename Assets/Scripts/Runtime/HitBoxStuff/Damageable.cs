@@ -91,7 +91,7 @@ public class Damageable : MonoBehaviour
 
         if (TryGetComponentInHierarchy<EffectApplier>(other.transform, out var effectApplier))
         {
-            effectApplier.ApplyEffect(other, other, gameObject);
+            effectApplier.ApplyEffect(gameObject);
         }
     }
 

@@ -9891,6 +9891,8 @@ GameObject:
   - component: {fileID: 8356246488286817862}
   - component: {fileID: 3800604290393088796}
   - component: {fileID: 6598932060652827659}
+  - component: {fileID: 3314387121813760984}
+  - component: {fileID: 3624469437273274268}
   m_Layer: 11
   m_Name: Spell_Fire_3
   m_TagString: Untagged
@@ -14828,6 +14830,52 @@ CapsuleCollider:
   m_Height: 4.72
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 2.73}
+--- !u!114 &3314387121813760984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721913554345814136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 7caa83e4b9f8be84cb408773e8bfb0e5, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 721913554345814136}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &3624469437273274268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721913554345814136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 316a0fae3259aa5408f76306331c643d, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 721913554345814136}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &3065988189355906576
 GameObject:
   m_ObjectHideFlags: 0
