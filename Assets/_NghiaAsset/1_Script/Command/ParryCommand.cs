@@ -46,6 +46,11 @@ namespace Turnbase
                 character.animator.Play("Parry 2");
                 CameraAction.instance.PerfectParryCamera(character);
 
+                if (ParriedVolumeController.Instance != null)
+                {
+                    ParriedVolumeController.Instance.TriggerParriedEffect();
+                }
+
                 yield return new WaitForSeconds(0.2f);
 
                 Transition.TransitionValue(
