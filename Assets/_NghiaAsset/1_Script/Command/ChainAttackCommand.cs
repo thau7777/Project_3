@@ -19,7 +19,8 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            chainTargets.Clear();
+            user.parryMissCount = 0;
+            chainTargets.Clear();
             if (target != null) chainTargets.Add(target);
 
             var otherEnemies = battleManager.allCombatants
