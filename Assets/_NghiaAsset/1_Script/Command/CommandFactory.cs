@@ -59,6 +59,9 @@ namespace Turnbase
                 case SkillType.StingRayAttack:
                     return new StingRayAttackCommand(user, target, skill, battleManager);
 
+                case SkillType.StingRayProjectile:
+                    return new StingRayAttackCommand_2(user, target, skill, battleManager);
+
                 default:
                     Debug.LogWarning("Skill chưa được hỗ trợ: " + skill.skillType);
                     return null;

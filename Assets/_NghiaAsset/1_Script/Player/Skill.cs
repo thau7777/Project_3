@@ -30,7 +30,7 @@ public class Skill : ScriptableObject
     public FlyweightSettings_TB meleeSettings;
 
     [Header("Projectile & VFX")]
-    [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
+    [ShowIfEnumValue("skillType", SkillType.RangedProjectile, SkillType.StingRayProjectile)]
     public FlyweightSettings_TB projectileSettings;
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
     public bool useSkillSpawnPoint2;
@@ -170,6 +170,7 @@ public enum SkillType
     DebuffPunisher,
     DebuffExtender,
     StingRayAttack,
+    StingRayProjectile,
 }
 
 public enum ElementType

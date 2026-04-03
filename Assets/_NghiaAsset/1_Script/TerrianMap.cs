@@ -28,6 +28,9 @@ namespace Turnbase
             {
                 case EMap.GreenLand:
                     terrain[0].gameObject.SetActive(true);
+                    terrain[1].gameObject.SetActive(false);
+                    terrain[2].gameObject.SetActive(false);
+
                     if (transforms.Length > 0 && transforms[0] != null)
                     {
                         terrain[0].transform.position = transforms[0].position;
@@ -37,6 +40,8 @@ namespace Turnbase
 
                 case EMap.Desert:
                     terrain[1].gameObject.SetActive(true);
+                    terrain[0].gameObject.SetActive(false);
+                    terrain[2].gameObject.SetActive(false);
                     if (transforms.Length > 1 && transforms[1] != null)
                     {
                         terrain[1].transform.position = transforms[1].position;
@@ -46,6 +51,8 @@ namespace Turnbase
 
                 case EMap.IceLand:
                     terrain[2].gameObject.SetActive(true);
+                    terrain[1].gameObject.SetActive(false);
+                    terrain[0].gameObject.SetActive(false);
                     if (transforms.Length > 2 && transforms[2] != null)
                     {
                         terrain[2].transform.position = transforms[2].position;
