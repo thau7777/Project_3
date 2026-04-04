@@ -1590,6 +1590,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenToolBox"",
+                    ""type"": ""Button"",
+                    ""id"": ""b2eacd49-6082-4a6b-83bd-0e5d2ec016a0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1768,6 +1777,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""OpenPassiveSigilStorage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7c71d63-cc97-4b96-8e05-681586b6b511"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenToolBox"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1842,6 +1862,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_DiceRoll_Submit = m_DiceRoll.FindAction("Submit", throwIfNotFound: true);
         m_DiceRoll_OpenSigilStorage = m_DiceRoll.FindAction("OpenSigilStorage", throwIfNotFound: true);
         m_DiceRoll_OpenPassiveSigilStorage = m_DiceRoll.FindAction("OpenPassiveSigilStorage", throwIfNotFound: true);
+        m_DiceRoll_OpenToolBox = m_DiceRoll.FindAction("OpenToolBox", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -2996,6 +3017,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_DiceRoll_Submit;
     private readonly InputAction m_DiceRoll_OpenSigilStorage;
     private readonly InputAction m_DiceRoll_OpenPassiveSigilStorage;
+    private readonly InputAction m_DiceRoll_OpenToolBox;
     /// <summary>
     /// Provides access to input actions defined in input action map "DiceRoll".
     /// </summary>
@@ -3047,6 +3069,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "DiceRoll/OpenPassiveSigilStorage".
         /// </summary>
         public InputAction @OpenPassiveSigilStorage => m_Wrapper.m_DiceRoll_OpenPassiveSigilStorage;
+        /// <summary>
+        /// Provides access to the underlying input action "DiceRoll/OpenToolBox".
+        /// </summary>
+        public InputAction @OpenToolBox => m_Wrapper.m_DiceRoll_OpenToolBox;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -3103,6 +3129,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @OpenPassiveSigilStorage.started += instance.OnOpenPassiveSigilStorage;
             @OpenPassiveSigilStorage.performed += instance.OnOpenPassiveSigilStorage;
             @OpenPassiveSigilStorage.canceled += instance.OnOpenPassiveSigilStorage;
+            @OpenToolBox.started += instance.OnOpenToolBox;
+            @OpenToolBox.performed += instance.OnOpenToolBox;
+            @OpenToolBox.canceled += instance.OnOpenToolBox;
         }
 
         /// <summary>
@@ -3144,6 +3173,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @OpenPassiveSigilStorage.started -= instance.OnOpenPassiveSigilStorage;
             @OpenPassiveSigilStorage.performed -= instance.OnOpenPassiveSigilStorage;
             @OpenPassiveSigilStorage.canceled -= instance.OnOpenPassiveSigilStorage;
+            @OpenToolBox.started -= instance.OnOpenToolBox;
+            @OpenToolBox.performed -= instance.OnOpenToolBox;
+            @OpenToolBox.canceled -= instance.OnOpenToolBox;
         }
 
         /// <summary>
@@ -3604,5 +3636,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenPassiveSigilStorage(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenToolBox" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenToolBox(InputAction.CallbackContext context);
     }
 }

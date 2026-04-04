@@ -109,7 +109,7 @@ namespace MyRule
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(false));
 
-            RTSCameraController.Instance.LockInteract();
+            if (RTSCameraController.Instance != null) RTSCameraController.Instance.LockInteract();
 
             EventBus<DialougeStartedEvent>.Raise(new DialougeStartedEvent());
 
@@ -130,7 +130,7 @@ namespace MyRule
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(true));
 
-            RTSCameraController.Instance.UnlockInteract();
+            if (RTSCameraController.Instance != null) RTSCameraController.Instance.UnlockInteract();
 
             EventBus<DialogueFinishedEvent>.Raise(new DialogueFinishedEvent());
 
