@@ -28,7 +28,7 @@ public class FishItem : MonoBehaviour
     public float moveRange;
 
     [Header("Sprite Direction")]
-    [Tooltip("Bật nếu sprite mặc định quay sang PHẢI")]
+    [Tooltip("Sprite is facing to the RIGHT")]
     public bool facingRightByDefault = false;
     
     
@@ -37,6 +37,13 @@ public class FishItem : MonoBehaviour
     [SerializeField] private RectTransform rt;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float timeOffset;
+    [SerializeField] private string poolTag;
+    [SerializeField] private string bubblePoolTag = "Bubble";
+    [SerializeField] private float bubbleSpawnInterval = 1.5f;
+    [SerializeField] private Vector2 bubbleRandomDelay = new Vector2(0.5f, 2.5f);
+
+    Coroutine bubbleRoutine;
+
 
     private void Awake()
     {
@@ -44,6 +51,8 @@ public class FishItem : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         GetRandomNumber();
+        poolTag = itemType.ToString();
+        Debug.Log(poolTag);
     }
 
     private void Update()
@@ -58,6 +67,7 @@ public class FishItem : MonoBehaviour
         {
             MoveFloating();
         }
+
     }
     public void Init()
     {
@@ -68,6 +78,8 @@ public class FishItem : MonoBehaviour
 
         direction = Random.value > 0.5f ? 1 : -1;
         ApplyFlip();
+        bubbleRoutine = StartCoroutine(SpawnBubbleRoutine());
+
 
         //if (itemType == FishingItemType.Fish)
         //    rb.simulated = false;
@@ -118,8 +130,8 @@ public class FishItem : MonoBehaviour
         float t = Time.time + timeOffset;
 
         rb.linearVelocity = new Vector2(
-            Mathf.Sin(t) * 0.3f,
-            Mathf.Cos(t * 0.5f) * 0.2f
+            Mathf.Sin(t) * 3f,
+            Mathf.Cos(t * 5f) * 2f
         );
     }
     #endregion
@@ -159,20 +171,46 @@ public class FishItem : MonoBehaviour
                 break;
         }
         FishingSpawner.instance.fishCount--;
-        StartCoroutine(HideAndDestroy());
+        if (bubbleRoutine != null)
+            StopCoroutine(bubbleRoutine);
+        StartCoroutine(ReturnToPool());
         
     }
 
-    IEnumerator HideAndDestroy()
+    IEnumerator ReturnToPool()
     {
         gameObject.SetActive(false);
         yield return new WaitForSeconds(1f);
-        Destroy(gameObject);
+
+        PoolManager.Instance.Despawn(poolTag, gameObject);
     }
 
     public void OnEscape()
     {
         state = FishState.Swimming;
         rb.simulated = true;
+    }
+    void SpawnBubble()
+    {
+        GameObject bubble = PoolManager.Instance.SpawnFromPool(bubblePoolTag, transform.parent);
+
+        RectTransform bubbleRT = bubble.GetComponent<RectTransform>();
+
+        // spawn ngay vị trí cá
+        bubbleRT.anchoredPosition = rt.anchoredPosition;
+
+        // random size (nhỏ → lớn)
+        float scale = Random.Range(0.5f, 1.5f);
+        bubble.transform.localScale = Vector3.one * scale;
+    }
+    IEnumerator SpawnBubbleRoutine()
+    {
+        while (state == FishState.Swimming)
+        {
+            float delay = Random.Range(bubbleRandomDelay.x, bubbleRandomDelay.y);
+            yield return new WaitForSeconds(delay);
+
+            SpawnBubble();
+        }
     }
 }

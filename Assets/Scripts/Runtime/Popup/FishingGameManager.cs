@@ -16,7 +16,7 @@ public class FishingGameManager : MonoBehaviour
     float time = 60f;
     int currentFisht;
     bool isGameEnded = false;
-
+    public bool useTimer = true;
     void Awake()
     {
         Instance = this;
@@ -30,8 +30,10 @@ public class FishingGameManager : MonoBehaviour
         UpdateUI();
         currentFisht = FishingSpawner.instance.fishCount;
 
+        if (!useTimer) return;
         if (time <= 0 || currentFisht <= 0)
         {
+
             EndGame();
         }
     }
@@ -48,11 +50,12 @@ public class FishingGameManager : MonoBehaviour
 
     public void EndGame()
     {
+
         if (isGameEnded) return;
         isGameEnded = true;
 
         inputReader.SwitchActionMap(ActionMap.DiceRoll);
-
+        
         if (time <= 0 && currentFisht > 0)
         {
             Debug.Log("Game Over! Final Score: " + score);
