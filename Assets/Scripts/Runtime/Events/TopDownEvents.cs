@@ -8,7 +8,14 @@ public struct SummonerTargetEvent : IEvent
         target = newTarget;
     }
 }
-public struct TopdownStartGameEvent : IEvent { }
+public struct TopdownStartGameEvent : IEvent 
+{
+    public bool isBossFight;
+    public TopdownStartGameEvent(bool isBossFight)
+    {
+        this.isBossFight = isBossFight;
+    }
+}
 public struct TopDownEndGameEvent : IEvent 
 { 
     public UIEndGameExecuteState endGameExecuteState;

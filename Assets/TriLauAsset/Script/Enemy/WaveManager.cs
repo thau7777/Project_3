@@ -80,7 +80,7 @@ namespace MyRule
             return groupWave;
         }
 
-        public GroupWave CreateNewWave()
+        public GroupWave CreateNewWave(bool isTest = false)
         {
             List<WaveCountRate> waveCountRates = new List<WaveCountRate>();
 

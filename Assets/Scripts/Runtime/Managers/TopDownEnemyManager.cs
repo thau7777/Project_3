@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 {
+
+    private bool _isBossFight = false;
     [SerializeField]
     private bool _spawnWithLimitCount = false;
     [SerializeField]
@@ -50,7 +52,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         set
         {
             _currentWaveIndex = value;
-            if (_currentWaveText != null)
+            if (!_isBossFight && _currentWaveText != null)
                 _currentWaveText.text = (_currentWaveIndex + 1).ToString() + "/" + _groupWave.WaveDatas.Length;
         }
     }
@@ -61,7 +63,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         set
         {
             _remainingEnemiesInWave = value;
-            if (_remainingEnemiesText != null)
+            if (!_isBossFight && _remainingEnemiesText != null)
                 _remainingEnemiesText.text = _remainingEnemiesInWave.ToString();
         }
     }
@@ -75,7 +77,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         set
         {
             _waveTimeRemaining = value;
-            if (waveTimeRemainingText != null)
+            if (!_isBossFight && waveTimeRemainingText != null)
                 waveTimeRemainingText.text = Mathf.RoundToInt(_waveTimeRemaining).ToString();
         }
     }
@@ -108,7 +110,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             return;
         ShowEnemyTutorial();
     }
-    private async UniTaskVoid ShowEnemyTutorial() 
+    private async UniTaskVoid ShowEnemyTutorial()
     {
         await UniTask.Delay(2000);
 
@@ -157,7 +159,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     private void LoadCurrentWave()
     {
         if (TopDownGameManager.Instance.isTestGameplay)
-            _groupWave = WaveManager.Instance.CreateNewWave();
+            _groupWave = WaveManager.Instance.CreateNewWave(true);
         else
             _groupWave = WaveManager.Instance.GetCurrentWave();
 
@@ -185,7 +187,39 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
         CurrentWaveIndex = 0;
         _gameOver = false;
-        StartCoroutine(StartWave(CurrentWaveIndex));
+        _isBossFight = TopDownGameManager.Instance.isBossFighting;
+        if (_isBossFight)
+            StartCoroutine(StartBossFight());
+        else
+            StartCoroutine(StartWave(CurrentWaveIndex));
+    }
+
+    // ─── Boss Fight ───────────────────────────────────────────────────────────
+
+    private IEnumerator StartBossFight()
+    {
+        WaveData[] waves = _groupWave.WaveDatas;
+        if (waves == null || waves.Length == 0 || waves[0] == null)
+        {
+            Debug.LogError("[BossFight] No valid WaveData found for boss fight.");
+            yield break;
+        }
+
+        WaveData bossWave = waves[0];
+        if (bossWave.Enemies == null || bossWave.Enemies.Length == 0 || bossWave.Enemies[0] == null)
+        {
+            Debug.LogError("[BossFight] No valid enemy found in wave 0 for boss fight.");
+            yield break;
+        }
+
+        Debug.Log("[BossFight] Spawning boss.");
+
+        RemainingEnemiesInWave = 1;
+        _isSpawning = true;
+        SpawnEnemy(bossWave.Enemies[0]);
+        _isSpawning = false;
+
+        // No timer — waiting for the boss to die via OnEnemyDied()
     }
 
     // ─── Wave Lifecycle ───────────────────────────────────────────────────────
@@ -240,6 +274,17 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         RemainingEnemiesInWave = Mathf.Max(0, RemainingEnemiesInWave);
 
         Debug.Log($"[WaveManager] Enemy died. Remaining: {RemainingEnemiesInWave} | Active tracked: {_activeEnemies.Count}");
+
+        // Boss fight: win immediately when the boss is dead
+        if (_isBossFight)
+        {
+            if (_activeEnemies.Count == 0)
+            {
+                Debug.Log("[BossFight] Boss defeated. YOU WIN!");
+                WinGame();
+            }
+            return;
+        }
 
         // Use _activeEnemies.Count as the authoritative source — catches stragglers too
         if (_activeEnemies.Count == 0)
@@ -311,7 +356,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             RemainingEnemiesInWave--;
             return;
         }
-        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform, Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y),groundLayerMask,obstacleLayerMask);
+        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform, Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y), groundLayerMask, obstacleLayerMask);
 
         var enemy = FlyweightFactory.Spawn(settings);
         if (enemy.TryGetComponent<CharacterStats>(out var enemyStats))
