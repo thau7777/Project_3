@@ -60,7 +60,7 @@ public class InputReader : ScriptableObject
         }
         //input.UI.Enable();
     }
-    private void DisableActions()
+    public void DisableActions()
     {
         if(input == null) return;
         input.PlayerTopDown.Disable();

@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5574773048892645173}
   - component: {fileID: 8377018398450312211}
+  - component: {fileID: 5660799729187274027}
+  - component: {fileID: -95855750236331892}
+  - component: {fileID: 3355007504786415804}
   m_Layer: 0
   m_Name: StingRay_WaterBullet
   m_TagString: Untagged
@@ -103,6 +106,75 @@ MonoBehaviour:
     m_Bits: 62649599
   _CollisionRadius: 0.3
   _MaxFlightTime: 5
+--- !u!114 &5660799729187274027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261450444413504574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 979fda79c53be5d4b96c17bb418160e1, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8261450444413504574}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &-95855750236331892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261450444413504574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 5e9a6dd2f87fdc249b322671f6adec0a, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8261450444413504574}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &3355007504786415804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261450444413504574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 6943a5a38cad0f84b89320f3af546a06, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8261450444413504574}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1001 &2750743052572288124
 PrefabInstance:
   m_ObjectHideFlags: 0

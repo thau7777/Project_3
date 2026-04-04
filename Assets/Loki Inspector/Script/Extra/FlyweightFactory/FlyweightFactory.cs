@@ -172,4 +172,5 @@ public enum FlyweightType
     Spell_Stingray_4,
 
     FlyingSlash_Dark,
+    BossSpawnVFX,
 }

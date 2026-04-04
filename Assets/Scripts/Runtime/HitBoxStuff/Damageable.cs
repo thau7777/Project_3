@@ -46,7 +46,7 @@ public class Damageable : MonoBehaviour
         MaxHealth = maxHealth;
         CurrentHealth = currentHealth;
 
-        if (!CompareTag("Player"))
+        if (!CompareTag("Player") && !TopDownGameManager.Instance.isBossFighting)
             GetComponentInChildren<TopDownEnemyUIController>().InitializeValue(MaxHealth, shieldHealth);
 
         if(hasShieldBreakingMechanic)

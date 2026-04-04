@@ -28,6 +28,8 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     [SerializeField] private TextMeshProUGUI _remainingEnemiesText;
     [TabGroup("References")]
     [SerializeField] private TextMeshProUGUI waveTimeRemainingText;
+    [SerializeField, TabGroup("References")]
+    private TopDownEnemyUIController _bossStatusBar;
 
     [TabGroup("Enemy Registry")]
     [SerializeField] private List<TopdownEnemyWithIds> _topDownEnemyWithIdsList;
@@ -42,7 +44,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     [SerializeField] private LayerMask groundLayerMask;
 
     [TabGroup("Sounds"), SerializeField] private SoundID _enemyDieSound;
-
+    public Transform BossTransform { get; private set; }
     // Wave state
     private GroupWave _groupWave;
     private int _currentWaveIndex = 0;
@@ -218,6 +220,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         _isSpawning = true;
         SpawnEnemy(bossWave.Enemies[0]);
         _isSpawning = false;
+        CinemachineCameraController.Instance.ShakeSequence(2);
 
         // No timer — waiting for the boss to die via OnEnemyDied()
     }
@@ -237,7 +240,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             yield break;
         }
 
-        Debug.Log($"[WaveManager] Starting Wave {waveIndex + 1} / {waves.Length}");
 
         // Never reset — always add new wave's enemies on top of surviving stragglers
         int newEnemyCount = 0;
@@ -280,8 +282,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         {
             if (_activeEnemies.Count == 0)
             {
-                Debug.Log("[BossFight] Boss defeated. YOU WIN!");
-                WinGame();
+                OnBossDied();
             }
             return;
         }
@@ -307,6 +308,12 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
         }
     }
 
+    private void OnBossDied()
+    {
+        BossCameraController.Instance.FocusOnBoss();
+        WinGame();
+
+    }
     private IEnumerator WaveTimer()
     {
         WaveTimeRemaining = _waveDuration;
@@ -356,7 +363,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             RemainingEnemiesInWave--;
             return;
         }
-        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform, Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y), groundLayerMask, obstacleLayerMask);
+        settings.SetupSpawnSettings(PlayerTopDownStateDriver.Instance.transform,_isBossFight ? _spawnRadiusMinMax.y : Random.Range(_spawnRadiusMinMax.x, _spawnRadiusMinMax.y), groundLayerMask, obstacleLayerMask);
 
         var enemy = FlyweightFactory.Spawn(settings);
         if (enemy.TryGetComponent<CharacterStats>(out var enemyStats))
@@ -366,6 +373,16 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
                 enemyData.FrostDef, enemyData.LightningDef, enemyData.HolyDef, enemyData.DarkDef, enemyData.PoisonDef, enemyData.AttackSpeed, enemyData.CritChance, enemyData.CritMult);
         }
         _activeEnemies.Add(enemy.gameObject);
+        if (_isBossFight)
+        {
+            BossTransform = enemy.transform;
+            Damageable bossDamageAble = BossTransform.GetComponent<Damageable>();
+            _bossStatusBar.InitializeValue(bossDamageAble.MaxHealth, bossDamageAble.MaxShieldHealth);
+            bossDamageAble.OnHealthChanged.AddListener(_bossStatusBar.SetHealth);
+            bossDamageAble.OnShieldChanged.AddListener(_bossStatusBar.SetShield);
+            BossTransform.GetComponent<EffectsManager>().OnEffectAdded.AddListener(_bossStatusBar.GetComponentInChildren<EffectUIController>().OnEffectAdded);
+            BossTransform.GetComponent<EffectsManager>().OnEffectRemoved.AddListener(_bossStatusBar.GetComponentInChildren<EffectUIController>().OnEffectRemoved);
+        }
     }
 
     private EnemyTopDownSettings GetSettingsForId(EnemyId id)

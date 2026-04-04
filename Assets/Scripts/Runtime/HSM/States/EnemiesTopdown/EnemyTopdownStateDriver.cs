@@ -245,6 +245,7 @@ public class EnemyTopdownStateDriver : Flyweight
                 }
 
                 VfxData vfxData = new(baseVfx.transform, target, oneShotVFXSettings.DefaultLifeTime, _context.CurrentEnemyAttackData.skillSize, targetPosOffset);
+                
                 baseVfx.Play(vfxData);
                 return;
             }

@@ -7,8 +7,10 @@ using System;
 [RequireComponent(typeof(Image))]
 public class ImageFillController : MonoBehaviour
 {
+    [SerializeField] private bool _alwaysShow = true;
     [SerializeField] private bool _useMaterial = false;
     [SerializeField] private bool _showWhenEndGame = false;
+    [SerializeField] private bool _forBossFight = false;
     [SerializeField, ShowIf("_showWhenEndGame")] private UIEndGameExecuteState _endGameExecuteState;
 
     [SerializeField, TabGroup("FillInSettings")] private float _delayBeforeFillIn = 0f;
@@ -97,7 +99,8 @@ public class ImageFillController : MonoBehaviour
     }
     private async void FillIn()
     {
-        await FillIn(_fillInDuration);
+        if (TopDownGameManager.Instance.isBossFighting == _forBossFight || _alwaysShow)
+            await FillIn(_fillInDuration);
     }
 
     private async void FillOut()

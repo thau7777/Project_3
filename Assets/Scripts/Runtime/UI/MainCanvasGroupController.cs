@@ -15,6 +15,8 @@ public enum UIEndGameExecuteState
 [RequireComponent(typeof(CanvasGroup))]
 public class MainCanvasGroupController : MonoBehaviour
 {
+
+    [SerializeField] private bool _alwaysShow = true;
     [SerializeField] private bool _showWhenEndGame = false;
     [SerializeField] private bool _forBossFight = false;
     [SerializeField, ShowIf("_showWhenEndGame")] private UIEndGameExecuteState _endGameExecuteState;
@@ -71,14 +73,22 @@ public class MainCanvasGroupController : MonoBehaviour
         fadeCts?.Cancel();
         fadeCts?.Dispose();
     }
-    private void OnEndGame(TopDownEndGameEvent topDownEndGameEvent)
+    private async void OnEndGame(TopDownEndGameEvent topDownEndGameEvent)
     {
         if (topDownEndGameEvent.endGameExecuteState == _endGameExecuteState || _endGameExecuteState == UIEndGameExecuteState.Both)
+        {
+            if(TopDownGameManager.Instance.isBossFighting && topDownEndGameEvent.endGameExecuteState == UIEndGameExecuteState.Win)
+            {
+                await UniTask.Delay(3000);
+                FadeIn();
+                return;
+            }
             FadeIn();
+        }
     }
     private async void CheckAndFadeIn()
     {
-        if(TopDownGameManager.Instance.isBossFighting == _forBossFight)
+        if(TopDownGameManager.Instance.isBossFighting == _forBossFight || _alwaysShow)
             await FadeIn(fadeInDuration);
     }
     private async void FadeIn()

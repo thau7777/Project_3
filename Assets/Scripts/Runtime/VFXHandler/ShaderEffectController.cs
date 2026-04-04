@@ -75,7 +75,7 @@ public class ShaderEffectController : MonoBehaviour
     /// <param name="data">The VFX material data to use</param>
     public void PlayEffectWithData(VFXMaterialData data)
     {
-        Debug.Log(gameObject.name);
+        
         if (data == null)
         {
             Debug.LogError("VFXMaterialData is null!");
