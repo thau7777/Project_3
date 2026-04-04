@@ -7,7 +7,7 @@ public class PopUpGame : InputActions.IPopUpGameActions
 {
     public Action<Vector2> onNaviagate;
     public Action onLeftClick;
-    public Action onThrow;
+    public Action<bool> onThrow;
     public Action onReset;
 
     public void OnNaviagate(InputAction.CallbackContext context)
@@ -23,8 +23,9 @@ public class PopUpGame : InputActions.IPopUpGameActions
     public void OnThrow(InputAction.CallbackContext context)
     {
         if (context.performed)
-            onThrow?.Invoke();
-            
+            onThrow?.Invoke(true);
+        else if (context.canceled)
+            onThrow?.Invoke(false);
     }
     public void OnReset(InputAction.CallbackContext context)
     {

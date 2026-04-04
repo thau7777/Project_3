@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Ami.BroAudio;
+using Ami.BroAudio.Data;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -14,20 +16,23 @@ public class HookController : MonoBehaviour
     [SerializeField] private List<GameObject> image;
     [SerializeField] private InputReader inputReader;
 
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID bgm;
+
     [Header("Charge")]
     public float chargeSpeed = 1.5f;
 
     [Header("Throw Force")]
-    public float minForce = 3f;
-    public float maxForce = 15f;
+    public float minForce = 5f;
+    public float maxForce = 20f;
 
     [Header("Water Physics")]
     public float waterDrag = 1.5f;
-    public float waterGravity = 10f;
+    public float waterGravity = 30f;
 
     [Header("Normal Physics")]
     public float normalMass = 0.5f;
-    public float normalGravity = 10f;
+    public float normalGravity = 30f;
 
 
     private bool isCharging;
@@ -38,34 +43,43 @@ public class HookController : MonoBehaviour
     private Vector2 initialPosition;
     private float chargeStartTime;
 
+    private void OnEnable()
+    {
+        inputReader.popUpGame.onThrow += HandleSpace;
+        inputReader.popUpGame.onReset += HandleR;
+
+    }
+    private void OnDisable()
+    {
+        inputReader.popUpGame.onThrow -= HandleSpace;
+        inputReader.popUpGame.onReset -= HandleR;
+    }
     void Start()
     {
         chargeBar.fillAmount = 0f;
         powerBar.SetActive(false);
         initialPosition = transform.position;
-        inputReader.popUpGame.onThrow += HandleSpace;
-        inputReader.popUpGame.onReset += HandleR;
-
         inputReader.SwitchActionMap(ActionMap.PopUpGame);
+
     }
 
     void Update()
     {
-        HandleSpace();
         UpdateChargeBar();
     }
 
-    void HandleSpace()
+    void HandleSpace(bool isPressed)
     {
-        if (!isCharging && !hasThrown)
+        if (!isCharging && !hasThrown && isPressed)
         {
+            
             isCharging = true;
             powerBar.SetActive(true);
 
             chargeStartTime = Time.time;
         }
         // SPACE lần 2 → ném hook
-        else if (isCharging)
+        else if (isCharging && !isPressed)
         {
             isCharging = false;
             powerBar.SetActive(false);
@@ -159,7 +173,7 @@ public class HookController : MonoBehaviour
         transform.position = initialPosition;
         hasThrown = false;
         inWater = false;
-        OnGround = false;
+        OnGround = true;
         hookedItem = null;
         rb.mass = normalMass;
         rb.gravityScale = normalGravity;
