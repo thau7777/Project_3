@@ -96,6 +96,8 @@ namespace Turnbase
                 await BattleCutsceneManager.Instance.PlayCutscene(BattleCutsceneType.Start);
             }
 
+            SpawnFirstWave();
+
             isProcessingTurn = false;
             if (turnHandler != null)
             {
@@ -126,6 +128,11 @@ namespace Turnbase
                 this.instantiatedRoundTracker = trackerInstance;
             }
 
+            if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);
+        }
+
+        private void SpawnFirstWave()
+        {
             currentWaveIndex = 0;
             currentGroupWave = WaveManager.Instance.GetCurrentWave();
 
