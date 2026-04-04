@@ -1,3 +1,4 @@
+using MyRule.Audio;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -29,6 +30,8 @@ namespace MyRule
             scifiMouse.UnlockMouse();
             hasActive = true;
             keyObj.SetActive(false);
+
+            AudioManager.Instance.PlaySound("HoloTableInteract");
 
             EventBus<ScifitableInteractEvent>.Raise(new ScifitableInteractEvent());
         }

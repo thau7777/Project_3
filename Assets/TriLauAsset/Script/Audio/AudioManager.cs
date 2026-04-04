@@ -1,6 +1,5 @@
 using Ami.BroAudio;
 using Ami.BroAudio.Runtime;
-using System;
 using UnityEngine;
 
 namespace MyRule.Audio
@@ -12,6 +11,8 @@ namespace MyRule.Audio
         public float masterVolume = 1f;
         public float musicVolume = 1f;
         public float sfxVolume = 1f;
+
+        [SerializeField] private float _lowPassFre = 500f;
 
         private void Start()
         {
@@ -30,6 +31,26 @@ namespace MyRule.Audio
             }
         }
 
+        public void PlayDialogueSound(string soundID)
+        {
+            for (int i = 0; i < soundIDStorage.Length; i++)
+            {
+                if (soundIDStorage[i].ToString().Equals(soundID))
+                {
+                    BroAudio.Play(soundIDStorage[i])
+                        .AsDominator()
+                        .LowPassOthers(_lowPassFre);
+
+                    return;
+                }
+            }
+        }
+
+        public void StopSound(BroAudioType broAudioType)
+        {
+            BroAudio.Stop(broAudioType);
+        }
+
         public void LoadSoundSettings()
         {
             masterVolume = PlayerPrefs.GetFloat("Master", 1f);
@@ -40,6 +61,8 @@ namespace MyRule.Audio
 
             sfxVolume = PlayerPrefs.GetFloat("SFX", 1f);
             BroAudio.SetVolume(BroAudioType.SFX, sfxVolume);
+            BroAudio.SetVolume(BroAudioType.UI, sfxVolume);
+            BroAudio.SetVolume(BroAudioType.Ambience, sfxVolume);
         }
 
         public void SaveSoundSettings(float master = 1f, float music = 1f, float sfx = 1f)

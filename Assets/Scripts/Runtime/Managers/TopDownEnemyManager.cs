@@ -157,7 +157,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     private void LoadCurrentWave()
     {
         if (TopDownGameManager.Instance.isTestGameplay)
-            _groupWave = WaveManager.Instance.CreateNewWave();
+            _groupWave = WaveManager.Instance.CreateNewWave(true);
         else
             _groupWave = WaveManager.Instance.GetCurrentWave();
 

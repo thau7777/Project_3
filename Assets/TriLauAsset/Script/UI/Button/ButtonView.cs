@@ -52,7 +52,7 @@ namespace MyRule.UI
         public virtual void OnSelect(BaseEventData eventData)
         {
             button.Select();
-            AudioManager.Instance.PlaySound("UIButtonClick");
+            AudioManager.Instance.PlaySound("UIButtonSelect");
         }
 
         public virtual void OnDeselect(BaseEventData eventData)

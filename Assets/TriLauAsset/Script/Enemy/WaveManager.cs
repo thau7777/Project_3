@@ -59,11 +59,11 @@ namespace MyRule
             return groupWave;
         }
 
-        public GroupWave CreateNewWave()
+        public GroupWave CreateNewWave(bool isTest = false)
         {
             int waveCount = UnityEngine.Random.Range(2, 5);
 
-            int currentLevel = MatchManager.Instance.MatchData.CurrentStep;
+            int currentLevel = isTest ? 1 : MatchManager.Instance.MatchData.CurrentStep;
 
             GroupWave groupWave = new GroupWave(waveCount);
 

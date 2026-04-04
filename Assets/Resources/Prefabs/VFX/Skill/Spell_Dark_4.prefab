@@ -34355,6 +34355,7 @@ GameObject:
   - component: {fileID: 7182927720312650940}
   - component: {fileID: 6576709460699995816}
   - component: {fileID: 3729485594939037754}
+  - component: {fileID: -7817899555282871259}
   m_Layer: 11
   m_Name: Spell_Dark_4
   m_TagString: Untagged
@@ -39212,6 +39213,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7817899555282871259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5662894038510970136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: f2239a4d882f8fc4599d12493cadbf5a, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 5662894038510970136}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0.1
 --- !u!1 &5716963630841108011
 GameObject:
   m_ObjectHideFlags: 0
