@@ -76,8 +76,6 @@ namespace Turnbase
         public GameObject parryEffectPrefab;
         public float effectDuration = 2f;
 
-        public SoundID _bgm;
-
         async void Start()
         {
             isProcessingTurn = true;
@@ -105,18 +103,6 @@ namespace Turnbase
                 StartCoroutine(turnHandler.UpdateActionGaugeRoutine());
             }
 
-            BroAudio.Play(_bgm);
-
-        }
-
-        private void OnDisable()
-        {
-            BroAudio.Stop(_bgm);
-        }
-
-        void Update()
-        {
-
         }
 
         void SetupBattle()
@@ -141,8 +127,17 @@ namespace Turnbase
             }
 
             currentWaveIndex = 0;
+            currentGroupWave = WaveManager.Instance.GetCurrentWave();
 
-            if (testEnemyPrefab != null)
+            if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
+            {
+                if (uiManager != null)
+                    uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
+
+                WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
+                spawner.SpawnWaveImmediately(firstWave, enemySlots);
+            }
+            else if (testEnemyPrefab != null)
             {
                 if (enemySlots != null && enemySlots.Length > 0)
                 {
@@ -150,18 +145,6 @@ namespace Turnbase
                 }
                 if (uiManager != null)
                     uiManager.UpdateWaveDisplay(1, 1);
-            }
-            else
-            {
-                currentGroupWave = WaveManager.Instance.GetCurrentWave();
-                if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
-                {
-                    if (uiManager != null)
-                        uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
-
-                    WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
-                    spawner.SpawnWaveImmediately(firstWave, enemySlots);
-                }
             }
 
             if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);

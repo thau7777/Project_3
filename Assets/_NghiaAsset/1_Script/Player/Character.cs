@@ -97,7 +97,6 @@ namespace Turnbase
         public int currentHitInSequence = 0;
 
 
-
         void Awake()
         {
             stateMachine = GetComponent<CharacterStateMachine>();

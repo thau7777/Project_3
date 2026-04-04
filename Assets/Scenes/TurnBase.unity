@@ -9425,9 +9425,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_fontStyle: 1
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -16687,15 +16687,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
   m_Padding:
-    m_Left: 39
+    m_Left: 27
     m_Right: 0
     m_Top: 40
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 376.58, y: 100}
-  m_Spacing: {x: 0, y: -22.4}
+  m_CellSize: {x: 568, y: 100}
+  m_Spacing: {x: 0, y: 68.65}
   m_Constraint: 1
   m_ConstraintCount: 1
 --- !u!114 &1513703747
@@ -18578,7 +18578,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\n                      [Click to turn off]"
+  m_text: '[Click to turn off]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18611,7 +18611,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 2
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -18863,6 +18863,18 @@ MonoBehaviour:
   - {fileID: 719189948}
   - {fileID: 411496903}
   - {fileID: 306449152}
+  greenLand:
+    _entity: {fileID: 11400000, guid: 1aa9c8ad1d8cc4348808b42c92dfb540, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 1738672238}
+  desertLand:
+    _entity: {fileID: 11400000, guid: 55555bfed7b285f428ae1defdaa6c069, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 1738672238}
+  iceLand:
+    _entity: {fileID: 11400000, guid: 4ee3a8c9b92b3e145b0400103051e3a1, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 1738672238}
 --- !u!1 &1744845531
 GameObject:
   m_ObjectHideFlags: 0
