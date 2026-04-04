@@ -17,7 +17,7 @@ public class HexNode : MonoBehaviour
     [SerializeField] private List<Sprite> grassSprites; 
     [SerializeField] private List<Sprite> desertSprites; 
     [SerializeField] private List<Sprite> iceSprites;
-    [SerializeField] private List<Sprite> nodeSprites;
+    [SerializeField] private List<Sprite> wallSprites;
 
 
     public void Init(int r, int c, System.Action<HexNode> onClickAction)
@@ -26,31 +26,30 @@ public class HexNode : MonoBehaviour
         col = c;
         isBlocked = false;
 
-        // Reset về Sprite trống (index 0)
-        //if (grassSprites.Count > 0)
-        //{
-        //    EMap mapType = MatchManager.Instance.MatchData.MapType;
+        if (grassSprites.Count > 0)
+        {
+            EMap mapType = MatchManager.Instance.MatchData.MapType;
 
-        //    switch (mapType)
-        //    {
-        //        case EMap.GreenLand:
-        //            displayImage.sprite = grassSprites[0];
-        //            backGroundImage.sprite = nodeSprites[0];
-        //            break;
-        //        case EMap.Desert:
-        //            displayImage.sprite = desertSprites[1];
-        //            backGroundImage.sprite = nodeSprites[1];
-        //            break;
-        //        case EMap.IceLand:
-        //            displayImage.sprite = iceSprites[2];
-        //            backGroundImage.sprite = nodeSprites[2];
-        //            break;
-        //    }
+            switch (mapType)
+            {
+                case EMap.GreenLand:
+                    displayImage.sprite = grassSprites[0];
+                    backGroundImage.sprite = wallSprites[0];
+                    break;
+                case EMap.Desert:
+                    displayImage.sprite = desertSprites[0];
+                    backGroundImage.sprite = wallSprites[1];
+                    break;
+                case EMap.IceLand:
+                    displayImage.sprite = iceSprites[0];
+                    backGroundImage.sprite = wallSprites[2];
+                    break;
+            }
 
-        //}
+        }
 
-        displayImage.sprite = grassSprites[0];
-        backGroundImage.sprite = nodeSprites[0];
+        //displayImage.sprite = grassSprites[0];
+        //backGroundImage.sprite = nodeSprites[0];
 
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() => onClickAction(this));
@@ -61,11 +60,24 @@ public class HexNode : MonoBehaviour
     public void SetAsWall()
     {
         isBlocked = true;
-        // Đổi sang Sprite tường (index 1)
+
         if (grassSprites.Count > 1)
-            displayImage.sprite = grassSprites[1];
-        else
-            Debug.LogError("Chưa kéo đủ 2 Sprite vào list nodeSprites!");
+        {
+            EMap mapType = MatchManager.Instance.MatchData.MapType;
+            switch(mapType)
+            {
+                case EMap.GreenLand:
+                    displayImage.sprite = grassSprites[1];
+                    break;
+                case EMap.Desert:
+                    displayImage.sprite = desertSprites[1];
+                    break;
+                case EMap.IceLand:
+                    displayImage.sprite = iceSprites[1];
+                    break;
+            }
+        }
+        
     }
     
 }

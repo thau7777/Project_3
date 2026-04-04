@@ -362,12 +362,15 @@ MonoBehaviour:
   - highlightTargets:
     - {fileID: 0}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   - highlightTargets:
     - {fileID: 6891155942848419514}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   - highlightTargets:
     - {fileID: 9202494318816658344}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   onBeforeSequenceStart:
     m_PersistentCalls:
       m_Calls: []
@@ -1690,7 +1693,9 @@ MonoBehaviour:
   scoreText: {fileID: 5303942502549487636}
   timerText: {fileID: 5883956195880073809}
   fishing: {fileID: 8984493287582211289}
+  inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
   score: 0
+  useTimer: 0
 --- !u!1 &6891155942848419514
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,18 +1791,23 @@ MonoBehaviour:
   - highlightTargets:
     - {fileID: 3770537139805323797}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   - highlightTargets:
     - {fileID: 5582760365996573849}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   - highlightTargets:
     - {fileID: 2709385588228332639}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   - highlightTargets:
     - {fileID: 8769980488666007896}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   - highlightTargets:
     - {fileID: 6407924466203897828}
     anchorOverride: {fileID: 8031021024475418851}
+    targetIdKeys: []
   onBeforeSequenceStart:
     m_PersistentCalls:
       m_Calls: []
@@ -1908,14 +1918,14 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7549250490588286113}
+  - {fileID: 6661211475776398220}
+  - {fileID: 4328729340295550032}
   - {fileID: 9097603325905797438}
   - {fileID: 7296628502028933138}
   - {fileID: 5199449364506246926}
   - {fileID: 2675158393046451122}
   - {fileID: 5171963700491617982}
   - {fileID: 6243906397763633787}
-  - {fileID: 6661211475776398220}
-  - {fileID: 4328729340295550032}
   - {fileID: 4224646405064336884}
   - {fileID: 5519594371118854937}
   - {fileID: 7007089060862139097}
@@ -1994,7 +2004,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2069307022, guid: a0f4fab9f6d66224c8d71352067f5526, type: 3}
+  m_Sprite: {fileID: 1371110081, guid: 010688a204b60cc45afc74f47202f2e2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2023,13 +2033,14 @@ MonoBehaviour:
   image:
   - {fileID: 8769980488666007896}
   - {fileID: 6407924466203897828}
+  inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
   chargeSpeed: 1.5
-  minForce: 3
-  maxForce: 12
+  minForce: 5
+  maxForce: 20
   waterDrag: 1.5
-  waterGravity: 10
+  waterGravity: 30
   normalMass: 0.5
-  normalGravity: 10
+  normalGravity: 30
 --- !u!50 &7354412327423304152
 Rigidbody2D:
   serializedVersion: 5
