@@ -11,7 +11,11 @@ using UnityEngine.SceneManagement;
 public class TopDownGameManager : Singleton<TopDownGameManager>
 {
     public bool isTestGameplay = false;
+    [ShowIf("isTestGameplay")]
+    public bool isTestBossFight = false; // For testing purposes, forces the manager to treat the first wave as a boss fight
 
+    [HideInInspector]
+    public bool isBossFighting = false;
     [SerializeField, TabGroup("References")]
     private InputReader _inputReader;
 
@@ -100,7 +104,8 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         await UniTask.Delay(700);
         EnablePlayer();
         await UniTask.Delay(3000);
-        EventBus<TopdownStartGameEvent>.Raise(new TopdownStartGameEvent());
+        isBossFighting = isTestGameplay ? isTestBossFight : CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting;
+        EventBus<TopdownStartGameEvent>.Raise( new TopdownStartGameEvent(isBossFighting));
         BroAudio.Play(_bgm);
     }
     private void EnablePlayer()
