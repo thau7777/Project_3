@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 
@@ -32,6 +33,10 @@ namespace Turnbase
 
         [TabGroup("Skill")] public SkillEntryUI skillEntryPrefab;
         [TabGroup("Skill")] public GameObject PlayerSkillPanel;
+        [TabGroup("Skill")] public Button swapSkillButton;
+        private int currentSkillPage = 0;
+        private bool isSwapping = false;
+        private const int SKILLS_PER_PAGE = 4;
 
         [TabGroup("Summon")] public SkillEntryUI summonEntryPrefab;
         [TabGroup("Summon")] public GameObject PlayerSummonPanel;
@@ -86,12 +91,12 @@ namespace Turnbase
             confirmButton.onClick.AddListener(OnConfirmClicked);
             summomonButton.onClick.AddListener(OnSummonClicked);
             itemButton.onClick.AddListener(OnItemClicked);
+            if (swapSkillButton != null) swapSkillButton.onClick.AddListener(OnSwapSkillClicked);
 
             PlayerSkillPanel.gameObject.SetActive(false);
             PlayerSummonPanel.gameObject.SetActive(false);
             PlayerItemPanel.gameObject.SetActive(false);
-
-            
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
 
             Hide();
         }
@@ -183,7 +188,9 @@ namespace Turnbase
             playerActionsPanel.SetActive(true);
             PlayerSkillPanel.SetActive(false);
             PlayerSummonPanel.SetActive(false);
+            PlayerSummonPanel.SetActive(false);
             PlayerItemPanel.SetActive(false);
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
 
             confirmButton.gameObject.SetActive(false);
 
@@ -201,6 +208,7 @@ namespace Turnbase
 
             if (parryButton != null) parryButton.gameObject.SetActive(false);
             if (parryFillImage != null) parryFillImage.gameObject.SetActive(false);
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
         }
 
         public void ShowParryUI(bool showParry)
@@ -271,6 +279,7 @@ namespace Turnbase
             PlayerSkillPanel.SetActive(false);
             PlayerSummonPanel.SetActive(false);
             PlayerItemPanel.SetActive(false);
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
 
         }
 
@@ -313,6 +322,8 @@ namespace Turnbase
             PlayerItemPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
 
+            currentSkillPage = 0;
+            PlayerSkillPanel.transform.localScale = Vector3.one;
             SetupSkillUI(currentCharacter.skills);
             PlayerSkillPanel.SetActive(true);
 
@@ -401,6 +412,7 @@ namespace Turnbase
             PlayerSkillPanel.SetActive(false);
             PlayerItemPanel.SetActive(false);
             confirmButton.gameObject.SetActive(false);
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
 
         }
 
@@ -430,6 +442,7 @@ namespace Turnbase
             summomonButton.interactable = true;
             itemButton.interactable = false;
 
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
             Debug.Log("sử dụng Item!");
             SetUPItemUI(currentCharacter.item);
 
@@ -513,7 +526,21 @@ namespace Turnbase
                 return;
             }
 
-            foreach (Skill skillToUse in damageSkills)
+            if (swapSkillButton != null)
+            {
+                swapSkillButton.gameObject.SetActive(damageSkills.Count > SKILLS_PER_PAGE);
+            }
+
+            int startIndex = currentSkillPage * SKILLS_PER_PAGE;
+            if (startIndex >= damageSkills.Count)
+            {
+                currentSkillPage = 0;
+                startIndex = 0;
+            }
+
+            var skillsToShow = damageSkills.Skip(startIndex).Take(SKILLS_PER_PAGE);
+
+            foreach (Skill skillToUse in skillsToShow)
             {
                 SkillEntryUI newEntry = Instantiate(skillEntryPrefab, PlayerSkillPanel.transform);
 
@@ -533,6 +560,47 @@ namespace Turnbase
             {
                 StartCoroutine(FocusFirstSkill());
             }
+        }
+
+        private void OnSwapSkillClicked()
+        {
+            if (currentCharacter == null || isSwapping || instantiatedSkillEntries.Count == 0) return;
+
+            List<Skill> damageSkills = currentCharacter.skills.Where(s => s.skillType != SkillType.Summon).ToList();
+            if (damageSkills.Count <= SKILLS_PER_PAGE) return;
+
+            isSwapping = true;
+
+            Sequence seqOut = DOTween.Sequence();
+            for (int i = 0; i < instantiatedSkillEntries.Count; i++)
+            {
+                seqOut.Join(instantiatedSkillEntries[i].transform.DOScale(0f, 0.15f)
+                    .SetEase(Ease.InBack)
+                    .SetDelay(i * 0.03f));
+            }
+
+            seqOut.OnComplete(() =>
+            {
+                currentSkillPage++;
+                if (currentSkillPage * SKILLS_PER_PAGE >= damageSkills.Count)
+                {
+                    currentSkillPage = 0;
+                }
+
+                SetupSkillUI(currentCharacter.skills);
+
+                for (int i = 0; i < instantiatedSkillEntries.Count; i++)
+                {
+                    Transform t = instantiatedSkillEntries[i].transform;
+                    t.localScale = Vector3.zero;
+
+                    t.DOScale(1f, 0.25f)
+                        .SetEase(Ease.OutBack)
+                        .SetDelay(i * 0.03f);
+                }
+
+                DOVirtual.DelayedCall(0.35f, () => isSwapping = false);
+            });
         }
 
         private IEnumerator FocusFirstSkill()
@@ -639,6 +707,7 @@ namespace Turnbase
             PlayerSummonPanel.SetActive(false);
             playerActionsPanel.SetActive(false);
             PlayerItemPanel.SetActive(false);
+            if (swapSkillButton != null) swapSkillButton.gameObject.SetActive(false);
 
             selectedSkillToConfirm = null;
         }

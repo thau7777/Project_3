@@ -20825,6 +20825,7 @@ MonoBehaviour:
   playerActionsPanel2: {fileID: 0}
   skillEntryPrefab: {fileID: 4535633081229299378, guid: 748ed40908065bc43932325459c51745, type: 3}
   PlayerSkillPanel: {fileID: 2353934936889864401}
+  swapSkillButton: {fileID: 1821012517894969250}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 748ed40908065bc43932325459c51745, type: 3}
   PlayerSummonPanel: {fileID: 4556486913971983218}
   itemEntryPrefab: {fileID: 3163969907839143040, guid: c3adcbf10b464cb49aebee29ccaf44a5, type: 3}
@@ -31894,6 +31895,54 @@ PrefabInstance:
       propertyPath: m_Name
       value: ===Canvas-Player===
       objectReference: {fileID: 0}
+    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99302363
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.005119559
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.115952894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.020802435
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -203
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -2.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 07b90ac11a351d04b827f7348d7ec7e9, type: 3}
+    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7079148
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3852208252640301882, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7443509545567645747, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -31975,7 +32024,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8864021635692639546, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
@@ -31984,6 +32034,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7443509545567645747, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
   m_PrefabInstance: {fileID: 7633550946433556680}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1821012517894969250 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8118401439571621738, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 7633550946433556680}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!114 &1915259441147576645 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8321399167605039501, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}

@@ -13,6 +13,8 @@ namespace Turnbase
 
         public Transform[] transforms;
 
+        public SoundID battle;
+
         public SoundID greenLand;
         public SoundID desertLand;
         public SoundID iceLand;
@@ -21,6 +23,13 @@ namespace Turnbase
         {
             SwichTerrain();
             Weather();
+
+            BroAudio.Play(battle);
+        }
+
+        private void OnDisable()
+        {
+            BroAudio.Stop(battle);
         }
 
         public async void SwichTerrain()
