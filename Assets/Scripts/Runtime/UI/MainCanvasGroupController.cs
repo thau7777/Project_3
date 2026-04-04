@@ -1,7 +1,8 @@
-using UnityEngine;
 using Cysharp.Threading.Tasks;
-using System.Threading;
+using MyRule;
 using System;
+using System.Threading;
+using UnityEngine;
 
 public enum UIEndGameExecuteState 
 {
@@ -15,6 +16,7 @@ public enum UIEndGameExecuteState
 public class MainCanvasGroupController : MonoBehaviour
 {
     [SerializeField] private bool _showWhenEndGame = false;
+    [SerializeField] private bool _forBossFight = false;
     [SerializeField, ShowIf("_showWhenEndGame")] private UIEndGameExecuteState _endGameExecuteState;
     [SerializeField, TabGroup("FadeInSettings")] private float _delayBeforeFadeIn = 0;
     [SerializeField, TabGroup("FadeInSettings")] private float fadeInDuration = 1f;
@@ -40,7 +42,7 @@ public class MainCanvasGroupController : MonoBehaviour
 
         if (!_showWhenEndGame)
         {
-            _startGameEventBinding = new EventBinding<TopdownStartGameEvent>(FadeIn);
+            _startGameEventBinding = new EventBinding<TopdownStartGameEvent>(CheckAndFadeIn);
             EventBus<TopdownStartGameEvent>.Register(_startGameEventBinding);
             _endGameEventBinding = new EventBinding<TopDownEndGameEvent>(FadeOut);
             EventBus<TopDownEndGameEvent>.Register(_endGameEventBinding);
@@ -73,6 +75,11 @@ public class MainCanvasGroupController : MonoBehaviour
     {
         if (topDownEndGameEvent.endGameExecuteState == _endGameExecuteState || _endGameExecuteState == UIEndGameExecuteState.Both)
             FadeIn();
+    }
+    private async void CheckAndFadeIn()
+    {
+        if(TopDownGameManager.Instance.isBossFighting == _forBossFight)
+            await FadeIn(fadeInDuration);
     }
     private async void FadeIn()
     {

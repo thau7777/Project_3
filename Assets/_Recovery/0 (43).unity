@@ -360,7 +360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -906,7 +905,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 1
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 1.3
   fadeInDuration: 1
@@ -6825,7 +6823,7 @@ GameObject:
   - component: {fileID: 227690609}
   m_Layer: 6
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -12658,7 +12656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasGroupController
   _showWhenEndGame: 1
-  _forBossFight: 0
   _endGameExecuteState: 1
   _delayBeforeFadeIn: 1
   fadeInDuration: 1
@@ -19012,7 +19009,6 @@ Transform:
   - {fileID: 791836147}
   - {fileID: 812478763}
   - {fileID: 2018775563}
-  - {fileID: 56718813683826733}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &437014326
@@ -19480,7 +19476,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 1
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 1.5
   fadeInDuration: 1
@@ -20386,7 +20381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -20556,7 +20550,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -31928,7 +31921,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -32259,7 +32251,7 @@ GameObject:
   - component: {fileID: 737541532}
   m_Layer: 6
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -32511,7 +32503,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -33497,7 +33488,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownCanvasGroupFadeController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -35688,7 +35678,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasGroupController
   _showWhenEndGame: 1
-  _forBossFight: 0
   _endGameExecuteState: 2
   _delayBeforeFadeIn: 1
   fadeInDuration: 1
@@ -36891,7 +36880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -43427,7 +43415,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -44913,7 +44900,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 0
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 0
   fadeInDuration: 1
@@ -46066,7 +46052,7 @@ MonoBehaviour:
   - id: 22
     settings: {fileID: 11400000, guid: 45247f79ec03dd447a8945503fb88dc0, type: 2}
   _spawnRadiusMinMax: {x: 5, y: 10}
-  _waveDuration: 60
+  _waveDuration: 30
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 2360840
@@ -46761,7 +46747,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
   _showWhenEndGame: 1
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 1.7
   fadeInDuration: 1
@@ -53577,8 +53562,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownGameManager
   isTestGameplay: 1
-  isTestBossFight: 0
-  isBossFighting: 0
   _inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
   _player: {fileID: 1568225709}
   _tpEffect: {fileID: 7141001731699096960}
@@ -54787,7 +54770,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasGroupController
   _showWhenEndGame: 1
-  _forBossFight: 0
   _endGameExecuteState: 0
   _delayBeforeFadeIn: 1
   fadeInDuration: 1
@@ -56564,7 +56546,7 @@ GameObject:
   - component: {fileID: 1974796264}
   m_Layer: 6
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -58411,11 +58393,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144161993}
   m_CullTransparentMesh: 1
---- !u!224 &56718813683826733 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-  m_PrefabInstance: {fileID: 1434500847096522111}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &678218058431443169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58630,182 +58607,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb109fb94435bf043a5a7b7734525d86, type: 3}
---- !u!1001 &1434500847096522111
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 429378871}
-    m_Modifications:
-    - target: {fileID: 1399862340519635796, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399862340519635796, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399862340519635796, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2134294243216581764, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -140.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3367435481491018817, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_Alpha
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4743055075432674572, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_Name
-      value: Boss Status Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 5168169287307707385, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_Spacing
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226761383923396410, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468824589782996158, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468824589782996158, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468824589782996158, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468824589782996158, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468824589782996158, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7305807141634635581, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7305807141634635581, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7305807141634635581, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7305807141634635581, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7389284123544957861, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7389284123544957861, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7926788902709104036, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7926788902709104036, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4743055075432674572, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7268836683822287585}
-  m_SourcePrefab: {fileID: 100100000, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
 --- !u!1001 &2096208980896328082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59102,11 +58903,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 847c00748b93585418ffda349a245caf, type: 3}
---- !u!1 &4677321618655762139 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4743055075432674572, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
-  m_PrefabInstance: {fileID: 1434500847096522111}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5246419691422606816 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5502179072115835541, guid: 4ab818fda5ba7e746b477161faf84a76, type: 3}
@@ -59754,25 +59550,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1444273029439083907, guid: 1d3b78943b0406e478e9f9420b2f479a, type: 3}
   m_PrefabInstance: {fileID: 4063842123427361237}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7268836683822287585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4677321618655762139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54c5b3f1e32bd9444a9c8bcc441a8ebb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MainCanvasGroupController
-  _showWhenEndGame: 0
-  _forBossFight: 1
-  _endGameExecuteState: 0
-  _delayBeforeFadeIn: 0.5
-  fadeInDuration: 1
-  _delayBeforeFadeOut: 0
-  fadeOutDuration: 1
 --- !u!1001 &8689643753412743371
 PrefabInstance:
   m_ObjectHideFlags: 0
