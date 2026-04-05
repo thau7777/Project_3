@@ -120,11 +120,11 @@ public class TutorialTrigger : MonoBehaviour
             return;
         }
 
-        if (sequence != null && sequence.playOnce && sequence.hasPlayed)
-        {
-            onSequenceEnd?.Invoke();
-            return;
-        }
+        //if (sequence != null && sequence.playOnce && sequence.hasPlayed)
+        //{
+        //    onSequenceEnd?.Invoke();
+        //    return;
+        //}
 
         onBeforeSequenceStart?.Invoke();
         TutorialManager.Instance.PlaySequence(sequence, anchorTarget, stepBindings);
@@ -137,6 +137,8 @@ public class TutorialTrigger : MonoBehaviour
         yield return null;
         while (TutorialManager.Instance != null && TutorialManager.Instance.IsRunning)
             yield return null;
+        
+        yield return new WaitForSeconds(0.5f);
         onSequenceEnd?.Invoke();
     }
 

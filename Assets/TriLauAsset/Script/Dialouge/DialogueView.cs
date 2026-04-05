@@ -139,9 +139,9 @@ namespace MyRule.UI
 
             currentLine = evt.dialogueLine;
 
-            foreach (DialougeChoiceButtonView choiceButton in choiceButtons)
+            for (int i = 0; i < choiceButtons.Length; i++)
             {
-                choiceButton.gameObject.SetActive(false);
+                choiceButtons[i].SetCanSubmit(false);
             }
 
             TypeDialogue(evt).Forget();
@@ -218,9 +218,9 @@ namespace MyRule.UI
                 Choice dialogueChoice = evt.dialogueChoices[i];
                 DialougeChoiceButtonView choiceButton = choiceButtons[i];
 
-                choiceButton.gameObject.SetActive(true);
                 choiceButton.SetText(dialogueChoice.text);
                 choiceButton.SetIndex(i);
+                choiceButton.SetCanSubmit(true);
             }
 
             await UniTask.WaitForEndOfFrame();

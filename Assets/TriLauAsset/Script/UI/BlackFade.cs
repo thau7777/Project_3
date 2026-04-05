@@ -14,6 +14,7 @@ namespace MyRule
 
         private async void Start()
         {
+            await UniTask.Delay(400);
             await FadeOut();
         }
 
@@ -63,6 +64,12 @@ namespace MyRule
             canvasGroup.DOFade(0f, duration).SetEase(Ease.Linear);
 
             await UniTask.Delay((int)(duration * 1000), cancellationToken: cts.Token);
+        }
+
+        public async void FadeThisFrame(float duration)
+        {
+            await FadeIn(duration);
+            await FadeOut(duration);
         }
     }
 }

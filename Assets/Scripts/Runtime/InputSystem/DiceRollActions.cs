@@ -21,6 +21,8 @@ public class DiceRollActions : InputActions.IDiceRollActions
     public event Action onOpenSigilStorage;
     public event Action onOpenPassiveSigilStorage;
 
+    public event Action onOpenToolBox;
+
     public void OnEsc(InputAction.CallbackContext context)
     {
         if (context.performed) onEsc?.Invoke();
@@ -58,6 +60,11 @@ public class DiceRollActions : InputActions.IDiceRollActions
     public void OnOpenSigilStorage(InputAction.CallbackContext context)
     {
         if (context.performed) onOpenSigilStorage?.Invoke();
+    }
+
+    public void OnOpenToolBox(InputAction.CallbackContext context)
+    {
+        if (context.performed) onOpenToolBox?.Invoke();
     }
 
     public void OnRightClick(InputAction.CallbackContext context)

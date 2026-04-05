@@ -1,126 +1,64 @@
-using Cysharp.Threading.Tasks;
-using System;
-using System.Threading;
+﻿using Cysharp.Threading.Tasks;
+using MyRule.Event;
 using UnityEngine;
-using UnityEngine.VFX;
 
 namespace MyRule
 {
     public class TAEController : MonoBehaviour
     {
-        private const string Voice = "VoiceStreght";
+        [SerializeField] private InputReader inputReader;
+        [SerializeField] private TutorialTrigger tutorialTrigger;
 
-        [Header("Target")]
-        [SerializeField] private VisualEffect effect;
+        private EventBinding<DialogueFinishedEvent> dialogueFinishEvt;
 
-        [Header("Curve")]
-        [SerializeField] private AnimationCurve talkCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-        [SerializeField] private float curveCycleDuration = 0.2f;
-
-        [Header("Default Value")]
-        [SerializeField] private float defaultValue = 0f;
-
-        [Header("Runtime")]
-        [SerializeField] private float currentValue;
-
-        private CancellationTokenSource talkingCts;
-
-        private void Reset()
+        private void OnEnable()
         {
-            effect = GetComponent<VisualEffect>();
-        }
-
-        private void Awake()
-        {
-            ResetStrength();
+            dialogueFinishEvt = new EventBinding<DialogueFinishedEvent>(FinishDialogue);
+            EventBus<DialogueFinishedEvent>.Register(dialogueFinishEvt);
         }
 
         private void OnDisable()
         {
-            CancelTalking();
-            ResetStrength();
+            EventBus<DialogueFinishedEvent>.Deregister(dialogueFinishEvt);
         }
 
-        private void OnDestroy()
+        private void Start()
         {
-            CancelTalking();
+            TriggerTAE();
         }
 
-        public async void TriggerTalking(float duration)
+        public async void TriggerTAE()
         {
-            CancelTalking();
-
-            talkingCts = new CancellationTokenSource();
-            CancellationTokenSource localCts = talkingCts;
-            CancellationToken token = localCts.Token;
-
-            try
+            if (GameSystemManager.Instance != null)
             {
-                if (effect == null || duration <= 0f)
+                var data = GameSystemManager.Instance?.GameData?.DialougeData;
+                if (data == null) return;
+
+                if (data.KeyValuePairs.TryGetValue("hasMeetTAE", out var value)
+                    && value is bool hasMeetTAE && hasMeetTAE)
                 {
-                    ResetStrength();
+                    Destroy(this.gameObject);
+                    await UniTask.Delay(7000);
+                    CinematicBorder.Instance.HideBorder(0.4f).Forget();
                     return;
                 }
-
-                float elapsed = 0f;
-
-                while (elapsed < duration)
-                {
-                    token.ThrowIfCancellationRequested();
-
-                    elapsed += Time.deltaTime;
-
-                    float normalizedTime = curveCycleDuration > 0f
-                        ? (elapsed % curveCycleDuration) / curveCycleDuration
-                        : 0f;
-
-                    currentValue = talkCurve.Evaluate(normalizedTime);
-                    ApplyStrength(currentValue);
-
-                    await UniTask.Yield(PlayerLoopTiming.Update, token);
-                }
             }
-            catch (OperationCanceledException)
-            {
-            }
-            finally
-            {
-                if (talkingCts == localCts)
-                {
-                    currentValue = defaultValue;
-                    ResetStrength();
 
-                    localCts.Dispose();
-                    talkingCts = null;
-                }
-                else
-                {
-                    localCts.Dispose();
-                }
-            }
+            await UniTask.Delay(7000);
+
+            inputReader.SwitchActionMap(ActionMap.DiceRoll);
+
+            NPCManager.Instance.TriggerNPC();
         }
 
-        public void CancelTalking()
+        private async void FinishDialogue()
         {
-            if (talkingCts == null) return;
-
-            if (!talkingCts.IsCancellationRequested)
-                talkingCts.Cancel();
-        }
-
-        private void ApplyStrength(float value)
-        {
-            if (effect == null) return;
-
-            effect.SetFloat(Voice, value);
-        }
-
-        private void ResetStrength()
-        {
-            if (effect == null) return;
-
-            currentValue = defaultValue;
-            effect.SetFloat(Voice, defaultValue);
+            inputReader.SwitchActionMap(ActionMap.SpaceStation);
+            BlackFade.Instance.FadeThisFrame(0.2f);
+            await UniTask.Delay(200);
+            Destroy(this.gameObject);
+            await CinematicBorder.Instance.HideBorder(0f);
+            tutorialTrigger.Trigger();
         }
     }
 }

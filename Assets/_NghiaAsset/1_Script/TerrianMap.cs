@@ -1,6 +1,7 @@
 using UnityEngine;
 using MyRule;
 using Cysharp.Threading.Tasks;
+using Ami.BroAudio;
 
 namespace Turnbase
 {
@@ -12,10 +13,23 @@ namespace Turnbase
 
         public Transform[] transforms;
 
+        public SoundID battle;
+
+        public SoundID greenLand;
+        public SoundID desertLand;
+        public SoundID iceLand;
+
         private void Start()
         {
             SwichTerrain();
             Weather();
+
+            BroAudio.Play(battle);
+        }
+
+        private void OnDisable()
+        {
+            BroAudio.Stop(battle);
         }
 
         public async void SwichTerrain()
@@ -31,6 +45,8 @@ namespace Turnbase
                     terrain[1].gameObject.SetActive(false);
                     terrain[2].gameObject.SetActive(false);
 
+                    BroAudio.Play(greenLand);
+
                     if (transforms.Length > 0 && transforms[0] != null)
                     {
                         terrain[0].transform.position = transforms[0].position;
@@ -42,6 +58,9 @@ namespace Turnbase
                     terrain[1].gameObject.SetActive(true);
                     terrain[0].gameObject.SetActive(false);
                     terrain[2].gameObject.SetActive(false);
+
+                    BroAudio.Play(desertLand);
+
                     if (transforms.Length > 1 && transforms[1] != null)
                     {
                         terrain[1].transform.position = transforms[1].position;
@@ -53,6 +72,9 @@ namespace Turnbase
                     terrain[2].gameObject.SetActive(true);
                     terrain[1].gameObject.SetActive(false);
                     terrain[0].gameObject.SetActive(false);
+
+                    BroAudio.Play(iceLand);
+
                     if (transforms.Length > 2 && transforms[2] != null)
                     {
                         terrain[2].transform.position = transforms[2].position;

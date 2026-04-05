@@ -95,8 +95,8 @@ namespace MyRule
 
         public void CreateBossFighting()
         {
-            GroupWave tdWaves = WaveManager.Instance.CreateNewWave();
-            GroupWave tbWaves = WaveManager.Instance.CreateNewWave();
+            GroupWave tdWaves = WaveManager.Instance.CreateBossWave();
+            GroupWave tbWaves = WaveManager.Instance.CreateBossWave();
 
             CreateNewCombat(CombatType.BossFigihting);
 

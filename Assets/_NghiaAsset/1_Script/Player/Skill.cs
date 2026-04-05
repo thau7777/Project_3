@@ -67,10 +67,6 @@ public class Skill : ScriptableObject
     [ShowIfEnumValue("skillType", SkillType.MeleeAttack)]
     public int attackCount = 1;
 
-    [Header("Sound Effects")]
-    public SFXType castSFXType;  
-    public SFXType impactSFXType;
-
     public bool canParry = true;
 
 

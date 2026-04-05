@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 36132918380740108}
   - component: {fileID: 6037397687123593738}
   - component: {fileID: -4120224521928647345}
+  - component: {fileID: 1173982671308966275}
   m_Layer: 0
   m_Name: Spell_ChainLightning_Tb
   m_TagString: Untagged
@@ -157,3 +158,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LightningBolt
   settings: {fileID: 0}
   lineRenderer: {fileID: 6037397687123593738}
+--- !u!114 &1173982671308966275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3672881043253125009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b562ecfa7567bd6458b18f766bc78a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundChainLightning
+  sound1:
+    _entity: {fileID: 11400000, guid: 3d807c32612f89442a2a924d24c1e9f8, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 3672881043253125009}
+  sound2:
+    _entity: {fileID: 11400000, guid: 99ccad12c881eba4e85df901c875fcf8, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 3672881043253125009}
+  sound3:
+    _entity: {fileID: 11400000, guid: 9431a8172a2bab34cbb291c9b92a84bb, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 3672881043253125009}
