@@ -5,8 +5,7 @@ namespace MyRule
 {
     public class WeatherView : MonoBehaviour
     {
-        [SerializeField] private GameObject rainObj;
-        [SerializeField] private GameObject snowObj;
+        [SerializeField] private GameObject weatherObj;
 
         [SerializeField] private Light directionLight;
 
@@ -28,22 +27,9 @@ namespace MyRule
 
         private void HandleWeather(WeatherEvent evt)
         {
-            switch (evt.weatherType)
+            if (evt.isBadWeather)
             {
-                case EWeatherType.Rain:
-                    {
-                        if (rainObj != null) rainObj.SetActive(true);
-                        directionLight.color = rainColor;
-                        break;
-                    }
-                case EWeatherType.Snow:
-                    {
-                        if (snowObj != null) snowObj.SetActive(true);
-                        directionLight.color = snowColor;
-                        break;
-                    }
-                default:
-                    break;
+                if (weatherObj != null) weatherObj.SetActive(true);
             }
         }
     }

@@ -6,56 +6,89 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public enum EWeatherType
+    public struct WeatherRate
     {
-        None,
-        Rain,
-        Snow,
+        public bool isBadWeather;
+        public int rate;
     }
 
     [Serializable]
     public class WeatherData
     {
-        [JsonProperty] private EWeatherType type;
+        [JsonProperty] private bool isBadWeather;
 
-        [JsonIgnore] public EWeatherType WeatherType => type;
+        [JsonIgnore] public bool IsBadWeather => isBadWeather;
 
         public WeatherData() 
         {
 
         }
 
-        public void SetWeatherType(EWeatherType type) => this.type = type;
+        public void SetBadWeather(bool isBadWeather) => this.isBadWeather = isBadWeather;
     }
 
     public class WeatherManager : PersistentSingleton<WeatherManager>, IGameData
     {
         private WeatherData weatherData;
 
-        private EWeatherType GetRandomWeather(EWeatherType eWeatherType1, EWeatherType eWeatherType2)
-        {
-            int random = UnityEngine.Random.Range(1, 3);
+        private WeatherRate[] weatherRates;
 
-            if (random == 1) return eWeatherType1;
-            else if (random == 2) return eWeatherType2;
-            else return EWeatherType.None;
+        private EventBinding<ToolWeatherEvent> toolWeatherEvt;
+
+        private bool GetRandomWeather()
+        {
+            int random = UnityEngine.Random.Range(1, 100);
+            int rate = 0;
+
+            for (int i = 0; i < weatherRates.Length; i++)
+            {
+                rate += weatherRates[i].rate;
+                if (rate > random)
+                {
+                    return weatherRates[i].isBadWeather;
+                }
+            }
+            
+            return false;
         }
 
         private void OnEnable()
         {
             GameSystemManager.Instance.Register(this);
+
+            toolWeatherEvt = new EventBinding<ToolWeatherEvent>(SetBadWeatherInNextComabat);
+            EventBus<ToolWeatherEvent>.Register(toolWeatherEvt);
+
+            weatherRates = new WeatherRate[2]
+            {
+                new WeatherRate 
+                {
+                    isBadWeather = false,
+                    rate = 70,
+                },
+                new WeatherRate 
+                {
+                    isBadWeather = true,
+                    rate = 30,
+                },
+            };
         }
 
         private void OnDisable()
         {
             GameSystemManager.Instance.Unregister(this);
+            EventBus<ToolWeatherEvent>.Deregister(toolWeatherEvt);
         }
 
         private void SetWeather()
+        {            
+            EventBus<WeatherEvent>.Raise(new WeatherEvent(weatherData.IsBadWeather));
+        }
+
+        private void SetBadWeatherInNextComabat()
         {
-            if (weatherData.WeatherType == EWeatherType.None) return;
-            
-            EventBus<WeatherEvent>.Raise(new WeatherEvent(weatherData.WeatherType));
+            weatherData.SetBadWeather(true);
+            SetWeather();
         }
 
         public UniTask LoadData(GameData data)
@@ -70,20 +103,9 @@ namespace MyRule
             {
                 weatherData = new WeatherData();
 
-                if (data.MatchData.MapType == EMap.GreenLand)
-                {
-                    //EWeatherType weatherType = GetRandomWeather(EWeatherType.None, EWeatherType.Rain);
-                    weatherData.SetWeatherType(EWeatherType.Rain);
-                }
-                else if (data.MatchData.MapType == EMap.Desert)
-                {
-                    weatherData.SetWeatherType(EWeatherType.None);
-                }
-                else if (data.MatchData.MapType == EMap.IceLand)
-                {
-                    EWeatherType weatherType = GetRandomWeather(EWeatherType.None, EWeatherType.Snow);
-                    weatherData.SetWeatherType(weatherType);
-                }
+                bool isbadWeather = GetRandomWeather();
+
+                weatherData.SetBadWeather(isbadWeather);
             }
 
             SetWeather();
