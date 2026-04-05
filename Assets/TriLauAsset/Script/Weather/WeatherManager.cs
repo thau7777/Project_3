@@ -31,11 +31,13 @@ namespace MyRule
     {
         private WeatherData weatherData;
 
+        public WeatherData WeatherData => weatherData;
+
         private WeatherRate[] weatherRates;
 
         private EventBinding<ToolWeatherEvent> toolWeatherEvt;
 
-        private bool GetRandomWeather()
+        public bool GetRandomWeather()
         {
             int random = UnityEngine.Random.Range(1, 100);
             int rate = 0;
@@ -43,7 +45,7 @@ namespace MyRule
             for (int i = 0; i < weatherRates.Length; i++)
             {
                 rate += weatherRates[i].rate;
-                if (rate > random)
+                if (rate >= random)
                 {
                     return weatherRates[i].isBadWeather;
                 }
@@ -80,7 +82,7 @@ namespace MyRule
             EventBus<ToolWeatherEvent>.Deregister(toolWeatherEvt);
         }
 
-        private void SetWeather()
+        public void SetWeather()
         {            
             EventBus<WeatherEvent>.Raise(new WeatherEvent(weatherData.IsBadWeather));
         }
@@ -93,22 +95,14 @@ namespace MyRule
 
         public UniTask LoadData(GameData data)
         {
+            weatherData = new WeatherData();
+
             if (data.MatchData == null) return UniTask.CompletedTask;
 
             if (data.MatchData.WeatherData != null)
             {
                 weatherData = data.MatchData.WeatherData;
             }
-            else if (data.MatchData.WeatherData == null)
-            {
-                weatherData = new WeatherData();
-
-                bool isbadWeather = GetRandomWeather();
-
-                weatherData.SetBadWeather(isbadWeather);
-            }
-
-            SetWeather();
 
             return UniTask.CompletedTask;
         }

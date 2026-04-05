@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using MyRule.Event;
 using UnityEngine;
 
@@ -24,6 +25,22 @@ namespace MyRule
         {
             EventBus<WeatherEvent>.Deregister(weatherEventBinding);
         }
+
+        private void Start()
+        {
+            SetRandomWeather();
+        }
+
+        private async void SetRandomWeather()
+        {
+            await UniTask.WaitUntil(() => WeatherManager.Instance.WeatherData != null);
+
+            bool isbadWeather = WeatherManager.Instance.GetRandomWeather();
+
+            WeatherManager.Instance.WeatherData.SetBadWeather(isbadWeather);
+
+            WeatherManager.Instance.SetWeather();
+        }    
 
         private void HandleWeather(WeatherEvent evt)
         {
