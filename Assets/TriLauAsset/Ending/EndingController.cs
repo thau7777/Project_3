@@ -2,7 +2,9 @@
 using MyRule.Audio;
 using MyRule.Event;
 using System.Threading;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace MyRule
 {
@@ -27,9 +29,19 @@ namespace MyRule
         [SerializeField] private float rotateSpeed = 10f;
         [SerializeField] private float accel = 2f;
 
+        [SerializeField] private EndingCredit[] endingCredits;
+        [SerializeField] private float DelayShowText = 3f;
+        [SerializeField] private SmoothLookAtCredit smoothLookAtCredit;
+        [SerializeField] private Transform gate;
+        [SerializeField] private Volume whiteVol;
+        [SerializeField] private float delayGMRPower = 10f;
+        [SerializeField] private float powerDuration = 1.0f;
+
         private float currentSpeed = 0f;
         private bool canMove = false;
         private bool finishFirstDialogue;
+
+        private CancellationTokenSource cts;
 
         private EventBinding<DialogueCamEvent> dialogueCamEvent;
         private EventBinding<DialogueFinishedEvent> dialogueFinishedEvent;
@@ -130,12 +142,48 @@ namespace MyRule
             {
                 char3.SetActive(false);
 
+                AudioManager.Instance.PlaySound("EndingBGMusic");
+
                 await UniTask.Delay(2000);
 
                 canMove = true;
 
-                AudioManager.Instance.PlaySound("EndingBGMusic");
+                ShowCredit();
             }
+        }
+
+        private async void ShowCredit()
+        {
+            await UniTask.Delay(8000);
+
+            for (int i = 0; i < endingCredits.Length; i++)
+            {
+                endingCredits[i].ShowText();
+                smoothLookAtCredit.SetTarget(endingCredits[i].transform);
+                await UniTask.Delay((int)(DelayShowText * 1000));
+            }
+
+            smoothLookAtCredit.SetTarget(gate);
+
+            await UniTask.Delay((int)(delayGMRPower * 1000));
+
+            SetPower();
+
+            await UniTask.Delay(12000);
+            await Loader.LoadSceneDirect(Loader.EScene.MainMenuScene);
+        }
+
+        private void SetPower()
+        {
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+
+            Transition.TransitionValue(
+                setter: value => whiteVol.weight = value,
+                from: whiteVol.weight,
+                to: 1f,
+                duration: powerDuration,
+                token: cts.Token).Forget();
         }
 
         private void SwitchEndingCam(DialogueCamEvent evt)
