@@ -1,16 +1,12 @@
-using UnityEngine;
-
-public class EndingEvent : MonoBehaviour
+namespace MyRule.Event
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public struct DialogueCamEvent : IEvent
     {
-        
-    }
+        public readonly string camName;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public DialogueCamEvent(string camName)
+        {
+            this.camName = camName;
+        }
     }
 }

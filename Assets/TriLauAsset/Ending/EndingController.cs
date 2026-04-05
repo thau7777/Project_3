@@ -1,7 +1,8 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using MyRule.Audio;
+using MyRule.Event;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace MyRule
 {
@@ -10,24 +11,146 @@ namespace MyRule
         [SerializeField] private DialougeTrigger dialougeTrigger;
         [SerializeField] private GameObject cam1;
         [SerializeField] private GameObject cam2;
+        [SerializeField] private GameObject cam3;
+        [SerializeField] private InputReader inputReader;
 
-        private CancellationTokenSource cts;
+        [SerializeField] private GameObject char1;
+        [SerializeField] private GameObject char2;
+        [SerializeField] private GameObject char3;
+
+        [SerializeField] private DialougeTrigger dialougeTrigger2;
+
+        [Header("Char4 Control")]
+        [SerializeField] private Transform char4;
+        [SerializeField] private Animator animator;
+        [SerializeField] private Transform target;
+        [SerializeField] private float rotateSpeed = 10f;
+        [SerializeField] private float accel = 2f;
+
+        private float currentSpeed = 0f;
+        private bool canMove = false;
+        private bool finishFirstDialogue;
+
+        private EventBinding<DialogueCamEvent> dialogueCamEvent;
+        private EventBinding<DialogueFinishedEvent> dialogueFinishedEvent;
+
+        private void OnEnable()
+        {
+            dialogueCamEvent = new EventBinding<DialogueCamEvent>(SwitchEndingCam);
+            EventBus<DialogueCamEvent>.Register(dialogueCamEvent);
+
+            dialogueFinishedEvent = new EventBinding<DialogueFinishedEvent>(OnDialogueFinish);
+            EventBus<DialogueFinishedEvent>.Register(dialogueFinishedEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<DialogueCamEvent>.Deregister(dialogueCamEvent);
+            EventBus<DialogueFinishedEvent>.Deregister(dialogueFinishedEvent);
+        }
 
         private void Start()
         {
             cam1.SetActive(false);
             cam2.SetActive(false);
+
+            EnterEnding().Forget();
+
+            inputReader.SwitchActionMap(ActionMap.DiceRoll);
         }
 
-        private async void EnterEnding()
+        private void Update()
         {
-            await BlackFade.Instance.FadeOut(1f);
+            if (target == null || char4 == null) return;
+            if (!canMove) return;
+
+            Vector3 direction = target.position - char4.position;
+            direction.y = 0;
+
+            float distance = direction.magnitude;
+
+            if (distance > 0.1f)
+            {
+                direction.Normalize();
+
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                char4.rotation = Quaternion.Slerp(char4.rotation, lookRotation, rotateSpeed * Time.deltaTime);
+
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 1f, accel * Time.deltaTime);
+            }
+            else
+            {
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, accel * Time.deltaTime);
+            }
+
+            animator.SetFloat("Y", currentSpeed);
+        }
+
+        private void OnAnimatorMove()
+        {
+            if (!canMove || char4 == null) return;
+
+            char4.position += animator.deltaPosition;
+            char4.rotation *= animator.deltaRotation;
+        }
+
+        private async UniTask EnterEnding()
+        {
+            BlackFade.Instance.FadeOut(1f).Forget();
+
+            await UniTask.Delay(1000);
 
             cam1.SetActive(true);
 
             await UniTask.Delay(300);
 
             dialougeTrigger.Trigger();
+        }
+
+        private async void OnDialogueFinish()
+        {
+            BlackFade.Instance.FadeThisFrame(0.5f);
+
+            if (!finishFirstDialogue)
+            {
+                char1.SetActive(false);
+                char2.SetActive(false);
+
+                char3.SetActive(true);
+
+                await UniTask.Delay(2000);
+
+                cam3.SetActive(true);
+
+                dialougeTrigger2.Trigger();
+
+                finishFirstDialogue = true;
+            }
+            else
+            {
+                char3.SetActive(false);
+
+                await UniTask.Delay(2000);
+
+                canMove = true;
+
+                AudioManager.Instance.PlaySound("EndingBGMusic");
+            }
+        }
+
+        private void SwitchEndingCam(DialogueCamEvent evt)
+        {
+            switch (evt.camName)
+            {
+                case "cam1":
+                    cam1.SetActive(true);
+                    cam2.SetActive(false);
+                    break;
+                case "cam2":
+                    cam1.SetActive(false);
+                    cam2.SetActive(true);
+                    break;
+            }
         }
     }
 }
