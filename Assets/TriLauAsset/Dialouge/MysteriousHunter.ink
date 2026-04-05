@@ -7,7 +7,7 @@ So I think you should get used to some things here. #speaker:Captain of the brav
 I have a little challenge for you. #speaker:Captain of the brave warriors #voice:CaptainDefault
 Overcome it, and I will reward you handsomely. #speaker:Captain of the brave warriors #voice:CaptainDefault
 * [Accept the challenge]
-~ TriggerMiniGame()
+~ TriggerMiniGame("Fish")
 Haha, well done, my friend. Keep trying! #speaker:Captain of the brave warriors #voice:CaptainAcceptChallenge
 -> MysteriousHunter_challenge_end
 * [Refuse the challenge]

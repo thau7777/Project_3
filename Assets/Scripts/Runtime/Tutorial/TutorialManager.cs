@@ -66,7 +66,6 @@ public class TutorialManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         SetOverlayAlpha(0f);
         overlayCanvas.gameObject.SetActive(false);

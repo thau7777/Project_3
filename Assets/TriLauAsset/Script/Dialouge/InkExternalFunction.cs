@@ -10,7 +10,7 @@ namespace MyRule
         public void Bind(Story story)
         {
             story.BindExternalFunction("OpenStore", () => OpenStore());
-            story.BindExternalFunction("TriggerMiniGame", () => TriggerMiniGame());
+            story.BindExternalFunction("TriggerMiniGame", (string name) => TriggerMiniGame(name));
             story.BindExternalFunction("ChosenSigil", (string sigilName) => ChosenSigil(sigilName));
             story.BindExternalFunction("UpdateRune", (int amount) => UpdateRune(amount));
             story.BindExternalFunction("TradeSigilByRune", (int rune, string sigilName) => TradeSigilByRune(rune, sigilName));
@@ -36,10 +36,10 @@ namespace MyRule
             EventBus<SwitchPanelEvent>.Raise(new SwitchPanelEvent(PanelType.Store));
         }
 
-        private void TriggerMiniGame()
+        private void TriggerMiniGame(string name)
         {
             Debug.Log("TriggerMiniGame");
-            EventBus<TriggerMiniGameEvent>.Raise(new TriggerMiniGameEvent());
+            EventBus<TriggerMiniGameEvent>.Raise(new TriggerMiniGameEvent(name));
         }
 
         private void ChosenSigil(string sigilName)

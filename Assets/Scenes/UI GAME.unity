@@ -427,7 +427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &580941502
 Camera:
   m_ObjectHideFlags: 0
@@ -910,6 +910,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841223938}
   m_CullTransparentMesh: 1
+--- !u!1 &1842218467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1842218469}
+  - component: {fileID: 1842218468}
+  m_Layer: 0
+  m_Name: MiniGameSetter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1842218468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842218467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc363712bc5fe4e4da66c572ee1dea69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.MiniGameSetter
+  fishGame: {fileID: 4617394352751340588}
+  beastGame: {fileID: 847938537387885376}
+--- !u!4 &1842218469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842218467}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.36418, y: -145.73558, z: 415.0946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1844078068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1312,11 +1358,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChatNoirGame
       objectReference: {fileID: 0}
+    - target: {fileID: 3313964030304544680, guid: 70a651eb39c1b8442b37ff7b7355b5a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70a651eb39c1b8442b37ff7b7355b5a1, type: 3}
+--- !u!1 &847938537387885376 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3313964030304544680, guid: 70a651eb39c1b8442b37ff7b7355b5a1, type: 3}
+  m_PrefabInstance: {fileID: 847938537387885375}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4617394352751340587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1418,6 +1473,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+--- !u!1 &4617394352751340588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8984493287582211289, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+  m_PrefabInstance: {fileID: 4617394352751340587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1428,3 +1488,4 @@ SceneRoots:
   - {fileID: 1683312709}
   - {fileID: 1844078068}
   - {fileID: 270504830}
+  - {fileID: 1842218469}

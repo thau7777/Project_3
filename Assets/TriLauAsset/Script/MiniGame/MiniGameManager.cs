@@ -11,6 +11,10 @@ namespace MyRule
         private EventBinding<TriggerMiniGameEvent> triggerMiniGameEvent;
         private EventBinding<MiniGameResultEvent> resultEvent;
 
+        private string mGName;
+
+        public string MGName => mGName;
+
         private void OnEnable()
         {
             triggerMiniGameEvent = new EventBinding<TriggerMiniGameEvent>(TriggerMiniGame);
@@ -26,12 +30,13 @@ namespace MyRule
             EventBus<MiniGameResultEvent>.Deregister(resultEvent);
         }
 
-        private void TriggerMiniGame()
+        private void TriggerMiniGame(TriggerMiniGameEvent evt)
         {
             Debug.Log("TriggerMiniGame");
 
             if (!SceneManager.GetSceneByName(miniGameNameScene).isLoaded)
             {
+                mGName = evt.name;
                 SceneManager.LoadScene(miniGameNameScene, LoadSceneMode.Additive);
                 DialogueManager.Instance.CanContinueDialouge(false);
             }
