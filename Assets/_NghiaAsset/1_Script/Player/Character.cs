@@ -175,7 +175,7 @@ namespace Turnbase
             }
 
             Dictionary<string, SigilData> ownedSigils = new Dictionary<string, SigilData>();
-            for (int i = 0; i < 4; i++)
+            for (int i = 5; i < storageManager.SigilStorageData.ActiveSigils.Length; i++)
             {
                 SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
                 if (sigilData == null) continue;

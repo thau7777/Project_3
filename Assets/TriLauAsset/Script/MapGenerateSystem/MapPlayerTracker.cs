@@ -20,6 +20,8 @@ namespace MyRule
 
         private int locking = 0;
 
+        public bool LockOOG { get; set; }
+
         public void LockMapTracker() => locking++;
         public void UnlockMapTracker() => locking--;
 
@@ -68,6 +70,8 @@ namespace MyRule
             //EventBus<MazeMoveEvent>.Raise(new MazeMoveEvent(mapNode.transform, mapNode.Node.nodeType));
 
             MatchManager.Instance.MatchData.IncreaseStep();
+
+            if (LockOOG) return;
 
             switch (mapNode.Node.NodeType)
             {

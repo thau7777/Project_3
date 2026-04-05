@@ -26,6 +26,11 @@ namespace MyRule
 
         public void TriggetStore() => TriggerNPC(salesman);
 
+        public void TriggerNPC(int index = 0)
+        {
+            TriggerNPC(nPCInMatches[index]);
+        }
+
         private async void TriggerNPC(NPCInMatch npc)
         {
             currentNPC = npc;
