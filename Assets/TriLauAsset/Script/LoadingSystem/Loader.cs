@@ -18,6 +18,7 @@ namespace MyRule
             GreenlandScene,
             DesertScene,
             IcelandScene,
+            EndingScene,
         }
 
         private static EScene targetScene = EScene.MainMenuScene;

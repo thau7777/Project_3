@@ -7,6 +7,7 @@ namespace MyRule
         GreenLand,
         Desert,
         IceLand,
+        Ending,
     }
 
     [CreateAssetMenu(fileName = "PlanetSO", menuName = "Scriptable Objects/PlanetSO")]

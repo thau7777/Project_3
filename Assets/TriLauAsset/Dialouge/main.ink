@@ -21,3 +21,4 @@ INCLUDE MysteriousWitch.ink
 INCLUDE MysteriousHunter.ink
 INCLUDE MysteriousHero.ink
 INCLUDE TAE.ink
+INCLUDE Ending.ink

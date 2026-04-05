@@ -60,7 +60,11 @@ namespace MyRule
             currentRuneAmount = amount;
         }
 
-        public void SetLockReceiveTurn(int turn) => lockReceiveTurn = turn;
+        public void SetLockReceiveTurn(int turn)
+        {
+            lockReceiveTurn = turn;
+            EventBus<SendUIRuneEvent>.Raise(new SendUIRuneEvent(currentRuneAmount, lockReceiveTurn));
+        }
 
         public async UniTask LoadData(GameData data)
         {
