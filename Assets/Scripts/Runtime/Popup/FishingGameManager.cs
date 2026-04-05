@@ -15,16 +15,25 @@ public class FishingGameManager : MonoBehaviour
     [TabGroup("BroAudio")]
     [SerializeField] private SoundID bgm;
 
+
     public int score;
-    float time = 60f;
+    [SerializeField]private float time = 60f;
     int currentFisht;
     bool isGameEnded = false;
-    public bool useTimer = true;
+    //public bool useTimer = true;
     void Awake()
     {
         Instance = this;
+
+    }
+    private void OnEnable()
+    {
         bgm.Play();
 
+    }
+    private void OnDisable()
+    {
+        BroAudio.Stop(bgm);
     }
 
     private void Update()
@@ -33,11 +42,9 @@ public class FishingGameManager : MonoBehaviour
 
         UpdateUI();
         currentFisht = FishingSpawner.instance.fishCount;
-
-        if (!useTimer) return;
+        //if (!useTimer) return;
         if (time <= 0 || currentFisht <= 0)
         {
-
             EndGame();
         }
     }
@@ -47,7 +54,11 @@ public class FishingGameManager : MonoBehaviour
         scoreText.text = "Score: " + score;
 
         time -= Time.deltaTime;
-
+        if (time <= 0)
+        {
+            time = 0;
+            return;
+        }
         int seconds = Mathf.FloorToInt(time % 60);
         timerText.text = $"Time: {seconds:00}";
     }
@@ -64,7 +75,7 @@ public class FishingGameManager : MonoBehaviour
         {
             Debug.Log("Game Over! Final Score: " + score);
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
-            StartCoroutine(DelayAction(3f, () =>
+            StartCoroutine(DelayAction(0.5f, () =>
             {
                 fishing.SetActive(false);
             }));
@@ -73,7 +84,7 @@ public class FishingGameManager : MonoBehaviour
         {
             Debug.Log("You Win! Final Score: " + score);
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(true));
-            StartCoroutine(DelayAction(3f, () =>
+            StartCoroutine(DelayAction(0.5f, () =>
             {
                 fishing.SetActive(false);
             }));
