@@ -23,7 +23,8 @@ namespace MyRule.UI
         private EventBinding<UpdateLobbyGoldUIEvent> updateLobbyGoldUIEvent;
         private EventBinding<UpdateLobbyCrystalUIEvent> updateLobbyCrystalUIEvent;
 
-        private CancellationTokenSource cts;
+        private CancellationTokenSource goldCts;
+        private CancellationTokenSource crystalCts;
 
         private void OnEnable()
         {
@@ -90,34 +91,52 @@ namespace MyRule.UI
             }
         }
 
-        private void UpdateGoldText(UpdateLobbyGoldUIEvent evt)
+        private async void UpdateGoldText(UpdateLobbyGoldUIEvent evt)
         {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
+            goldCts?.Cancel();
+            goldCts?.Dispose();
+            goldCts = new CancellationTokenSource();
 
-            Transition.TransitionValue(
-                setter: value => goldTxt.text = value.ToString(),
-                from: gold,
-                to: evt.value,
-                duration: 0.2f,
-                token: cts.Token).Forget();
+            int oldGold = gold;
+            int newGold = evt.value;
 
-            gold = evt.value;
+            await AnimateValue(goldTxt, oldGold, newGold, 0.5f, goldCts.Token);
+
+            gold = newGold;
         }
 
-        private void UpdateCrystalText(UpdateLobbyCrystalUIEvent evt)
+        private async void UpdateCrystalText(UpdateLobbyCrystalUIEvent evt)
         {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
+            crystalCts?.Cancel();
+            crystalCts?.Dispose();
+            crystalCts = new CancellationTokenSource();
 
-            Transition.TransitionValue(
-                setter: value => crystalTxt.text = value.ToString(),
-                from: crystal,
-                to: evt.value,
-                duration: 0.2f,
-                token: cts.Token).Forget();
+            int oldCrystal = crystal;
+            int newCrystal = evt.value;
 
-            crystal = evt.value;
+            await AnimateValue(crystalTxt, oldCrystal, newCrystal, 0.5f, crystalCts.Token);
+
+            crystal = newCrystal;
+        }
+
+        private async UniTask AnimateValue(TextMeshProUGUI txt, int from, int to, float duration, CancellationToken token)
+        {
+            float time = 0f;
+
+            while (time < duration)
+            {
+                if (token.IsCancellationRequested) return;
+
+                time += Time.deltaTime;
+                float t = time / duration;
+
+                int value = Mathf.RoundToInt(Mathf.Lerp(from, to, t));
+                txt.text = value.ToString();
+
+                await UniTask.Yield();
+            }
+
+            txt.text = to.ToString(); 
         }
     }
 }
