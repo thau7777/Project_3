@@ -55,7 +55,10 @@ public class ChatNiorGameManager : MonoBehaviour
         SetUpStartGame();
         
     }
-
+    private void OnDisable()
+    {
+        BroAudio.Stop(bgmID);
+    }
     private void Update()
     {
         UpdateUI();
@@ -106,7 +109,7 @@ public class ChatNiorGameManager : MonoBehaviour
 
     public void EndGame()
     {
-        StartCoroutine(DelayedAction(2f, () =>
+        StartCoroutine(DelayedAction(1f, () =>
         {
             chatNoir.SetActive(false);
         }));

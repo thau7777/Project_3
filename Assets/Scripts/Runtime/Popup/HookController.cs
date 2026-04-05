@@ -1,5 +1,6 @@
 ﻿using Ami.BroAudio;
 using Ami.BroAudio.Data;
+using MyRule;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -13,7 +14,7 @@ public class HookController : MonoBehaviour
     [SerializeField] private Image chargeBar;
     public GameObject powerBar;
     public TutorialTrigger fishTutorial;
-    [SerializeField] private List<GameObject> image;
+    [SerializeField] private GameObject imageGround;
     [SerializeField] private InputReader inputReader;
 
     
@@ -63,7 +64,7 @@ public class HookController : MonoBehaviour
         inputReader.SwitchActionMap(ActionMap.PopUpGame);
 
     }
-
+    
     void Update()
     {
         UpdateChargeBar();
@@ -136,8 +137,8 @@ public class HookController : MonoBehaviour
 
         hookedItem = item;
         item.OnHooked();
-        image.ForEach(i => i.SetActive(true));
-
+        
+        imageGround.SetActive(true);
         fishTutorial.Trigger();
 
         rb.linearVelocity = Vector2.zero;
@@ -145,7 +146,7 @@ public class HookController : MonoBehaviour
         rb.simulated = false;
 
         FishingUI.instance.StartFishing(this);
-        StartCoroutine(DelayAction(1f, () => image[1].SetActive(false)));
+        StartCoroutine(DelayAction(1f, () => imageGround.SetActive(false)));
         //StartCoroutine(DelayAction(1f, () =>image.ForEach(i => i.SetActive(false))
 
     }
@@ -184,6 +185,7 @@ public class HookController : MonoBehaviour
         rb.linearDamping = 0f;
         rb.linearVelocity = Vector2.zero;
         rb.simulated = true;
+        FishingUI.instance.fishTime = 1f;
     }
     private IEnumerator DelayAction(float delay, System.Action action)
     {
