@@ -1,4 +1,7 @@
+using Cysharp.Threading.Tasks;
 using MyRule.Event;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 
 namespace MyRule.UI
@@ -9,9 +12,18 @@ namespace MyRule.UI
         [SerializeField] private LobbyShopProductView[] cardProducts;
         [SerializeField] private LobbyShopProductView[] goldProducts;
         [SerializeField] private LobbyShopProductView[] crystalProducts;
+        [SerializeField] private TextMeshProUGUI goldTxt;
+        [SerializeField] private TextMeshProUGUI crystalTxt;
+
+        private int gold = 0;
+        private int crystal = 0;
 
         private EventBinding<UpdateLobbyShopSigilEvent> updateLobbyShopSigilEvent;
         private EventBinding<UpdateLobbyShopCardEvent> updateLobbyShopCardEvent;
+        private EventBinding<UpdateLobbyGoldUIEvent> updateLobbyGoldUIEvent;
+        private EventBinding<UpdateLobbyCrystalUIEvent> updateLobbyCrystalUIEvent;
+
+        private CancellationTokenSource cts;
 
         private void OnEnable()
         {
@@ -20,12 +32,20 @@ namespace MyRule.UI
 
             updateLobbyShopCardEvent = new EventBinding<UpdateLobbyShopCardEvent>(HandleCards);
             EventBus<UpdateLobbyShopCardEvent>.Register(updateLobbyShopCardEvent);
+
+            updateLobbyGoldUIEvent = new EventBinding<UpdateLobbyGoldUIEvent>(UpdateGoldText);
+            EventBus<UpdateLobbyGoldUIEvent>.Register(updateLobbyGoldUIEvent);
+
+            updateLobbyCrystalUIEvent = new EventBinding<UpdateLobbyCrystalUIEvent>(UpdateCrystalText);
+            EventBus<UpdateLobbyCrystalUIEvent>.Register(updateLobbyCrystalUIEvent);
         }
 
         private void OnDisable()
         {
             EventBus<UpdateLobbyShopSigilEvent>.Deregister(updateLobbyShopSigilEvent);
             EventBus<UpdateLobbyShopCardEvent>.Deregister(updateLobbyShopCardEvent);
+            EventBus<UpdateLobbyGoldUIEvent>.Deregister(updateLobbyGoldUIEvent);
+            EventBus<UpdateLobbyCrystalUIEvent>.Deregister(updateLobbyCrystalUIEvent);
         }
 
         private void Start()
@@ -68,6 +88,36 @@ namespace MyRule.UI
             {
                 crystalProducts[i].SetProduct();
             }
+        }
+
+        private void UpdateGoldText(UpdateLobbyGoldUIEvent evt)
+        {
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+
+            Transition.TransitionValue(
+                setter: value => goldTxt.text = value.ToString(),
+                from: gold,
+                to: evt.value,
+                duration: 0.2f,
+                token: cts.Token).Forget();
+
+            gold = evt.value;
+        }
+
+        private void UpdateCrystalText(UpdateLobbyCrystalUIEvent evt)
+        {
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+
+            Transition.TransitionValue(
+                setter: value => crystalTxt.text = value.ToString(),
+                from: crystal,
+                to: evt.value,
+                duration: 0.2f,
+                token: cts.Token).Forget();
+
+            crystal = evt.value;
         }
     }
 }
