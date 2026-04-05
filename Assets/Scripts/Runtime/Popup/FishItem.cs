@@ -192,25 +192,28 @@ public class FishItem : MonoBehaviour
     }
     void SpawnBubble()
     {
-        GameObject bubble = PoolManager.Instance.SpawnFromPool(bubblePoolTag, transform.parent);
+        GameObject bubble = PoolManager.Instance.SpawnFromPool(bubblePoolTag, gameObject.transform );
 
-        RectTransform bubbleRT = bubble.GetComponent<RectTransform>();
+        bubble.transform.SetParent(transform.parent, true);
 
-        // spawn ngay vị trí cá
-        bubbleRT.anchoredPosition = rt.anchoredPosition;
-
-        // random size (nhỏ → lớn)
-        float scale = Random.Range(0.5f, 1.5f);
+        float scale = Random.Range(0.05f, 0.3f);
         bubble.transform.localScale = Vector3.one * scale;
+
     }
     IEnumerator SpawnBubbleRoutine()
     {
         while (state == FishState.Swimming)
         {
-            float delay = Random.Range(bubbleRandomDelay.x, bubbleRandomDelay.y);
-            yield return new WaitForSeconds(delay);
-
-            SpawnBubble();
+            float waitTime = Random.Range(2f, 5f);
+            yield return new WaitForSeconds(waitTime);
+            int bubbleCount = Random.Range(2, 5);
+            for (int i = 0; i < bubbleCount; i++)
+            {
+                if (state != FishState.Swimming)
+                    yield break;
+                SpawnBubble();
+                yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+            }
         }
     }
 }
