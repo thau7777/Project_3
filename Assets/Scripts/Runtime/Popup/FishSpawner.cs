@@ -14,7 +14,7 @@ public class FishingSpawner : MonoBehaviour
 
     [Header("Trash Prefabs")]
     public List<GameObject> trashPrefabs;
-    public Vector2Int trashCountRange = new Vector2Int(1, 4);
+    public Vector2Int trashCountRange = new Vector2Int(3, 6);
 
     [Header("Treasure")]
     public GameObject treasurePrefab;

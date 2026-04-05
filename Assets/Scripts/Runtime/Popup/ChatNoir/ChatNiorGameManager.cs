@@ -1,4 +1,5 @@
-﻿using MyRule.Event;
+﻿using Ami.BroAudio;
+using MyRule.Event;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,8 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private GameObject skillButton;
     [SerializeField] private List<GameObject> image;
 
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID skillSoundID,bgmID,clickID;    
     #region Unity
     private void Start()
     {
@@ -85,7 +88,7 @@ public class ChatNiorGameManager : MonoBehaviour
 
         score = 2000;
         moveCount = 0;
-
+        bgmID.Play();
         image.ForEach(i => i.SetActive(true));
         UpdateUI();
     }
@@ -111,6 +114,7 @@ public class ChatNiorGameManager : MonoBehaviour
     public void TriggerSkill()
     {
         skillUsed = true;
+        skillSoundID.Play();
         //catAnimator.enabled = true;
         //catAnimator.SetTrigger("Freeze");
 
@@ -203,6 +207,7 @@ public class ChatNiorGameManager : MonoBehaviour
     void OnNodeClicked(HexNode node)
     {
         if (node.isBlocked || node == catNode||isGameEnd) return;
+        clickID.Play();
         if (score <= 0 && !isGameEnd)
         {
             resultText.text = loseText;
