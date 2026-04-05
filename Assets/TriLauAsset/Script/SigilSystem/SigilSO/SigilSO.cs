@@ -101,6 +101,8 @@ namespace MyRule
         [TabGroup("Stats")]
         public int health;
         [TabGroup("Stats")]
+        public int mana;
+        [TabGroup("Stats")]
         public int phyDef;
         [TabGroup("Stats")]
         public int magicDef;

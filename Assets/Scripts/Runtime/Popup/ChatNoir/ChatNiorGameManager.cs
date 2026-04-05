@@ -1,4 +1,5 @@
 ﻿using Ami.BroAudio;
+using MyRule;
 using MyRule.Event;
 using System.Collections;
 using System.Collections.Generic;
@@ -132,6 +133,7 @@ public class ChatNiorGameManager : MonoBehaviour
             resultText.text = winText;
             isGameEnd = true;
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(true));
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent((int)(score * 0.1)));
             EndGame();
             return;
         }
@@ -144,6 +146,7 @@ public class ChatNiorGameManager : MonoBehaviour
             resultText.text = loseText;
             isGameEnd = true;
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent((int)(score * 0.1)));
             EndGame();
         }
     }

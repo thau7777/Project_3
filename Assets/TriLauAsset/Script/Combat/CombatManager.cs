@@ -64,11 +64,11 @@ namespace MyRule
             combatData.SetResult(EMatchResult.Win);
             if (combatData.CombatType == CombatType.EnemyFighting)
             {
-                MazeGameplayRewardManager.Instance.CreateNewReward(100);
+                MazeGameplayRewardManager.Instance.CreateNewReward(50);
             }
             else if (combatData.CombatType == CombatType.BossFighting)
             {
-                MazeGameplayRewardManager.Instance.CreateNewReward(100);
+                MazeGameplayRewardManager.Instance.CreateNewReward(600);
                 MapTypeManager.Instance.MoveToNextMap();
             }
             combatData = null;

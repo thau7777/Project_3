@@ -1,4 +1,5 @@
 using Ami.BroAudio;
+using MyRule;
 using MyRule.Event;
 using System.Collections;
 using UnityEngine;
@@ -75,6 +76,7 @@ public class FishingGameManager : MonoBehaviour
         {
             Debug.Log("Game Over! Final Score: " + score);
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent((int)(score * 0.1)));
             StartCoroutine(DelayAction(0.5f, () =>
             {
                 fishing.SetActive(false);
@@ -84,6 +86,7 @@ public class FishingGameManager : MonoBehaviour
         {
             Debug.Log("You Win! Final Score: " + score);
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(true));
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent((int)(score * 0.1)));
             StartCoroutine(DelayAction(0.5f, () =>
             {
                 fishing.SetActive(false);
