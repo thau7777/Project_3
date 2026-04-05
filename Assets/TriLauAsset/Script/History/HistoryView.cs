@@ -49,9 +49,9 @@ namespace MyRule.UI
 
             for (int i = 0; i < evt.HistoryData.Matchs.Length; i++)
             {
-                MatchData matchData = evt.HistoryData.Matchs[i];
+                HistotyMatchData historyMatchData = evt.HistoryData.Matchs[i];
                 
-                if (matchData == null) continue;
+                if (historyMatchData == null) continue;
 
                 historyMatchInfoViews[i].gameObject.SetActive(true);
                 historyMatchInfoViews[i].SetMatchValue(i, evt.HistoryData.Matchs[i]);

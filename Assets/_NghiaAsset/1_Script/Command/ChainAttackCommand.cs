@@ -10,7 +10,7 @@ namespace Turnbase
         private BattleManager battleManager;
         private List<Character> chainTargets = new List<Character>();
         private LineRenderer lineRenderer;
-
+    
         public ChainAttackCommand(Character user, Character target, Skill skill, BattleManager battleManager)
           : base(user, target, skill)
         {
@@ -19,7 +19,8 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
-            chainTargets.Clear();
+            user.parryMissCount = 0;
+            chainTargets.Clear();
             if (target != null) chainTargets.Add(target);
 
             var otherEnemies = battleManager.allCombatants
@@ -35,6 +36,7 @@ namespace Turnbase
             yield return new WaitForSeconds(0.4f);
 
             Flyweight_TB effectInstance = null;
+            SoundChainLightning soundEffect = null;
             Vector3 startPos = user.SkillSpawnPoint != null ? user.SkillSpawnPoint.position : user.transform.position;
 
             if (skill.lazerSettings != null)
@@ -44,6 +46,7 @@ namespace Turnbase
                 {
                     effectInstance.Initialize(startPos, Quaternion.identity);
                     lineRenderer = effectInstance.GetComponent<LineRenderer>();
+                    soundEffect = effectInstance.GetComponent<SoundChainLightning>();
 
                     if (lineRenderer != null)
                     {
@@ -85,6 +88,11 @@ namespace Turnbase
 
                 currentTarget.TakeDamage(user, damagePerHit, skill.elementType);
                 SpawnImpactEffect(targetPoint, skill);
+
+                if (soundEffect != null)
+                {
+                    soundEffect.PlayChainLightning();
+                }
 
                 if (i == 0 || skill.targetType == SkillTargetType.Enemies) 
                 {

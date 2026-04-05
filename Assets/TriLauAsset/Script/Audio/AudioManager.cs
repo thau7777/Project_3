@@ -1,130 +1,75 @@
-using System.Collections.Generic;
+using Ami.BroAudio;
+using Ami.BroAudio.Runtime;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace MyRule.Audio
 {
     public class AudioManager : PersistentSingleton<AudioManager>
     {
-        [Header("Mixer")]
-        [SerializeField] private AudioMixer audioMixer;
+        [SerializeField] private SoundID[] soundIDStorage;
 
-        [Header("Audio Sources")]
-        [SerializeField] private AudioSource musicSource;
-        [SerializeField] private AudioSource[] sfxSources;
+        public float masterVolume = 1f;
+        public float musicVolume = 1f;
+        public float sfxVolume = 1f;
 
-        [Header("Audio Data")]
-        [SerializeField] private AudioDataContainer _audioDataContainer;
+        [SerializeField] private float _lowPassFre = 500f;
 
-        private Dictionary<SFXType, SFXData> sfxDict;
-        private Dictionary<SFXType, int> sfxIndexDict;
-        private Dictionary<MusicType, AudioClip> musicDict;
-
-        private int sfxSourceIndex;
-
-        // ====================== LIFECYCLE ======================
-        protected override void Awake()
+        private void Start()
         {
-            base.Awake();
-
-            Init();
+            LoadSoundSettings();
         }
 
-        private void Init()
+        public void PlaySound(string soundID)
         {
-            sfxDict = new Dictionary<SFXType, SFXData>();
-            sfxIndexDict = new Dictionary<SFXType, int>();
-            musicDict = new Dictionary<MusicType, AudioClip>();
-
-            foreach (var sfx in _audioDataContainer.sfxList)
+            for (int i = 0; i < soundIDStorage.Length; i++)
             {
-                if (sfx.clips == null || sfx.clips.Count == 0)
-                    continue;
-
-                sfxDict[sfx.sfxType] = sfx;
-                sfxIndexDict[sfx.sfxType] = 0;
-            }
-
-            foreach (var music in _audioDataContainer.musicList)
-            {
-                musicDict[music.musicType] = music.clip;
-            }
-        }
-
-        // ====================== SFX ======================
-        public void PlaySFX(SFXType type)
-        {
-            if (!sfxDict.ContainsKey(type)) return;
-
-            SFXData data = sfxDict[type];
-            AudioClip clip = GetNextClip(type, data);
-
-            AudioSource source = sfxSources[sfxSourceIndex];
-            sfxSourceIndex = (sfxSourceIndex + 1) % sfxSources.Length;
-
-            source.pitch = Random.Range(data.pitchRandom.x, data.pitchRandom.y);
-            source.PlayOneShot(clip);
-        }
-
-        private AudioClip GetNextClip(SFXType type, SFXData data)
-        {
-            if (data.random && data.clips.Count > 1)
-            {
-                int newIndex;
-                int current = sfxIndexDict[type];
-
-                do
+                if (soundIDStorage[i].ToString().Equals(soundID))
                 {
-                    newIndex = Random.Range(0, data.clips.Count);
+                    BroAudio.Play(soundIDStorage[i]);
+                    return;
                 }
-                while (newIndex == current);
-
-                sfxIndexDict[type] = newIndex;
-                return data.clips[newIndex];
             }
-            else
+        }
+
+        public void PlayDialogueSound(string soundID)
+        {
+            for (int i = 0; i < soundIDStorage.Length; i++)
             {
-                int index = sfxIndexDict[type];
-                AudioClip clip = data.clips[index];
+                if (soundIDStorage[i].ToString().Equals(soundID))
+                {
+                    BroAudio.Play(soundIDStorage[i])
+                        .AsDominator()
+                        .LowPassOthers(_lowPassFre);
 
-                index = (index + 1) % data.clips.Count;
-                sfxIndexDict[type] = index;
-
-                return clip;
+                    return;
+                }
             }
         }
 
-        // ====================== MUSIC ======================
-        public void PlayMusic(MusicType type, bool loop = true)
+        public void StopSound(BroAudioType broAudioType)
         {
-            if (!musicDict.ContainsKey(type)) return;
-
-            if (musicSource.clip == musicDict[type]) return;
-
-            musicSource.clip = musicDict[type];
-            musicSource.loop = loop;
-            musicSource.Play();
+            BroAudio.Stop(broAudioType);
         }
 
-        public void StopMusic()
+        public void LoadSoundSettings()
         {
-            musicSource.Stop();
+            masterVolume = PlayerPrefs.GetFloat("Master", 1f);
+            BroAudio.SetVolume(BroAudioType.All, masterVolume);
+
+            musicVolume = PlayerPrefs.GetFloat("Music", 1f);
+            BroAudio.SetVolume(BroAudioType.Music, musicVolume);
+
+            sfxVolume = PlayerPrefs.GetFloat("SFX", 1f);
+            BroAudio.SetVolume(BroAudioType.SFX, sfxVolume);
+            BroAudio.SetVolume(BroAudioType.UI, sfxVolume);
+            BroAudio.SetVolume(BroAudioType.Ambience, sfxVolume);
         }
 
-        // ====================== MIXER ======================
-        public void SetGeneralVolume(float value)
+        public void SaveSoundSettings(float master = 1f, float music = 1f, float sfx = 1f)
         {
-            audioMixer.SetFloat("GeneralVolume", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-        }
-
-        public void SetMusicVolume(float value)
-        {
-            audioMixer.SetFloat("MusicVolume", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-        }
-
-        public void SetSFXVolume(float value)
-        {
-            audioMixer.SetFloat("SFXVolume", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
+            PlayerPrefs.SetFloat("Master", master);
+            PlayerPrefs.SetFloat("Music", music);
+            PlayerPrefs.SetFloat("SFX", sfx);
         }
     }
 }

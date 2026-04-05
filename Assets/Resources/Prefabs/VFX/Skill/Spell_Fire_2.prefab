@@ -9741,6 +9741,31 @@ GameObject:
   - component: {fileID: 919014637187192476}
   - component: {fileID: 1243975552047044769}
   - component: {fileID: 8265396173343778683}
+  - component: {fileID: 6030887621234410180}
+  - component: {fileID: 6040525982494492640}
+  - component: {fileID: 8142351135261213023}
+  - component: {fileID: 1130932734565748766}
+  - component: {fileID: 4729748119879576307}
+  - component: {fileID: 2616204216894185313}
+  - component: {fileID: 3112076203876023319}
+  - component: {fileID: 8645266462200044210}
+  - component: {fileID: 7956717802187345237}
+  - component: {fileID: 2414368681801281105}
+  - component: {fileID: 6202251518232421072}
+  - component: {fileID: 2881020558867695422}
+  - component: {fileID: 4422933336321894675}
+  - component: {fileID: 5937607068753085087}
+  - component: {fileID: 8439114157584321973}
+  - component: {fileID: 8542657071190492779}
+  - component: {fileID: 3044791984827651205}
+  - component: {fileID: 5457859902837911759}
+  - component: {fileID: 4290025539464525065}
+  - component: {fileID: 983203961256077075}
+  - component: {fileID: 6068869553534532780}
+  - component: {fileID: 8543467326406234551}
+  - component: {fileID: 9020135632343947443}
+  - component: {fileID: 802616362168242534}
+  - component: {fileID: 169898752677889470}
   m_Layer: 11
   m_Name: Spell_Fire_2
   m_TagString: Untagged
@@ -13583,7 +13608,7 @@ ParticleSystem:
     radiusScale: 0.14
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 2097729
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -13593,7 +13618,7 @@ ParticleSystem:
   TriggerModule:
     enabled: 0
     serializedVersion: 2
-    inside: 1
+    inside: 2
     outside: 0
     enter: 0
     exit: 0
@@ -14638,6 +14663,581 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &6030887621234410180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 95c68e92ab3d1df438089a1e6b79276d, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &6040525982494492640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0.7
+--- !u!114 &8142351135261213023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0.8
+--- !u!114 &1130932734565748766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0.9
+--- !u!114 &4729748119879576307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1
+--- !u!114 &2616204216894185313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.1
+--- !u!114 &3112076203876023319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.2
+--- !u!114 &8645266462200044210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.3
+--- !u!114 &7956717802187345237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.4
+--- !u!114 &2414368681801281105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.5
+--- !u!114 &6202251518232421072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.6
+--- !u!114 &2881020558867695422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.7
+--- !u!114 &4422933336321894675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.8
+--- !u!114 &5937607068753085087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 1.9
+--- !u!114 &8439114157584321973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2
+--- !u!114 &8542657071190492779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.1
+--- !u!114 &3044791984827651205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.2
+--- !u!114 &5457859902837911759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.3
+--- !u!114 &4290025539464525065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.4
+--- !u!114 &983203961256077075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.5
+--- !u!114 &6068869553534532780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.6
+--- !u!114 &8543467326406234551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.7
+--- !u!114 &9020135632343947443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.8
+--- !u!114 &802616362168242534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 2.9
+--- !u!114 &169898752677889470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853275839263050785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 96a811ee1254f204291049916794baf2, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4853275839263050785}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 3
 --- !u!1001 &5319787792511486037
 PrefabInstance:
   m_ObjectHideFlags: 0

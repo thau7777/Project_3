@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4751608382444874026}
   - component: {fileID: 3166814678770400519}
   - component: {fileID: 3780539031471882213}
+  - component: {fileID: 7984953368790831536}
   m_Layer: 11
   m_Name: Spell_Poison_3
   m_TagString: Untagged
@@ -4900,6 +4901,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!114 &7984953368790831536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176996867187702311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 756e6fc2c70050949bb99ebf45eaf4fb, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 1176996867187702311}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &1516941854124233465
 GameObject:
   m_ObjectHideFlags: 0
@@ -14690,7 +14714,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 2.7105054e-20, w: 1.92865e-39}
+  m_BoundingSphereOverride: {x: 6.39e-43, y: 8e-44, z: 0, w: 4.3e-44}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0

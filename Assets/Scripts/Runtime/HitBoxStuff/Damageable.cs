@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using Ami.BroAudio;
 public class Damageable : MonoBehaviour
 {
 
@@ -25,16 +25,17 @@ public class Damageable : MonoBehaviour
 
     private Coroutine _stunCoroutine;
 
-    public UnityEvent<GameObject,float, Vector3, float> OnTakeDamage;
-    public UnityEvent OnDeath;
-    public UnityEvent<float> OnShieldBreak;
+    [TabGroup("Events")] public UnityEvent<GameObject,float, Vector3, float> OnTakeDamage;
+    [TabGroup("Events")] public UnityEvent OnDeath;
+    [TabGroup("Events")] public UnityEvent<float> OnShieldBreak;
 
-    public UnityEvent<float, float> OnHealthChanged;
-    public UnityEvent<float, float> OnShieldChanged;
+    [TabGroup("Events")] public UnityEvent<float, float> OnHealthChanged;
+    [TabGroup("Events")] public UnityEvent<float, float> OnShieldChanged;
 
-    public FloatingCombatTextSettings floatingCombatTextSettings;
-    public OneShotVFXSettings parrySuccessVFXSettings;
+    [TabGroup("Effects")] public FloatingCombatTextSettings floatingCombatTextSettings;
+    [TabGroup("Effects")] public OneShotVFXSettings parrySuccessVFXSettings;
 
+    [SerializeField, TabGroup("Sounds")] private SoundID _HurtSound;
     private void Awake()
     {
         _ccLayerIgnoreController = gameObject.GetOrAdd<CCLayerIgnoreController>();
@@ -90,7 +91,7 @@ public class Damageable : MonoBehaviour
 
         if (TryGetComponentInHierarchy<EffectApplier>(other.transform, out var effectApplier))
         {
-            effectApplier.ApplyEffect(other, other, gameObject);
+            effectApplier.ApplyEffect(gameObject);
         }
     }
 
@@ -142,7 +143,7 @@ public class Damageable : MonoBehaviour
             if (floatingCombatTextSettings)
             {
                 var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
-                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+                floatingCombatTextEffect.Init("Frost Shield", FloatingCombatText.CombatTextType.Frost, sender.transform.position.Add(y: 1.5f), false);
             }
         }
         if(effectsManager.HasEffect("Holy Shield Effect"))
@@ -153,7 +154,7 @@ public class Damageable : MonoBehaviour
             if (floatingCombatTextSettings)
             {
                 var floatingCombatTextEffect = FlyweightFactory.Spawn(floatingCombatTextSettings) as FloatingCombatText;
-                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Poison, sender.transform.position.Add(y: 1.5f), false);
+                floatingCombatTextEffect.Init("Holy Shield", FloatingCombatText.CombatTextType.Holy, sender.transform.position.Add(y: 1.5f), false);
             }
             return;
 
@@ -238,7 +239,8 @@ public class Damageable : MonoBehaviour
         OnTakeDamage?.Invoke(sender, CurrentHealth, knockBackDirection, knockBackForce);
         _invincibleElapsedTime = InvincibleDuration;
 
-        
+        if(knockBackForce > 0)
+            BroAudio.Play(_HurtSound);
     }
     public void TakeShieldDamage(float damage)
     {

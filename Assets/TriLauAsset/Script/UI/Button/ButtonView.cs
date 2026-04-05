@@ -1,3 +1,4 @@
+using Ami.BroAudio;
 using MyRule.Audio;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -42,8 +43,7 @@ namespace MyRule.UI
 
         public virtual void OnSubmit(BaseEventData eventData)
         {
-            AudioManager.Instance.PlaySFX(SFXType.UI_Click);
-
+            AudioManager.Instance.PlaySound("UIButtonClick");
             button.onClick?.Invoke();
 
             Navigator.OnSubmitPress(button, buttonViewType);
@@ -52,7 +52,7 @@ namespace MyRule.UI
         public virtual void OnSelect(BaseEventData eventData)
         {
             button.Select();
-            AudioManager.Instance.PlaySFX(SFXType.UI_Select);
+            AudioManager.Instance.PlaySound("UIButtonSelect");
         }
 
         public virtual void OnDeselect(BaseEventData eventData)

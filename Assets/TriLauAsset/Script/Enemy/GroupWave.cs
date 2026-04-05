@@ -173,7 +173,6 @@ namespace MyRule
             this.resRate = (int)(resRate * (1 + level * mult));
             this.attackSpeed *= (1 + level * mult);
             this.critChance *= (1 + level * mult);
-            this.critMult *= (1 + level * mult);
         }
     }
 }

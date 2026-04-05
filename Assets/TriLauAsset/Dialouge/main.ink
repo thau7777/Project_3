@@ -10,6 +10,7 @@ EXTERNAL UpdateHealth(health)
 VAR hasBloodFang = false
 VAR currentRune = 0
 
+VAR hasMeetTAE = false
 VAR MysteriousWitchCompletedFirstMeet = false
 VAR TheSalesmanCompletedFirstMeet = false
 VAR MysteriousHunterCompletedFirstMeet = false

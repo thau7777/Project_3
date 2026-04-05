@@ -139,7 +139,7 @@ namespace MyRule.UI
         {
             Hide();
             await UniTask.Delay(400);
-            BlackFade.Instance.FadeIn();
+            await BlackFade.Instance.FadeIn();
             await UniTask.Delay(1000);
         }
     }

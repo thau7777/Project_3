@@ -89,16 +89,6 @@ namespace MyRule
             }
         }
 
-        private void UnlockAchievement(AchievementConfig config, AchievementData data)
-        {
-            Debug.Log($"Unlocked Achievement: {config.id}");
-
-            //GiveReward(config);
-
-            // UI
-            //EventBus<NoctificationAchievementEvent>.Raise(new NoctificationAchievementEvent(config));
-        }
-
         public void GiveReward(AchievementConfig config)
         {
             if (config.goldReward > 0)

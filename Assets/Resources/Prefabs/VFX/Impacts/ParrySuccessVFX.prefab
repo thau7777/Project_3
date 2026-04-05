@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 614093089323757221}
   - component: {fileID: 8179668172955340972}
   - component: {fileID: 3504273908401430842}
+  - component: {fileID: -8275354169171976365}
+  - component: {fileID: 7728545939575465819}
   m_Layer: 22
   m_Name: ParrySuccessVFX
   m_TagString: Untagged
@@ -121,3 +123,49 @@ VFXRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
+--- !u!114 &-8275354169171976365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798410975250083961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: d8581139a9104ca49bff3463a8daf903, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 1798410975250083961}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &7728545939575465819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798410975250083961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 6c765744e3980ab49bbfc0ce8b7ddae7, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 1798410975250083961}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0

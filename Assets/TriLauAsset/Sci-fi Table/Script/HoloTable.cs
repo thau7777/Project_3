@@ -1,10 +1,11 @@
+using MyRule.Audio;
 using Unity.Cinemachine;
 using UnityEngine;
 
 
 namespace MyRule
 {
-    public class HoloTable : MonoBehaviour
+    public class HoloTable : Singleton<HoloTable>
     {
         [SerializeField] private GameObject holoTableCam;
         [SerializeField] private ScifiMouseController scifiMouse;
@@ -29,6 +30,8 @@ namespace MyRule
             scifiMouse.UnlockMouse();
             hasActive = true;
             keyObj.SetActive(false);
+
+            AudioManager.Instance.PlaySound("HoloTableInteract");
 
             EventBus<ScifitableInteractEvent>.Raise(new ScifitableInteractEvent());
         }

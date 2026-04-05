@@ -1,8 +1,10 @@
 ﻿using Ink.Runtime;
+using MyRule.Audio;
 using MyRule.Event;
 using MyRule.UI;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace MyRule
@@ -10,6 +12,7 @@ namespace MyRule
     public class DialogueManager : Singleton<DialogueManager>
     {
         private const string SPEAKER_TAG = "speaker";
+        private const string VOICE_TAG = "voice";
         
         [Header("Load Global JSON")]
         [SerializeField] private TextAsset inkJSON;
@@ -88,6 +91,8 @@ namespace MyRule
 
             if (canContinueDialogue)
             {
+                AudioManager.Instance.StopSound(Ami.BroAudio.BroAudioType.VoiceOver);
+
                 ContinueStoryOrExitStory();
             }
         }
@@ -104,7 +109,7 @@ namespace MyRule
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(false));
 
-            RTSCameraController.Instance.LockInteract();
+            if (RTSCameraController.Instance != null) RTSCameraController.Instance.LockInteract();
 
             EventBus<DialougeStartedEvent>.Raise(new DialougeStartedEvent());
 
@@ -125,7 +130,7 @@ namespace MyRule
 
             EventBus<OpenHUDEvent>.Raise(new OpenHUDEvent(true));
 
-            RTSCameraController.Instance.UnlockInteract();
+            if (RTSCameraController.Instance != null) RTSCameraController.Instance.UnlockInteract();
 
             EventBus<DialogueFinishedEvent>.Raise(new DialogueFinishedEvent());
 
@@ -230,6 +235,9 @@ namespace MyRule
                 {
                     case SPEAKER_TAG:
                         EventBus<UpdateSpeakerNameEvent>.Raise(new UpdateSpeakerNameEvent(tagValue));
+                        break;
+                    case VOICE_TAG:
+                        AudioManager.Instance.PlayDialogueSound(tagValue);
                         break;
                     default:
                         Debug.Log("Loi tag");

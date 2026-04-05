@@ -16,7 +16,7 @@ namespace Turnbase
 
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySFX(skill.castSFXType);
+                //AudioManager.Instance.PlaySFX(skill.castSFXType);
             }
 
             if (!string.IsNullOrEmpty(skill.animationTriggerName))
@@ -47,7 +47,7 @@ namespace Turnbase
 
                 if (AudioManager.Instance != null)
                 {
-                    AudioManager.Instance.PlaySFX(skill.impactSFXType);
+                    //AudioManager.Instance.PlaySFX(skill.impactSFXType);
                 }
 
                 yield return new WaitForSeconds(1.0f);

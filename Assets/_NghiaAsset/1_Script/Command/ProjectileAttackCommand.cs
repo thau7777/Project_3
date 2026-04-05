@@ -23,6 +23,7 @@ namespace Turnbase
 
         public override IEnumerator Execute()
         {
+            user.parryMissCount = 0;
             targetLookRotation = GetTargetLookRotation();
 
             yield return RotateTowardsTarget();

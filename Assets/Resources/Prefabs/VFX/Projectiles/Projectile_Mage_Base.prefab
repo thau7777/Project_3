@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2477345035565852346}
   - component: {fileID: 2991293708650652239}
   - component: {fileID: 2396395566119735545}
+  - component: {fileID: 2736701086784681973}
   m_Layer: 8
   m_Name: Projectile_Mage_Base
   m_TagString: Untagged
@@ -143,6 +144,29 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0.41}
+--- !u!114 &2736701086784681973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938311114822527344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 83a7039f6594ac345bb6c921432d2bfa, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4938311114822527344}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1001 &3693160711600860720
 PrefabInstance:
   m_ObjectHideFlags: 0

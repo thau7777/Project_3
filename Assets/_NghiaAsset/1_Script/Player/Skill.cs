@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using MyRule.Audio;
 using Turnbase;
 using UnityEngine;
@@ -30,15 +30,15 @@ public class Skill : ScriptableObject
     public FlyweightSettings_TB meleeSettings;
 
     [Header("Projectile & VFX")]
-    [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
+    [ShowIfEnumValue("skillType", SkillType.RangedProjectile, SkillType.StingRayProjectile)]
     public FlyweightSettings_TB projectileSettings;
     [ShowIfEnumValue("skillType", SkillType.RangedProjectile)]
     public bool useSkillSpawnPoint2;
 
     [Header("Lazer & VFX")]
-    [ShowIfEnumValue("skillType", SkillType.LaserAttack,SkillType.Chain)]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain, SkillType.StingRayAttack)]
     public FlyweightSettings_TB lazerSettings;
-    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain)]
+    [ShowIfEnumValue("skillType", SkillType.LaserAttack, SkillType.Chain, SkillType.StingRayAttack)]
     public float laserVFXDuration = 5;
 
     public float impactVFXDuration = 1.0f;
@@ -66,10 +66,6 @@ public class Skill : ScriptableObject
     public float delayBetweenHits = 0.1f;
     [ShowIfEnumValue("skillType", SkillType.MeleeAttack)]
     public int attackCount = 1;
-
-    [Header("Sound Effects")]
-    public SFXType castSFXType;  
-    public SFXType impactSFXType;
 
     public bool canParry = true;
 
@@ -100,7 +96,7 @@ public class Skill : ScriptableObject
     public DebuffSettings debuffProperties;
     [System.Serializable]
     public struct DebuffSettings 
-    {
+    {
         public DebuffType statToModify;
         public int durationTurns;
         public int baseDamagePerTurn;
@@ -169,8 +165,8 @@ public enum SkillType
     XPassive,
     DebuffPunisher,
     DebuffExtender,
-
-
+    StingRayAttack,
+    StingRayProjectile,
 }
 
 public enum ElementType

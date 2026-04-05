@@ -473,7 +473,7 @@ MonoBehaviour:
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 183d266ab277ad7408d353bfcccd48b9, type: 2}
-    skillDuration: 1
+    projectileRange: 1
     projectileSpeed: 0
     skillSize: 2
     executionSound: {fileID: 0}
@@ -510,7 +510,7 @@ MonoBehaviour:
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 5b02568e9086c254d93345a5132b72c8, type: 2}
-    skillDuration: 1
+    projectileRange: 1
     projectileSpeed: 0
     skillSize: 2
     executionSound: {fileID: 0}
@@ -657,6 +657,10 @@ MonoBehaviour:
         m_CallState: 2
   floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}
   parrySuccessVFXSettings: {fileID: 0}
+  _HurtSound:
+    _entity: {fileID: 11400000, guid: 37f79d7f6427cae48877b8b2049b7f18, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 9014302104273215624, guid: cd7dcab7273315447835a8d91130f841, type: 3}
 --- !u!114 &8515916403747737610
 MonoBehaviour:
   m_ObjectHideFlags: 0

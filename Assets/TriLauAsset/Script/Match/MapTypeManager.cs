@@ -23,6 +23,8 @@ namespace MyRule
 
         public void MoveToNextMap()
         {
+            AchievementManager.Instance.Trigger(AchievementType.Discovery, currentMap);
+
             switch (currentMap)
             {
                 case EMap.GreenLand:

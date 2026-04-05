@@ -17,6 +17,7 @@ namespace Turnbase
             { SkillType.MeleeAttack, 20 },
             { SkillType.RangedAttack, 20 },
             { SkillType.RangedProjectile, 20 },
+            { SkillType.StingRayAttack, 30 },
         };
     }
 
@@ -158,6 +159,7 @@ namespace Turnbase
                 case SkillType.MeleeAttack:
                 case SkillType.RangedAttack:
                 case SkillType.LaserAttack:
+                case SkillType.StingRayAttack:
                 case SkillType.RangedProjectile:
                     float estimatedDamage = DamageCalculator.GetFinalDamage(user, target, skill, battleManager);
                     skillPowerScore = estimatedDamage * 1.2f;
