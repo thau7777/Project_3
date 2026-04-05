@@ -104,7 +104,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         EnableTPEffect();
         await UniTask.Delay(700);
         EnablePlayer();
-        isBossFighting = isTestGameplay ? isTestBossFight : CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting;
+        isBossFighting = isTestGameplay ? isTestBossFight : CombatManager.Instance.CombatData.CombatType == CombatType.BossFighting;
         await UniTask.Delay(3000);
         EventBus<TopdownStartGameEvent>.Raise( new TopdownStartGameEvent(isBossFighting));
         if (isBossFighting)

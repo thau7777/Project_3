@@ -160,8 +160,15 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
     }
     private void LoadCurrentWave()
     {
+        _isBossFight = TopDownGameManager.Instance.isBossFighting;
         if (TopDownGameManager.Instance.isTestGameplay)
-            _groupWave = WaveManager.Instance.CreateNewWave(true);
+        {
+            if(_isBossFight)
+                _groupWave = WaveManager.Instance.CreateBossWave(true);
+            else
+                _groupWave = WaveManager.Instance.CreateNewWave(true);
+
+        }
         else
             _groupWave = WaveManager.Instance.GetCurrentWave();
 
@@ -189,7 +196,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
         CurrentWaveIndex = 0;
         _gameOver = false;
-        _isBossFight = TopDownGameManager.Instance.isBossFighting;
         if (_isBossFight)
             StartCoroutine(StartBossFight());
         else
@@ -214,7 +220,6 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             yield break;
         }
 
-        Debug.Log("[BossFight] Spawning boss.");
 
         RemainingEnemiesInWave = 1;
         _isSpawning = true;

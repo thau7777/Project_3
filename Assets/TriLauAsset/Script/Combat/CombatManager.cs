@@ -9,7 +9,7 @@ namespace MyRule
     public enum CombatType
     {
         EnemyFighting,
-        BossFigihting,
+        BossFighting,
     }
 
     [Serializable]
@@ -66,7 +66,7 @@ namespace MyRule
             {
                 MazeGameplayRewardManager.Instance.CreateNewReward(100);
             }
-            else if (combatData.CombatType == CombatType.BossFigihting)
+            else if (combatData.CombatType == CombatType.BossFighting)
             {
                 MazeGameplayRewardManager.Instance.CreateNewReward(100);
                 MapTypeManager.Instance.MoveToNextMap();
@@ -98,8 +98,8 @@ namespace MyRule
             GroupWave tdWaves = WaveManager.Instance.CreateBossWave();
             GroupWave tbWaves = WaveManager.Instance.CreateBossWave();
 
-            CreateNewCombat(CombatType.BossFigihting);
-
+            CreateNewCombat(CombatType.BossFighting);
+            Debug.Log("Boss combat created with waves:");
             EventBus<UpdateTDCombatWavesEvent>.Raise(new UpdateTDCombatWavesEvent(tdWaves));
             EventBus<UpdateTBCombatWavesEvent>.Raise(new UpdateTBCombatWavesEvent(tbWaves));
             EventBus<ShowCombatChoiceEvent>.Raise(new ShowCombatChoiceEvent(true));

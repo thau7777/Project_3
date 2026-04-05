@@ -21,25 +21,22 @@ public class BossCameraController : Singleton<BossCameraController>
     private Transform _dummyTarget;
     private CancellationTokenSource _cts;
    
-    protected override void Awake()
+  
+
+    // Call this to trigger the boss focus sequence
+    public void FocusOnBoss()
     {
-        base.Awake();
-        // Create a dummy target that Cinemachine will always track.
-        // We lerp this dummy's position instead of swapping targets directly,
-        // giving us full control over the transition speed and curve.
-        _dummyTarget = new GameObject("CameraDummyTarget").transform;
-        _dummyTarget.SetParent(null);
+        if(_dummyTarget == null)
+        {
+            _dummyTarget = new GameObject("CameraDummyTarget").transform;
+            _dummyTarget.SetParent(null);
+        }
 
         if (playerTransform != null)
             SetDummyPosition(playerTransform.position);
 
         cinemachineCamera.Target.TrackingTarget = _dummyTarget;
-    }
-
-    // Call this to trigger the boss focus sequence
-    public void FocusOnBoss()
-    {
-        if(bossTransform == null)
+        if (bossTransform == null)
             bossTransform = TopDownEnemyManager.Instance.BossTransform;
         CancelCurrentSequence();
         _cts = new CancellationTokenSource();
