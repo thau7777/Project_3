@@ -40,7 +40,7 @@ public class FishItem : MonoBehaviour
     [SerializeField] private string poolTag;
     [SerializeField] private string bubblePoolTag = "Bubble";
     [SerializeField] private float bubbleSpawnInterval = 1.5f;
-    [SerializeField] private Vector2 bubbleRandomDelay = new Vector2(0.5f, 2.5f);
+    
 
     Coroutine bubbleRoutine;
 
@@ -52,7 +52,7 @@ public class FishItem : MonoBehaviour
 
         GetRandomNumber();
         poolTag = itemType.ToString();
-        Debug.Log(poolTag);
+        bubbleRoutine = StartCoroutine(SpawnBubbleRoutine());
     }
 
     private void Update()
@@ -78,13 +78,10 @@ public class FishItem : MonoBehaviour
 
         direction = Random.value > 0.5f ? 1 : -1;
         ApplyFlip();
-        bubbleRoutine = StartCoroutine(SpawnBubbleRoutine());
+        
+        
+        
 
-
-        //if (itemType == FishingItemType.Fish)
-        //    rb.simulated = false;
-        //else
-        //    rb.simulated = true;
     }
     public void GetRandomNumber()
     {
@@ -150,7 +147,10 @@ public class FishItem : MonoBehaviour
                 break;
 
             case FishingItemType.Treasure:
-                FishingUI.instance.fishTime *= 0.05f;
+                FishingUI.instance.fishTime *= 0.5f;
+                break;
+            case FishingItemType.Trash:
+                FishingUI.instance.fishTime *= 0f;
                 break;
         }
     }
@@ -192,27 +192,25 @@ public class FishItem : MonoBehaviour
     }
     void SpawnBubble()
     {
-        GameObject bubble = PoolManager.Instance.SpawnFromPool(bubblePoolTag, gameObject.transform );
+        GameObject bubble = PoolManager.Instance.SpawnFromPool(bubblePoolTag, gameObject.transform);
 
-        bubble.transform.SetParent(transform.parent, true);
 
         float scale = Random.Range(0.05f, 0.3f);
         bubble.transform.localScale = Vector3.one * scale;
-
     }
     IEnumerator SpawnBubbleRoutine()
     {
         while (state == FishState.Swimming)
         {
-            float waitTime = Random.Range(2f, 5f);
+            float waitTime = Random.Range(10f, 15f);
             yield return new WaitForSeconds(waitTime);
-            int bubbleCount = Random.Range(2, 5);
+            int bubbleCount = Random.Range(1, 4);
             for (int i = 0; i < bubbleCount; i++)
             {
                 if (state != FishState.Swimming)
                     yield break;
                 SpawnBubble();
-                yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+                yield return new WaitForSeconds(Random.Range(0.1f, 2f));
             }
         }
     }

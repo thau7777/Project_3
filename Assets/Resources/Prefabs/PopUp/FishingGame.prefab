@@ -32,7 +32,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -98}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &927625067208170518
@@ -142,7 +142,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 74.48587, y: -52.962677}
+  m_Offset: {x: 74.48584, y: -9.118589}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -152,7 +152,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1826.771, y: 104.92557}
+  m_Size: {x: 1826.771, y: 90.15117}
   m_EdgeRadius: 0
 --- !u!50 &5229063703865668390
 Rigidbody2D:
@@ -355,7 +355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialTrigger
   sequence: {fileID: 11400000, guid: 76191c8afb6620143a5f771f78ea25b3, type: 2}
   triggerMode: 0
-  _onStartTriggerDelayDuration: 2
+  _onStartTriggerDelayDuration: 1
   playerTag: Player
   anchorTarget: {fileID: 8031021024475418851}
   stepBindings:
@@ -1198,7 +1198,7 @@ MonoBehaviour:
   trashPrefabs:
   - {fileID: 5467849190853849419, guid: f9711a867f90ba545bb39de3d25c454e, type: 3}
   - {fileID: 5467849190853849419, guid: d0b7415ece1971740820d5f266216761, type: 3}
-  trashCountRange: {x: 1, y: 4}
+  trashCountRange: {x: 3, y: 6}
   treasurePrefab: {fileID: 5467849190853849419, guid: 681e5ea868a93e642b1f80748adb9d89, type: 3}
   treasureChance: 0.35
 --- !u!1 &5582760365996573849
@@ -1388,6 +1388,7 @@ MonoBehaviour:
   - {fileID: 1977900560, guid: bb32233b7ac88ef42936c4f1f1da795f, type: 3}
   - {fileID: 21300000, guid: 852469e52db832f43a67b372fb350330, type: 3}
   - {fileID: 21300000, guid: ed021089b1008b74294cf58feaac1e2c, type: 3}
+  isTest: 1
 --- !u!1 &6221007960976822772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,6 +1695,10 @@ MonoBehaviour:
   timerText: {fileID: 5883956195880073809}
   fishing: {fileID: 8984493287582211289}
   inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
+  bgm:
+    _entity: {fileID: 11400000, guid: 50113c2e075205748bb2d878032341d6, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 6463980205004573408}
   score: 0
   useTimer: 0
 --- !u!1 &6891155942848419514
@@ -1825,13 +1830,14 @@ GameObject:
   - component: {fileID: 6669360434450557502}
   - component: {fileID: 7371114209067835721}
   - component: {fileID: 1219671731953833283}
+  - component: {fileID: 3556380210262049354}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6669360434450557502
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1841,7 +1847,7 @@ RectTransform:
   m_GameObject: {fileID: 8769980488666007896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 19.3, y: 1.21, z: 1}
+  m_LocalScale: {x: 19.34, y: 1.21, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6661211475776398220}
@@ -1889,6 +1895,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &3556380210262049354
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8769980488666007896}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b159e92b76a8ef340ac0305eebb8dbc0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8984493287582211289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,14 +1994,14 @@ RectTransform:
   m_GameObject: {fileID: 9202494318816658344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.79493, y: 0.79493, z: 0.79493}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8031021024475418851}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -803, y: 370}
+  m_AnchoredPosition: {x: -802.98, y: 369.09}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7063846552171450280
@@ -2038,7 +2066,7 @@ MonoBehaviour:
   minForce: 5
   maxForce: 20
   waterDrag: 1.5
-  waterGravity: 30
+  waterGravity: 25
   normalMass: 0.5
   normalGravity: 30
 --- !u!50 &7354412327423304152
@@ -2102,7 +2130,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.097797394, y: -4.4592085}
+  m_Offset: {x: -1.6760359, y: -4.4592094}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2112,7 +2140,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 25.979042, y: 41.513664}
+  m_Size: {x: 41.927986, y: 41.513664}
   m_EdgeRadius: 0
 --- !u!1001 &5872384112534984497
 PrefabInstance:
