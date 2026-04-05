@@ -1,6 +1,5 @@
 using Ami.BroAudio;
 using System.Collections.Generic;
-using Unity.AppUI.UI;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = " New OneShotVFX Settings", menuName = "Scriptable Objects/Flyweight/OneShotVFX Settings")]
