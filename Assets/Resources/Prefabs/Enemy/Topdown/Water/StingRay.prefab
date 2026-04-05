@@ -263,6 +263,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
+  isBoss: 1
+  _phaseTransitionVFXDatasList:
+  - SpawnTransform: {fileID: 2914029391124184953}
+    VFXSettings: {fileID: 11400000, guid: d4a9f4bfad3a2e04798931303b1cc034, type: 2}
+    Size: 2
+    positionOffset: {x: 0, y: 4, z: 0}
+    rotationOffset: {x: 0, y: 0, z: 0}
+  _phaseTransitionSound:
+    _entity: {fileID: 11400000, guid: b96977b13279fdf4695720b62c2f9501, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 882621943930547787}
+  _deathSound:
+    _entity: {fileID: 11400000, guid: dacd51cefe09af54197b029e550151a1, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 882621943930547787}
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
@@ -286,6 +301,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
@@ -323,6 +339,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: f26b87804e74f334bb0f5ec0a6e36fc7, type: 2}
@@ -360,6 +377,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack3
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 25152878369c69643b0be5b8fa7a5184, type: 2}
@@ -381,6 +399,44 @@ MonoBehaviour:
     indicatorWidth: 7
     indicatorLength: 2
   - Parryable: 0
+    spawnType: 1
+    skillSpawnTransform: {fileID: 0}
+    positionOffset: {x: 0, y: 0, z: 1}
+    rotationOffset: {x: 0, y: 0, z: 0}
+    dodgeLayers:
+      serializedVersion: 2
+      m_Bits: 2816
+    coolDown: 10
+    weight: 0
+    minRange: 0
+    maxRange: 5
+    damage: 10
+    dealTrueDamage: 0
+    reverseKnockbackDirection: 0
+    knockBackForce: 10
+    stunTime: 0
+    forPhaseTwo: 0
+    executeAnimationName: Attack5
+    crossfadeDuration: 0.1
+    skillVFX: {fileID: 11400000, guid: 709d8e74edb189d4997f2170de8d8f9d, type: 2}
+    projectileRange: 1
+    projectileSpeed: 10
+    skillSize: 5
+    executionSound: {fileID: 0}
+    movementSpeed: 0
+    rotateSpeed: 10
+    faceTargetState: 3
+    lockMovementState: 3
+    needCharge: 0
+    chargeAnimationName: 
+    chargeSpawnTransform: {fileID: 2416255869784781388}
+    chargeEffect: {fileID: 11400000, guid: 77d179d3e74e9584eb77675d9534affc, type: 2}
+    chargeEffectSize: 2
+    chargeDuration: 0
+    indicator: {fileID: 11400000, guid: 0ac5d30c27e5652428860850b2851f6d, type: 2}
+    indicatorWidth: 7
+    indicatorLength: 0
+  - Parryable: 0
     spawnType: 2
     skillSpawnTransform: {fileID: 6028389075288452404}
     positionOffset: {x: 0, y: 4, z: 1.5}
@@ -389,7 +445,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 2816
     coolDown: 15
-    weight: 0
+    weight: 1
     minRange: 0
     maxRange: 11
     damage: 10
@@ -397,6 +453,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 1
     executeAnimationName: Attack4
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 9bacad23d9d856a4eae833a7be691620, type: 2}
@@ -420,26 +477,27 @@ MonoBehaviour:
   - Parryable: 0
     spawnType: 1
     skillSpawnTransform: {fileID: 0}
-    positionOffset: {x: 0, y: 0, z: 1}
+    positionOffset: {x: 0, y: 4, z: 1}
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
       m_Bits: 2816
-    coolDown: 15
-    weight: 0
+    coolDown: 10
+    weight: 1
     minRange: 0
-    maxRange: 5
+    maxRange: 11
     damage: 10
     dealTrueDamage: 0
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
-    executeAnimationName: Attack5
+    forPhaseTwo: 1
+    executeAnimationName: Attack6
     crossfadeDuration: 0.1
-    skillVFX: {fileID: 11400000, guid: 709d8e74edb189d4997f2170de8d8f9d, type: 2}
+    skillVFX: {fileID: 11400000, guid: 25152878369c69643b0be5b8fa7a5184, type: 2}
     projectileRange: 1
     projectileSpeed: 10
-    skillSize: 5
+    skillSize: 2
     executionSound: {fileID: 0}
     movementSpeed: 0
     rotateSpeed: 10
@@ -451,7 +509,7 @@ MonoBehaviour:
     chargeEffect: {fileID: 11400000, guid: 77d179d3e74e9584eb77675d9534affc, type: 2}
     chargeEffectSize: 2
     chargeDuration: 0
-    indicator: {fileID: 11400000, guid: 0ac5d30c27e5652428860850b2851f6d, type: 2}
+    indicator: {fileID: 0}
     indicatorWidth: 7
     indicatorLength: 0
   _context:
@@ -466,6 +524,9 @@ MonoBehaviour:
     <IsMoreHurt>k__BackingField: 0
     <IsStunned>k__BackingField: 0
     <IsDead>k__BackingField: 0
+    <IsBoss>k__BackingField: 0
+    <IsChangingPhase>k__BackingField: 0
+    <IsChangedPhase>k__BackingField: 0
 --- !u!114 &102692265641583663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,6 +617,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartPhaseTransition:
     m_PersistentCalls:
       m_Calls: []
   floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}

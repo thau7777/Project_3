@@ -46,6 +46,9 @@ public class EnemyTopdownContext
     [field: SerializeField] public bool IsMoreHurt { get; set; }
     [field: SerializeField] public bool IsStunned { get; set; }
     [field: SerializeField] public bool IsDead { get; set; }
+    [field: SerializeField] public bool IsBoss { get; set; }
+    [field: SerializeField] public bool IsChangingPhase { get; set; }
+    [field: SerializeField] public bool IsChangedPhase { get; set; }
 
     // Cached Animator Hashes
     public int IdleHash => Animator.StringToHash("Idle");
@@ -53,6 +56,7 @@ public class EnemyTopdownContext
     public int HurtHash => Animator.StringToHash("Hurt");
     public int StunnedHash => Animator.StringToHash("Stunned");
     public int DeadHash => Animator.StringToHash("Dead");
+    public int ChangePhaseHash => Animator.StringToHash("PhaseTransition");
 
     public EnemyTopdownMovementType EnemyType { get; set; }
     public List<EnemyAttackData> EnemyAttackDataList { get; private set; }
@@ -82,6 +86,8 @@ public class EnemyTopdownContext
         {
             var attack = EnemyAttackDataList[i];
 
+            if(attack.forPhaseTwo && !IsChangedPhase)
+                continue;
             // Filter by distance
             if (DistanceToTarget < attack.minRange || DistanceToTarget > attack.maxRange)
                 continue;
@@ -153,6 +159,13 @@ public class EnemyTopdownContext
     {
         private readonly EnemyTopdownContext ctx = new EnemyTopdownContext();
 
+        public Builder SetIsBoss(bool isBoss)
+        {
+            ctx.IsBoss = isBoss;
+            ctx.IsChangingPhase = false;
+            ctx.IsChangedPhase = false;
+            return this;
+        }
         public Builder SetAnimator(Animator animator)
         {
             ctx.Animator = animator;

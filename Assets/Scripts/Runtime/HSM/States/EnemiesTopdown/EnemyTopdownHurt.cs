@@ -37,11 +37,20 @@ public class EnemyTopdownHurt : State
         ctx.CurrentSpeed = Mathf.Lerp(ctx.KnockbackForce, _targetSpeed, t);
 
     }
+    protected override void OnExit()
+    {
+        ctx.IsHurting = false;
+        ctx.IsMoreHurt = false;
+    }
     protected override State GetTransition()
     {
         if (ctx.IsDead)
         {
             return ((EnemyTopdownRoot)Parent).Dead;
+        }
+        if (ctx.IsChangingPhase && !ctx.IsChangedPhase)
+        {
+            return ((EnemyTopdownRoot)Parent).BossTransition;
         }
         if (ctx.IsStunned)
         {

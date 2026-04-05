@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Ami.BroAudio;
+using Unity.VisualScripting;
 public class Damageable : MonoBehaviour
 {
 
@@ -32,10 +33,14 @@ public class Damageable : MonoBehaviour
     [TabGroup("Events")] public UnityEvent<float, float> OnHealthChanged;
     [TabGroup("Events")] public UnityEvent<float, float> OnShieldChanged;
 
+    [TabGroup("Events")] public UnityEvent OnStartPhaseTransition;
+
     [TabGroup("Effects")] public FloatingCombatTextSettings floatingCombatTextSettings;
     [TabGroup("Effects")] public OneShotVFXSettings parrySuccessVFXSettings;
 
     [SerializeField, TabGroup("Sounds")] private SoundID _HurtSound;
+
+    private bool _isPhaseChanged = false;
     private void Awake()
     {
         _ccLayerIgnoreController = gameObject.GetOrAdd<CCLayerIgnoreController>();
@@ -57,6 +62,12 @@ public class Damageable : MonoBehaviour
         }
 
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
+        if(!CompareTag("Player") && TryGetComponent<EnemyTopdownStateDriver>(out var stateDriver) && stateDriver.isBoss)
+        {
+            OnStartPhaseTransition.AddListener(stateDriver.StartPhaseTransition);
+            OnStartPhaseTransition.AddListener(BossCameraController.Instance.FocusOnBoss);
+        }
     }
     public void UpdateMaxHealth(float newMaxHealth)
     {
@@ -114,9 +125,13 @@ public class Damageable : MonoBehaviour
         int damage, bool dealTrueDamage, Vector3 knockBackDirection, float knockBackForce, 
         ElementalType attackElementalType, OneShotVFXSettings hitVfx = null, bool respectInvincibilityTime = true)
     {
-        if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime) return;
-     
-        var effectsManager = GetComponent<EffectsManager>();
+        if (CurrentHealth == 0 || _invincibleElapsedTime > 0 && respectInvincibilityTime 
+            || TryGetComponent<EnemyTopdownStateDriver>(out var stateDriver) && stateDriver.isBoss && stateDriver.GetIsChangingPhase()) return;
+        if (TopDownGameManager.Instance.isBossFighting && TopDownEnemyManager.Instance.BossTransform.TryGetComponent<EnemyTopdownStateDriver>(out var bossStateDriver)
+            && bossStateDriver.GetIsChangingPhase())
+            return;
+
+            var effectsManager = GetComponent<EffectsManager>();
         if (effectsManager.HasEffect("Unbreaking Thorn Effect"))
         {
             EffectData PoisonEffectData = new EffectData
@@ -202,6 +217,13 @@ public class Damageable : MonoBehaviour
         finalDamage = Mathf.RoundToInt(finalDamage);
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
+        if(!CompareTag("Player") && stateDriver.isBoss && CurrentHealth / MaxHealth <= 0.6f && !_isPhaseChanged)
+        {
+            _isPhaseChanged = true;
+            OnStartPhaseTransition?.Invoke();
+            CinemachineCameraController.Instance.ShakeSequence(2f);
+        }
 
         if(!CompareTag("Player"))
             TopDownGameManager.Instance.AddDamageDealt((int)finalDamage);

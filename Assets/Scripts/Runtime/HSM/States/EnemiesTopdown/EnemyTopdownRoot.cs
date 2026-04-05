@@ -12,7 +12,7 @@ public class EnemyTopdownRoot : State
     public EnemyTopdownHurt Hurt;
     public EnemyTopdownDead Dead;
     public EnemyTopdownStunned Stunned;
-
+    public BossTransitionPhase BossTransition;
 
     private float verticalVelocity; // stored between frames
     public EnemyTopdownRoot(StateMachine machine, EnemyTopdownContext context) : base(machine, null)
@@ -26,6 +26,9 @@ public class EnemyTopdownRoot : State
         Hurt = new EnemyTopdownHurt(machine, this, ctx);
         Dead = new EnemyTopdownDead(machine, this, ctx);
         Stunned = new EnemyTopdownStunned(machine, this, ctx);
+        if(ctx.IsBoss)
+            BossTransition = new BossTransitionPhase(machine, this, ctx);
+
     }
     public void UpdateRotation(float deltaTime, Vector3 direction)
     {

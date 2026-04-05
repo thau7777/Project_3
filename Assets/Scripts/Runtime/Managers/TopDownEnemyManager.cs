@@ -274,7 +274,8 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     public void OnEnemyDied(GameObject enemyGO)
     {
-        BroAudio.Play(_enemyDieSound);
+        if(!_isBossFight)
+            BroAudio.Play(_enemyDieSound);
         _activeEnemies.Remove(enemyGO);
 
         RemainingEnemiesInWave--;
@@ -387,6 +388,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
             bossDamageAble.OnShieldChanged.AddListener(_bossStatusBar.SetShield);
             BossTransform.GetComponent<EffectsManager>().OnEffectAdded.AddListener(_bossStatusBar.GetComponentInChildren<EffectUIController>().OnEffectAdded);
             BossTransform.GetComponent<EffectsManager>().OnEffectRemoved.AddListener(_bossStatusBar.GetComponentInChildren<EffectUIController>().OnEffectRemoved);
+            _bossStatusBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = enemy.name;
         }
     }
 

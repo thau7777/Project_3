@@ -173,4 +173,7 @@ public enum FlyweightType
 
     FlyingSlash_Dark,
     BossSpawnVFX,
+    SlashGroundDark,
+
+    ShockWaveVFX,
 }

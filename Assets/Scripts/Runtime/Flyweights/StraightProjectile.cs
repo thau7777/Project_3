@@ -60,6 +60,7 @@ public class StraightProjectile : Flyweight
     {
         _sender = sender;
         _direction = direction.normalized;
+        transform.forward = _direction.Value;
         _speed = speed;
         _range = range;
         _startPosition = transform.position;

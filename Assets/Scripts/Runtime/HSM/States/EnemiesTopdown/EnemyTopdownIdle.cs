@@ -29,6 +29,7 @@ public class EnemyTopdownIdle : State
         {
             return ((EnemyTopdownRoot)Parent).Dead;
         }
+
         if (ctx.IsStunned)
         {
             return ((EnemyTopdownRoot)Parent).Stunned;
