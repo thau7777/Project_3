@@ -14706,6 +14706,7 @@ GameObject:
   - component: {fileID: 1661849055536065488}
   - component: {fileID: 7223640214784275257}
   - component: {fileID: 3198041600129778323}
+  - component: {fileID: 6358124993781423423}
   m_Layer: 0
   m_Name: StingRay_WaterBlast
   m_TagString: Untagged
@@ -14763,6 +14764,29 @@ MonoBehaviour:
   _LocationEffect: {fileID: 7223640214784275257}
   _RadiusFactor: 1
   _IgnoreYDirection: 1
+--- !u!114 &6358124993781423423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123197451578103894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 478661bce7fb7e14cb3a1f40a72bc2d5, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 2123197451578103894}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &2232504350388364489
 GameObject:
   m_ObjectHideFlags: 0

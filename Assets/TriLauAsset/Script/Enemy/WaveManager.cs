@@ -37,6 +37,7 @@ namespace MyRule
         [SerializeField] private MapEnemies mapEnemies;
         [SerializeField] private List<BossInMap> bossInMap;
         [SerializeField] private EnemyDataSO bossSO;
+        [SerializeField] private List<EnemyDataSO> enemyDataSOs;
 
         private GroupWave groupWave;
 
@@ -72,7 +73,7 @@ namespace MyRule
 
         public EnemyDataSO GetEnemySOById(EnemyId id)
         {
-            return mapEnemies.enemies.Find(so => so.enemyId == id);
+            return enemyDataSOs.Find(so => so.enemyId == id);
         }
 
         public GroupWave GetCurrentWave()
@@ -86,7 +87,7 @@ namespace MyRule
 
             List<EnemyCountRate> enemyCountRates = new List<EnemyCountRate>();
 
-            int currentLevel = MatchManager.Instance.MatchData.CurrentStep;
+            int currentLevel = isTest ? 1 : MatchManager.Instance.MatchData.CurrentStep;
             Debug.Log("currentLevel " +  currentLevel);
 
             if (currentLevel >= 0 && currentLevel < 6)
@@ -328,9 +329,9 @@ namespace MyRule
             return groupWave;
         }
 
-        public GroupWave CreateBossWave()
+        public GroupWave CreateBossWave(bool isTest = false)
         {
-            int currentLevel = MatchManager.Instance.MatchData.CurrentStep;
+            int currentLevel = isTest ? 1 : MatchManager.Instance.MatchData.CurrentStep;
 
             GroupWave groupWave = new GroupWave(1);
 
@@ -347,7 +348,7 @@ namespace MyRule
             waveData.AddEnemy(0, bossData);
 
             groupWave.AddWaveData(0, waveData);
-            
+            Debug.Log(groupWave.WaveDatas[0].Enemies[0]);
             return groupWave;
         }
 

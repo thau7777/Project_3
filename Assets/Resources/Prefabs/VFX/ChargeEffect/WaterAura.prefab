@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5553428818579422097}
   - component: {fileID: 7951796636389873158}
   - component: {fileID: 6196299661648360991}
+  - component: {fileID: -5134228566439738064}
   m_Layer: 0
   m_Name: WaterAura
   m_TagString: Untagged
@@ -4845,3 +4846,26 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &-5134228566439738064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8172492366223560487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 88401b142ad461c46aaaf708283dece5, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8172492366223560487}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ami.BroAudio;
 using Cysharp.Threading.Tasks;
 using MyRule;
 using MyRule.Audio;
@@ -82,6 +83,8 @@ namespace Turnbase
 
         public ScreenEffectUIController _screenEffectController;
 
+        public SoundID hitSound;
+
         public bool isAlive
         {
             get { return stats.currentHP > 0; }
@@ -92,7 +95,6 @@ namespace Turnbase
         public int parryMissCount = 0;
         public int totalHitsInSequence = 0;
         public int currentHitInSequence = 0;
-
 
 
         void Awake()
@@ -320,6 +322,8 @@ namespace Turnbase
 
             damageCallback?.Invoke();
             damageCallback = null;
+
+            BroAudio.Play(hitSound);
         }
 
         #region Heal Methods

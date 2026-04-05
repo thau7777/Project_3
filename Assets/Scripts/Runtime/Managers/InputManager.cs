@@ -60,4 +60,13 @@ public class InputManager : PersistentSingleton<InputManager>
                 break;
         }
     }
+
+    public void DisableAllAction()
+    {
+        _inputReader.DisableActions();
+    }
+    public void EnableActionMap(ActionMap map)
+    {
+        _inputReader.SwitchActionMap(map);
+    }
 }

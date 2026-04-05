@@ -33,7 +33,8 @@ public class FishingUI : MonoBehaviour
     {
         if (!isFishing) return;
 
-        timer += Time.deltaTime* fishTime;
+
+        timer -= Time.deltaTime * fishTime;
         fishingBar.fillAmount = timer / duration;
 
         if (timer >= duration)
@@ -47,7 +48,7 @@ public class FishingUI : MonoBehaviour
         currentHook = hook;
 
         isFishing = true;
-        timer = duration *0.1f;
+        timer = duration *0.1f + 0.7f;
 
         fishBar.SetActive(true);
         arrowUI.SetActive(true);

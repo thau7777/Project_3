@@ -16,8 +16,7 @@ public class HookController : MonoBehaviour
     [SerializeField] private List<GameObject> image;
     [SerializeField] private InputReader inputReader;
 
-    [TabGroup("BroAudio")]
-    [SerializeField] private SoundID bgm;
+    
 
     [Header("Charge")]
     public float chargeSpeed = 1.5f;
@@ -28,7 +27,7 @@ public class HookController : MonoBehaviour
 
     [Header("Water Physics")]
     public float waterDrag = 1.5f;
-    public float waterGravity = 30f;
+    public float waterGravity = 25f;
 
     [Header("Normal Physics")]
     public float normalMass = 0.5f;
@@ -43,6 +42,8 @@ public class HookController : MonoBehaviour
     private Vector2 initialPosition;
     private float chargeStartTime;
 
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID waterID;
     private void OnEnable()
     {
         inputReader.popUpGame.onThrow += HandleSpace;
@@ -126,6 +127,7 @@ public class HookController : MonoBehaviour
             inWater = true;
             rb.linearDamping = waterDrag;
             rb.gravityScale = waterGravity;
+            waterID.Play();
         }
         
 
@@ -143,7 +145,9 @@ public class HookController : MonoBehaviour
         rb.simulated = false;
 
         FishingUI.instance.StartFishing(this);
-        StartCoroutine(DelayAction(1f, () => image.ForEach(i => i.SetActive(false))));
+        StartCoroutine(DelayAction(1f, () => image[1].SetActive(false)));
+        //StartCoroutine(DelayAction(1f, () =>image.ForEach(i => i.SetActive(false))
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

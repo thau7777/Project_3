@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Ami.BroAudio;
 
 public class ArrowInput : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class ArrowInput : MonoBehaviour
     private bool canInput = false;
 
     private Dictionary<KeyCode, ArrowType> keyMap;
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID  arrow;
 
     void Awake()
     {
@@ -50,6 +53,7 @@ public class ArrowInput : MonoBehaviour
         bool correct = input == arrowManager.currentArrow;
 
         fishingUI.ModifyTimer(correct);
+        arrow.Play();
 
         if (correct)
             arrowManager.NextArrow();

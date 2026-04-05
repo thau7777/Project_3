@@ -6,39 +6,47 @@ public class Bubble : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Animator animator;
     [SerializeField] private string poolTag;
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private RectTransform rt;
+    [SerializeField] private RectTransform rtb;
 
-    private void Start()
+    private float internalTimeOffset;
+
+    private void Awake()
     {
-        speed = (int)Random.Range(5f, 15f);
-        rt = GetComponent<RectTransform>();
-        rb = GetComponent<Rigidbody2D>();
+        rtb = GetComponent<RectTransform>();
+        animator = GetComponent<Animator>();
+    }
+    private void OnEnable()
+    {
+        speed = (int)Random.Range(40f, 45f);
+        internalTimeOffset = Random.Range(0, 100);
     }
     private void Update()
     {
-        rt.anchoredPosition += Vector2.up * speed * Time.deltaTime;
+        
+        rtb.anchoredPosition += Vector2.up * speed * Time.deltaTime;
         MoveFloating();
     }
+   
     void MoveFloating()
     {
-        float t = Time.time + speed;
-
-        rb.linearVelocity = new Vector2(
-            Mathf.Sin(t) * 8f,
-            Mathf.Cos(t * 15f) * 2f
-        );
+        float t = Time.time + internalTimeOffset;
+        rtb.anchoredPosition += new Vector2(
+            Mathf.Sin(t * 2) * 15f,
+            Mathf.Cos(t * 2) * 5f
+        ) * Time.deltaTime;
     }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.name.Contains("Water"))
         {
-            animator.Play("Bubble_pop");
+            
             StartCoroutine(ReturnToPool());
         }
     }
     IEnumerator ReturnToPool()
     {
+        
         yield return new WaitForSeconds(1f);
         PoolManager.Instance.Despawn(poolTag, gameObject);
     }

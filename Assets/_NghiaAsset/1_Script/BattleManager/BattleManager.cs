@@ -8,6 +8,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
 using System.Threading.Tasks;
+using Ami.BroAudio;
 
 namespace Turnbase
 {
@@ -95,16 +96,14 @@ namespace Turnbase
                 await BattleCutsceneManager.Instance.PlayCutscene(BattleCutsceneType.Start);
             }
 
+            SpawnFirstWave();
+
             isProcessingTurn = false;
             if (turnHandler != null)
             {
                 turnHandler.isProcessingTurn = false;
                 StartCoroutine(turnHandler.UpdateActionGaugeRoutine());
             }
-        }
-
-        void Update()
-        {
 
         }
 
@@ -129,9 +128,23 @@ namespace Turnbase
                 this.instantiatedRoundTracker = trackerInstance;
             }
 
-            currentWaveIndex = 0;
+            if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);
+        }
 
-            if (testEnemyPrefab != null)
+        private void SpawnFirstWave()
+        {
+            currentWaveIndex = 0;
+            currentGroupWave = WaveManager.Instance.GetCurrentWave();
+
+            if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
+            {
+                if (uiManager != null)
+                    uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
+
+                WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
+                spawner.SpawnWaveImmediately(firstWave, enemySlots);
+            }
+            else if (testEnemyPrefab != null)
             {
                 if (enemySlots != null && enemySlots.Length > 0)
                 {
@@ -139,18 +152,6 @@ namespace Turnbase
                 }
                 if (uiManager != null)
                     uiManager.UpdateWaveDisplay(1, 1);
-            }
-            else
-            {
-                currentGroupWave = WaveManager.Instance.GetCurrentWave();
-                if (currentGroupWave != null && currentGroupWave.WaveDatas.Length > 0)
-                {
-                    if (uiManager != null)
-                        uiManager.UpdateWaveDisplay(currentWaveIndex + 1, currentGroupWave.WaveDatas.Length);
-
-                    WaveData firstWave = currentGroupWave.WaveDatas[currentWaveIndex];
-                    spawner.SpawnWaveImmediately(firstWave, enemySlots);
-                }
             }
 
             if (turnOrderUI != null) turnOrderUI.UpdateActionGaugeUI(allCombatants);

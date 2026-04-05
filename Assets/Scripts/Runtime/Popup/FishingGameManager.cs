@@ -1,3 +1,4 @@
+using Ami.BroAudio;
 using MyRule.Event;
 using System.Collections;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class FishingGameManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI timerText;
     [SerializeField] private GameObject fishing;
     [SerializeField] private InputReader inputReader;
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID bgm;
 
     public int score;
     float time = 60f;
@@ -20,7 +23,8 @@ public class FishingGameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        
+        bgm.Play();
+
     }
 
     private void Update()
@@ -80,10 +84,7 @@ public class FishingGameManager : MonoBehaviour
     {
         score += value;
     }
-    public void Caught(float bonus)
-    {
-        time += bonus;
-    }
+    
     private IEnumerator DelayAction(float delay, System.Action action)
     {
         yield return new WaitForSeconds(delay);

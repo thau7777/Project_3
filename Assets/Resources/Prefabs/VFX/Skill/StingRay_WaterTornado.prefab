@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5812872755245285005}
   - component: {fileID: 7415857423758448967}
   - component: {fileID: 3708435071424829049}
+  - component: {fileID: 616938934126310687}
   m_Layer: 11
   m_Name: StingRay_WaterTornado
   m_TagString: Untagged
@@ -4950,6 +4951,29 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!114 &616938934126310687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81529681693639666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 066d4a4faab43e64f92342e74159571c, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 81529681693639666}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &875154659969586754
 GameObject:
   m_ObjectHideFlags: 0

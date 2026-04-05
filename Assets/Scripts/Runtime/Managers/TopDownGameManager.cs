@@ -48,6 +48,7 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
     [SerializeField, TabGroup("LowHealthEffectSettings")] private float _lowHealthLerpOutDuration = 0.5f;
 
     [SerializeField, TabGroup("Sounds")] private SoundID _bgm;
+    [SerializeField, TabGroup("Sounds")] private SoundID _bossBgm;
 
 
     private bool _isFlashing = false;
@@ -103,10 +104,20 @@ public class TopDownGameManager : Singleton<TopDownGameManager>
         EnableTPEffect();
         await UniTask.Delay(700);
         EnablePlayer();
+        isBossFighting = isTestGameplay ? isTestBossFight : CombatManager.Instance.CombatData.CombatType == CombatType.BossFighting;
         await UniTask.Delay(3000);
-        isBossFighting = isTestGameplay ? isTestBossFight : CombatManager.Instance.CombatData.CombatType == CombatType.BossFigihting;
         EventBus<TopdownStartGameEvent>.Raise( new TopdownStartGameEvent(isBossFighting));
-        BroAudio.Play(_bgm);
+        if (isBossFighting)
+        {
+            BossCameraController.Instance.FocusOnBoss();
+        }
+        if (!isBossFighting)
+            BroAudio.Play(_bgm);
+        else
+        {
+            await UniTask.Delay(3000); 
+            BroAudio.Play(_bossBgm);
+        }
     }
     private void EnablePlayer()
     {

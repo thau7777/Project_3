@@ -36,8 +36,8 @@ public class TopdownWarpDriveController : MonoBehaviour
             _visualEffect.SetFloat("WarpAmount", value);
             _firstCylinderMaterial.SetFloat("_Active", value);
             _secondCylinderMaterial.SetFloat("_Active", value);
-            _cameraNoiseChannel.AmplitudeGain = value;
-            _cameraNoiseChannel.FrequencyGain = value;
+            _cameraNoiseChannel.AmplitudeGain = value / 2;
+            _cameraNoiseChannel.FrequencyGain = value / 2;
 
             TPVolume.weight = value;
         }
