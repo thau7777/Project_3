@@ -42,6 +42,8 @@ public class HookController : MonoBehaviour
     private Vector2 initialPosition;
     private float chargeStartTime;
 
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID waterID;
     private void OnEnable()
     {
         inputReader.popUpGame.onThrow += HandleSpace;
@@ -125,6 +127,7 @@ public class HookController : MonoBehaviour
             inWater = true;
             rb.linearDamping = waterDrag;
             rb.gravityScale = waterGravity;
+            waterID.Play();
         }
         
 

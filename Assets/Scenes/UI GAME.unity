@@ -452,6 +452,7 @@ GameObject:
   - component: {fileID: 580941503}
   - component: {fileID: 580941502}
   - component: {fileID: 580941504}
+  - component: {fileID: 580941505}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -569,6 +570,14 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!81 &580941505
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580941500}
+  m_Enabled: 1
 --- !u!224 &613953987 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8031021024475418851, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
@@ -649,6 +658,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &818206509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1211999467548597684, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+  m_PrefabInstance: {fileID: 4617394352751340587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &819857050
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +960,11 @@ MonoBehaviour:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3535301904644254332, guid: 70a651eb39c1b8442b37ff7b7355b5a1, type: 3}
   m_PrefabInstance: {fileID: 847938537387885375}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1183531277 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9202494318816658344, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+  m_PrefabInstance: {fileID: 4617394352751340587}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1329671891 stripped
 GameObject:
@@ -1704,6 +1723,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 819857051}
     m_Modifications:
+    - target: {fileID: 815689765947955878, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: arrow._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: d154f793d4fd53d40bf41b0156550fc9, type: 2}
+    - target: {fileID: 815689765947955878, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: arrow.<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 818206509}
+    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: waterID._entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 5bbfbdca100eff44992f5d944504d397, type: 2}
+    - target: {fileID: 6157224750889959168, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
+      propertyPath: waterID.<DebugObject>k__BackingField
+      value: 
+      objectReference: {fileID: 1183531277}
     - target: {fileID: 8031021024475418851, guid: 00b54c61d38f9614796a535d856c7171, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
