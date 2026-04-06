@@ -179,6 +179,8 @@ public class EnviromentManager : Singleton<EnviromentManager>
             RestoreMapMaterials(mapInfo);
         BroAudio.Stop(BroAudioType.Ambience);
 
+        _currentLight.intensity = 1f;
+
     }
 
     public async UniTaskVoid LerpLightIntensity(float duration, float holdDuration)
