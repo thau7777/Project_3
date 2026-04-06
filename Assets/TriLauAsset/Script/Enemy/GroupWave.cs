@@ -150,29 +150,28 @@ namespace MyRule
 
         private void ScaleStats(int level, float mult)
         {
-            this.health = (int)(health * (1 + level * mult));
-            this.stamina = (int)(stamina * (1 + level * mult));
-            this.phys = (int)(phys * (1 + level * mult));
-            this.mag = (int)(mag * (1 + level * mult));
-            this.fire = (int)(fire * (1 + level * mult));
-            this.frost = (int)(frost * (1 + level * mult));
-            this.lightning = (int)(lightning * (1 + level * mult));
-            this.holy = (int)(holy * (1 + level * mult));
-            this.dark = (int)(dark * (1 + level * mult));
-            this.water = (int)(water * (1 + level * mult));
-            this.poison = (int)(poison * (1 + level * mult));
-            this.phyDef = (int)(phyDef * (1 + level * mult));
-            this.magDef = (int)(magDef * (1 + level * mult));
-            this.fireDef = (int)(fireDef * (1 + level * mult));
-            this.frostDef = (int)(frostDef * (1 + level * mult));
-            this.lightningDef = (int)(lightningDef * (1 + level * mult));
-            this.holyDef = (int)(holyDef * (1 + level * mult));
-            this.darkDef = (int)(darkDef * (1 + level * mult));
-            this.waterDef = (int)(waterDef * (1 + level * mult));
-            this.poisonDef = (int)(poisonDef * (1 + level * mult));
-            this.resRate = (int)(resRate * (1 + level * mult));
-            this.attackSpeed *= (1 + level * mult);
-            this.critChance *= (1 + level * mult);
+            this.health *= (int)(1 + level * mult);
+            this.stamina += (int)(1 + level * mult);
+            this.phys += (int)(1 + level * mult);
+            this.mag += (int)((1 + level * mult));
+            this.fire *= (int)((1 + level * mult));
+            this.frost *= (int)((1 + level * mult));
+            this.lightning *= (int)((1 + level * mult));
+            this.holy *= (int)((1 + level * mult));
+            this.dark *= (int)((1 + level * mult));
+            this.water *= (int)((1 + level * mult));
+            this.poison *= (int)((1 + level * mult));
+            this.phyDef += (int)((1 + level * mult));
+            this.magDef += (int)((1 + level * mult));
+            this.fireDef *= (int)((1 + level * mult));
+            this.frostDef *= (int)((1 + level * mult));
+            this.lightningDef *= (int)((1 + level * mult));
+            this.holyDef *= (int)((1 + level * mult));
+            this.darkDef *= (int)((1 + level * mult));
+            this.waterDef *= (int)((1 + level * mult));
+            this.poisonDef *= (int)((1 + level * mult));
+            this.resRate += (int)((1 + level * mult));
+            this.critChance *= level * mult;
         }
     }
 }

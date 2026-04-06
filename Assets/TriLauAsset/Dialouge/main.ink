@@ -1,7 +1,7 @@
 EXTERNAL TradeSigilByRune(rune, sigil_name)
 EXTERNAL TradeSigilBySigil(sigil_name, sigil_name)
 EXTERNAL OpenStore()
-EXTERNAL TriggerMiniGame()
+EXTERNAL TriggerMiniGame(name)
 EXTERNAL ChosenSigil(sigil_name)
 EXTERNAL UpdateRune(rune)
 EXTERNAL BlockEarnRune(number)
@@ -21,3 +21,4 @@ INCLUDE MysteriousWitch.ink
 INCLUDE MysteriousHunter.ink
 INCLUDE MysteriousHero.ink
 INCLUDE TAE.ink
+INCLUDE Ending.ink

@@ -1,4 +1,7 @@
+using Cysharp.Threading.Tasks;
 using MyRule.Event;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 
 namespace MyRule.UI
@@ -9,9 +12,19 @@ namespace MyRule.UI
         [SerializeField] private LobbyShopProductView[] cardProducts;
         [SerializeField] private LobbyShopProductView[] goldProducts;
         [SerializeField] private LobbyShopProductView[] crystalProducts;
+        [SerializeField] private TextMeshProUGUI goldTxt;
+        [SerializeField] private TextMeshProUGUI crystalTxt;
+
+        private int gold = 0;
+        private int crystal = 0;
 
         private EventBinding<UpdateLobbyShopSigilEvent> updateLobbyShopSigilEvent;
         private EventBinding<UpdateLobbyShopCardEvent> updateLobbyShopCardEvent;
+        private EventBinding<UpdateLobbyGoldUIEvent> updateLobbyGoldUIEvent;
+        private EventBinding<UpdateLobbyCrystalUIEvent> updateLobbyCrystalUIEvent;
+
+        private CancellationTokenSource goldCts;
+        private CancellationTokenSource crystalCts;
 
         private void OnEnable()
         {
@@ -20,12 +33,20 @@ namespace MyRule.UI
 
             updateLobbyShopCardEvent = new EventBinding<UpdateLobbyShopCardEvent>(HandleCards);
             EventBus<UpdateLobbyShopCardEvent>.Register(updateLobbyShopCardEvent);
+
+            updateLobbyGoldUIEvent = new EventBinding<UpdateLobbyGoldUIEvent>(UpdateGoldText);
+            EventBus<UpdateLobbyGoldUIEvent>.Register(updateLobbyGoldUIEvent);
+
+            updateLobbyCrystalUIEvent = new EventBinding<UpdateLobbyCrystalUIEvent>(UpdateCrystalText);
+            EventBus<UpdateLobbyCrystalUIEvent>.Register(updateLobbyCrystalUIEvent);
         }
 
         private void OnDisable()
         {
             EventBus<UpdateLobbyShopSigilEvent>.Deregister(updateLobbyShopSigilEvent);
             EventBus<UpdateLobbyShopCardEvent>.Deregister(updateLobbyShopCardEvent);
+            EventBus<UpdateLobbyGoldUIEvent>.Deregister(updateLobbyGoldUIEvent);
+            EventBus<UpdateLobbyCrystalUIEvent>.Deregister(updateLobbyCrystalUIEvent);
         }
 
         private void Start()
@@ -68,6 +89,54 @@ namespace MyRule.UI
             {
                 crystalProducts[i].SetProduct();
             }
+        }
+
+        private async void UpdateGoldText(UpdateLobbyGoldUIEvent evt)
+        {
+            goldCts?.Cancel();
+            goldCts?.Dispose();
+            goldCts = new CancellationTokenSource();
+
+            int oldGold = gold;
+            int newGold = evt.value;
+
+            await AnimateValue(goldTxt, oldGold, newGold, 0.5f, goldCts.Token);
+
+            gold = newGold;
+        }
+
+        private async void UpdateCrystalText(UpdateLobbyCrystalUIEvent evt)
+        {
+            crystalCts?.Cancel();
+            crystalCts?.Dispose();
+            crystalCts = new CancellationTokenSource();
+
+            int oldCrystal = crystal;
+            int newCrystal = evt.value;
+
+            await AnimateValue(crystalTxt, oldCrystal, newCrystal, 0.5f, crystalCts.Token);
+
+            crystal = newCrystal;
+        }
+
+        private async UniTask AnimateValue(TextMeshProUGUI txt, int from, int to, float duration, CancellationToken token)
+        {
+            float time = 0f;
+
+            while (time < duration)
+            {
+                if (token.IsCancellationRequested) return;
+
+                time += Time.deltaTime;
+                float t = time / duration;
+
+                int value = Mathf.RoundToInt(Mathf.Lerp(from, to, t));
+                txt.text = value.ToString();
+
+                await UniTask.Yield();
+            }
+
+            txt.text = to.ToString(); 
         }
     }
 }

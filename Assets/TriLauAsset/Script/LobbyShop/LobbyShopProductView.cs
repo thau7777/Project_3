@@ -94,7 +94,7 @@ namespace MyRule
                     {
                         if (LobbyShopManager.Instance.BuyGold(productConfig.prices, productConfig.gold))
                         {
-
+                            Debug.Log("Buy Gold " + productConfig.gold);
                         }
 
                         break;
@@ -103,9 +103,8 @@ namespace MyRule
                     {
                         if (LobbyShopManager.Instance.BuyCrystal(0, productConfig.crystal))
                         {
-
+                            Debug.Log("Buy Crystal " + productConfig.crystal);
                         }
-
                         break;
                     }
             }

@@ -12,9 +12,13 @@ namespace MyRule
         public int CurrentGold => gold;
         public int CurrentCrystal => crystal;
 
+        private EventBinding<ReceiveGoldEvent> receiveGold;
+        private EventBinding<ReceiveCrystalEvent> receiveCrystal;
+
         private void OnEnable()
         {
             GameSystemManager.Instance.Register(this);
+
         }
 
         private void OnDisable()

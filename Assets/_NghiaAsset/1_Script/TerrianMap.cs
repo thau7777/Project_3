@@ -88,17 +88,21 @@ namespace Turnbase
         {
             await UniTask.WaitUntil(() => MatchManager.Instance.MatchData != null);
 
-            EWeatherType mapType = MatchManager.Instance.MatchData.WeatherData.WeatherType;
+            bool isBadWeather = MatchManager.Instance.MatchData.WeatherData.IsBadWeather;
+            EMap eMap = MatchManager.Instance.MatchData.MapType;
 
-            switch (mapType)
+            if (isBadWeather)
             {
-                case EWeatherType.Rain:
-                    if (weather[0] != null) weather[0].gameObject.SetActive(true);
-                    break;
+                switch (eMap)
+                {
+                    case EMap.GreenLand:
+                        if (weather[0] != null) weather[0].gameObject.SetActive(true);
+                        break;
 
-                case EWeatherType.Snow:
-                    if (weather[1] != null) weather[1].gameObject.SetActive(true);
-                    break;
+                    case EMap.IceLand:
+                        if (weather[1] != null) weather[1].gameObject.SetActive(true);
+                        break;
+                }
             }
         }
     }

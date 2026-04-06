@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MyRule.Event;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ namespace MyRule.ToolBox
     {
         [SerializeField] private InputReader _inputReader;
         [SerializeField] private Button escBtn;
+        [SerializeField] private Button setWeatherBtn;
 
         private bool isShowing = false;
 
@@ -15,12 +17,14 @@ namespace MyRule.ToolBox
         {
             _inputReader.diceRollActions.onOpenToolBox += HandleToolBox;
             escBtn.onClick.AddListener(CloseToolBox);
+            setWeatherBtn.onClick.AddListener(SetWeather);
         }
 
         private void OnDisable()
         {
             _inputReader.diceRollActions.onOpenToolBox -= HandleToolBox;
             escBtn.onClick.RemoveListener(CloseToolBox);
+            setWeatherBtn.onClick.RemoveListener(SetWeather);
         }
 
         private void HandleToolBox()
@@ -49,6 +53,11 @@ namespace MyRule.ToolBox
 
             transform.DOLocalMoveX(-2500, 1f);
             isShowing = false;
+        }
+
+        private void SetWeather()
+        {
+            EventBus<ToolWeatherEvent>.Raise(new ToolWeatherEvent());
         }
     }
 }

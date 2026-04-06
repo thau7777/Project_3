@@ -1,5 +1,6 @@
 ﻿using Ami.BroAudio;
 using Ami.BroAudio.Data;
+using MyRule;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -13,11 +14,10 @@ public class HookController : MonoBehaviour
     [SerializeField] private Image chargeBar;
     public GameObject powerBar;
     public TutorialTrigger fishTutorial;
-    [SerializeField] private List<GameObject> image;
+    [SerializeField] private GameObject imageGround;
     [SerializeField] private InputReader inputReader;
 
-    [TabGroup("BroAudio")]
-    [SerializeField] private SoundID bgm;
+    
 
     [Header("Charge")]
     public float chargeSpeed = 1.5f;
@@ -28,7 +28,7 @@ public class HookController : MonoBehaviour
 
     [Header("Water Physics")]
     public float waterDrag = 1.5f;
-    public float waterGravity = 30f;
+    public float waterGravity = 25f;
 
     [Header("Normal Physics")]
     public float normalMass = 0.5f;
@@ -43,6 +43,8 @@ public class HookController : MonoBehaviour
     private Vector2 initialPosition;
     private float chargeStartTime;
 
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID waterID;
     private void OnEnable()
     {
         inputReader.popUpGame.onThrow += HandleSpace;
@@ -62,7 +64,7 @@ public class HookController : MonoBehaviour
         inputReader.SwitchActionMap(ActionMap.PopUpGame);
 
     }
-
+    
     void Update()
     {
         UpdateChargeBar();
@@ -126,6 +128,7 @@ public class HookController : MonoBehaviour
             inWater = true;
             rb.linearDamping = waterDrag;
             rb.gravityScale = waterGravity;
+            waterID.Play();
         }
         
 
@@ -134,8 +137,8 @@ public class HookController : MonoBehaviour
 
         hookedItem = item;
         item.OnHooked();
-        image.ForEach(i => i.SetActive(true));
-
+        
+        imageGround.SetActive(true);
         fishTutorial.Trigger();
 
         rb.linearVelocity = Vector2.zero;
@@ -143,7 +146,9 @@ public class HookController : MonoBehaviour
         rb.simulated = false;
 
         FishingUI.instance.StartFishing(this);
-        StartCoroutine(DelayAction(1f, () => image.ForEach(i => i.SetActive(false))));
+        StartCoroutine(DelayAction(1f, () => imageGround.SetActive(false)));
+        //StartCoroutine(DelayAction(1f, () =>image.ForEach(i => i.SetActive(false))
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -180,6 +185,7 @@ public class HookController : MonoBehaviour
         rb.linearDamping = 0f;
         rb.linearVelocity = Vector2.zero;
         rb.simulated = true;
+        FishingUI.instance.fishTime = 1f;
     }
     private IEnumerator DelayAction(float delay, System.Action action)
     {

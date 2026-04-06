@@ -84,6 +84,11 @@ namespace MyRule
                 case "Blood Fang":
                     EventBus<UpdateInkDialogueVariableEvent>.Raise(new UpdateInkDialogueVariableEvent("hasBloodFang", true));
                     break;
+                case "Blood Knight's Oath":
+                case "Butterfly Effect":
+                case "The Wish Under Star":
+                    AchievementManager.Instance.Trigger(AchievementType.CollectSigil, sigilSO.id);
+                    break;
             }
         }
 

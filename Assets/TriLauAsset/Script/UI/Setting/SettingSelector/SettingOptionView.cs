@@ -1,5 +1,6 @@
 using MyRule.Audio;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace MyRule.UI
@@ -16,6 +17,7 @@ namespace MyRule.UI
 
         [Header("Data")]
         [SerializeField] protected string settingKey = "TextLanguage";
+        [SerializeField] protected UnityEvent<int> onChangeValue;
 
         protected virtual void Start()
         {

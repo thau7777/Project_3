@@ -19,6 +19,8 @@ public class HexNode : MonoBehaviour
     [SerializeField] private List<Sprite> iceSprites;
     [SerializeField] private List<Sprite> wallSprites;
 
+    [SerializeField] private bool isTest;
+
 
     public void Init(int r, int c, System.Action<HexNode> onClickAction)
     {
@@ -26,28 +28,38 @@ public class HexNode : MonoBehaviour
         col = c;
         isBlocked = false;
 
-        if (grassSprites.Count > 0)
+        if(isTest)
         {
-            EMap mapType = MatchManager.Instance.MatchData.MapType;
-
-            switch (mapType)
+            if (grassSprites.Count > 0)
             {
-                case EMap.GreenLand:
-                    displayImage.sprite = grassSprites[0];
-                    backGroundImage.sprite = wallSprites[0];
-                    break;
-                case EMap.Desert:
-                    displayImage.sprite = desertSprites[0];
-                    backGroundImage.sprite = wallSprites[1];
-                    break;
-                case EMap.IceLand:
-                    displayImage.sprite = iceSprites[0];
-                    backGroundImage.sprite = wallSprites[2];
-                    break;
+                displayImage.sprite = grassSprites[0];
+                backGroundImage.sprite = wallSprites[0];
             }
-
         }
+        else
+        {
+            if (grassSprites.Count > 0)
+            {
+                EMap mapType = MatchManager.Instance.MatchData.MapType;
 
+                switch (mapType)
+                {
+                    case EMap.GreenLand:
+                        displayImage.sprite = grassSprites[0];
+                        backGroundImage.sprite = wallSprites[0];
+                        break;
+                    case EMap.Desert:
+                        displayImage.sprite = desertSprites[0];
+                        backGroundImage.sprite = wallSprites[1];
+                        break;
+                    case EMap.IceLand:
+                        displayImage.sprite = iceSprites[0];
+                        backGroundImage.sprite = wallSprites[2];
+                        break;
+                }
+
+            }
+        }
         //displayImage.sprite = grassSprites[0];
         //backGroundImage.sprite = nodeSprites[0];
 

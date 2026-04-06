@@ -36,6 +36,8 @@ namespace MyRule
                     MatchManager.Instance.MatchData.SetScene(Loader.EScene.IcelandScene);
                     break;
                 case EMap.IceLand:
+                    currentMap = EMap.Ending;
+                    MatchManager.Instance.MatchData.SetScene(Loader.EScene.EndingScene);
                     break;
             }
         }

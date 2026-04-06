@@ -62,11 +62,11 @@ namespace MyRule
         {
             _attributesData.IncreaseVigor(sigilSO.vigor);
             int vigor = GetBonus(_attributesData.Vigor);
-            _baseData.IncreaseMaxHealth(vigor);
+            _baseData.IncreaseMaxHealth(sigilSO.health);
 
             _attributesData.IncreaseMind(sigilSO.mind);
             int mind = GetBonus(_attributesData.Mind);
-            _baseData.IncreaseMaxMana(mind);
+            _baseData.IncreaseMaxMana(sigilSO.mana);
 
             _attributesData.IncreaseEndurance(sigilSO.endurance);
             int endurance = GetBonus(_attributesData.Endurance);
@@ -77,8 +77,9 @@ namespace MyRule
 
             _attributesData.IncreaseDexterity(sigilSO.dexterity);
             int dexterity = GetBonus(_attributesData.Dexterity);
-            _baseData.IncreaseCritMult(dexterity);
-            _baseData.IncreaseSpeed(dexterity);
+            _baseData.SetCritMult(sigilSO.critMult);
+            _baseData.IncreaseSpeed((int)sigilSO.speed);
+            _baseData.IncreaseCritChance(sigilSO.critChance);
 
             _attributesData.IncreaseIntelligence(sigilSO.intelligence);
             int intelligence = GetBonus(_attributesData.Intelligence);
@@ -237,7 +238,13 @@ namespace MyRule
         public void IncreaseMaxStamina(int amount) => _maxStamina *= amount;
         public void IncreaseSpeed(int amount) => _speed *= amount;
         public void IncreaseCritChance(int amount) => _critChance += amount;
-        public void IncreaseCritMult(int amount) => _critMult += amount;  
+        public void SetCritMult(float amount)
+        {
+            if (amount >= _critMult)
+                _critMult = amount;
+            else
+                return;
+        }
     }
 
     [Serializable]

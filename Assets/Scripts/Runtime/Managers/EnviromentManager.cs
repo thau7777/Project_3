@@ -122,7 +122,7 @@ public class EnviromentManager : Singleton<EnviromentManager>
 
     private void CheckWeather(MapInfo map)
     {
-        bool isBad = !TopDownGameManager.Instance.isTestGameplay ? MatchManager.Instance.MatchData.WeatherData.WeatherType == EWeatherType.Rain : _isBadWeatherForTest;
+        bool isBad = !TopDownGameManager.Instance.isTestGameplay ? MatchManager.Instance.MatchData.WeatherData.IsBadWeather : _isBadWeatherForTest;
         _currentLight = isBad ? map.BadWeatherMainLight : map.WeatherMainLight;
         ApplyMapAmbienceSound(map, isBad);
         map.WeatherMainLight.gameObject.SetActive(!isBad);

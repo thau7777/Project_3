@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using MyRule.Event;
 using UnityEngine;
 
@@ -5,8 +6,7 @@ namespace MyRule
 {
     public class WeatherView : MonoBehaviour
     {
-        [SerializeField] private GameObject rainObj;
-        [SerializeField] private GameObject snowObj;
+        [SerializeField] private GameObject weatherObj;
 
         [SerializeField] private Light directionLight;
 
@@ -26,24 +26,27 @@ namespace MyRule
             EventBus<WeatherEvent>.Deregister(weatherEventBinding);
         }
 
+        private void Start()
+        {
+            SetRandomWeather();
+        }
+
+        private async void SetRandomWeather()
+        {
+            await UniTask.WaitUntil(() => WeatherManager.Instance.WeatherData != null);
+
+            bool isbadWeather = WeatherManager.Instance.GetRandomWeather();
+
+            WeatherManager.Instance.WeatherData.SetBadWeather(isbadWeather);
+
+            WeatherManager.Instance.SetWeather();
+        }    
+
         private void HandleWeather(WeatherEvent evt)
         {
-            switch (evt.weatherType)
+            if (evt.isBadWeather)
             {
-                case EWeatherType.Rain:
-                    {
-                        if (rainObj != null) rainObj.SetActive(true);
-                        directionLight.color = rainColor;
-                        break;
-                    }
-                case EWeatherType.Snow:
-                    {
-                        if (snowObj != null) snowObj.SetActive(true);
-                        directionLight.color = snowColor;
-                        break;
-                    }
-                default:
-                    break;
+                if (weatherObj != null) weatherObj.SetActive(true);
             }
         }
     }

@@ -51,6 +51,8 @@ namespace MyRule
         public void UpdateSigilStats(SigilSO sigilSO)
         {
             character.CharacterStatsData.AdjustStats(sigilSO);
+
+            EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(character));
         }
 
         public UniTask LoadData(GameData data)

@@ -4,11 +4,11 @@ namespace MyRule.Event
 {
     public struct WeatherEvent : IEvent
     {
-        public readonly EWeatherType weatherType;
+        public readonly bool isBadWeather;
 
-        public WeatherEvent(EWeatherType weatherType)
+        public WeatherEvent(bool weatherType)
         {
-            this.weatherType = weatherType;
+            isBadWeather = weatherType;
         }
     }
 }

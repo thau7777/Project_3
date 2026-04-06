@@ -31,4 +31,22 @@ namespace MyRule.Event
             this.show = shown;
         }
     }
+
+    public struct ReceiveGoldEvent : IEvent
+    {
+        public readonly int value;
+        public ReceiveGoldEvent(int value)
+        {
+            this.value = value;
+        }
+    }
+
+    public struct ReceiveCrystalEvent : IEvent
+    {
+        public readonly int value;
+        public ReceiveCrystalEvent(int value)
+        {
+            this.value = value;
+        }
+    }
 }

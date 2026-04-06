@@ -6,7 +6,7 @@ There are so many traps out there. I can't let a newcomer with unknown abilities
 }
 I have a challenge: catch a BamBear and bring it back here, and I will acknowledge your abilities. #speaker:Mysterious Hunter #voice:HunterDefault
 * [Accept the challenge]
-~ TriggerMiniGame()
+~ TriggerMiniGame("Beast")
 That's great, do your best! #speaker:Mysterious Hunter #voice:HunterAcceptChallenge
 -> MysteriousHero_challenge_end
 * [Refuse the challenge]

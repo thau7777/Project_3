@@ -13,6 +13,7 @@ namespace MyRule
     {
         private const string SPEAKER_TAG = "speaker";
         private const string VOICE_TAG = "voice";
+        private const string CAM_TAG = "cam";
         
         [Header("Load Global JSON")]
         [SerializeField] private TextAsset inkJSON;
@@ -134,7 +135,7 @@ namespace MyRule
 
             EventBus<DialogueFinishedEvent>.Raise(new DialogueFinishedEvent());
 
-            NPCManager.Instance.ExitDialogue();
+            if (NPCManager.Instance != null) NPCManager.Instance.ExitDialogue();
 
             dialogueVarialble.StopListening(story);
 
@@ -238,6 +239,9 @@ namespace MyRule
                         break;
                     case VOICE_TAG:
                         AudioManager.Instance.PlayDialogueSound(tagValue);
+                        break;
+                    case CAM_TAG:
+                        EventBus<DialogueCamEvent>.Raise(new DialogueCamEvent(tagValue));
                         break;
                     default:
                         Debug.Log("Loi tag");

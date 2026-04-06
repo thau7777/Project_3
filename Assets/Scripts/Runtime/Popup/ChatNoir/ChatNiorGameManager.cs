@@ -1,4 +1,6 @@
-﻿using MyRule.Event;
+﻿using Ami.BroAudio;
+using MyRule;
+using MyRule.Event;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,13 +48,18 @@ public class ChatNiorGameManager : MonoBehaviour
     [SerializeField] private GameObject skillButton;
     [SerializeField] private List<GameObject> image;
 
+    [TabGroup("BroAudio")]
+    [SerializeField] private SoundID skillSoundID,bgmID,clickID;    
     #region Unity
     private void Start()
     {
         SetUpStartGame();
         
     }
-
+    private void OnDisable()
+    {
+        BroAudio.Stop(bgmID);
+    }
     private void Update()
     {
         UpdateUI();
@@ -85,7 +92,7 @@ public class ChatNiorGameManager : MonoBehaviour
 
         score = 2000;
         moveCount = 0;
-
+        bgmID.Play();
         image.ForEach(i => i.SetActive(true));
         UpdateUI();
     }
@@ -103,7 +110,7 @@ public class ChatNiorGameManager : MonoBehaviour
 
     public void EndGame()
     {
-        StartCoroutine(DelayedAction(2f, () =>
+        StartCoroutine(DelayedAction(1f, () =>
         {
             chatNoir.SetActive(false);
         }));
@@ -111,6 +118,7 @@ public class ChatNiorGameManager : MonoBehaviour
     public void TriggerSkill()
     {
         skillUsed = true;
+        skillSoundID.Play();
         //catAnimator.enabled = true;
         //catAnimator.SetTrigger("Freeze");
 
@@ -125,6 +133,7 @@ public class ChatNiorGameManager : MonoBehaviour
             resultText.text = winText;
             isGameEnd = true;
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(true));
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent((int)(score * 0.1)));
             EndGame();
             return;
         }
@@ -137,6 +146,7 @@ public class ChatNiorGameManager : MonoBehaviour
             resultText.text = loseText;
             isGameEnd = true;
             EventBus<MiniGameResultEvent>.Raise(new MiniGameResultEvent(false));
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent((int)(score * 0.1)));
             EndGame();
         }
     }
@@ -203,6 +213,7 @@ public class ChatNiorGameManager : MonoBehaviour
     void OnNodeClicked(HexNode node)
     {
         if (node.isBlocked || node == catNode||isGameEnd) return;
+        clickID.Play();
         if (score <= 0 && !isGameEnd)
         {
             resultText.text = loseText;
