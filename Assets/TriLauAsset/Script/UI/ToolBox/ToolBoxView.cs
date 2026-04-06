@@ -1,5 +1,6 @@
 using DG.Tweening;
 using MyRule.Event;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,11 @@ namespace MyRule.ToolBox
         [SerializeField] private Button escBtn;
         [SerializeField] private Button setWeatherBtn;
 
+        [SerializeField] private TMP_InputField aSField;
+        [SerializeField] private Button aSBtn;
+        [SerializeField] private TMP_InputField pSField;
+        [SerializeField] private Button pSBtn;
+
         private bool isShowing = false;
 
         private void OnEnable()
@@ -18,6 +24,8 @@ namespace MyRule.ToolBox
             _inputReader.diceRollActions.onOpenToolBox += HandleToolBox;
             escBtn.onClick.AddListener(CloseToolBox);
             setWeatherBtn.onClick.AddListener(SetWeather);
+            aSBtn.onClick.AddListener(AddAS);
+            pSBtn.onClick.AddListener(AddPS);
         }
 
         private void OnDisable()
@@ -25,6 +33,8 @@ namespace MyRule.ToolBox
             _inputReader.diceRollActions.onOpenToolBox -= HandleToolBox;
             escBtn.onClick.RemoveListener(CloseToolBox);
             setWeatherBtn.onClick.RemoveListener(SetWeather);
+            aSBtn?.onClick.RemoveListener(AddAS);
+            pSBtn?.onClick.RemoveListener(AddPS);
         }
 
         private void HandleToolBox()
@@ -58,6 +68,32 @@ namespace MyRule.ToolBox
         private void SetWeather()
         {
             EventBus<ToolWeatherEvent>.Raise(new ToolWeatherEvent());
+        }
+
+        private void AddAS()
+        {
+            string id = aSField.text;
+
+            SigilData sigilData = MatchManager.Instance.MatchData.SigilPool.GetActiveSigilById(id);
+
+            if (sigilData == null) return;
+
+            SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+            SigilStorageManager.Instance.AddSigilToStorage(sigilSO);
+        }
+
+        private void AddPS()
+        {
+            string id = pSField.text;
+
+            SigilData sigilData = MatchManager.Instance.MatchData.SigilPool.GetPassiveSigilById(id);
+
+            if (sigilData == null) return;
+
+            SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
+
+            SigilStorageManager.Instance.AddSigilToStorage(sigilSO);
         }
     }
 }

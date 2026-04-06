@@ -80,5 +80,21 @@ namespace MyRule
                 _passiveSigilPool.Remove(sigil);
             }
         }
+
+        public SigilData GetActiveSigilById(string id)
+        {
+            SigilData sigil = _activeSigilPool.Find(x => x.Id == id);
+            if (sigil == null) return null; 
+            _activeSigilPool.Remove(sigil);
+            return sigil;
+        }
+
+        public SigilData GetPassiveSigilById(string id)
+        {
+            SigilData sigil = _passiveSigilPool.Find(x => x.Id == id);
+            if (sigil == null) return null;
+            _passiveSigilPool.Remove(sigil);
+            return sigil;
+        }
     }
 }
