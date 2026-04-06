@@ -37,6 +37,7 @@ namespace MyRule.UI
             {
                 adjustTxt.text = optionList[optionIndex];
                 PlayerPrefs.SetInt(settingKey, optionIndex);
+                onChangeValue?.Invoke(optionIndex);
             }
         }
 
