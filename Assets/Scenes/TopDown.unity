@@ -35921,7 +35921,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 0.9857256, g: 1, b: 0.9198113, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.8963059
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -54106,8 +54106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 195e6bd412664884db319c6dc7d40524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownGameManager
-  isTestGameplay: 0
-  isTestBossFight: 0
+  isTestGameplay: 1
+  isTestBossFight: 1
   isBossFighting: 0
   _inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
   _player: {fileID: 1568225709}
@@ -59504,6 +59504,10 @@ PrefabInstance:
     - target: {fileID: 3367435481491018817, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
       propertyPath: m_Alpha
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4736878128693820900, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
+      propertyPath: healthBarSliderHandleMaxScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4743055075432674572, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
       propertyPath: m_Name
