@@ -78,7 +78,6 @@ namespace MyRule
             _attributesData.IncreaseDexterity(sigilSO.dexterity);
             int dexterity = GetBonus(_attributesData.Dexterity);
             _baseData.SetCritMult(sigilSO.critMult);
-            _baseData.IncreaseSpeed((int)sigilSO.speed);
             _baseData.IncreaseCritChance(sigilSO.critChance);
 
             _attributesData.IncreaseIntelligence(sigilSO.intelligence);
@@ -233,10 +232,10 @@ namespace MyRule
                 _currentHealth = MaxHealth;
         }
 
-        public void IncreaseMaxHealth(int amount) => _maxHealth *= amount;
-        public void IncreaseMaxMana(int amount) => _maxMana *= amount;
-        public void IncreaseMaxStamina(int amount) => _maxStamina *= amount;
-        public void IncreaseSpeed(int amount) => _speed *= amount;
+        public void IncreaseMaxHealth(int amount) => _maxHealth += amount;
+        public void IncreaseMaxMana(int amount) => _maxMana += amount;
+        public void IncreaseMaxStamina(int amount) => _maxStamina += amount;
+        public void IncreaseSpeed(int amount) => _speed += amount;
         public void IncreaseCritChance(int amount) => _critChance += amount;
         public void SetCritMult(float amount)
         {

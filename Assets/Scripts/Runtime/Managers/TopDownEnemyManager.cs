@@ -288,6 +288,7 @@ public class TopDownEnemyManager : Singleton<TopDownEnemyManager>
 
     public void OnEnemyDied(GameObject enemyGO)
     {
+        AchievementManager.Instance.Trigger(AchievementType.KillEnemy, 1);
         if(!_isBossFight)
             BroAudio.Play(_enemyDieSound);
         _activeEnemies.Remove(enemyGO);

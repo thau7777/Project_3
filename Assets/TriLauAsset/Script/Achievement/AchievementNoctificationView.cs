@@ -13,6 +13,8 @@ namespace MyRule.UI
         [SerializeField] private TextMeshProUGUI _achievementName;
         [SerializeField] private float _moveDuration = 0.5f;
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private float targetY = 920;
+        [SerializeField] private float originalY = 1400;
 
         private EventBinding<NoctificationAchievementEvent> noctificationAchievementEvt;
 
@@ -36,12 +38,12 @@ namespace MyRule.UI
 
             Sequence seq = DOTween.Sequence();
 
-            seq.Append(transform.DOLocalMoveY(920, _moveDuration).SetEase(Ease.OutBack));
+            seq.Append(transform.DOLocalMoveY(targetY, _moveDuration).SetEase(Ease.OutBack));
             seq.Join(canvasGroup.DOFade(1, _moveDuration));
 
             seq.AppendInterval(2f);
 
-            seq.Append(transform.DOLocalMoveY(1400, _moveDuration).SetEase(Ease.InBack));
+            seq.Append(transform.DOLocalMoveY(originalY, _moveDuration).SetEase(Ease.InBack));
             seq.Join(canvasGroup.DOFade(0, _moveDuration));
 
             await seq.AsyncWaitForCompletion();

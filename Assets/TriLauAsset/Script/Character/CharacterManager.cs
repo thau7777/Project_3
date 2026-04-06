@@ -59,7 +59,7 @@ namespace MyRule
         {
             character = new CharacterData();
 
-            if (data.MatchData?.CharacterData != null)
+            if (data.MatchData != null)
             {
                 character = data.MatchData.CharacterData;
             }
