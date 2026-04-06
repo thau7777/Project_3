@@ -1767,8 +1767,18 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 8510259093681129127}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
+  hitSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8083454903267841439}
   isParrySuccessful: 0
+  isLastHit: 0
+  parryMissCount: 0
+  totalHitsInSequence: 0
+  currentHitInSequence: 0
   traildblaze: 100
+  isBoss: 0
   isBroken: 0
   enemyUI: {fileID: 9145698497346757161}
   BreakDebuffSettings:
@@ -1796,6 +1806,7 @@ MonoBehaviour:
   lerpSpeed: 2
   mpBarFill: {fileID: 6343429955527139453}
   trailblazeFill: {fileID: 414544424781297329}
+  trailblazeFillDelay: {fileID: 0}
   shieldBarFill: {fileID: 1279019492483649976}
   elementImage: {fileID: 8745278089750654241}
   statusEffectContainer: {fileID: 4462461429892056083}

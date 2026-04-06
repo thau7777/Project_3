@@ -567,7 +567,7 @@ public class TutorialManager : MonoBehaviour
                 // 3. Reparent into the highlight canvas (no worldPositionStays so
                 //    scale/rotation don't inherit the world-space canvas transform)
                 obj.transform.SetParent(highlightCanvas.transform, worldPositionStays: false);
-                obj.transform.localScale = Vector3.one * 70;
+                obj.transform.localScale = Vector3.one * 100;
                 obj.transform.localRotation = Quaternion.identity;
                 // 4. Convert screen point → local position inside the highlight canvas
                 //    and apply it so the element sits exactly where it did on screen

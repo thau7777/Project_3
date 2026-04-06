@@ -64,6 +64,8 @@ namespace Turnbase
         public float parryWindowDuration = 0f;
 
         public RenderTexture RenderTexture;
+        private Camera _selfieCamera;
+
 
         public Transform damagePopupCanvasParent;
 
@@ -122,7 +124,28 @@ namespace Turnbase
 
             InitializeCharacterFrom(characterClass);
 
+            if (RenderTexture != null)
+            {
+                // Create a unique instance of the RenderTexture to avoid shared global asset issues
+                RenderTexture = new RenderTexture(RenderTexture);
+                
+                // Find the Camera that's supposed to render this character (usually a child)
+                // We'll search for it and assign the unique RenderTexture to it
+                _selfieCamera = GetComponentInChildren<Camera>();
+                if (_selfieCamera != null)
+                {
+                    _selfieCamera.targetTexture = RenderTexture;
+                    _selfieCamera.enabled = false; // Keep it off by default to save performance
+                }
+            }
+        }
 
+        public void SetSelfieCameraActive(bool isActive)
+        {
+            if (_selfieCamera != null)
+            {
+                _selfieCamera.enabled = isActive;
+            }
         }
 
         public async void InitializeCharacterFrom(CharacterClass classTypeToLoad)
@@ -175,7 +198,7 @@ namespace Turnbase
             }
 
             Dictionary<string, SigilData> ownedSigils = new Dictionary<string, SigilData>();
-            for (int i = 5; i < storageManager.SigilStorageData.ActiveSigils.Length; i++)
+            for (int i = 4; i < storageManager.SigilStorageData.ActiveSigils.Length; i++)
             {
                 SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
                 if (sigilData == null) continue;
