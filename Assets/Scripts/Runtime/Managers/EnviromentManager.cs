@@ -44,7 +44,7 @@ public class EnviromentManager : Singleton<EnviromentManager>
 
     [SerializeField] private bool _isBadWeatherForTest = true;
     private readonly Dictionary<Material, (float Metallic, float Smoothness)> _originalMaterialValues = new();
-
+    private Light _currentLight;
     protected override void Awake()
     {
         base.Awake();
@@ -123,8 +123,8 @@ public class EnviromentManager : Singleton<EnviromentManager>
     private void CheckWeather(MapInfo map)
     {
         bool isBad = !TopDownGameManager.Instance.isTestGameplay ? MatchManager.Instance.MatchData.WeatherData.IsBadWeather : _isBadWeatherForTest;
+        _currentLight = isBad ? map.BadWeatherMainLight : map.WeatherMainLight;
         ApplyMapAmbienceSound(map, isBad);
-
         map.WeatherMainLight.gameObject.SetActive(!isBad);
         if (map.BadWeatherMainLight != null)
             map.BadWeatherMainLight.gameObject.SetActive(isBad);
@@ -179,5 +179,35 @@ public class EnviromentManager : Singleton<EnviromentManager>
             RestoreMapMaterials(mapInfo);
         BroAudio.Stop(BroAudioType.Ambience);
 
+    }
+
+    public async UniTaskVoid LerpLightIntensity(float duration, float holdDuration)
+    {
+        if (_currentLight == null) return;
+
+        float originalIntensity = _currentLight.intensity;
+
+        // Lerp to 0
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _currentLight.intensity = Mathf.Lerp(originalIntensity, 0f, elapsed / duration);
+            await UniTask.Yield();
+        }
+        _currentLight.intensity = 0f;
+
+        // Hold
+        await UniTask.Delay((int)(holdDuration * 1000));
+
+        // Lerp back
+        elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _currentLight.intensity = Mathf.Lerp(0f, originalIntensity, elapsed / duration);
+            await UniTask.Yield();
+        }
+        _currentLight.intensity = originalIntensity;
     }
 }

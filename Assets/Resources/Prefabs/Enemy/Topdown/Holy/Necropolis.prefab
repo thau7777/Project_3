@@ -313,6 +313,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
+  isBoss: 0
+  _phaseTransitionVFXDatasList: []
+  _phaseTransitionSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 0}
+  _deathSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 0}
   _movementType: 2
   _minRangeDistance: 5
   _maxRangeDistance: 10
@@ -336,9 +346,10 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
-    skillVFX: {fileID: 11400000, guid: f6a1c85f3dd9cca41af59a6b5c7b01bb, type: 2}
+    skillVFX: {fileID: 11400000, guid: 09aebb5b47616024c931ad5f2ed1e8ac, type: 2}
     projectileRange: 10
     projectileSpeed: 10
     skillSize: 1
@@ -373,6 +384,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: c24424984cd984c49979ed135abf6a82, type: 2}
@@ -405,6 +417,9 @@ MonoBehaviour:
     <IsMoreHurt>k__BackingField: 0
     <IsStunned>k__BackingField: 0
     <IsDead>k__BackingField: 0
+    <IsBoss>k__BackingField: 0
+    <IsChangingPhase>k__BackingField: 0
+    <IsChangedPhase>k__BackingField: 0
 --- !u!114 &173313673758464179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,6 +536,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnStartPhaseTransition:
+    m_PersistentCalls:
+      m_Calls: []
   floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}
   parrySuccessVFXSettings: {fileID: 0}
   _HurtSound:

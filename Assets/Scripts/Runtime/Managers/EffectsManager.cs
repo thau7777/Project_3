@@ -110,7 +110,10 @@ public class EffectsManager : MonoBehaviour
     }
     public void AddEffect(GameObject sender,EffectData effectData)
     {
-        if (_invincibleElapsedTime > 0) return;
+        if (_invincibleElapsedTime > 0 || TryGetComponent<EnemyTopdownStateDriver>(out var stateDriver) && stateDriver.isBoss && stateDriver.GetIsChangingPhase()) return;
+        if (TopDownGameManager.Instance.isBossFighting && TopDownEnemyManager.Instance.BossTransform.TryGetComponent<EnemyTopdownStateDriver>(out var bossStateDriver) 
+            && bossStateDriver.GetIsChangingPhase())
+            return;
 
         ActiveEffect existing = activeEffectsList.Find(ae => ae.effect.name == effectData.effect.name);
         if (existing != null)

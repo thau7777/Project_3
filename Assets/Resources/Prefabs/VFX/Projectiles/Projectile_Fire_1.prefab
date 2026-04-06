@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 283538348305088904}
   - component: {fileID: 283538348305088905}
   - component: {fileID: 6345016736684443969}
+  - component: {fileID: -7330717510982479276}
   m_Layer: 8
   m_Name: Projectile_Fire_1
   m_TagString: Untagged
@@ -4867,6 +4868,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7330717510982479276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283538348305088910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 3dc04d6e7743d5948aebf7e001774a47, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 283538348305088910}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &283538348712861668
 GameObject:
   m_ObjectHideFlags: 0

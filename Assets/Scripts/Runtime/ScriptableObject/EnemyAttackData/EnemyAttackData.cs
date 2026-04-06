@@ -45,6 +45,7 @@ public class EnemyAttackData
 
 
     [Header("Execute Settings")]
+    public bool forPhaseTwo;
     public string executeAnimationName = "Attack1";
     public float crossfadeDuration = 0.1f;
     public FlyweightSettings skillVFX;
@@ -74,5 +75,5 @@ public class EnemyAttackData
     public float indicatorWidth = 2f;
     public float indicatorLength = 2f;
 
-
 }
+

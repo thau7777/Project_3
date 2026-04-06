@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -51,6 +52,7 @@ public class AttackWarningVFXSpawner : MonoBehaviour
 
     private void SpawnFromPreset(VFXSpawnPreset preset, int spawnPointIndex, bool parryAble)
     {
+        TopDownEnemyManager.Instance.OnEnemyUseAttack(parryAble);
         var spawnPoint = _spawnPoints[spawnPointIndex];
 
         var vfx = FlyweightFactory.Spawn(preset.vfxSettings);
@@ -81,5 +83,6 @@ public class AttackWarningVFXSpawner : MonoBehaviour
         }
     }
 
+    
 
 }

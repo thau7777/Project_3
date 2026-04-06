@@ -13,7 +13,6 @@ public class StraightProjectileSettings : FlyweightSettings
 
     [field: SerializeField]
     public LayerMask DodgeLayers { get; private set; }
-
     public float delayDurationToDespawn = 0f;
 
     [Header("Lifetime")]
@@ -38,8 +37,11 @@ public class StraightProjectileSettings : FlyweightSettings
     {
         var go = Instantiate(prefab);
         go.name = prefab.name;
-
-        var flyweight = go.GetOrAdd<StraightProjectile>();
+        StraightProjectile flyweight = null;
+        if (go.GetComponent<BeholderMultiProjectile>() == null)
+            flyweight = go.GetOrAdd<StraightProjectile>();
+        else
+            flyweight = go.GetComponent<BeholderMultiProjectile>();
         flyweight.settings = this;
 
         return flyweight;

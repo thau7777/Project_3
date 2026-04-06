@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 215471697339077572}
   - component: {fileID: 6535343535327712026}
   - component: {fileID: 7381959220639139305}
+  - component: {fileID: -8609892315266852677}
+  - component: {fileID: -2455528019281738461}
   m_Layer: 8
   m_Name: FlyingSlash_Dark_GroundTrail
   m_TagString: Untagged
@@ -53,7 +55,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 1.5
+      - m_Value: 0.95
         m_Name: LifeTime
         m_Overridden: 1
     m_Vector2f:
@@ -155,6 +157,52 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &-8609892315266852677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987875743568731800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 13388b9c79bafaf4eb2937d08d5e5299, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 6987875743568731800}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &-2455528019281738461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987875743568731800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 391a85219e05cc841ac0e9579cd2dd45, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 6987875743568731800}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0.1
 --- !u!1001 &7620213794385537549
 PrefabInstance:
   m_ObjectHideFlags: 0
