@@ -19,6 +19,5 @@ namespace MyRule
         public Sprite image;
         [TextArea(3, 4)]
         public string planetDescription;
-        public MapEnemies mapEnemies;
     }
 }
