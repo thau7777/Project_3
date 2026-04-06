@@ -6,25 +6,25 @@ public class StraightProjectile : Flyweight
 {
     new StraightProjectileSettings settings => (StraightProjectileSettings)base.settings;
 
-    private GameObject _sender;
-    private LayerMask _dodgeLayers;
+    protected GameObject _sender;
+    protected LayerMask _dodgeLayers;
     private Vector3? _direction = null;
     private Rigidbody _rb;
 
-    private float _speed;
-    private float _range;
+    protected float _speed;
+    protected float _range;
     private float _traveledDistance = 0f;
     private Vector3 _startPosition;
-    private int _damage;
-    private float _knockBackForce;
-    private bool _dealTrueDamage;
-    private float _currentSize;
+    protected int _damage;
+    protected float _knockBackForce;
+    protected bool _dealTrueDamage;
+    protected float _currentSize;
 
     private DamageDealer _damageDealer;
     private EffectApplier _effectApplier;
 
     private const float MaxHeight = 1.35f;
-    private const float DescentSpeed = 2f;
+    private const float DescentSpeed = 5f;
     private const float StoppedSpeedThreshold = 0.01f;
 
     private float _lifeTimeElapsed = 0f;
@@ -38,7 +38,8 @@ public class StraightProjectile : Flyweight
         _rb.useGravity = false;
     }
 
-    private void OnEnable()
+    // In StraightProjectile
+    protected virtual void OnEnable()
     {
         _traveledDistance = 0f;
         _lifeTimeElapsed = 0f;
@@ -119,11 +120,13 @@ public class StraightProjectile : Flyweight
         {
             // Distance path — despawn when range is reached
             _traveledDistance = Vector3.Distance(_startPosition, transform.position);
+            OnTraveledDistance(_traveledDistance);  // add this line
             if (_traveledDistance >= _range)
                 DespawnProjectile();
         }
     }
-
+    protected virtual void OnTraveledDistance(float traveledDistance) { }
+    protected virtual void OnHitDespawn() { DespawnProjectile(); }
     private float ComputeCurrentSpeed()
     {
         if (!settings.useLifeTime || !settings.useSpeedCurve)
@@ -191,7 +194,7 @@ public class StraightProjectile : Flyweight
     private void OnTriggerEnter(Collider other)
     {
         if ((_dodgeLayers.value & (1 << other.gameObject.layer)) != 0) return;
-        if (settings.despawnOnHit) DespawnProjectile();
+        if (settings.despawnOnHit) OnHitDespawn(); // was DespawnProjectile()
 
         if (!other.TryGetComponent<Damageable>(out var damageable)) return;
         if (damageable.CurrentHealth == 0) return;

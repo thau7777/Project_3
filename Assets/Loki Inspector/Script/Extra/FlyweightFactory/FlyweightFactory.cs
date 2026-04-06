@@ -176,4 +176,8 @@ public enum FlyweightType
     SlashGroundDark,
 
     ShockWaveVFX,
+    BeholderHeavenStrikeController,
+    BeholderHeavenStrikeVfx,
+    ImpactFrameVfx,
+    BeholderProjectile,
 }

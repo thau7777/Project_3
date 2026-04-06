@@ -302,6 +302,11 @@ public class EnemyTopdownStateDriver : Flyweight
                     return;
                 }
 
+                if (oneShotVFX.TryGetComponent<BeholderHeavenStrike>(out var beholderHeavenStrike))
+                {
+                    beholderHeavenStrike.SetUp(gameObject, _context.CurrentEnemyAttackData.dodgeLayers, _characterStats.AttackDamage, _context.CurrentEnemyAttackData.skillSize);
+                    return;
+                }
 
                 if (vfx.TryGetComponent<HitBoxHandler>(out var hitBoxHandler))
                 {
@@ -342,6 +347,22 @@ public class EnemyTopdownStateDriver : Flyweight
                     ? _skillIndicatorList[i].transform.forward
                     : transform.forward;
 
+                if (vfx is BeholderMultiProjectile)
+                {
+                    (vfx as BeholderMultiProjectile).InitializeMultiProjectile(
+                        gameObject,
+                        rotationOffset * indicatorForward,
+                        _context.CurrentEnemyAttackData.projectileSpeed,
+                        _context.CurrentEnemyAttackData.projectileRange,
+                        _context.CurrentEnemyAttackData.skillSize,
+                        _context.CurrentEnemyAttackData.damage,
+                        _context.CurrentEnemyAttackData.knockBackForce,
+                        _context.CurrentEnemyAttackData.dealTrueDamage,
+                        _context.CurrentEnemyAttackData.dodgeLayers,
+                        2);
+
+                    return;
+                }
                 (vfx as StraightProjectile).InitializeProjectile(
                     gameObject,
                     rotationOffset * indicatorForward,
@@ -352,6 +373,7 @@ public class EnemyTopdownStateDriver : Flyweight
                     _context.CurrentEnemyAttackData.knockBackForce,
                     _context.CurrentEnemyAttackData.dealTrueDamage,
                     _context.CurrentEnemyAttackData.dodgeLayers);
+
             }
         }
 
@@ -621,6 +643,10 @@ public class EnemyTopdownStateDriver : Flyweight
         vfx.InitializeVFX(_phaseTransitionVFXDatasList[index].Size, _phaseTransitionVFXDatasList[index].VFXSettings.DefaultLifeTime);
     }
 
+    public void TurnOffLight()
+    {
+        EnviromentManager.Instance.LerpLightIntensity(2,2).Forget();
+    }
     #region Outside Calls
     public void StartSpawnAnim(float groundSurfaceY)
     {

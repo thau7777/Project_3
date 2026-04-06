@@ -51,6 +51,9 @@ public class TutorialTrigger : MonoBehaviour
     [SerializeField]
     [ShowIfEnumValue("triggerMode", TriggerMode.OnStart)]
     private int _onStartTriggerDelayDuration = 1;
+    [SerializeField]
+    [ShowIfEnumValue("triggerMode", TriggerMode.Manual)]
+    private float _manualTriggerDelayDuration = 0;
 
     [Tooltip("Tag of the GameObject that activates this trigger (usually 'Player').")]
     [ShowIfEnumValue("triggerMode", TriggerMode.OnTriggerEnter3D)]
@@ -108,7 +111,7 @@ public class TutorialTrigger : MonoBehaviour
     ///   • Call   myTutorialTrigger.Trigger()   from any script
     ///   • Wire it to a Button.onClick
     /// </summary>
-    public void Trigger()
+    public async void Trigger()
     {
         if (GameSystemManager.Instance != null && 
             GameSystemManager.Instance.GameData.Tutorial.HasCompletedTutorial(sequence.id)) 
@@ -125,7 +128,8 @@ public class TutorialTrigger : MonoBehaviour
         //    onSequenceEnd?.Invoke();
         //    return;
         //}
-
+        if(triggerMode == TriggerMode.Manual && _manualTriggerDelayDuration > 0)
+            await UniTask.Delay((int)_manualTriggerDelayDuration * 1000);
         onBeforeSequenceStart?.Invoke();
         TutorialManager.Instance.PlaySequence(sequence, anchorTarget, stepBindings);
 

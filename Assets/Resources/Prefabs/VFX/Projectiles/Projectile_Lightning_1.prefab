@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 235924139800853844}
   - component: {fileID: 1181343452353296505}
   - component: {fileID: 5902618169481176775}
+  - component: {fileID: -6417981034978648074}
   m_Layer: 8
   m_Name: Projectile_Lightning_1
   m_TagString: Untagged
@@ -4938,6 +4939,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.36
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6417981034978648074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675930637859345768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 3dc04d6e7743d5948aebf7e001774a47, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 4675930637859345768}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &5338992960483884725
 GameObject:
   m_ObjectHideFlags: 0

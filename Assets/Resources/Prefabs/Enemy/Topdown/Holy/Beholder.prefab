@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 1245365385068818348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 1.8701267}
+  m_LocalPosition: {x: 0, y: 1.5, z: 1.4678835}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -592,7 +592,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1890129227004170035}
@@ -688,7 +688,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
   isBoss: 1
-  _phaseTransitionVFXDatasList: []
+  _phaseTransitionVFXDatasList:
+  - SpawnTransform: {fileID: 3237797960516263250}
+    VFXSettings: {fileID: 11400000, guid: d4a9f4bfad3a2e04798931303b1cc034, type: 2}
+    Size: 2
+    positionOffset: {x: 0, y: 3, z: 0}
+    rotationOffset: {x: 0, y: 0, z: 0}
   _phaseTransitionSound:
     _entity: {fileID: 11400000, guid: b96977b13279fdf4695720b62c2f9501, type: 2}
     ID: 0
@@ -704,52 +709,14 @@ MonoBehaviour:
   _rotateSpeed: 10
   _attackList:
   - Parryable: 0
-    spawnType: 2
-    skillSpawnTransform: {fileID: 1890129227004170035}
-    positionOffset: {x: 0, y: 0, z: 0}
-    rotationOffset: {x: 0, y: 0, z: 0}
-    dodgeLayers:
-      serializedVersion: 2
-      m_Bits: 2816
-    coolDown: 15
-    weight: 1
-    minRange: 0
-    maxRange: 10
-    damage: 10
-    dealTrueDamage: 0
-    reverseKnockbackDirection: 0
-    knockBackForce: 10
-    stunTime: 0
-    forPhaseTwo: 0
-    executeAnimationName: Skill_1
-    crossfadeDuration: 0
-    skillVFX: {fileID: 11400000, guid: b3e67274cda219a449153e7ab0775a68, type: 2}
-    projectileRange: 1
-    projectileSpeed: 10
-    skillSize: 1.5
-    executionSound: {fileID: 0}
-    movementSpeed: 0
-    rotateSpeed: 3
-    faceTargetState: 3
-    lockMovementState: 3
-    needCharge: 1
-    chargeAnimationName: Charge
-    chargeSpawnTransform: {fileID: 0}
-    chargeEffect: {fileID: 0}
-    chargeEffectSize: 0
-    chargeDuration: 0
-    indicator: {fileID: 11400000, guid: 6f9f5cc18c9cf7546979801b106627a5, type: 2}
-    indicatorWidth: 50
-    indicatorLength: 300
-  - Parryable: 0
-    spawnType: 2
-    skillSpawnTransform: {fileID: 1890129227004170035}
-    positionOffset: {x: 0, y: 0, z: 0}
+    spawnType: 0
+    skillSpawnTransform: {fileID: 0}
+    positionOffset: {x: 0, y: 2, z: 1}
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
       serializedVersion: 2
       m_Bits: 2880
-    coolDown: 5
+    coolDown: 3
     weight: 0
     minRange: 0
     maxRange: 10
@@ -762,7 +729,7 @@ MonoBehaviour:
     executeAnimationName: Attack1
     crossfadeDuration: 0
     skillVFX: {fileID: 11400000, guid: f6a1c85f3dd9cca41af59a6b5c7b01bb, type: 2}
-    projectileRange: 10
+    projectileRange: 15
     projectileSpeed: 10
     skillSize: 1
     executionSound: {fileID: 0}
@@ -781,7 +748,7 @@ MonoBehaviour:
     indicatorLength: 300
   - Parryable: 1
     spawnType: 0
-    skillSpawnTransform: {fileID: 1890129227004170035}
+    skillSpawnTransform: {fileID: 0}
     positionOffset: {x: 0, y: 1, z: 0.2}
     rotationOffset: {x: 0, y: 0, z: 0}
     dodgeLayers:
@@ -815,6 +782,82 @@ MonoBehaviour:
     chargeEffectSize: 0
     chargeDuration: 0
     indicator: {fileID: 0}
+    indicatorWidth: 50
+    indicatorLength: 300
+  - Parryable: 0
+    spawnType: 0
+    skillSpawnTransform: {fileID: 0}
+    positionOffset: {x: 0, y: 3, z: 0}
+    rotationOffset: {x: 0, y: 0, z: 0}
+    dodgeLayers:
+      serializedVersion: 2
+      m_Bits: 2816
+    coolDown: 14
+    weight: 1
+    minRange: 0
+    maxRange: 11
+    damage: 10
+    dealTrueDamage: 0
+    reverseKnockbackDirection: 0
+    knockBackForce: 10
+    stunTime: 0
+    forPhaseTwo: 1
+    executeAnimationName: Attack3
+    crossfadeDuration: 0
+    skillVFX: {fileID: 11400000, guid: ddded92bf1f68064981e36487cb4dd2f, type: 2}
+    projectileRange: 1
+    projectileSpeed: 10
+    skillSize: 4
+    executionSound: {fileID: 0}
+    movementSpeed: 0
+    rotateSpeed: 10
+    faceTargetState: 0
+    lockMovementState: 3
+    needCharge: 0
+    chargeAnimationName: Charge
+    chargeSpawnTransform: {fileID: 0}
+    chargeEffect: {fileID: 0}
+    chargeEffectSize: 0
+    chargeDuration: 0
+    indicator: {fileID: 0}
+    indicatorWidth: 50
+    indicatorLength: 300
+  - Parryable: 0
+    spawnType: 2
+    skillSpawnTransform: {fileID: 1890129227004170035}
+    positionOffset: {x: 0, y: 0, z: 0}
+    rotationOffset: {x: 0, y: 0, z: 0}
+    dodgeLayers:
+      serializedVersion: 2
+      m_Bits: 2816
+    coolDown: 15
+    weight: 2
+    minRange: 0
+    maxRange: 10
+    damage: 10
+    dealTrueDamage: 0
+    reverseKnockbackDirection: 0
+    knockBackForce: 10
+    stunTime: 0
+    forPhaseTwo: 1
+    executeAnimationName: Skill_1
+    crossfadeDuration: 0
+    skillVFX: {fileID: 11400000, guid: b3e67274cda219a449153e7ab0775a68, type: 2}
+    projectileRange: 1
+    projectileSpeed: 10
+    skillSize: 1
+    executionSound: {fileID: 0}
+    movementSpeed: 0
+    rotateSpeed: 2
+    faceTargetState: 3
+    lockMovementState: 3
+    needCharge: 1
+    chargeAnimationName: Charge
+    chargeSpawnTransform: {fileID: 0}
+    chargeEffect: {fileID: 0}
+    chargeEffectSize: 0
+    chargeDuration: 0
+    indicator: {fileID: 11400000, guid: 6f9f5cc18c9cf7546979801b106627a5, type: 2}
     indicatorWidth: 50
     indicatorLength: 300
   _context:

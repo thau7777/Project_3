@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3500543784656721834}
   - component: {fileID: 3500543784656721835}
   - component: {fileID: -4689947339645784846}
+  - component: {fileID: -4689436176141109856}
   m_Layer: 11
   m_Name: FireBall Explosion
   m_TagString: Untagged
@@ -4931,6 +4932,29 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4689436176141109856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500543784656721832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 2cf480bac662a0841ae1c2599354e209, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 3500543784656721832}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &3500543785289021408
 GameObject:
   m_ObjectHideFlags: 0

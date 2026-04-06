@@ -29,7 +29,11 @@ public class AttackEventBehaviour : StateMachineBehaviour
                 _stateDriver.OnHurtDone();
             else
                 _stateDriver.OnAttackDone(); // or whatever function you want
+        }else if(_hasTriggered && stateInfo.IsTag("Hurt") && _stateDriver.GetIsHurting())
+        {
+            _stateDriver.OnHurtDone();
         }
+
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

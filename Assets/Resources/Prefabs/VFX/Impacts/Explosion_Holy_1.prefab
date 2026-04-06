@@ -4927,6 +4927,8 @@ GameObject:
   - component: {fileID: 7856006410814702784}
   - component: {fileID: 2063739602912716281}
   - component: {fileID: 5259936977541900875}
+  - component: {fileID: 6644519485849656395}
+  - component: {fileID: 5157174520112362682}
   m_Layer: 11
   m_Name: Explosion_Holy_1
   m_TagString: Untagged
@@ -9847,6 +9849,52 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6644519485849656395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5989895375517810355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 2c8e364688f6a8f44aa5e7eb3dacff26, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 5989895375517810355}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
+--- !u!114 &5157174520112362682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5989895375517810355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ffc06106304cc3824d5bcf25a7037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BroAudio::Ami.BroAudio.SoundSource
+  _onlyPlayOnce: 0
+  _playOnEnable: 1
+  _stopOnDisable: 0
+  _overrideFadeOut: -1
+  _sound:
+    _entity: {fileID: 11400000, guid: 46913bcd791a4b54aa844233ca4fce51, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 5989895375517810355}
+  _overrideGroup: {fileID: 0}
+  _positionMode: 0
+  _delay: 0
 --- !u!1 &6466993969494626825
 GameObject:
   m_ObjectHideFlags: 0

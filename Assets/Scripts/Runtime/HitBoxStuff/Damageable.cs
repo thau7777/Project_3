@@ -23,6 +23,7 @@ public class Damageable : MonoBehaviour
     [SerializeField] private float _invincibleDuration = 0.1f;
     public float InvincibleDuration => _invincibleDuration;
     private float _invincibleElapsedTime = 0;
+    public bool IsInvincible => _invincibleElapsedTime > 0;
 
     private Coroutine _stunCoroutine;
 

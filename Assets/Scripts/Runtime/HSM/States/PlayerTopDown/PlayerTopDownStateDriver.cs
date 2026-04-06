@@ -485,6 +485,10 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
     {
         _context.IsHurting = false;
     }
+    public bool GetIsHurting()
+    {
+        return _context.IsHurting;
+    }
     // must have to reset physicalAttack cycle when physicalAttack animation exits maybe by other state entering
     public void OnAttackAnimExit()
     {
