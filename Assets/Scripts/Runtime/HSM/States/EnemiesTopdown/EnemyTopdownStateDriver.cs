@@ -647,6 +647,13 @@ public class EnemyTopdownStateDriver : Flyweight
     {
         EnviromentManager.Instance.LerpLightIntensity(2,2).Forget();
     }
+
+    public void StartShakeCamera(float duration)
+    {
+        CinemachineCameraController.Instance.ShakeSequence(duration);
+    }
+
+
     #region Outside Calls
     public void StartSpawnAnim(float groundSurfaceY)
     {
