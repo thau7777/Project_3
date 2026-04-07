@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -13,29 +14,27 @@ namespace MyRule.UI
         private RunePresenter presenter;
         private int currentRune;
 
+        private CancellationTokenSource cts;
+
         private void Start()
         {
             presenter = new RunePresenter(this);
         }
 
-        public async UniTask AdjustRune(int targetRune)
+        public void AdjustRune(int targetRune)
         {
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+
             int start = currentRune;
-            float time = 0f;
-            float duration = 0.5f;
 
-            while (time < duration)
-            {
-                time += Time.deltaTime;
+            Transition.TransitionValue(
+                setter: value => runeTxt.text = ((int)value).ToString(),
+                from: currentRune,
+                to: targetRune,
+                duration: 0.5f,
+                token: cts.Token).Forget();
 
-                int value = Mathf.RoundToInt(Mathf.Lerp(start, targetRune, time / duration));
-
-                runeTxt.text = value.ToString();
-
-                await UniTask.Yield();
-            }
-
-            runeTxt.text = targetRune.ToString();
             currentRune = targetRune;
         }
 

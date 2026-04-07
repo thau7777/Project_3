@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Ami.BroAudio;
 using Turnbase;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace Turnbase
         private Action onHitCallback;
         private Skill skillData;
         private int damageAmount;
+
+        public SoundID sound;
 
         private ElementType projectileElement;
 
@@ -78,6 +81,8 @@ namespace Turnbase
             SpawnImpactEffect(target.transform.position, skillData);
 
             onHitCallback?.Invoke();
+
+            BroAudio.Play(sound);
         }
 
         private void SpawnImpactEffect(Vector3 position, Skill skill)

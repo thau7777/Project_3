@@ -81,7 +81,7 @@ namespace MyRule
                         break;
                     }
                 case NodeType.RestSite:
-                    CharacterManager.Instance.IncreaseHealth(60);
+                    CharacterManager.Instance.IncreaseHealth(200);
                     break;
                 case NodeType.Treasure:
                     break;

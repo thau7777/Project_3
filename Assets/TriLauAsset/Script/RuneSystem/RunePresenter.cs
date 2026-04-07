@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace MyRule.UI
@@ -23,7 +24,7 @@ namespace MyRule.UI
             EventBus<SendUIRuneEvent>.Deregister(sendUIRuneEventBinding);
         }
 
-        private async void HandleRuneEvent(SendUIRuneEvent e)
+        private void HandleRuneEvent(SendUIRuneEvent e)
         {
             if (e.runeLockAmount > 0)
             {
@@ -34,7 +35,7 @@ namespace MyRule.UI
                 view.SetRuneLock(false);
             }
 
-            await view.AdjustRune(e.runAmount);
+            view.AdjustRune(e.runAmount);
         }
     }
 }

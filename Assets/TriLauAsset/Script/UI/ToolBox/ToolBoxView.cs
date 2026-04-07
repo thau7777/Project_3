@@ -17,6 +17,9 @@ namespace MyRule.ToolBox
         [SerializeField] private TMP_InputField pSField;
         [SerializeField] private Button pSBtn;
 
+        [SerializeField] private Button addRune;
+
+
         private bool isShowing = false;
 
         private void OnEnable()
@@ -26,6 +29,8 @@ namespace MyRule.ToolBox
             setWeatherBtn.onClick.AddListener(SetWeather);
             aSBtn.onClick.AddListener(AddAS);
             pSBtn.onClick.AddListener(AddPS);
+            addRune.onClick.AddListener(AddRune);
+
         }
 
         private void OnDisable()
@@ -35,6 +40,8 @@ namespace MyRule.ToolBox
             setWeatherBtn.onClick.RemoveListener(SetWeather);
             aSBtn?.onClick.RemoveListener(AddAS);
             pSBtn?.onClick.RemoveListener(AddPS);
+            addRune?.onClick.RemoveListener(AddRune);
+
         }
 
         private void HandleToolBox()
@@ -94,6 +101,11 @@ namespace MyRule.ToolBox
             SigilSO sigilSO = SigilCollectionManager.Instance.GetSigilSOById(sigilData.Id);
 
             SigilStorageManager.Instance.AddSigilToStorage(sigilSO);
+        }
+
+        private void AddRune()
+        {
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(100));
         }
     }
 }
