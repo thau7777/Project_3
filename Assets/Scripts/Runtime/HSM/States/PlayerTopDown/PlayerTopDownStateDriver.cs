@@ -112,9 +112,9 @@ public class PlayerTopDownStateDriver : Singleton<PlayerTopDownStateDriver>
             BaseStatsData baseStatsData = playerStats.CharacterStatsData.BaseStatsData;
             DamageData damageData = playerStats.CharacterStatsData.Damage;
             DefenseData defenseData = playerStats.CharacterStatsData.Defense;
-            _characterStats.Setup(ElementalType.Normal, baseStatsData.MaxHealth, 0, baseStatsData.MaxMana, damageData.PhysDmg,
-                damageData.MagDmg, damageData.FireDmg, damageData.WaterDmg, damageData.FrostDmg, damageData.LightningDmg, damageData.HolyDmg,
-                damageData.DarkDmg, damageData.PoisonDmg, defenseData.PhysDef, defenseData.MagDef, defenseData.FireDef, defenseData.WaterDef,
+            _characterStats.Setup(ElementalType.Normal, baseStatsData.MaxHealth, 0, baseStatsData.MaxMana, Mathf.RoundToInt(damageData.PhysDmg * 0.6f),
+                Mathf.RoundToInt(damageData.MagDmg * 0.6f), Mathf.RoundToInt(damageData.FireDmg * 0.6f), Mathf.RoundToInt(damageData.WaterDmg * 0.6f), Mathf.RoundToInt(damageData.FrostDmg * 0.6f), Mathf.RoundToInt(damageData.LightningDmg * 0.6f), Mathf.RoundToInt(damageData.HolyDmg * 0.6f),
+                Mathf.RoundToInt(damageData.DarkDmg * 0.6f), Mathf.RoundToInt(damageData.PoisonDmg * 0.6f), defenseData.PhysDef, defenseData.MagDef, defenseData.FireDef, defenseData.WaterDef,
                 defenseData.FrostDef, defenseData.LightningDef, defenseData.HolyDef, defenseData.DarkDef, defenseData.PoisonDef, baseStatsData.Speed,
                 baseStatsData.CritChance, baseStatsData.CritMult);
 
