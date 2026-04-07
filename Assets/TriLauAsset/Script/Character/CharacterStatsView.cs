@@ -70,8 +70,8 @@ namespace MyRule
             if (fai != null) fai.text = character.CharacterStatsData.AttributesData.Faith.ToString();
             if (arc != null) arc.text = character.CharacterStatsData.AttributesData.Arcane.ToString();
 
-            if (hp != null) hp.text = character.CharacterStatsData.BaseStatsData.CurrentHealth.ToString();
-            if (fp != null) fp.text = character.CharacterStatsData.BaseStatsData.CurrentMana.ToString();
+            if (hp != null) hp.text = character.CharacterStatsData.BaseStatsData.MaxHealth.ToString();
+            if (fp != null) fp.text = character.CharacterStatsData.BaseStatsData.MaxMana.ToString();
             if (stamina != null) stamina.text = character.CharacterStatsData.BaseStatsData.CurrentStamina.ToString();
             if (critChance != null) critChance.text = character.CharacterStatsData.BaseStatsData.CritChance.ToString() + "%";
             if (critMult != null) critMult.text = character.CharacterStatsData.BaseStatsData.CritMult.ToString();
