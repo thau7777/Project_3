@@ -38,7 +38,6 @@ namespace Turnbase
                 battleManager.mainDirector.Play();
             }
 
-            SpawnImpactEffect(new Vector3(0f, 0f, 0f));
 
             Action damageLogicCallback = () =>
             {
@@ -122,6 +121,8 @@ namespace Turnbase
             float delayBetweenHits = skill.delayBetweenHits;
             float targetDelay = 0.05f;
 
+            bool vfxSpawned = false;
+
             for (int i = 0; i < hits; i++)
             {
 
@@ -154,6 +155,12 @@ namespace Turnbase
                     }
 
                     ApplySingleHitDamage(aoeTarget, currentHitDamage);
+
+                    if (i == 0 && !vfxSpawned)
+                    {
+                        SpawnImpactEffect(new Vector3(1.7f, 0f, -6f));
+                        vfxSpawned = true;
+                    }
 
                     yield return new WaitForSeconds(targetDelay);
                 }

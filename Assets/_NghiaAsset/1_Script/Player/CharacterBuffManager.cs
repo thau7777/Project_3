@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using static Skill;
 
@@ -6,7 +6,7 @@ namespace Turnbase
 {
     public class CharacterBuffManager : MonoBehaviour
     {
-        private CharacterStats stats;
+        private CharacterStats stats => character?.stats;
         private Character character;
 
 
@@ -82,15 +82,21 @@ namespace Turnbase
         void Awake()
         {
             character = GetComponent<Character>();
+        }
+
+        void Start()
+        {
+            // Chạy sau Awake của Character, đảm bảo character.stats đã là object mới được khởi tạo
             if (character != null)
             {
-                stats = character.stats;
                 InitializeBaseStats();
             }
         }
 
         public void InitializeBaseStats()
         {
+            if (stats == null) return;
+
             if (originalBaseDefense == 0 && stats.physicalDefense > 0)
             {
                 originalBaseDefense = stats.physicalDefense;
@@ -613,14 +619,16 @@ namespace Turnbase
 
         public void RecalculateDefenseStat()
         {
-            if (character.debuffManager == null) return;
+            if (character == null || stats == null || character.debuffManager == null) return;
 
             float defRed = character.debuffManager.defReductionPercentage;
             float poisonRed = character.debuffManager.poisonReductionPercentage;
 
             float totalReductionPercent = Mathf.Max(defRed, poisonRed);
 
-            int finalPDef = originalBaseDefense;
+            // fallback: nếu chưa từng có buff thì lấy giá trị hiện tại làm gốc
+            int basePDef = originalBaseDefense > 0 ? originalBaseDefense : stats.physicalDefense;
+            int finalPDef = basePDef;
             if (defenseBuffTurnsRemaining > 0) finalPDef += defenseBuffAmount;
 
             if (totalReductionPercent > 0f)
@@ -629,7 +637,8 @@ namespace Turnbase
             }
             stats.physicalDefense = Mathf.Max(0, finalPDef);
 
-            int finalMDef = magicalOriginalBaseDefense;
+            int baseMDef = magicalOriginalBaseDefense > 0 ? magicalOriginalBaseDefense : stats.magicDefense;
+            int finalMDef = baseMDef;
             if (magicalDefenseBuffTurnsRemaining > 0) finalMDef += magicalDefenseBuffAmount;
 
             if (totalReductionPercent > 0f)

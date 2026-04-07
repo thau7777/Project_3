@@ -7,7 +7,7 @@ namespace Turnbase
 {
     public class CharacterDebuffManager : MonoBehaviour
     {
-        private CharacterStats stats;
+        private CharacterStats stats => characterTarget?.stats;
         private Character characterTarget;
         private Character character;
 
@@ -56,11 +56,6 @@ namespace Turnbase
         private void Awake()
         {
             characterTarget = GetComponent<Character>();
-            if (characterTarget != null)
-            {
-                stats = characterTarget.stats;
-            }
-
         }
 
         public void ApplyBurnDebuff(Character attacker, int baseDamage, int duration, Flyweight_TB vfxInstance, Sprite icon)

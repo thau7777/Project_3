@@ -112,6 +112,12 @@ namespace Turnbase
             CharacterData currentStats = CharacterManager.Instance.GetCharacterStats();
             stats = new CharacterStats(currentStats);
 
+            // Khởi tạo base stats cho buff/debuff manager ngay sau khi stats mới được tạo
+            if (buffManager != null)
+            {
+                buffManager.InitializeBaseStats();
+            }
+
             if (stats == null)
             {
 
