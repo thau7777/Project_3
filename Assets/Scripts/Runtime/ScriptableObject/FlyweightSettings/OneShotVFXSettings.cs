@@ -117,21 +117,26 @@ public class OneShotVFXSettings : FlyweightSettings
 
     #endregion
 
-
     [SerializeField] private bool _addComponentsFirst = true;
+
     private void OnValidate()
     {
         _hasHitBox = _canDealDamage || _canApplyEffect;
         _hasDecal = decalSettings;
     }
+
     public override Flyweight Create()
     {
+        _hasHitBox = _canDealDamage || _canApplyEffect;
+        _hasDecal = decalSettings;
+
         var go = Instantiate(prefab);
         go.name = prefab.name;
 
         var flyweight = go.GetOrAdd<OneShotVFX>();
         flyweight.settings = this;
 
+        Debug.LogWarning("hasHitbox : " + HasHitBox + "addCompoment: " + _addComponentsFirst);
 
         if (HasHitBox && _addComponentsFirst)
         {
@@ -158,6 +163,7 @@ public class OneShotVFXSettings : FlyweightSettings
     }
     public override void OnRelease(Flyweight f)
     {
+
         if (f.transform.parent != null) 
             f.transform.SetParent(null);
 

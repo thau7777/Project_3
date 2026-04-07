@@ -19,6 +19,8 @@ namespace MyRule
             DesertScene,
             IcelandScene,
             EndingScene,
+            UIGAME,
+
         }
 
         private static EScene targetScene = EScene.MainMenuScene;

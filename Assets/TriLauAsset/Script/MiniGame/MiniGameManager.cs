@@ -6,7 +6,6 @@ namespace MyRule
 {
     public class MiniGameManager : Singleton<MiniGameManager>
     {
-        private const string miniGameNameScene = "UI GAME";
 
         private EventBinding<TriggerMiniGameEvent> triggerMiniGameEvent;
         private EventBinding<MiniGameResultEvent> resultEvent;
@@ -30,33 +29,22 @@ namespace MyRule
             EventBus<MiniGameResultEvent>.Deregister(resultEvent);
         }
 
-        private void TriggerMiniGame(TriggerMiniGameEvent evt)
+        private async void TriggerMiniGame(TriggerMiniGameEvent evt)
         {
             Debug.Log("TriggerMiniGame");
 
-            if (!SceneManager.GetSceneByName(miniGameNameScene).isLoaded)
-            {
-                mGName = evt.name;
-                SceneManager.LoadScene(miniGameNameScene, LoadSceneMode.Additive);
-                DialogueManager.Instance.CanContinueDialouge(false);
-            }
-            else
-            {
-                Debug.LogWarning($"[MiniGameManager] Scene '{miniGameNameScene}' has been loaded.");
-            }
+            mGName = evt.name;
+            await Loader.LoadSceneAdditive(Loader.EScene.UIGAME);
+            DialogueManager.Instance.CanContinueDialouge(false);
+
         }
 
-        private void ExitMiniGame()
+        private async void ExitMiniGame()
         {
-            if (SceneManager.GetSceneByName(miniGameNameScene).isLoaded)
-            {
-                SceneManager.UnloadSceneAsync(miniGameNameScene);
-                DialogueManager.Instance.CanContinueDialouge(true);
-            }
-            else
-            {
-                Debug.LogWarning($"[MiniGameManager] Scene '{miniGameNameScene}' hasnt been loaded.");
-            }
+            await Loader.UnloadSceneAdditive(Loader.EScene.UIGAME);
+
+            DialogueManager.Instance.CanContinueDialouge(true);
+
         }
     }
 }
