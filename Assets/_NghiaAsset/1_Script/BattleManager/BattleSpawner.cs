@@ -258,7 +258,7 @@ namespace Turnbase
 
             if (characterInstance.stats != null)
             {
-                characterInstance.stats.currentHP = characterInstance.stats.maxHP;
+                //characterInstance.stats.currentHP = characterInstance.stats.maxHP;
                 characterInstance.stats.currentMP = characterInstance.stats.maxMP;
             }
 
