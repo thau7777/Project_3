@@ -9,6 +9,7 @@ namespace MyRule.UI
     {
         [Header("Info")]
         [SerializeField] protected string settingName = "Text Language";
+        [SerializeField] protected Sprite image;
         [TextArea(3, 10)][SerializeField] protected string settingDesc = "Set the language for in-game text.";
 
         [Header("UI Elements")]
@@ -41,7 +42,7 @@ namespace MyRule.UI
         {
             SetSelected(true);
 
-            SettingDescriptionView.Instance.SetInfo(settingName, settingDesc);
+            SettingDescriptionView.Instance.SetInfo(settingName, settingDesc, image);
 
             AudioManager.Instance.PlaySound("UIButtonSelect");
         }

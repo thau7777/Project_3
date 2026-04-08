@@ -34,17 +34,23 @@ namespace MyRule.UI
         private void OnEnable()
         {
             presenter = new ButtonPresenter(this);
+            button.onClick.AddListener(HandleSubmit);
         }
 
         private void OnDisable()
         {
             presenter.CleanUp();
+            button.onClick.RemoveListener(HandleSubmit);
         }
 
         public virtual void OnSubmit(BaseEventData eventData)
         {
+            HandleSubmit();
+        }
+
+        private void HandleSubmit()
+        {
             AudioManager.Instance.PlaySound("UIButtonClick");
-            button.onClick?.Invoke();
 
             Navigator.OnSubmitPress(button, buttonViewType);
         }
@@ -52,11 +58,13 @@ namespace MyRule.UI
         public virtual void OnSelect(BaseEventData eventData)
         {
             button.Select();
+            
             AudioManager.Instance.PlaySound("UIButtonSelect");
         }
 
         public virtual void OnDeselect(BaseEventData eventData)
         {
+
         }
     }
 }

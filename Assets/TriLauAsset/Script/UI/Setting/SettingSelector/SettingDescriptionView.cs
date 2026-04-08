@@ -12,7 +12,7 @@ namespace MyRule.UI
 
         [SerializeField] private GameObject container;
 
-        public void SetInfo(string name, string description, Sprite sprite = null)
+        public void SetInfo(string name, string description, Sprite sprite)
         {
             nameText.text = name;
             descriptionText.text = description;

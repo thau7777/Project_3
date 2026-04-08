@@ -1,6 +1,7 @@
-using MyRule.Audio;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 namespace MyRule.UI
 {
@@ -14,6 +15,8 @@ namespace MyRule.UI
         [SerializeField] private MainMenuButtonView quitBtn;
  
         private MainMenuPresenter presenter;
+
+        private CancellationTokenSource cts;
 
         protected override void OnEnable()
         {

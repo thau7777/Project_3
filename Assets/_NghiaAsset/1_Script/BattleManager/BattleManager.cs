@@ -78,6 +78,8 @@ namespace Turnbase
 
         async void Start()
         {
+            Loader.LoadSceneAdditive(Loader.EScene.CharacterScene).Forget();
+
             isProcessingTurn = true;
             if (turnHandler != null) turnHandler.isProcessingTurn = true;
 

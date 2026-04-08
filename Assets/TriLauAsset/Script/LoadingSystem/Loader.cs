@@ -20,7 +20,7 @@ namespace MyRule
             IcelandScene,
             EndingScene,
             UIGAME,
-
+            CharacterScene,
         }
 
         private static EScene targetScene = EScene.MainMenuScene;
