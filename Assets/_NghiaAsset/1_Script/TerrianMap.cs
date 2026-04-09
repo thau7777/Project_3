@@ -1,7 +1,8 @@
-using UnityEngine;
-using MyRule;
-using Cysharp.Threading.Tasks;
 using Ami.BroAudio;
+using CelestialCyclesSystem;
+using Cysharp.Threading.Tasks;
+using MyRule;
+using UnityEngine;
 
 namespace Turnbase
 {
@@ -18,6 +19,8 @@ namespace Turnbase
         public SoundID greenLand;
         public SoundID desertLand;
         public SoundID iceLand;
+
+        public CelestialTimeManager celestical;
 
         private void Start()
         {
@@ -97,11 +100,20 @@ namespace Turnbase
                 {
                     case EMap.GreenLand:
                         if (weather[0] != null) weather[0].gameObject.SetActive(true);
+                        celestical.currentTimeOfDay = 15f;
+                        break;
+
+                    case EMap.Desert:
+                        if (weather[1] != null) weather[1].gameObject.SetActive(true);
+                        celestical.currentTimeOfDay = 15f;
                         break;
 
                     case EMap.IceLand:
-                        if (weather[1] != null) weather[1].gameObject.SetActive(true);
+                        if (weather[1] != null) weather[2].gameObject.SetActive(true);
+                        celestical.currentTimeOfDay = 15f;
                         break;
+
+
                 }
             }
         }

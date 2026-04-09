@@ -1,10 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MyRule;
 using MyRule.Audio;
 using Cysharp.Threading.Tasks;
+using Ami.BroAudio;
 
 namespace Turnbase
 {
@@ -23,6 +24,8 @@ namespace Turnbase
         [Header("Player Spawn Settings")]
         public float playerMoveDuration = 0.3f;
         public Vector3 playerOffsetFromSlot = new Vector3(3f, 0f, 0f);
+
+        public SoundID bossSound;
 
         public void Initialize(BattleManager manager)
         {
@@ -57,7 +60,11 @@ namespace Turnbase
                 if (character != null)
                 {
                     ApplyScaledStats(character, enemiesToSpawn[i]);
-                    if (isBossPrefab) bossSpawnedInThisWave = true;
+                    if (isBossPrefab)
+                    {
+                        bossSpawnedInThisWave = true;
+                        BroAudio.Play(bossSound);
+                    }
                 }
             }
 
@@ -96,7 +103,11 @@ namespace Turnbase
                 if (character != null)
                 {
                     ApplyScaledStats(character, enemiesToSpawn[i]);
-                    if (isBossPrefab) bossSpawnedInThisWave = true;
+                    if (isBossPrefab)
+                    {
+                        bossSpawnedInThisWave = true;
+                        BroAudio.Play(bossSound);
+                    }
                 }
             }
 
@@ -133,12 +144,12 @@ namespace Turnbase
             s.critMult = (int)(data.CritMult * 100);
         }
 
-        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
+        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint, bool isSummon = false)
         {
             if (prefab == null) return null;
 
             Enemy eComp = prefab.GetComponent<Enemy>();
-            bool isBoss = (eComp != null && eComp.isBoss);
+            bool isBoss = (eComp != null && !isSummon && eComp.isBoss);
 
             Transform[] slotArray = isPlayerFaction ? bm.playerSpawnPoints : bm.enemySlots;
             Transform freeSlot = FindFreeSlot(slotArray, positionHint, isBoss);
@@ -158,6 +169,8 @@ namespace Turnbase
             if (freeSlot != null) characterInstance.transform.SetParent(freeSlot);
             characterInstance.initialPosition = finalPosition;
             characterInstance.isPlayer = isPlayerFaction;
+            characterInstance.isPet = isSummon;
+            characterInstance.ManualInitialize();
             characterInstance.battleManager = bm;
             characterInstance.battleUIManager = bm.uiManager;
 
@@ -168,7 +181,7 @@ namespace Turnbase
             }
             else
             {
-                if (enemySpawnEffect != null)
+                if (enemySpawnEffect != null && !isSummon)
                 {
                     Flyweight_TB effect = FlyweightFactory_TB.Spawn(enemySpawnEffect);
                     if (effect != null) effect.Initialize(finalPosition, Quaternion.identity);
@@ -177,7 +190,7 @@ namespace Turnbase
                 StartCoroutine(MoveToPosition(characterInstance.transform, startPos, finalPosition, enemyRiseDuration));
             }
 
-            SetupCharacter(characterInstance);
+            SetupCharacter(characterInstance, isSummon);
             return characterInstance;
         }
 
@@ -246,7 +259,7 @@ namespace Turnbase
             if (anim != null) anim.Play("Idle");
         }
 
-        private void SetupCharacter(Character characterInstance)
+        private void SetupCharacter(Character characterInstance, bool isSummon = false)
         {
             CharacterStateMachine stateMachine = characterInstance.GetComponent<CharacterStateMachine>();
             if (stateMachine != null)
@@ -282,6 +295,21 @@ namespace Turnbase
             if (bm.turnOrderUI != null) bm.turnOrderUI.UpdateActionGaugeUI(bm.allCombatants);
 
             bm.turnbuffManager.ProcessOnBattleStartPassives(characterInstance);
+
+            // Auto-spawn pets from skills if this is NOT a summon itself to prevent infinite loops
+            if (!isSummon && characterInstance.skills != null)
+            {
+                foreach (var skill in characterInstance.skills)
+                {
+                    if (skill != null && skill.skillType == SkillType.Summon && skill.isAutoSummon && skill.summonPrefab != null)
+                    {
+                        foreach (var petPrefab in skill.summonPrefab)
+                        {
+                            SummonPet(characterInstance, petPrefab);
+                        }
+                    }
+                }
+            }
         }
 
         public Transform FindFreeSlot(Transform[] slots, Vector3 positionHint, bool isBoss = false)
@@ -313,10 +341,51 @@ namespace Turnbase
 
         public Character SummonPet(Character summoner, GameObject petPrefab)
         {
-            Transform freeSlot = FindFreeSlot(bm.playerSpawnPoints, summoner.transform.position, false);
+            Transform[] slotArray = summoner.isPlayer ? bm.playerSpawnPoints : bm.enemySlots;
+            Transform freeSlot = FindFreeSlot(slotArray, summoner.transform.position, false);
             if (freeSlot == null) return null;
 
-            return SpawnCombatant(petPrefab, summoner.isPlayer, freeSlot.position);
+            Character pet = SpawnCombatant(petPrefab, summoner.isPlayer, freeSlot.position, true);
+            if (pet != null && summoner != null)
+            {
+                ApplyPetStats(pet, summoner);
+            }
+            return pet;
+        }
+
+        private void ApplyPetStats(Character pet, Character summoner)
+        {
+            if (pet.stats == null || summoner.stats == null) return;
+
+            CharacterStats p = pet.stats;
+            CharacterStats s = summoner.stats;
+
+            float multiplier = 0.5f;
+
+            p.maxHP = Mathf.RoundToInt(s.maxHP * multiplier);
+            p.currentHP = p.maxHP;
+            
+            p.maxMP = Mathf.RoundToInt(s.maxMP * multiplier);
+            p.currentMP = p.maxMP;
+
+            p.physicalAttack = Mathf.RoundToInt(s.physicalAttack * multiplier);
+            p.magicAttack = Mathf.RoundToInt(s.magicAttack * multiplier);
+            p.physicalDefense = Mathf.RoundToInt(s.physicalDefense * multiplier);
+            p.magicDefense = Mathf.RoundToInt(s.magicDefense * multiplier);
+
+            p.fireDefense = Mathf.RoundToInt(s.fireDefense * multiplier);
+            p.frostDefense = Mathf.RoundToInt(s.frostDefense * multiplier);
+            p.lightningDefense = Mathf.RoundToInt(s.lightningDefense * multiplier);
+            p.holyDefense = Mathf.RoundToInt(s.holyDefense * multiplier);
+            p.darkDefense = Mathf.RoundToInt(s.darkDefense * multiplier);
+            p.waterDefense = Mathf.RoundToInt(s.waterDefense * multiplier);
+            p.poisonDefense = Mathf.RoundToInt(s.poisonDefense * multiplier);
+
+            p.speed = Mathf.RoundToInt(s.speed * multiplier); 
+            p.critChance = Mathf.RoundToInt(s.critChance * multiplier);
+            p.critMult = Mathf.RoundToInt(s.critMult * multiplier);
+
+            if (bm.uiManager != null) bm.uiManager.UpdateCharacterUI(pet);
         }
     }
 }

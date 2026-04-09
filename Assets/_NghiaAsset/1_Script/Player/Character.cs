@@ -32,6 +32,7 @@ namespace Turnbase
         [TabGroup("Skill Passive")] public List<SkillPassive> passiveSkills;
 
         public bool isPlayer;
+        public bool isPet;
         public bool isVirtualTracker = false;
         public Character target;
         public GameObject targetMarker;
@@ -101,6 +102,8 @@ namespace Turnbase
 
         void Awake()
         {
+            if (gameObject.CompareTag("Player")) isPlayer = true;
+
             stateMachine = GetComponent<CharacterStateMachine>();
             buffManager = GetComponent<CharacterBuffManager>();
             debuffManager = GetComponent<CharacterDebuffManager>();
@@ -128,7 +131,6 @@ namespace Turnbase
             }
 
 
-            InitializeCharacterFrom(characterClass);
 
             if (RenderTexture != null)
             {
@@ -144,6 +146,22 @@ namespace Turnbase
                     _selfieCamera.enabled = false; // Keep it off by default to save performance
                 }
             }
+        }
+
+        private bool isInitialized = false;
+
+        public void ManualInitialize()
+        {
+            if (!isInitialized)
+            {
+                isInitialized = true;
+                InitializeCharacterFrom(characterClass);
+            }
+        }
+
+        void Start()
+        {
+            ManualInitialize();
         }
 
         public void SetSelfieCameraActive(bool isActive)
@@ -172,6 +190,10 @@ namespace Turnbase
                 animator.runtimeAnimatorController = targetProfile.animatorController;
             }
 
+            // Chỉ duy nhất Player chính mới load skill/item từ Profile/Sigil.
+            // Enemy và Pet sẽ dùng chính list skill của nó (từ Prefab).
+            if (isPet || !isPlayer) return;
+
             var itemStorageMgr = ItemStorageManager.Instance;
             item.Clear();
 
@@ -194,28 +216,33 @@ namespace Turnbase
                 Debug.Log($"[Init] Nhân vật nhận {item.Count} vật phẩm từ kho đồ cá nhân.");
             }
 
-            await UniTask.WaitUntil(() => SigilStorageManager.Instance.SigilStorageData != null);
-
-            var storageManager = FindFirstObjectByType<SigilStorageManager>();
-            if (storageManager == null || storageManager.SigilStorageData == null)
-            {
-                Debug.LogError("Không tìm thấy SigilStorageSO để lọc kỹ năng!");
-                return;
-            }
-
             Dictionary<string, SigilData> ownedSigils = new Dictionary<string, SigilData>();
-            for (int i = 4; i < storageManager.SigilStorageData.ActiveSigils.Length; i++)
-            {
-                SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
-                if (sigilData == null) continue;
-                else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
-            }
 
-            for (int i = 0; i < storageManager.SigilStorageData.PassiveSigils.Length; i++)
+            if (isPlayer)
             {
-                SigilData sigilData = storageManager.SigilStorageData.PassiveSigils[i];
-                if (sigilData == null) continue;
-                else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
+                await UniTask.WaitUntil(() => SigilStorageManager.Instance.SigilStorageData != null);
+
+                var storageManager = FindFirstObjectByType<SigilStorageManager>();
+                if (storageManager == null || storageManager.SigilStorageData == null)
+                {
+                    Debug.LogError("Không tìm thấy SigilStorageSO để lọc kỹ năng!");
+                }
+                else
+                {
+                    for (int i = 4; i < storageManager.SigilStorageData.ActiveSigils.Length; i++)
+                    {
+                        SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
+                        if (sigilData == null) continue;
+                        else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
+                    }
+
+                    for (int i = 0; i < storageManager.SigilStorageData.PassiveSigils.Length; i++)
+                    {
+                        SigilData sigilData = storageManager.SigilStorageData.PassiveSigils[i];
+                        if (sigilData == null) continue;
+                        else if (sigilData != null) ownedSigils[sigilData.Name] = sigilData;
+                    }
+                }
             }
 
             skills.Clear();
@@ -223,14 +250,19 @@ namespace Turnbase
             {
                 foreach (var skillTemplate in targetProfile.initialSkills)
                 {
-                    if (skillTemplate != null && ownedSigils.TryGetValue(skillTemplate.skillName, out SigilData data))
+                    if (skillTemplate == null) continue;
+
+                    if (ownedSigils.TryGetValue(skillTemplate.skillName, out SigilData data))
                     {
                         Skill clonedSkill = Instantiate(skillTemplate);
-
                         clonedSkill.damage = data.BaseDamage;
                         clonedSkill.manaCost = data.ManaCost;
-
                         skills.Add(clonedSkill);
+                    }
+                    else if (!isPlayer)
+                    {
+                        // Đối với kẻ địch hoặc summon, dùng luôn skill mặc định từ Profile
+                        skills.Add(Instantiate(skillTemplate));
                     }
                 }
             }
@@ -240,7 +272,7 @@ namespace Turnbase
             {
                 foreach (var pSkill in targetProfile.initialPassiveSkills)
                 {
-                    if (pSkill != null && ownedSigils.ContainsKey(pSkill.name))
+                    if (pSkill != null && (ownedSigils.ContainsKey(pSkill.name) || !isPlayer))
                     {
                         passiveSkills.Add(pSkill);
                     }

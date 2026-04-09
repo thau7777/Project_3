@@ -186,7 +186,7 @@ namespace Turnbase
             }
             else
             {
-                var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
+                var livingPlayers = allCombatants.Where(c => c.isPlayer && !c.isPet && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
                     isProcessingTurn = true;
@@ -513,11 +513,11 @@ namespace Turnbase
         }
 
 
-        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
+        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint, bool isSummon = false)
         {
             if (spawner != null)
             {
-                return spawner.SpawnCombatant(prefab, isPlayerFaction, positionHint);
+                return spawner.SpawnCombatant(prefab, isPlayerFaction, positionHint, isSummon);
             }
             return null;
         }
