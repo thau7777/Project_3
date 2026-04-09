@@ -4,10 +4,13 @@ namespace Turnbase
 {
     public class BillboardCanvas : MonoBehaviour
     {
-        [SerializeField] private string priorityCameraTag = "SkillCamera"; 
+        [SerializeField] private string priorityCameraTag = "SkillCamera";
+        [SerializeField] private bool followRotation = true; 
 
         void LateUpdate()
         {
+            if (!followRotation) return;
+
             Camera targetCam = null;
 
             Camera[] allCams = Camera.allCameras;
@@ -17,7 +20,7 @@ namespace Turnbase
                 if (cam.enabled && cam.CompareTag(priorityCameraTag))
                 {
                     targetCam = cam;
-                    break; 
+                    break;
                 }
             }
 

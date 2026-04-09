@@ -1,10 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MyRule;
 using MyRule.Audio;
 using Cysharp.Threading.Tasks;
+using Ami.BroAudio;
 
 namespace Turnbase
 {
@@ -23,6 +24,8 @@ namespace Turnbase
         [Header("Player Spawn Settings")]
         public float playerMoveDuration = 0.3f;
         public Vector3 playerOffsetFromSlot = new Vector3(3f, 0f, 0f);
+
+        public SoundID bossSound;
 
         public void Initialize(BattleManager manager)
         {
@@ -57,7 +60,11 @@ namespace Turnbase
                 if (character != null)
                 {
                     ApplyScaledStats(character, enemiesToSpawn[i]);
-                    if (isBossPrefab) bossSpawnedInThisWave = true;
+                    if (isBossPrefab)
+                    {
+                        bossSpawnedInThisWave = true;
+                        BroAudio.Play(bossSound);
+                    }
                 }
             }
 
@@ -96,7 +103,11 @@ namespace Turnbase
                 if (character != null)
                 {
                     ApplyScaledStats(character, enemiesToSpawn[i]);
-                    if (isBossPrefab) bossSpawnedInThisWave = true;
+                    if (isBossPrefab)
+                    {
+                        bossSpawnedInThisWave = true;
+                        BroAudio.Play(bossSound);
+                    }
                 }
             }
 

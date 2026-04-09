@@ -186,7 +186,7 @@ namespace Turnbase
             }
             else
             {
-                var livingPlayers = allCombatants.Where(c => c.isPlayer && c.isAlive).ToList();
+                var livingPlayers = allCombatants.Where(c => c.isPlayer && !c.isPet && c.isAlive).ToList();
                 if (livingPlayers.Count == 0)
                 {
                     isProcessingTurn = true;

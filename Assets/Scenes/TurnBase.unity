@@ -479,7 +479,7 @@ Transform:
   m_GameObject: {fileID: 44314710}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.3800004, y: 0, z: 0.058237553}
+  m_LocalPosition: {x: -3.38, y: 0, z: 2.1570172}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24604,7 +24604,7 @@ MonoBehaviour:
   - {fileID: 1847522023}
   - {fileID: 44314711}
   - {fileID: 1229945274}
-  testEnemyPrefab: {fileID: 8083454903267841439, guid: e75d7c6bb8de2cd49bc2532869a2d8af, type: 3}
+  testEnemyPrefab: {fileID: 8083454903267841439, guid: 8639f5bb42dcd4944ada5dff03fe18ca, type: 3}
   turnOrderUI: {fileID: 748348505}
   uiManager: {fileID: 498165808}
   elementChart: {fileID: 11400000, guid: d2c46f24fcbc63c46aa46064bf67a78a, type: 2}
@@ -25480,7 +25480,7 @@ GameObject:
   - component: {fileID: 570302010}
   m_Layer: 0
   m_Name: CinemachineCamera
-  m_TagString: Untagged
+  m_TagString: CinemachineCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49281,6 +49281,10 @@ MonoBehaviour:
   enemySinkDepth: 2.5
   playerMoveDuration: 1
   playerOffsetFromSlot: {x: 3, y: 0, z: 0}
+  bossSound:
+    _entity: {fileID: 11400000, guid: fe73c7771c648494c93423d63e84cf88, type: 2}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 878176327}
 --- !u!4 &878176329
 Transform:
   m_ObjectHideFlags: 0
@@ -56971,7 +56975,7 @@ Transform:
   m_GameObject: {fileID: 1229945273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.3800004, y: 0, z: 2.0582383}
+  m_LocalPosition: {x: -3.38, y: 0, z: 4.157019}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57464,7 +57468,7 @@ Transform:
   m_GameObject: {fileID: 1292752796}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.3800004, y: 0, z: -3.9417617}
+  m_LocalPosition: {x: -3.38, y: 0, z: -1.8429819}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61237,7 +61241,7 @@ Transform:
   m_GameObject: {fileID: 1555564183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.3800004, y: 0, z: -5.941762}
+  m_LocalPosition: {x: -3.38, y: 0, z: -3.8429809}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -67840,8 +67844,8 @@ MonoBehaviour:
   - {fileID: 1478758515}
   weather:
   - {fileID: 7989033791816909088}
-  - {fileID: 929686073}
   - {fileID: 801448388}
+  - {fileID: 929686073}
   transforms:
   - {fileID: 719189948}
   - {fileID: 411496903}
@@ -67862,6 +67866,7 @@ MonoBehaviour:
     _entity: {fileID: 11400000, guid: 3e1bece7546988e43ad1585ba9e348a6, type: 2}
     ID: 0
     <DebugObject>k__BackingField: {fileID: 1738672238}
+  celestical: {fileID: 1859979514}
 --- !u!1 &1744845531
 GameObject:
   m_ObjectHideFlags: 0
@@ -74048,7 +74053,7 @@ Transform:
   m_GameObject: {fileID: 1847522022}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.3800004, y: 0, z: -1.9417624}
+  m_LocalPosition: {x: -3.38, y: 0, z: 0.15701711}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []

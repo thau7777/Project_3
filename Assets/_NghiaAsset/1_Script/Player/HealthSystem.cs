@@ -108,6 +108,10 @@ namespace Turnbase
                 {
                     AchievementManager.Instance.Trigger(AchievementType.KillEnemy, 1);
                 }
+                else if (!owner.isPet && owner.battleManager != null)
+                {
+                    owner.battleManager.CheckWaveCondition();
+                }
 
                 owner.stateMachine.SwitchState(owner.stateMachine.deadState);
             }
