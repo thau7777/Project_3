@@ -29,6 +29,9 @@ namespace Turnbase
         private Coroutine hpLerpCoroutine;
         private Coroutine mpLerpCoroutine;
 
+        public GameObject isPetAvatar;
+        public bool petAvatar = false;
+
 
         private void Awake()
         {
@@ -43,6 +46,11 @@ namespace Turnbase
             ownerCharacter = character;
             if (ownerCharacter != null)
             {
+                if (isPetAvatar != null)
+                {
+                    if (ownerCharacter.isPet) isPetAvatar.SetActive(false);
+                }
+
                 dataProvider = ownerCharacter.GetComponent<CharacterStatusDataProvider>();
                 UpdateUI(ownerCharacter.stats, ownerCharacter.info);
             }
@@ -56,6 +64,7 @@ namespace Turnbase
         {
             if (ownerCharacter != null)
             {
+                if (isPetAvatar != null && ownerCharacter.isPet) isPetAvatar.SetActive(false);
                 UpdateUI(ownerCharacter.stats, ownerCharacter.info);
             }
             else
@@ -63,6 +72,7 @@ namespace Turnbase
                 ownerCharacter = GetComponentInParent<Character>();
                 if (ownerCharacter != null)
                 {
+                    if (isPetAvatar != null && ownerCharacter.isPet) isPetAvatar.SetActive(false);
                     UpdateUI(ownerCharacter.stats, ownerCharacter.info);
                 }
             }

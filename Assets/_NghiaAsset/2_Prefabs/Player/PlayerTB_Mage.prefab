@@ -28110,33 +28110,37 @@ MonoBehaviour:
     currentMP: 150
     maxShield: 10000
     currentShield: 0
-    physicalAttack: 1
-    magicAttack: 1
-    physicalDefense: 0
-    magicDefense: 0
-    fireDefense: 0
-    lightningDefense: 0
-    frostDefense: 0
-    darkDefense: 0
-    holyDefense: 0
-    waterDefense: 0
-    poisonDefense: 0
-    fireDamageBonus: 0
-    lightningDamageBonus: 0
-    frostDamageBonus: 0
-    darkDamageBonus: 0
-    holyDamageBonus: 0
-    waterDamageBonus: 0
-    poisonDamageBonus: 0
-    critChance: 0
-    critMult: 0
-    speed: 11111
+    physicalAttack: 10
+    magicAttack: 10
+    physicalDefense: 10
+    magicDefense: 10
+    fireDefense: 10
+    lightningDefense: 10
+    frostDefense: 10
+    darkDefense: 10
+    holyDefense: 10
+    waterDefense: 10
+    poisonDefense: 10
+    fireDamageBonus: 10
+    lightningDamageBonus: 10
+    frostDamageBonus: 10
+    darkDamageBonus: 10
+    holyDamageBonus: 10
+    waterDamageBonus: 10
+    poisonDamageBonus: 10
+    critChance: 10
+    critMult: 150
+    speed: 1111
   allClassProfiles:
   - {fileID: 11400000, guid: 6f74b0a0b9cf2234388a070c546b7b7a, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: de3fb2e05072b8e469b35402dbe98f12, type: 2}
+  - {fileID: 11400000, guid: 2c1d1e8f358465147b4c79c16ee44fbb, type: 2}
+  - {fileID: 11400000, guid: 49662befed696de45b1702e10d57fb18, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 1
+  isPet: 0
   isVirtualTracker: 0
   target: {fileID: 0}
   targetMarker: {fileID: 1349848908112051574}
@@ -31892,58 +31896,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ===Canvas-Player===
       objectReference: {fileID: 0}
-    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.99302363
-      objectReference: {fileID: 0}
-    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.005119559
-      objectReference: {fileID: 0}
-    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.115952894
-      objectReference: {fileID: 0}
-    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.020802435
-      objectReference: {fileID: 0}
-    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -203
-      objectReference: {fileID: 0}
-    - target: {fileID: 1688760948381755602, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -2.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 07b90ac11a351d04b827f7348d7ec7e9, type: 3}
-    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_Color.g
-      value: 0.7079148
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582992864720002160, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3852208252640301882, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687303208234022255, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7443509545567645747, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -32025,8 +31977,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8864021635692639546, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}

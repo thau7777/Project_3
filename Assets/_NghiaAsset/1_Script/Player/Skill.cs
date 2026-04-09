@@ -21,6 +21,9 @@ public class Skill : ScriptableObject
     [ShowIfEnumValue("skillType", SkillType.Summon)]
     public List<GameObject> summonPrefab;
 
+    [ShowIfEnumValue("skillType", SkillType.Summon)]
+    public bool isAutoSummon;
+
 
     [Header("Visual Effects")]
     public FlyweightSettings_TB impactVFXPrefab;

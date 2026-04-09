@@ -513,11 +513,11 @@ namespace Turnbase
         }
 
 
-        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint)
+        public Character SpawnCombatant(GameObject prefab, bool isPlayerFaction, Vector3 positionHint, bool isSummon = false)
         {
             if (spawner != null)
             {
-                return spawner.SpawnCombatant(prefab, isPlayerFaction, positionHint);
+                return spawner.SpawnCombatant(prefab, isPlayerFaction, positionHint, isSummon);
             }
             return null;
         }

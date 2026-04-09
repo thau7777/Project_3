@@ -162,8 +162,13 @@ namespace Turnbase
 
             if (summomonButton != null)
             {
-                bool isSummoner = Owner != null && Owner.characterClass == CharacterClass.Summon;
-                summomonButton.gameObject.SetActive(isSummoner);
+                bool hasActiveSummons = Owner != null && Owner.skills.Any(s => s.skillType == SkillType.Summon && !s.isAutoSummon);
+                summomonButton.gameObject.SetActive(hasActiveSummons && !Owner.isPet);
+            }
+
+            if (itemButton != null)
+            {
+                itemButton.gameObject.SetActive(Owner != null && !Owner.isPet);
             }
 
         }
@@ -332,7 +337,7 @@ namespace Turnbase
 
         public void SetupSummonUI(List<Skill> skills)
         {
-            List<Skill> summonSkills = skills.Where(s => s.skillType == SkillType.Summon).ToList();
+            List<Skill> summonSkills = skills.Where(s => s.skillType == SkillType.Summon && !s.isAutoSummon).ToList();
 
             foreach (var entry in instantiatedSummonEntries)
             {

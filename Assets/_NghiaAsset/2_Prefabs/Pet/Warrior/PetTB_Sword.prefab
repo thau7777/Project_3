@@ -2474,7 +2474,7 @@ Transform:
   m_GameObject: {fileID: 1984771704473587561}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0028765798, y: -0.046060227, z: -0.00013264827, w: 0.99893457}
-  m_LocalPosition: {x: 1.24, y: 1.9333603, z: -2.95}
+  m_LocalPosition: {x: 1.2872843, y: 1.7080214, z: -3.4616508}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2568,6 +2568,7 @@ MonoBehaviour:
   playerActionsPanel2: {fileID: 0}
   skillEntryPrefab: {fileID: 4535633081229299378, guid: 748ed40908065bc43932325459c51745, type: 3}
   PlayerSkillPanel: {fileID: 7467650043950934744}
+  swapSkillButton: {fileID: 6795155859748474283}
   summonEntryPrefab: {fileID: 4535633081229299378, guid: 0c378e221269cfc49af870a0c15623f2, type: 3}
   PlayerSummonPanel: {fileID: 8661358630346918267}
   itemEntryPrefab: {fileID: 3163969907839143040, guid: c3adcbf10b464cb49aebee29ccaf44a5, type: 3}
@@ -2606,7 +2607,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.37445998, y: 0.37445998, z: 0.37445998}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5286427092251467328}
   m_Father: {fileID: 75167956460423509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2677,6 +2679,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &7616078673256987795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5286427092251467328}
+  m_Layer: 0
+  m_Name: Pointparry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5286427092251467328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7616078673256987795}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.70086, y: -0.028555667, z: 2.441998}
+  m_LocalScale: {x: 2.6705248, y: 2.6705248, z: 2.6705248}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 672235303008904703}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8083454903267841439
 GameObject:
   m_ObjectHideFlags: 0
@@ -2692,6 +2725,9 @@ GameObject:
   - component: {fileID: -7072520419978499482}
   - component: {fileID: -4638524337439984294}
   - component: {fileID: 8654578489053990261}
+  - component: {fileID: 5374785152457534647}
+  - component: {fileID: 6228068518134247298}
+  - component: {fileID: 2768917278765889525}
   m_Layer: 0
   m_Name: PetTB_Sword
   m_TagString: Player
@@ -2772,19 +2808,35 @@ MonoBehaviour:
     maxShield: 1000
     currentShield: 0
     physicalAttack: 100
-    physicalDefense: 100
     magicAttack: 154
+    physicalDefense: 100
     magicDefense: 139
-    crit: 0
-    critDamage: 0
-    agility: 111
+    fireDefense: 0
+    lightningDefense: 0
+    frostDefense: 0
+    darkDefense: 0
+    holyDefense: 0
+    waterDefense: 0
+    poisonDefense: 0
+    fireDamageBonus: 0
+    lightningDamageBonus: 0
+    frostDamageBonus: 0
+    darkDamageBonus: 0
+    holyDamageBonus: 0
+    waterDamageBonus: 0
+    poisonDamageBonus: 0
+    critChance: 0
+    critMult: 0
+    speed: 0
   allClassProfiles:
   - {fileID: 11400000, guid: e28c56fefa5fd0b4283a575d58c54375, type: 2}
   skills:
   - {fileID: 11400000, guid: d13dcba399a87834fbbbfb985a09188e, type: 2}
+  - {fileID: 11400000, guid: 5324443a104dbb1478a5cc5ce01a2265, type: 2}
   item: []
   passiveSkills: []
   isPlayer: 1
+  isPet: 0
   isVirtualTracker: 0
   target: {fileID: 0}
   targetMarker: {fileID: 1349848908112051574}
@@ -2809,7 +2861,16 @@ MonoBehaviour:
   buffEffectSpawnPoint: {fileID: 3702487629804660082}
   isAttackBlocked: 0
   healthSystem: {fileID: 0}
+  _screenEffectController: {fileID: 0}
+  hitSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 8083454903267841439}
   isParrySuccessful: 0
+  isLastHit: 0
+  parryMissCount: 0
+  totalHitsInSequence: 0
+  currentHitInSequence: 0
 --- !u!114 &6007067907109271698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2876,6 +2937,10 @@ MonoBehaviour:
   hasDivineShield: 0
   divineShieldVFXInstance: {fileID: 0}
   divineShieldIcon: {fileID: 0}
+  lifeForPowerTurnsRemaining: 0
+  lifeForPowerBonusDamage: 0
+  lifeForPowerVFXInstance: {fileID: 0}
+  lifeForPowerIcon: {fileID: 0}
 --- !u!114 &-4638524337439984294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2893,7 +2958,7 @@ MonoBehaviour:
   burnVFXInstance: {fileID: 0}
   burnIcon: {fileID: 0}
   poisonTurnsRemaining: 0
-  poisonDamagePerTurn: 0
+  poisonReductionPercentage: 0
   poisonVFXInstance: {fileID: 0}
   poisonIcon: {fileID: 0}
   stunTurnsRemaining: 0
@@ -2910,6 +2975,10 @@ MonoBehaviour:
   breakTurnsRemaining: 0
   breakVFXInstance: {fileID: 0}
   breakIcon: {fileID: 0}
+  paralysisTurnsRemaining: 0
+  paralysisDamageReduction: 0
+  paralysisVFXInstance: {fileID: 0}
+  paralysisIcon: {fileID: 0}
 --- !u!114 &8654578489053990261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2923,6 +2992,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterStatusDataProvider
   character: {fileID: 0}
+--- !u!114 &5374785152457534647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7a00be6a53a2e459b7f6bd902c8b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.ParryPopup
+  parryPopupPrefab: {fileID: 6339077806955394922, guid: d54edf3e186a8604fb416ee7e7203ac7, type: 3}
+  avoidPopupPrefab: {fileID: 6339077806955394922, guid: d54edf3e186a8604fb416ee7e7203ac7, type: 3}
+  spawnPoint: {fileID: 5286427092251467328}
+--- !u!114 &6228068518134247298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4da53e0da5aa245b5c3883aca222a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.HealthSystem
+--- !u!114 &2768917278765889525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083454903267841439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf93edb259241a4fba43310dd0a5333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turnbase.CharacterIItemBuffManager
+  activeBuffs: []
 --- !u!1 &8105846745597628921
 GameObject:
   m_ObjectHideFlags: 0
@@ -3211,7 +3320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7443509545567645747, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.72
+      value: 1.599
       objectReference: {fileID: 0}
     - target: {fileID: 7443509545567645747, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3322,6 +3431,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6795155859748474283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8118401439571621738, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}
+  m_PrefabInstance: {fileID: 3379781474266348225}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &7467650043950934744 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5279636576018059289, guid: 2202dcd2e01bd674a8d82b5b1968ab90, type: 3}

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using System.Linq;
 
@@ -23,9 +23,9 @@ namespace Turnbase
             }
 
             Skill basicAttack = ScriptableObject.CreateInstance<Skill>();
-            basicAttack.skillName = "Basic PhysicalAttack";
+            basicAttack.skillName = "Basic Attack";
 
-            basicAttack.animationTriggerName = "PhysicalAttack";
+            basicAttack.animationTriggerName = "Attack";
 
             basicAttack.damage = 1;
 
