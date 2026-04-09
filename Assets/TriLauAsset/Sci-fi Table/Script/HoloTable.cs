@@ -1,4 +1,5 @@
 using MyRule.Audio;
+using MyRule.Event;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace MyRule
     {
         [SerializeField] private GameObject holoTableCam;
         [SerializeField] private ScifiMouseController scifiMouse;
-        [SerializeField] private GameObject keyObj;
+        [SerializeField] private GameObject suggestUI;
 
         private bool playerInRange = false;
 
@@ -27,13 +28,14 @@ namespace MyRule
             if (!playerInRange) return;
 
             holoTableCam.SetActive(true);
+            suggestUI.SetActive(true);
             scifiMouse.UnlockMouse();
             hasActive = true;
-            keyObj.SetActive(false);
 
             AudioManager.Instance.PlaySound("HoloTableInteract");
 
             EventBus<ScifitableInteractEvent>.Raise(new ScifitableInteractEvent());
+            EventBus<ShowLobbyEvent>.Raise(new ShowLobbyEvent(false));
         }
 
         public void Exit()
@@ -42,13 +44,14 @@ namespace MyRule
             if (!hasActive) return;
 
             holoTableCam.SetActive(false);
+            suggestUI?.SetActive(false);
             scifiMouse.LockMouse();
             hasActive = false;
-            keyObj?.SetActive(true);
 
             Cursor.lockState = CursorLockMode.Locked;
 
             EventBus<ScifitableExitEvent>.Raise(new ScifitableExitEvent());
+            EventBus<ShowLobbyEvent>.Raise(new ShowLobbyEvent(true));
         }
 
         private void OnTriggerEnter(Collider other)

@@ -106,7 +106,7 @@ namespace Turnbase
 
                 if (!owner.isPlayer)
                 {
-                    AchievementManager.Instance.Trigger(AchievementType.KillEnemy, 1);
+                    AchievementManager.Instance.Trigger<int>(AchievementType.KillEnemy, 1);
                 }
 
                 owner.stateMachine.SwitchState(owner.stateMachine.deadState);

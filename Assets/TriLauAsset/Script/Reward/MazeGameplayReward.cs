@@ -4,25 +4,14 @@ using UnityEngine;
 
 namespace MyRule
 {
-    public abstract class Reward
-    {
-
-    }
-
     [Serializable]
-    public class MazeGameplayReward : Reward
+    public class MazeGameplayReward
     {
         [JsonProperty] private int runeAmount;
         [JsonProperty] private int sigilAmount;
 
         [JsonIgnore] public int RuneAmount => runeAmount;    
         [JsonIgnore] public int SigilAmount => sigilAmount;
-
-        public MazeGameplayReward()
-        {
-            runeAmount = 0;
-            sigilAmount = 0;
-        }
 
         public MazeGameplayReward(int runeAmount, int sigilAmount)
         {

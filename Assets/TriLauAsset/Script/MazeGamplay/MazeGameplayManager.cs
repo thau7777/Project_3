@@ -24,8 +24,7 @@ namespace MyRule
         {
             await UniTask.WaitUntil(() => AchievementManager.Instance != null);
 
-            AchievementManager.Instance.Trigger(AchievementType.Basic, true);
-            AchievementManager.Instance.Trigger(AchievementType.KillEnemy, 1);
+            AchievementManager.Instance.Trigger<bool>(AchievementType.Basic, true);
         }
 
         private void OnMazeGameplayEvent(MazeGameplayEvent evt)

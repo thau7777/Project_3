@@ -16,6 +16,7 @@ namespace MyRule
         [SerializeField] private MeshRenderer cylinder1;
         [SerializeField] private MeshRenderer cylinder2;
         [SerializeField] private Volume flareVol;
+        [SerializeField] private ParticleSystem scanMap;
 
         [SerializeField] private float powerFrom1 = 20f;
         [SerializeField] private float powerFrom2 = 4f;
@@ -71,6 +72,8 @@ namespace MyRule
                 cts.Token).Forget();
 
             await UniTask.Delay(1000);
+
+            scanMap.Play();
 
             Transition.TransitionValue(
                 value => cylinder1.material.SetFloat("_Active", value),

@@ -25,6 +25,9 @@ namespace MyRule
 
         private void SetConfig()
         {
+            _configByType.Clear();
+            _achievementDict.Clear();
+
             foreach (var config in configs)
             {
                 if (!_configByType.ContainsKey(config.type))
@@ -32,40 +35,9 @@ namespace MyRule
 
                 _configByType[config.type].Add(config);
 
-                switch (config.type)
+                if (!_achievementDict.ContainsKey(config.id))
                 {
-                    case AchievementType.KillEnemy:
-                        {
-                            if (!_achievementDict.ContainsKey(config.id))
-                            {
-                                _achievementDict[config.id] = new KillEnemyAchievementData(config.id, false, 0, config.targetValue);
-                            }
-                            break;
-                        }
-                    case AchievementType.Discovery:
-                        {
-                            if (!_achievementDict.ContainsKey(config.id))
-                            {
-                                _achievementDict[config.id] = new DiscoveryAchievementData(config.id, false, config.targetMap);
-                            }
-                            break;
-                        }
-                    case AchievementType.CollectSigil:
-                        {
-                            if (!_achievementDict.ContainsKey(config.id))
-                            {
-                                _achievementDict[config.id] = new CollectSigilAchievementData(config.id, false, config.targetSigil.id);
-                            }
-                            break;
-                        }
-                    case AchievementType.Basic:
-                        {
-                            if (!_achievementDict.ContainsKey(config.id))
-                            {
-                                _achievementDict[config.id] = new AchievementData(config.id, false);
-                            }
-                            break;
-                        }
+                    _achievementDict[config.id] = new AchievementData(config.id, config.targetValue);
                 }
             }
         }
@@ -75,7 +47,7 @@ namespace MyRule
             return configs.Find(x => x.id == id);
         }
 
-        public void Trigger(AchievementType type, object value)
+        public void Trigger<T>(AchievementType type, T value)
         {
             if (!_configByType.ContainsKey(type)) return;
 
@@ -85,7 +57,22 @@ namespace MyRule
 
                 if (data.IsUnlocked) continue;
 
-                data.UpdateProgress(value);
+                if (value is int v1)
+                {
+                    data.UpdateProgress(v1);
+                }
+                else if (value is EMap v2)
+                {
+                    if (v2 != config.targetMap) continue;
+
+                    data.UpdateProgress(1);
+                }
+                else if (value is string v3)
+                {
+                    if (v3 != config.targetSigil.id) continue;
+
+                    data.UpdateProgress(1);
+                }
             }
         }
 

@@ -13,14 +13,15 @@ namespace MyRule
     {
         [SerializeField] private WarpController warpController;
 
-        [SerializeField] private GameObject keyTxt;
         [SerializeField] private PlayableDirector portalTimeline;
         [SerializeField] private PlayableDirector startGameTimeline;
+        [SerializeField] private GameObject suggestBtn;
         private Loader.EScene targetScene;
         
         [SerializeField] private MeshRenderer portalRenderer;
         [SerializeField] private float cutscene1Duration = 3f;
         [SerializeField] private float cutscene2Duration = 0.8f;
+        
 
         private bool hasTargetScene = false;
         private bool canInteract = false;
@@ -42,10 +43,27 @@ namespace MyRule
             SceneManager.LoadScene("CharacterScene", LoadSceneMode.Additive);
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player") && hasTargetScene)
+            {
+                CanInteract = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                CanInteract = false;
+            }
+        }
+
         public void SetTargetScene(Loader.EScene scene)
         {
             targetScene = scene;
             hasTargetScene = true;
+            suggestBtn.gameObject.SetActive(true);
             portalTimeline.Play();
 
             HighlightPortalAsync(200f, cutscene1Duration).Forget();
@@ -68,24 +86,6 @@ namespace MyRule
             }
 
             portalRenderer.material.SetFloat("_Indestry", to);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player") && hasTargetScene)
-            {
-                CanInteract = true;
-                keyTxt.SetActive(true);
-            }
-        }
-
-        private void OnTriggerExit(Collider other) 
-        {
-            if (other.CompareTag("Player"))
-            {
-                CanInteract = false;
-                keyTxt.SetActive(false);
-            }
         }
 
         public async void OnStartBtnClicked()

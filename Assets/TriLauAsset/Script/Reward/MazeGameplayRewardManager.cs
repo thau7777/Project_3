@@ -33,7 +33,8 @@ namespace MyRule
         {
             if (data.MatchData != null && data.MatchData.Reward != null)
             {
-                EventBus<MazeGameplayRewardEvent>.Raise(new MazeGameplayRewardEvent(reward));
+                Debug.Log("rune reward " +data.MatchData.Reward.RuneAmount);
+                EventBus<MazeGameplayRewardEvent>.Raise(new MazeGameplayRewardEvent(data.MatchData.Reward));
                 reward = null;
                 hasRewards = false;
             }

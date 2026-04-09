@@ -33,8 +33,7 @@ namespace MyRule
                             eScene = Loader.EScene.SpaceStationScene;
                         }
 
-                        ICommand continueCommand = new SceneCommand(btnSubmit, currentScene, eScene);
-                        CommandInvoker.ExecuteCommand(continueCommand);
+                        await Loader.LoadSceneWithLoading(eScene);
                         break;
                     }
                 case ButtonType.NewGameButton:

@@ -23,7 +23,7 @@ namespace MyRule
 
         public void MoveToNextMap()
         {
-            AchievementManager.Instance.Trigger(AchievementType.Discovery, currentMap);
+            AchievementManager.Instance.Trigger<EMap>(AchievementType.Discovery, currentMap);
 
             switch (currentMap)
             {

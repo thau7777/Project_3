@@ -87,7 +87,7 @@ namespace MyRule
                 case "Blood Knight's Oath":
                 case "Butterfly Effect":
                 case "The Wish Under Star":
-                    AchievementManager.Instance.Trigger(AchievementType.CollectSigil, sigilSO.id);
+                    AchievementManager.Instance.Trigger<string>(AchievementType.CollectSigil, sigilSO.id);
                     break;
             }
         }

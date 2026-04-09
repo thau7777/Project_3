@@ -13,6 +13,7 @@ namespace MyRule.UI
 {
     public class PopUpView : MonoBehaviour
     {
+        [SerializeField] private InputReader _inputReader;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private float fadeDuration = 0.4f;
         [SerializeField] private Button resumeBtn;
@@ -43,6 +44,8 @@ namespace MyRule.UI
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
+            _inputReader.SwitchActionMap(ActionMap.UI);
+
             cts?.Cancel();
             cts = new CancellationTokenSource();
 
@@ -62,7 +65,7 @@ namespace MyRule.UI
             isShowing = true;
         }
 
-        public async void Hide()
+        public void Hide()
         {
             if (!isShowing) return;
 
@@ -71,6 +74,16 @@ namespace MyRule.UI
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
             canvasGroup.DOFade(0f, fadeDuration);
+
+            Loader.EScene currentScene = MatchManager.Instance.MatchData.Scene;
+            switch (currentScene)
+            {
+                case Loader.EScene.GreenlandScene:
+                case Loader.EScene.DesertScene:
+                case Loader.EScene.IcelandScene:
+                    _inputReader.SwitchActionMap(ActionMap.DiceRoll);
+                    break;  
+            }
 
             cts?.Cancel();
             cts = new CancellationTokenSource();

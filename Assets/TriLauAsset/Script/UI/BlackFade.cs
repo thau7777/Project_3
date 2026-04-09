@@ -1,7 +1,8 @@
-using System.Threading;
+﻿using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using System;
 
 namespace MyRule
 {
@@ -9,60 +10,54 @@ namespace MyRule
     {
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private float fadeDuration = 0.4f;
-
         private CancellationTokenSource cts;
 
         private async void Start()
         {
-            await UniTask.Delay(400);
-            await FadeOut();
+            var token = this.GetCancellationTokenOnDestroy();
+            try
+            {
+                await UniTask.Delay(400, cancellationToken: token);
+                await FadeOut();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public async UniTask FadeIn()
         {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
-
+            CancelAndRenew();
+            if (canvasGroup == null) return;
             canvasGroup.alpha = 0f;
-
             canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.Linear);
-
             await UniTask.Delay((int)(fadeDuration * 1000), cancellationToken: cts.Token);
         }
 
         public async UniTask FadeIn(float duration)
         {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
-
+            CancelAndRenew();
+            if (canvasGroup == null) return;
             canvasGroup.alpha = 0f;
-
             canvasGroup.DOFade(1f, duration).SetEase(Ease.Linear);
-
             await UniTask.Delay((int)(duration * 1000), cancellationToken: cts.Token);
         }
 
         public async UniTask FadeOut()
         {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
-
+            CancelAndRenew();
+            if (canvasGroup == null) return;
             canvasGroup.alpha = 1f;
-
             canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.Linear);
-
             await UniTask.Delay((int)(fadeDuration * 1000), cancellationToken: cts.Token);
         }
 
         public async UniTask FadeOut(float duration)
         {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
-
+            CancelAndRenew();
+            if (canvasGroup == null) return;
             canvasGroup.alpha = 1f;
-
             canvasGroup.DOFade(0f, duration).SetEase(Ease.Linear);
-
             await UniTask.Delay((int)(duration * 1000), cancellationToken: cts.Token);
         }
 
@@ -70,6 +65,19 @@ namespace MyRule
         {
             await FadeIn(duration);
             await FadeOut(duration);
+        }
+
+        private void CancelAndRenew()
+        {
+            cts?.Cancel();
+            cts?.Dispose();
+            cts = new CancellationTokenSource();
+        }
+
+        private void OnDestroy()
+        {
+            cts?.Cancel();
+            cts?.Dispose();
         }
     }
 }

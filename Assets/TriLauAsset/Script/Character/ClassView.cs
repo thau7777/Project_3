@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MyRule.CommandPattern;
+using TMPro;
 using Turnbase;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,7 @@ namespace MyRule
         [SerializeField] private CharacterSO characterStatsSO;
         [SerializeField] private GameObject highlightObj;
         [SerializeField] private Button button;
+        [SerializeField] private TextMeshProUGUI backStory;
         [SerializeField] private bool locking = true;
 
         private void Start()
@@ -37,6 +39,8 @@ namespace MyRule
             EventBus<CharacterUpdatedEvent>.Raise(new CharacterUpdatedEvent(data));
 
             RuneManger.Instance.SetStartRune(characterStatsSO.startRune);
+
+            backStory.text = characterStatsSO.backStory;
         }
 
         private void EnterPortal()
