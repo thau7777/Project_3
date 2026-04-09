@@ -9,6 +9,32 @@ namespace Turnbase
         private CharacterStats stats => character?.stats;
         private Character character;
 
+        private void SafeReturnToPool(Flyweight_TB vfx)
+        {
+            if (vfx != null && vfx.gameObject != null && vfx.gameObject.activeInHierarchy)
+            {
+                bool isOurs = false;
+                if (character != null)
+                {
+                    Transform spawnPoint = character.buffEffectSpawnPoint != null ? character.buffEffectSpawnPoint : transform;
+                    if (vfx.transform.IsChildOf(spawnPoint) || vfx.transform.IsChildOf(transform))
+                    {
+                        isOurs = true;
+                    }
+                }
+                else if (vfx.transform.IsChildOf(transform))
+                {
+                    isOurs = true;
+                }
+
+                if (isOurs)
+                {
+                    vfx.transform.SetParent(null);
+                    vfx.ReturnToPool();
+                }
+            }
+        }
+
 
         [Header("Attack Buff")]
         [HideInInspector] public int attackBuffTurnsRemaining = 0;
@@ -129,7 +155,7 @@ namespace Turnbase
 
             if (attackVFXInstance != null && attackVFXInstance != vfxInstance)
             {
-                Destroy(attackVFXInstance);
+                SafeReturnToPool(attackVFXInstance);
             }
             attackVFXInstance = vfxInstance;
             attackBuffIcon = icon;
@@ -162,7 +188,7 @@ namespace Turnbase
 
             if (maxHPVFXInstance != null && maxHPVFXInstance != vfxInstance)
             {
-                Destroy(maxHPVFXInstance);
+                SafeReturnToPool(maxHPVFXInstance);
             }
             maxHPVFXInstance = vfxInstance;
             maxHPBuffIcon = icon;
@@ -196,7 +222,7 @@ namespace Turnbase
 
             if (defenseVFXInstance != null && defenseVFXInstance != vfxInstance)
             {
-                defenseVFXInstance.ReturnToPool();
+                SafeReturnToPool(defenseVFXInstance);
             }
             defenseVFXInstance = vfxInstance;
             defenseBuffIcon = icon;
@@ -227,7 +253,7 @@ namespace Turnbase
 
             if (agilityVFXInstance != null && agilityVFXInstance != vfxInstance)
             {
-                Destroy(agilityVFXInstance);
+                SafeReturnToPool(agilityVFXInstance);
             }
             agilityVFXInstance = vfxInstance;
             agilityBuffIcon = icon;
@@ -258,7 +284,7 @@ namespace Turnbase
 
             if (magicalAttackVFXInstance != null && magicalAttackVFXInstance != vfxInstance)
             {
-                magicalAttackVFXInstance.ReturnToPool(); 
+                SafeReturnToPool(magicalAttackVFXInstance); 
             }
             magicalAttackVFXInstance = vfxInstance;
             magicalAttackBuffIcon = icon;
@@ -286,6 +312,10 @@ namespace Turnbase
                 stats.magicDefense += amount;
             }
 
+            if (magicalDefenseVFXInstance != null && magicalDefenseVFXInstance != vfxInstance)
+            {
+                SafeReturnToPool(magicalDefenseVFXInstance);
+            }
             magicalDefenseVFXInstance = vfxInstance;
             magicalDefenseBuffIcon = icon;
             magicalDefenseBuffTurnsRemaining = duration;
@@ -331,7 +361,7 @@ namespace Turnbase
 
             if (vfxInstance != null)
             {
-                if (divineShieldVFXInstance != null) divineShieldVFXInstance.ReturnToPool();
+                if (divineShieldVFXInstance != null && divineShieldVFXInstance != vfxInstance) SafeReturnToPool(divineShieldVFXInstance);
                 divineShieldVFXInstance = vfxInstance;
             }
 
@@ -351,6 +381,10 @@ namespace Turnbase
             lifeForPowerBonusDamage = Mathf.FloorToInt(character.stats.physicalAttack * damageBuffPercent);
             lifeForPowerTurnsRemaining = duration;
 
+            if (lifeForPowerVFXInstance != null && lifeForPowerVFXInstance != vfx)
+            {
+                SafeReturnToPool(lifeForPowerVFXInstance);
+            }
             lifeForPowerIcon = icon;
             lifeForPowerVFXInstance = vfx;
 
@@ -476,8 +510,7 @@ namespace Turnbase
 
             if (attackVFXInstance != null)
             {
-                attackVFXInstance.transform.SetParent(null);
-                attackVFXInstance.ReturnToPool();
+                SafeReturnToPool(attackVFXInstance);
                 attackVFXInstance = null;
             }
 
@@ -500,8 +533,7 @@ namespace Turnbase
 
             if (maxHPVFXInstance != null)
             {
-                maxHPVFXInstance.transform.SetParent(null);
-                maxHPVFXInstance.ReturnToPool();
+                SafeReturnToPool(maxHPVFXInstance);
                 maxHPVFXInstance = null;
             }
 
@@ -521,8 +553,7 @@ namespace Turnbase
         {
             if (defenseBuffTurnsRemaining <= 0 && defenseVFXInstance != null)
             {
-                defenseVFXInstance.transform.SetParent(null);
-                defenseVFXInstance.ReturnToPool();
+                SafeReturnToPool(defenseVFXInstance);
                 defenseVFXInstance = null;
             }
 
@@ -543,8 +574,7 @@ namespace Turnbase
 
             if (agilityVFXInstance != null)
             {
-                agilityVFXInstance.transform.SetParent(null);
-                agilityVFXInstance.ReturnToPool();
+                SafeReturnToPool(agilityVFXInstance);
                 agilityVFXInstance = null;
             }
 
@@ -564,8 +594,7 @@ namespace Turnbase
 
             if (magicalAttackVFXInstance != null)
             {
-                magicalAttackVFXInstance.transform.SetParent(null);
-                magicalAttackVFXInstance.ReturnToPool();
+                SafeReturnToPool(magicalAttackVFXInstance);
                 magicalAttackVFXInstance = null;
             }
 
@@ -579,8 +608,7 @@ namespace Turnbase
         {
             if (magicalDefenseBuffTurnsRemaining <= 0 && magicalDefenseVFXInstance != null)
             {
-                magicalDefenseVFXInstance.transform.SetParent(null);
-                magicalDefenseVFXInstance.ReturnToPool();
+                SafeReturnToPool(magicalDefenseVFXInstance);
                 magicalDefenseVFXInstance = null;
             }
 
@@ -601,8 +629,7 @@ namespace Turnbase
 
             if (lifeForPowerVFXInstance != null)
             {
-                lifeForPowerVFXInstance.transform.SetParent(null);
-                lifeForPowerVFXInstance.ReturnToPool();
+                SafeReturnToPool(lifeForPowerVFXInstance);
                 lifeForPowerVFXInstance = null;
             }
 
@@ -690,7 +717,7 @@ namespace Turnbase
 
                 if (divineShieldVFXInstance != null)
                 {
-                    divineShieldVFXInstance.ReturnToPool();
+                    SafeReturnToPool(divineShieldVFXInstance);
                     divineShieldVFXInstance = null;
                 }
                 divineShieldIcon = null;
