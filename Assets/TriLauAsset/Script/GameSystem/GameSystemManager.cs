@@ -9,7 +9,6 @@ namespace MyRule
 {
     public class GameSystemManager : PersistentSingleton<GameSystemManager>
     {
-        // public static GameSystemManager Instance { get; private set; }
         private const string fileName = "/gamedata.json";
         [SerializeField] private bool encrypted = false;
 
@@ -27,9 +26,7 @@ namespace MyRule
 
         protected override void Awake()
         {
-            Debug.Log($"[GameSystemManager] Awake - instance null: {instance == null}, this: {GetInstanceID()}");
             base.Awake();
-            Debug.Log($"[GameSystemManager] After base.Awake - instance ID: {instance.GetInstanceID()}");
         }
 
         private void OnEnable()

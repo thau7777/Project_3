@@ -24,7 +24,7 @@ namespace MyRule.UI
         ShopButton,
     }
 
-    public class ButtonView : MonoBehaviour, IButtonView, ISelectHandler, IDeselectHandler, ISubmitHandler
+    public class ButtonView : MonoBehaviour, IButtonView, ISelectHandler, IDeselectHandler
     {
         [SerializeField] protected ButtonType buttonViewType = ButtonType.AnyButton;
         [SerializeField] protected Button button;
@@ -41,11 +41,6 @@ namespace MyRule.UI
         {
             presenter.CleanUp();
             button.onClick.RemoveListener(HandleSubmit);
-        }
-
-        public virtual void OnSubmit(BaseEventData eventData)
-        {
-            HandleSubmit();
         }
 
         private void HandleSubmit()
