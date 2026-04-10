@@ -259,6 +259,7 @@ public class Damageable : MonoBehaviour
             return;
         }
 
+        if (finalDamage <= 0) return;
         OnTakeDamage?.Invoke(sender, CurrentHealth, knockBackDirection, knockBackForce);
         _invincibleElapsedTime = InvincibleDuration;
 

@@ -1,6 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class TopDownEnemyUIController : MonoBehaviour
 {
@@ -8,8 +10,6 @@ public class TopDownEnemyUIController : MonoBehaviour
     [SerializeField] private Slider healthBarSlider;
     [TabGroup("Bar References")]
     [SerializeField] private Image healthBarBackFill;
-    [TabGroup("Bar References")]
-    [SerializeField] private Image healthBarSliderHandle;
     [TabGroup("Bar References")]
     [SerializeField] private Slider shieldBarSlider;
     [TabGroup("Bar References")]
@@ -21,14 +21,7 @@ public class TopDownEnemyUIController : MonoBehaviour
     [SerializeField] private float healthBarBackFillAnimationDuration = 0.5f;
     [TabGroup("Bar Settings")]
     [SerializeField] private AnimationCurve healthBarBackFillCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-    [TabGroup("Bar Settings")]
-    [SerializeField] private float healthBarSliderHandleMaxScale = 1.5f;
-    [TabGroup("Bar Settings")]
-    [SerializeField] private float healthBarSliderHandleScaleDuration = 0.3f;
-    [TabGroup("Bar Settings")]
-    [SerializeField] private float healthBarSliderHandleHoldDuration = 0.2f;
-    [TabGroup("Bar Settings")]
-    [SerializeField] private AnimationCurve healthBarSliderHandleScaleCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    
     [TabGroup("Bar Settings")]
     [SerializeField] private Color healthBarBackFillHurtColor = Color.white;
 
@@ -40,6 +33,26 @@ public class TopDownEnemyUIController : MonoBehaviour
     [SerializeField] private AnimationCurve shieldBarBackFillCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [TabGroup("Shield Bar Settings")]
     [SerializeField] private Color shieldBarBackFillHurtColor = Color.cyan;
+
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private Image shieldBreakObj;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float targetshieldBreakScale;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float shieldBreakScaleDuration = 0.8f;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float shieldBreakFadeInDuration = 0.15f;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float shieldBreakHoldDuration = 0.25f;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float shieldBreakFadeOutDuration = 0.4f;
+
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private Image shieldBreakBackGlow;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float shieldBreakBackGlowEmissionLerpDuration = 0.6f;
+    [TabGroup("Shield Bar Break Settings")]
+    [SerializeField] private float shieldBreakBackGlowTargetScale = 2.5f;
 
     [TabGroup("Optional Text Labels")]
     [SerializeField] private TMPro.TextMeshProUGUI healthText;
@@ -53,10 +66,50 @@ public class TopDownEnemyUIController : MonoBehaviour
     private float currentShield;
     private float maxShield;
 
-    private Coroutine healthBackFillCoroutine;
-    private Coroutine handleScaleCoroutine;
-    private Coroutine shieldBackFillCoroutine;
+    private CancellationTokenSource healthBackFillCTS;
+    private CancellationTokenSource shieldBackFillCTS;
 
+    private Vector3 shieldBreakOriginalScale;
+    private bool isShieldBreakPlaying;
+
+    private Material shieldBreakMaterial; 
+    private Material shieldBreakBackGlowMaterial;
+    private Vector3 shieldBreakBackGlowOriginalScale;
+    private float shieldBreakBackGlowOriginalEmission;
+
+    private void Awake()
+    {
+        if (shieldBreakObj != null)
+        {
+            shieldBreakOriginalScale = shieldBreakObj.transform.localScale;
+            shieldBreakMaterial = new Material(shieldBreakObj.material);
+            shieldBreakObj.material = shieldBreakMaterial;
+            shieldBreakMaterial.SetFloat("_NoisePower", 1f);
+            shieldBreakObj.gameObject.SetActive(false);
+        }
+
+        if (shieldBreakBackGlow != null)
+        {
+            shieldBreakBackGlowOriginalScale = shieldBreakBackGlow.transform.localScale;
+            shieldBreakBackGlowMaterial = new Material(shieldBreakBackGlow.material);
+            shieldBreakBackGlow.material = shieldBreakBackGlowMaterial;
+            shieldBreakBackGlowOriginalEmission = shieldBreakBackGlowMaterial.GetFloat("_Emission");
+            shieldBreakBackGlow.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        healthBackFillCTS?.Cancel();
+        healthBackFillCTS?.Dispose();
+        shieldBackFillCTS?.Cancel();
+        shieldBackFillCTS?.Dispose();
+
+        if (shieldBreakMaterial != null)
+            Destroy(shieldBreakMaterial);
+        if (shieldBreakBackGlowMaterial != null)
+            Destroy(shieldBreakBackGlowMaterial);
+    }
 
     public void InitializeValue(float maxHealth, float maxShield)
     {
@@ -70,9 +123,6 @@ public class TopDownEnemyUIController : MonoBehaviour
 
         shieldBarSlider.value = 1;
         shieldBarBackFill.fillAmount = 1;
-
-        if (healthBarSliderHandle != null)
-            healthBarSliderHandle.transform.localScale = Vector3.zero;
     }
 
     public void SetHealth(float current, float max)
@@ -90,78 +140,47 @@ public class TopDownEnemyUIController : MonoBehaviour
 
         if (isDamage)
         {
-            // Damage: backfill lingers then animates down
             SetHealthBarBackFillColor(healthBarBackFillHurtColor);
 
-            if (healthBackFillCoroutine != null) StopCoroutine(healthBackFillCoroutine);
-            healthBackFillCoroutine = StartCoroutine(AnimateHealthBarBackFill());
-
-            if (handleScaleCoroutine != null) StopCoroutine(handleScaleCoroutine);
-            handleScaleCoroutine = StartCoroutine(AnimateHealthBarSliderHandle());
+            healthBackFillCTS?.Cancel();
+            healthBackFillCTS?.Dispose();
+            healthBackFillCTS = new CancellationTokenSource();
+            AnimateHealthBarBackFillAsync(healthBackFillCTS.Token).Forget();
         }
         else
         {
-            // Heal: snap backfill immediately to match main bar, no animation
-            if (healthBackFillCoroutine != null)
-            {
-                StopCoroutine(healthBackFillCoroutine);
-                healthBackFillCoroutine = null;
-            }
+            healthBackFillCTS?.Cancel();
+            healthBackFillCTS?.Dispose();
+            healthBackFillCTS = null;
+
             if (healthBarBackFill != null)
                 healthBarBackFill.fillAmount = newValue;
         }
     }
 
-    private IEnumerator AnimateHealthBarBackFill()
+    private async UniTaskVoid AnimateHealthBarBackFillAsync(CancellationToken ct)
     {
-        if (healthBarBackFill == null || healthBarSlider == null) yield break;
+        if (healthBarBackFill == null || healthBarSlider == null) return;
 
-        yield return Helpers.GetWaitForSeconds(healthBarBackFillDelayDuration);
-
-        float startFillAmount = healthBarBackFill.fillAmount;
-        float targetFillAmount = healthBarSlider.value;
-        float elapsed = 0f;
-
-        while (elapsed < healthBarBackFillAnimationDuration)
+        try
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / healthBarBackFillAnimationDuration;
-            healthBarBackFill.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, healthBarBackFillCurve.Evaluate(t));
-            yield return null;
+            await UniTask.Delay(TimeSpan.FromSeconds(healthBarBackFillDelayDuration), cancellationToken: ct);
+
+            float startFillAmount = healthBarBackFill.fillAmount;
+            float targetFillAmount = healthBarSlider.value;
+            float elapsed = 0f;
+
+            while (elapsed < healthBarBackFillAnimationDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / healthBarBackFillAnimationDuration;
+                healthBarBackFill.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, healthBarBackFillCurve.Evaluate(t));
+                await UniTask.Yield(PlayerLoopTiming.Update, ct);
+            }
+
+            healthBarBackFill.fillAmount = targetFillAmount;
         }
-
-        healthBarBackFill.fillAmount = targetFillAmount;
-    }
-
-    private IEnumerator AnimateHealthBarSliderHandle()
-    {
-        if (healthBarSliderHandle == null) yield break;
-
-        Vector3 targetScale = Vector3.one * healthBarSliderHandleMaxScale;
-        Vector3 startScale = healthBarSliderHandle.transform.localScale;
-        float elapsed = 0f;
-
-        while (elapsed < healthBarSliderHandleScaleDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / healthBarSliderHandleScaleDuration;
-            healthBarSliderHandle.transform.localScale = Vector3.Lerp(startScale, targetScale, healthBarSliderHandleScaleCurve.Evaluate(t));
-            yield return null;
-        }
-
-        healthBarSliderHandle.transform.localScale = targetScale;
-        yield return Helpers.GetWaitForSeconds(healthBarSliderHandleHoldDuration);
-
-        elapsed = 0f;
-        while (elapsed < healthBarSliderHandleScaleDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / healthBarSliderHandleScaleDuration;
-            healthBarSliderHandle.transform.localScale = Vector3.Lerp(targetScale, Vector3.zero, healthBarSliderHandleScaleCurve.Evaluate(t));
-            yield return null;
-        }
-
-        healthBarSliderHandle.transform.localScale = Vector3.zero;
+        catch (OperationCanceledException) { }
     }
 
     public void SetShield(float current, float max)
@@ -179,44 +198,141 @@ public class TopDownEnemyUIController : MonoBehaviour
 
         if (isDamage)
         {
-            // Damage: backfill lingers then animates down
             SetShieldBarBackFillColor(shieldBarBackFillHurtColor);
 
-            if (shieldBackFillCoroutine != null) StopCoroutine(shieldBackFillCoroutine);
-            shieldBackFillCoroutine = StartCoroutine(AnimateShieldBarBackFill());
+            shieldBackFillCTS?.Cancel();
+            shieldBackFillCTS?.Dispose();
+            shieldBackFillCTS = new CancellationTokenSource();
+            AnimateShieldBarBackFillAsync(shieldBackFillCTS.Token).Forget();
+
+            if (current <= 0 && !isShieldBreakPlaying)
+                PlayShieldBreakAnimationAsync().Forget();
         }
         else
         {
-            // Heal/restore: snap backfill immediately to match main bar
-            if (shieldBackFillCoroutine != null)
-            {
-                StopCoroutine(shieldBackFillCoroutine);
-                shieldBackFillCoroutine = null;
-            }
+            shieldBackFillCTS?.Cancel();
+            shieldBackFillCTS?.Dispose();
+            shieldBackFillCTS = null;
+
             if (shieldBarBackFill != null)
                 shieldBarBackFill.fillAmount = newValue;
         }
     }
 
-    private IEnumerator AnimateShieldBarBackFill()
+    private async UniTaskVoid AnimateShieldBarBackFillAsync(CancellationToken ct)
     {
-        if (shieldBarBackFill == null || shieldBarSlider == null) yield break;
+        if (shieldBarBackFill == null || shieldBarSlider == null) return;
 
-        yield return Helpers.GetWaitForSeconds(shieldBarBackFillDelayDuration);
-
-        float startFillAmount = shieldBarBackFill.fillAmount;
-        float targetFillAmount = shieldBarSlider.value;
-        float elapsed = 0f;
-
-        while (elapsed < shieldBarBackFillAnimationDuration)
+        try
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / shieldBarBackFillAnimationDuration;
-            shieldBarBackFill.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, shieldBarBackFillCurve.Evaluate(t));
-            yield return null;
+            await UniTask.Delay(TimeSpan.FromSeconds(shieldBarBackFillDelayDuration), cancellationToken: ct);
+
+            float startFillAmount = shieldBarBackFill.fillAmount;
+            float targetFillAmount = shieldBarSlider.value;
+            float elapsed = 0f;
+
+            while (elapsed < shieldBarBackFillAnimationDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / shieldBarBackFillAnimationDuration;
+                shieldBarBackFill.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, shieldBarBackFillCurve.Evaluate(t));
+                await UniTask.Yield(PlayerLoopTiming.Update, ct);
+            }
+
+            shieldBarBackFill.fillAmount = targetFillAmount;
+        }
+        catch (OperationCanceledException) { }
+    }
+
+    private async UniTaskVoid PlayShieldBreakAnimationAsync()
+    {
+        if (shieldBreakObj == null) return;
+
+        isShieldBreakPlaying = true;
+        shieldBreakObj.gameObject.SetActive(true);
+
+        shieldBreakObj.transform.localScale = shieldBreakOriginalScale;
+        Vector3 targetScale = shieldBreakOriginalScale * targetshieldBreakScale;
+
+        shieldBreakMaterial.SetFloat("_Alpha", 0f);
+
+        bool hasBackGlow = shieldBreakBackGlow != null;
+        Vector3 backGlowTargetScale = shieldBreakBackGlowOriginalScale * shieldBreakBackGlowTargetScale;
+        if (hasBackGlow)
+        {
+            shieldBreakBackGlow.gameObject.SetActive(true);
+            shieldBreakBackGlow.transform.localScale = shieldBreakBackGlowOriginalScale;
+            shieldBreakBackGlowMaterial.SetFloat("_Emission", shieldBreakBackGlowOriginalEmission);
         }
 
-        shieldBarBackFill.fillAmount = targetFillAmount;
+        float totalFadeDuration = shieldBreakFadeInDuration + shieldBreakHoldDuration + shieldBreakFadeOutDuration;
+        float scaleElapsed = 0f;
+        float fadeElapsed = 0f;
+        float backGlowEmissionElapsed = 0f;
+
+        var ct = this.GetCancellationTokenOnDestroy();
+
+        while (scaleElapsed < shieldBreakScaleDuration || fadeElapsed < totalFadeDuration)
+        {
+            float dt = Time.deltaTime;
+
+            // --- Scale ---
+            if (scaleElapsed < shieldBreakScaleDuration)
+            {
+                scaleElapsed += dt;
+                float scaleT = Mathf.Clamp01(scaleElapsed / shieldBreakScaleDuration);
+                shieldBreakObj.transform.localScale = Vector3.Lerp(shieldBreakOriginalScale, targetScale, scaleT);
+
+                if (hasBackGlow)
+                    shieldBreakBackGlow.transform.localScale = Vector3.Lerp(shieldBreakBackGlowOriginalScale, backGlowTargetScale, scaleT);
+            }
+
+            // --- _Alpha: fade in → hold → fade out ---
+            if (fadeElapsed < totalFadeDuration)
+            {
+                fadeElapsed += dt;
+
+                float alpha;
+                if (fadeElapsed < shieldBreakFadeInDuration)
+                {
+                    alpha = fadeElapsed / shieldBreakFadeInDuration;
+                }
+                else if (fadeElapsed < shieldBreakFadeInDuration + shieldBreakHoldDuration)
+                {
+                    alpha = 1f;
+                }
+                else
+                {
+                    float fadeOutElapsed = fadeElapsed - shieldBreakFadeInDuration - shieldBreakHoldDuration;
+                    alpha = 1f - Mathf.Clamp01(fadeOutElapsed / shieldBreakFadeOutDuration);
+                }
+
+                shieldBreakMaterial.SetFloat("_Alpha", alpha);
+            }
+
+            // --- Backglow _Emission: og → 0 ---
+            if (hasBackGlow && backGlowEmissionElapsed < shieldBreakBackGlowEmissionLerpDuration)
+            {
+                backGlowEmissionElapsed += dt;
+                float emissionT = Mathf.Clamp01(backGlowEmissionElapsed / shieldBreakBackGlowEmissionLerpDuration);
+                shieldBreakBackGlowMaterial.SetFloat("_Emission", Mathf.Lerp(shieldBreakBackGlowOriginalEmission, 0f, emissionT));
+            }
+
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
+        }
+
+        shieldBreakMaterial.SetFloat("_Alpha", 0f);
+        shieldBreakObj.transform.localScale = shieldBreakOriginalScale;
+        shieldBreakObj.gameObject.SetActive(false);
+
+        if (hasBackGlow)
+        {
+            shieldBreakBackGlowMaterial.SetFloat("_Emission", 0f);
+            shieldBreakBackGlow.transform.localScale = shieldBreakBackGlowOriginalScale;
+            shieldBreakBackGlow.gameObject.SetActive(false);
+        }
+
+        isShieldBreakPlaying = false;
     }
 
     public float GetHealthPercentage() => maxHealth > 0 ? currentHealth / maxHealth : 0;
