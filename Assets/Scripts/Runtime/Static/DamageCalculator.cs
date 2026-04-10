@@ -28,7 +28,7 @@ public static class DamageCalculator
         var elementalDamageMultiplier = ElementalManager.Instance.GetDamageMultiplier(attackElementalType, defenderStats.ElementalType);
         finalDamage *= elementalDamageMultiplier;
 
-        return Mathf.RoundToInt(finalDamage);
+        return Mathf.Max(0, Mathf.RoundToInt(finalDamage));
     }
 
     private static float GetElementalDamageStat(ElementalType elementalType, CharacterStats characterStats)

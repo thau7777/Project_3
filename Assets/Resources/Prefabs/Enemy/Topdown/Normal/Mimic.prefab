@@ -198,7 +198,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2060567578959206144}
+  - {fileID: 3179023505963447615}
   - {fileID: 1076293620184259748}
   - {fileID: 3774847447718513864}
   m_Father: {fileID: 0}
@@ -290,6 +290,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
+  isBoss: 0
+  _phaseTransitionVFXDatasList: []
+  _phaseTransitionSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 0}
+  _deathSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 0}
   _movementType: 1
   _minRangeDistance: 5
   _maxRangeDistance: 10
@@ -313,6 +323,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 00e56e15a1109d341a9e800879099c46, type: 2}
@@ -345,6 +356,9 @@ MonoBehaviour:
     <IsMoreHurt>k__BackingField: 0
     <IsStunned>k__BackingField: 0
     <IsDead>k__BackingField: 0
+    <IsBoss>k__BackingField: 0
+    <IsChangingPhase>k__BackingField: 0
+    <IsChangedPhase>k__BackingField: 0
 --- !u!114 &7989440567087409669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,7 +448,7 @@ MonoBehaviour:
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 883167730367998460}
+      - m_Target: {fileID: 4379493479599934403}
         m_TargetAssemblyTypeName: TopDownEnemyUIController, Assembly-CSharp
         m_MethodName: SetHealth
         m_Mode: 0
@@ -449,7 +463,7 @@ MonoBehaviour:
   OnShieldChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 883167730367998460}
+      - m_Target: {fileID: 4379493479599934403}
         m_TargetAssemblyTypeName: TopDownEnemyUIController, Assembly-CSharp
         m_MethodName: SetShield
         m_Mode: 0
@@ -461,6 +475,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnStartPhaseTransition:
+    m_PersistentCalls:
+      m_Calls: []
   floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}
   parrySuccessVFXSettings: {fileID: 0}
   _HurtSound:
@@ -485,7 +502,7 @@ MonoBehaviour:
   OnEffectAdded:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6773438836122897222}
+      - m_Target: {fileID: 7964234381762849145}
         m_TargetAssemblyTypeName: EffectUIController, Assembly-CSharp
         m_MethodName: OnEffectAdded
         m_Mode: 0
@@ -500,7 +517,7 @@ MonoBehaviour:
   OnEffectRemoved:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6773438836122897222}
+      - m_Target: {fileID: 7964234381762849145}
         m_TargetAssemblyTypeName: EffectUIController, Assembly-CSharp
         m_MethodName: OnEffectRemoved
         m_Mode: 0
@@ -1305,7 +1322,7 @@ MonoBehaviour:
   customRadius: 2
   radiusMultiplier: 2
   alwaysUseBounds: 0
---- !u!1001 &2040440959958654047
+--- !u!1001 &3231236511100026464
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1339,11 +1356,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 2.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1.8
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1375,11 +1392,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3
+      value: 2.33
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1409,38 +1426,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4520016364210386985, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1457,19 +1442,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas Enemy Status
       objectReference: {fileID: 0}
-    - target: {fileID: 8730498759427676704, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e8ca19dd815b5ba48a74c8d5b76b91ca, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
---- !u!114 &883167730367998460 stripped
+--- !u!224 &3179023505963447615 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+  m_PrefabInstance: {fileID: 3231236511100026464}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4379493479599934403 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1157634428438197667, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-  m_PrefabInstance: {fileID: 2040440959958654047}
+  m_PrefabInstance: {fileID: 3231236511100026464}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -1477,15 +1463,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2194e86de77d9be4584a66f54979f7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatusBarsUIController
---- !u!224 &2060567578959206144 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-  m_PrefabInstance: {fileID: 2040440959958654047}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6773438836122897222 stripped
+--- !u!114 &7964234381762849145 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4778614449240987417, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-  m_PrefabInstance: {fileID: 2040440959958654047}
+  m_PrefabInstance: {fileID: 3231236511100026464}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1

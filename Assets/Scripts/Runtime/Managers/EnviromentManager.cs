@@ -35,9 +35,7 @@ public class EnviromentManager : Singleton<EnviromentManager>
     }
 
     [TabGroup("BasicMaps"), SerializeField] private List<MapInfo> _mapInfos;
-    [TabGroup("SnowSpecialSettings"), SerializeField] private CameraCullingMaskController _maskController;
-    [TabGroup("SnowSpecialSettings"), SerializeField] private Camera _mainCamera;
-    [TabGroup("SnowSpecialSettings"), SerializeField] private LayerMask _skillIndicatorLayer;
+    [TabGroup("SnowSpecialSettings"), SerializeField] private Camera _skillIndicatorCamera;
 
     [TabGroup("SoundSettings"), SerializeField] private float _transitionDuration = default;
 
@@ -106,11 +104,9 @@ public class EnviromentManager : Singleton<EnviromentManager>
     private void EnableMap(EMap mapType)
     {
         if (mapType == EMap.IceLand)
-        {
-            _maskController.AddLayerToCulling(_skillIndicatorLayer);
-            //remove that indicator layer from main
-            _mainCamera.cullingMask &= ~_skillIndicatorLayer;
-        }
+            _skillIndicatorCamera.gameObject.SetActive(true);
+        else
+            _skillIndicatorCamera.gameObject.SetActive(false);
         foreach (var mapInfo in _mapInfos)
         {
             if (mapInfo.MapType != mapType) continue;

@@ -154,7 +154,7 @@ public class FloatingCombatText : Flyweight
         transform.localScale = Vector3.zero;
 
         TextStyle style = GetStyle(type);
-        _tmp.text = text;
+        _tmp.text = isCrit ? "Crit: " + text : text;
         ApplyColors(style.faceColor, style.outlineColor, style.underlayColor, 1f);
 
         float targetScale = isCrit ? critScale : normalScale;

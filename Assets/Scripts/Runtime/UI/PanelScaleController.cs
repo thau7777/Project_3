@@ -8,6 +8,8 @@ public class PanelScaleController : MonoBehaviour
     [SerializeField] private float duration = 0.5f;
     [SerializeField] private AnimationCurve scaleCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+    [SerializeField] private float _delayDuration = 1;
+
     private CancellationTokenSource _cts;
     private EventBinding<TopdownStartGameEvent> _startGameEventBinding;
 
@@ -29,11 +31,12 @@ public class PanelScaleController : MonoBehaviour
         SetScaleX(0f);
     }
 
-    public void ScaleIn()
+    public async void ScaleIn()
     {
         if(!TopDownGameManager.Instance.isBossFighting) return;
         CancelCurrentTween();
         _cts = new CancellationTokenSource();
+        await UniTask.Delay((int)(_delayDuration * 1000), cancellationToken: _cts.Token);
         ScaleXAsync(0f, 1f, _cts.Token).Forget();
     }
 

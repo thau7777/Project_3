@@ -59,7 +59,7 @@ public class SkillStrategy : ScriptableObject, IStrategy
 
     [TabGroup("Skill Settings")]
     [SerializeField]
-    private float _manaCost = 20;
+    protected float _manaCost = 20;
     public float ManaCost => _manaCost;
 
     [TabGroup("Skill Settings")]

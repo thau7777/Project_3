@@ -1265,6 +1265,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTopdownStateDriver
   settings: {fileID: 0}
+  isBoss: 0
+  _phaseTransitionVFXDatasList: []
+  _phaseTransitionSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 0}
+  _deathSound:
+    _entity: {fileID: 0}
+    ID: 0
+    <DebugObject>k__BackingField: {fileID: 0}
   _movementType: 2
   _minRangeDistance: 5
   _maxRangeDistance: 10
@@ -1288,6 +1298,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack1
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 9fe937f3e3f47a943bf10bb3365c218e, type: 2}
@@ -1325,6 +1336,7 @@ MonoBehaviour:
     reverseKnockbackDirection: 0
     knockBackForce: 10
     stunTime: 0
+    forPhaseTwo: 0
     executeAnimationName: Attack2
     crossfadeDuration: 0.1
     skillVFX: {fileID: 11400000, guid: 7cb3912c40e6d1041987267f93ede405, type: 2}
@@ -1357,6 +1369,9 @@ MonoBehaviour:
     <IsMoreHurt>k__BackingField: 0
     <IsStunned>k__BackingField: 0
     <IsDead>k__BackingField: 0
+    <IsBoss>k__BackingField: 0
+    <IsChangingPhase>k__BackingField: 0
+    <IsChangedPhase>k__BackingField: 0
 --- !u!114 &6647616986771868724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,6 +1488,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnStartPhaseTransition:
+    m_PersistentCalls:
+      m_Calls: []
   floatingCombatTextSettings: {fileID: 11400000, guid: 3af78a71fa804284395f41ef94738c45, type: 2}
   parrySuccessVFXSettings: {fileID: 0}
   _HurtSound:
@@ -1773,11 +1791,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 2.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1.8
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1809,11 +1827,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.5
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 56718812932918111, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1843,38 +1861,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717051999281951799, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615212196529226864, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4520016364210386985, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1891,14 +1877,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas Enemy Status
       objectReference: {fileID: 0}
-    - target: {fileID: 7268836684681724333, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_PresetInfoIsWorld
+    - target: {fileID: 8551639876834427505, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+      propertyPath: m_Value
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8730498759427676704, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e8ca19dd815b5ba48a74c8d5b76b91ca, type: 3}
+    - target: {fileID: 8551639876834427505, guid: 4d8a45d96e12c1440ac5eaf96d6a2643, type: 3}
+      propertyPath: m_MinValue
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
