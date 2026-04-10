@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5782876112342725029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6446254430829711183}
+  - component: {fileID: 2218692229199110198}
+  m_Layer: 0
+  m_Name: CardPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6446254430829711183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782876112342725029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.13754, y: -1910.4265, z: 24.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2218692229199110198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782876112342725029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bbc2bc7c8bf8be47a7077a926663d34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardPoolManager
+  configs:
+  - prefab: {fileID: 6706867454956550920, guid: 8095dad4b10dd7047a9d65c8c7712bdb, type: 3}
+    initialSize: 10
+  - prefab: {fileID: 2439269997888150485, guid: 6ad4c164c96fd2144b478037e3d1ec8f, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 5760146459789470823, guid: 7aa1b541bc94dad4e97559bf485c2d70, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 6425155270267918786, guid: 5c9a3015eb712594599adb58fd56d159, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 497234182093492210, guid: e541dc20fb2e87c46a5d53b682d46146, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 2419900282654632319, guid: 8f230b5ae8330e647a24eb8170f3972e, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 7518516971101048079, guid: 3fe228f7cd9fb184db862b043f9d7aed, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 6109845597459127307, guid: 921f9ddc9e8a35b40b893d8c9447703a, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 1705897956459418071, guid: 8205f06e5b9131c418275d9927013479, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 6732185119051698330, guid: 68a06c255f98951438de15f9794699dd, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 8827573456314208196, guid: 12a704f85f4b9dd4bb86f43d9b0ef71d, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 5336669791964051760, guid: 5d81881f9e9b152409d04bb1adf8f873, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 6521434741793382012, guid: f8ade6d2d04945a43a1b3d047fb8400b, type: 3}
+    initialSize: 2
+  - prefab: {fileID: 5207798281686709345, guid: 4924962d2f1910a47a052eaf090a783e, type: 3}
+    initialSize: 2
+  collectionCheck: 1
+  maxSize: 10
