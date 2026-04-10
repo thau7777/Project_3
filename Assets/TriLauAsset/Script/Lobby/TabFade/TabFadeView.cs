@@ -1,3 +1,4 @@
+using MyRule.CommandPattern;
 using MyRule.Event;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -48,6 +49,8 @@ namespace MyRule.UI
                     inputReader.SwitchActionMap(ActionMap.DiceRoll);
                     break;
             }
+
+            CommandInvoker.UndoCommand();
         }
 
         public override void Show()
