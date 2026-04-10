@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MyRule.Audio;
@@ -107,10 +107,19 @@ namespace Turnbase
             {
                 if (selectedSkill.targetType == SkillTargetType.Enemy || selectedSkill.targetType == SkillTargetType.Ally)
                 {
+                    int leftDir = -1;
+                    int rightDir = 1;
+
+                    if (selectedSkill.skillType == SkillType.Buff || selectedSkill.skillType == SkillType.Heal || selectedSkill.skillType == SkillType.Shield)
+                    {
+                        leftDir = 1;
+                        rightDir = -1;
+                    }
+
                     if (Input.GetKeyDown(KeyCode.A))
-                        UpdateTarget(-1);
+                        UpdateTarget(leftDir);
                     if (Input.GetKeyDown(KeyCode.D))
-                        UpdateTarget(1);
+                        UpdateTarget(rightDir);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Escape))

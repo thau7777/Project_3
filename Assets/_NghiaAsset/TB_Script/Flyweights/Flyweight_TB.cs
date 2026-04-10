@@ -9,6 +9,13 @@ namespace Turnbase
         {
             transform.position = position;
             transform.rotation = rotation;
+
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+            foreach (ParticleSystem p in particles)
+            {
+                p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                p.Play(true);
+            }
         }
         public void ReturnToPool()
         {

@@ -69,6 +69,8 @@ namespace MyRule
             EnterEnding().Forget();
 
             inputReader.SwitchActionMap(ActionMap.DiceRoll);
+
+            FinishMatch();
         }
 
         private void Update()
@@ -200,5 +202,10 @@ namespace MyRule
                     break;
             }
         }
+
+        private void FinishMatch()
+        {
+            MatchManager.Instance.FinishMatch();
+        }    
     }
 }

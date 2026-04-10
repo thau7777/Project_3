@@ -141,10 +141,42 @@ namespace Turnbase
             {
                 animationToPlay = skill.animationLastHitName;
                 Debug.Log("<color=red>[INFO]</color> Last Hit");
-            }            
+            }
+
+            int stateHash = Animator.StringToHash(animationToPlay);
+            bool hasState = !string.IsNullOrEmpty(animationToPlay) && user.animator.HasState(0, stateHash);
+
+            if (!hasState)
+            {
+                if (!string.IsNullOrEmpty(animationToPlay))
+                {
+                    Debug.LogWarning($"<color=orange>[WARNING]</color> Animation state '{animationToPlay}' not found on Layer 0 of {user.name}. Falling back to 'Attack'.");
+                }
+
+                animationToPlay = "Attack";
+
+                // Safety second check: if 'Attack' is also missing
+                if (!user.animator.HasState(0, Animator.StringToHash("Attack")))
+                {
+                    Debug.LogError($"<color=red>[ERROR]</color> Neither '{animationToPlay}' nor 'Attack' exist in {user.name}'s Animator Layer 0. Verify state names and Layer index.");
+                }
+            }
+
             user.animator.Play(animationToPlay, 0, 0f);
 
-            while (!damageApplied) yield return null;
+            float startTime = Time.time;
+            float timeout = 2.5f;
+
+            while (!damageApplied && Time.time < startTime + timeout) 
+            {
+                yield return null;
+            }
+
+            if (!damageApplied)
+            {
+                Debug.LogWarning($"<color=yellow>[WARNING]</color> Animation '{animationToPlay}' on {user.name} didn't trigger hit callback (possibly missing state or event). Forcing damage.");
+                hitAction.Invoke();
+            }
 
             int extraHits = (skill.numberOfHits > 0 ? skill.numberOfHits : 1) - 1;
             if (extraHits > 0)

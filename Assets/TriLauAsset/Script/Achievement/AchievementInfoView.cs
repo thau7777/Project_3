@@ -20,12 +20,23 @@ namespace MyRule.UI
         [SerializeField] private TextMeshProUGUI rewardText;
         [SerializeField] private Sprite goldSprite;
         [SerializeField] private Sprite crystalSprite;
+        [SerializeField] private Button button;
 
         [SerializeField] private AchievementConfig achivementConfig;
 
         private AchievementData achievementData;
 
         public bool Unlocked => unlocked;
+
+        private void OnEnable()
+        {
+            button.onClick.AddListener(ReceiveReward);
+        }
+
+        private void OnDisable()
+        {
+            button.onClick?.RemoveListener(ReceiveReward);
+        }
 
         public void SetAchievement(AchievementData achievementData)
         {
@@ -94,14 +105,19 @@ namespace MyRule.UI
 
         public void OnSubmit(BaseEventData eventData)
         {
+            ReceiveReward();
+        }
+
+        private void ReceiveReward()
+        {
             if (unlocked)
             {
                 hasReceiveReward = true;
                 hasReceive.SetActive(true);
-                achievementData.ReceiveRewards();   
+                achievementData.ReceiveRewards();
                 AchievementManager.Instance.GiveReward(achivementConfig);
             }
-            
+
             return;
         }
     }

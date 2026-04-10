@@ -9,6 +9,8 @@ namespace MyRule
     {
         [SerializeField] private List<Planet> planets;
         [SerializeField] private CinemachineCamera planetCam;
+        [SerializeField] private GameObject holotableSuggest;
+        [SerializeField] private GameObject planetSugget;
         public Planet planetTargetd;
 
         public bool isPlanetShow;
@@ -34,6 +36,9 @@ namespace MyRule
 
             ShowPlanetCinemachineCam();
 
+            holotableSuggest.SetActive(false);
+            planetSugget.SetActive(true);
+
             isPlanetShow = true;
         }
 
@@ -49,6 +54,9 @@ namespace MyRule
             ScifiMouseController.instance?.UnlockMouse();
 
             HideCinemachineCam();
+
+            holotableSuggest?.SetActive(true);
+            planetSugget?.SetActive(false);
 
             planetTargetd = null;
             isPlanetShow = false;

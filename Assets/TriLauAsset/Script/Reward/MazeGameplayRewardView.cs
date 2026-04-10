@@ -56,7 +56,7 @@ namespace MyRule
             EventBus<MazeGameplayRewardEvent>.Deregister(rewardEvt);
         }
 
-        protected async override void Start()
+        protected override void Start()
         {
             cts = new CancellationTokenSource();
 
@@ -70,6 +70,7 @@ namespace MyRule
 
         private void HandleReward(MazeGameplayRewardEvent evt)
         {
+            Debug.Log("+ reward");
             reward = evt.reward;
             locking--;
             Show();
@@ -160,14 +161,7 @@ namespace MyRule
             
             await UniTask.Delay(300);
 
-            if (reward != null)
-            {
-                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(reward.RuneAmount));
-            }
-            else
-            {
-                EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(10));
-            }
+            EventBus<ReceiveRuneEvent>.Raise(new ReceiveRuneEvent(reward.RuneAmount));
 
             SpawnRewardSigil();
         }

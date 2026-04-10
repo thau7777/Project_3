@@ -35,7 +35,7 @@ namespace MyRule
         public string achievementName;
         public Sprite icon;
         public AchievementType type;
-        [ShowIfEnumValue("type", AchievementType.KillEnemy)] public int targetValue;
+        public int targetValue;
         [ShowIfEnumValue("type", AchievementType.Discovery)] public EMap targetMap;
         [ShowIfEnumValue("type", AchievementType.CollectSigil)] public SigilSO targetSigil;
 
