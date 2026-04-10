@@ -46,9 +46,8 @@ public class TutorialManager : MonoBehaviour
     private Coroutine _pulseCoroutine;
     private Transform _anchorTarget;
     private TutorialStepBinding[] _stepBindings;
-    private TutorialStepBinding _currentBinding;   // ← ADD
-    private bool _mouseClickedTarget;              // ← ADD
-    // Snapshot of every action that was enabled before we blocked input.
+    private TutorialStepBinding _currentBinding;
+    private bool _mouseClickedTarget;
     private readonly List<InputAction> _snapshotEnabledActions = new();
 
     private struct UIParentRecord
@@ -59,6 +58,7 @@ public class TutorialManager : MonoBehaviour
         public Vector3 originalLocalScale;
         public Vector3 originalLocalPosition;
         public Quaternion originalLocalRotation;
+        public bool originalActiveSelf;   // ← NEW: snapshot active state
     }
     private readonly List<UIParentRecord> _movedUIObjects = new();
 
@@ -125,7 +125,6 @@ public class TutorialManager : MonoBehaviour
         {
             if (action == continueAction) continue;
 
-            // Keep UI EventSystem actions alive so mouse clicks still register
             if (action.name == "Point" ||
                 action.name == "Click" ||
                 action.name == "Navigate" ||
@@ -153,7 +152,6 @@ public class TutorialManager : MonoBehaviour
         {
             if (action == continueAction) continue;
 
-            // Keep UI EventSystem actions alive so mouse clicks still register
             if (action.name == "Point" ||
                 action.name == "Click" ||
                 action.name == "Navigate" ||
@@ -210,14 +208,12 @@ public class TutorialManager : MonoBehaviour
 
             if (needsInput)
             {
-                // ── Set up click listener ──────────────────────────
                 if (step.waitForMouseClick)
                 {
                     _mouseClickedTarget = false;
                     AddClickListeners(_currentBinding?.highlightTargets);
                 }
 
-                // ── Block input appropriately ──────────────────────
                 if (step.waitForAnyKey)
                 {
                     BlockAllActionsExceptButtonPressDetect(continueAction);
@@ -229,9 +225,7 @@ public class TutorialManager : MonoBehaviour
                     else
                         BlockAllActionsExcept(continueAction);
                 }
-                // waitForMouseClick only → no key blocking needed
 
-                // ── Build unified wait condition ───────────────────
                 bool anyKeyPressed = false;
                 IDisposable subscription = null;
 
@@ -257,7 +251,6 @@ public class TutorialManager : MonoBehaviour
                 subscription?.Dispose();
                 subscription = null;
 
-                // ── Cleanup ────────────────────────────────────────
                 if (step.waitForMouseClick)
                     RemoveClickListeners(_currentBinding?.highlightTargets);
 
@@ -265,7 +258,6 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
-                // Auto-advance
                 float elapsed = 0f;
                 while (elapsed < step.autoAdvanceDelay && _stepIndex == entryIndex)
                 {
@@ -293,6 +285,7 @@ public class TutorialManager : MonoBehaviour
         Time.timeScale = 1f;
         _isRunning = false;
     }
+
     // ── Mouse Click Helpers ────────────────────────────────────
 
     private void AddClickListeners(GameObject[] targets)
@@ -303,7 +296,6 @@ public class TutorialManager : MonoBehaviour
         {
             if (obj == null) continue;
 
-            // Collect all raycastable Graphics on self AND children
             var graphics = obj.GetComponentsInChildren<Graphic>(includeInactive: false);
 
             if (graphics.Length == 0)
@@ -344,7 +336,6 @@ public class TutorialManager : MonoBehaviour
         {
             if (obj == null) continue;
 
-            // Clean up from self AND all children
             var triggers = obj.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(includeInactive: false);
 
             foreach (var trigger in triggers)
@@ -357,6 +348,7 @@ public class TutorialManager : MonoBehaviour
             }
         }
     }
+
     private void ShowStep(TutorialStep step, int stepIndex)
     {
         if (buttonToPressText) buttonToPressText.text = step.buttonToPressText;
@@ -365,22 +357,20 @@ public class TutorialManager : MonoBehaviour
         tutorialBox.SetActive(true);
         buttonToPressText.gameObject.SetActive(step.buttonToPressText != "");
 
-        _currentBinding = (_stepBindings != null && stepIndex < _stepBindings.Length)  // ← STORE IT
+        _currentBinding = (_stepBindings != null && stepIndex < _stepBindings.Length)
             ? _stepBindings[stepIndex] : null;
 
         Transform anchor = (_currentBinding?.anchorOverride != null) ? _currentBinding.anchorOverride : _anchorTarget;
 
         CleanupHighlights();
 
-        // DEBUG: kiểm tra trạng thái binding
         Debug.Log($"[Tutorial] ShowStep {stepIndex} — binding={(object)_currentBinding ?? "NULL"} | " +
                   $"highlightTargets={(_currentBinding?.highlightTargets?.Length.ToString() ?? "null")} | " +
                   $"targetIdKeys={(_currentBinding?.targetIdKeys?.Length.ToString() ?? "null")}");
 
-        // Ưu tiên highlightTargets kéo thả; nếu không có thì tìm theo targetIdKeys
         if (_currentBinding?.highlightTargets != null && _currentBinding.highlightTargets.Length > 0)
         {
-            foreach (var t in _currentBinding.highlightTargets)
+            foreach (var t in _currentBinding.highlightTargets) { }
             LiftUIObjects(_currentBinding.highlightTargets);
         }
         else if (_currentBinding?.targetIdKeys != null && _currentBinding.targetIdKeys.Length > 0)
@@ -539,12 +529,11 @@ public class TutorialManager : MonoBehaviour
         {
             if (obj == null) continue;
 
-            // Check if this object lives inside a World Space Canvas
             Canvas parentCanvas = obj.GetComponentInParent<Canvas>();
             bool isInWorldSpaceCanvas = parentCanvas != null
                                      && parentCanvas.renderMode == RenderMode.WorldSpace;
 
-            // Snapshot full transform state before any changes
+            // ── Snapshot full state including active self ──────────
             _movedUIObjects.Add(new UIParentRecord
             {
                 obj = obj,
@@ -552,25 +541,22 @@ public class TutorialManager : MonoBehaviour
                 originalSiblingIndex = obj.transform.GetSiblingIndex(),
                 originalLocalScale = obj.transform.localScale,
                 originalLocalPosition = obj.transform.localPosition,
-                originalLocalRotation = obj.transform.localRotation
+                originalLocalRotation = obj.transform.localRotation,
+                originalActiveSelf = obj.activeSelf   // ← NEW
             });
+
+            // ── Force visible so it shows above the overlay ────────
+            obj.SetActive(true);                        // ← NEW
 
             if (isInWorldSpaceCanvas)
             {
-                // ── World Space Canvas element ──────────────────────────────
-                // 1. Capture world position BEFORE reparenting
                 Vector3 worldPos = obj.transform.position;
-
-                // 2. Convert world position → screen point via reference camera
                 Vector2 screenPoint = cam.WorldToScreenPoint(worldPos);
 
-                // 3. Reparent into the highlight canvas (no worldPositionStays so
-                //    scale/rotation don't inherit the world-space canvas transform)
                 obj.transform.SetParent(highlightCanvas.transform, worldPositionStays: false);
                 obj.transform.localScale = Vector3.one * 100;
                 obj.transform.localRotation = Quaternion.identity;
-                // 4. Convert screen point → local position inside the highlight canvas
-                //    and apply it so the element sits exactly where it did on screen
+
                 if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                         canvasRect, screenPoint, highlightCanvas.worldCamera, out Vector2 localPoint))
                 {
@@ -579,10 +565,7 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
-                // ── Regular Screen Space UI element ─────────────────────────
                 obj.transform.SetParent(highlightCanvas.transform, worldPositionStays: true);
-                //obj.transform.localScale = obj.transform.localScale;
-                //obj.transform.localRotation = Quaternion.identity;
             }
         }
     }
@@ -598,6 +581,7 @@ public class TutorialManager : MonoBehaviour
             record.obj.transform.localScale = record.originalLocalScale;
             record.obj.transform.localPosition = record.originalLocalPosition;
             record.obj.transform.localRotation = record.originalLocalRotation;
+            record.obj.SetActive(record.originalActiveSelf);   // ← NEW: restore original active state
         }
         _movedUIObjects.Clear();
     }
