@@ -197,6 +197,9 @@ namespace Turnbase
                     await UniTask.Delay(3000);
                     //CharacterManager.Instance.SetCurrentHealth(activeCharacter.stats.currentHP);
                     TB_Menu.instance.ShowLoseMenu();
+
+                    CheckWinCondition(false);
+
                 }
             }
         }
@@ -379,6 +382,8 @@ namespace Turnbase
             else
             {
                 CombatManager.Instance.SetCombatResultLose();
+                Debug.LogWarning("Check Lose");
+
             }
         }
 
