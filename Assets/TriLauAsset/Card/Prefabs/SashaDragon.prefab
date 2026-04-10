@@ -535,10 +535,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardRotator
   card: {fileID: 6109845597459127307}
-  maxRotationX: 30
-  maxRotationY: 30
-  rotationSpeed: 1
-  snapBackDuration: 0.1
 --- !u!65 &6070166277730309833
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -585,6 +581,7 @@ MonoBehaviour:
   sigilReplacedContainer: {fileID: 7025641721382172616}
   sigilReplacedIcon: {fileID: 4301621473366387255}
   sigilReplaced: {fileID: 0}
+  replaceIndex: -1
   cardRotator: {fileID: 1775175376743237044}
   clickAnimate: {fileID: 4381578879972699451}
 --- !u!114 &4381578879972699451
@@ -761,7 +758,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 5064940649984691210, guid: 1125c183d9d27d046bd2207b43c561f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -807,8 +804,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ascascascascascascsacascascsacascascascascascascascascac
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1125c183d9d27d046bd2207b43c561f7, type: 2}
+  m_sharedMaterial: {fileID: 5064940649984691210, guid: 1125c183d9d27d046bd2207b43c561f7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

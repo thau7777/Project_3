@@ -229,7 +229,7 @@ namespace Turnbase
                 }
                 else
                 {
-                    for (int i = 4; i < storageManager.SigilStorageData.ActiveSigils.Length; i++)
+                    for (int i = 0; i < 8 ; i++)
                     {
                         SigilData sigilData = storageManager.SigilStorageData.ActiveSigils[i];
                         if (sigilData == null) continue;

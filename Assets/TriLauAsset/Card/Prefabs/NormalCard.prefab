@@ -298,6 +298,7 @@ MonoBehaviour:
   sigilReplacedContainer: {fileID: 1691164434218626246}
   sigilReplacedIcon: {fileID: 5569337607117599033}
   sigilReplaced: {fileID: 0}
+  replaceIndex: -1
   cardRotator: {fileID: 4555058064549172894}
   clickAnimate: {fileID: 7355434708267699690}
 --- !u!114 &4555058064549172894
@@ -313,10 +314,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyRule.CardRotator
   card: {fileID: 6706867454956550920}
-  maxRotationX: 30
-  maxRotationY: 30
-  rotationSpeed: 1
-  snapBackDuration: 0.2
 --- !u!114 &7355434708267699690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,15 +491,19 @@ PrefabInstance:
     - target: {fileID: 3503182483989991501, guid: 8d9c27f83a0360e47b8d918d184275f2, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: 1125c183d9d27d046bd2207b43c561f7, type: 2}
     - target: {fileID: 3503182483989991501, guid: 8d9c27f83a0360e47b8d918d184275f2, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 5064940649984691210, guid: 1125c183d9d27d046bd2207b43c561f7, type: 2}
+    - target: {fileID: 3503182483989991501, guid: 8d9c27f83a0360e47b8d918d184275f2, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4498305251547462887, guid: 8d9c27f83a0360e47b8d918d184275f2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 5064940649984691210, guid: 1125c183d9d27d046bd2207b43c561f7, type: 2}
     - target: {fileID: 7090562652814493655, guid: 8d9c27f83a0360e47b8d918d184275f2, type: 3}
       propertyPath: m_Name
       value: CardContents
