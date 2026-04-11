@@ -7700,7 +7700,7 @@ MonoBehaviour:
     enemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
   mapEnemies: {fileID: 11400000, guid: e2b66474030efeb468848c22c81d200f, type: 2}
   bossInMap: []
-  bossSO: {fileID: 11400000, guid: e745d4df2a202ea409ed8591ec8564ec, type: 2}
+  bossSO: {fileID: 11400000, guid: b606f99874fc9d648a7c2c77e8bca595, type: 2}
   enemyDataSOs: []
 --- !u!4 &274391605
 Transform:
@@ -54103,7 +54103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownGameManager
   isTestGameplay: 0
-  isTestBossFight: 1
+  isTestBossFight: 0
   isBossFighting: 0
   _inputReader: {fileID: 11400000, guid: 1ae59a0501ac9b14180ae2b1e9d19b44, type: 2}
   _player: {fileID: 1568225709}
@@ -59513,6 +59513,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 427494081520303406, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 427494081520303406, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
@@ -59854,7 +59858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2776591187190841794, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0.805
       objectReference: {fileID: 0}
     - target: {fileID: 3150108863160672813, guid: 1568c08e23cc01646a4a43439f903be6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -60460,7 +60464,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _delayDuration: 1
+  _delayDuration: 2
 --- !u!1001 &2096208980896328082
 PrefabInstance:
   m_ObjectHideFlags: 0

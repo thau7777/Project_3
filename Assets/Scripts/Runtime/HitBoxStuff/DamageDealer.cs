@@ -99,6 +99,13 @@ public class DamageDealer : MonoBehaviour
                 parriedDamage = isCrit ? Mathf.RoundToInt(parriedDamage * senderStats.CriticalMultiplier) : Mathf.RoundToInt(parriedDamage);
                 TopDownGameManager.Instance.AddParriedDamage(Mathf.RoundToInt(parriedDamage));
                 TopDownGameManager.Instance.TriggerParryEffect();
+
+                if(sender.TryGetComponent<EnemyTopdownStateDriver>(out var senderEnemy) &&
+                senderEnemy.TryGetComponent<Damageable>(out var senderEnemyDamageable) &&
+                senderEnemyDamageable.hasShieldBreakingMechanic &&
+                senderEnemyDamageable.CurrentShieldHealth > 0 &&
+                senderEnemyDamageable.CurrentHealth > 0)
+                    senderEnemyDamageable.TakeShieldDamage(10);
                 return;
             }
 

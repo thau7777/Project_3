@@ -113,9 +113,9 @@ public class TutorialTrigger : MonoBehaviour
     /// </summary>
     public async void Trigger()
     {
-        //if (GameSystemManager.Instance != null && 
-        //    GameSystemManager.Instance.GameData.Tutorial.HasCompletedTutorial(sequence.id)) 
-        //    return;
+        if (GameSystemManager.Instance != null &&
+            GameSystemManager.Instance.GameData.Tutorial.HasCompletedTutorial(sequence.id))
+            return;
 
         if (TutorialManager.Instance == null)
         {
