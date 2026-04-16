@@ -78,7 +78,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 <p align="center">
   <img src="README_assets/ComboAttack.gif" width="97%" />
 </p>
-<p align="center">** Skills, Weather And Map **</p>
+<p align="center">** Skills, Weather And Maps **</p>
 <p align="center">
   <img src="README_assets/Bubble.gif" width="32%" />
   <img src="README_assets/IceLance.gif" width="32%" />
