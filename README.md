@@ -34,9 +34,23 @@ The project is a **roguelike prototype** featuring two gameplay modes: **top-dow
 
 My work focuses specifically on the **top-down gameplay mode**, where I was responsible for implementing core gameplay systems, designing interactions, and enhancing overall game feel through visual and audio feedback.
 
-This repository reflects both my implementation work and my approach to gameplay system design, responsiveness, and real-time interaction.
+I focused on building **scalable gameplay systems using event-driven and pattern-based design**, while also improving player experience through responsive controls and immersive feedback.
 
-> 🔍 This repository is intended as a portfolio piece to demonstrate my gameplay programming and game feel design skills.
+> 🔍 This repository is intended as a portfolio piece to demonstrate my gameplay programming and system design skills.
+
+---
+
+## 📚 Table of Contents
+
+* [📌 About The Project](#-about-the-project)
+* [🖼️ Gameplay Preview](#-gameplay-preview)
+* [✨ Key Features](#-key-features-top-down-mode)
+* [👤 My Contribution](#-my-contribution)
+* [🧠 Technical Challenges & Observations](#-technical-challenges--observations)
+* [🚀 Proposed Improvements](#-proposed-improvements)
+* [🛠️ Tech Stack](#️-tech-stack)
+* [🧩 Design Approach & Patterns](#-design-approach--patterns)
+* [🧠 What I Learned](#-what-i-learned)
 
 ---
 
@@ -53,7 +67,22 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 * 🎯 Genre: Roguelike
 * 👨‍💻 Role: Gameplay Programmer (Top-down mode)
-* 🎮 Focus: Combat, interaction, and game feel
+* 🎮 Focus: Combat systems, interaction, and game feel
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 🖼️ Gameplay Preview
+
+<p align="center">
+  <img src="SCREENSHOT_1" width="45%" />
+  <img src="SCREENSHOT_2" width="45%" />
+</p>
+
+<p align="center">
+  <img src="GAMEPLAY_GIF" width="70%" />
+</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -62,11 +91,36 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 ## ✨ Key Features (Top-Down Mode)
 
 * ⚔️ Combo-based combat system
+
 * 🎮 Responsive player input handling
+
 * 🎥 Player-controlled camera system
+
+* 🧠 **Hierarchical State Machine (Player & Enemy AI)**
+  Implemented to drive both player and enemy behaviors, enabling structured and scalable state transitions.
+
+* 🧩 **Skill System (30+ skills)**
+  Designed using a **Strategy-based approach**, allowing each skill to encapsulate its own behavior and scale without modifying existing systems.
+
+* 🎒 **Item System (~10 types)**
+  Implemented using a similar strategy-driven structure for reusable and flexible item behaviors.
+
+* 📡 **Event-Driven Gameplay (Event Bus)**
+  Used extensively to decouple systems such as input, combat, VFX, and UI.
+
+* ♻️ **Optimized Object Management (Factory + Object Pooling)**
+  Combined a factory-style system with object pooling to manage and reuse gameplay objects and VFX efficiently.
+
 * 🌿 Dynamic environmental interaction
+
+  * Grass reacts to wind and nearby objects
+  * Leaves are displaced when entities move through them
+  * Snow surface deforms based on movement
+
 * 💥 VFX-driven feedback (VFX Graph & Particle System)
+
 * 🔊 Integrated sound effects for gameplay feedback
+
 * 🧩 UI elements tailored for top-down gameplay
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -75,32 +129,38 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 ## 👤 My Contribution
 
-I was responsible for the **design and implementation of the top-down gameplay mode**, including both technical systems and player experience.
+I was responsible for the **design and implementation of the top-down gameplay mode**, including both system architecture and player experience.
 
 ### 🎮 Gameplay Programming
 
 * Built core combat system (combo-based attacks)
-* Implemented player input handling
-* Designed gameplay responsiveness and control flow
+* Implemented input handling and gameplay flow
+* Designed responsive control system
+
+### 🧠 System Design
+
+* Implemented HSM for both player and enemy behaviors
+* Designed scalable skill and item systems using Strategy pattern
+* Built event-driven communication using Event Bus
 
 ### 🌍 Environment Interaction
 
 * Grass reacts dynamically to wind and nearby objects
 * Leaves are displaced when objects move through them
-* Snow surface deforms based on player movement
+* Snow deforms based on movement
 
 ### 💥 Visual Effects (VFX)
 
-* Designed and implemented VFX using Unity VFX Graph
-* Created particle systems for combat and environment feedback
+* Designed VFX using Unity VFX Graph
+* Created particle-based feedback systems
 
 ### 🔊 Audio Design
 
 * Integrated sound effects to enhance gameplay feedback
 
-### 🧩 UI (Top-Down Mode)
+### 🧩 UI
 
-* Designed and implemented gameplay UI
+* Designed and implemented gameplay UI for top-down mode
 
 ### 📁 Code Ownership
 
@@ -117,19 +177,19 @@ I was responsible for the **design and implementation of the top-down gameplay m
 
 ### 1. Script Responsibility
 
-Some gameplay scripts (including my own) handle multiple responsibilities, which can reduce maintainability.
+Some scripts (including my own) handle multiple responsibilities, reducing maintainability.
 
 ### 2. System Coupling
 
-Gameplay systems are somewhat tightly coupled, making them harder to extend independently.
+Certain systems are tightly coupled, making them harder to extend or modify independently.
 
-### 3. Combat Flow Management
+### 3. Combat Flow Complexity
 
-The combat system could benefit from a more structured approach such as a state machine.
+Combat logic could benefit from a more structured and consistent state management approach.
 
-### 4. Separation of Effects and Logic
+### 4. VFX & Gameplay Coupling
 
-VFX and gameplay logic are sometimes closely linked, which may limit flexibility.
+Some visual effects are directly tied to gameplay logic, limiting flexibility and reuse.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,9 +198,10 @@ VFX and gameplay logic are sometimes closely linked, which may limit flexibility
 ## 🚀 Proposed Improvements
 
 * Apply SOLID principles more consistently
-* Introduce a state machine for combat and player states
-* Decouple VFX, audio, and gameplay logic
-* Improve modularity for better scalability
+* Improve separation between systems
+* Refactor combat logic into a clearer state structure
+* Decouple VFX and gameplay logic
+* Improve modularity and scalability
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -156,48 +217,66 @@ VFX and gameplay logic are sometimes closely linked, which may limit flexibility
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
+
 ## 🧩 Design Approach & Patterns
 
-During development, I explored and applied several design patterns to structure gameplay systems and improve code organization:
+During development, I explored and applied multiple design patterns to improve system structure, scalability, and performance.
+
+### 🧠 Core Architecture
 
 * **Hierarchical State Machine (HSM)**
-  Used to structure player behavior and combat flow, allowing more flexible transitions between states compared to simple state handling.
+  Used to drive both player and enemy behaviors, enabling scalable and structured state transitions.
 
-* **Singleton**
-  Applied for managing global systems such as input or core managers.
+---
+
+### 🧩 Gameplay Systems
+
+* **Strategy Pattern (Skills & Items)**
+  Used to implement flexible systems where behaviors are encapsulated and easily extendable.
+
+---
+
+### 📡 System Communication
+
+* **Event Bus (Event-Driven Architecture)**
+  Used extensively to decouple systems and allow flexible communication between gameplay components.
+
+---
+
+### ♻️ Performance & Resource Management
 
 * **Object Pooling**
-  Used to optimize performance for frequently spawned objects such as VFX and gameplay effects.
+  Used to reuse frequently spawned objects such as VFX.
 
-* **Flyweight / Factory-style approach**
-  Used to reuse shared data and reduce duplication in certain gameplay elements.
+* **Flyweight + Factory-style approach**
+  Used to manage shared data and centralize object creation across multiple pools.
 
-* **Event Bus (event-driven communication)**
-  Helped decouple systems such as input, gameplay logic, and feedback systems.
+---
 
-* **Strategy Pattern**
-  Applied to separate interchangeable gameplay behaviors and logic variations.
+### ⚠️ Reflection
 
-* **Builder-style approach**
-  Used in constructing more complex objects or configurations in a controlled manner.
+While these patterns were applied based on my learning, I recognize that my implementations are still evolving and not fully optimized.
 
-While these patterns were implemented based on my learning from various resources, I recognize that my implementations are still at an early stage and not fully optimized.
+Areas for improvement include:
 
-Some systems could be further improved in terms of:
+* clearer abstraction between systems
+* more consistent use of design principles
+* improving flexibility and reusability
 
-* clearer separation of responsibilities
-* better abstraction and reusability
-* more consistent application of design principles
+This project represents my transition from writing functional code to designing more structured and scalable gameplay systems.
 
-This project represents my effort to move from writing functional code to designing more structured and maintainable systems.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
 
 ## 🧠 What I Learned
 
-* Designing gameplay systems within a multi-mode game
+* Designing scalable gameplay systems using patterns
 * Building responsive real-time combat systems
+* Using event-driven architecture to decouple systems
+* Optimizing performance with object pooling
 * Enhancing game feel through VFX and audio
-* Identifying architectural limitations in team projects
-* Thinking about scalability and maintainability
+* Thinking in terms of system design, not just implementation
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
