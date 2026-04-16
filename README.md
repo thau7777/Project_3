@@ -60,14 +60,14 @@ This is a **roguelike game prototype** developed in Unity as part of a team proj
 
 The game includes two main gameplay modes:
 
-* ⚔️ **Top-down action mode** (real-time combat)
-* ♟️ **Turn-based mode** (strategic gameplay)
+* **Top-down action mode** (real-time combat)
+* **Turn-based mode** (strategic gameplay)
 
 My contribution is focused entirely on the **top-down gameplay experience**.
 
-* 🎯 Genre: Roguelike
-* 👨‍💻 Role: Gameplay Programmer (Top-down mode)
-* 🎮 Focus: Combat systems, interaction, and game feel
+* Genre: Roguelike
+* Role: Gameplay Programmer (Top-down mode)
+* Focus: Combat systems, interaction, and game feel
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
