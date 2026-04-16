@@ -207,7 +207,6 @@ Combat logic could benefit from a more structured and consistent state managemen
 * Apply SOLID principles more consistently
 * Improve separation between systems
 * Refactor combat logic into a clearer state structure
-* Decouple VFX and gameplay logic
 * Improve modularity and scalability
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
