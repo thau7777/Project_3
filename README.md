@@ -75,12 +75,12 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 ## 🖼️ Gameplay Preview
 <p align="center">
-  <img src="README_assets/ComboAttack.gif" width="100%" />
+  <img src="README_assets/ComboAttack.gif" width="99%" />
 </p>
 <p align="center">
-  <img src="README_assets/IceLance.gif" width="33.1%" />
-  <img src="README_assets/ChainLightning.gif" width="33.1%" />
-  <img src="README_assets/WaterTsunami.gif" width="33.1%" />
+  <img src="README_assets/IceLance.gif" width="33%" />
+  <img src="README_assets/ChainLightning.gif" width="33%" />
+  <img src="README_assets/WaterTsunami.gif" width="33%" />
 </p>
 <p align="center">
   <img src="README_assets/GrassInteract.gif" width="49%" />
