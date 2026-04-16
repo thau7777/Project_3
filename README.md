@@ -198,10 +198,6 @@ Certain systems are tightly coupled, making them harder to extend or modify inde
 
 Combat logic could benefit from a more structured and consistent state management approach.
 
-### 4. VFX & Gameplay Coupling
-
-Some visual effects are directly tied to gameplay logic, limiting flexibility and reuse.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
