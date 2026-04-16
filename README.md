@@ -3,7 +3,7 @@
 <!-- BANNER -->
 
 <p align="center">
-  <img src="YOUR_BANNER_URL" width="100%" />
+  <img src="README_assets/GameTitle.png" width="100%" />
 </p>
 
 <h1 align="center">🎮 Project 3 – Roguelike Gameplay Prototype</h1>
@@ -74,16 +74,24 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 ---
 
 ## 🖼️ Gameplay Preview
-
 <p align="center">
-  <img src="SCREENSHOT_1" width="45%" />
-  <img src="SCREENSHOT_2" width="45%" />
+  <img src="README_assets/ComboAttack.gif" width="100%" />
 </p>
-
 <p align="center">
-  <img src="README_assets/IceLance.gif" width="70%" />
+  <img src="README_assets/IceLance.gif" width="30%" />
 </p>
-
+<p align="center">
+  <img src="README_assets/ChainLightning.gif" width="30%" />
+</p>
+<p align="center">
+  <img src="README_assets/WaterTsunami.gif" width="30%" />
+</p>
+<p align="center">
+  <img src="README_assets/GrassInteract.gif" width="45%" />
+</p>
+<p align="center">
+  <img src="README_assets/SnowInteract.gif" width="45%" />
+</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
