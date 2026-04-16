@@ -4,6 +4,7 @@
 
 <p align="center">
   <img src="README_assets/GameTitle.png" width="80%" />
+  <img src="README_assets/Glow.png" width="80%" />
 </p>
 
 <h1 align="center">🎮 Project 3 – Roguelike Gameplay Prototype</h1>
