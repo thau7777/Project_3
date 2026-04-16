@@ -78,13 +78,13 @@ My contribution is focused entirely on the **top-down gameplay experience**.
   <img src="README_assets/ComboAttack.gif" width="100%" />
 </p>
 <p align="center">
-  <img src="README_assets/IceLance.gif" width="33%" />
-  <img src="README_assets/ChainLightning.gif" width="33%" />
-  <img src="README_assets/WaterTsunami.gif" width="33%" />
+  <img src="README_assets/IceLance.gif" width="33.1%" />
+  <img src="README_assets/ChainLightning.gif" width="33.1%" />
+  <img src="README_assets/WaterTsunami.gif" width="33.1%" />
 </p>
 <p align="center">
-  <img src="README_assets/GrassInteract.gif" width="50%" />
-  <img src="README_assets/SnowInteract.gif" width="50%" />
+  <img src="README_assets/GrassInteract.gif" width="49%" />
+  <img src="README_assets/SnowInteract.gif" width="49%" />
 </p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
