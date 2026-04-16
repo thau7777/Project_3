@@ -78,9 +78,9 @@ My contribution is focused entirely on the **top-down gameplay experience**.
   <img src="README_assets/ComboAttack.gif" width="99%" />
 </p>
 <p align="center">
-  <img src="README_assets/IceLance.gif" width="33%" />
-  <img src="README_assets/ChainLightning.gif" width="33%" />
-  <img src="README_assets/WaterTsunami.gif" width="33%" />
+  <img src="README_assets/IceLance.gif" width="32%" />
+  <img src="README_assets/ChainLightning.gif" width="32%" />
+  <img src="README_assets/WaterTsunami.gif" width="32%" />
 </p>
 <p align="center">
   <img src="README_assets/GrassInteract.gif" width="49%" />
