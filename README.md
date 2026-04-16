@@ -89,6 +89,12 @@ My contribution is focused entirely on the **top-down gameplay experience**.
   <img src="README_assets/GrassInteract.gif" width="48.5%" />
   <img src="README_assets/SnowInteract.gif" width="48.5%" />
 </p>
+<p align="center"><b>** Boss Fight **</b></p>
+<p align="center">
+  <img src="README_assets/stingray.gif" width="32%" />
+  <img src="README_assets/blackknight.gif" width="32%" />
+  <img src="README_assets/beholder.gif" width="32%" />
+</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
