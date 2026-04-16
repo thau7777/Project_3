@@ -81,7 +81,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 </p>
 
 <p align="center">
-  <img src="GAMEPLAY_GIF" width="70%" />
+  <img src="README_assets/skill.gif" width="70%" />
 </p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
