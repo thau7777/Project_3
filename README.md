@@ -6,7 +6,11 @@
   <img src="README_assets/GameTitle.png" width="80%" />
 </p>
 
-<h1 align="center">A Graduation Project developed at VTC Academy</h1>
+<h1 align="center">Roguelike Game Prototype</h1>
+
+<p align="center">
+  <b>A Graduation Project developed at VTC Academy</b>
+</p>
 <p align="center">
   <a href="YOUR_BUILD_LINK">▶️ Play Game</a> •
   <a href="YOUR_TRAILER_LINK">🎥 Trailer</a>
