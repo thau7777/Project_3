@@ -1,19 +1,44 @@
+<a name="readme-top"></a>
+
 <!-- BANNER -->
 
 <p align="center">
-  <img src="YOUR_BANNER" width="100%" />
+  <img src="YOUR_BANNER_URL" alt="Banner" width="100%" />
 </p>
 
 <h1 align="center">🎮 Project 3</h1>
 
 <p align="center">
-  <b>A Unity-based gameplay prototype focusing on combat and player interaction</b>
+  <b>A Unity gameplay prototype focusing on combat and player interaction</b>
 </p>
 
 <p align="center">
   <a href="YOUR_BUILD_LINK">▶️ Play Game</a> •
-  <a href="YOUR_TRAILER">🎥 Trailer</a>
+  <a href="YOUR_TRAILER_LINK">🎥 Trailer</a>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Engine-Unity-black" />
+  <img src="https://img.shields.io/badge/Language-C%23-blue" />
+  <img src="https://img.shields.io/badge/Type-Team%20Project-orange" />
+  <img src="https://img.shields.io/badge/Status-Completed-green" />
+</p>
+
+---
+
+## 📚 Table of Contents
+
+* [📌 About The Project](#-about-the-project)
+* [🖼️ Gameplay Preview](#-gameplay-preview)
+* [✨ Features](#-features)
+* [👥 My Contribution](#-my-contribution)
+* [🧠 Technical Challenges & Observations](#-technical-challenges--observations)
+* [🚀 Proposed Improvements](#-proposed-improvements)
+* [🛠️ Tech Stack](#️-tech-stack)
+* [🧠 What I Learned](#-what-i-learned)
+* [🎮 Controls](#-controls)
+* [📂 Project Structure](#-project-structure)
+* [👥 Contributors](#-contributors)
 
 ---
 
@@ -26,6 +51,8 @@ The goal was to build a playable prototype while practicing gameplay programming
 * ⏱ Development Time: (YOUR TIME)
 * 👥 Team Size: (NUMBER OF MEMBERS)
 * 👨‍💻 Role: Gameplay Programmer
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
@@ -40,14 +67,18 @@ The goal was to build a playable prototype while practicing gameplay programming
   <img src="GAMEPLAY_GIF" width="70%" />
 </p>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ---
 
-## ✨ Key Features
+## ✨ Features
 
 * ⚔️ Combo-based attack system
-* 🎥 Camera rotation with player control
-* 🎮 Responsive player input handling
-* 🧠 Basic gameplay interaction systems
+* 🎥 Camera rotation control
+* 🎮 Responsive input handling
+* 🧠 Basic gameplay interaction
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
@@ -56,56 +87,62 @@ The goal was to build a playable prototype while practicing gameplay programming
 As a gameplay programmer in this team project, my main responsibilities included:
 
 * Implemented player combat system (combo attack logic)
-* Handled player input and interaction flow
-* Developed camera control system (rotation & usability)
-* Focused on improving gameplay responsiveness and feel
+* Handled player input system
+* Developed camera control system
+* Improved gameplay responsiveness and feel
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
 ## 🧠 Technical Challenges & Observations
 
-During development, I identified several technical challenges and architectural limitations:
+During development, I identified several technical and architectural limitations:
 
 ### 1. Script Responsibility Issues
 
-Some scripts handled multiple responsibilities (e.g., input, movement, and combat in a single class), making them harder to maintain and extend.
+Some scripts handled multiple responsibilities (input, movement, combat in a single class), which reduced maintainability.
 
 ### 2. Tight Coupling Between Systems
 
-Certain systems were tightly coupled, reducing flexibility and making future changes more difficult.
+Systems were tightly connected, making it harder to extend or modify individual components.
 
-### 3. Scalability Limitations
+### 3. Scalability Concerns
 
-The current structure would become difficult to scale if more features (e.g., skills, enemies, UI systems) were added.
+The current structure may become difficult to scale when adding more features like AI, skills, or UI systems.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
 ## 🚀 Proposed Improvements
 
-If I were to continue developing this project, I would improve the architecture as follows:
+If I were to continue developing this project, I would:
 
 ### 🔧 Apply SOLID Principles
 
-* Separate responsibilities into smaller components
-* Ensure each system handles only one core function
+* Separate logic into smaller, focused components
+* Ensure each class has a single responsibility
 
-### 🧱 Refactor System Structure
+### 🧱 Refactor Architecture
 
 From:
 
-* One script handling multiple gameplay systems
+* One script handling multiple systems
 
 To:
 
-* InputHandler → handles player input
-* PlayerController → handles movement
-* PlayerCombat → handles attack logic
-* CameraController → handles camera behavior
+* InputHandler
+* PlayerController
+* PlayerCombat
+* CameraController
 
 ### ⚙️ Improve Maintainability
 
 * Reduce dependencies between systems
-* Make code easier to extend and debug
+* Improve scalability and readability
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
@@ -113,20 +150,24 @@ To:
 
 * 🎮 Engine: Unity
 * 💻 Language: C#
-* 🧱 Programming Concepts:
+* 🧱 Concepts:
 
-  * Object-Oriented Programming (OOP)
+  * OOP
   * Basic SOLID principles
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
 ## 🧠 What I Learned
 
-* Designing and implementing gameplay systems in Unity
-* Handling player input and animation flow
+* Implementing gameplay systems in Unity
+* Handling input and animation flow
+* Identifying code structure issues in team projects
+* Thinking in terms of scalability and maintainability
 * Understanding the importance of clean architecture
-* Identifying and analyzing code structure issues in team projects
-* Thinking about scalability and maintainability in game development
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
@@ -136,6 +177,8 @@ To:
 | ------------- | ------------ |
 | Attack        | Left Mouse   |
 | Rotate Camera | Middle Mouse |
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
@@ -149,24 +192,22 @@ Assets/
  ├── Scenes/
 ```
 
----
-
-## 📈 Future Improvements
-
-* Improve combat system with better state management
-* Add enemy AI behavior
-* Enhance visual feedback (VFX, screen shake, sound)
-* Optimize performance and code structure
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
-## 👤 Author
+## 👥 Contributors
 
-* Trần Hậu
-* GitHub: https://github.com/thau7777
+<a href="https://github.com/thau7777/Project_3/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=thau7777/Project_3" />
+</a>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
 ## ⭐ Support
 
 If you find this project interesting, feel free to give it a ⭐!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
