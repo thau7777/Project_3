@@ -75,7 +75,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 ## 🖼️ Gameplay Preview
 <p align="center">
-  <img src="README_assets/ComboAttack.gif" width="97%" />
+  <img src="README_assets/ComboAttack.gif" width="96.5%" />
 </p>
 <p align="center">
   <img src="README_assets/IceLance.gif" width="32%" />
@@ -83,8 +83,8 @@ My contribution is focused entirely on the **top-down gameplay experience**.
   <img src="README_assets/WaterTsunami.gif" width="32%" />
 </p>
 <p align="center">
-  <img src="README_assets/GrassInteract.gif" width="48.5%" />
-  <img src="README_assets/SnowInteract.gif" width="48.5%" />
+  <img src="README_assets/GrassInteract.gif" width="48.25%" />
+  <img src="README_assets/SnowInteract.gif" width="48.25%" />
 </p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
