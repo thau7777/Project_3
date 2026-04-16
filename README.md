@@ -75,14 +75,17 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 ## 🖼️ Gameplay Preview
 <p align="center">
+  ComboAttack
   <img src="README_assets/ComboAttack.gif" width="97%" />
 </p>
 <p align="center">
+  Skills, Weather And Map
+  <img src="README_assets/Bubble.gif" width="32%" />
   <img src="README_assets/IceLance.gif" width="32%" />
-  <img src="README_assets/ChainLightning.gif" width="32%" />
-  <img src="README_assets/WaterTsunami.gif" width="32%" />
+  <img src="README_assets/FlameTornado.gif" width="32%" />
 </p>
 <p align="center">
+  Enviroment Details
   <img src="README_assets/GrassInteract.gif" width="48.5%" />
   <img src="README_assets/SnowInteract.gif" width="48.5%" />
 </p>
