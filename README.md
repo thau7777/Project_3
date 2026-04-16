@@ -92,104 +92,86 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 ## ✨ Key Features (Top-Down Mode)
 
-* ⚔️ Combo-based combat system
+* Combo-based combat system
 
-* 🎮 Responsive player input handling
+* Responsive player input handling
 
-* 🎥 Player-controlled camera system
+* Player-controlled camera system
 
-* 🧠 **Hierarchical State Machine (Player & Enemy AI)**
-  Implemented to drive both player and enemy behaviors, enabling structured and scalable state transitions.
-  
-* 🤖 **Enemy AI System**
-  Implemented AI behaviors using a hierarchical state machine, including:
+* **Hierarchical State Machine (Player & Enemy AI)**
+  Structured and scalable state transitions for gameplay behaviors
 
-  * **Pathfinding & obstacle avoidance**
-    Combined NavMesh-based pathfinding with CharacterController-driven movement, allowing enemies to navigate around obstacles while preserving fine control over movement and responsiveness.
+* **Enemy AI System**
 
-  * **Dynamic separation behavior**
-    Enemies adjust their positions to avoid clustering, improving combat readability and spacing.
+  * Pathfinding & obstacle avoidance using NavMesh + CharacterController
+  * Dynamic separation to prevent clustering
+  * Context-aware move selection based on distance
+  * Ranged enemy positioning (kiting behavior)
+  * Boss phase-based abilities
 
-  * **Context-aware move selection**
-    Each enemy (and boss) has multiple moves, selecting actions based on distance to the player combined with randomized behavior.
+* **Skill System (30+ skills)**
+  Strategy-based design for scalable and extendable behaviors
 
-  * **Ranged enemy positioning (kiting behavior)**
-    Ranged enemies maintain distance by retreating when the player gets too close, and only attack when reaching a safe range.
+* **Item System (~10 types)**
+  Reusable and flexible item behavior structure
 
-  * **Boss phase system**
-    Bosses unlock additional abilities in later phases, introducing more complex and dynamic combat patterns.
+* **Event-driven gameplay (Event Bus)**
+  Decoupled communication between systems
 
+* **Object management (Factory + Object Pooling)**
+  Efficient spawning and reuse of gameplay objects
 
-* 🧩 **Skill System (30+ skills)**
-  Designed using a **Strategy-based approach**, allowing each skill to encapsulate its own behavior and scale without modifying existing systems.
+* Dynamic environmental interaction
 
-* 🎒 **Item System (~10 types)**
-  Implemented using a similar strategy-driven structure for reusable and flexible item behaviors.
+  * Grass reacts to nearby objects
+  * Leaves are displaced on movement
+  * Snow deforms based on position
 
-* 📡 **Event-Driven Gameplay (Event Bus)**
-  Used extensively to decouple systems such as input, combat, VFX, and UI.
+* VFX-driven feedback (VFX Graph & Particle System)
 
-* ♻️ **Optimized Object Management (Factory + Object Pooling)**
-  Combined a factory-style system with object pooling to manage and reuse gameplay objects and VFX efficiently.
+* Integrated sound effects
 
-* 🌿 Dynamic environmental interaction
-
-  * Grass reacts to wind and nearby objects
-  * Leaves are displaced when entities move through them
-  * Snow surface deforms based on movement
-
-* 💥 VFX-driven feedback (VFX Graph & Particle System)
-
-* 🔊 Integrated sound effects for gameplay feedback
-
-* 🧩 UI elements tailored for top-down gameplay
-
+* Gameplay UI for top-down mode
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
 ## 👤 My Contribution
 
-I was responsible for the **design and implementation of the top-down gameplay mode**, including both system architecture and player experience.
+I was responsible for the design and implementation of the top-down gameplay mode.
 
-### 🎮 Gameplay Programming
+### Gameplay Programming
 
-* Built core combat system (combo-based attacks)
-* Implemented input handling and gameplay flow
-* Designed responsive control system
+* Combat system (combo-based attacks)
+* Input handling and gameplay flow
+* Responsive control system
 
-### 🧠 System Design
+### System Design
 
-* Implemented HSM for both player and enemy behaviors
-* Designed scalable skill and item systems using Strategy pattern
-* Built event-driven communication using Event Bus
+* HSM for player and enemy behaviors
+* Strategy-based skill and item systems
+* Event-driven communication (Event Bus)
 
-### 🌍 Environment Interaction
+### Environment Interaction
 
-* Grass reacts dynamically to wind and nearby objects
-* Leaves are displaced when objects move through them
-* Snow deforms based on movement
+* Grass, leaves, and snow interaction systems
 
-### 💥 Visual Effects (VFX)
+### Visual Effects
 
-* Designed VFX using Unity VFX Graph
-* Created particle-based feedback systems
+* VFX Graph and particle-based feedback
 
-### 🔊 Audio Design
+### Audio
 
-* Integrated sound effects to enhance gameplay feedback
+* Integrated gameplay sound effects
 
-### 🧩 UI
+### UI
 
-* Designed and implemented gameplay UI for top-down mode
+* Gameplay UI for top-down mode
 
-### 📁 Code Ownership
+### Code Ownership
 
-* All scripts in:
-
-  * `Assets/Scripts/`
-  * `Assets/LokiInspector/`
-
+* `Assets/Scripts/`
+* `Assets/LokiInspector/`
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
@@ -230,10 +212,10 @@ Some visual effects are directly tied to gameplay logic, limiting flexibility an
 
 ## 🛠️ Tech Stack
 
-* 🎮 Unity
-* 💻 C#
-* 💥 VFX Graph
-* 🎨 Particle System
+* Unity
+* C#
+* VFX Graph
+* Particle System
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
