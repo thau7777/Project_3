@@ -6,12 +6,7 @@
   <img src="README_assets/GameTitle.png" width="80%" />
 </p>
 
-<h1 align="center">🎮 Project 3 – Roguelike Gameplay Prototype</h1>
-
-<p align="center">
-  <b>A Unity-based roguelike prototype featuring multiple gameplay modes</b>
-</p>
-
+<h1 align="center">A Graduation Project developed at VTC Academy</h1>
 <p align="center">
   <a href="YOUR_BUILD_LINK">▶️ Play Game</a> •
   <a href="YOUR_TRAILER_LINK">🎥 Trailer</a>
