@@ -42,15 +42,15 @@ I focused on building **scalable gameplay systems using event-driven and pattern
 
 ## 📚 Table of Contents
 
-* [📌 About The Project](#-about-the-project)
-* [🖼️ Gameplay Preview](#-gameplay-preview)
-* [✨ Key Features](#-key-features-top-down-mode)
-* [👤 My Contribution](#-my-contribution)
-* [🧠 Technical Challenges & Observations](#-technical-challenges--observations)
-* [🚀 Proposed Improvements](#-proposed-improvements)
-* [🛠️ Tech Stack](#️-tech-stack)
-* [🧩 Design Approach & Patterns](#-design-approach--patterns)
-* [🧠 What I Learned](#-what-i-learned)
+* [About The Project](#-about-the-project)
+* [Gameplay Preview](#-gameplay-preview)
+* [Key Features](#-key-features-top-down-mode)
+* [My Contribution](#-my-contribution)
+* [Technical Challenges & Observations](#-technical-challenges--observations)
+* [Proposed Improvements](#-proposed-improvements)
+* [Tech Stack](#️-tech-stack)
+* [Design Approach & Patterns](#-design-approach--patterns)
+* [What I Learned](#-what-i-learned)
 
 ---
 
