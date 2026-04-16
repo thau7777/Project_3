@@ -100,6 +100,21 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 * 🧠 **Hierarchical State Machine (Player & Enemy AI)**
   Implemented to drive both player and enemy behaviors, enabling structured and scalable state transitions.
+  
+* 🤖 **Enemy AI System**
+  Implemented AI behaviors using a hierarchical state machine, including:
+
+  * **Pathfinding & obstacle avoidance**
+    Enemies navigate toward the player while avoiding obstacles and dynamically separating from each other to prevent clustering.
+
+  * **Context-aware move selection**
+    Each enemy (and boss) has multiple moves, selecting actions based on distance to the player combined with randomized behavior.
+
+  * **Ranged enemy positioning (kiting behavior)**
+    Ranged enemies maintain distance by retreating when the player gets too close, and only attack when reaching a safe range.
+
+  * **Boss phase system**
+    Bosses unlock additional abilities in later phases, introducing more complex and dynamic combat patterns.
 
 * 🧩 **Skill System (30+ skills)**
   Designed using a **Strategy-based approach**, allowing each skill to encapsulate its own behavior and scale without modifying existing systems.
