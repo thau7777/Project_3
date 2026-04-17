@@ -98,6 +98,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
     <sub>Gameplay Programmer (Top-down Combat & Systems)</sub>
     <br />
     <sub>Combat, AI (HSM), Skills/Items, Environment Interaction, VFX & Game Feel</sub>
+    <br />
   </a>
 
   <a href="https://github.com/TriLau">
@@ -108,6 +109,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
     <sub>Main Menu, Lobby & World Map</sub>
     <br />
     <sub>Main Systems (Save/Load, Settings), VFX, Balance</sub>
+    <br />
   </a>
 
   <a href="https://github.com/Luhieunghia2001">
@@ -118,6 +120,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
     <sub>Turn-based Gameplay Programmer</sub>
     <br />
     <sub>Turn-based Systems (Combat, AI, Skills/Items)</sub>
+    <br />
   </a>
 
   <a href="https://github.com/Ridotakarin">
@@ -128,6 +131,7 @@ My contribution is focused entirely on the **top-down gameplay experience**.
     <sub>Minigame Programmer & Designer</sub>
     <br />
     <sub>Publishing & Game Balance Support</sub>
+    <br />
   </a>
 </p>
 
