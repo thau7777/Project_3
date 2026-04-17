@@ -80,6 +80,54 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## 🤝 Team & Contributors
+
+<p align="center">
+  <a href="https://github.com/thau7777">
+    <img src="https://github.com/thau7777.png" width="80px;" alt="thau7777"/>
+    <br />
+    <sub><b>Trần Hậu</b></sub>
+    <br />
+    <sub>Top-down Gameplay Programmer & Designer</sub>
+    <br />
+    <sub>Combat, AI(HSM), Skills/Items, Enviroment, VFX & Game Feel</sub>
+  </a>
+
+  <a href="https://github.com/TriLau">
+    <img src="https://github.com/TriLau.png" width="80px;" alt="TriLau"/>
+    <br />
+    <sub><b>Tri Lau</b></sub>
+    <br />
+    <sub>Main Menu, Lobby & World Map</sub>
+    <br />
+    <sub>Main System Programmer(Save/Load, Settings), VFX, Balance</sub>
+  </a>
+
+  <a href="https://github.com/Luhieunghia2001">
+    <img src="https://github.com/Luhieunghia2001.png" width="80px;" alt="Luhieunghia2001"/>
+    <br />
+    <sub><b>Lu Hieu Nghia</b></sub>
+    <br />
+    <sub>Turn-based Gameplay Programmer</sub>
+    <br />
+    <sub>Turn-based System Design(Combat, AI, Skills/Items)</sub>
+  </a>
+
+  <a href="https://github.com/Ridotakarin">
+    <img src="https://github.com/Ridotakarin.png" width="80px;" alt="Ridotakarin"/>
+    <br />
+    <sub><b>Ridotakarin</b></sub>
+    <br />
+    <sub>Minigame Programmer & Designer</sub>
+    <br />
+    <sub>Publishing & Game Balance Support</sub>
+  </a>
+</p>
+
+<p align="center">
+  This project was developed collaboratively. This README highlights my individual contributions,
+  primarily focused on gameplay programming and system design in the top-down mode.
+</p>
 ---
 
 ## 🖼️ Gameplay Preview
