@@ -24,15 +24,19 @@
 
 ## 👋 Introduction
 
-This repository is a fork of a team-developed Unity project, adapted to highlight my individual contributions and technical perspective as a gameplay programmer.
+This repository contains a team-developed Unity project.
+
+The project was developed collaboratively, and this documentation isolates my technical contributions for clarity.
+
+This README focuses specifically on my individual contributions within the project, highlighting my work as a gameplay programmer, particularly in the top-down gameplay mode.
 
 The project is a **roguelike prototype** featuring two gameplay modes: **top-down action** and **turn-based mechanics**.
 
-My work focuses specifically on the **top-down gameplay mode**, where I was responsible for implementing core gameplay systems, designing interactions, and enhancing overall game feel through visual and audio feedback.
+My work focuses on implementing core gameplay systems, designing interactions, and enhancing overall game feel through visual and audio feedback.
 
-I focused on building **scalable gameplay systems using event-driven and pattern-based design**, while also improving player experience through responsive controls and immersive feedback.
+I aimed to build **scalable gameplay systems using event-driven and pattern-based design**, while also improving player experience through responsive controls and immersive feedback.
 
-> 🔍 This repository is intended as a portfolio piece to demonstrate my gameplay programming and system design skills.
+> 🔍 This README is intended as a portfolio piece to demonstrate my gameplay programming and system design skills.
 
 ---
 
