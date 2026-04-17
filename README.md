@@ -40,6 +40,13 @@ I aimed to build **scalable gameplay systems using event-driven and pattern-base
 > 
 > ⚠️ This project was developed as part of a graduation project with a focus on learning and experimentation. Some systems may not be fully polished, but the implementation demonstrates my understanding of gameplay architecture, scalability, and real-world development practices in Unity.
 
+## 📅 Development Timeline
+
+- Development period: [Month Year] – [Month Year]
+- Team size: X members
+
+The project was developed within a constrained timeframe, which influenced prioritization decisions and iterative development. Despite these constraints, I focused on building scalable gameplay systems and maintaining code structure where possible.
+
 ---
 
 ## 📚 Table of Contents
