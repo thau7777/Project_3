@@ -37,6 +37,7 @@ My work focuses on implementing core gameplay systems, designing interactions, a
 I aimed to build **scalable gameplay systems using event-driven and pattern-based design**, while also improving player experience through responsive controls and immersive feedback.
 
 > 🔍 This README is intended as a portfolio piece to demonstrate my gameplay programming and system design skills.
+> 
 > ⚠️ This project was developed as part of a graduation project with a focus on learning and experimentation. Some systems may not be fully polished, but the implementation demonstrates my understanding of gameplay architecture, scalability, and real-world development practices in Unity.
 
 ---
