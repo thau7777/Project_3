@@ -295,7 +295,7 @@ During development, I explored and applied multiple design patterns to improve s
 * **Object Pooling**  
   Used to reuse frequently spawned objects such as VFX.
 
-* **Flyweight + Factory-style approach**  
+* **Flyweight Factory**  
   Used to manage shared data and centralize object creation across multiple pools.
 
 ### ⚠️ Reflection
