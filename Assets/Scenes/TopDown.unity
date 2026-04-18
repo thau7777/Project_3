@@ -7698,7 +7698,7 @@ MonoBehaviour:
     enemies: {fileID: 11400000, guid: cd7f11ed964312a4e84638044ea77d17, type: 2}
   - mapType: 0
     enemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
-  mapEnemies: {fileID: 11400000, guid: e2b66474030efeb468848c22c81d200f, type: 2}
+  mapEnemies: {fileID: 11400000, guid: 3fb5c627cd2b0884fbd511f715e21982, type: 2}
   bossInMap: []
   bossSO: {fileID: 11400000, guid: b606f99874fc9d648a7c2c77e8bca595, type: 2}
   enemyDataSOs: []
@@ -25870,6 +25870,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnviromentManager
   _mapInfos:
+  - MapType: 2
+    MapPrefab: {fileID: 1285216565}
+    WeatherMainLight: {fileID: 310278161}
+    BadWeatherMainLight: {fileID: 236804539}
+    BadWeatherExtraEffects: {fileID: 1762241422}
+    WeatherMaterials: []
+    NormalAmbienceSound:
+      _entity: {fileID: 11400000, guid: 3e1bece7546988e43ad1585ba9e348a6, type: 2}
+      ID: 0
+      <DebugObject>k__BackingField: {fileID: 549629945}
+    BadAmbienceSound:
+      _entity: {fileID: 11400000, guid: c15a197091689e44dad57d86fcbd8a3c, type: 2}
+      ID: 0
+      <DebugObject>k__BackingField: {fileID: 549629945}
   - MapType: 0
     MapPrefab: {fileID: 1721798494}
     WeatherMainLight: {fileID: 1000665352}
@@ -25897,20 +25911,6 @@ MonoBehaviour:
       <DebugObject>k__BackingField: {fileID: 549629945}
     BadAmbienceSound:
       _entity: {fileID: 11400000, guid: cdb76262c3197944fb6574b017689504, type: 2}
-      ID: 0
-      <DebugObject>k__BackingField: {fileID: 549629945}
-  - MapType: 2
-    MapPrefab: {fileID: 1285216565}
-    WeatherMainLight: {fileID: 310278161}
-    BadWeatherMainLight: {fileID: 236804539}
-    BadWeatherExtraEffects: {fileID: 1762241422}
-    WeatherMaterials: []
-    NormalAmbienceSound:
-      _entity: {fileID: 11400000, guid: 3e1bece7546988e43ad1585ba9e348a6, type: 2}
-      ID: 0
-      <DebugObject>k__BackingField: {fileID: 549629945}
-    BadAmbienceSound:
-      _entity: {fileID: 11400000, guid: c15a197091689e44dad57d86fcbd8a3c, type: 2}
       ID: 0
       <DebugObject>k__BackingField: {fileID: 549629945}
   - MapType: 1
@@ -47796,6 +47796,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 811720669900769246, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_itemArray.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7abfadc8a4709da428d07b600de2b80b, type: 2}
+    - target: {fileID: 811720669900769246, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_itemArray.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 84c31340b74d09b4b815d956df3532f1, type: 2}
+    - target: {fileID: 811720669900769246, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_itemArray.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 117ca6c8756cad742b50d3f87c3ef0e3, type: 2}
+    - target: {fileID: 811720669900769246, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_itemArray.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: f7a0888ddcc83ef4daa5d20dd1034bbb, type: 2}
+    - target: {fileID: 811720669900769246, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
+      propertyPath: '_itemArray.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: dd58ebee03c61cf4d8ac70dde018ca87, type: 2}
     - target: {fileID: 1071162874243563009, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: <AttackDamage>k__BackingField
       value: 15
@@ -47815,7 +47835,7 @@ PrefabInstance:
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: edd2dd10f75bff24690571863e6fe30d, type: 2}
+      objectReference: {fileID: 11400000, guid: 5542d180e5e34014a8b980d65aca8dfa, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[4]'
       value: 
@@ -47823,7 +47843,7 @@ PrefabInstance:
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: '_skillStrategies.Array.data[5]'
       value: 
-      objectReference: {fileID: 11400000, guid: ce4131bc62809a741b0f92eb89ed0a9c, type: 2}
+      objectReference: {fileID: 11400000, guid: b0b3c89c7fd563d4c83959bd01beaab0, type: 2}
     - target: {fileID: 2645424129194304365, guid: 45647cbd215f95e4ca73498d933bf207, type: 3}
       propertyPath: OnManaChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
