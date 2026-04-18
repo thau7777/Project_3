@@ -11,6 +11,8 @@
 <p align="center">
   <a href="https://github.com/thau7777/Project_3/releases/download/v1.0/CaptionFNF.zip"><img src="https://img.shields.io/badge/Download-PC-black" /></a> •
   <a href="https://youtu.be/xLrVJfSz7FM"><img src="https://img.shields.io/badge/Trailer-Video-red" /></a>
+  <a href="https://youtu.be/KEEI6nvmjgg"><img src="https://img.shields.io/badge/Gameplay-Video-blue" /></a>
+  <a href="https://www.youtube.com/watch?v=qWnVls9iFDA"><img src="https://img.shields.io/badge/BossFight-Video-green" /></a>
 </p>
 
 <p align="center">
