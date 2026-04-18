@@ -46,8 +46,8 @@ I aimed to build **scalable gameplay systems using event-driven and pattern-base
 
 ## 📅 Development Timeline
 
-- Development period: [Month Year] – [Month Year]
-- Team size: X members
+- Development period: [September 2025] – [March 2026]
+- Team size: 4 members
 
 The project was developed within a constrained timeframe, which influenced prioritization and iterative development. Despite these constraints, I focused on building scalable gameplay systems while maintaining clean and structured code where possible.
 
@@ -92,48 +92,38 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 <p align="center">
   <a href="https://github.com/thau7777">
     <img src="https://github.com/thau7777.png" width="80px;" alt="thau7777"/>
-    <br />
-    <sub><b>Trần Hậu</b></sub>
-    <br />
-    <sub>Gameplay Programmer (Top-down Combat & Systems)</sub>
-    <br />
-    <sub>Combat, AI (HSM), Skills/Items, Environment Interaction, VFX & Game Feel</sub>
-    <br />
   </a>
-
   <a href="https://github.com/TriLau">
     <img src="https://github.com/TriLau.png" width="80px;" alt="TriLau"/>
-    <br />
-    <sub><b>Tri Lau</b></sub>
-    <br />
-    <sub>Main Menu, Lobby & World Map</sub>
-    <br />
-    <sub>Main Systems (Save/Load, Settings), VFX, Balance</sub>
-    <br />
   </a>
-
   <a href="https://github.com/Luhieunghia2001">
     <img src="https://github.com/Luhieunghia2001.png" width="80px;" alt="Luhieunghia2001"/>
-    <br />
-    <sub><b>Lu Hieu Nghia</b></sub>
-    <br />
-    <sub>Turn-based Gameplay Programmer</sub>
-    <br />
-    <sub>Turn-based Systems (Combat, AI, Skills/Items)</sub>
-    <br />
   </a>
-
   <a href="https://github.com/Ridotakarin">
     <img src="https://github.com/Ridotakarin.png" width="80px;" alt="Ridotakarin"/>
-    <br />
-    <sub><b>Ridotakarin</b></sub>
-    <br />
-    <sub>Minigame Programmer & Designer</sub>
-    <br />
-    <sub>Publishing & Game Balance Support</sub>
-    <br />
   </a>
 </p>
+
+<table align="center">
+  <tr>
+    <td align="center"><b>Trần Hậu</b></td>
+    <td align="center"><b>Tri Lau</b></td>
+    <td align="center"><b>Lu Hieu Nghia</b></td>
+    <td align="center"><b>Ridotakarin</b></td>
+  </tr>
+  <tr>
+    <td align="center">Gameplay Programmer</td>
+    <td align="center">System & UI Programmer</td>
+    <td align="center">Turn-based Programmer</td>
+    <td align="center">Minigame Programmer</td>
+  </tr>
+  <tr>
+    <td align="center">Top-down Combat, AI (HSM), Skills/Items,<br/>Environment Interaction, VFX & Game Feel</td>
+    <td align="center">Main Menu, Lobby, World Map,<br/>Save/Load, Settings, VFX, Balance</td>
+    <td align="center">Turn-based Combat, AI,<br/>Skills/Items</td>
+    <td align="center">Minigame Design,<br/>Publishing & Balance Support</td>
+  </tr>
+</table>
 
 <p align="center">
   This project was developed as a collaborative team effort. This README highlights my individual contributions,
