@@ -9,7 +9,7 @@
 <h1 align="center">A Graduation Game Project Developed at VTC Academy</h1>
 
 <p align="center">
-  <a href="YOUR_BUILD_LINK">▶️ Play Game</a> •
+  <a href="https://github.com/thau7777/Project_3/releases/download/v1.0/CaptionFNF.zip">▶️ Play Game</a> •
   <a href="YOUR_TRAILER_LINK">🎥 Trailer</a>
 </p>
 
