@@ -46,7 +46,7 @@ I aimed to build **scalable gameplay systems using event-driven and pattern-base
 
 ## 📅 Development Timeline
 
-- Development period: [September 2025] – [March 2026]
+- Development period: September 2025 – March 2026
 - Team size: 4 members
 
 The project was developed within a constrained timeframe, which influenced prioritization and iterative development. Despite these constraints, I focused on building scalable gameplay systems while maintaining clean and structured code where possible.
