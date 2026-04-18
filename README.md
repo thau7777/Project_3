@@ -12,7 +12,7 @@
   <a href="https://github.com/thau7777/Project_3/releases/download/v1.0/CaptionFNF.zip"><img src="https://img.shields.io/badge/Download-PC-black" /></a> •
   <a href="https://youtu.be/xLrVJfSz7FM"><img src="https://img.shields.io/badge/Video-Trailer-red" /></a>
   <a href="https://youtu.be/KEEI6nvmjgg"><img src="https://img.shields.io/badge/Video-Gameplay-green" /></a>
-  <a href="https://www.youtube.com/watch?v=qWnVls9iFDA"><img src="https://img.shields.io/badge/Video-BossFight-purple" /></a>
+  <a href="https://www.youtube.com/watch?v=qWnVls9iFDA"><img src="https://img.shields.io/badge/Video-BossFight-yellow" /></a>
 </p>
 
 <p align="center">
