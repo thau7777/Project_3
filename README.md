@@ -138,20 +138,20 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 <p align="center">
   <img src="README_assets/ComboAttack.gif" width="97%" />
 </p>
-
+<br/>
 <p align="center"><b>Skills, Weather, and Maps</b></p>
 <p align="center">
   <img src="README_assets/Bubble.gif" width="32%" />
   <img src="README_assets/IceLance.gif" width="32%" />
   <img src="README_assets/FlameTornado.gif" width="32%" />
 </p>
-
+<br/>
 <p align="center"><b>Environment Details</b></p>
 <p align="center">
   <img src="README_assets/GrassInteract.gif" width="48.5%" />
   <img src="README_assets/SnowInteract.gif" width="48.5%" />
 </p>
-
+<br/>
 <p align="center"><b>Boss Fight</b></p>
 <p align="center">
   <img src="README_assets/stingray.gif" width="32%" />
