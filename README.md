@@ -106,21 +106,21 @@ My contribution is focused entirely on the **top-down gameplay experience**.
 
 <table align="center">
   <tr>
-    <td align="center"><b>Trần Hậu</b></td>
+    <td align="center"><b>Hau Tran</b></td>
     <td align="center"><b>Tri Lau</b></td>
-    <td align="center"><b>Lu Hieu Nghia</b></td>
+    <td align="center"><b>Nghia Lu</b></td>
     <td align="center"><b>Ridotakarin</b></td>
   </tr>
   <tr>
-    <td align="center">Gameplay Programmer</td>
+    <td align="center">Top-down Gameplay Programmer</td>
     <td align="center">System & UI Programmer</td>
     <td align="center">Turn-based Programmer</td>
     <td align="center">Minigame Programmer</td>
   </tr>
   <tr>
-    <td align="center">Top-down Combat, AI (HSM), Skills/Items,<br/>Environment Interaction, VFX & Game Feel</td>
+    <td align="center">Top-down Combat, AI, Skills/Items,<br/>Environment Interaction, VFX & Game Feel</td>
     <td align="center">Main Menu, Lobby, World Map,<br/>Save/Load, Settings, VFX, Balance</td>
-    <td align="center">Turn-based Combat, AI,<br/>Skills/Items</td>
+    <td align="center">Turn-based Combat System, AI,<br/>Skills/Items</td>
     <td align="center">Minigame Design,<br/>Publishing & Balance Support</td>
   </tr>
 </table>
