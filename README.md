@@ -279,19 +279,19 @@ Combat logic could benefit from a more structured and consistent state managemen
 
 During development, I explored and applied multiple design patterns to improve system structure, scalability, and performance.
 
-### 🧠 Core Architecture
+### Core Architecture
 * **Hierarchical State Machine (HSM)**  
   Used to drive both player and enemy behaviors, enabling scalable and structured state transitions.
 
-### 🧩 Gameplay Systems
+### Gameplay Systems
 * **Strategy Pattern (Skills & Items)**  
   Used to implement flexible systems where behaviors are encapsulated and easily extendable.
 
-### 📡 System Communication
+### System Communication
 * **Event Bus (Event-Driven Architecture)**  
   Used extensively to decouple systems and allow flexible communication between gameplay components.
 
-### ♻️ Performance & Resource Management
+### Performance & Resource Management
 * **Object Pooling**  
   Used to reuse frequently spawned objects such as VFX.
 
