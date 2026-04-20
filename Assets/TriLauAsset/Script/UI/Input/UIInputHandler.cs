@@ -11,6 +11,7 @@ namespace MyRule.UI
 
         private void OnEnable()
         {
+            Debug.Log("Switch to UI action map");
             inputReader.SwitchActionMap(ActionMap.UI);
 
             inputReader.uiActions.onPressAnyButton += OnAnyButtonPress;

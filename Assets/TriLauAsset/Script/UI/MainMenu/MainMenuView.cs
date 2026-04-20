@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 namespace MyRule.UI
 {
@@ -13,7 +15,7 @@ namespace MyRule.UI
         [SerializeField] private MainMenuButtonView loadGameBtn;
         [SerializeField] private MainMenuButtonView settingsBtn;
         [SerializeField] private MainMenuButtonView quitBtn;
- 
+
         private MainMenuPresenter presenter;
 
         private CancellationTokenSource cts;
@@ -23,6 +25,7 @@ namespace MyRule.UI
             base.OnEnable();
 
             presenter = new MainMenuPresenter();
+            inputReader.uiActions.onPressAnyButton += OnAnyPressed;
         }
 
         protected override void OnDisable()
@@ -31,6 +34,8 @@ namespace MyRule.UI
 
             presenter.CleanUp();
             presenter = null;
+
+            inputReader.uiActions.onPressAnyButton -= OnAnyPressed;
         }
 
         protected override void Start()
@@ -51,9 +56,11 @@ namespace MyRule.UI
         {
 
         }
-
         public void OnAnyPressed()
         {
+            if (!anyBtn.gameObject.activeSelf) return;
+            anyBtn.GetComponent<Button>().onClick.Invoke();
+            Debug.Log("Any button pressed");
             if (GameSystemManager.Instance.HasSaveData)
             {
                 continueBtn.gameObject.SetActive(true);
@@ -67,5 +74,6 @@ namespace MyRule.UI
                 newGameBtn.CurrentButton.Select();
             }
         }
+
     }
 }
